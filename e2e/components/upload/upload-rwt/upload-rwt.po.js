@@ -1,29 +1,30 @@
-const uploadElements = {
-  root: '#upload-real-world-testing',
-  title: '.panel-title',
-  chooseUploadRwt: '//*[@id="ngf-label-upload-button-rwt"]/input[@id="ngf-upload-button-rwt"]',
-  uploadButton: '.btn.btn-ai-success',
-};
-
 const path = require('path');
 
 class UploadRwtComponent {
-  constructor() { }
+  constructor() {
+    this.uploadElements = {
+      root: '#upload-real-world-testing',
+      title: '.panel-title',
+      chooseUploadRwt: '#upload-file-selector',
+      uploadButton: '#submit-upload-file',
+      snackbar: '#notistack-snackbar',
+    };
+  }
 
   get chooseUploadRwtButton() {
-    return $(uploadElements.chooseUploadRwt);
+    return $(this.uploadElements.chooseUploadRwt);
   }
 
   get uploadButton() {
-    return $(uploadElements.root).$(uploadElements.uploadButton);
+    return $(this.uploadElements.root).$(this.uploadElements.uploadButton);
   }
 
   get fileUploadText() {
-    return $(uploadElements.root).$('div').$('div.panel-body').$('div');
+    return $(this.uploadElements.snackbar);
   }
 
   get title() {
-    return $(uploadElements.root).$(uploadElements.title);
+    return $(this.uploadElements.root).$(this.uploadElements.title);
   }
 
   uploadRwt(uploadfilePath) {

@@ -29,7 +29,7 @@ describe('When uploading rwt file as ONC-ACB', () => {
     expect(uploadRwtComponent.fileUploadText.getText()).toContain('was uploaded successfully. The file will be processed and an email will be sent to');
   });
 
-  it('cant upload invalid format of rwt file', () => {
+  it('can\'t upload invalid format of rwt file', () => {
     uploadRwtComponent.uploadRwt('../../../resources/apiDoc/APIDoc_File.xlsx');
     browser.waitUntil(() => !uploadRwtComponent.uploadButton.isDisplayed());
     expect(uploadRwtComponent.fileUploadText.getText()).toContain('was not uploaded successfully.');
