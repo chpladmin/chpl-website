@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadListings() {
+function ChplUploadRealWorldTestingPanel() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -75,7 +75,7 @@ function ChplUploadListings() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/listings/upload`,
+      url: `${API}/real-world-testing/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
@@ -109,7 +109,6 @@ function ChplUploadListings() {
         if (error?.data?.errorMessages) {
           if (error.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
             message += ' The CSV header row does not match any of the headers in the system.';
-            // to do: get available templates
           } else {
             message += ` ${error.data.errorMessages.join(', ')}`;
           }
@@ -125,75 +124,71 @@ function ChplUploadListings() {
 
   return (
     <Card>
-      <CardHeader title="Upload Certified Products" />
+      <CardHeader title="Upload Real World Testing" />
       <CardContent>
         <div className={classes.uploadContentContainer}>
-          <Typography variant="body1">
-            <strong> CSV files only</strong>
-          </Typography>
-          <div>
-            <Button
-              color="primary"
-              variant="outlined"
-              component="label"
-              endIcon={<CloudUploadOutlinedIcon />}
-            >
-              Choose file to upload
-              <input
-                type="file"
-                id="upload-listings"
-                onChange={onFileChange}
-                style={{ display: 'none' }}
-              />
-            </Button>
-          </div>
-          { file
-            && (
-              <Box className={classes.fileUploadContainer}>
-                <Box className={classes.fileUploadContent}>
-                  <div className={classes.fileName}>
-                    <strong>Filename:</strong>
-                    {' '}
-                    { file.name }
-                  </div>
-                  { file
-            && (
-              <div>
-                <strong>File size:</strong>
-                {' '}
-                { file.size }
-              </div>
-            )}
-                </Box>
-                { file
-            && (
-              <div className={classes.buttonUploadContainer}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={uploadFile}
-                  endIcon={<DoneIcon />}
-                >
-                  Upload
-                </Button>
-                <Button
-                  className={classes.deleteButton}
-                  variant="contained"
-                  onClick={clearFile}
-                  endIcon={<DeleteIcon />}
-                >
-                  Remove
-                </Button>
-              </div>
-            )}
-              </Box>
-            )}
+          <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
+          <Button
+            color="primary"
+            variant="outlined"
+            component="label"
+            endIcon={<CloudUploadOutlinedIcon />}
+          >
+            Choose file to upload
+            <input
+              type="file"
+              id="upload-real-world-testing"
+              onChange={onFileChange}
+              style={{ display: 'none' }}
+            />
+          </Button>
         </div>
+        { file
+          && (
+            <Box className={classes.fileUploadContainer}>
+              <Box className={classes.fileUploadContent}>
+                <div>
+                  <strong>Filename:</strong>
+                  {' '}
+                  { file.name }
+                </div>
+                { file
+                  && (
+                    <div>
+                      <strong>File size:</strong>
+                      {' '}
+                      { file.size }
+                    </div>
+                  )}
+              </Box>
+              { file
+                && (
+                  <div className={classes.buttonUploadContainer}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={uploadFile}
+                      endIcon={<DoneIcon />}
+                    >
+                      Upload
+                    </Button>
+                    <Button
+                      className={classes.deleteButton}
+                      variant="contained"
+                      onClick={clearFile}
+                      endIcon={<DeleteIcon />}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                )}
+            </Box>
+          )}
       </CardContent>
     </Card>
   );
 }
 
-ChplUploadListings.propTypes = {};
+ChplUploadRealWorldTestingPanel.propTypes = {};
 
-export default ChplUploadListings;
+export default ChplUploadRealWorldTestingPanel;

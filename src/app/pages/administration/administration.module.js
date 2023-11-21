@@ -5,6 +5,7 @@ import ChplLoginPage from './login';
 import ChplReportsWrapper from './reports/reports-wrapper';
 import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
 import ChplUploadPageWrapper from './upload/upload-page-wrapper';
+
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
 angular

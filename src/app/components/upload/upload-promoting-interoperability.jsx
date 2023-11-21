@@ -5,59 +5,56 @@ import {
   Card,
   CardContent,
   CardHeader,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DoneIcon from '@material-ui/icons/Done';
-
-import theme from 'themes/theme';
-
-import { ChplTextField } from 'components/util';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useSnackbar } from 'notistack';
+
+import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
-buttonUploadContainer: {
+  buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
     gap: '16px',
-},
-deleteButton: {
-  border: '1px solid #c44f65',
-  backgroundColor: '#FFFFFF',
-  color: '#c44f65',
-  '&:hover': {
-    border: '1px solid #853544',
-    color: '#853544',
   },
-},
-fileName: {
-  wordBreak: 'break-word',
-},
-uploadContentContainer: {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  alignItems: 'flex-start',
-},
-fileUploadContent: {
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '16px',
-},
-fileUploadContainer: {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  borderTop: '1px solid #EEEEEE',
-  marginTop: '16px',
-  paddingTop: '16px',
-},
+  deleteButton: {
+    border: '1px solid #c44f65',
+    backgroundColor: '#FFFFFF',
+    color: '#c44f65',
+    '&:hover': {
+      border: '1px solid #853544',
+      color: '#853544',
+    },
+  },
+  fileName: {
+    wordBreak: 'break-word',
+  },
+  uploadContentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    alignItems: 'flex-start',
+  },
+  fileUploadContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+  },
+  fileUploadContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    borderTop: '1px solid #EEEEEE',
+    marginTop: '16px',
+    paddingTop: '16px',
+  },
 });
 
 const validationSchema = yup.object({
@@ -71,7 +68,7 @@ function ChplUploadPromotingInteroperability() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
-  const toaster = getAngularService('toaster');
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let formik;
 
@@ -104,10 +101,8 @@ function ChplUploadPromotingInteroperability() {
     Upload.upload(item)
       .then((response) => {
         const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
+        enqueueSnackbar(message, {
+          variant: 'success',
         });
       })
       .catch((error) => {
@@ -115,10 +110,8 @@ function ChplUploadPromotingInteroperability() {
         if (error?.data?.errorMessages) {
           message += ` ${error.data.errorMessages.join(', ')}`;
         }
-        toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body: message,
+        enqueueSnackbar(message, {
+          variant: 'error',
         });
       })
       .finally(() => {
@@ -140,87 +133,85 @@ function ChplUploadPromotingInteroperability() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Card>
-        <CardHeader title="Upload Promoting Interoperability Users"/>
-        <CardContent>
-          <div className={classes.uploadContentContainer}>
-            <Typography gutterBottom variant="body1">
-              <strong>CSV files only</strong>
-            </Typography>
-            <ChplTextField
-                type="date"
-                id="promoting-interoperability-accurate-as-of"
-                name="accurateAsOf"
-                label="Date for Promoting Interoperability Users with this upload"
-                required
-                value={formik.values.accurateAsOf}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
-                helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
+    <Card>
+      <CardHeader title="Upload Promoting Interoperability Users" />
+      <CardContent>
+        <div className={classes.uploadContentContainer}>
+          <Typography gutterBottom variant="body1">
+            <strong>CSV files only</strong>
+          </Typography>
+          <ChplTextField
+            type="date"
+            id="promoting-interoperability-accurate-as-of"
+            name="accurateAsOf"
+            label="Date for Promoting Interoperability Users with this upload"
+            required
+            value={formik.values.accurateAsOf}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
+            helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
+          />
+          <div>
+            <Button
+              color="primary"
+              variant="outlined"
+              component="label"
+              endIcon={<CloudUploadOutlinedIcon />}
+            >
+              Choose file to upload
+              <input
+                type="file"
+                id="upload-promoting-interoperability"
+                onChange={onFileChange}
+                style={{ display: 'none' }}
               />
-            <div>
-              <Button
-                color="primary"
-                variant="outlined"
-                component="label"
-                endIcon={<CloudUploadOutlinedIcon/>}
-              >
-                Choose file to upload
-                <input
-                  type="file"
-                  id="upload-promoting-interoperability"
-                  onChange={onFileChange}
-                  style={{ display: 'none' }}
-                />
-              </Button>
-            </div>
-            { file
-              && (
+            </Button>
+          </div>
+          { file
+            && (
               <Box className={classes.fileUploadContainer}>
-              <Box className={classes.fileUploadContent}>
-                <div className={classes.fileName}>
-                  <strong>Filename:</strong>
-                  {' '}
-                  { file.name }
-                </div>
-            { file
-              && (
-              <div>
-                <strong>File size:</strong>
-                {' '}
-                { file.size }
-              </div>
-              )}
+                <Box className={classes.fileUploadContent}>
+                  <div className={classes.fileName}>
+                    <strong>Filename:</strong>
+                    {' '}
+                    { file.name }
+                  </div>
+                  { file
+                    && (
+                      <div>
+                        <strong>File size:</strong>
+                        {' '}
+                        { file.size }
+                      </div>
+                    )}
+                </Box>
+                { file
+                  && (
+                    <div className={classes.buttonUploadContainer}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={formik.handleSubmit}
+                        endIcon={<DoneIcon />}
+                      >
+                        Upload
+                      </Button>
+                      <Button
+                        className={classes.deleteButton}
+                        variant="contained"
+                        onClick={clearFile}
+                        endIcon={<DeleteIcon />}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  )}
               </Box>
-            { file
-              && (
-              <div className={classes.buttonUploadContainer}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={formik.handleSubmit}
-                  endIcon={<DoneIcon />}
-                >
-                  Upload
-                </Button>
-                <Button
-                  className={classes.deleteButton}
-                  variant="contained"
-                  onClick={clearFile}
-                  endIcon={<DeleteIcon/>}
-                >
-                  Remove
-                </Button>
-              </div>
-              )}
-            </Box>
-          )}
-         </div>     
-        </CardContent>
-      </Card>
-    </ThemeProvider>
+            )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

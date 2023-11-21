@@ -5,17 +5,17 @@ import {
   Card,
   CardContent,
   CardHeader,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { theme } from 'themes';
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DoneIcon from '@material-ui/icons/Done';
-
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
+
+import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
@@ -57,7 +57,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadRealWorldTestingPanel() {
+const validationSchema = yup.object({
+  accurateAsOf: yup.date()
+    .required('Enter the most accurate date for API Documentation associated with this upload, field required.'),
+});
+
+function ChplUploadApiDocumentation() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -65,6 +70,7 @@ function ChplUploadRealWorldTestingPanel() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const classes = useStyles();
+  let formik;
 
   const clearFile = () => {
     setFile(undefined);
@@ -78,15 +84,20 @@ function ChplUploadRealWorldTestingPanel() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/real-world-testing/upload`,
+      url: `${API}/files/api_documentation`,
       headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
+        Authorization: 'Bearer ' + authService.getToken(),
         'API-Key': authService.getApiKey(),
       },
       data: {
         file,
       },
     };
+    if (typeof formik.values.accurateAsOf === 'object') {
+      item.url += `?accurate_as_of=${formik.values.accurateAsOf.getTime()}`;
+    } else {
+      item.url += `?accurate_as_of=${new Date(formik.values.accurateAsOf).getTime()}`;
+    }
     Upload.upload(item)
       .then((response) => {
         if (response.status === 206) {
@@ -107,94 +118,102 @@ function ChplUploadRealWorldTestingPanel() {
           });
         }
       })
-      .catch((error) => {
-        let message = `Error: File "${file.name}" was not uploaded successfully.`;
-        if (error?.data?.errorMessages) {
-          if (error.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
-            message += ' The CSV header row does not match any of the headers in the system.';
-            // to do: get available templates
-          } else {
-            message += ` ${error.data.errorMessages.join(', ')}`;
-          }
-        }
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
-      })
       .finally(() => {
         clearFile();
       });
   };
 
+  formik = useFormik({
+    validationSchema,
+    initialValues: {
+      accurateAsOf: '',
+    },
+    validateOnChange: false,
+    validateOnBlur: true,
+    onSubmit: () => {
+      uploadFile();
+    },
+  });
+
   return (
-    <ThemeProvider theme={theme}>
-      <Card>
-        <CardHeader title="Upload Real World Testing" />
-        <CardContent>
-          <div className={classes.uploadContentContainer}>
-            <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
-            <Button
-              color="primary"
-              variant="outlined"
-              component="label"
-              endIcon={<CloudUploadOutlinedIcon />}
-            >
-              Choose file to upload
-              <input
-                type="file"
-                id="upload-real-world-testing"
-                onChange={onFileChange}
-                style={{ display: 'none' }}
-              />
-            </Button>
-          </div>
-          { file
-            && (
-              <Box className={classes.fileUploadContainer}>
-                <Box className={classes.fileUploadContent}>
-                  <div>
-                    <strong>Filename:</strong>
-                    {' '}
-                    { file.name }
-                  </div>
-                  { file
-              && (
+    <Card>
+      <CardHeader title="Upload API Documentation"/>
+      <CardContent>
+        <div className={classes.uploadContentContainer}>
+          <Typography gutterBottom variant="body1"><strong>No requirements on file type</strong></Typography>
+          <ChplTextField
+            type="date"
+            id="api-documentation-accurate-as-of"
+            name="accurateAsOf"
+            label="Date for API Documentation with this upload"
+            required
+            value={formik.values.accurateAsOf}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
+            helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
+          />
+          <Button
+            color="primary"
+            variant="outlined"
+            component="label"
+            endIcon={<CloudUploadOutlinedIcon/>}
+          >
+            Choose file to upload
+            <input
+              type="file"
+              id="upload-api-documentation"
+              onChange={onFileChange}
+              style={{ display: 'none' }}
+            />
+          </Button>
+        </div>
+        { file
+          && (
+            <Box className={classes.fileUploadContainer}>
+              <Box className={classes.fileUploadContent}>
                 <div>
-                  <strong>File size:</strong>
+                  <strong>Filename:</strong>
                   {' '}
-                  { file.size }
+                  { file.name }
                 </div>
-              )}
-                </Box>
                 { file
-            && (
-              <div className={classes.buttonUploadContainer}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={uploadFile}
-                  endIcon={<DoneIcon />}
-                >
-                  Upload
-                </Button>
-                <Button
-                  className={classes.deleteButton}
-                  variant="contained"
-                  onClick={clearFile}
-                  endIcon={<DeleteIcon />}
-                >
-                  Remove
-                </Button>
-              </div>
-            )}
+                  && (
+                    <div>
+                      <strong>File size:</strong>
+                      {' '}
+                      { file.size }
+                    </div>
+                  )}
               </Box>
-            )}
-        </CardContent>
-      </Card>
-    </ThemeProvider>
+              { file
+                && (
+                  <div className={classes.buttonUploadContainer}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={uploadFile}
+                      endIcon={<DoneIcon />}
+                    >
+                      Upload
+                    </Button>
+                    <Button
+                      className={classes.deleteButton}
+                      variant="contained"
+                      onClick={clearFile}
+                      endIcon={<DeleteIcon />}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                )}
+            </Box>
+          )}
+      </CardContent>
+    </Card>
   );
 }
 
-ChplUploadRealWorldTestingPanel.propTypes = {};
+export default ChplUploadApiDocumentation;
 
-export default ChplUploadRealWorldTestingPanel;
+ChplUploadApiDocumentation.propTypes = {};

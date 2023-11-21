@@ -27,14 +27,6 @@ import ChplSurveillanceView from './listing/details/surveillance/surveillance-vi
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage/reporting-date-selector';
-import {
-  ChplUploadPromotingInteroperability,
-  ChplUploadWrapper,
-  ChplUploadRealWorldTestingPanel,
-  ChplUploadRealWorldTestingWrapper,
-  ChplUploadApiDocumentationPanel,
-  ChplUploadApiDocumentationWrapper,
-} from './upload';
 import ChplUsersWrapper from './user/users-wrapper';
 import {
   ChplConfirmation,
@@ -85,11 +77,5 @@ angular
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
-  .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
-  .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
-  .component('chplUploadRealWorldTestingWrapperBridge', reactToAngularComponent(ChplUploadRealWorldTestingWrapper))
-  .component('chplUploadRealWorldTestingPanelBridge', reactToAngularComponent(ChplUploadRealWorldTestingPanel))
-  .component('chplUploadApiDocumentationWrapperBridge', reactToAngularComponent(ChplUploadApiDocumentationWrapper))
-  .component('chplUploadApiDocumentationPanelBridge', reactToAngularComponent(ChplUploadApiDocumentationPanel))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));

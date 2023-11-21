@@ -6,13 +6,10 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import {
-  ChplUploadListings,
-  ChplUploadPromotingInteroperability,
-  ChplUploadRealWorldTestingWrapper,
-  ChplUploadApiDocumentationWrapper,
-} from '../../../components/upload';
-
+import ChplUploadApiDocumentationWrapper from 'components/upload/upload-api-documentation';
+import ChplUploadListings from 'components/upload/upload-listings';
+import ChplUploadPromotingInteroperability from 'components/upload/upload-promoting-interoperability';
+import ChplUploadRealWorldTestingWrapper from 'components/upload/upload-real-world-testing';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -45,6 +42,7 @@ const useStyles = makeStyles({
 
 function ChplUpload() {
   const classes = useStyles();
+
   return (
     <Box bgcolor={palette.background}>
       <div className={classes.pageHeader}>
