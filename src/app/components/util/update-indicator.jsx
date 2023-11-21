@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   IconButton,
@@ -13,6 +13,8 @@ import { string } from 'prop-types';
 
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { getDisplayDateFormat } from 'services/date-util';
+import { isListingActive } from 'services/listing.service';
+import { CriterionContext, ListingContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -31,7 +33,15 @@ const useStyles = makeStyles({
 });
 
 function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
+  const { criterion } = useContext(CriterionContext);
+  const { listing } = useContext(ListingContext);
   const classes = useStyles();
+
+  if (listing.chplProductNumber
+      && (!isListingActive(listing)
+          || criterion.criterion.status === 'REMOVED')) {
+    return null;
+  }
 
   if (endDay && jsJoda.LocalDate.now() < endDay) {
     return (
