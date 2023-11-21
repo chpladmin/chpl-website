@@ -3,7 +3,7 @@ const path = require('path');
 class UploadListingComponent {
   constructor() {
     this.elements = {
-      root: 'chpl-upload-wrapper-bridge',
+      root: '#upload-certified-products',
       title: '.MuiCardHeader-title',
       chooseUploadListing: '#upload-listings',
       uploadButton: '.MuiButton-containedPrimary',

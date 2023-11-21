@@ -1,6 +1,5 @@
 const uploadElements = {
-  root: 'chpl-upload-api-documentation',
-  title: '.panel-title',
+  root: '#upload-api-documentation',
   chooseUploadAPIDocumentation: '//*[@id="ngf-label-upload-button-api"]/input[@id="ngf-upload-button-api"]',
   uploadMessages: '.upload-messages',
   uploadButton: '.btn.btn-ai-success',
@@ -25,7 +24,7 @@ class UploadApiDocumentationComponent {
   }
 
   get title () {
-    return $(uploadElements.root).$(uploadElements.title);
+    return $(uploadElements.root).$$('div')[0];
   }
 
   uploadAPIDocFile (uploadfilePath) {

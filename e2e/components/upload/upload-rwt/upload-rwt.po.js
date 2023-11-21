@@ -1,5 +1,5 @@
 const uploadElements = {
-  root: 'chpl-upload-real-world-testing',
+  root: '#upload-real-world-testing',
   title: '.panel-title',
   chooseUploadRwt: '//*[@id="ngf-label-upload-button-rwt"]/input[@id="ngf-upload-button-rwt"]',
   uploadButton: '.btn.btn-ai-success',
