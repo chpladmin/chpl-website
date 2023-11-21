@@ -24,6 +24,7 @@ import ChplCriterionDetailsView from './criterion-details-view';
 import { ChplHighlightCures } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { isCures } from 'services/criteria.service';
+import { CriterionContext } from 'shared/contexts';
 import {
   certificationResult,
   listing as listingPropType,
@@ -173,6 +174,11 @@ function ChplCriterion(props) {
 
   if (!criterion) { return null; }
 
+  const criterionState = {
+    criterion,
+    setCriterion,
+  };
+
   return (
     <div>
       <Accordion
@@ -287,12 +293,13 @@ function ChplCriterion(props) {
                           </div>
                         )}
                       <div>
-                        <ChplCriterionDetailsView
-                          criterion={criterion}
-                          accessibilityStandards={accessibilityStandards}
-                          qmsStandards={qmsStandards}
-                          isConfirming={isConfirming}
-                        />
+                        <CriterionContext.Provider value={criterionState}>
+                          <ChplCriterionDetailsView
+                            criterion={criterion}
+                            accessibilityStandards={accessibilityStandards}
+                            qmsStandards={qmsStandards}
+                          />
+                        </CriterionContext.Provider>
                       </div>
                     </>
                   )}
