@@ -141,7 +141,7 @@ function ChplUploadListings() {
               Choose file to upload
               <input
                 type="file"
-                id="upload-listings"
+                id="upload-file-selector"
                 onChange={onFileChange}
                 style={{ display: 'none' }}
               />
@@ -157,35 +157,37 @@ function ChplUploadListings() {
                     { file.name }
                   </div>
                   { file
-            && (
-              <div>
-                <strong>File size:</strong>
-                {' '}
-                { file.size }
-              </div>
-            )}
+                    && (
+                      <div>
+                        <strong>File size:</strong>
+                        {' '}
+                        { file.size }
+                      </div>
+                    )}
                 </Box>
                 { file
-            && (
-              <div className={classes.buttonUploadContainer}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={uploadFile}
-                  endIcon={<DoneIcon />}
-                >
-                  Upload
-                </Button>
-                <Button
-                  className={classes.deleteButton}
-                  variant="contained"
-                  onClick={clearFile}
-                  endIcon={<DeleteIcon />}
-                >
-                  Remove
-                </Button>
-              </div>
-            )}
+                  && (
+                    <div className={classes.buttonUploadContainer}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={uploadFile}
+                        endIcon={<DoneIcon />}
+                        id="submit-upload-file"
+                      >
+                        Upload
+                      </Button>
+                      <Button
+                        className={classes.deleteButton}
+                        variant="contained"
+                        onClick={clearFile}
+                        endIcon={<DeleteIcon />}
+                        id="clear-upload-file"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  )}
               </Box>
             )}
         </div>

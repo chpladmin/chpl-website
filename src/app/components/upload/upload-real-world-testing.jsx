@@ -137,7 +137,7 @@ function ChplUploadRealWorldTesting() {
             Choose file to upload
             <input
               type="file"
-              id="upload-real-world-testing"
+              id="upload-file-selector"
               onChange={onFileChange}
               style={{ display: 'none' }}
             />
@@ -169,6 +169,7 @@ function ChplUploadRealWorldTesting() {
                       variant="contained"
                       onClick={uploadFile}
                       endIcon={<DoneIcon />}
+                      id="submit-upload-file"
                     >
                       Upload
                     </Button>
@@ -177,6 +178,7 @@ function ChplUploadRealWorldTesting() {
                       variant="contained"
                       onClick={clearFile}
                       endIcon={<DeleteIcon />}
+                      id="clear-upload-file"
                     >
                       Remove
                     </Button>

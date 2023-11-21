@@ -162,7 +162,7 @@ function ChplUploadPromotingInteroperability() {
               Choose file to upload
               <input
                 type="file"
-                id="upload-promoting-interoperability"
+                id="upload-file-selector"
                 onChange={onFileChange}
                 style={{ display: 'none' }}
               />
@@ -194,6 +194,7 @@ function ChplUploadPromotingInteroperability() {
                         variant="contained"
                         onClick={formik.handleSubmit}
                         endIcon={<DoneIcon />}
+                        id="submit-upload-file"
                       >
                         Upload
                       </Button>
@@ -202,6 +203,7 @@ function ChplUploadPromotingInteroperability() {
                         variant="contained"
                         onClick={clearFile}
                         endIcon={<DeleteIcon />}
+                        id="clear-upload-file"
                       >
                         Remove
                       </Button>
