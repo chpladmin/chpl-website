@@ -123,7 +123,7 @@ function ChplUploadRealWorldTesting() {
   };
 
   return (
-    <Card>
+    <Card id="upload-real-world-testing">
       <CardHeader title="Upload Real World Testing" />
       <CardContent>
         <div className={classes.uploadContentContainer}>

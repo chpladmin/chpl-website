@@ -136,7 +136,7 @@ function ChplUploadApiDocumentation() {
   });
 
   return (
-    <Card>
+    <Card id="upload-api-documentation">
       <CardHeader title="Upload API Documentation" />
       <CardContent>
         <div className={classes.uploadContentContainer}>

@@ -124,7 +124,7 @@ function ChplUploadListings() {
   };
 
   return (
-    <Card>
+    <Card id="upload-certified-products">
       <CardHeader title="Upload Certified Products" />
       <CardContent>
         <div className={classes.uploadContentContainer}>

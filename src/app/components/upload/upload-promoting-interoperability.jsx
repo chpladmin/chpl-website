@@ -133,7 +133,7 @@ function ChplUploadPromotingInteroperability() {
   });
 
   return (
-    <Card>
+    <Card id="upload-promoting-interoperability-users">
       <CardHeader title="Upload Promoting Interoperability Users" />
       <CardContent>
         <div className={classes.uploadContentContainer}>
