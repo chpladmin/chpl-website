@@ -9,30 +9,30 @@ const uploadElements = {
 const path = require('path');
 
 class UploadApiDocumentationComponent {
-  constructor () { }
+  constructor() { }
 
-  get uploadButton () {
+  get uploadButton() {
     return $(uploadElements.root).$(uploadElements.uploadButton);
   }
 
-  get chooseUploadAPIDocumentation () {
+  get chooseUploadAPIDocumentation() {
     return $(uploadElements.chooseUploadAPIDocumentation);
   }
 
-  get apiDocUploadText () {
+  get apiDocUploadText() {
     return $(uploadElements.root).$(uploadElements.uploadMessages).$(uploadElements.uploadMessagesText);
   }
 
-  get title () {
+  get title() {
     return $(uploadElements.root).$$('div')[0];
   }
 
-  uploadAPIDocFile (uploadfilePath) {
+  uploadAPIDocFile(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadAPIDocumentation.addValue(browser.uploadFile(filePath));
     this.uploadButton.scrollIntoView();
     this.uploadButton.click();
-    browser.waitUntil( () => this.apiDocUploadText.isDisplayed());
+    browser.waitUntil(() => this.apiDocUploadText.isDisplayed());
   }
 }
 

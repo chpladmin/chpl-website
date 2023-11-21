@@ -8,31 +8,30 @@ const uploadElements = {
 const path = require('path');
 
 class UploadRwtComponent {
-  constructor () { }
+  constructor() { }
 
-  get chooseUploadRwtButton () {
+  get chooseUploadRwtButton() {
     return $(uploadElements.chooseUploadRwt);
   }
 
-  get uploadButton () {
+  get uploadButton() {
     return $(uploadElements.root).$(uploadElements.uploadButton);
   }
 
-  get fileUploadText () {
+  get fileUploadText() {
     return $(uploadElements.root).$('div').$('div.panel-body').$('div');
   }
 
-  get title () {
+  get title() {
     return $(uploadElements.root).$(uploadElements.title);
   }
 
-  uploadRwt (uploadfilePath) {
+  uploadRwt(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadRwtButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();
-    browser.waitUntil( () => this.fileUploadText.isDisplayed());
+    browser.waitUntil(() => this.fileUploadText.isDisplayed());
   }
-
 }
 
 export default UploadRwtComponent;
