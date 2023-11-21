@@ -1,30 +1,31 @@
-const uploadElements = {
-  root: '#upload-api-documentation',
-  chooseUploadAPIDocumentation: '//*[@id="ngf-label-upload-button-api"]/input[@id="ngf-upload-button-api"]',
-  uploadMessages: '.upload-messages',
-  uploadButton: '.btn.btn-ai-success',
-  uploadMessagesText: 'div.ng-binding.ng-scope',
-};
-
 const path = require('path');
 
 class UploadApiDocumentationComponent {
-  constructor() { }
+  constructor() {
+    this.uploadElements = {
+      root: '#upload-api-documentation',
+      chooseUploadAPIDocumentation: '#upload-file-selector',
+      uploadMessages: '.upload-messages',
+      uploadButton: '#submit-upload-file',
+      uploadMessagesText: 'div.ng-binding.ng-scope',
+      snackbar: '#notistack-snackbar',
+    };
+  }
 
   get uploadButton() {
-    return $(uploadElements.root).$(uploadElements.uploadButton);
+    return $(this.uploadElements.root).$(this.uploadElements.uploadButton);
   }
 
   get chooseUploadAPIDocumentation() {
-    return $(uploadElements.chooseUploadAPIDocumentation);
+    return $(this.uploadElements.root).$(this.uploadElements.chooseUploadAPIDocumentation);
   }
 
   get apiDocUploadText() {
-    return $(uploadElements.root).$(uploadElements.uploadMessages).$(uploadElements.uploadMessagesText);
+    return $(this.uploadElements.snackbar);
   }
 
   get title() {
-    return $(uploadElements.root).$$('div')[0];
+    return $(this.uploadElements.root).$$('div')[0];
   }
 
   uploadAPIDocFile(uploadfilePath) {

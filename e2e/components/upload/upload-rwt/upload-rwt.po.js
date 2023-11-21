@@ -4,7 +4,6 @@ class UploadRwtComponent {
   constructor() {
     this.uploadElements = {
       root: '#upload-real-world-testing',
-      title: '.panel-title',
       chooseUploadRwt: '#upload-file-selector',
       uploadButton: '#submit-upload-file',
       snackbar: '#notistack-snackbar',
@@ -12,7 +11,7 @@ class UploadRwtComponent {
   }
 
   get chooseUploadRwtButton() {
-    return $(this.uploadElements.chooseUploadRwt);
+    return $(this.uploadElements.root).$(this.uploadElements.chooseUploadRwt);
   }
 
   get uploadButton() {
@@ -24,7 +23,7 @@ class UploadRwtComponent {
   }
 
   get title() {
-    return $(this.uploadElements.root).$(this.uploadElements.title);
+    return $(this.uploadElements.root).$$('div')[0];
   }
 
   uploadRwt(uploadfilePath) {
