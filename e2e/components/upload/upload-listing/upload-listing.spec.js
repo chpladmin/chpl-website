@@ -21,6 +21,7 @@ describe('when uploading listings', () => {
   });
 
   afterEach(() => {
+    upload.clearResults();
     hooks.waitForSpinnerToDisappear();
     loginComponent.logOut();
   });
@@ -30,7 +31,8 @@ describe('when uploading listings', () => {
 
     it(`shows ${message} status of upload: ${testName}`, () => {
       upload.uploadListing(path);
-      expect(upload.uploadMessage(path.split('/').pop())).toHaveTextContaining(message);
+      //expect(upload.uploadMessage(path.split('/').pop())).toHaveTextContaining(message);
+      expect(upload.uploadResults).toHaveTextContaining(message);
     });
   });
 });

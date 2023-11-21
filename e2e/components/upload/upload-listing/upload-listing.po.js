@@ -4,10 +4,10 @@ class UploadListingComponent {
   constructor() {
     this.elements = {
       root: '#upload-certified-products',
-      title: '.MuiCardHeader-title',
-      chooseUploadListing: '#upload-listings',
-      uploadButton: '.MuiButton-containedPrimary',
-      uploadDone: (filename) => `div#notistack-snackbar*=${filename}`,
+      chooseUploadListing: '#upload-file-selector',
+      uploadButton: '#submit-upload-file',
+      snackbar: '#notistack-snackbar',
+      uploadDone: (filename) => `#notistack-snackbar*=${filename}`,
     };
   }
 
@@ -16,7 +16,7 @@ class UploadListingComponent {
   }
 
   get title() {
-    return $(this.elements.root).$(this.elements.title);
+    return $(this.elements.root).$$('div')[0];
   }
 
   get chooseUploadListingButton() {
@@ -27,12 +27,21 @@ class UploadListingComponent {
     return $(this.elements.root).$(this.elements.uploadButton);
   }
 
+  get uploadResults() {
+    return $(this.elements.snackbar);
+  }
+
+  clearResults() {
+    $(this.elements.snackbar).parentElement().$('button').click();
+  }
+
   uploadListing(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();
     const toast = this.uploadMessage(uploadfilePath.split('/').pop());
-    browser.waitUntil(() => toast.isDisplayed());
+    //browser.waitUntil(() => toast.isDisplayed());
+    browser.waitUntil(() => this.uploadResults.isDisplayed());
   }
 
   uploadFileAndWaitForListingsToBeProcessed(filename, listingIds, hooks, confirm) {

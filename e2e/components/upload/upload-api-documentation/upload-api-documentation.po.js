@@ -5,9 +5,7 @@ class UploadApiDocumentationComponent {
     this.uploadElements = {
       root: '#upload-api-documentation',
       chooseUploadAPIDocumentation: '#upload-file-selector',
-      uploadMessages: '.upload-messages',
       uploadButton: '#submit-upload-file',
-      uploadMessagesText: 'div.ng-binding.ng-scope',
       snackbar: '#notistack-snackbar',
     };
   }
