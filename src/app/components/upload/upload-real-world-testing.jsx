@@ -8,8 +8,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useSnackbar } from 'notistack';
 
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadRealWorldTestingPanel() {
+function ChplUploadRealWorldTesting() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -189,6 +189,7 @@ function ChplUploadRealWorldTestingPanel() {
   );
 }
 
-ChplUploadRealWorldTestingPanel.propTypes = {};
+export default ChplUploadRealWorldTesting;
 
-export default ChplUploadRealWorldTestingPanel;
+ChplUploadRealWorldTesting.propTypes = {
+};

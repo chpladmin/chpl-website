@@ -8,8 +8,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -217,4 +217,5 @@ function ChplUploadPromotingInteroperability() {
 
 export default ChplUploadPromotingInteroperability;
 
-ChplUploadPromotingInteroperability.propTypes = {};
+ChplUploadPromotingInteroperability.propTypes = {
+};

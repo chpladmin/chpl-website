@@ -8,8 +8,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useSnackbar } from 'notistack';
 
@@ -194,6 +194,7 @@ function ChplUploadListings() {
   );
 }
 
-ChplUploadListings.propTypes = {};
-
 export default ChplUploadListings;
+
+ChplUploadListings.propTypes = {
+};

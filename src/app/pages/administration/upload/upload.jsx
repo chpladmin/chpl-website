@@ -6,10 +6,11 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import ChplUploadApiDocumentationWrapper from 'components/upload/upload-api-documentation';
+import ChplUploadApiDocumentation from 'components/upload/upload-api-documentation';
 import ChplUploadListings from 'components/upload/upload-listings';
 import ChplUploadPromotingInteroperability from 'components/upload/upload-promoting-interoperability';
-import ChplUploadRealWorldTestingWrapper from 'components/upload/upload-real-world-testing';
+import ChplUploadRealWorldTesting from 'components/upload/upload-real-world-testing';
+import { UserContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({

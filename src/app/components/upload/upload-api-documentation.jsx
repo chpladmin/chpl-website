@@ -8,8 +8,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -86,7 +86,7 @@ function ChplUploadApiDocumentation() {
     const item = {
       url: `${API}/files/api_documentation`,
       headers: {
-        Authorization: 'Bearer ' + authService.getToken(),
+        Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
       },
       data: {
@@ -137,7 +137,7 @@ function ChplUploadApiDocumentation() {
 
   return (
     <Card>
-      <CardHeader title="Upload API Documentation"/>
+      <CardHeader title="Upload API Documentation" />
       <CardContent>
         <div className={classes.uploadContentContainer}>
           <Typography gutterBottom variant="body1"><strong>No requirements on file type</strong></Typography>
@@ -157,7 +157,7 @@ function ChplUploadApiDocumentation() {
             color="primary"
             variant="outlined"
             component="label"
-            endIcon={<CloudUploadOutlinedIcon/>}
+            endIcon={<CloudUploadOutlinedIcon />}
           >
             Choose file to upload
             <input
@@ -216,4 +216,5 @@ function ChplUploadApiDocumentation() {
 
 export default ChplUploadApiDocumentation;
 
-ChplUploadApiDocumentation.propTypes = {};
+ChplUploadApiDocumentation.propTypes = {
+};
