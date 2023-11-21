@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Container,
@@ -42,6 +42,7 @@ const useStyles = makeStyles({
 });
 
 function ChplUpload() {
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   return (
@@ -63,14 +64,20 @@ function ChplUpload() {
                 <ChplUploadListings />
               </Box>
               <Box className={classes.uploadCards}>
-                <ChplUploadRealWorldTestingWrapper />
+                <ChplUploadRealWorldTesting />
               </Box>
-              <Box className={classes.uploadCards}>
-                <ChplUploadPromotingInteroperability />
-              </Box>
-              <Box className={classes.uploadCards}>
-                <ChplUploadApiDocumentationWrapper />
-              </Box>
+              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+                && (
+                  <Box className={classes.uploadCards}>
+                    <ChplUploadPromotingInteroperability />
+                  </Box>
+                )}
+              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+                && (
+                  <Box className={classes.uploadCards}>
+                    <ChplUploadApiDocumentation />
+                  </Box>
+                )}
             </Box>
           </Box>
         </Container>
