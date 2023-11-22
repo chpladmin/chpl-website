@@ -87,8 +87,10 @@
     function getUserId() {
       if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
+        console.log(token);
         if (featureFlags.isOn('sso')) {
-          return parseJwt(token).email;
+          console.log(parseJwt(token));
+          return parseJwt(token).sub;
         } else {
           const identity = parseJwt(token).Identity;
           return identity[0];
