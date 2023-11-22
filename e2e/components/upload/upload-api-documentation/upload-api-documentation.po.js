@@ -1,37 +1,22 @@
+import UploadComponent from '../upload.po';
+
 const path = require('path');
 
-class UploadApiDocumentationComponent {
+class UploadApiDocumentationComponent extends UploadComponent {
   constructor() {
-    this.uploadElements = {
+    super();
+    this.elements = {
+      ...this.elements,
       root: '#upload-api-documentation',
-      chooseUploadAPIDocumentation: '#upload-file-selector',
-      uploadButton: '#submit-upload-file',
-      snackbar: '#notistack-snackbar',
     };
-  }
-
-  get uploadButton() {
-    return $(this.uploadElements.root).$(this.uploadElements.uploadButton);
-  }
-
-  get chooseUploadAPIDocumentation() {
-    return $(this.uploadElements.root).$(this.uploadElements.chooseUploadAPIDocumentation);
-  }
-
-  get apiDocUploadText() {
-    return $(this.uploadElements.snackbar);
-  }
-
-  get title() {
-    return $(this.uploadElements.root).$$('div')[0];
   }
 
   uploadAPIDocFile(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
-    this.chooseUploadAPIDocumentation.addValue(browser.uploadFile(filePath));
+    this.chooseUploadFileButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.scrollIntoView();
     this.uploadButton.click();
-    browser.waitUntil(() => this.apiDocUploadText.isDisplayed());
+    browser.waitUntil(() => this.uploadResults.isDisplayed());
   }
 }
 
