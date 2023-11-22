@@ -340,7 +340,7 @@ const CertificationCriteriaEditComponent = {
         .sort((a, b) => (a.value < b.value ? -1 : 1))
         .map((ft) => ({
           ...ft,
-          displayText: `${(ft.retired ? 'Expired | ' : '')} ${ft.value}`,
+          displayText: `${(ft.retired ? 'Expired | ' : '')} ${ft.regulatoryTextCitation}: ${ft.value}`,
         }));
     }
 
