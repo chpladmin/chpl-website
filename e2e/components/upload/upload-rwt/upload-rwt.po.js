@@ -1,36 +1,21 @@
+import UploadComponent from '../upload.po';
+
 const path = require('path');
 
-class UploadRwtComponent {
+class UploadRwtComponent extends UploadComponent {
   constructor() {
-    this.uploadElements = {
+    super();
+    this.elements = {
+      ...this.elements,
       root: '#upload-real-world-testing',
-      chooseUploadRwt: '#upload-file-selector',
-      uploadButton: '#submit-upload-file',
-      snackbar: '#notistack-snackbar',
     };
-  }
-
-  get chooseUploadRwtButton() {
-    return $(this.uploadElements.root).$(this.uploadElements.chooseUploadRwt);
-  }
-
-  get uploadButton() {
-    return $(this.uploadElements.root).$(this.uploadElements.uploadButton);
-  }
-
-  get fileUploadText() {
-    return $(this.uploadElements.snackbar);
-  }
-
-  get title() {
-    return $(this.uploadElements.root).$$('div')[0];
   }
 
   uploadRwt(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
-    this.chooseUploadRwtButton.addValue(browser.uploadFile(filePath));
+    this.chooseUploadFileButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();
-    browser.waitUntil(() => this.fileUploadText.isDisplayed());
+    browser.waitUntil(() => this.uploadResults.isDisplayed());
   }
 }
 

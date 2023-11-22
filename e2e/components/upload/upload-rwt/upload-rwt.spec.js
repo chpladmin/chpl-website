@@ -5,10 +5,10 @@ import UploadRwtComponent from './upload-rwt.po';
 
 let hooks;
 let loginComponent;
-let uploadRwtComponent;
+let upload;
 
 beforeEach(async () => {
-  uploadRwtComponent = new UploadRwtComponent();
+  upload = new UploadRwtComponent();
   loginComponent = new LoginComponent();
   hooks = new Hooks();
   await hooks.open('#/administration/upload');
@@ -20,18 +20,18 @@ describe('When uploading rwt file as ONC-ACB', () => {
   });
 
   afterEach(() => {
-    loginComponent.logOut();
+    browser.reloadSession();
   });
 
   it('can upload valid format of rwt file', () => {
-    uploadRwtComponent.uploadRwt('../../../resources/rwt/RWT_Upload_File.csv');
-    browser.waitUntil(() => !uploadRwtComponent.uploadButton.isDisplayed());
-    expect(uploadRwtComponent.fileUploadText.getText()).toContain('was uploaded successfully. The file will be processed and an email will be sent to');
+    upload.uploadRwt('../../../resources/rwt/RWT_Upload_File.csv');
+    hooks.waitForSpinnerToDisappear();
+    expect(upload.uploadResults.getText()).toContain('was uploaded successfully. The file will be processed and an email will be sent to');
   });
 
   it('can\'t upload invalid format of rwt file', () => {
-    uploadRwtComponent.uploadRwt('../../../resources/apiDoc/APIDoc_File.xlsx');
-    browser.waitUntil(() => !uploadRwtComponent.uploadButton.isDisplayed());
-    expect(uploadRwtComponent.fileUploadText.getText()).toContain('was not uploaded successfully.');
+    upload.uploadRwt('../../../resources/apiDoc/APIDoc_File.xlsx');
+    hooks.waitForSpinnerToDisappear();
+    expect(upload.uploadResults.getText()).toContain('was not uploaded successfully.');
   });
 });
