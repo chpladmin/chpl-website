@@ -1,31 +1,27 @@
+import UploadComponent from '../upload.po';
+
 const path = require('path');
 
-class UploadPiComponent {
+class UploadPiComponent extends UploadComponent {
   constructor() {
+    super();
     this.elements = {
-      uploadButton: '//span[text()="Upload"]',
+      ...this.elements,
+      root: '#upload-promoting-interoperability-users',
       accurateAsOfDate: '#promoting-interoperability-accurate-as-of',
-      chooseUploadPi: '//input[@id="upload-promoting-interoperability"]',
     };
   }
 
-  get chooseUploadButton() {
-    return $(this.elements.chooseUploadPi);
-  }
-
-  get uploadButton() {
-    return $(this.elements.uploadButton);
-  }
-
   get accurateAsOfDate() {
-    return $(this.elements.accurateAsOfDate);
+    return $(this.elements.root).$(this.elements.accurateAsOfDate);
   }
 
   upload(uploadfilePath, accurateAsOf) {
     this.accurateAsOfDate.addValue(accurateAsOf);
     const filePath = path.join(__dirname, uploadfilePath);
-    this.chooseUploadButton.addValue(browser.uploadFile(filePath));
+    this.chooseUploadFileButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();
+    browser.waitUntil(() => this.uploadResults.isDisplayed());
   }
 }
 

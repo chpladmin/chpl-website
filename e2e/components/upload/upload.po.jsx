@@ -8,10 +8,6 @@ class UploadComponent {
     };
   }
 
-  uploadMessage() {
-    return $(this.elements.root).$(this.elements.snackbar);
-  }
-
   get title() {
     return $(this.elements.root).$$('div')[0];
   }
