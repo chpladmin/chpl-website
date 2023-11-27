@@ -60,9 +60,12 @@ function ChplUpload() {
         <Container maxWidth="lg">
           <Box className={classes.uploadCardColumns}>
             <Box className={classes.uploadCardContainer}>
-              <Box className={classes.uploadCards}>
-                <ChplUploadListings />
-              </Box>
+              { hasAnyRole(['chpl-admin', 'ROLE_ACB'])
+                && (
+                  <Box className={classes.uploadCards}>
+                    <ChplUploadListings />
+                  </Box>
+                )}
               <Box className={classes.uploadCards}>
                 <ChplUploadRealWorldTesting />
               </Box>
