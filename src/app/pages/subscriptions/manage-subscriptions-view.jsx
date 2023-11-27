@@ -109,10 +109,10 @@ function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const $analytics = getAngularService('$analytics');
   const [headers] = useState(initialHeaders);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'subscriber_email');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const [subscriptions, setSubscriptions] = useState([]);
   const classes = useStyles();
