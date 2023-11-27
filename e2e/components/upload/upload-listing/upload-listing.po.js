@@ -21,12 +21,6 @@ class UploadListingComponent extends UploadComponent {
   uploadFileAndWaitForListingsToBeProcessed(filename, listingIds, hooks, confirm) {
     this.uploadListing(filename);
     this.clearResults();
-    /*
-    this.uploadMessage(filename.split('/').pop())
-      .parentElement()
-      .$('button*=Dismiss')
-      .click();
-      */
     hooks.open('#/administration/confirm/listings');
     browser.waitUntil(() => confirm.isLoaded());
     listingIds.forEach((listingId) => {
