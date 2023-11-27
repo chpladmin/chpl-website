@@ -92,7 +92,7 @@ function ChplComplaintEdit(props) {
   const [complainantTypes, setComplainantTypes] = useState([]);
   const [complaint, setComplaint] = useState({});
   const [criteria, setCriteria] = useState([]);
-  const [criterionEdition, setCriterionEdition] = useState('2015');
+  const [criterionParagraph, setCriterionParagraph] = useState('170.315');
   const [criterionToAdd, setCriterionToAdd] = useState('');
   const [listings, setListings] = useState([]);
   const [listingToAdd, setListingToAdd] = useState(null);
@@ -290,7 +290,7 @@ function ChplComplaintEdit(props) {
   };
 
   const handleEditionFilterChange = (event) => {
-    setCriterionEdition(event.target.value);
+    setCriterionParagraph(event.target.value);
   };
 
   const save = () => {
@@ -528,19 +528,21 @@ function ChplComplaintEdit(props) {
                     <InputAdornment position="start">
                       <Select
                         aria-label="Select Edition of Certification Criteria"
-                        value={criterionEdition}
+                        value={criterionParagraph}
                         onChange={handleEditionFilterChange}
                       >
-                        <MenuItem value="2015">2015</MenuItem>
-                        <MenuItem value="2014">2014</MenuItem>
-                        <MenuItem value="2011">2011</MenuItem>
+                        <MenuItem value="170.315">170.315</MenuItem>
+                        <MenuItem value="170.314">170.314</MenuItem>
+                        <MenuItem value="170.306">170.306</MenuItem>
+                        <MenuItem value="170.304">170.304</MenuItem>
+                        <MenuItem value="170.302">170.302</MenuItem>
                       </Select>
                     </InputAdornment>
                   ),
                 }}
               >
                 {criteria
-                  .filter((criterion) => (criterion.certificationEdition === criterionEdition))
+                  .filter((criterion) => (criterion.number.startsWith(criterionParagraph)))
                   .map((item) => (
                     <MenuItem value={item} key={item.id}>{`${(item.removed ? 'Removed | ' : '') + item.number}: ${item.title}`}</MenuItem>
                   ))}
