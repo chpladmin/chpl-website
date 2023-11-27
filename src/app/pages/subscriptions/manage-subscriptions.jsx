@@ -4,10 +4,12 @@ import ChplManageSubscriptionsView from './manage-subscriptions-view';
 
 import { FilterProvider } from 'components/filter';
 import {
+  subscriberRole,
   subscriptionType,
 } from 'components/filter/filters';
 
 const staticFilters = [
+  subscriberRole,
   subscriptionType,
 ];
 

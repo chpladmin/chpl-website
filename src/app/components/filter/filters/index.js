@@ -6,6 +6,7 @@ import cqms from './cqms';
 import decertificationDate from './decertification-date';
 import derivedCertificationEditions from './derived-certification-editions';
 import quickFilters from './quick-filters';
+import subscriberRole from './subscriber-role';
 import subscriptionType from './subscription-type';
 
 export {
@@ -17,5 +18,6 @@ export {
   decertificationDate,
   derivedCertificationEditions,
   quickFilters,
+  subscriberRole,
   subscriptionType,
 };
