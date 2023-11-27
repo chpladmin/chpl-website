@@ -169,39 +169,46 @@
             <td ng-if="$ctrl.cert.apiDocumentation"><a ai-a href="{{ $ctrl.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.apiDocumentation }">{{ $ctrl.cert.apiDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.apiDocumentation">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.criterion.attributes.exportDocumentation" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Export_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.exportDocumentation" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Export_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Export Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.exportDocumentation"><a ai-a href="{{ $ctrl.cert.exportDocumentation }}" analytics-on="click" analytics-event="Export Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.exportDocumentation }">{{ $ctrl.cert.exportDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.exportDocumentation">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.criterion.attributes.attestationAnswer" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Attestation_Answer{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.attestationAnswer" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Attestation_Answer{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Attestation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ $ctrl.cert.attestationAnswer ? 'Yes' : 'No' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.criterion.attributes.documentationUrl" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.documentationUrl" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.documentationUrl"><a ai-a href="{{ $ctrl.cert.documentationUrl }}" analytics-on="click" analytics-event="Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.documentationUrl }">{{ $ctrl.cert.documentationUrl }}</a></td>
             <td ng-if="!$ctrl.cert.documentationUrl">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.criterion.attributes.useCases" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Use_Cases{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.useCases" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Use_Cases{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Use Case(s) <button class="btn btn-link btn-xs pull-right" uib-tooltip="Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.useCases"><a ai-a href="{{ $ctrl.cert.useCases }}" analytics-on="click" analytics-event="Use Cases" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.useCases }">{{ $ctrl.cert.useCases }}</a></td>
             <td ng-if="!$ctrl.cert.useCases">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.criterion.attributes.serviceBaseUrlList" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_service_base_url_list{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.serviceBaseUrlList" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_service_base_url_list{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Service Base URL List <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.serviceBaseUrlList"><a ai-a href="{{ $ctrl.cert.serviceBaseUrlList }}" analytics-on="click" analytics-event="Service Base URL List" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.serviceBaseUrlList }">{{ $ctrl.cert.serviceBaseUrlList }}</a></td>
             <td ng-if="!$ctrl.cert.serviceBaseUrlList">None</td>
+          </tr>
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.riskManagementSummaryInformation" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_risk_management_summary_information">
+            <td>
+              Risk Management Summary Information <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the Risk Management practices for a Health IT Module certified to &sect;170.315(b)(11), outlines the developers&apos; strategies to ensure that predictive Decision Support Interventions are fair, accurate, reliable, and maintain user safety and data privacy." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the Risk Management practices for a Health IT Module certified to &sect;170.315(b)(11), outlines the developers&apos; strategies to ensure that predictive Decision Support Interventions are fair, accurate, reliable, and maintain user safety and data privacy.</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.riskManagementSummaryInformation"><a ai-a href="{{ $ctrl.cert.riskManagementSummaryInformation }}" analytics-on="click" analytics-event="Risk Management Summary Information" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.riskManagementSummaryInformation }">{{ $ctrl.cert.riskManagementSummaryInformation }}</a></td>
+            <td ng-if="!$ctrl.cert.riskManagementSummaryInformation">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.privacySecurityFramework" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Privacy_Security_Framework{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>

@@ -1,3 +1,4 @@
+import * as jsJoda from '@js-joda/core';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
@@ -70,10 +71,11 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
-const useFetchCriteria = (props = { enabled: true }) => {
+const useFetchCriteria = (props = { enabled: true, active: true }) => {
   const params = Object
     .entries(props)
-    .filter(([key, value]) => key !== 'enabled' && value)
+    .filter(([key, value]) => key !== 'enabled' && key !== 'active' && value)
+    .filter(([key]) => (key !== 'enabled' && key !== 'active'))
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
   let query = 'certification-criteria';
@@ -81,7 +83,7 @@ const useFetchCriteria = (props = { enabled: true }) => {
   const axios = useAxios();
   return useQuery(['certification-criteria', params], async () => {
     const response = await axios.get(query);
-    return response.data;
+    return response.data.filter((cc) => !props.active || cc.startDay < jsJoda.LocalDate.now());
   }, {
     enabled: props.enabled,
   });

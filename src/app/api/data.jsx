@@ -35,14 +35,6 @@ const useFetchCqms = () => {
   }, options.daily);
 };
 
-const useFetchCriteria = () => {
-  const axios = useAxios();
-  return useQuery(['data/certification-criteria'], async () => {
-    const response = await axios.get('data/certification-criteria');
-    return response.data;
-  }, options.daily);
-};
-
 const useFetchPracticeTypes = () => {
   const axios = useAxios();
   return useQuery(['data/practice_types'], async () => {
@@ -56,6 +48,5 @@ export {
   useFetchClassificationTypes,
   useFetchComplainantTypes,
   useFetchCqms,
-  useFetchCriteria,
   useFetchPracticeTypes,
 };

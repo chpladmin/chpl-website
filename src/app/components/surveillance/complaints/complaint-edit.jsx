@@ -21,7 +21,8 @@ import * as yup from 'yup';
 import { useFetchAcbs } from 'api/acbs';
 import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
 import { useFetchCollection } from 'api/collections';
-import { useFetchComplainantTypes, useFetchCriteria } from 'api/data';
+import { useFetchComplainantTypes } from 'api/data';
+import { useFetchCriteria } from 'api/standards';
 import { ChplTextField } from 'components/util';
 import { ChplActionBar } from 'components/action-bar';
 import { getAngularService } from 'services/angular-react-helper';
@@ -139,7 +140,7 @@ function ChplComplaintEdit(props) {
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
-    setCriteria(criteriaData.criteria.sort(getAngularService('utilService').sortCertActual));
+    setCriteria(criteriaData.sort(getAngularService('utilService').sortCertActual));
   }, [criteriaData, criteriaIsLoading, criteriaIsSuccess]);
 
   useEffect(() => {

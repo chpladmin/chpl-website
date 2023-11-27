@@ -17,7 +17,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -68,7 +68,7 @@ function ChplListingPage({ id }) {
   }, [data, isLoading, isSuccess]);
 
   const canEdit = () => {
-    if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
+    if (hasAnyRole(['chpl-admin', 'ROLE_ONC'])) { return true; }
     if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
@@ -85,6 +85,11 @@ function ChplListingPage({ id }) {
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
+
+  const listingState = {
+    listing,
+    setListing,
+  };
 
   return (
     <Box bgcolor={palette.background}>
@@ -141,9 +146,11 @@ function ChplListingPage({ id }) {
       </div>
       <Container maxWidth="lg">
         <div className={classes.container} id="main-content" tabIndex="-1">
-          <ChplListingView
-            listing={listing}
-          />
+          <ListingContext.Provider value={listingState}>
+            <ChplListingView
+              listing={listing}
+            />
+          </ListingContext.Provider>
         </div>
       </Container>
     </Box>
