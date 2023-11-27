@@ -100,23 +100,16 @@ function ChplUploadApiDocumentation() {
     }
     Upload.upload(item)
       .then((response) => {
-        if (response.status === 206) {
-          const message = `Partial success: File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
-          enqueueSnackbar(message, {
-            variant: 'warning',
-          });
-        } else {
-          const message = `Success: File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
-          enqueueSnackbar(message, {
-            variant: 'success',
-          });
-        }
-        if (response.headers.warning === '299 - "Deprecated upload template"') {
-          const message = 'Warning: The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.';
-          enqueueSnackbar(message, {
-            variant: 'warning',
-          });
-        }
+        const message = `File "${response.config.data.file.name}" was uploaded successfully.`;
+        enqueueSnackbar(message, {
+          variant: 'success',
+        });
+      })
+      .catch((error) => {
+        const message = `File "${error.config.data.file.name}" was not uploaded successfully.`;
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
       })
       .finally(() => {
         clearFile();
