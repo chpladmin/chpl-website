@@ -29,7 +29,10 @@ import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
 const initialHeaders = [
-  { property: 'email', text: 'Email', sortable: true },
+  { property: 'subscriber_email', text: 'Email', sortable: true },
+  { property: 'creation_date', text: 'Creation Date', sortable: true },
+  { property: 'subscriber_role', text: 'Role', sortable: true },
+  { text: 'Subject' },
 ];
 
 const useStyles = makeStyles({
@@ -104,7 +107,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const $analytics = getAngularService('$analytics');
   const [headers] = useState(initialHeaders);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'email');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'subscriber_email');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
@@ -127,7 +130,6 @@ function ChplManageSubscriptionsView({ analytics }) {
       setSubscriptions([]);
       return;
     }
-    console.log(data.results);
     setSubscriptions(data.results.map((subscription) => ({
       ...subscription,
     })));
@@ -160,7 +162,9 @@ function ChplManageSubscriptionsView({ analytics }) {
         </Typography>
       </div>
       <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm />
+        <ChplFilterSearchTerm
+          placeholder="Search by Subscriber Email or CHPL Product Number..."
+        />
         <ChplFilterPanel />
       </div>
       <div>
@@ -210,7 +214,23 @@ function ChplManageSubscriptionsView({ analytics }) {
                           .map((item) => (
                             <TableRow key={item.id}>
                               <TableCell className={classes.stickyColumn}>
-                                { item.email }
+                                { item.subscriberEmail }
+                              </TableCell>
+                              <TableCell>
+                                { getDisplayDateFormat(item.creationDate) }
+                              </TableCell>
+                              <TableCell>
+                                { item.subscriberRole }
+                              </TableCell>
+                              <TableCell>
+                                <ChplLink
+                                  href={`#/listing/${item.subscribedObjectId}`}
+                                  text={item.subscribedObjectName}
+                                  analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
+                                  external={false}
+                                  router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
+                                />
+                                { item.subscriptionSubect }
                               </TableCell>
                             </TableRow>
                           ))}

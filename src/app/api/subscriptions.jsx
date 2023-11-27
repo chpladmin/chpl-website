@@ -27,12 +27,20 @@ const useDeleteSubscription = () => {
   });
 };
 
-const useFetchAllSubscriptions = () => {
+const useFetchAllSubscriptions = ({
+  orderBy,
+  pageNumber,
+  pageSize,
+  sortDescending,
+  query,
+}) => {
   const axios = useAxios();
-  return useQuery(['subscriptions'], async () => {
-    const response = await axios.get('subscriptions');
+  return useQuery(['subscriptions/search', {
+    orderBy, pageNumber, pageSize, sortDescending, query,
+  }], async () => {
+    const response = await axios.get(`/subscriptions/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
-  });
+  }, { keepPreviousData: true });
 };
 
 const useFetchRoles = () => {
