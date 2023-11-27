@@ -4,13 +4,17 @@ import ChplManageSubscriptionsView from './manage-subscriptions-view';
 
 import { FilterProvider } from 'components/filter';
 import {
-  subscriberRole,
-  subscriptionType,
+  subscriberRoles,
+  subscriberStatuses,
+  subscriptionSubjects,
+  subscriptionTypes,
 } from 'components/filter/filters';
 
 const staticFilters = [
-  subscriberRole,
-  subscriptionType,
+  subscriberRoles,
+  subscriberStatuses,
+  subscriptionSubjects,
+  subscriptionTypes,
 ];
 
 function ChplManageSubscriptionsPage() {

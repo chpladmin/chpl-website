@@ -2,7 +2,7 @@ import { defaultFilter } from 'components/filter';
 
 const filter = {
   ...defaultFilter,
-  key: 'subscriberRole',
+  key: 'subscriberRoles',
   display: 'Subscriber Role',
   values: [
     { value: 'Health IT Vendor' },

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  List,
+  ListItem,
   Paper,
   Table,
   TableBody,
@@ -212,7 +214,7 @@ function ChplManageSubscriptionsView({ analytics }) {
                       <TableBody>
                         { subscriptions
                           .map((item) => (
-                            <TableRow key={item.id}>
+                            <TableRow key={`${item.subscriberId}-${item.subscribedObjectId}`}>
                               <TableCell className={classes.stickyColumn}>
                                 { item.subscriberEmail }
                               </TableCell>
@@ -230,7 +232,13 @@ function ChplManageSubscriptionsView({ analytics }) {
                                   external={false}
                                   router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
                                 />
-                                { item.subscriptionSubect }
+                                <List>
+                                  { item.subscriptionSubjects
+                                    .sort((a, b) => (a < b ? -1 : 1))
+                                    .map((sub) => (
+                                      <ListItem key={sub}>{ sub }</ListItem>
+                                    ))}
+                                </List>
                               </TableCell>
                             </TableRow>
                           ))}
