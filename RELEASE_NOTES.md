@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 13.7.0
+_27 November 2023_
+
+### Features
+* Show "Update Indicators" only on Active Certificates and Criteria
+* Update Surveillance to work with Editionless listings
+* Enable view/edit of new "Risk Management Summary Information" field
+
+### Flagged Features
+* Implement basic Cognito authentication/authorization
+
+---
+
 ## Version 13.6.0
 _13 November 2023_
 
