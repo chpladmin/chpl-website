@@ -31,5 +31,4 @@ describe('the users cards', () => {
     browser.waitUntil(() => component.getDemographic(element, 'Title:') !== initialTitle);
     expect(component.getDemographic(element, 'Title:')).toBe(title);
   });
-  
-});
+  });
