@@ -20,10 +20,12 @@ describe('When uploading API documentation files as ADMIN', () => {
   });
 
   it('can be uploaded successfully back to back', () => {
-    upload.uploadAPIDocFile('../../../resources/apiDoc/APIDoc_File.xlsx');
+    upload.upload('../../../resources/apiDoc/APIDoc_File.xlsx', '01/01/2021');
+    hooks.waitForSpinnerToDisappear();
     expect(upload.uploadResults.getText()).toContain('was uploaded successfully.');
     upload.clearResults();
-    upload.uploadAPIDocFile('../../../resources/apiDoc/APIDoc_File.xlsx');
+    upload.upload('../../../resources/apiDoc/APIDoc_File.xlsx', '01/02/2021');
+    hooks.waitForSpinnerToDisappear();
     expect(upload.uploadResults.getText()).not.toContain('was not uploaded successfully.');
   });
 });

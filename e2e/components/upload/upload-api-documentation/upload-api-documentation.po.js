@@ -8,13 +8,18 @@ class UploadApiDocumentationComponent extends UploadComponent {
     this.elements = {
       ...this.elements,
       root: '#upload-api-documentation',
+      accurateAsOfDate: '#api-documentation-accurate-as-of',
     };
   }
 
-  uploadAPIDocFile(uploadfilePath) {
+  get accurateAsOfDate() {
+    return $(this.elements.root).$(this.elements.accurateAsOfDate);
+  }
+
+  upload(uploadfilePath, accurateAsOf) {
+    this.accurateAsOfDate.addValue(accurateAsOf);
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadFileButton.addValue(browser.uploadFile(filePath));
-    this.uploadButton.scrollIntoView();
     this.uploadButton.click();
     browser.waitUntil(() => this.uploadResults.isDisplayed());
   }
