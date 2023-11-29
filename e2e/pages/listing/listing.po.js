@@ -5,6 +5,8 @@ class ListingPage {
       seeAllCriteria: '#see-all-criteria',
       editCertifiedProduct: '//span[text()="Edit"]',
       newEditCertifiedProductButton: '//span[text()="Edit - New"]',
+      cqmLeftNavButton: '#clinicalQualityMeasures-navigation-button',
+      versionSelectHelperText:'#version-select-helper-text',
       reason: '#reason-for-change',
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
@@ -32,6 +34,14 @@ class ListingPage {
 
   async newEditCertifiedProductButton() {
     await (await $(this.elements.newEditCertifiedProductButton)).click();
+  }
+
+  async cqmLeftNavButton() {
+    await (await $(this.elements.cqmLeftNavButton)).click();
+  }
+
+  async versionSelectHelperText() {
+    return (await $(this.elements.versionSelectHelperText)).getText();
   }
 
   get reason() {
