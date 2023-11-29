@@ -56,6 +56,12 @@ describe('the system maintenance page', () => {
       await page.navigate('ucd-processes');
       await expect(await page.canNavigate('ucd-processes')).toBe(false);
     });
+
+    it('should allow navigation to "subscriptions" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('subscriptions')).toBe(true);
+      await page.navigate('subscriptions');
+      await expect(await page.canNavigate('subscriptions')).toBe(false);
+    });
   });
 
   describe('when logged in as ADMIN', () => {
@@ -90,6 +96,12 @@ describe('the system maintenance page', () => {
       await expect(await page.canNavigate('functionalities-tested')).toBe(true);
       await page.navigate('functionalities-tested');
       await expect(await page.canNavigate('functionalities-tested')).toBe(false);
+    });
+
+    it('should allow navigation to "subscriptions" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('subscriptions')).toBe(true);
+      await page.navigate('subscriptions');
+      await expect(await page.canNavigate('subscriptions')).toBe(false);
     });
   });
 });
