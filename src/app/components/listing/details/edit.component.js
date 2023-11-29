@@ -1,4 +1,5 @@
 import { jsJoda } from 'services/date-util';
+import { sortCriteria } from 'services/criteria.service';
 
 const ListingDetailsEditComponent = {
   templateUrl: 'chpl.components/listing/details/edit.html',
@@ -20,7 +21,6 @@ const ListingDetailsEditComponent = {
       this.networkService = networkService;
       this.utilService = utilService;
       this.addNewValue = utilService.addNewValue;
-      this.sortCerts = utilService.sortCert;
       this.handlers = [];
       this.drStatus = 'pending';
       this.viewAllCerts = true;
@@ -63,6 +63,7 @@ const ListingDetailsEditComponent = {
           that.listing.certificationResults = Array.from([...allCriteria, ...that.listing.certificationResults]
             .reduce((m, cr) => m.set(cr.criterion.id, cr), new Map())
             .values())
+            .sort((a, b) => sortCriteria(a.criterion, b.criterion))
             .map((cr) => ({
               ...cr,
               criterion: {
