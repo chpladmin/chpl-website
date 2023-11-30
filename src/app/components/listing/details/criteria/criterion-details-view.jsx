@@ -51,9 +51,11 @@ function ChplCriterionDetailsView(props) {
     return null;
   }
 
+  const isDisplayableStandard = (standard) => isConfirming || standard.standard.endDay || jsJoda.LocalDate.now() < standard.standard.requiredDay;
+
   const hasDisplayableStandards = () => criterion.success
         && criterion.standards?.length > 0
-        && (isConfirming || criterion.standards.some((std) => std.standard.endDay || jsJoda.LocalDate.now() < std.standard.requiredDay));
+        && criterion.standards.some((std) => isDisplayableStandard(std));
 
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
@@ -305,20 +307,22 @@ function ChplCriterionDetailsView(props) {
                   </TableCell>
                   <TableCell>
                     <List>
-                      { criterion.standards.map((std, index) => (
-                        <ListItem key={std.id || std.key || index} className={std.standard.retired ? 'removed' : ''}>
-                          <Box width="100%">
-                            Name:
-                            {' '}
-                            {`${std.standard.retired ? 'Retired | ' : ''} ${std.standard.regulatoryTextCitation}: ${std.standard.value}`}
-                          </Box>
-                          <ChplUpdateIndicator
-                            requiredDay={std.standard.requiredDay}
-                            endDay={std.standard.endDay}
-                            additionalInformation={std.standard.additionalInformation}
-                          />
-                        </ListItem>
-                      ))}
+                      { criterion.standards
+                        .filter(isDisplayableStandard)
+                        .map((std, index) => (
+                          <ListItem key={std.id || std.key || index} className={std.standard.retired ? 'removed' : ''}>
+                            <Box width="100%">
+                              Name:
+                              {' '}
+                              {`${std.standard.retired ? 'Retired | ' : ''} ${std.standard.regulatoryTextCitation}: ${std.standard.value}`}
+                            </Box>
+                            <ChplUpdateIndicator
+                              requiredDay={std.standard.requiredDay}
+                              endDay={std.standard.endDay}
+                              additionalInformation={std.standard.additionalInformation}
+                            />
+                          </ListItem>
+                        ))}
                     </List>
                   </TableCell>
                 </TableRow>
