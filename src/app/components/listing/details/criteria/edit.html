@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span></h4>
+    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: {{ $ctrl.cert.criterion.title }}</h4>
   </div>
   <div class="modal-body" ng-form="$ctrl.editForm" ng-class="{ 'removed' : $ctrl.cert.criterion.removed }">
     <input type="checkbox" ng-model="$ctrl.cert.success" id="data{{ $ctrl.cert.criterion.number }}" name="data"></input>

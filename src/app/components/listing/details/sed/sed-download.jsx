@@ -3,12 +3,11 @@ import {
   Button,
 } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-
 import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
-import { isCures, sortCriteria } from 'services/criteria.service';
+import { sortCriteria } from 'services/criteria.service';
 
 const headers = [
   { headerName: 'Unique CHPL ID', objectKey: 'chplProductNumber' },
@@ -60,7 +59,7 @@ function ChplSedDownload({ listing }) {
       .flatMap((task) => task.testParticipants.map((participant) => ({
         ...base,
         ...task,
-        criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}${isCures(crit) ? ' (Cures Update)' : ''}`).join(';'),
+        criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
         ...participant,
       })))
       .sort((a, b) => {

@@ -1,5 +1,5 @@
 import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
-import { isCures, sortCriteria } from 'services/criteria.service';
+import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -53,7 +53,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'ucdProcesses.criteria':
       options = {
         sort: (p, c) => sortCriteria(p.criterion ?? p, c.criterion ?? c),
-        write: (f) => (f.criterion ? `${f.criterion.number}${isCures(f.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${f.number ?? f.certificationNumber}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`),
+        write: (f) => (f.criterion ? `${f.criterion.number}` : `${f.number ?? f.certificationNumber}`),
       };
       break;
     case 'documents':

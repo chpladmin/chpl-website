@@ -12,9 +12,9 @@ const suite = {
     expectedErrors: [
     ],
     expectedWarnings: [
-      'Functionality tested is not applicable for the criterion 170.315 (c)(3) (Cures Update). It has been removed.',
-      'Criteria 170.315 (b)(1) (Cures Update) contains an invalid Functionality Tested \'notafunctionalitytested\'. It has been removed from the pending listing.',
-      'Criteria 170.315 (b)(1) (Cures Update) contains an invalid Functionality Tested \'(g)(5)(i)\'. It has been removed from the pending listing.',
+      'Functionality tested is not applicable for the criterion 170.315 (c)(3). It has been removed.',
+      'Criteria 170.315 (b)(1) contains an invalid Functionality Tested \'notafunctionalitytested\'. It has been removed from the pending listing.',
+      'Criteria 170.315 (b)(1) contains an invalid Functionality Tested \'(g)(5)(i)\'. It has been removed from the pending listing.',
       'Certification 170.315 (d)(7) contains duplicate Functionality Tested: Number \'(d)(7)(i)\'. The duplicates have been removed.',
     ],
   }],

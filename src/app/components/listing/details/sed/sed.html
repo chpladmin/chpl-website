@@ -32,7 +32,7 @@
             <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
               <td>
                 <ul>
-                  <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in process.criteria | orderBy:vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: <span chpl-highlight-cures ng-model="crit.title"></span> <button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
+                  <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in process.criteria | orderBy:vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: {{ crit.title }} <button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
                 </ul>
               </td>
               <td>{{ process.name ? process.name : 'None' }}</td>
@@ -79,7 +79,7 @@
             <td>{{ task.taskRating }} ({{ task.taskRatingScale }})</td>
             <td>
               <ul>
-                <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in task.criteria | orderBy: vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: <span chpl-highlight-cures ng-model="crit.title"></span><button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
+                <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in task.criteria | orderBy: vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: {{ crit.title }}<button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
               </ul>
             </td>
             <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
