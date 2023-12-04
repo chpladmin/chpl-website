@@ -67,9 +67,11 @@ function ChplActivityDetails({ activity }) {
     switch (activity.triggerLevel) {
       case 'Certification Criteria':
       case 'Listing':
-        setDetails(compareListing(data?.originalData, data?.newData)
-          .map((item) => `<li>${item}</li>`)
-          .join(''));
+        if (data.originalData) {
+          setDetails(compareListing(data?.originalData, data?.newData)
+            .map((item) => `<li>${item}</li>`)
+            .join(''));
+        }
         break;
       case 'Developer':
         setDetails(compareDeveloper(data?.originalData, data?.newData)
