@@ -287,8 +287,7 @@ function ChplListingEdit() {
             <List dense>
               <ListItem>Clinical Quality Measure Removed</ListItem>
               <ListItem>Certification Criteria Removed</ListItem>
-              <ListItem>Editing of a 2011 Edition Certified Product</ListItem>
-              <ListItem>Editing of a 2014 Edition Certified Product</ListItem>
+              <ListItem>Editing of a non-active Certified Product</ListItem>
               <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
             </List>
           </CardContent>
