@@ -4,6 +4,7 @@ import ChplCmsWrapper from './cms/cms-wrapper';
 import ChplLoginPage from './login';
 import ChplReportsWrapper from './reports/reports-wrapper';
 import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
+import ChplUploadPageWrapper from './upload/upload-page-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -37,4 +38,5 @@ angular
   .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
   .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))
   .component('chplReportsWrapperBridge', reactToAngularComponent(ChplReportsWrapper))
-  .component('chplSystemMaintenanceWrapperBridge', reactToAngularComponent(ChplSystemMaintenanceWrapper));
+  .component('chplSystemMaintenanceWrapperBridge', reactToAngularComponent(ChplSystemMaintenanceWrapper))
+  .component('chplUploadPageWrapperBridge', reactToAngularComponent(ChplUploadPageWrapper));
