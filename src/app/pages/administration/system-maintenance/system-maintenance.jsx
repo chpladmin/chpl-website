@@ -292,7 +292,7 @@ function ChplSystemMaintenance() {
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
-                      <ListItem>Standards - TBD</ListItem>
+                      <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem>
                     )}
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['chpl-admin'])
