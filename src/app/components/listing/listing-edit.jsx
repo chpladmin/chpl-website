@@ -3,8 +3,10 @@ import {
   Box,
   Card,
   CardContent,
+  FormControlLabel,
   List,
   ListItem,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -18,6 +20,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
 
 import { usePutListing } from 'api/listing';
@@ -123,6 +126,7 @@ function ChplListingEdit() {
     dataErrors: new Set(),
     warnings: new Set(),
   });
+  const [seeAllCqms, setSeeAllCqms] = useState(true);
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
@@ -298,6 +302,37 @@ function ChplListingEdit() {
           </Box>
           <CardContent>
             <ChplListingInformationEdit />
+          </CardContent>
+        </Card>
+        <Card>
+          <span className="anchor-element">
+            <span id="clinicalQualityMeasures" className="page-anchor" />
+          </span>
+          <Box className={classes.sectionHeader}>
+            <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
+            <div>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="see-all-cqms"
+                    name="seeAllCqms"
+                    color="primary"
+                    checked={seeAllCqms}
+                    onChange={() => setSeeAllCqms(!seeAllCqms)}
+                  />
+                )}
+                label="See all CQMs"
+              />
+              (
+              {listing.cqmResults.filter((cqm) => (cqm.success || cqm.successVersions?.length > 0)).length}
+              {' '}
+              found)
+            </div>
+          </Box>
+          <CardContent>
+            <ChplCqmsEdit
+              viewAll={seeAllCqms}
+            />
           </CardContent>
         </Card>
         <Card>
