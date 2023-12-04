@@ -22,7 +22,6 @@ import { object } from 'prop-types';
 
 import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
-import { ChplHighlightCures } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { palette, utilStyles, theme } from 'themes';
 
@@ -163,9 +162,6 @@ function ChplSedTaskView({ task: initialTask }) {
                             <ListItem key={criterion.id}>
                               { criterion.removed && 'Removed | ' }
                               { criterion.number }
-                              :
-                              {' '}
-                              <ChplHighlightCures text={criterion.title} />
                             </ListItem>
                           ))}
                       </List>

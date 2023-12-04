@@ -1,14 +1,12 @@
 (function () {
-  'use strict';
-
   angular
     .module('chpl.components')
     .directive('aiSed', aiSed)
     .controller('SedController', SedController);
 
   /** @ngInject */
-  function aiSed () {
-    var directive = {
+  function aiSed() {
+    const directive = {
       bindToController: {
         analyticsCategory: '@',
         criteriaCount: '=?',
@@ -21,10 +19,10 @@
       },
       controller: 'SedController',
       controllerAs: 'vm',
-      link: function (scope, element, attr, ctrl) {
+      link(scope, element, attr, ctrl) {
         if (ctrl.refresh) {
-          var handler = ctrl.refresh({
-            handler: function () {
+          const handler = ctrl.refresh({
+            handler() {
               ctrl._analyzeSed();
             },
           });
@@ -40,8 +38,8 @@
   }
 
   /** @ngInject */
-  function SedController ($filter, $log, $scope, $timeout, $uibModal, DateUtil, utilService) {
-    var vm = this;
+  function SedController($filter, $log, $scope, $timeout, $uibModal, DateUtil, utilService) {
+    const vm = this;
 
     vm.DateUtil = DateUtil;
     vm.addTask = addTask;
@@ -54,14 +52,14 @@
     vm.viewParticipants = viewParticipants;
     vm.viewTask = viewTask;
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
     this.$onInit = function () {
       vm.isEditing = false;
       _analyzeSed();
     };
 
-    function addTask () {
+    function addTask() {
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/edit-task.html',
         controller: 'EditSedTaskController',
@@ -71,29 +69,29 @@
         keyboard: false,
         size: 'lg',
         resolve: {
-          criteria: function () { return vm.sedCriteria; },
-          participants: function () { return vm.allParticipants; },
-          task: function () { return {}; },
+          criteria() { return vm.sedCriteria; },
+          participants() { return vm.allParticipants; },
+          task() { return {}; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
+      vm.modalInstance.result.then((result) => {
         vm.allParticipants = result.participants;
         vm.listing.sed.testTasks.push(result.task);
         vm.taskCount = vm.listing.sed.testTasks.length;
-        vm.onChange({listing: vm.listing});
+        vm.onChange({ listing: vm.listing });
       });
     }
 
-    function editDetails () {
+    function editDetails() {
       _analyzeSed();
       vm.isEditing = true;
     }
 
-    function getCsv () {
+    function getCsv() {
       utilService.makeCsv(vm.csvData);
     }
 
-    function handleDispatch ({action, payload}) {
+    function handleDispatch({ action, payload }) {
       switch (action) {
         case 'cancel':
           vm.isEditing = false;
@@ -105,22 +103,22 @@
           vm.listing.sed.ucdProcesses = payload.ucdProcesses;
           vm.ucdProcesses = payload.ucdProcesses;
           vm.isEditing = false;
-          vm.onChange({listing: vm.listing});
+          vm.onChange({ listing: vm.listing });
           break;
           // no default
       }
       $scope.$digest();
     }
 
-    function sortProcesses (process) {
-      return utilService.sortCertArray(process.criteria.map(function (item) { return item.number; }));
+    function sortProcesses(process) {
+      return utilService.sortCertArray(process.criteria.map((item) => item.number));
     }
 
-    function sortTasks (task) {
-      return utilService.sortCertArray(task.criteria.map(function (item) { return item.number; }));
+    function sortTasks(task) {
+      return utilService.sortCertArray(task.criteria.map((item) => item.number));
     }
 
-    function viewParticipants (task) {
+    function viewParticipants(task) {
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
         controller: 'ViewSedParticipantsController',
@@ -130,23 +128,23 @@
         keyboard: false,
         size: 'lg',
         resolve: {
-          allParticipants: function () { return vm.allParticipants; },
-          editMode: function () { return vm.editMode; },
-          participants: function () { return task.testParticipants; },
+          allParticipants() { return vm.allParticipants; },
+          editMode() { return vm.editMode; },
+          participants() { return task.testParticipants; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
-        for (var i = 0; i < vm.listing.sed.testTasks.length; i++) {
+      vm.modalInstance.result.then((result) => {
+        for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
           if (vm.listing.sed.testTasks[i].id === task.id) {
             vm.listing.sed.testTasks[i].testParticipants = result.participants;
           }
         }
         vm.allParticipants = result.allParticipants;
-        vm.onChange({listing: vm.listing});
+        vm.onChange({ listing: vm.listing });
       });
     }
 
-    function viewTask (task) {
+    function viewTask(task) {
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/task-modal.html',
         controller: 'ViewSedTaskController',
@@ -156,14 +154,14 @@
         keyboard: false,
         size: 'lg',
         resolve: {
-          criteria: function () { return vm.sedCriteria; },
-          editMode: function () { return vm.editMode; },
-          participants: function () { return vm.allParticipants; },
-          task: function () { return task; },
+          criteria() { return vm.sedCriteria; },
+          editMode() { return vm.editMode; },
+          participants() { return vm.allParticipants; },
+          task() { return task; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
-        for (var i = 0; i < vm.listing.sed.testTasks.length; i++) {
+      vm.modalInstance.result.then((result) => {
+        for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
           if (vm.listing.sed.testTasks[i].id === task.id) {
             if (result.deleted) {
               vm.listing.sed.testTasks.splice(i, 1);
@@ -174,27 +172,28 @@
           }
         }
         vm.allParticipants = result.participants;
-        vm.onChange({listing: vm.listing});
+        vm.onChange({ listing: vm.listing });
       });
     }
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
     vm._analyzeSed = _analyzeSed;
 
-    function _analyzeSed () {
-      if (!vm.listing.chplProductNumber ||
-                !vm.listing.developer ||
-                !vm.listing.product ||
-                !vm.listing.version ||
-                !vm.listing.certificationResults ||
-                !vm.listing.sed) {
+    function _analyzeSed() {
+      if (!vm.listing.chplProductNumber
+                || !vm.listing.developer
+                || !vm.listing.product
+                || !vm.listing.version
+                || !vm.listing.certificationResults
+                || !vm.listing.sed) {
         $timeout(_analyzeSed, 500);
       } else {
-        var csvRow, i, j, object, participant, task;
-        var TASK_START = 5;
-        var PART_START = TASK_START + 14;
-        var ROW_BASE = [
+        let csvRow; let i; let j; let object; let participant; let
+          task;
+        const TASK_START = 5;
+        const PART_START = TASK_START + 14;
+        const ROW_BASE = [
           vm.listing.chplProductNumber,
           vm.listing.developer.name,
           vm.listing.product.name,
@@ -204,7 +203,7 @@
           participants: {},
         };
         vm.csvData = {
-          name: vm.listing.chplProductNumber + '.sed.csv',
+          name: `${vm.listing.chplProductNumber}.sed.csv`,
           values: [[
             'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
             'Task Description', 'Rating Scale', 'Task Rating', 'Task Rating - Standard Deviation', 'Task Time Mean (s)', 'Task Time - Standard Deviation (s)', 'Task Time Deviation - Observed (s)', 'Task Time Deviation - Optimal (s)', 'Task Success - Mean (%)', 'Task Success - Standard Deviation (%)', 'Task Errors - Mean (%)', 'Task Errors - Standard Deviation (%)', 'Task Path Deviation - Observed (# of Steps)', 'Task Path Deviation - Optimal (# of Steps)',
@@ -213,8 +212,8 @@
         };
 
         vm.sedCriteria = vm.listing.certificationResults
-          .filter(cert => cert.success && cert.sed)
-          .map(cert => cert.criterion);
+          .filter((cert) => cert.success && cert.sed)
+          .map((cert) => cert.criterion);
         vm.criteriaCount = vm.sedCriteria.length;
 
         csvRow = angular.copy(ROW_BASE);
@@ -224,9 +223,9 @@
           if (!task.id) {
             task.id = i * -1 - 1;
           }
-          task.criteria = $filter('orderBy')(task.criteria.filter(cert => vm.sedCriteria.map(cert => cert.number).indexOf(cert.number) > -1), vm.sortCert);
+          task.criteria = $filter('orderBy')(task.criteria.filter((cert) => vm.sedCriteria.map((cert) => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
-          csvRow[4] = task.criteria.map(item => (item.removed ? 'Removed | ' : '') + item.number + (item.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')).join(';');
+          csvRow[4] = task.criteria.map((item) => (item.removed ? 'Removed | ' : '') + item.number).join(';');
           csvRow[TASK_START + 0] = task.description;
           csvRow[TASK_START + 1] = task.taskRatingScale;
           csvRow[TASK_START + 2] = task.taskRating;
@@ -267,10 +266,10 @@
 
         vm.taskCount = vm.listing.sed.testTasks.length;
 
-        var partMap = {};
+        const partMap = {};
         vm.allParticipants = [];
-        angular.forEach(object.participants, function (participant) {
-          var val = angular.copy(participant);
+        angular.forEach(object.participants, (participant) => {
+          const val = angular.copy(participant);
           if (val.uniqueId) {
             val.id = vm.allParticipants.length * -1 - 1;
             partMap[val.uniqueId] = val.id;
@@ -288,10 +287,10 @@
         }
 
         vm.ucdProcesses = vm.listing.sed.ucdProcesses
-          .map(item => {
+          .map((item) => {
             vm.sedCriteria = vm.sedCriteria
-              .map(criterion => {
-                if (item.criteria.findIndex(crit => crit.number === criterion.number && crit.title === criterion.title) > -1) {
+              .map((criterion) => {
+                if (item.criteria.findIndex((crit) => crit.number === criterion.number && crit.title === criterion.title) > -1) {
                   criterion.found = true;
                 }
                 return criterion;
@@ -301,31 +300,30 @@
           .concat([{
             name: undefined,
             details: undefined,
-            criteria: vm.sedCriteria.filter(criterion => !criterion.found),
+            criteria: vm.sedCriteria.filter((criterion) => !criterion.found),
           }])
-          .filter(item => item.criteria.length > 0);
+          .filter((item) => item.criteria.length > 0);
 
         vm.csvData.values = csvSort(vm.csvData.values);
       }
     }
 
-    function csvSort (data) {
-      var mapped = data.map(function (el, i) {
+    function csvSort(data) {
+      const mapped = data.map((el, i) => {
         if (i === 0) {
           return {
             index: 0,
             value: Number.MIN_VALUE,
           };
-        } else {
-          var vals = el[4].split(';');
-          return {
-            index: i,
-            value: vals.reduce(function (sum, cur) { return sum + vm.sortCert(cur); }, 0),
-          };
         }
+        const vals = el[4].split(';');
+        return {
+          index: i,
+          value: vals.reduce((sum, cur) => sum + vm.sortCert(cur), 0),
+        };
       });
 
-      mapped.sort(function (a, b) {
+      mapped.sort((a, b) => {
         if (a.value < b.value) {
           return -1;
         }
@@ -335,11 +333,9 @@
         return 0;
       });
 
-      var ret = mapped.map(function (el) {
-        return data[el.index];
-      });
+      const ret = mapped.map((el) => data[el.index]);
 
       return ret;
     }
   }
-})();
+}());
