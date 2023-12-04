@@ -1,39 +1,27 @@
-const uploadElements = {
-  root: 'chpl-upload-api-documentation',
-  title: '.panel-title',
-  chooseUploadAPIDocumentation: '//*[@id="ngf-label-upload-button-api"]/input[@id="ngf-upload-button-api"]',
-  uploadMessages: '.upload-messages',
-  uploadButton: '.btn.btn-ai-success',
-  uploadMessagesText: 'div.ng-binding.ng-scope',
-};
+import UploadComponent from '../upload.po';
 
 const path = require('path');
 
-class UploadApiDocumentationComponent {
-  constructor () { }
-
-  get uploadButton () {
-    return $(uploadElements.root).$(uploadElements.uploadButton);
+class UploadApiDocumentationComponent extends UploadComponent {
+  constructor() {
+    super();
+    this.elements = {
+      ...this.elements,
+      root: '#upload-api-documentation',
+      accurateAsOfDate: '#api-documentation-accurate-as-of',
+    };
   }
 
-  get chooseUploadAPIDocumentation () {
-    return $(uploadElements.chooseUploadAPIDocumentation);
+  get accurateAsOfDate() {
+    return $(this.elements.root).$(this.elements.accurateAsOfDate);
   }
 
-  get apiDocUploadText () {
-    return $(uploadElements.root).$(uploadElements.uploadMessages).$(uploadElements.uploadMessagesText);
-  }
-
-  get title () {
-    return $(uploadElements.root).$(uploadElements.title);
-  }
-
-  uploadAPIDocFile (uploadfilePath) {
+  upload(uploadfilePath, accurateAsOf) {
+    this.accurateAsOfDate.addValue(accurateAsOf);
     const filePath = path.join(__dirname, uploadfilePath);
-    this.chooseUploadAPIDocumentation.addValue(browser.uploadFile(filePath));
-    this.uploadButton.scrollIntoView();
+    this.chooseUploadFileButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();
-    browser.waitUntil( () => this.apiDocUploadText.isDisplayed());
+    browser.waitUntil(() => this.uploadResults.isDisplayed());
   }
 }
 
