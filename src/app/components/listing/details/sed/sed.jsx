@@ -18,7 +18,7 @@ import {
 import ChplSedDownload from './sed-download';
 import ChplSedTaskView from './sed-task-view';
 
-import { ChplHighlightCures, ChplLink } from 'components/util';
+import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
@@ -139,9 +139,6 @@ function ChplSed({ listing }) {
                               <ListItem key={criterion.id}>
                                 {criterion.removed && 'Removed | '}
                                 {criterion.number}
-                                :
-                                {' '}
-                                <ChplHighlightCures text={criterion.title} />
                               </ListItem>
                             ))}
                         </List>

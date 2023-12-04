@@ -212,10 +212,6 @@ function SgAdvancedSearchPopover(props) {
                     <Checkbox color="primary" edge="start" />
                     <ListItemText>2015</ListItemText>
                   </ListItem>
-                  <ListItem>
-                    <Checkbox color="primary" edge="start" />
-                    <ListItemText>2015 Cures Update</ListItemText>
-                  </ListItem>
                 </div>
               </div>
             </List>

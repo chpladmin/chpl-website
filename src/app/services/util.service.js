@@ -1,44 +1,41 @@
 (() => {
-  'use strict';
-
   angular.module('chpl.services')
     .factory('utilService', utilService);
 
   /** @ngInject */
   function utilService($filter, $log, Blob, FileSaver) {
-    var service = {
-      addDays: addDays,
-      addNewValue: addNewValue,
-      addressRequired: addressRequired,
-      arrayCompare: arrayCompare,
-      arrayToCsv: arrayToCsv,
-      certificationStatusWhenEditing: certificationStatusWhenEditing,
-      extendSelect: extendSelect,
-      findModel: findModel,
-      isBlank: isBlank,
-      isCures: isCures,
-      makeCsv: makeCsv,
-      muuCount: muuCount,
-      passwordClass: passwordClass,
-      passwordTitle: passwordTitle,
-      range: range,
-      rangeCol: rangeCol,
-      sortCert: sortCert,
-      sortCertActual: sortCertActual,
-      sortCertArray: sortCertArray,
-      sortCqm: sortCqm,
-      sortCqmActual: sortCqmActual,
-      sortNonconformityTypes: sortNonconformityTypes,
-      sortFunctionalitiesTested: sortFunctionalitiesTested,
-      statusFont: statusFont,
-      ternaryFilter: ternaryFilter,
+    const service = {
+      addDays,
+      addNewValue,
+      addressRequired,
+      arrayCompare,
+      arrayToCsv,
+      certificationStatusWhenEditing,
+      extendSelect,
+      findModel,
+      isBlank,
+      makeCsv,
+      muuCount,
+      passwordClass,
+      passwordTitle,
+      range,
+      rangeCol,
+      sortCert,
+      sortCertActual,
+      sortCertArray,
+      sortCqm,
+      sortCqmActual,
+      sortNonconformityTypes,
+      sortFunctionalitiesTested,
+      statusFont,
+      ternaryFilter,
     };
     return service;
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
     function addDays(date, days) {
-      var result = new Date(date);
+      const result = new Date(date);
       result.setDate(result.getDate() + days);
       return result;
     }
@@ -65,17 +62,19 @@
     }
 
     function arrayCompare(before, after, key) {
-      var ret = {
+      const ret = {
         added: [],
         edited: [],
         removed: [],
       };
       if (angular.isUndefined(key)) { key = 'id'; }
-      var i, j;
-      var added, removed;
-      var count = Math.max(
+      let i; let
+        j;
+      let added; let
+        removed;
+      const count = Math.max(
         angular.isArray(before) ? before.length : 0,
-        angular.isArray(after) ? after.length : 0
+        angular.isArray(after) ? after.length : 0,
       );
 
       for (i = 0; i < count; i++) {
@@ -87,9 +86,9 @@
               // if equal, then not added
               if (angular.equals(after[i], before[j])) { added = false; }
               // if not equal, but have equal ids, then edited
-              else if (angular.isDefined(after[i][key]) &&
-                angular.isDefined(before[j][key]) &&
-                after[i][key] === before[j][key]) {
+              else if (angular.isDefined(after[i][key])
+                && angular.isDefined(before[j][key])
+                && after[i][key] === before[j][key]) {
                 added = false;
                 ret.edited.push({ before: before[j], after: after[i] });
               }
@@ -107,9 +106,9 @@
               // if equal, then not added
               if (angular.equals(before[i], after[j])) { removed = false; }
               // if not equal, but have equal ids, then edited
-              else if (angular.isDefined(before[i][key]) &&
-                angular.isDefined(after[j][key]) &&
-                before[i][key] === after[j][key]) { removed = false; }
+              else if (angular.isDefined(before[i][key])
+                && angular.isDefined(after[j][key])
+                && before[i][key] === after[j][key]) { removed = false; }
             }
           }
           if (removed) {
@@ -121,27 +120,23 @@
     }
 
     function arrayToCsv(data) {
-      return data.map(row => {
-        return row.map(cell => {
-          if (typeof (cell) === 'string' &&
-            (cell.indexOf('"') > -1 ||
-              cell.indexOf(',') > -1 ||
-              cell.indexOf('\n') > -1)) {
-            return '"' + cell.replace(/"/g, '""') + '"';
-          } else {
-            return cell;
-          }
-        })
-          .join(',');
+      return data.map((row) => row.map((cell) => {
+        if (typeof (cell) === 'string'
+            && (cell.indexOf('"') > -1
+              || cell.indexOf(',') > -1
+              || cell.indexOf('\n') > -1)) {
+          return `"${cell.replace(/"/g, '""')}"`;
+        }
+        return cell;
       })
+        .join(','))
         .join('\n');
-
     }
 
     function certificationStatusWhenEditing(listing) {
       if (listing.certificationEvents && listing.certificationEvents.length > 0) {
-        let events = listing.certificationEvents
-          .map(ce => {
+        const events = listing.certificationEvents
+          .map((ce) => {
             if (ce.statusDateObject) {
               ce.eventDate = ce.statusDateObject.getTime();
             }
@@ -154,7 +149,7 @@
     }
 
     function extendSelect(options, value) {
-      for (var i = 0; i < options.length; i++) {
+      for (let i = 0; i < options.length; i++) {
         if (options[i].name === value) {
           return;
         }
@@ -163,20 +158,15 @@
     }
 
     function findModel(item, options, key = 'id') {
-      const ret = options.filter(option => item[key] === option[key]);
+      const ret = options.filter((option) => item[key] === option[key]);
       if (ret.length === 1) {
         return ret[0];
-      } else {
-        return item;
       }
-    }
-
-    function isCures(criterion) {
-      return criterion.title.indexOf('Cures Update') > -1;
+      return item;
     }
 
     function makeCsv(data) {
-      var blob = new Blob([this.arrayToCsv(data.values)], {
+      const blob = new Blob([this.arrayToCsv(data.values)], {
         type: 'text/plain;charset=utf-8',
       });
       FileSaver.saveAs(blob, data.name);
@@ -222,7 +212,7 @@
 
     function range(max, step) {
       step = parseInt(step, 10) || 1;
-      let ret = [];
+      const ret = [];
       for (let i = 0; i < max; i += step) {
         ret.push(i);
       }
@@ -263,7 +253,7 @@
     }
 
     function sortCertArray(array) {
-      var ret = Number.MIN_VALUE;
+      let ret = Number.MIN_VALUE;
       if (array.length > 0) {
         ret = this.sortCert(array[0]);
       }
@@ -274,12 +264,12 @@
       if (angular.isObject(cqm)) {
         cqm = cqm.name;
         if (cqm.substring(0, 3) !== 'CMS') {
-          cqm = 'NQF-' + cqm;
+          cqm = `NQF-${cqm}`;
         }
       }
-      var edition = 1000 * cqm.indexOf('-');
-      var num = parseInt(edition > 0 ? cqm.substring(4) : cqm.substring(3));
-      var ret = edition + num;
+      const edition = 1000 * cqm.indexOf('-');
+      const num = parseInt(edition > 0 ? cqm.substring(4) : cqm.substring(3));
+      const ret = edition + num;
       return ret;
     }
 
@@ -298,15 +288,15 @@
     }
 
     function sortFunctionalitiesTested(ftA, ftB) {
-      let matcher = /^\((.+?)\)/;
+      const matcher = /^\((.+?)\)/;
       let a = ftA.functionalityTested.regulatoryTextCitation;
       let b = ftB.functionalityTested.regulatoryTextCitation;
       while (a && a.length > 0 && b && b.length > 0) {
-        let aVals = a.match(matcher);
-        let bVals = b.match(matcher);
+        const aVals = a.match(matcher);
+        const bVals = b.match(matcher);
         if (aVals && bVals) {
-          let testA = isNaN(parseInt(aVals[0], 10)) ? aVals[0] : parseInt(aVals[0], 10);
-          let testB = isNaN(parseInt(bVals[0], 10)) ? bVals[0] : parseInt(bVals[0], 10);
+          const testA = isNaN(parseInt(aVals[0], 10)) ? aVals[0] : parseInt(aVals[0], 10);
+          const testB = isNaN(parseInt(bVals[0], 10)) ? bVals[0] : parseInt(bVals[0], 10);
           if (testA < testB) { return -1; }
           if (testA > testB) { return 1; }
           a = a.replace(aVals[0], '');
@@ -324,7 +314,7 @@
     }
 
     function statusFont(status) {
-      var ret;
+      let ret;
       switch (status) {
         case 'Active':
           ret = 'fa-check-circle status-good';
@@ -358,50 +348,40 @@
     function ternaryFilter(field) {
       if (field === null) {
         return 'N/A';
-      } else {
-        return field ? 'True' : 'False';
       }
+      return field ? 'True' : 'False';
     }
 
     function isBlank(x) {
       if (typeof x === 'string' || x === undefined || x === null) {
         return !x || x.trim().length === 0;
-      } else if (Array.isArray(x)) {
+      } if (Array.isArray(x)) {
         return !x.length;
-      } else if (typeof x === 'object' && x.constructor === Object) {
+      } if (typeof x === 'object' && x.constructor === Object) {
         return !Object.keys(x).length;
       }
       return false;
     }
 
-    ///////////////////////////////////////////////////
+    /// ////////////////////////////////////////////////
 
     function certificationResultSortComparator(a, b) {
-      let valueToFindA = a.criterion?.number || a.number;
-      let valueToFindB = b.criterion?.number || b.number;
-      if (isCertResultForCuresUpdateCriterion(a)) {
-        valueToFindA += '(Cures Update)';
-      }
-      if (isCertResultForCuresUpdateCriterion(b)) {
-        valueToFindB += '(Cures Update)';
-      }
+      const valueToFindA = a.criterion?.number || a.number;
+      const valueToFindB = b.criterion?.number || b.number;
       return certificationResultSortIndex(valueToFindA) - certificationResultSortIndex(valueToFindB);
     }
 
     function certificationResultSortIndex(certResult) {
-      //Handle both criteria numbers, names and certificationResult objects
-      let criterion = createCriterion(certResult);
+      // Handle both criteria numbers, names and certificationResult objects
+      const criterion = createCriterion(certResult);
       if (!criterion) {
-        //Couldn't figure out what was passed in...
+        // Couldn't figure out what was passed in...
         return Number.MAX_VALUE;
       }
 
-      let valueToFind = criterion.number;
-      if (isCertResultForCuresUpdateCriterion(criterion)) {
-        valueToFind += '(Cures Update)';
-      }
-      //If we don't find the item in the referece array, put it at the end
-      let index = certificationResultSortOrder().findIndex(item => item === valueToFind);
+      const valueToFind = criterion.number;
+      // If we don't find the item in the referece array, put it at the end
+      let index = certificationResultSortOrder().findIndex((item) => item === valueToFind);
       if (index === -1) {
         index = Number.MAX_VALUE;
       }
@@ -413,16 +393,16 @@
       if (cert.criterion) { return cert.criterion; }
       let criterion;
       if (cert.number) {
-        criterion = { 'number': cert.number, 'title': cert.title };
+        criterion = { number: cert.number, title: cert.title };
       } else if (cert.name) {
         criterion = {
-          'number': cert.name.indexOf(':') > -1 ? cert.name.substring(0, cert.name.indexOf(':')) : cert.name,
-          'title': cert.name.indexOf(':') > -1 ? cert.name.substring(cert.name.indexOf(':') + 1) : '',
+          number: cert.name.indexOf(':') > -1 ? cert.name.substring(0, cert.name.indexOf(':')) : cert.name,
+          title: cert.name.indexOf(':') > -1 ? cert.name.substring(cert.name.indexOf(':') + 1) : '',
         };
       } else {
         criterion = {
-          'number': cert.indexOf(':') > -1 ? cert.substring(0, cert.indexOf(':')) : cert,
-          'title': cert.indexOf(':') > -1 ? cert.substring(cert.indexOf(':') + 1) : '',
+          number: cert.indexOf(':') > -1 ? cert.substring(0, cert.indexOf(':')) : cert,
+          title: cert.indexOf(':') > -1 ? cert.substring(cert.indexOf(':') + 1) : '',
         };
       }
       return criterion;
@@ -552,34 +532,24 @@
         '170.315 (a)(13)',
         '170.315 (a)(14)',
         '170.315 (a)(15)',
-        '170.315 (b)(1)(Cures Update)',
         '170.315 (b)(1)',
-        '170.315 (b)(2)(Cures Update)',
         '170.315 (b)(2)',
-        '170.315 (b)(3)(Cures Update)',
         '170.315 (b)(3)',
         '170.315 (b)(4)',
         'Removed | 170.315 (b)(4)',
         '170.315 (b)(5)',
         'Removed | 170.315 (b)(5)',
         '170.315 (b)(6)',
-        '170.315 (b)(7)(Cures Update)',
         '170.315 (b)(7)',
-        '170.315 (b)(8)(Cures Update)',
         '170.315 (b)(8)',
-        '170.315 (b)(9)(Cures Update)',
         '170.315 (b)(9)',
-        '170.315 (b)(10)(Cures Update)',
         '170.315 (b)(11)',
         '170.315 (c)(1)',
         '170.315 (c)(2)',
-        '170.315 (c)(3)(Cures Update)',
         '170.315 (c)(3)',
         '170.315 (c)(4)',
         '170.315 (d)(1)',
-        '170.315 (d)(2)(Cures Update)',
         '170.315 (d)(2)',
-        '170.315 (d)(3)(Cures Update)',
         '170.315 (d)(3)',
         '170.315 (d)(4)',
         '170.315 (d)(5)',
@@ -587,13 +557,9 @@
         '170.315 (d)(7)',
         '170.315 (d)(8)',
         '170.315 (d)(9)',
-        '170.315 (d)(10)(Cures Update)',
         '170.315 (d)(10)',
         '170.315 (d)(11)',
-        '170.315 (d)(12)(Cures Update)',
-        '170.315 (d)(13)(Cures Update)',
         '170.315 (d)(14)',
-        '170.315 (e)(1)(Cures Update)',
         '170.315 (e)(1)',
         '170.315 (e)(2)',
         '170.315 (e)(3)',
@@ -601,7 +567,6 @@
         '170.315 (f)(2)',
         '170.315 (f)(3)',
         '170.315 (f)(4)',
-        '170.315 (f)(5)(Cures Update)',
         '170.315 (f)(5)',
         '170.315 (f)(6)',
         '170.315 (f)(7)',
@@ -610,13 +575,10 @@
         '170.315 (g)(3)',
         '170.315 (g)(4)',
         '170.315 (g)(5)',
-        '170.315 (g)(6)(Cures Update)',
         '170.315 (g)(6)',
         '170.315 (g)(7)',
         '170.315 (g)(8)',
-        '170.315 (g)(9)(Cures Update)',
         '170.315 (g)(9)',
-        '170.315 (g)(10)(Cures Update)',
         '170.315 (h)(1)',
         '170.315 (h)(2)',
         '170.523 (k)(1)',
@@ -627,14 +589,6 @@
         'Semiannual Attestations Submission',
         'Other Non-Conformity',
       ];
-    }
-
-    function isCertResultForCuresUpdateCriterion(certResult) {
-      if (certResult && (certResult.title || certResult.criterion?.title)) {
-        return (certResult.title || certResult.criterion.title).includes('(Cures Update)');
-      } else {
-        return false;
-      }
     }
   }
 })();

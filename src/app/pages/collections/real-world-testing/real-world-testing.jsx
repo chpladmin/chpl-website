@@ -75,7 +75,7 @@ function ChplRealWorldTestingCollectionPage() {
       .map((cc) => ({
         ...cc,
         value: cc.id,
-        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}`,
         longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
       }));
     setFilters((f) => f
