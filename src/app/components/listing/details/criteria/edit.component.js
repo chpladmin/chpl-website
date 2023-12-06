@@ -45,6 +45,7 @@ const CertificationCriteriaEditComponent = {
       this.certSave = angular.copy(this.cert);
 
       this.setAvailableTestTools();
+      this.setAvailableStandards();
       this.setAvailableOptionalStandards();
       this.setAvailableConformanceMethods();
       this.setAvailableTestValues();
@@ -53,6 +54,7 @@ const CertificationCriteriaEditComponent = {
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
       this.selectedFunctionalityTestedKeys = this.getSelectedFunctionalityTestedKeys();
       this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
+      this.selectedStandardKeys = this.getSelectedStandardKeys();
       this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
       this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
       this.newOptionalStandards = this.getNewOptionalStandards();
@@ -158,6 +160,24 @@ const CertificationCriteriaEditComponent = {
           this.cert.testProcedures = action.item.map((i) => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
           break;
         // no default
+      }
+    }
+
+    standardsOnChange(action) {
+      switch (action.action) {
+        case 'Remove':
+          this.cert.standards = this.cert.standards
+            .filter((crs) => {
+              if (action.item.item.id === 'newItem') {
+                return crs.standard.value !== action.item.item.value;
+              }
+              return crs.standard.id !== action.item.item.id;
+            });
+          break;
+        case 'Add':
+          this.cert.standards = [].concat(this.cert.standards).concat({ standard: action.item.item }).filter((item) => item);
+          break;
+        default:
       }
     }
 
@@ -282,6 +302,17 @@ const CertificationCriteriaEditComponent = {
       }));
     }
 
+    getSelectedStandardKeys() {
+      const that = this;
+      if (!this.cert.standards) {
+        return [];
+      }
+      return this.cert.standards
+        .filter((s) => s.standard.id
+          && that.resources.standards.filter((as) => as.id === s.standard.id).length > 0)
+        .map((s) => ({ key: s.standard.id }));
+    }
+
     getSelectedOptionalStandardKeys() {
       const that = this;
       if (!this.cert.optionalStandards) {
@@ -377,6 +408,17 @@ const CertificationCriteriaEditComponent = {
           .map((cm) => ({
             ...cm,
             dropDownText: (cm.retired ? 'Retired | ' : '') + cm.value,
+          }));
+      }
+    }
+
+    setAvailableStandards() {
+      if (Array.isArray(this.resources.standards)) {
+        this.cert.allowedStandards = this.resources.standards
+          .filter((s) => s.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          .map((s) => ({
+            ...s,
+            dropDownText: s.regulatoryTextCitation + (s.retired ? ' (Retired)' : ''),
           }));
       }
     }
