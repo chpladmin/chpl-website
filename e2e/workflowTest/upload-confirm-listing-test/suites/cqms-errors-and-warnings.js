@@ -7,7 +7,7 @@ const suite = {
       'The CQM with CMS ID \'CMS2\' does not specify a version. A version is required.',
       'The CQM with CMS ID \'CMS72\' has an invalid version \'v19\'.',
       'Clinical Quality Measurement CMS134 was found under Certification criterion 170.315 (c)(1), but the product does not attest to that criterion.',
-      'Clinical Quality Measurement CMS134 was found under Certification criterion 170.315 (c)(3) (Cures Update), but the product does not attest to that criterion.',
+      'Clinical Quality Measurement CMS134 was found under Certification criterion 170.315 (c)(3), but the product does not attest to that criterion.',
     ],
     expectedWarnings: [
       'A CQM was found with versions or criteria specified but is missing the required CMS ID. The CQM has been removed.',
@@ -19,7 +19,7 @@ const suite = {
     expectedErrors: [
       'Certification criterion \'170.315 (c)(1)\' was found but no matching Clinical Quality Measurement was found.',
       'Certification criterion \'170.315 (c)(2)\' was found but no matching Clinical Quality Measurement was found.',
-      'Certification criterion \'170.315 (c)(3) (Cures Update)\' was found but no matching Clinical Quality Measurement was found.',
+      'Certification criterion \'170.315 (c)(3)\' was found but no matching Clinical Quality Measurement was found.',
       'Certification criterion \'170.315 (c)(4)\' was found but no matching Clinical Quality Measurement was found.',
     ],
     expectedWarnings: [

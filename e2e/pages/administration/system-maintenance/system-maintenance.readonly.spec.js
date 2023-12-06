@@ -91,5 +91,11 @@ describe('the system maintenance page', () => {
       await page.navigate('functionalities-tested');
       await expect(await page.canNavigate('functionalities-tested')).toBe(false);
     });
+
+    it('should allow navigation to "standards" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('standards')).toBe(true);
+      await page.navigate('standards');
+      await expect(await page.canNavigate('standards')).toBe(false);
+    });
   });
 });

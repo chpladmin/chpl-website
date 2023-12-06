@@ -294,6 +294,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
             <ChplCriteria
               listing={listing}
               viewAll={seeAllCriteria}
+              isConfirming={isConfirming}
             />
           </CardContent>
         </Card>

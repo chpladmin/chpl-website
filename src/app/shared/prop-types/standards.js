@@ -38,6 +38,19 @@ const functionalityTested = shape({
   value: string,
 });
 
+const standard = shape({
+  criteria: arrayOf(criterion),
+  description: string,
+  endDay: string,
+  id: number,
+  name: string,
+  regulatoryTextCitation: string,
+  requiredDay: string,
+  rule,
+  startDay: string,
+  value: string,
+});
+
 const qmsStandard = shape({
   applicableCriteria: string,
   id: number,
@@ -102,6 +115,7 @@ export {
   accessibilityStandard,
   accessibilityStandardType,
   functionalityTested,
+  standard,
   qmsStandard,
   qmsStandardType,
   rule,

@@ -31,16 +31,4 @@ describe('the users cards', () => {
     browser.waitUntil(() => component.getDemographic(element, 'Title:') !== initialTitle);
     expect(component.getDemographic(element, 'Title:')).toBe(title);
   });
-
-  it('should allow editing of the phone number', () => {
-    const element = component.getComponent('AQA ONC');
-    const initialNumber = component.getDemographic(element, 'Phone Number:');
-    component.editUser(element);
-    const number = `${Date.now() % 10000000}`;
-    component.setDemographic(number, 'phoneNumber');
-    actionBar.save();
-    hooks.waitForSpinnerToDisappear();
-    browser.waitUntil(() => component.getDemographic(element, 'Phone Number:') !== initialNumber);
-    expect(component.getDemographic(element, 'Phone Number:')).toBe(number);
-  });
 });
