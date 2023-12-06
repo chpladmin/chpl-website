@@ -48,6 +48,22 @@
               </ul>
             </td>
           </tr>
+          <tr ng-if="$ctrl.showStandardsSection()"
+              id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_standard">
+            <td>
+              <span>Standard</span>
+              <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td>
+              <ul>
+                <li ng-repeat="m in $ctrl.cert.standards">
+                  {{ m.standard.regulatoryTextCitation }}
+                  :
+                  {{ m.standard.value }}
+                </li>
+              </ul>
+            </td>
+          </tr>
           <tr ng-if="$ctrl.showOptionalStandardsSection()"
               id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.id }}">
             <td>
