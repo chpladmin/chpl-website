@@ -64,7 +64,7 @@ function ChplApiDocumentationCollectionPage() {
       .map((cc) => ({
         ...cc,
         value: cc.id,
-        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}`,
         longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
         default: [56, 181, 182].includes(cc.id),
       }));

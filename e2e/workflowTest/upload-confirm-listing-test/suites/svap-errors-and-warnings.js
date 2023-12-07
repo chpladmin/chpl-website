@@ -14,9 +14,9 @@ const suite = {
     expectedErrors: [
     ],
     expectedWarnings: [
-      'Standards Version Advancement Process 170.204(a)(1) is not valid for criteria 170.315 (c)(3) (Cures Update). It has been removed.',
+      'Standards Version Advancement Process 170.204(a)(1) is not valid for criteria 170.315 (c)(3). It has been removed.',
       'Standards Version Advancement Process 170.204(a)(2) is not valid for criteria 170.315 (f)(7). It has been removed.',
-      'Standards Version Advancement Process 170.205(s)(1) is not valid for criteria 170.315 (e)(1) (Cures Update). It has been removed.',
+      'Standards Version Advancement Process 170.205(s)(1) is not valid for criteria 170.315 (e)(1). It has been removed.',
     ],
   }, {
     listingId: '15.02.04.2701.SVP3.12.00.1.220920',

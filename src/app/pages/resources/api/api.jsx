@@ -195,7 +195,7 @@ function ChplResourcesApi() {
                 <Box className={classes.warningBox}>
                   <ReportProblemOutlinedIcon />
                   <Typography>
-                    XML Files are being deprecated and will be discontinued in the near future.
+                    The XML Files are deprecated and will be discontinued on or after December 31, 2023.
                   </Typography>
                 </Box>
               </ul>

@@ -15,7 +15,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import { arrayOf } from 'prop-types';
+import * as jsJoda from '@js-joda/core';
+import { arrayOf, bool } from 'prop-types';
 
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
@@ -38,12 +39,23 @@ const useStyles = makeStyles({
 });
 
 function ChplCriterionDetailsView(props) {
-  const { criterion, qmsStandards, accessibilityStandards } = props;
+  const {
+    criterion,
+    qmsStandards,
+    accessibilityStandards,
+    isConfirming,
+  } = props;
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
     return null;
   }
+
+  const isDisplayableStandard = (standard) => isConfirming || standard.standard.endDay || jsJoda.LocalDate.now() < standard.standard.requiredDay;
+
+  const hasDisplayableStandards = () => criterion.success
+        && criterion.standards?.length > 0
+        && criterion.standards.some((std) => isDisplayableStandard(std));
 
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
@@ -277,6 +289,41 @@ function ChplCriterionDetailsView(props) {
                         </List>
                       )}
                     { criterion.conformanceMethods?.length === 0 && 'None' }
+                  </TableCell>
+                </TableRow>
+              )}
+            { criterion.success && criterion.criterion.attributes?.standard && hasDisplayableStandards()
+              && (
+                <TableRow key="standards">
+                  <TableCell component="th" scope="row">
+                    <ChplTooltip title="TBD">
+                      <IconButton className={classes.infoIcon}>
+                        <InfoIcon
+                          className={classes.infoIconColor}
+                        />
+                      </IconButton>
+                    </ChplTooltip>
+                    Standard
+                  </TableCell>
+                  <TableCell>
+                    <List>
+                      { criterion.standards
+                        .filter(isDisplayableStandard)
+                        .map((std, index) => (
+                          <ListItem key={std.id || std.key || index} className={std.standard.retired ? 'removed' : ''}>
+                            <Box width="100%">
+                              Name:
+                              {' '}
+                              {`${std.standard.retired ? 'Retired | ' : ''} ${std.standard.regulatoryTextCitation}: ${std.standard.value}`}
+                            </Box>
+                            <ChplUpdateIndicator
+                              requiredDay={std.standard.requiredDay}
+                              endDay={std.standard.endDay}
+                              additionalInformation={std.standard.additionalInformation}
+                            />
+                          </ListItem>
+                        ))}
+                    </List>
                   </TableCell>
                 </TableRow>
               )}
@@ -634,4 +681,9 @@ ChplCriterionDetailsView.propTypes = {
   criterion: certificationResult.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
+  isConfirming: bool,
+};
+
+ChplCriterionDetailsView.defaultProps = {
+  isConfirming: false,
 };

@@ -49,6 +49,7 @@ const getDisplay = (key) => {
     case 'riskManagementSummaryInformation': return 'Risk Management Summary Information';
     case 'sed': return 'SED';
     case 'serviceBaseUrlList': return 'Service Base URL List';
+    case 'standard': return 'Standard';
     case 'standardsTested': return 'Standards Tested';
     case 'svap': return 'SVAP';
     case 'testData': return 'Test Data';

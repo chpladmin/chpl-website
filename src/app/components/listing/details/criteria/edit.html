@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span></h4>
+    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: {{ $ctrl.cert.criterion.title }}</h4>
   </div>
   <div class="modal-body" ng-form="$ctrl.editForm" ng-class="{ 'removed' : $ctrl.cert.criterion.removed }">
     <input type="checkbox" ng-model="$ctrl.cert.success" id="data{{ $ctrl.cert.criterion.number }}" name="data"></input>
@@ -56,6 +56,35 @@
             </ul>
           </td>
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
+        </tr>
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.standard">
+          <td>
+            <span>Standard</span>
+          </td>
+          <td ng-if="$ctrl.canEdit()">
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                  <chpl-expandable-list
+                    identifier="standard"
+                    item-key="id"
+                    item-text="dropDownText"
+                    items="$ctrl.cert.allowedStandards"
+                    selected-item-keys="$ctrl.selectedStandardKeys"
+                    placeholder="Select a Standard"
+                    on-change="$ctrl.standardsOnChange(action)">
+                  </chpl-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td ng-if="$ctrl.cert.standards && $ctrl.cert.standards.length > 0 && !$ctrl.canEdit()">
+            <ul>
+              <li ng-repeat="m in $ctrl.cert.standards">
+                <chpl-ellipsis-bridge text="m.standard" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
+              </li>
+            </ul>
+          </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && (($ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0) || ($ctrl.cert.allowedOptionalStandards && $ctrl.cert.allowedOptionalStandards.length > 0))">
           <td>
