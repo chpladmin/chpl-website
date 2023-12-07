@@ -56,6 +56,7 @@ const ConfirmListingComponent = {
         this.networkService.getMeasureTypes().then((response) => { pending.measureTypes = response; }),
         this.networkService.getOptionalStandards().then((response) => { pending.optionalStandards = response; }),
         this.networkService.getQmsStandards().then((response) => { pending.qmsStandards = response; }),
+        this.networkService.getStandards().then((response) => { pending.standards = response; }),
         this.networkService.getSvaps().then((response) => { pending.svaps = response; }),
         this.networkService.getTargetedUsers().then((response) => { pending.targetedUsers = response; }),
         this.networkService.getTestData().then((response) => { pending.testData = response; }),

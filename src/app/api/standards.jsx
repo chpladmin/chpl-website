@@ -33,6 +33,16 @@ const useDeleteQmsStandard = () => {
   });
 };
 
+const useDeleteStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`standards/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['standards']);
+    },
+  });
+};
+
 const useDeleteTestTool = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -97,6 +107,14 @@ const useFetchCriteriaForFunctionalitiesTested = () => {
   });
 };
 
+const useFetchCriteriaForStandards = () => {
+  const axios = useAxios();
+  return useQuery(['standards/criteria'], async () => {
+    const response = await axios.get('standards/criteria');
+    return response.data;
+  });
+};
+
 const useFetchCriteriaForSvaps = () => {
   const axios = useAxios();
   return useQuery(['svaps/criteria'], async () => {
@@ -133,6 +151,14 @@ const useFetchRules = () => {
   const axios = useAxios();
   return useQuery(['rules'], async () => {
     const response = await axios.get('rules');
+    return response.data;
+  });
+};
+
+const useFetchStandards = () => {
+  const axios = useAxios();
+  return useQuery(['standards'], async () => {
+    const response = await axios.get('standards');
     return response.data;
   });
 };
@@ -187,6 +213,16 @@ const usePostQmsStandard = () => {
   return useMutation(async (data) => axios.post('qms-standards', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['qms-standards']);
+    },
+  });
+};
+
+const usePostStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('standards', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['standards']);
     },
   });
 };
@@ -251,6 +287,16 @@ const usePutQmsStandard = () => {
   });
 };
 
+const usePutStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('standards', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['standards']);
+    },
+  });
+};
+
 const usePutTestTool = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -285,29 +331,34 @@ export {
   useDeleteAccessibilityStandard,
   useDeleteFunctionalityTested,
   useDeleteQmsStandard,
+  useDeleteStandard,
   useDeleteSvap,
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
   useFetchCriteria,
   useFetchCriteriaForFunctionalitiesTested,
+  useFetchCriteriaForStandards,
   useFetchCriteriaForSvaps,
   useFetchCriteriaForTestTools,
   useFetchFunctionalitiesTested,
   useFetchQmsStandards,
   useFetchRules,
+  useFetchStandards,
   useFetchSvaps,
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,
   usePostFunctionalityTested,
   usePostQmsStandard,
+  usePostStandard,
   usePostSvap,
   usePostTestTool,
   usePostUcdProcess,
   usePutAccessibilityStandard,
   usePutFunctionalityTested,
   usePutQmsStandard,
+  usePutStandard,
   usePutSvap,
   usePutTestTool,
   usePutUcdProcess,

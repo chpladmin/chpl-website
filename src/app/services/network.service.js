@@ -402,6 +402,10 @@ export default class NetworkService {
     return this.apiGET(url);
   }
 
+  getStandards() {
+    return this.apiGET('/standards');
+  }
+
   getSurveillanceActivityReport(range) {
     const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
     return this.apiGET(url);
