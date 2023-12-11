@@ -343,15 +343,13 @@ g                  { hasAnyRole(['chpl-admin'])
           && (
             <ChplFunctionalitiesTested />
           )}
-<<<<<<< HEAD
         { active === 'subscriptions'
           && (
             <ChplManageSubscriptions />
-=======
+          )}
         { active === 'standards'
           && (
             <ChplStandards />
->>>>>>> staging
           )}
         { active === 'svaps'
           && (
