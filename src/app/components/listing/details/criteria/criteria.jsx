@@ -144,6 +144,7 @@ function ChplCriteria(props) {
                         onSave={handleSave}
                         resources={prepareResources(cc.criterion)}
                         listing={listing}
+                        isConfirming={isConfirming}
                       />
                     ))}
                 </Container>

@@ -1,3 +1,5 @@
+import * as jsJoda from '@js-joda/core';
+
 const CertificationCriteriaViewComponent = {
   templateUrl: 'chpl.components/listing/details/criteria/view.html',
   bindings: {
@@ -93,6 +95,12 @@ const CertificationCriteriaViewComponent = {
                         || (this.cert.g2Success !== null && this.cert.g2Success !== undefined)));
     }
 
+    showStandardsSection() {
+      return this.cert.success
+        && this.cert.standards?.length > 0
+        && (this.isConfirming || this.cert.standards.some((std) => std.standard.endDay || jsJoda.LocalDate.now() < std.standard.requiredDay));
+    }
+
     showOptionalStandardsSection() {
       return this.cert.success && (
         (this.cert.optionalStandards?.length > 0)
@@ -102,7 +110,7 @@ const CertificationCriteriaViewComponent = {
 
     toggleCriteria() {
       if (!this.showDetails) {
-        const label = this.cert.criterion.number + (this.utilService.isCures(this.cert.criterion) ? ' (Cures Update)' : '');
+        const label = this.cert.criterion.number;
         this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
       }
       this.showDetails = !this.showDetails;

@@ -1,5 +1,5 @@
 import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
-import { isCures, sortCriteria } from 'services/criteria.service';
+import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -53,7 +53,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'ucdProcesses.criteria':
       options = {
         sort: (p, c) => sortCriteria(p.criterion ?? p, c.criterion ?? c),
-        write: (f) => (f.criterion ? `${f.criterion.number}${isCures(f.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${f.number ?? f.certificationNumber}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`),
+        write: (f) => (f.criterion ? `${f.criterion.number}` : `${f.number ?? f.certificationNumber}`),
       };
       break;
     case 'documents':
@@ -123,6 +123,12 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => (p.id < c.id ? -1 : p.id > c.id ? 1 : 0),
         write: (f) => `Requirement "${f.requirementType?.title ?? f.requirement}"`,
+      };
+      break;
+    case 'standards':
+      options = {
+        sort: (p, c) => (p.standard.value < c.standard.value ? -1 : p.standard.value > c.standard.value ? 1 : 0),
+        write: (f) => `Standard "${f.standard.regulatoryTextCitation}: ${f.standard.value}"`,
       };
       break;
     case 'surveillance':
@@ -297,6 +303,7 @@ lookup = {
   'certificationResults.riskManagementSummaryInformation': { message: (before, after) => comparePrimitive(before, after, 'riskManagementSummaryInformation', 'Risk Management Summary Information') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
   'certificationResults.serviceBaseUrlList': { message: (before, after) => comparePrimitive(before, after, 'serviceBaseUrlList', 'Service Base URL List') },
+  'certificationResults.standards': { message: (before, after) => compare(before, after, 'standards', 'Standards') },
   'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
   'certificationResults.svaps': { message: (before, after) => compare(before, after, 'svaps', 'SVAP') },
   'certificationResults.testDataUsed': { message: (before, after) => compare(before, after, 'testDataUsed', 'Test Data') },

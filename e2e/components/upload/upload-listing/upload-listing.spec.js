@@ -16,21 +16,16 @@ beforeEach(async () => {
 });
 
 describe('when uploading listings', () => {
-  beforeEach(() => {
-    loginComponent.logIn('acb');
-  });
-
-  afterEach(() => {
-    hooks.waitForSpinnerToDisappear();
-    loginComponent.logOut();
-  });
-
   inputs.forEach((input) => {
     const { message, path, testName } = input;
 
     it(`shows ${message} status of upload: ${testName}`, () => {
+      loginComponent.logIn('acb');
       upload.uploadListing(path);
-      expect(upload.uploadMessage(path.split('/').pop())).toHaveTextContaining(message);
+      hooks.waitForSpinnerToDisappear();
+      expect(upload.uploadResults).toHaveTextContaining(message);
+      upload.clearResults();
+      browser.reloadSession();
     });
   });
 });

@@ -22,23 +22,19 @@ class CriteriaComponent {
     return $(this.elements.removedCriteria);
   }
 
-  editCriteria(criteriaOld) {
-    $(`button#criterion-id-${criteriaOld}-edit`).$('span').click();
+  editCriteria(criteria) {
+    $(`button#criterion-id-${criteria}-edit`).$('span').click();
   }
 
   get conformanceMethod() {
     return $(this.elements.conformanceMethodName);
   }
 
-  get testTools() {
-    return $(this.elements.testToolsName);
-  }
-
-  get conformanceMethodsOld() {
+  get conformanceMethods() {
     return $(elementsOld.conformanceMethodName);
   }
 
-  get testToolsOld() {
+  get testTools() {
     return $(elementsOld.testToolsName);
   }
 
@@ -117,32 +113,19 @@ class CriteriaComponent {
     $(`//*[@data-value="${value}"]`).click();
   }
 
-  editCriteriaOldButton(criteriaOld, cures) {
-    if (cures) {
-      return $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit');
-    }
-    return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit');
+  editCriteriaButton(criteria, id) {
+    return $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit');
   }
 
-  openAttestedCriteriaOld(criteriaOld, cures) {
-    if (cures) {
-      // click on Edit for on the criteria
-      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit').click();
-    } else {
-      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit').click();
-    }
+  openAttestedCriteria(criteria, id) {
+    $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit').click();
   }
 
-  openUnattestedCriteriaOld(criteriaOld, cures) {
-    if (cures) {
-      // click on Edit for on the criteria
-      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit').click();
-    } else {
-      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit').click();
-    }
+  openUnattestedCriteria(criteria, id) {
+    $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit').click();
   }
 
-  attestCriteriaOld(criteria) {
+  attestCriteria(criteria) {
     $(`//*[@id="data${criteria}"]`).click();
   }
 
@@ -157,19 +140,11 @@ class CriteriaComponent {
   }
 
   get conformanceMethodDropdownOptions() {
-    return $('#menu-name').$$('li');
+    return this.conformanceMethods.$$('option');
   }
 
   get testToolsDropdownOptions() {
-    return $('#menu-tt').$$('li');
-  }
-
-  get conformanceMethodDropdownOptionsOld() {
-    return this.conformanceMethodsOld.$$('option');
-  }
-
-  get testToolsDropdownOptionsOld() {
-    return this.testToolsOld.$$('option');
+    return this.testTools.$$('option');
   }
 
   closeItem(type) {
