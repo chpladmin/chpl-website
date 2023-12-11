@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 13.8.0
+_11 December 2023_
+
+### Features
+* Change list of edit types requiring a reason
+* Enable editing of CQMs in new UI
+* Remove all references to "Cures Update"
+* Enable management of "Standards" for ROLE_ADMIN
+
+### Flagged Features
+* Remove "Edition" in surveillance management
+
+### User Interface Updates
+* Separate criteria by paragraph number in Complaints editing
+* Convert "Upload" page to React
+
+---
+
 ## Version 13.7.0
 _27 November 2023_
 
