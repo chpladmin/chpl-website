@@ -2,32 +2,28 @@ class ComparePage {
   constructor() {
     this.elements = {
       criteriaRow: (id) => `#criterion-${id}`,
+      cqmRow: (id) => `#cqm-${id}`,
       chplProductNumber: (number) => `td*=${number}`,
     };
   }
 
-  getCellWithCriteriaId(id) {
+  async getCellWithCriteriaId(id) {
     return $(this.elements.criteriaRow(id)).$$('td')[0];
   }
 
-  isListingLoaded(chplProductNumber) {
+  async getCellWithCqmId(id) {
+    return $(this.elements.cqmRow(id)).$$('td')[0];
+  }
+
+  async isListingLoaded(chplProductNumber) {
     return $(this.elements.chplProductNumber(chplProductNumber)).isDisplayed();
   }
 
-  findColumnIndex(chplProductNumber) {
+  async findColumnIndex(chplProductNumber) {
     return $(this.elements.chplProductNumber(chplProductNumber))
       .parentElement()
       .$$('td')
-      .findIndex((ele) => ele.getText() === chplProductNumber);
-  }
-
-  getDecertificationDate(chplProductNumber) {
-    return $('table')
-      .$('tbody')
-      .$$('tr')
-      .find((row) => row.getText().includes('Inactive/Decertified Date'))
-      .$$('td')[this.findColumnIndex(chplProductNumber)]
-      .getText();
+      .findIndex(async (ele) => await(ele.getText()) === chplProductNumber);
   }
 }
 
