@@ -190,8 +190,8 @@ export default class NetworkService {
     return this.apiGET('/change-requests');
   }
 
-  getCognitoUser(email) {
-    return this.apiGET(`/cognito/users/${email}`);
+  getCognitoUser(ssoUserId) {
+    return this.apiGET(`/cognito/users/${ssoUserId}`);
   }
 
   getCollection(type) {
@@ -478,10 +478,6 @@ export default class NetworkService {
 
   getUserById(id) {
     return this.apiGET(`/users/beta/${id}/details`);
-  }
-
-  getCognitoUserById(email) {
-    return this.apiGET(`/cognito/users/${email}`);
   }
 
   getUsers() {
