@@ -31,6 +31,7 @@ const validationSchema = yup.object({
   endDay: yup.date(),
   requiredDay: yup.date(),
   startDay: yup.date(),
+  groupName: yup.string(),
 });
 
 const useStyles = makeStyles({
@@ -122,6 +123,7 @@ function ChplStandardEdit(props) {
     endDay: formik.values.endDay,
     requiredDay: formik.values.requiredDay,
     startDay: formik.values.startDay,
+    groupName: formik.values.groupName,
   });
 
   const handleDispatch = (action) => {
@@ -162,6 +164,7 @@ function ChplStandardEdit(props) {
       endDay: initialStandard?.endDay ?? '',
       requiredDay: initialStandard?.requiredDay ?? '',
       startDay: initialStandard?.startDay ?? '',
+      groupName: initialStandard?.groupName ?? '',
     },
     onSubmit: () => {
       dispatch({ action: 'save', payload: buildPayload() });
@@ -294,6 +297,14 @@ function ChplStandardEdit(props) {
         name="additionalInformation"
         label="Additional Information"
         value={formik.values.additionalInformation}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <ChplTextField
+        id="group-name"
+        name="groupName"
+        label="Group"
+        value={formik.values.groupName}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
       />
