@@ -25,6 +25,15 @@ class ComparePage {
       .$$('td')
       .findIndex(async (ele) => await(ele.getText()) === chplProductNumber);
   }
+
+  async getDecertificationDate(chplProductNumber) {
+    return $('table')
+      .$('tbody')
+      .$$('tr')
+      .find(async (row) => await (row.getText()).includes('Inactive/Decertified Date'))
+      .$$('td')[this.findColumnIndex(chplProductNumber)]
+      .getText();
+  }
 }
 
 export default ComparePage;
