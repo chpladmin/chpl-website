@@ -18,7 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import { bool } from 'prop-types';
 
-import ChplG1G2Edit from './g1g2-edit';
+import ChplG1G2Add from './g1g2-add';
 
 import { ChplTooltip } from 'components/util';
 import { measure as measureType } from 'shared/prop-types';
@@ -144,7 +144,7 @@ function ChplG1G2sEdit() {
         { addingMeasure
           && (
             <>
-              <ChplG1G2Edit />
+              <ChplG1G2Add />
             </>
           )}
         </Card>
