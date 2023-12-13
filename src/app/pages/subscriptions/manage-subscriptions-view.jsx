@@ -159,105 +159,102 @@ function ChplManageSubscriptionsView({ analytics }) {
         <Typography variant="h1">Subscriptions</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1" gutterBottom>
-          TBD
-        </Typography>
-      </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm
-          placeholder="Search by Subscriber Email or CHPL Product Number..."
-        />
-        <ChplFilterPanel />
-      </div>
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <>Loading</>
-        )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { subscriptions.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { subscriptions.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
+        <div className={classes.searchContainer}>
+          <ChplFilterSearchTerm
+            placeholder="Search by Subscriber Email or CHPL Product Number..."
+          />
+          <ChplFilterPanel />
+        </div>
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <>Loading</>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.tableResultsHeaderContainer}>
+                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  { subscriptions.length === 0
+                    && (
+                      <Typography>
+                        No results found
+                      </Typography>
+                    )}
+                  { subscriptions.length > 0
+                    && (
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                      </Typography>
+                    )}
+                </div>
               </div>
-            </div>
-            { subscriptions.length > 0
-              && (
-                <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Manage Subscriptions table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
+              { subscriptions.length > 0
+                && (
+                  <>
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                      <Table
                         stickyHeader
-                      />
-                      <TableBody>
-                        { subscriptions
-                          .map((item) => (
-                            <TableRow key={`${item.subscriberId}-${item.subscribedObjectId}`}>
-                              <TableCell className={classes.stickyColumn}>
-                                { item.subscriberEmail }
-                              </TableCell>
-                              <TableCell>
-                                { getDisplayDateFormat(item.creationDate) }
-                              </TableCell>
-                              <TableCell>
-                                { item.subscriberRole }
-                              </TableCell>
-                              <TableCell>
-                                <ChplLink
-                                  href={`#/listing/${item.subscribedObjectId}`}
-                                  text={item.subscribedObjectName}
-                                  analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
-                                  external={false}
-                                  router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
-                                />
-                                <List>
-                                  { item.subscriptionSubjects
-                                    .sort((a, b) => (a < b ? -1 : 1))
-                                    .map((sub) => (
-                                      <ListItem key={sub}>{ sub }</ListItem>
-                                    ))}
-                                </List>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                    analytics={analytics}
-                  />
-                </>
-              )}
-          </>
-        )}
+                        aria-label="Manage Subscriptions table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          onTableSort={handleTableSort}
+                          orderBy={orderBy}
+                          order={sortDescending ? 'desc' : 'asc'}
+                          stickyHeader
+                        />
+                        <TableBody>
+                          { subscriptions
+                            .map((item) => (
+                              <TableRow key={`${item.subscriberId}-${item.subscribedObjectId}`}>
+                                <TableCell className={classes.stickyColumn}>
+                                  { item.subscriberEmail }
+                                </TableCell>
+                                <TableCell>
+                                  { getDisplayDateFormat(item.creationDate) }
+                                </TableCell>
+                                <TableCell>
+                                  { item.subscriberRole }
+                                </TableCell>
+                                <TableCell>
+                                  <ChplLink
+                                    href={`#/listing/${item.subscribedObjectId}`}
+                                    text={item.subscribedObjectName}
+                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
+                                  />
+                                  <List>
+                                    { item.subscriptionSubjects
+                                      .sort((a, b) => (a < b ? -1 : 1))
+                                      .map((sub) => (
+                                        <ListItem key={sub}>{ sub }</ListItem>
+                                      ))}
+                                  </List>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                      analytics={analytics}
+                    />
+                  </>
+                )}
+            </>
+          )}
+      </div>
     </>
   );
 }

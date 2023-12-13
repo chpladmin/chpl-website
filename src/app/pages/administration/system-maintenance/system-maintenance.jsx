@@ -304,11 +304,11 @@ function ChplSystemMaintenance() {
                       <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
-                  <ListItem>Subscriptions - View and search for existing subscribers and subscriptions</ListItem>
-g                  { hasAnyRole(['chpl-admin'])
+                  { hasAnyRole(['chpl-admin'])
                     && (
                       <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem>
                     )}
+                  <ListItem>Subscriptions - Search and filter CHPL subscriptions</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['chpl-admin'])
                     && (
