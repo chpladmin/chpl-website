@@ -58,7 +58,7 @@ const ChartsSurveillanceComponent = {
     updateYAxis() {
       const that = this;
       Object.values(this.nonconformityCounts).forEach((value) => {
-        value.options.vAxis.scaleType = that.chartState.yAxis;
+        value.options.hAxis.scaleType = that.chartState.yAxis;
       });
       const type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
       this.$analytics.eventTrack('Change Non-conformity Charts Y Axis', { category: 'Charts', label: type });
@@ -77,7 +77,7 @@ const ChartsSurveillanceComponent = {
           },
           options: {
             height: '2200',
-            chartArea: {width: '75%', height: '2000'},
+            chartArea: {width: '60%', height: '2000'},
             bar: { groupWidth: 20 },  
             animation: {
               duration: 1000,
@@ -89,7 +89,7 @@ const ChartsSurveillanceComponent = {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
               textStyle : {
-                fontSize: 9,
+                fontSize: 11,
               }
             },  
             hAxis: {
@@ -110,7 +110,7 @@ const ChartsSurveillanceComponent = {
           },
           options: {
             height: '2200',
-            chartArea: {width: '75%', height: '2000'},
+            chartArea: {width: '60%', height: '2000'},
             bar: { groupWidth: 20 },  
             animation: {
               duration: 1000,
@@ -122,7 +122,7 @@ const ChartsSurveillanceComponent = {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
               textStyle : {
-                fontSize: 9,
+                fontSize: 11,
               }
             },  
             hAxis: {
@@ -143,7 +143,7 @@ const ChartsSurveillanceComponent = {
           },
           options: {
             height: '700',
-            chartArea: {width: '75%', height: '500'},
+            chartArea: {width: '60%', height: '500'},
             bar: { groupWidth: 20 },  
             animation: {
               duration: 1000,
@@ -155,7 +155,7 @@ const ChartsSurveillanceComponent = {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
               textStyle : {
-                fontSize: 10,
+                fontSize: 11,
               }
             },  
             hAxis: {
