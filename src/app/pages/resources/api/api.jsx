@@ -146,7 +146,7 @@ function ChplResourcesApi() {
                 <li>
                   <Typography gutterBottom><strong>Certified Products:</strong></Typography>
                   {' '}
-                  Entire collection of a set of certified products, including all data elements.
+                  Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
                   <ul>
                     <li>
                       The Active products summary file is updated nightly.
