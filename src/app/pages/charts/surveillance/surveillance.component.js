@@ -20,7 +20,22 @@ const getNonconformityCountDataInChartFormat = (data, type) => data.nonconformit
     }
   })
   .sort(sortNonconformityTypes)
-  .map((obj) => ({ c: [{ v: obj.nonconformityType }, { v: obj.nonconformityCount }] }));
+  .map((obj) => ({ c: [
+    { v: obj.nonconformityType }, 
+    { v: obj.nonconformityCount },
+    { v: getToolTip(obj) },
+  ] }));
+
+const getToolTip = nonconformityStat => {
+  let toolTip = '';
+  if (nonconformityStat.criterion) {
+    toolTip = (nonconformityStat.criterion.removed ? 'Removed | ' : '') + nonconformityStat.criterion.number + ': '  + nonconformityStat.criterion.title;
+  } else {
+    toolTip = nonconformityStat.nonconformityType;
+  }
+  toolTip += `\n\nCount: ${nonconformityStat.nonconformityCount}`
+  return toolTip;
+};
 
 const ChartsSurveillanceComponent = {
   templateUrl: 'chpl.charts/surveillance/surveillance.html',
@@ -72,6 +87,7 @@ const ChartsSurveillanceComponent = {
             cols: [
               { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
               { label: 'Number of Non-Conformities', type: 'number' },
+              { type: 'string', role: 'tooltip' },
             ],
             rows: getNonconformityCountDataInChartFormat(data, 'All'),
           },
