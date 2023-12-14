@@ -142,6 +142,7 @@ function ChplResourcesApi() {
               <Divider />
             </Box>
             <div className={classes.downloadSection}>
+            <Box width="66%">
               <ul className={classes.listSpacing}>
                 <li>
                   <Typography gutterBottom><strong>Certified Products:</strong></Typography>
@@ -160,6 +161,7 @@ function ChplResourcesApi() {
                   </ul>
                 </li>
               </ul>
+            </Box>
               <Card className={classes.downloadCard}>
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
