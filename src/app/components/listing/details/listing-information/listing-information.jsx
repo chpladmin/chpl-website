@@ -14,7 +14,7 @@ import {
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
-import { UserContext } from 'shared/contexts';
+import { UserContext, FlagContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -40,6 +40,8 @@ const useStyles = makeStyles({
 
 function ChplListingInformation({ listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
+  const { isOn } = useContext(FlagContext);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
 
@@ -51,6 +53,13 @@ function ChplListingInformation({ listing: initialListing }) {
         .sort((a, b) => (a < b ? -1 : 1)),
     });
   }, [initialListing]);
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
+
+  const canSeeEdition = () => listing.edition
+        && (listing.edition.name !== '2015' || !editionlessIsOn);
 
   const canViewRwtDates = () => {
     if (hasAnyRole(['chpl-admin', 'ROLE_ONC'])) { return true; }
@@ -114,7 +123,7 @@ function ChplListingInformation({ listing: initialListing }) {
             <Typography variant="subtitle1">Version:</Typography>
             <Typography gutterBottom>{listing.version.version}</Typography>
           </Box>
-          { listing.edition
+          { canSeeEdition()
              && (
              <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Certification Edition:</Typography>
