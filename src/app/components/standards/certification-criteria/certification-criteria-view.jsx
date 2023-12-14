@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
 
+import { ChplLink } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { criterion as criterionPropType } from 'shared/prop-types';
@@ -19,6 +20,7 @@ const headers = [
   { property: 'title', text: 'Title', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
+  { text: 'Certification Companion Guide' },
   { text: 'Rule' },
   { text: 'Attributes' },
 ];
@@ -124,6 +126,20 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }
+                  </TableCell>
+                  <TableCell>
+                    { item.companionGuideLink
+                      && (
+                        <ChplLink
+                          href={item.companionGuideLink}
+                          text={item.companionGuideLink}
+                          external={false}
+                        />
+                      )}
+                    { !item.companionGuideLink
+                      && (
+                        'N/A'
+                      )}
                   </TableCell>
                   <TableCell>
                     { item.rule?.name }
