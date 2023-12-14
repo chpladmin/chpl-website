@@ -1,9 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
+  Button,
   Chip,
   Checkbox,
   CircularProgress,
+  FormControl,
   FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
   MenuItem,
   Switch,
   TableCell,
@@ -11,6 +17,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { Clear, Save } from '@material-ui/icons';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -22,25 +30,11 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  chips: {
+  cancelAndSaveButton: {
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: '4px',
-    marginTop: '4px',
-  },
-  column: {
-    display: 'flex',
-    flexDirection: 'column',
-    gridGap: '16px',
-    alignItems: 'flex-start',
+    gridGap: '8px',
     width: '100%',
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  versionColumn: {
-    width: '216px',
   },
 });
 
@@ -76,12 +70,13 @@ const sortMeasures = (a, b) => {
     0;
 }
 
-function ChplG1G2Add() {
+function ChplG1G2Add({ dispatch }) {
   const { listing, setListing } = useContext(ListingContext);
   const [measures, setMeasures] = useState([]);
   const [tests, setTests] = useState([]);
   const [types, setTypes] = useState([]);
   const [isG1, setIsG1] = useState(true);
+  const [criteria, setCriteria] = useState(new Set());
   const measuresQuery = useFetchMeasures();
   const measureTypesQuery = useFetchMeasureTypes();
   const classes = useStyles();
@@ -112,27 +107,46 @@ function ChplG1G2Add() {
             );
   }, [measureTypesQuery.data, measureTypesQuery.isLoading, measureTypesQuery.isSuccess]);
 
-  const add = (v) => {
+  const add = () => {
     const measure = {
-      test: formik.values.newMeasureTest,
-      domain: formik.values.newMeasureDomain,
-      type: true,
-      criteria: [],
+      measure: formik.values.newMeasureDomain,
+      measureType: types.find((t) => isG1 ? t.name === 'G1' : t.name === 'G2'),
+      associatedCriteria: formik.values.newMeasureDomain.allowedCriteria.filter((cc) => criteria.has(cc.number)),
+      displayCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? [... criteria].join('; ') : formik.values.newMeasureDomain.displayCriteria,
     };
+    console.log({measure});
     setListing({
       ...listing,
-      measures: listing.measures
-        .concat({
-          measure,
-        }),
+      measures: [...listing.measures]
+        .concat(measure),
     });
+    close();
+  };
+
+  const close = () => {
     formik.setFieldValue('newMeasureTest', '');
     formik.setFieldValue('newMeasureDomain', '');
-    //setAddingStatus(false);
+    setCriteria(new Set());
+    setIsG1(true);
+    dispatch();
+  };
+
+  const handleTestChange = (event) => {
+    formik.setFieldValue('newMeasureDomain', '');
+    setCriteria(new Set());
+    formik.handleChange(event);
   };
 
   const toggleCriteria = (event) => {
-    console.log(event.target.value);
+    if (event.target.checked) {
+      setCriteria((prev) => new Set(prev).add(event.target.name));
+    } else {
+      setCriteria((prev) => {
+        const next = new Set(prev);
+        next.delete(event.target.name);
+        return next;
+      });
+    }
   };
 
   const toggleType = () => {
@@ -162,7 +176,7 @@ function ChplG1G2Add() {
         label="New Test"
         required
         value={formik.values.newMeasureTest}
-        onChange={formik.handleChange}
+        onChange={handleTestChange}
         onBlur={formik.handleBlur}
         error={formik.touched.newMeasureTest && !!formik.errors.newMeasureTest}
         helperText={formik.touched.newMeasureTest && formik.errors.newMeasureTest}
@@ -175,7 +189,7 @@ function ChplG1G2Add() {
         select
         id="new-measure-domain"
         name="newMeasureDomain"
-        label="New Test Domain"
+        label="New Measure Domain"
         required
         disabled={!formik.values.newMeasureTest}
         value={formik.values.newMeasureDomain}
@@ -200,21 +214,53 @@ function ChplG1G2Add() {
             checked={isG1}
           />
         )}
-        label={`${isG1 ? 'G1' : 'G2'}`}
+        label={`G1/G2: ${isG1 ? 'G1' : 'G2'}`}
       />
-      <FormControlLabel
-        label="criteria"
-        key="criteria"
-        control={(
-          <Checkbox
-            color="primary"
-            name="criteria"
-            value="value"
-            onChange={toggleCriteria}
-            checked={false}
-          />
+      { formik.values.newMeasureDomain && !formik.values.newMeasureDomain.requiresCriteriaSelection
+        && (
+          <Typography>
+            { formik.values.newMeasureDomain.displayCriteria.join('; ') }
+          </Typography>
         )}
-      />
+      { formik.values.newMeasureDomain && formik.values.newMeasureDomain.requiresCriteriaSelection
+        && (
+          <FormControl required error={criteria.size === 0} component="fieldset">
+            <FormLabel component="legend">Certification Criteria</FormLabel>
+            <FormGroup>
+              { formik.values.newMeasureDomain.displayCriteria.map((cc) => (
+                <FormControlLabel
+                  control={<Checkbox checked={criteria.has(cc)} onChange={toggleCriteria} name={cc} />}
+                  label={cc}
+                  key={cc}
+                />
+              ))}
+            </FormGroup>
+            { criteria.size === 0
+              && (
+                <FormHelperText>At least one must be selected</FormHelperText>
+              )}
+          </FormControl>
+        )}
+      <Box className={classes.cancelAndSaveButton}>
+        <Button
+          size="medium"
+          endIcon={<Clear fontSize="small" />}
+          onClick={() => close()}
+          variant="contained"
+          color="secondary"
+        >
+          Cancel
+        </Button>
+        <Button
+          size="medium"
+          endIcon={<Save fontSize="small" />}
+          variant="contained"
+          color="primary"
+          onClick={() => add()}
+        >
+          Save
+        </Button>
+      </Box>
     </>
   );
 }
@@ -222,4 +268,5 @@ function ChplG1G2Add() {
 export default ChplG1G2Add;
 
 ChplG1G2Add.propTypes = {
+  dispatch: func.isRequired,
 };

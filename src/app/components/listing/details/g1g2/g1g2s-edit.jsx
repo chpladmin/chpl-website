@@ -51,6 +51,10 @@ function ChplG1G2sEdit() {
     .map((cc) => cc.number)
     .join('; ');
 
+  const handleDispatch = () => {
+    setAddingMeasure(false);
+  };
+
   const remove = (measure) => {
     setListing({
       ...listing,
@@ -144,7 +148,9 @@ function ChplG1G2sEdit() {
         { addingMeasure
           && (
             <>
-              <ChplG1G2Add />
+              <ChplG1G2Add
+                dispatch={handleDispatch}
+              />
             </>
           )}
         </Card>
