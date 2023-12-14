@@ -40,21 +40,6 @@ export const ChartsComponent = {
 
     ////////////////////////////////////////////////////////////////////
 
-    //loadCriterionProductCountChart () {
-    //  let that = this;
-    //  this.networkService.getCriterionProductStatistics().then(data => that.criterionProduct = data);
-    //}
-
-    //loadIncumbentDevelopersCountChart () {
-    //  let that = this;
-    //  this.networkService.getIncumbentDevelopersStatistics().then(data => that.incumbentDevelopers = data);
-    //}
-
-    //loadListingCountCharts () {
-    //  let that = this;
-    //  this.networkService.getListingCountStatistics().then(data => that.listingCountData = data);
-    //}
-
     loadNonconformityCountChart () {
       let that = this;
       this.networkService.getNonconformityStatisticsCount().then(data => that.nonconformityCriteriaCount = data);
