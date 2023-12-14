@@ -31,7 +31,7 @@ import {
 
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { toTimestamp } from 'services/date-util';
+import { getDisplayDateFormat, toTimestamp } from 'services/date-util';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -222,7 +222,7 @@ function ChplListingHistory(props) {
                       .map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>
-                            { DateUtil.timestampToString(item.activityDate) }
+                            { item.eventDay ? getDisplayDateFormat (item.eventDay) : DateUtil.timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>
                             <ul className="list-unstyled">
