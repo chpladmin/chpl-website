@@ -213,6 +213,10 @@ export default class NetworkService {
     return this.apiGET('/conformance-methods');
   }
 
+  getCriterionProductStatistics() {
+    return this.apiGET('/statistics/criterion_product');
+  }
+
   getDeveloper(id) {
     return this.apiGET(`/developers/${id}`);
   }
@@ -277,30 +281,6 @@ export default class NetworkService {
     return this.apiGET('/optional-standards');
   }
 
-  getParticipantAgeStatistics() {
-    return this.apiGET('/statistics/participant_age_count');
-  }
-
-  getParticipantComputerExperienceStatistics() {
-    return this.apiGET('/statistics/participant_computer_experience_count');
-  }
-
-  getParticipantEducationStatistics() {
-    return this.apiGET('/statistics/participant_education_count');
-  }
-
-  getParticipantGenderStatistics() {
-    return this.apiGET('/statistics/participant_gender_count');
-  }
-
-  getParticipantProductExperienceStatistics() {
-    return this.apiGET('/statistics/participant_product_experience_count');
-  }
-
-  getParticipantProfessionalExperienceStatistics() {
-    return this.apiGET('/statistics/participant_professional_experience_count');
-  }
-
   getPendingListingById(id) {
     return this.apiGET(`/listings/pending/${id}`);
   }
@@ -348,10 +328,6 @@ export default class NetworkService {
 
   getSearchOptions() {
     return this.apiGET('/data/search-options');
-  }
-
-  getSedParticipantStatisticsCount() {
-    return this.apiGET('/statistics/sed_participant_count');
   }
 
   getSimpleProduct(id) {
