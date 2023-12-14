@@ -166,7 +166,9 @@ function ChplResourcesApi() {
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
                   <Box display="flex" flexDirection="column" gridGap={16}>
-                    <Typography> To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.</Typography>
+                    <Typography>
+                      To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
+                    </Typography>
                     <div className={classes.fullWidth}>
                       <ChplTextField
                         select
