@@ -3,7 +3,7 @@ class ChartsPage {
     this.elements = {
       chartTitle: 'svg > g:nth-child(3) > text:nth-child(1)',
       programTypeDropdown: '//label[1]/select',
-      chart: '//*[contains(@class,\'chart\')]',
+      chart: 'aria/A chart.',
       axisDropdown: '//label[2]/select',
       certificationStatusDropdown: '//label[1]/select',
       stackingTypeDropdown: '//label[2]/select',
