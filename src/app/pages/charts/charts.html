@@ -11,10 +11,23 @@
           The charts are a dynamic display of the data currently on the CHPL. If there are any questions or comments regarding this feature, please submit them through the <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
         </p>
         <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'product'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('product')">Unique Product charts</button></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'developer'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('developer')">Developer charts</button></li>
           <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'sed'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('sed')">SED Participant charts</button></li>
           <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'nonconformity'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('nonconformity')">Nonconformity charts</button></li>
         </ul>
       </div>
+    </div>
+    <div ng-if="$ctrl.chartState.tab === 'product' && $ctrl.criterionProduct">
+      <chpl-charts-product
+        criterion-product="$ctrl.criterionProduct"
+        ></chpl-charts-product>
+    </div>
+    <div ng-if="$ctrl.chartState.tab === 'developer' && $ctrl.incumbentDevelopers && $ctrl.listingCountData">
+      <chpl-charts-developer
+        incumbent-developers="$ctrl.incumbentDevelopers"
+        listing-count-data="$ctrl.listingCountData"
+        ></chpl-charts-developer>
     </div>
     <div ng-if="$ctrl.chartState.tab === 'sed'">
       <chpl-charts-sed

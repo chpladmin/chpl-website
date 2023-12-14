@@ -12,11 +12,11 @@ export const ChartsComponent = {
 
     $onInit () {
       this.chartState = {
-        tab: 'sed',
+        tab: 'product',
       };
-      //this.loadCriterionProductCountChart();
-      //this.loadIncumbentDevelopersCountChart();
-      //this.loadListingCountCharts();
+      this.loadCriterionProductCountChart();
+      this.loadIncumbentDevelopersCountChart();
+      this.loadListingCountCharts();
       this.loadNonconformityCountChart();
       this.loadSedParticipantCountChart();
       this.loadParticipantGenderCountChart();
@@ -31,6 +31,8 @@ export const ChartsComponent = {
       this.chartState.tab = target;
       let title;
       switch (target) {
+      case 'product': title = 'Unique Product'; break;
+      case 'developer': title = 'Developer'; break;
       case 'sed': title = 'SED Participants'; break;
       case 'nonconformity': title = 'Non-conformity'; break;
         //no default
@@ -39,6 +41,21 @@ export const ChartsComponent = {
     }
 
     ////////////////////////////////////////////////////////////////////
+
+    loadCriterionProductCountChart () {
+      let that = this;
+      this.networkService.getCriterionProductStatistics().then(data => that.criterionProduct = data);
+    }
+
+    loadIncumbentDevelopersCountChart () {
+      let that = this;
+      this.networkService.getIncumbentDevelopersStatistics().then(data => that.incumbentDevelopers = data);
+    }
+
+    loadListingCountCharts () {
+      let that = this;
+      this.networkService.getListingCountStatistics().then(data => that.listingCountData = data);
+    }
 
     loadNonconformityCountChart () {
       let that = this;
