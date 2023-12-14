@@ -142,24 +142,26 @@ function ChplResourcesApi() {
               <Divider />
             </Box>
             <div className={classes.downloadSection}>
-              <ul className={classes.listSpacing}>
-                <li>
-                  <Typography gutterBottom><strong>Certified Products:</strong></Typography>
-                  {' '}
-                  Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
-                  <ul>
-                    <li>
-                      The Active products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The Inactive products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <Box width="66%">
+                <ul className={classes.listSpacing}>
+                  <li>
+                    <Typography gutterBottom><strong>Certified Products:</strong></Typography>
+                    {' '}
+                    Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
+                    <ul>
+                      <li>
+                        The Active products summary file is updated nightly.
+                      </li>
+                      <li>
+                        The Inactive products summary file is updated nightly.
+                      </li>
+                      <li>
+                        The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </Box>
               <Card className={classes.downloadCard}>
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
