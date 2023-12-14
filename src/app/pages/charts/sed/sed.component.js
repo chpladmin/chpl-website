@@ -16,25 +16,25 @@ export const ChartsSedComponent = {
     }
 
     $onChanges (changes) {
-      if (changes.sedParticipantStatisticsCount) {
+      if (changes.sedParticipantStatisticsCount?.currentValue) {
         this._createSedParticipantCountChart(changes.sedParticipantStatisticsCount.currentValue);
       }
-      if (changes.participantGenderCount) {
+      if (changes.participantGenderCount?.currentValue) {
         this._createParticipantGenderCountChart(changes.participantGenderCount.currentValue);
       }
-      if (changes.participantAgeCount) {
+      if (changes.participantAgeCount?.currentValue) {
         this._createParticipantAgeCountChart(changes.participantAgeCount.currentValue);
       }
-      if (changes.participantEducationCount) {
+      if (changes.participantEducationCount?.currentValue) {
         this._createParticipantEducationCountChart(changes.participantEducationCount.currentValue);
       }
-      if (changes.participantProfessionalExperienceCount) {
+      if (changes.participantProfessionalExperienceCount?.currentValue) {
         this._createParticipantProfessionalExperienceCountChart(changes.participantProfessionalExperienceCount.currentValue);
       }
-      if (changes.participantComputerExperienceCount) {
+      if (changes.participantComputerExperienceCount?.currentValue) {
         this._createParticipantComputerExperienceCountChart(changes.participantComputerExperienceCount.currentValue);
       }
-      if (changes.participantProductExperienceCount) {
+      if (changes.participantProductExperienceCount?.currentValue) {
         this._createParticipantProductExperienceCountChart(changes.participantProductExperienceCount.currentValue);
       }
     }
