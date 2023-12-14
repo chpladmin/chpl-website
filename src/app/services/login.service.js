@@ -29,7 +29,7 @@
       const userRole = parseJwt(getToken())?.Authority;
       const targetRole = target.role;
       return !isImpersonating()
-                && ((userRole === 'chpl-admin' && targetRole !== 'CHPL_ADMIN')
+        && (((userRole === 'ROLE_ADMIN' || userRole === 'chpl-admin') && (targetRole !== 'ROLE_ADMIN' && targetRole !== 'chpl-admin'))
                  || (userRole === 'ROLE_ONC' && targetRole !== 'chpl-admin' && targetRole !== 'ROLE_ONC'));
     }
 
