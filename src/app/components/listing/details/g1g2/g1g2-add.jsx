@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Chip,
   Checkbox,
   CircularProgress,
   FormControl,
@@ -12,8 +11,6 @@ import {
   FormLabel,
   MenuItem,
   Switch,
-  TableCell,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -35,6 +32,21 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridGap: '8px',
     width: '100%',
+  },
+  criteriaForm: {
+    width: '100%',
+    gap: '16px',
+  },
+  criteriaList: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  g1G2AddContainer:{
+    alignItems: 'center',
+    display: 'grid',
+    gridTemplateColumns: '2fr 2fr 1fr',
+    width: '100%',
+    gap: '16px',
   },
 });
 
@@ -169,78 +181,83 @@ function ChplG1G2Add({ dispatch }) {
 
   return (
     <>
-      <ChplTextField
-        select
-        id="new-measure-test"
-        name="newMeasureTest"
-        label="New Test"
-        required
-        value={formik.values.newMeasureTest}
-        onChange={handleTestChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.newMeasureTest && !!formik.errors.newMeasureTest}
-        helperText={formik.touched.newMeasureTest && formik.errors.newMeasureTest}
-      >
-        { tests.map((item) => (
-          <MenuItem value={item} key={item}>{item}</MenuItem>
-        ))}
-      </ChplTextField>
-      <ChplTextField
-        select
-        id="new-measure-domain"
-        name="newMeasureDomain"
-        label="New Measure Domain"
-        required
-        disabled={!formik.values.newMeasureTest}
-        value={formik.values.newMeasureDomain}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.newMeasureDomain && !!formik.errors.newMeasureDomain}
-        helperText={formik.touched.newMeasureDomain && formik.errors.newMeasureDomain}
-      >
-        { measures
-          .filter((m) => m.abbreviation === formik.values.newMeasureTest)
-          .map((item) => (
-            <MenuItem value={item} key={item.id}>{item.displayName}</MenuItem>
-          ))}
-      </ChplTextField>
-      <FormControlLabel
-        control={(
-          <Switch
-            id="is-g1"
-            color="primary"
-            size="small"
-            onChange={toggleType}
-            checked={isG1}
-          />
-        )}
-        label={`G1/G2: ${isG1 ? 'G1' : 'G2'}`}
-      />
-      { formik.values.newMeasureDomain && !formik.values.newMeasureDomain.requiresCriteriaSelection
-        && (
-          <Typography>
-            { formik.values.newMeasureDomain.displayCriteria.join('; ') }
-          </Typography>
-        )}
-      { formik.values.newMeasureDomain && formik.values.newMeasureDomain.requiresCriteriaSelection
-        && (
-          <FormControl required error={criteria.size === 0} component="fieldset">
-            <FormLabel component="legend">Certification Criteria</FormLabel>
-            <FormGroup>
-              { formik.values.newMeasureDomain.displayCriteria.map((cc) => (
-                <FormControlLabel
-                  control={<Checkbox checked={criteria.has(cc)} onChange={toggleCriteria} name={cc} />}
-                  label={cc}
-                  key={cc}
-                />
+      <Typography variant="subtitle1">Adding G1/G2 Measure</Typography>
+        <Box className={classes.g1G2AddContainer}>
+          <ChplTextField
+            select
+            id="new-measure-test"
+            name="newMeasureTest"
+            label="New Test"
+            required
+            value={formik.values.newMeasureTest}
+            onChange={handleTestChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.newMeasureTest && !!formik.errors.newMeasureTest}
+            helperText={formik.touched.newMeasureTest && formik.errors.newMeasureTest}
+          >
+            { tests.map((item) => (
+              <MenuItem value={item} key={item}>{item}</MenuItem>
+            ))}
+          </ChplTextField>
+          <ChplTextField
+            select
+            id="new-measure-domain"
+            name="newMeasureDomain"
+            label="New Measure Domain"
+            required
+            disabled={!formik.values.newMeasureTest}
+            value={formik.values.newMeasureDomain}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.newMeasureDomain && !!formik.errors.newMeasureDomain}
+            helperText={formik.touched.newMeasureDomain && formik.errors.newMeasureDomain}
+          >
+            { measures
+              .filter((m) => m.abbreviation === formik.values.newMeasureTest)
+              .map((item) => (
+                <MenuItem value={item} key={item.id}>{item.displayName}</MenuItem>
               ))}
-            </FormGroup>
-            { criteria.size === 0
-              && (
-                <FormHelperText>At least one must be selected</FormHelperText>
-              )}
-          </FormControl>
-        )}
+          </ChplTextField>
+          <FormControlLabel
+            control={(
+              <Switch
+                id="is-g1"
+                color="primary"
+                size="small"
+                onChange={toggleType}
+                checked={isG1}
+              />
+            )}
+            label={`G1/G2:  ${isG1 ? 'G1' : 'G2'}`}
+          />
+      </Box>
+      <Box className={classes.criteriaForm}>
+        { formik.values.newMeasureDomain && !formik.values.newMeasureDomain.requiresCriteriaSelection
+          && (
+            <Typography>
+              { formik.values.newMeasureDomain.displayCriteria.join('; ') }
+            </Typography>
+          )}
+        { formik.values.newMeasureDomain && formik.values.newMeasureDomain.requiresCriteriaSelection
+          && (
+            <FormControl required error={criteria.size === 0} component="fieldset">
+              <FormLabel component="legend">Certification Criteria</FormLabel>
+              <FormGroup className={classes.criteriaList}>
+                { formik.values.newMeasureDomain.displayCriteria.map((cc) => (
+                  <FormControlLabel
+                    control={<Checkbox color="primary" checked={criteria.has(cc)} onChange={toggleCriteria} name={cc} />}
+                    label={cc}
+                    key={cc}
+                  />
+                ))}
+              </FormGroup>
+              { criteria.size === 0
+                && (
+                  <FormHelperText>At least one must be selected</FormHelperText>
+                )}
+            </FormControl>
+          )}
+      </Box>
       <Box className={classes.cancelAndSaveButton}>
         <Button
           size="medium"
