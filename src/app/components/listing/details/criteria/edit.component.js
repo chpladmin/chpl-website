@@ -1,5 +1,10 @@
 import * as jsJoda from '@js-joda/core';
 
+const isStandardInteresting = (standard) => (standard.endDay && jsJoda.LocalDate.now() < standard.endDay) // interesting because soon to expire
+      || (standard.endDay && jsJoda.LocalDate.now() > standard.endDay) // interesting because it's already expired
+      || (standard.requiredDay && jsJoda.LocalDate.now() < standard.requiredDay) // interesting because it will be required soon
+      || (standard.groupName !== ''); // interesting because it's in a group
+
 const CertificationCriteriaEditComponent = {
   templateUrl: 'chpl.components/listing/details/criteria/edit.html',
   bindings: {
@@ -310,8 +315,9 @@ const CertificationCriteriaEditComponent = {
         return [];
       }
       return this.cert.standards
+        .filter((s) => isStandardInteresting(s.standard))
         .filter((s) => s.standard.id
-          && that.resources.standards.filter((as) => as.id === s.standard.id).length > 0)
+                && that.resources.standards.filter((as) => as.id === s.standard.id).length > 0)
         .map((s) => ({ key: s.standard.id }));
     }
 
@@ -418,7 +424,8 @@ const CertificationCriteriaEditComponent = {
       if (Array.isArray(this.resources.standards)) {
         this.cert.allowedStandards = this.resources.standards
           .filter((s) => s.criteria.some((cc) => cc.id === this.cert.criterion.id))
-          .filter((s) => s.startDay <= jsJoda.LocalDate.now())
+          .filter((s) => s.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
+          .filter(isStandardInteresting)
           .map((s) => ({
             ...s,
             dropDownText: s.regulatoryTextCitation + (s.retired ? ' (Retired)' : ''),
