@@ -28,8 +28,10 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  fullWidth: {
+  cardContainer: {
     width: '100%',
+    height: "700px",
+    overflowY: "scroll"
   },
   column: {
     display: 'flex',
@@ -78,8 +80,8 @@ function ChplG1G2sEdit() {
               Note 170.315 (c)(3) has two versions, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
             </Typography>
           )}
-        <Card className={classes.fullWidth}>
-          <Table>
+        <Card className={classes.cardContainer}>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell>Measure Name</TableCell>
@@ -133,17 +135,20 @@ function ChplG1G2sEdit() {
                 ))}
             </TableBody>
           </Table>
+        </Card>
         { !addingMeasure
           && (
-            <Button
-              size="medium"
-              color="primary"
-              variant="outlined"
-              onClick={() => setAddingMeasure(true)}
-              endIcon={<AddIcon fontSize="medium" />}
-            >
-              Add G1/G2 Measure
-            </Button>
+            <Box>
+              <Button
+                size="medium"
+                color="primary"
+                variant="outlined"
+                onClick={() => setAddingMeasure(true)}
+                endIcon={<AddIcon fontSize="medium" />}
+              >
+                Add G1/G2 Measure
+              </Button>
+            </Box>
           )}
         { addingMeasure
           && (
@@ -153,7 +158,6 @@ function ChplG1G2sEdit() {
               />
             </>
           )}
-        </Card>
       </Box>
     </>
   );
