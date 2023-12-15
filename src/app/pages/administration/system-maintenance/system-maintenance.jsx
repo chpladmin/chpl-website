@@ -15,6 +15,7 @@ import ChplAccessibilityStandards from 'components/standards/accessibility-stand
 import ChplCertificationCriteria from 'components/standards/certification-criteria/certification-criteria';
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplFunctionalitiesTested from 'components/standards/functionality-tested/functionalities-tested';
+import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
 import ChplTestTools from 'components/standards/test-tool/test-tools';
 import ChplStandards from 'components/standards/standard/standards';
 import ChplSvaps from 'components/standards/svap/svaps';
@@ -96,6 +97,7 @@ function ChplSystemMaintenance() {
     hide('functionalitiesTested.viewall');
     hide('functionalitiesTested.add.disabled');
     hide('functionalitiesTested.edit.disabled');
+    hide('manageSubscriptions.viewall.disabled');
     hide('qmsStandards.viewall.disabled');
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
@@ -215,6 +217,18 @@ function ChplSystemMaintenance() {
               </Button>
             )}
           <Button
+            onClick={() => navigate('subscriptions')}
+            disabled={active === 'subscriptions'}
+            id="system-maintenance-navigation-subscriptions"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            Subscriptions
+          </Button>
+          <Button
             onClick={() => navigate('svaps')}
             disabled={active === 'svaps'}
             id="system-maintenance-navigation-svaps"
@@ -290,10 +304,11 @@ function ChplSystemMaintenance() {
                       <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
-                  { hasAnyRole(['ROLE_ADMIN'])
+                  { hasAnyRole(['chpl-admin'])
                     && (
                       <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem>
                     )}
+                  <ListItem>Subscriptions - Search and filter CHPL subscriptions</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['chpl-admin'])
                     && (
@@ -327,6 +342,10 @@ function ChplSystemMaintenance() {
         { active === 'functionalitiesTested'
           && (
             <ChplFunctionalitiesTested />
+          )}
+        { active === 'subscriptions'
+          && (
+            <ChplManageSubscriptions />
           )}
         { active === 'standards'
           && (
