@@ -1,3 +1,5 @@
+import * as jsJoda from '@js-joda/core';
+
 const CertificationCriteriaEditComponent = {
   templateUrl: 'chpl.components/listing/details/criteria/edit.html',
   bindings: {
@@ -416,6 +418,7 @@ const CertificationCriteriaEditComponent = {
       if (Array.isArray(this.resources.standards)) {
         this.cert.allowedStandards = this.resources.standards
           .filter((s) => s.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          .filter((s) => s.startDay <= jsJoda.LocalDate.now())
           .map((s) => ({
             ...s,
             dropDownText: s.regulatoryTextCitation + (s.retired ? ' (Retired)' : ''),
