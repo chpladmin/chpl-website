@@ -123,10 +123,9 @@ function ChplG1G2Add({ dispatch }) {
     const measure = {
       measure: formik.values.newMeasureDomain,
       measureType: types.find((t) => isG1 ? t.name === 'G1' : t.name === 'G2'),
-      associatedCriteria: formik.values.newMeasureDomain.allowedCriteria.filter((cc) => criteria.has(cc.number)),
+      associatedCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? formik.values.newMeasureDomain.allowedCriteria.filter((cc) => criteria.has(cc.number)) : formik.values.newMeasureDomain.allowedCriteria,
       displayCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? [... criteria].join('; ') : formik.values.newMeasureDomain.displayCriteria,
     };
-    console.log({measure});
     setListing({
       ...listing,
       measures: [...listing.measures]
