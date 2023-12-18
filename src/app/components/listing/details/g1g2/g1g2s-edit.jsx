@@ -28,8 +28,8 @@ const useStyles = makeStyles({
   ...utilStyles,
   cardContainer: {
     width: '100%',
-    height: '700px',
-    overflowY: 'scroll',
+    maxHeight: '700px',
+    overflowY: 'auto',
   },
   column: {
     display: 'flex',
