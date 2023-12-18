@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   ...utilStyles,
   cardContainer: {
     width: '100%',
-    height: '700px',
+    maxHeight: '700px',
     overflowY: 'auto',
   },
   column: {
