@@ -10,7 +10,7 @@ const getCriterionProductCountDataInChartFormat = (data) => data.criterionProduc
   .map((obj) => ({
     c: [{
       v: obj.criterion.number,
-    }, { v: obj.productCount }, { v: `${obj.criterion.number} : ${obj.criterion.title}\n Count: ${obj.productCount}` }],
+    }, { v: obj.productCount }, { v: `${obj.criterion.number} : ${obj.criterion.title}\n\n Count: ${obj.productCount}` }],
   }));
 
 const ChartsProductComponent = {
@@ -49,8 +49,8 @@ const ChartsProductComponent = {
             title: 'All Certification Criteria',
             minValue: 0,
             textStyle : {
-              fontSize: 11,
-            }
+              fontSize: 14,
+            },
           },
           hAxis: {
             title: 'Number of Unique Products',
@@ -59,7 +59,11 @@ const ChartsProductComponent = {
           height: '2200',
           chartArea: {width: '60%', height: '2000'},
           bar: { groupWidth: 20 },  
-          tooltip: { isHtml: true },
+          tooltip: { 
+            textStyle : {
+              fontSize: 14,
+            }, 
+          },
           animation: {
             duration: 1000,
             easing: 'inAndOut',

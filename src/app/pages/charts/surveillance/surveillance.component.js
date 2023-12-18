@@ -105,13 +105,18 @@ const ChartsSurveillanceComponent = {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
               textStyle : {
-                fontSize: 11,
-              }
+                fontSize: 14,
+              },
             },  
             hAxis: {
               scaleType: this.chartState.yAxis,
               title: 'Number of Non-Conformities',
               minValue: 0,
+            },
+            tooltip: {
+              textStyle : {
+                fontSize: 14,
+              },
             },
           },
         },
@@ -138,13 +143,18 @@ const ChartsSurveillanceComponent = {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
               textStyle : {
-                fontSize: 11,
+                fontSize: 14,
               }
             },  
             hAxis: {
               scaleType: this.chartState.yAxis,
               title: 'Number of Non-Conformities',
               minValue: 0,
+            },
+            tooltip: {
+              textStyle : {
+                fontSize: 14,
+              },
             },
           },
         },
@@ -171,13 +181,18 @@ const ChartsSurveillanceComponent = {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
               textStyle : {
-                fontSize: 11,
+                fontSize: 14,
               }
             },  
             hAxis: {
               scaleType: this.chartState.yAxis,
               title: 'Number of Non-Conformities',
               minValue: 0,
+            },
+            tooltip: {
+              textStyle : {
+                fontSize: 14,
+              },
             },
           },
         },
