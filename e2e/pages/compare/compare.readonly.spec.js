@@ -1,23 +1,16 @@
-import Hooks from '../../utilities/hooks';
-
 import ComparePage from './compare.po';
 
-let hooks;
 let page;
 
 describe('the compare page', () => {
   beforeEach(async () => {
     page = new ComparePage();
-    hooks = new Hooks();
-    await hooks.open('#/compare/9261&11079');
-    browser.waitUntil(() => page.isListingLoaded('15.02.02.3007.A056.01.00.0.180214') && page.isListingLoaded('15.04.04.2916.smar.07.02.1.221216'));
+    await page.open([9261, 11079]);
   });
 
-  describe('when looking at specific data', () => {
-    it('should know what the decertification date is', async () => {
-      await expect(await page.getDecertificationDate('15.02.02.3007.A056.01.00.0.180214')).toBe('Jul 19, 2021');
-      await expect(await page.getDecertificationDate('15.04.04.2916.smar.07.02.1.221216')).toBe('N/A');
-    });
+  it('should know what the decertification date is', async () => {
+    await expect(await page.getDecertificationDate('15.02.02.3007.A056.01.00.0.180214')).toBe('Jul 19, 2021');
+    await expect(await page.getDecertificationDate('15.04.04.2916.smar.07.02.1.221216')).toBe('N/A');
   });
 
   it('should correctly display the criteria number/title', async () => {
