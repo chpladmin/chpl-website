@@ -148,6 +148,10 @@ function ChplG1G2Add({ dispatch }) {
     formik.handleChange(event);
   };
 
+  const isEnabled = () => !!formik.values.newMeasureDomain
+        && (!formik.values.newMeasureDomain.requiresCriteriaSelection
+            || criteria.size > 0);
+
   const toggleCriteria = (event) => {
     if (event.target.checked) {
       setCriteria((prev) => new Set(prev).add(event.target.name));
@@ -272,6 +276,7 @@ function ChplG1G2Add({ dispatch }) {
           endIcon={<Save fontSize="small" />}
           variant="contained"
           color="primary"
+          disabled={!isEnabled()}
           onClick={() => add()}
         >
           Save
