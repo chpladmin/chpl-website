@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,12 +16,10 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
-import { bool } from 'prop-types';
 
 import ChplG1G2Add from './g1g2-add';
 
 import { ChplTooltip } from 'components/util';
-import { measure as measureType } from 'shared/prop-types';
 import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -30,8 +28,8 @@ const useStyles = makeStyles({
   ...utilStyles,
   cardContainer: {
     width: '100%',
-    height: "700px",
-    overflowY: "scroll"
+    height: '700px',
+    overflowY: 'scroll',
   },
   column: {
     display: 'flex',

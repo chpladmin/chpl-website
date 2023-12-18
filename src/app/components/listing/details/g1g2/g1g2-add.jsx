@@ -41,7 +41,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
   },
-  g1G2AddContainer:{
+  g1G2AddContainer: {
     alignItems: 'center',
     display: 'grid',
     gridTemplateColumns: '2fr 2fr 1fr',
@@ -61,7 +61,7 @@ const sortTests = (first, second) => {
   const a = parseInt(first.substring(2), 10);
   const b = parseInt(second.substring(2), 10);
   return a - b;
-}
+};
 
 const sortMeasures = (a, b) => {
   if (!a.measureType) {
@@ -73,14 +73,14 @@ const sortMeasures = (a, b) => {
   if (!a.measure.id || !b.measure.id) {
     return a.measure.id ? 1 : -1;
   }
-  const getNum = test => parseInt(test.substring(2), 10);
-  return a.measure.removed !== b.measure.removed ? (a.measure.removed ? 1 : -1) :
-    a.measureType.name < b.measureType.name ? -1 : a.measureType.name > b.measureType.name ? 1 :
-    getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
-    a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
-    a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :
-    0;
-}
+  const getNum = (test) => parseInt(test.substring(2), 10);
+  return a.measure.removed !== b.measure.removed ? (a.measure.removed ? 1 : -1)
+    : a.measureType.name < b.measureType.name ? -1 : a.measureType.name > b.measureType.name ? 1
+      : getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1
+        : a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1
+          : a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1
+            : 0;
+};
 
 function ChplG1G2Add({ dispatch }) {
   const { listing, setListing } = useContext(ListingContext);
@@ -99,14 +99,14 @@ function ChplG1G2Add({ dispatch }) {
       return;
     }
     setMeasures(measuresQuery.data.data
-                .map((m) => ({
-                  ...m,
-                  displayName: `${m.removed ? 'Removed | ' : ''}${m.domain.name}`,
-                  displayCriteria: [... new Set(m.allowedCriteria.map((c) => c.number))].sort(sortCriteria),
-                }))
-                .sort(sortMeasures));
-    setTests([... new Set(measuresQuery.data.data.map((m) => m.abbreviation))]
-              .sort(sortTests));
+      .map((m) => ({
+        ...m,
+        displayName: `${m.removed ? 'Removed | ' : ''}${m.domain.name}`,
+        displayCriteria: [...new Set(m.allowedCriteria.map((c) => c.number))].sort(sortCriteria),
+      }))
+      .sort(sortMeasures));
+    setTests([...new Set(measuresQuery.data.data.map((m) => m.abbreviation))]
+      .sort(sortTests));
   }, [measuresQuery.data, measuresQuery.isLoading, measuresQuery.isSuccess]);
 
   useEffect(() => {
@@ -114,25 +114,9 @@ function ChplG1G2Add({ dispatch }) {
       return;
     }
     setTypes(measureTypesQuery.data.data
-             .map((t) => t)
-             .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-            );
+      .map((t) => t)
+      .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0)));
   }, [measureTypesQuery.data, measureTypesQuery.isLoading, measureTypesQuery.isSuccess]);
-
-  const add = () => {
-    const measure = {
-      measure: formik.values.newMeasureDomain,
-      measureType: types.find((t) => isG1 ? t.name === 'G1' : t.name === 'G2'),
-      associatedCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? formik.values.newMeasureDomain.allowedCriteria.filter((cc) => criteria.has(cc.number)) : formik.values.newMeasureDomain.allowedCriteria,
-      displayCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? [... criteria].join('; ') : formik.values.newMeasureDomain.displayCriteria,
-    };
-    setListing({
-      ...listing,
-      measures: [...listing.measures]
-        .concat(measure),
-    });
-    close();
-  };
 
   const close = () => {
     formik.setFieldValue('newMeasureTest', '');
@@ -140,6 +124,21 @@ function ChplG1G2Add({ dispatch }) {
     setCriteria(new Set());
     setIsG1(true);
     dispatch();
+  };
+
+  const add = () => {
+    const measure = {
+      measure: formik.values.newMeasureDomain,
+      measureType: types.find((t) => (isG1 ? t.name === 'G1' : t.name === 'G2')),
+      associatedCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? formik.values.newMeasureDomain.allowedCriteria.filter((cc) => criteria.has(cc.number)) : formik.values.newMeasureDomain.allowedCriteria,
+      displayCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? [...criteria].join('; ') : formik.values.newMeasureDomain.displayCriteria,
+    };
+    setListing({
+      ...listing,
+      measures: [...listing.measures]
+        .concat(measure),
+    });
+    close();
   };
 
   const handleTestChange = (event) => {
@@ -185,54 +184,54 @@ function ChplG1G2Add({ dispatch }) {
   return (
     <>
       <Typography variant="subtitle1">Adding G1/G2 Measure</Typography>
-        <Box className={classes.g1G2AddContainer}>
-          <ChplTextField
-            select
-            id="new-measure-test"
-            name="newMeasureTest"
-            label="New Test"
-            required
-            value={formik.values.newMeasureTest}
-            onChange={handleTestChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.newMeasureTest && !!formik.errors.newMeasureTest}
-            helperText={formik.touched.newMeasureTest && formik.errors.newMeasureTest}
-          >
-            { tests.map((item) => (
-              <MenuItem value={item} key={item}>{item}</MenuItem>
+      <Box className={classes.g1G2AddContainer}>
+        <ChplTextField
+          select
+          id="new-measure-test"
+          name="newMeasureTest"
+          label="New Test"
+          required
+          value={formik.values.newMeasureTest}
+          onChange={handleTestChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.newMeasureTest && !!formik.errors.newMeasureTest}
+          helperText={formik.touched.newMeasureTest && formik.errors.newMeasureTest}
+        >
+          { tests.map((item) => (
+            <MenuItem value={item} key={item}>{item}</MenuItem>
+          ))}
+        </ChplTextField>
+        <ChplTextField
+          select
+          id="new-measure-domain"
+          name="newMeasureDomain"
+          label="New Measure Domain"
+          required
+          disabled={!formik.values.newMeasureTest}
+          value={formik.values.newMeasureDomain}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.newMeasureDomain && !!formik.errors.newMeasureDomain}
+          helperText={formik.touched.newMeasureDomain && formik.errors.newMeasureDomain}
+        >
+          { measures
+            .filter((m) => m.abbreviation === formik.values.newMeasureTest)
+            .map((item) => (
+              <MenuItem value={item} key={item.id}>{item.displayName}</MenuItem>
             ))}
-          </ChplTextField>
-          <ChplTextField
-            select
-            id="new-measure-domain"
-            name="newMeasureDomain"
-            label="New Measure Domain"
-            required
-            disabled={!formik.values.newMeasureTest}
-            value={formik.values.newMeasureDomain}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.newMeasureDomain && !!formik.errors.newMeasureDomain}
-            helperText={formik.touched.newMeasureDomain && formik.errors.newMeasureDomain}
-          >
-            { measures
-              .filter((m) => m.abbreviation === formik.values.newMeasureTest)
-              .map((item) => (
-                <MenuItem value={item} key={item.id}>{item.displayName}</MenuItem>
-              ))}
-          </ChplTextField>
-          <FormControlLabel
-            control={(
-              <Switch
-                id="is-g1"
-                color="primary"
-                size="small"
-                onChange={toggleType}
-                checked={isG1}
-              />
+        </ChplTextField>
+        <FormControlLabel
+          control={(
+            <Switch
+              id="is-g1"
+              color="primary"
+              size="small"
+              onChange={toggleType}
+              checked={isG1}
+            />
             )}
-            label={`G1/G2:  ${isG1 ? 'G1' : 'G2'}`}
-          />
+          label={`G1/G2:  ${isG1 ? 'G1' : 'G2'}`}
+        />
       </Box>
       <Box className={classes.criteriaForm}>
         { formik.values.newMeasureDomain && !formik.values.newMeasureDomain.requiresCriteriaSelection
