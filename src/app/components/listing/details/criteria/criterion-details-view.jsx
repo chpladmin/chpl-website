@@ -75,9 +75,9 @@ function ChplCriterionDetailsView(props) {
 
   return (
     <>
-      <Box className={classes.companionGuide}>
-        { criterion.criterion.companionGuideLink
-          && (
+      { criterion.criterion.companionGuideLink
+        && (
+          <Box className={classes.companionGuide}>
             <Typography>
               Need help? Review the
               {' '}
@@ -89,8 +89,8 @@ function ChplCriterionDetailsView(props) {
               />
               .
             </Typography>
-          )}
-      </Box>
+          </Box>
+        )}
       <Card>
         <TableContainer component={Paper}>
           <Table aria-label="Criterion Details Table">
