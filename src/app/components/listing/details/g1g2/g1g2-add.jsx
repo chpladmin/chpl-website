@@ -10,7 +10,6 @@ import {
   FormHelperText,
   FormLabel,
   MenuItem,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -44,7 +43,7 @@ const useStyles = makeStyles({
   g1G2AddContainer: {
     alignItems: 'center',
     display: 'grid',
-    gridTemplateColumns: '2fr 2fr 1fr',
+    gridTemplateColumns: '1fr 1fr 1fr',
     width: '100%',
     gap: '16px',
   },
@@ -54,6 +53,8 @@ const validationSchema = yup.object({
   newMeasureTest: yup.string()
     .required('Field is required'),
   newMeasureDomain: yup.object()
+    .required('Field is required'),
+  newMeasureG: yup.string()
     .required('Field is required'),
 });
 
@@ -87,7 +88,6 @@ function ChplG1G2Add({ dispatch }) {
   const [measures, setMeasures] = useState([]);
   const [tests, setTests] = useState([]);
   const [types, setTypes] = useState([]);
-  const [isG1, setIsG1] = useState(true);
   const [criteria, setCriteria] = useState(new Set());
   const measuresQuery = useFetchMeasures();
   const measureTypesQuery = useFetchMeasureTypes();
@@ -121,15 +121,15 @@ function ChplG1G2Add({ dispatch }) {
   const close = () => {
     formik.setFieldValue('newMeasureTest', '');
     formik.setFieldValue('newMeasureDomain', '');
+    formik.setFieldValue('newMeasureG', '');
     setCriteria(new Set());
-    setIsG1(true);
     dispatch();
   };
 
   const add = () => {
     const measure = {
       measure: formik.values.newMeasureDomain,
-      measureType: types.find((t) => (isG1 ? t.name === 'G1' : t.name === 'G2')),
+      measureType: types.find((t) => (t.name === formik.values.newMeasureG)),
       associatedCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? formik.values.newMeasureDomain.allowedCriteria.filter((cc) => criteria.has(cc.number)) : formik.values.newMeasureDomain.allowedCriteria,
       displayCriteria: formik.values.newMeasureDomain.requiresCriteriaSelection ? [...criteria].join('; ') : formik.values.newMeasureDomain.displayCriteria,
     };
@@ -148,6 +148,7 @@ function ChplG1G2Add({ dispatch }) {
   };
 
   const isEnabled = () => !!formik.values.newMeasureDomain
+        && !!formik.values.newMeasureG
         && (!formik.values.newMeasureDomain.requiresCriteriaSelection
             || criteria.size > 0);
 
@@ -163,14 +164,11 @@ function ChplG1G2Add({ dispatch }) {
     }
   };
 
-  const toggleType = () => {
-    setIsG1((prev) => !prev);
-  };
-
   formik = useFormik({
     initialValues: {
       newMeasureTest: '',
       newMeasureDomain: '',
+      newMeasureG: '',
     },
     validationSchema,
   });
@@ -220,18 +218,21 @@ function ChplG1G2Add({ dispatch }) {
               <MenuItem value={item} key={item.id}>{item.displayName}</MenuItem>
             ))}
         </ChplTextField>
-        <FormControlLabel
-          control={(
-            <Switch
-              id="is-g1"
-              color="primary"
-              size="small"
-              onChange={toggleType}
-              checked={isG1}
-            />
-            )}
-          label={`G1/G2:  ${isG1 ? 'G1' : 'G2'}`}
-        />
+        <ChplTextField
+          select
+          id="new-measure-g"
+          name="newMeasureG"
+          label="G1/G2"
+          required
+          value={formik.values.newMeasureG}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.newMeasureG && !!formik.errors.newMeasureG}
+          helperText={formik.touched.newMeasureG && formik.errors.newMeasureG}
+        >
+          <MenuItem value="G1" key="G1">G1</MenuItem>
+          <MenuItem value="G2" key="G2">G2</MenuItem>
+        </ChplTextField>
       </Box>
       <Box className={classes.criteriaForm}>
         { formik.values.newMeasureDomain && !formik.values.newMeasureDomain.requiresCriteriaSelection
