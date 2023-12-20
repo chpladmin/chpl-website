@@ -20,6 +20,26 @@ const useFetchDevelopers = () => {
   }, { keepPreviousData: true });
 };
 
+const useFetchRealWorldTestingPlans = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/rwt-plans-urls', developer?.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/rwt-plans-urls`);
+    return response.data;
+  }, {
+    enabled: !!developer,
+  });
+};
+
+const useFetchRealWorldTestingResults = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/rwt-results-urls', developer?.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/rwt-results-urls`);
+    return response.data;
+  }, {
+    enabled: !!developer,
+  });
+};
+
 const usePostAttestationException = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -45,6 +65,8 @@ const usePutJoinDevelopers = () => {
 export {
   useFetchAttestations,
   useFetchDevelopers,
+  useFetchRealWorldTestingPlans,
+  useFetchRealWorldTestingResults,
   usePostAttestationException,
   usePutJoinDevelopers,
 };
