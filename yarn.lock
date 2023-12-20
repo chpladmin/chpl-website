@@ -5048,15 +5048,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.4":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4"
-  dependencies:
-    follow-redirects: ^1.14.0
-  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.6.0":
   version: 1.6.2
   resolution: "axios@npm:1.6.2"
@@ -6560,7 +6551,7 @@ __metadata:
     angularjs-toaster: ^2.2.0
     angulartics: ^1.6.0
     angulartics-google-tag-manager: ^0.0.1
-    axios: ^0.21.4
+    axios: ^1.6.0
     babel-eslint: ^8.2.6
     babel-jest: ^26.6.3
     babel-loader: ^8.3.0
@@ -10135,7 +10126,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0":
+"follow-redirects@npm:^1.0.0":
   version: 1.14.5
   resolution: "follow-redirects@npm:1.14.5"
   peerDependenciesMeta:
@@ -11305,7 +11296,7 @@ __metadata:
     ignore: ^3.3.5
     strip-ansi: ^4.0.0
     text-table: ^0.2.0
-  checksum: 1f333d8b4292b43f2ba090112a404778ceb932c087c52ebe1c05d1aadc35a8360d99720882bd22c555d8ecee3447c288e2cd6f1d21d5f6b8431afd778712e675
+  checksum: 1c215a977968637c363e423d3b35b9f32dedae7666277e03146b9f7c222ae512e7567fd3ecbf3e9c34a4233133e4f785098697c5eb334b34079753ca52b199c3
   languageName: node
   linkType: hard
 
