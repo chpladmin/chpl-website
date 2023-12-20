@@ -296,7 +296,7 @@ function ChplCriterionDetailsView(props) {
               && (
                 <TableRow key="standards">
                   <TableCell component="th" scope="row">
-                    <ChplTooltip title="TBD">
+                    <ChplTooltip title="The standard(s) required to be attested to in order for the Certification Criterion to be attested to.">
                       <IconButton className={classes.infoIcon}>
                         <InfoIcon
                           className={classes.infoIconColor}
