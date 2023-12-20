@@ -49,7 +49,7 @@ function ChplRealWorldTestingView({ developer }) {
                   <Typography variant="subtitle1">
                     {`RWT Plans URL${plans.length !== 1 ? 's' : ''}`}
                   </Typography>
-                  <List>
+                  <List dense>
                     { plans.map((item) => (
                       <ListItem key={item.url}>
                         <ChplLink href={item.url} />
@@ -64,7 +64,7 @@ function ChplRealWorldTestingView({ developer }) {
                   <Typography variant="subtitle1">
                     {`RWT Results URL${results.length !== 1 ? 's' : ''}`}
                   </Typography>
-                  <List>
+                  <List dense>
                     { results.map((item) => (
                       <ListItem key={item.url}>
                         <ChplLink href={item.url} />
