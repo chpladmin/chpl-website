@@ -312,9 +312,11 @@ function ChplCriterionDetailsView(props) {
                         .map((std, index) => (
                           <ListItem key={std.id || std.key || index} className={std.standard.retired ? 'removed' : ''}>
                             <Box width="100%">
-                              Name:
-                              {' '}
-                              {`${std.standard.retired ? 'Retired | ' : ''} ${std.standard.regulatoryTextCitation}: ${std.standard.value}`}
+                              <ChplEllipsis
+                                text={`${std.standard.retired ? 'Retired | ' : ''} ${std.standard.regulatoryTextCitation}: ${std.standard.value}`}
+                                maxLength={160}
+                                wordBoundaries
+                              />
                             </Box>
                             <ChplUpdateIndicator
                               requiredDay={std.standard.requiredDay}

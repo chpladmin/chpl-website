@@ -57,9 +57,7 @@
             <td>
               <ul>
                 <li ng-repeat="m in $ctrl.cert.standards">
-                  {{ m.standard.regulatoryTextCitation }}
-                  :
-                  {{ m.standard.value }}
+                  <chpl-ellipsis-bridge text="m.standard.regulatoryTextCitation + ' ' + m.standard.value" max-length="160" word-boundaries="true"></chpl-ellipsis-bridge>
                 </li>
               </ul>
             </td>
