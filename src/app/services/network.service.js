@@ -253,10 +253,6 @@ export default class NetworkService {
     return this.apiGET('/functionalities-tested');
   }
 
-  getIncumbentDevelopersStatistics() {
-    return this.apiGET('/statistics/incumbent_developers');
-  }
-
   getIcsFamily(id) {
     return this.apiGET(`/certified_products/${id}/ics_relationships`);
   }
@@ -267,10 +263,6 @@ export default class NetworkService {
 
   getListingBasic(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
-  }
-
-  getListingCountStatistics() {
-    return this.apiGET('/statistics/listing_count');
   }
 
   getMeasures() {
@@ -287,30 +279,6 @@ export default class NetworkService {
 
   getOptionalStandards() {
     return this.apiGET('/optional-standards');
-  }
-
-  getParticipantAgeStatistics() {
-    return this.apiGET('/statistics/participant_age_count');
-  }
-
-  getParticipantComputerExperienceStatistics() {
-    return this.apiGET('/statistics/participant_computer_experience_count');
-  }
-
-  getParticipantEducationStatistics() {
-    return this.apiGET('/statistics/participant_education_count');
-  }
-
-  getParticipantGenderStatistics() {
-    return this.apiGET('/statistics/participant_gender_count');
-  }
-
-  getParticipantProductExperienceStatistics() {
-    return this.apiGET('/statistics/participant_product_experience_count');
-  }
-
-  getParticipantProfessionalExperienceStatistics() {
-    return this.apiGET('/statistics/participant_professional_experience_count');
   }
 
   getPendingListingById(id) {
@@ -360,10 +328,6 @@ export default class NetworkService {
 
   getSearchOptions() {
     return this.apiGET('/data/search-options');
-  }
-
-  getSedParticipantStatisticsCount() {
-    return this.apiGET('/statistics/sed_participant_count');
   }
 
   getSimpleProduct(id) {

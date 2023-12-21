@@ -20,7 +20,22 @@ const getNonconformityCountDataInChartFormat = (data, type) => data.nonconformit
     }
   })
   .sort(sortNonconformityTypes)
-  .map((obj) => ({ c: [{ v: obj.nonconformityType }, { v: obj.nonconformityCount }] }));
+  .map((obj) => ({ c: [
+    { v: obj.nonconformityType }, 
+    { v: obj.nonconformityCount },
+    { v: getToolTip(obj) },
+  ] }));
+
+const getToolTip = nonconformityStat => {
+  let toolTip = '';
+  if (nonconformityStat.criterion) {
+    toolTip = (nonconformityStat.criterion.removed ? 'Removed | ' : '') + nonconformityStat.criterion.number + ': '  + nonconformityStat.criterion.title;
+  } else {
+    toolTip = nonconformityStat.nonconformityType;
+  }
+  toolTip += `\n\nCount: ${nonconformityStat.nonconformityCount}`
+  return toolTip;
+};
 
 const ChartsSurveillanceComponent = {
   templateUrl: 'chpl.charts/surveillance/surveillance.html',
@@ -58,7 +73,7 @@ const ChartsSurveillanceComponent = {
     updateYAxis() {
       const that = this;
       Object.values(this.nonconformityCounts).forEach((value) => {
-        value.options.vAxis.scaleType = that.chartState.yAxis;
+        value.options.hAxis.scaleType = that.chartState.yAxis;
       });
       const type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
       this.$analytics.eventTrack('Change Non-conformity Charts Y Axis', { category: 'Charts', label: type });
@@ -67,83 +82,117 @@ const ChartsSurveillanceComponent = {
     createNonconformityCountChart(data) {
       this.nonconformityCounts = {
         All: {
-          type: 'ColumnChart',
+          type: 'BarChart',
           data: {
             cols: [
               { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
               { label: 'Number of Non-Conformities', type: 'number' },
+              { type: 'string', role: 'tooltip' },
             ],
             rows: getNonconformityCountDataInChartFormat(data, 'All'),
           },
           options: {
+            height: '2200',
+            chartArea: {width: '60%', height: '2000'},
+            bar: { groupWidth: 20 },  
             animation: {
               duration: 1000,
               easing: 'inAndOut',
               startup: true,
             },
             title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
-            hAxis: {
+            vAxis: {
               title: 'All Certification Criteria and Program Requirements Surveilled',
               minValue: 0,
-            },
-            vAxis: {
+              textStyle : {
+                fontSize: 14,
+              },
+            },  
+            hAxis: {
               scaleType: this.chartState.yAxis,
               title: 'Number of Non-Conformities',
               minValue: 0,
             },
+            tooltip: {
+              textStyle : {
+                fontSize: 14,
+              },
+            },
           },
         },
         'Certification Criteria': {
-          type: 'ColumnChart',
+          type: 'BarChart',
           data: {
             cols: [
-              { label: 'Certification Criteria Surveilled', type: 'string' },
+              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
               { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: getNonconformityCountDataInChartFormat(data, 'Certification Criteria'),
           },
           options: {
+            height: '2200',
+            chartArea: {width: '60%', height: '2000'},
+            bar: { groupWidth: 20 },  
             animation: {
               duration: 1000,
               easing: 'inAndOut',
               startup: true,
             },
-            title: 'Number of Non-Conformities by Certification Criteria Surveilled',
-            hAxis: {
-              title: 'Certification Criteria Surveilled',
-              minValue: 0,
-            },
+            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
             vAxis: {
+              title: 'All Certification Criteria and Program Requirements Surveilled',
+              minValue: 0,
+              textStyle : {
+                fontSize: 14,
+              }
+            },  
+            hAxis: {
               scaleType: this.chartState.yAxis,
               title: 'Number of Non-Conformities',
               minValue: 0,
             },
+            tooltip: {
+              textStyle : {
+                fontSize: 14,
+              },
+            },
           },
         },
         Program: {
-          type: 'ColumnChart',
+          type: 'BarChart',
           data: {
             cols: [
-              { label: 'Program Requirements Surveilled', type: 'string' },
+              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
               { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: getNonconformityCountDataInChartFormat(data, 'Program'),
           },
           options: {
+            height: '700',
+            chartArea: {width: '60%', height: '500'},
+            bar: { groupWidth: 20 },  
             animation: {
               duration: 1000,
               easing: 'inAndOut',
               startup: true,
             },
-            title: 'Number of Non-Conformities by Program Requirements Surveilled',
-            hAxis: {
-              title: 'Program Requirements Surveilled',
-              minValue: 0,
-            },
+            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
             vAxis: {
+              title: 'All Certification Criteria and Program Requirements Surveilled',
+              minValue: 0,
+              textStyle : {
+                fontSize: 14,
+              }
+            },  
+            hAxis: {
               scaleType: this.chartState.yAxis,
               title: 'Number of Non-Conformities',
               minValue: 0,
+            },
+            tooltip: {
+              textStyle : {
+                fontSize: 14,
+              },
             },
           },
         },
