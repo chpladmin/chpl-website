@@ -13,9 +13,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import SwaggerUI from 'swagger-ui-react';
 
 import { ChplLink, ChplTextField } from 'components/util';
@@ -81,14 +79,10 @@ const useStyles = makeStyles({
 });
 
 const allOptions = [
-  'Active products (JSON)',
-  'Inactive products (JSON)',
-  '2014 edition products (JSON)',
-  '2011 edition products (JSON)',
-  'Active products (XML)',
-  'Inactive products (XML)',
-  '2014 edition products (XML)',
-  '2011 edition products (XML)',
+  'Active products',
+  'Inactive products',
+  '2014 edition products',
+  '2011 edition products',
 ];
 
 function ChplResourcesApi() {
@@ -101,20 +95,16 @@ function ChplResourcesApi() {
   } = getAngularService('authService');
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
-  const [selectedOption, setSelectedOption] = useState('Active products (JSON)');
+  const [selectedOption, setSelectedOption] = useState('Active products');
   const classes = useStyles();
   const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
 
   useEffect(() => {
     const data = {
-      'Active products (JSON)': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, definition: '', label: 'Active JSON' },
-      'Inactive products (JSON)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, definition: '', label: 'Inactive JSON' },
-      '2014 edition products (JSON)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, definition: '', label: '2014 JSON' },
-      '2011 edition products (JSON)': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, definition: '', label: '2011 JSON' },
-      'Active products (XML)': { data: `${API}/download/active?api_key=${getApiKey()}`, definition: `${API}/download/active?api_key=${getApiKey()}&definition=true`, label: 'Active XML' },
-      'Inactive products (XML)': { data: `${API}/download/inactive?api_key=${getApiKey()}`, definition: `${API}/download/inactive?api_key=${getApiKey()}&definition=true`, label: 'Inactive XML' },
-      '2014 edition products (XML)': { data: `${API}/download/2014?api_key=${getApiKey()}`, definition: `${API}/download/2014?api_key=${getApiKey()}&definition=true`, label: '2014 XML' },
-      '2011 edition products (XML)': { data: `${API}/download/2011?api_key=${getApiKey()}`, definition: `${API}/download/2011?api_key=${getApiKey()}&definition=true`, label: '2011 XML' },
+      'Active products': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, label: 'Active' },
+      'Inactive products': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, label: 'Inactive' },
+      '2014 edition products': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, label: '2014' },
+      '2011 edition products': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, label: '2011' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
@@ -122,7 +112,7 @@ function ChplResourcesApi() {
 
   const downloadFile = (type) => {
     if (selectedOption) {
-      $analytics.eventTrack(`Download CHPL${type === 'definition' ? ' Definition' : ''}`, { category: 'Download CHPL', label: files[selectedOption].label });
+      $analytics.eventTrack('Download CHPL', { category: 'Download CHPL', label: files[selectedOption].label });
       window.open(files[selectedOption][type]);
     }
   };
@@ -143,13 +133,6 @@ function ChplResourcesApi() {
           <div className={classes.pageBody} id="main-content" tabIndex="-1">
             <Box className={classes.fullWidth}>
               <Typography
-                variant="body1"
-              >
-                Please note that the CHPL files are now available in JSON format, offering a more modern and flexible approach to data integration. Please note that while our XML files are still available, they are being deprecated and will be discontinued in the near future. We recommend transitioning to JSON format for future-proofing your data integrations.
-              </Typography>
-            </Box>
-            <Box className={classes.fullWidth}>
-              <Typography
                 variant="h4"
                 component="h2"
               >
@@ -159,51 +142,33 @@ function ChplResourcesApi() {
               <Divider />
             </Box>
             <div className={classes.downloadSection}>
-              <ul className={classes.listSpacing}>
-                <li>
-                  <Typography gutterBottom><strong>Certified Products (JSON):</strong></Typography>
-                  {' '}
-                  Entire collection of a set of certified products, including all data elements.
-                  <ul>
-                    <li>
-                      The Active products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The Inactive products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Typography gutterBottom><strong>Certified Products (XML):</strong></Typography>
-                  {' '}
-                  Entire collection of a set of certified products, including all data elements.
-                  <ul>
-                    <li>
-                      The Active products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The Inactive products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                    </li>
-                  </ul>
-                </li>
-                <Box className={classes.warningBox}>
-                  <ReportProblemOutlinedIcon />
-                  <Typography>
-                    The XML Files are deprecated and will be discontinued on or after December 31, 2023.
-                  </Typography>
-                </Box>
-              </ul>
+              <Box width="66%">
+                <ul className={classes.listSpacing}>
+                  <li>
+                    <Typography gutterBottom><strong>Certified Products:</strong></Typography>
+                    {' '}
+                    Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
+                    <ul>
+                      <li>
+                        The Active products summary file is updated nightly.
+                      </li>
+                      <li>
+                        The Inactive products summary file is updated nightly.
+                      </li>
+                      <li>
+                        The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </Box>
               <Card className={classes.downloadCard}>
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
                   <Box display="flex" flexDirection="column" gridGap={16}>
-                    <Typography> To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.</Typography>
+                    <Typography>
+                      To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
+                    </Typography>
                     <div className={classes.fullWidth}>
                       <ChplTextField
                         select
@@ -218,13 +183,6 @@ function ChplResourcesApi() {
                         ))}
                       </ChplTextField>
                     </div>
-                    <div className={classes.fullWidth}>
-                      <div>
-                        <Typography variant="body1">
-                          The XML definition files were last modified on December 11, 2023.
-                        </Typography>
-                      </div>
-                    </div>
                   </Box>
                 </CardContent>
                 <CardActions>
@@ -235,21 +193,9 @@ function ChplResourcesApi() {
                     id="download-chpl-data-button"
                     onClick={() => downloadFile('data')}
                   >
-                    Data File
+                    Download Data File
                     {' '}
                     <GetAppIcon className={classes.iconSpacing} />
-                  </Button>
-                  <Button
-                    fullWidth
-                    color="primary"
-                    variant="text"
-                    id="download-chpl-definition-button"
-                    disabled={files[selectedOption]?.definition === ''}
-                    onClick={() => downloadFile('definition')}
-                  >
-                    Definition File
-                    {' '}
-                    <CodeIcon className={classes.iconSpacing} />
                   </Button>
                 </CardActions>
               </Card>
