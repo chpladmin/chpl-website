@@ -73,7 +73,7 @@ function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
       <ChplTooltip title={(
         <Box>
           <Typography variant="h5" align="left">
-            Past Due: Update Required by
+            Requirement not met: Update Required by
             {' '}
             { getDisplayDateFormat(endDay) }
           </Typography>

@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
@@ -21,20 +22,31 @@ import { arrayOf, bool } from 'prop-types';
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
 import {
-  ChplEllipsis, ChplLink, ChplTooltip, ChplUpdateIndicator,
+  ChplEllipsis,
+  ChplLink,
+  ChplTooltip,
+  ChplUpdateIndicator,
 } from 'components/util';
 import {
   accessibilityStandard,
   certificationResult,
   qmsStandard,
 } from 'shared/prop-types';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   infoIcon: {
     float: 'right',
   },
   infoIconColor: {
-    color: '#156dac',
+    color: palette.primary,
+  },
+  companionGuide: {
+    padding: '16px',
+    marginBottom: '8px',
+    backgroundColor: palette.secondary,
+    border: `1px solid ${palette.primary}`,
+    borderRadius: '4px',
   },
 });
 
@@ -63,6 +75,22 @@ function ChplCriterionDetailsView(props) {
 
   return (
     <>
+      { criterion.criterion.companionGuideLink
+        && (
+          <Box className={classes.companionGuide}>
+            <Typography>
+              Need help? Review the
+              {' '}
+              <ChplLink
+                href={criterion.criterion.companionGuideLink}
+                text="Certification Companion Guide (CCG)"
+                external={false}
+                inline
+              />
+              .
+            </Typography>
+          </Box>
+        )}
       <Card>
         <TableContainer component={Paper}>
           <Table aria-label="Criterion Details Table">
@@ -527,7 +555,7 @@ function ChplCriterionDetailsView(props) {
                 && (
                   <TableRow key="exportDocumentation">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))">
+                      <ChplTooltip title="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
@@ -563,7 +591,7 @@ function ChplCriterionDetailsView(props) {
                 && (
                   <TableRow key="documentationUrl">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
+                      <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
@@ -603,7 +631,7 @@ function ChplCriterionDetailsView(props) {
                 && (
                   <TableRow key="serviceBaseUrlList">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.">
+                      <ChplTooltip title="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
