@@ -6,7 +6,9 @@ class ListingPage {
       editCertifiedProduct: '//span[text()="Edit"]',
       newEditCertifiedProductButton: '//span[text()="Edit - New"]',
       cqmLeftNavButton: '#clinicalQualityMeasures-navigation-button',
-      versionSelectHelperText:'#version-select-helper-text',
+      versionSelectHelperText: '#version-select-helper-text',
+      g1g2MeasuresLeftNavButton: '#g1g2Measures-navigation-button',
+      addMeasuresButton: '//span[text()="Add G1/G2 Measure"]',
       reason: '#reason-for-change',
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
@@ -42,6 +44,14 @@ class ListingPage {
 
   async versionSelectHelperText() {
     return (await $(this.elements.versionSelectHelperText)).getText();
+  }
+
+  async g1g2MeasuresLeftNavButton() {
+    await (await $(this.elements.g1g2MeasuresLeftNavButton)).click();
+  }
+
+  async addMeasuresButton() {
+    return $(this.elements.addMeasuresButton);
   }
 
   get reason() {
