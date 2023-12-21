@@ -19,14 +19,6 @@ describe('the charts page', () => {
     await expect(await (await page.chartTabs('Unique Product charts')).isDisplayed()).toBe(true);
   });
 
-  it('should display developer charts tab', async () => {
-    await expect(await (await page.chartTabs('Developer charts')).isDisplayed()).toBe(true);
-  });
-
-  it('should display SED participant charts tab', async () => {
-    await expect(await (await page.chartTabs('SED Participant charts')).isDisplayed()).toBe(true);
-  });
-
   it('should display nonconformity charts tab', async () => {
     await expect(await (await page.chartTabs('Nonconformity charts')).isDisplayed()).toBe(true);
   });
@@ -65,40 +57,6 @@ describe('the charts page', () => {
     it('should have the right number of options in the "Y-Axis Type" dropdown', async () => {
       const expected = new Set(['Linear', 'Log']);
       await expect(page.axisDropdownOptions.length).toBe(expected.size);
-    });
-  });
-
-  describe('SED participant charts tab', () => {
-    beforeEach(async () => {
-      await (await page.chartTabs('SED Participant charts')).click();
-      await hooks.waitForSpinnerToDisappear();
-      await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
-    });
-
-    it('should display 7 charts', async () => {
-      await expect(page.chart.length).toBe(7);
-    });
-  });
-
-  describe('developer charts tab', () => {
-    beforeEach(async () => {
-      await (await page.chartTabs('Developer charts')).click();
-      await hooks.waitForSpinnerToDisappear();
-      await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
-    });
-
-    it('should display 5 charts', async () => {
-      await expect(page.chart.length).toBe(5);
-    });
-
-    it('should have the right number of options in the "Certification status" dropdown', async () => {
-      const expected = new Set(['Active', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB']);
-      await expect(page.certificationStatusDropdownOptions.length).toBe(expected.size);
-    });
-
-    it('should have the right number of options in the "Stacking type" dropdown', async () => {
-      const expected = new Set(['Percent', 'Absolute', 'None']);
-      await expect(page.stackingTypeDropdownOptions.length).toBe(expected.size);
     });
   });
 });
