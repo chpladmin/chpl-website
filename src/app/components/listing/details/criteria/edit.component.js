@@ -1,9 +1,8 @@
 import * as jsJoda from '@js-joda/core';
 
-const isStandardInteresting = (standard) => (standard.endDay && jsJoda.LocalDate.now() < standard.endDay) // interesting because soon to expire
+const isStandardInteresting = (standard) => (standard.endDay && jsJoda.LocalDate.now() <= standard.endDay) // interesting because soon to expire
       || (standard.endDay && jsJoda.LocalDate.now() > standard.endDay) // interesting because it's already expired
-      || (standard.requiredDay && jsJoda.LocalDate.now() < standard.requiredDay) // interesting because it will be required soon
-      || (standard.groupName !== ''); // interesting because it's in a group
+      || (standard.requiredDay && jsJoda.LocalDate.now() < standard.requiredDay); // interesting because it will be required soon
 
 const CertificationCriteriaEditComponent = {
   templateUrl: 'chpl.components/listing/details/criteria/edit.html',
