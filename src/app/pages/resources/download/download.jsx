@@ -183,7 +183,7 @@ function ChplResourcesDownload() {
                     <Box className={classes.infoBox}>
                       <InfoOutlinedIcon color="primary" />
                       <Typography>
-                        JSON and XML files have been moved to the
+                        The JSON files have been moved to the
                         {' '}
                         <ChplLink
                           text="CHPL API page"
