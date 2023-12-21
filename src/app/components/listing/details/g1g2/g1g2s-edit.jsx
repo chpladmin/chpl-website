@@ -10,7 +10,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -72,12 +71,6 @@ function ChplG1G2sEdit() {
   return (
     <>
       <Box className={classes.column}>
-        { (listing.edition === null || listing.edition.name === '2015')
-          && (
-            <Typography>
-              Note 170.315 (c)(3) has two versions, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
-            </Typography>
-          )}
         <Card className={classes.cardContainer}>
           <Table stickyHeader>
             <TableHead>
