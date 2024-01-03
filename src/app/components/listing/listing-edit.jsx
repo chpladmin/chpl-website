@@ -336,18 +336,20 @@ function ChplListingEdit() {
             />
           </CardContent>
         </Card>
-        <Card>
-          <span className="anchor-element">
-            <span id="g1g2Measures" className="page-anchor" />
-          </span>
-          <Box className={classes.sectionHeader}>
-            <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
-          </Box>
-          <CardContent>
-            <ChplG1G2sEdit
-            />
-          </CardContent>
-        </Card>
+        { (listing.edition === null || listing.edition.name === '2015')
+          && (
+            <Card>
+              <span className="anchor-element">
+                <span id="g1g2Measures" className="page-anchor" />
+              </span>
+              <Box className={classes.sectionHeader}>
+                <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
+              </Box>
+              <CardContent>
+                <ChplG1G2sEdit />
+              </CardContent>
+            </Card>
+          )}
         <Card>
           <span className="anchor-element">
             <span id="additional" className="page-anchor" />
