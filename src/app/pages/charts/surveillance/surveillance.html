@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <div google-chart="" chart="$ctrl.nonconformityCounts['' + $ctrl.chartState.nonconformityCountType]" class="column-chart"></div>
+    <div google-chart="" chart="$ctrl.nonconformityCounts[$ctrl.chartState.nonconformityCountType]" ></div>
   </div>
 </div>
 <div class="row">
@@ -14,7 +14,7 @@
     </label>
     <br />
     <label>
-      Y-Axis Type:
+      X-Axis Type:
       <select ng-model="$ctrl.chartState.yAxis" ng-change="$ctrl.updateYAxis()">
         <option value="">Linear</option>
         <option value="mirrorLog">Log</option>
