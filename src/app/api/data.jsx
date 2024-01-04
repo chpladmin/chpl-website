@@ -35,6 +35,22 @@ const useFetchCqms = () => {
   }, options.daily);
 };
 
+const useFetchMeasures = () => {
+  const axios = useAxios();
+  return useQuery(['data/measures'], async () => {
+    const response = await axios.get('data/measures');
+    return response.data;
+  }, options.daily);
+};
+
+const useFetchMeasureTypes = () => {
+  const axios = useAxios();
+  return useQuery(['data/measure-types'], async () => {
+    const response = await axios.get('data/measure-types');
+    return response.data;
+  }, options.daily);
+};
+
 const useFetchPracticeTypes = () => {
   const axios = useAxios();
   return useQuery(['data/practice_types'], async () => {
@@ -48,5 +64,7 @@ export {
   useFetchClassificationTypes,
   useFetchComplainantTypes,
   useFetchCqms,
+  useFetchMeasures,
+  useFetchMeasureTypes,
   useFetchPracticeTypes,
 };
