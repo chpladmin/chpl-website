@@ -21,8 +21,10 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  fullWidth: {
+  cardContainer: {
     width: '100%',
+    maxHeight: '700px',
+    overflowY: 'auto',
   },
   column: {
     display: 'flex',
@@ -57,7 +59,7 @@ function ChplCqmsEdit({ viewAll: initialViewAll }) {
               Note 170.315 (c)(3) has two versions, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
             </Typography>
           )}
-        <Card className={classes.fullWidth}>
+        <Card className={classes.cardContainer}>
           <Table>
             <TableHead>
               <TableRow>
