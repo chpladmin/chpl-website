@@ -21,6 +21,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import ChplCqmsEdit from './details/cqms/cqms-edit';
+import ChplG1G2sEdit from './details/g1g2/g1g2s-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
 
 import { usePutListing } from 'api/listing';
@@ -335,6 +336,20 @@ function ChplListingEdit() {
             />
           </CardContent>
         </Card>
+        { (listing.edition === null || listing.edition.name === '2015')
+          && (
+            <Card>
+              <span className="anchor-element">
+                <span id="g1g2Measures" className="page-anchor" />
+              </span>
+              <Box className={classes.sectionHeader}>
+                <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
+              </Box>
+              <CardContent>
+                <ChplG1G2sEdit />
+              </CardContent>
+            </Card>
+          )}
         <Card>
           <span className="anchor-element">
             <span id="additional" className="page-anchor" />
