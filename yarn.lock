@@ -5048,15 +5048,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.4":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4"
-  dependencies:
-    follow-redirects: ^1.14.0
-  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.6.0":
   version: 1.6.2
   resolution: "axios@npm:1.6.2"
@@ -6560,7 +6551,7 @@ __metadata:
     angularjs-toaster: ^2.2.0
     angulartics: ^1.6.0
     angulartics-google-tag-manager: ^0.0.1
-    axios: ^0.21.4
+    axios: ^1.6.0
     babel-eslint: ^8.2.6
     babel-jest: ^26.6.3
     babel-loader: ^8.3.0
@@ -9583,7 +9574,7 @@ __metadata:
 "export-to-csv@https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac":
   version: 0.2.1
   resolution: "export-to-csv@https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac"
-  checksum: 5b8d5645f8a82b7079146bcf79f24fd7c5858e87e3b7106dc62ec12c126577a9632012c022ca247451b69d80767968f805bdfdd0bd385f161e1d1dcfdf1b79f0
+  checksum: f970f5875eabfbf15dc4ee28878eefc82675ea24b6a128c88d1e0e09f99fb343361caea343f24fca7342038ea6abbee94b2d585cec97f8ee0993f7ee8614288d
   languageName: node
   linkType: hard
 
@@ -10135,7 +10126,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0":
+"follow-redirects@npm:^1.0.0":
   version: 1.14.5
   resolution: "follow-redirects@npm:1.14.5"
   peerDependenciesMeta:

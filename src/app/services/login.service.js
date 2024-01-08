@@ -29,7 +29,7 @@
       const userRole = parseJwt(getToken())?.Authority;
       const targetRole = target.role;
       return !isImpersonating()
-                && ((userRole === 'chpl-admin' && targetRole !== 'CHPL_ADMIN')
+        && (((userRole === 'ROLE_ADMIN' || userRole === 'chpl-admin') && (targetRole !== 'ROLE_ADMIN' && targetRole !== 'chpl-admin'))
                  || (userRole === 'ROLE_ONC' && targetRole !== 'chpl-admin' && targetRole !== 'ROLE_ONC'));
     }
 
@@ -88,7 +88,7 @@
       if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
         if (featureFlags.isOn('sso')) {
-          return parseJwt(token).email;
+          return parseJwt(token).sub;
         } else {
           const identity = parseJwt(token).Identity;
           return identity[0];

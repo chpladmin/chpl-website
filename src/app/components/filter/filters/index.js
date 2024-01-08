@@ -6,6 +6,10 @@ import cqms from './cqms';
 import decertificationDate from './decertification-date';
 import derivedCertificationEditions from './derived-certification-editions';
 import quickFilters from './quick-filters';
+import subscriberRoles from './subscriber-roles';
+import subscriberStatuses from './subscriber-statuses';
+import subscriptionSubjects from './subscription-subjects';
+import subscriptionTypes from './subscription-types';
 
 export {
   certificationBodies,
@@ -16,4 +20,8 @@ export {
   decertificationDate,
   derivedCertificationEditions,
   quickFilters,
+  subscriberRoles,
+  subscriberStatuses,
+  subscriptionSubjects,
+  subscriptionTypes,
 };
