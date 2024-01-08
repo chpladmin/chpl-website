@@ -1,5 +1,28 @@
 # Release Notes
 
+## Version 13.9.0
+_8 January 2024_
+
+### Features
+* Disable double-click and empty submit on Subscriptions
+* Update Charts to account for Editionless
+* Enable editing of g1/g2 measures by ROLE_ADMIN in new UI
+* Enable administrative view of all Subscriptions
+
+### User Interface Updates
+* Display Real World Testing data at the Developer level
+* Display "Companion Guide Link" when available
+* Display changes of status in history popup as date only
+* Remove references to XML/XSD files from API Page
+
+### Bug Fixes
+* Re-enable ability of ROLE_ADMIN to impersonate users
+
+### Flagged UI Update
+* Hide Edition after HTI-1 rule effective date
+
+---
+
 ## Version 13.8.0
 _11 December 2023_
 
