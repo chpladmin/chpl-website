@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -25,9 +25,11 @@ const validationSchema = yup.object({
 function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   const { enqueueSnackbar } = useSnackbar();
   const postSubscription = usePostSubscription();
+  const [isSubscribing, setIsSubscribing] = useState(false);
   let formik;
 
   const subscribe = () => {
+    setIsSubscribing(true);
     postSubscription.mutate({
       email: formik.values.email,
       subscribedObjectTypeId,
@@ -42,11 +44,13 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
         }
         enqueueSnackbar(body, { variant: 'success' });
         formik.resetForm();
+        setIsSubscribing(false);
       },
       onError: (error) => {
         const { errorMessages } = error.response.data;
         const body = `Error: ${errorMessages.join('; ')}`;
         enqueueSnackbar(body, { variant: 'error' });
+        setIsSubscribing(false);
       },
     });
   };
@@ -88,6 +92,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             variant="contained"
             onClick={subscribe}
             endIcon={<SendIcon fontSize="small" />}
+            disabled={isSubscribing || !formik.values.email}
           >
             Subscribe
           </Button>
