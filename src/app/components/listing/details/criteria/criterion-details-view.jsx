@@ -16,8 +16,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import * as jsJoda from '@js-joda/core';
-import { arrayOf, bool } from 'prop-types';
+import { arrayOf } from 'prop-types';
 
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
@@ -55,7 +54,6 @@ function ChplCriterionDetailsView(props) {
     criterion,
     qmsStandards,
     accessibilityStandards,
-    isConfirming,
   } = props;
   const classes = useStyles();
 
@@ -63,11 +61,8 @@ function ChplCriterionDetailsView(props) {
     return null;
   }
 
-  const isDisplayableStandard = (standard) => isConfirming || standard.standard.endDay || jsJoda.LocalDate.now() < standard.standard.requiredDay;
-
   const hasDisplayableStandards = () => criterion.success
-        && criterion.standards?.length > 0
-        && criterion.standards.some((std) => isDisplayableStandard(std));
+        && criterion.standards?.length > 0;
 
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
@@ -337,7 +332,7 @@ function ChplCriterionDetailsView(props) {
                     <TableCell>
                       <List>
                         { criterion.standards
-                          .filter(isDisplayableStandard)
+                          .sort((a, b) => (a.standard.regulatoryTextCitation < b.standard.regulatoryTextCitation ? -1 : 1))
                           .map((std, index) => (
                             <ListItem key={std.id || std.key || index} className={std.standard.retired ? 'removed' : ''}>
                               <Box width="100%">
@@ -713,9 +708,4 @@ ChplCriterionDetailsView.propTypes = {
   criterion: certificationResult.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
-  isConfirming: bool,
-};
-
-ChplCriterionDetailsView.defaultProps = {
-  isConfirming: false,
 };
