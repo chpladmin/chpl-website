@@ -1,4 +1,5 @@
 import { compareListing } from 'pages/reports/listings/listings.service';
+import { sortCqms } from 'services/cqms.service';
 
 const interpretActivity = (activity, utilService) => {
   const ret = {
@@ -118,14 +119,12 @@ const interpretCertificationCriteria = (prev, curr, utilService) => {
 
 const interpretCqms = (prev, curr) => {
   const changes = [];
-  const pCqms = prev.cqmResults;
-  const cCqms = curr.cqmResults;
-  pCqms.sort((a, b) => ((a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0)));
-  cCqms.sort((a, b) => ((a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0)));
+  const pCqms = prev.cqmResults.sort(sortCqms);
+  const cCqms = curr.cqmResults.sort(sortCqms);
   let i;
   let j;
   for (i = 0; i < pCqms.length; i += 1) {
-    const obj = { cmsId: pCqms[i].cmsId, changes: [] };
+    const obj = { cmsId: pCqms[i].cmsId ? pCqms[i].cmsId : `NQF-${pCqms[i].nqfNumber}`, changes: [] };
     if (pCqms[i].success !== cCqms[i].success) {
       if (pCqms[i].success) {
         obj.changes.push('<li>CQM became "False"</li>');
