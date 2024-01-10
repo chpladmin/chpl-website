@@ -43,7 +43,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'cqmResults':
       options = {
         sort: sortCqms,
-        write: (f) => `CQM "${f.cmsId}"`,
+        write: (f) => `CQM "${f.cmsId ? f.cmsId : `NQF-${f.nqfNumber}`}"`,
       };
       break;
     case 'certificationResults':
