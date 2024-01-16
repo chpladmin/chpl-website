@@ -180,7 +180,8 @@ function ChplLandingPage() {
               <ChplFilterSearchTerm />
               <ChplFilterQuickFilters />
             </Box>
-            { editionlessIsOn ? (
+            { editionlessIsOn
+            && (
               <>
                 <Box pb={4}>
                   <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
@@ -202,7 +203,7 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </>
-            ) : null}
+            )}
             <Box pt={6} pb={4}>
               <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
                 Use our collections pages to help find a particular category of listings
