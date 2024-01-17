@@ -1,4 +1,4 @@
-import { briefLookup, compareObject, compareListing } from 'pages/reports/listings/listings.service';
+import { briefLookup, compareListing } from 'pages/reports/listings/listings.service';
 import { sortCqms } from 'services/cqms.service';
 
 const interpretActivity = (activity, utilService) => {

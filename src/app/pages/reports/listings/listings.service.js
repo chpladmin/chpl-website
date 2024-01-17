@@ -3,7 +3,7 @@ import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-let lookup;
+let rules;
 
 /* eslint-disable no-nested-ternary */
 const compare = (before, after, key, title = 'unknown') => {
@@ -230,7 +230,7 @@ const compare = (before, after, key, title = 'unknown') => {
       }
       return undefined;
   }
-  const changes = compareArrays(before, after, { ...options, root: key }, lookup);
+  const changes = compareArrays(before, after, { ...options, root: key }, rules);
   if (changes && changes.length > 0) {
     return `${title} changes<ul>${changes.join('')}</ul>`;
   }
@@ -486,7 +486,7 @@ const briefLookup = {
   'ucdProcesses.name': { message: () => undefined },
 };
 
-lookup = {
+const lookup = {
   ...briefLookup,
   shortCircuit: [
     'requirements.requirementType.certificationEdition',
@@ -643,10 +643,12 @@ lookup = {
   'ucdProcesses.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
 };
 
-const compareListing = (prev, curr) => compareObject(prev, curr, lookup);
+const compareListing = (prev, curr, optionalRules = lookup) => {
+  rules = optionalRules;
+  return compareObject(prev, curr, rules);
+};
 
 export {
   briefLookup,
-  compareObject,
   compareListing,
 };
