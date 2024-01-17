@@ -424,7 +424,7 @@ const CertificationCriteriaEditComponent = {
         this.cert.allowedStandards = this.resources.standards
           .filter((s) => s.criteria.some((cc) => cc.id === this.cert.criterion.id))
           .filter((s) => s.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
-          .filter((s) => (jsJoda.LocalDate.now() <= s.endDay || !this.isConfirming)) // ends in the past; can't be used on confirmation
+          .filter((s) => (!s.endDay || jsJoda.LocalDate.now() <= s.endDay || !this.isConfirming)) // ends in the past; can't be used on confirmation
           .filter(isStandardInteresting)
           .map((s) => ({
             ...s,
