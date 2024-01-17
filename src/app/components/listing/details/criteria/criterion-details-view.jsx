@@ -320,7 +320,7 @@ function ChplCriterionDetailsView(props) {
                 && (
                   <TableRow key="standards">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="The standard(s) required to be attested to in order for the Certification Criterion to be attested to.">
+                      <ChplTooltip title="A set of technical and interoperability specifications with a unique identifier for health IT systems. These are the required benchmarks for products to demonstrate compliance with certification criteria.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
