@@ -1,7 +1,6 @@
 import { briefLookup, compareListing } from 'pages/reports/listings/listings.service';
-import { sortCqms } from 'services/cqms.service';
 
-const interpretActivity = (activity, utilService) => {
+const interpretActivity = (activity) => {
   const ret = {
     ...activity,
     change: [],
@@ -9,32 +8,11 @@ const interpretActivity = (activity, utilService) => {
   const { originalData: prev, newData: curr } = activity;
   if (activity.description.startsWith('Updated certified product')) {
     const ignored = { developer: undefined, product: undefined };
-    const listingChanges = compareObject({...prev, ...ignored }, {...curr, ...ignored }, briefLookup);
+    const listingChanges = compareListing({ ...prev, ...ignored }, { ...curr, ...ignored }, briefLookup);
     if (listingChanges.length > 0) {
       ret.change = [
         ...ret.change,
         ...listingChanges,
-      ];
-    }
-    const ccChanges = interpretCertificationCriteria(prev, curr, utilService);
-    if (ccChanges.length > 0) {
-      ret.change = [
-        ...ret.change,
-        ...ccChanges,
-      ];
-    }
-    const cqmChanges = interpretCqms(prev, curr);
-    if (cqmChanges.length > 0) {
-      ret.change = [
-        ...ret.change,
-        ...cqmChanges,
-      ];
-    }
-    const basicChanges = interpretListingChange(prev, curr, utilService);
-    if (basicChanges.length > 0) {
-      ret.change = [
-        ...ret.change,
-        ...basicChanges,
       ];
     }
   } else if (activity.description.startsWith('Changed ACB ownership')) {
@@ -56,163 +34,6 @@ const interpretActivity = (activity, utilService) => {
     ret.change.push('Surveillance activity was deleted');
   }
   return ret;
-};
-
-const interpretCertificationCriteria = (prev, curr, utilService) => {
-  const pCC = prev.certificationResults;
-  const cCC = curr.certificationResults;
-  let i;
-  let j;
-  const changes = [];
-
-  pCC.sort((a, b) => utilService.sortCertActual(a, b));
-  cCC.sort((a, b) => utilService.sortCertActual(a, b));
-  for (i = 0; i < pCC.length; i += 1) {
-    const obj = {
-      criteria: (pCC[i].number || pCC[i].criterion.number) + ((pCC[i].title || pCC[i].criterion.title)),
-      changes: [],
-    };
-
-    // Became certified to a criteria
-    if (!pCC[i].success && cCC[i].success) {
-      obj.changes.push('<li>Certification Criteria was added</li>');
-    }
-
-    // Added/removed G1 or G2 success
-    if (pCC[i].g1Success !== cCC[i].g1Success) {
-      obj.changes.push(`<li>Certification Criteria became ${cCC[i].g1Success ? 'Certified to' : 'Decertified from'} G1</li>`);
-    }
-    if (pCC[i].g2Success !== cCC[i].g2Success) {
-      obj.changes.push(`<li>Certification Criteria became ${cCC[i].g2Success ? 'Certified to' : 'Decertified from'} G2</li>`);
-    }
-
-    // Change to G1/G2 Macra Measures
-    let measures = utilService.arrayCompare(pCC[i].g1MacraMeasures, cCC[i].g1MacraMeasures);
-    if (measures.added.length > 0) {
-      obj.changes.push(`<li>Added G1 MACRA Measure${measures.added.length > 1 ? 's' : ''}:<ul>`);
-      for (j = 0; j < measures.added.length; j += 1) {
-        obj.changes.push(`<li>${measures.added[j].abbreviation}</li>`);
-      }
-      obj.changes.push('</ul></li>');
-    }
-    if (measures.removed.length > 0) {
-      obj.changes.push(`<li>Removed G1 MACRA Measure${measures.removed.length > 1 ? 's' : ''}:<ul>`);
-      for (j = 0; j < measures.removed.length; j += 1) {
-        obj.changes.push(`<li>${measures.removed[j].abbreviation}</li>`);
-      }
-      obj.changes.push('</ul></li>');
-    }
-    measures = utilService.arrayCompare(pCC[i].g2MacraMeasures, cCC[i].g2MacraMeasures);
-    if (measures.added.length > 0) {
-      obj.changes.push(`<li>Added G2 MACRA Measure${measures.added.length > 1 ? 's' : ''}:<ul>`);
-      for (j = 0; j < measures.added.length; j += 1) {
-        obj.changes.push(`<li>${measures.added[j].abbreviation}</li>`);
-      }
-      obj.changes.push('</ul></li>');
-    }
-    if (measures.removed.length > 0) {
-      obj.changes.push(`<li>Removed G2 MACRA Measure${measures.removed.length > 1 ? 's' : ''}:<ul>`);
-      for (j = 0; j < measures.removed.length; j += 1) {
-        obj.changes.push(`<li>${measures.removed[j].abbreviation}</li>`);
-      }
-      obj.changes.push('</ul></li>');
-    }
-
-    if (obj.changes.length > 0) {
-      changes.push(`${obj.criteria} changes:<ul>${obj.changes.join('')}</ul>`);
-    }
-  }
-  return changes;
-};
-
-const interpretCqms = (prev, curr) => {
-  const changes = [];
-  const pCqms = prev.cqmResults.sort(sortCqms);
-  const cCqms = curr.cqmResults.sort(sortCqms);
-  let i;
-  let j;
-  for (i = 0; i < pCqms.length; i += 1) {
-    const obj = { cmsId: pCqms[i].cmsId ? pCqms[i].cmsId : `NQF-${pCqms[i].nqfNumber}`, changes: [] };
-    if (pCqms[i].success !== cCqms[i].success) {
-      if (pCqms[i].success) {
-        obj.changes.push('<li>CQM became "False"</li>');
-      } else {
-        obj.changes.push('<li>CQM became "True"</li>');
-      }
-    }
-    for (j = 0; j < pCqms[i].allVersions.length; j += 1) {
-      if (pCqms[i].successVersions.indexOf(pCqms[i].allVersions[j]) < 0 && cCqms[i].successVersions.indexOf(pCqms[i].allVersions[j]) >= 0) {
-        obj.changes.push(`<li>${pCqms[i].allVersions[j]} added</li>`);
-      }
-      if (pCqms[i].successVersions.indexOf(pCqms[i].allVersions[j]) >= 0 && cCqms[i].successVersions.indexOf(pCqms[i].allVersions[j]) < 0) {
-        obj.changes.push(`<li>${pCqms[i].allVersions[j]} removed</li>`);
-      }
-    }
-    const criteria = compareArray(pCqms[i].criteria, cCqms[i].criteria, 'certificationNumber');
-    for (j = 0; j < criteria.length; j += 1) {
-      obj.changes.push(`<li>Certification Criteria "${criteria[j].name}" changes<ul>${criteria[j].changes.join('')}</ul></li>`);
-    }
-    if (obj.changes.length > 0) {
-      changes.push(`${obj.cmsId} changes:<ul>${obj.changes.join('')}</ul>`);
-    }
-  }
-  return changes;
-};
-
-const compareArray = (prev, curr, root) => {
-  const ret = [];
-  let i;
-  let j;
-  for (i = 0; i < prev.length; i += 1) {
-    for (j = 0; j < curr.length; j += 1) {
-      if (prev[i][root] === curr[j][root]) {
-        prev[i].evaluated = true;
-        curr[j].evaluated = true;
-      }
-    }
-    if (!prev[i].evaluated) {
-      ret.push({ name: prev[i][root], changes: [`<li>${prev[i][root]} removed</li>`] });
-    }
-  }
-  for (i = 0; i < curr.length; i += 1) {
-    if (!curr[i].evaluated) {
-      ret.push({ name: curr[i][root], changes: [`<li>${curr[i][root]} added</li>`] });
-    }
-  }
-  return ret;
-};
-
-const interpretListingChange = (prev, curr, utilService) => {
-  const changes = [];
-  if (prev.chplProductNumber !== curr.chplProductNumber) {
-    changes.push(`CHPL Product Number changed from ${prev.chplProductNumber} to ${curr.chplProductNumber}`);
-  }
-  if (prev.curesUpdate !== curr.curesUpdate) {
-    changes.push(`2015 Edition Cures Update status changed from ${prev.curesUpdate ? 'True' : 'False'} to ${curr.curesUpdate ? 'True' : 'False'}`);
-  }
-  if (prev.rwtPlansUrl !== curr.rwtPlansUrl) {
-    if (!prev.rwtPlansUrl) {
-      changes.push(`Real World Testing Plans URL added: ${curr.rwtPlansUrl}`);
-    } else if (!curr.rwtPlansUrl) {
-      changes.push(`Real World Testing Plans URL removed: ${prev.rwtPlansUrl}`);
-    } else {
-      changes.push(`Real World Testing Plans URL changed from ${prev.rwtPlansUrl} to ${curr.rwtPlansUrl}`);
-    }
-  }
-  if (prev.rwtResultsUrl !== curr.rwtResultsUrl) {
-    if (!prev.rwtResultsUrl) {
-      changes.push(`Real World Testing Results URL added: ${curr.rwtResultsUrl}`);
-    } else if (!curr.rwtResultsUrl) {
-      changes.push(`Real World Testing Results URL removed: ${prev.rwtResultsUrl}`);
-    } else {
-      changes.push(`Real World Testing Results URL changed from ${prev.rwtResultsUrl} to ${curr.rwtResultsUrl}`);
-    }
-  }
-  const measures = compareListing({ measures: prev.measures }, { measures: curr.measures });
-  if (measures.length > 0) {
-    changes.push(measures);
-  }
-  return changes;
 };
 
 const interpretCertificationStatusChanges = (listing) => listing.certificationEvents
