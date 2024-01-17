@@ -1,4 +1,4 @@
-import { compareListing } from 'pages/reports/listings/listings.service';
+import { briefLookup, compareObject, compareListing } from 'pages/reports/listings/listings.service';
 import { sortCqms } from 'services/cqms.service';
 
 const interpretActivity = (activity, utilService) => {
@@ -8,6 +8,14 @@ const interpretActivity = (activity, utilService) => {
   };
   const { originalData: prev, newData: curr } = activity;
   if (activity.description.startsWith('Updated certified product')) {
+    const ignored = { developer: undefined, product: undefined };
+    const listingChanges = compareObject({...prev, ...ignored }, {...curr, ...ignored }, briefLookup);
+    if (listingChanges.length > 0) {
+      ret.change = [
+        ...ret.change,
+        ...listingChanges,
+      ];
+    }
     const ccChanges = interpretCertificationCriteria(prev, curr, utilService);
     if (ccChanges.length > 0) {
       ret.change = [
