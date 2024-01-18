@@ -100,7 +100,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                 <TableRow key={`${item.id}-${item.value}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.value }
-                    { item.retired && ' (Retired)'}
+                    { item.retired && ' (Expired)'}
                     <ChplUpdateIndicator
                       requiredDay={item.requiredDay}
                       endDay={item.endDay}

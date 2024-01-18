@@ -56,7 +56,8 @@
             </td>
             <td>
               <ul>
-                <li ng-repeat="m in $ctrl.cert.standards">
+                <li ng-repeat="m in $ctrl.cert.standards" ng-class="{ 'removed' : m.standard.retired }">
+                  <span ng-if="m.standard.retired">Expired | </span>
                   <chpl-ellipsis-bridge text="m.standard.regulatoryTextCitation + ' ' + m.standard.value" max-length="160" word-boundaries="true"></chpl-ellipsis-bridge>
                 </li>
               </ul>
