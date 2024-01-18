@@ -180,8 +180,32 @@ function ChplLandingPage() {
               <ChplFilterSearchTerm />
               <ChplFilterQuickFilters />
             </Box>
-            <Box pb={4}>
-              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>
+            { editionlessIsOn
+            && (
+              <>
+                <Box pb={4}>
+                  <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
+                    Feature Topic
+                  </Typography>
+                </Box>
+                <Card className={classes.collectionsCards}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gridGap={8}>
+                      <Box className={classes.collectionsCardText}>
+                        <Typography align="left" component="h3" variant="h4" color="primary">
+                          <strong>Discontinuing Year-Themed Editions for Health IT Certification Criteria</strong>
+                        </Typography>
+                        <Typography>
+                          To simplify the Certification Program and support more modular and extensible future updates, the HTI-1 final rule discontinues year-themed editions of certification criteria. This change also supports broader use of certification criteria and standards adopted by ONC for other federal agencies and programs.
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </>
+            )}
+            <Box pt={6} pb={4}>
+              <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
                 Use our collections pages to help find a particular category of listings
               </Typography>
             </Box>
@@ -191,7 +215,7 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <CodeIcon color="primary" />
+                        <CodeIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
@@ -220,7 +244,7 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <GavelIcon color="primary" />
+                        <GavelIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
@@ -243,7 +267,7 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <ImageIcon color="primary" />
+                        <ImageIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
@@ -266,7 +290,7 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <TrendingUpIcon color="primary" />
+                        <TrendingUpIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
@@ -296,7 +320,7 @@ function ChplLandingPage() {
                   <Card className={classes.helpCardContent}>
                     <CardContent>
                       <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <DescriptionIcon fontSize="large" color="primary" />
+                        <DescriptionIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
                         <Box>
                           <Typography align="center">
                             <ChplLink
@@ -316,7 +340,7 @@ function ChplLandingPage() {
                   <Card className={classes.helpCardContent}>
                     <CardContent>
                       <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <DeveloperModeIcon fontSize="large" color="primary" />
+                        <DeveloperModeIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
                         <Box>
                           <Typography align="center">
                             <ChplLink
@@ -336,7 +360,7 @@ function ChplLandingPage() {
                   <Card className={classes.helpCardContent}>
                     <CardContent>
                       <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <MenuBookIcon fontSize="large" color="primary" />
+                        <MenuBookIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
                         <Box display="flex" gridGap={4}>
                           <Typography align="center">
                             <ChplLink
@@ -362,7 +386,7 @@ function ChplLandingPage() {
                   <Card className={classes.complianceCardContent}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <BlockIcon color="primary" />
+                        <BlockIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
@@ -385,7 +409,7 @@ function ChplLandingPage() {
                   <Card className={classes.complianceCardContent}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <ErrorOutlineOutlinedIcon color="primary" />
+                        <ErrorOutlineOutlinedIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
