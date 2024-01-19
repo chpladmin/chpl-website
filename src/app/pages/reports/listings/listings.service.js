@@ -254,6 +254,17 @@ const compareTestParticipants = (before, after) => {
 };
 
 const briefLookup = {
+  shortCircuit: [
+    'cqmResults.criteria.criterion',
+    'requirements.requirementType.certificationEdition',
+    'requirements.requirementType.requirementGroupType',
+    'root.currentStatus',
+    'root.developer',
+    'root.oldestStatus',
+    'root.product',
+    'root.version',
+    'surveillance.certifiedProduct',
+  ],
   'accessibilityStandards.id': { message: () => undefined },
   'additionalSoftware.certifiedProductId': { message: () => undefined },
   'additionalSoftware.certifiedProductNumber': { message: () => undefined },
@@ -312,6 +323,7 @@ const briefLookup = {
   'conformanceMethods.id': { message: () => undefined },
   'cqmResults.allVersions': { message: () => undefined },
   'cqmResults.criteria': { message: (before, after) => compare(before, after, 'cqmResults.criteria', 'Certification Criteria') },
+  'cqmResults.criteria.certificationId': { message: () => undefined },
   'cqmResults.criteria.id': { message: () => undefined },
   'cqmResults.description': { message: () => undefined },
   'cqmResults.id': { message: () => undefined },
@@ -460,6 +472,9 @@ const briefLookup = {
   'testProcedures.testProcedureVersion': { message: () => undefined },
   'testStandards.id': { message: () => undefined },
   'testTasks.criteria': { message: () => undefined },
+  'testTasks.criteria.id': { message: () => undefined },
+  'testTasks.criteria.removed': { message: () => undefined },
+  'testTasks.criteria.title': { message: () => undefined },
   'testTasks.id': { message: () => undefined },
   'testTasks.taskErrors': { message: () => undefined },
   'testTasks.taskErrorsStddev': { message: () => undefined },
@@ -481,6 +496,9 @@ const briefLookup = {
   'testToolsUsed.testToolVersion': { message: () => undefined },
   'testToolsUsed.version': { message: () => undefined },
   'ucdProcesses.criteria': { message: () => undefined },
+  'ucdProcesses.criteria.id': { message: () => undefined },
+  'ucdProcesses.criteria.removed': { message: () => undefined },
+  'ucdProcesses.criteria.title': { message: () => undefined },
   'ucdProcesses.details': { message: () => undefined },
   'ucdProcesses.id': { message: () => undefined },
   'ucdProcesses.name': { message: () => undefined },
@@ -488,16 +506,6 @@ const briefLookup = {
 
 const lookup = {
   ...briefLookup,
-  shortCircuit: [
-    'requirements.requirementType.certificationEdition',
-    'requirements.requirementType.requirementGroupType',
-    'root.currentStatus',
-    'root.developer',
-    'root.oldestStatus',
-    'root.product',
-    'root.version',
-    'surveillance.certifiedProduct',
-  ],
   'additionalSoftware.certifiedProductNumber': { message: (before, after) => comparePrimitive(before, after, 'certifiedProductNumber', 'Certified Product Code') },
   'additionalSoftware.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
   'additionalSoftware.grouping': { message: (before, after) => comparePrimitive(before, after, 'grouping', 'Group') },

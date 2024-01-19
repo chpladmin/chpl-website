@@ -7,8 +7,7 @@ const interpretActivity = (activity) => {
   };
   const { originalData: prev, newData: curr } = activity;
   if (activity.description.startsWith('Updated certified product')) {
-    const ignored = { developer: undefined, product: undefined };
-    const listingChanges = compareListing({ ...prev, ...ignored }, { ...curr, ...ignored }, briefLookup);
+    const listingChanges = compareListing(prev, curr, briefLookup);
     if (listingChanges.length > 0) {
       ret.change = [
         ...ret.change,
