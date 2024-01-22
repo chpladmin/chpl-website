@@ -29,6 +29,10 @@
           <td><label class="control-label" for="data_gap{{ $ctrl.cert.criterion.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.criterion.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.codeSets">
+          <td><label class="control-label" for="data_code_sets{{ $ctrl.cert.criterion.number }}">Up to date on Code Sets</label></td>
+          <td><select class="form-control input-sm" id="data_code_sets{{ $ctrl.cert.criterion.number }}" name="data_code_sets" ng_model="$ctrl.cert.codeSets" ng-options="b.value as b.name for b in $ctrl.yesNo" ng-disabled="!$ctrl.canEdit()"></select></td>
+        </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.svap && $ctrl.allowedSvaps.length > 0">
           <td>Standards Version Advancement Process</td>
           <td ng-if="$ctrl.canEdit()">
