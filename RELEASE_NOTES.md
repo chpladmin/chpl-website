@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 13.9.1
+_23 January 2024_
+
+### Bug Fixes
+* Show event and decertification day changes in Listing Activity
+* Show Certification Criteria changes in public Listing modal
+* Allow adding/removing CQMs for previously 2011 Listings
+
+### Flagged UI Update
+* Add HTI-1 Message to CHPL Home Page
+
+---
+
 ## Version 13.9.0
 _8 January 2024_
 
