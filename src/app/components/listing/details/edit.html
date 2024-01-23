@@ -75,7 +75,7 @@
           <tbody>
             <tr ng-if="$ctrl.viewAllCerts || n.success" ng-repeat="n in $ctrl.cqms | orderBy:$ctrl.sortCqms track by $index">
               <td class="text-center">
-                <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
+                <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}" ng-change="$ctrl.updateCs()"></input>
                 <span class="cert-bloc" ng-if="n.cmsId">
                   <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
                           ng-options="version for version in n.allVersions" ng-change="$ctrl.updateCs()">

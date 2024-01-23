@@ -42,8 +42,8 @@ describe('the Api Documentation collection page', () => {
         await page.resetFilters();
       });
 
-      it('should filter on edition', async () => {
-        await page.removeFilter('Certification Edition', '2015');
+      it('should filter on ONC-ACB', async () => {
+        await page.removeFilter('ONC-ACB', 'Drummond Group');
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });

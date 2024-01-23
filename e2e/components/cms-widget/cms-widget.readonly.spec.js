@@ -3,10 +3,10 @@ import Hooks from '../../utilities/hooks';
 
 import CmsWidgetComponent from './cms-widget.po';
 
-const listingId1 = 9851;
+const listingId1 = 11084;
 const listingId2 = 10974;
 const listingId3 = 10964;
-const search1 = '2621'; // developer code for listingId1
+const search1 = '1043'; // developer code for listingId1
 const search2 = '3121'; // developer code for listingId2
 const chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
 const cmsReverseLookup = '#/resources/cms-lookup';
@@ -61,7 +61,7 @@ describe('on cms widget', () => {
     });
   });
 
-  describe('if a listing added meet 80% of base criteria (View with partial products selected) - ', () => {
+  describe('if a listing added meet 70% of base criteria (View with partial products selected) - ', () => {
     beforeAll(() => {
       search.open();
       search.searchForText(search1);
@@ -70,8 +70,8 @@ describe('on cms widget', () => {
     });
 
     it('should have progress bar with correct text and value', async () => {
-      await expect(await cms.progressBarText.getText()).toBe('80% Base Criteria Met');
-      await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('80');
+      await expect(await cms.progressBarText.getText()).toBe('70% Base Criteria Met');
+      await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('70');
     });
 
     it('should have missing base criteria list', async () => {

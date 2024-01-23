@@ -49,11 +49,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplListingHistory(props) {
-  /* eslint-disable react/destructuring-assignment */
   const [activity, setActivity] = useState([]);
-  const [canSeeHistory] = useState(props.canSeeHistory);
-  const [listing] = useState(props.listing);
-  const [open, setOpen] = React.useState(false);
+  const [canSeeHistory] = useState(props.listing)
+  const [listing] = useState(props.listing)
+  const [open, setOpen] = useState(false);
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');

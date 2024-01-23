@@ -112,7 +112,7 @@ describe('the quarterly surveillance reporting page', () => {
 
   describe('when working with future reports', () => {
     const acb = 'Drummond Group';
-    const year = 2023;
+    const year = 2024;
     const quarter = 'Q4';
     const timestamp = Date.now();
 

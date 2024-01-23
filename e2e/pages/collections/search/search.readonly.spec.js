@@ -32,12 +32,6 @@ describe('the Search page', () => {
         await page.resetFilters();
       });
 
-      it('should filter on edition', async () => {
-        await page.removeFilter('Certification Edition', '2015');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
-      });
-
       xit('should filter on cqms', async () => {
         await page.setListFilter('cqms', 'CMS2');
         countAfter = await page.getTotalResultCount();
