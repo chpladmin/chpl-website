@@ -39,6 +39,7 @@ const getDisplay = (key) => {
     case 'additionalSoftware': return 'Additional Software';
     case 'apiDocumentation': return 'API Documentation';
     case 'attestationAnswer': return 'Attestation Answer';
+    case 'codeSets': return 'Code Sets';
     case 'conformanceMethod': return 'Conformance Method';
     case 'documentationUrl': return 'Documentation URL';
     case 'exportDocumentation': return 'Export Documentation';
