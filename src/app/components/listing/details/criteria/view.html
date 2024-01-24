@@ -52,14 +52,13 @@
               id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_standard">
             <td>
               <span>Standard</span>
-              <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+              <button class="btn btn-link btn-xs pull-right" uib-tooltip="A set of technical and interoperability specifications with a unique identifier for health IT systems. These are the required benchmarks for products to demonstrate compliance with certification criteria." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A set of technical and interoperability specifications with a unique identifier for health IT systems. These are the required benchmarks for products to demonstrate compliance with certification criteria.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>
               <ul>
-                <li ng-repeat="m in $ctrl.cert.standards">
-                  {{ m.standard.regulatoryTextCitation }}
-                  :
-                  {{ m.standard.value }}
+                <li ng-repeat="m in $ctrl.cert.standards" ng-class="{ 'removed' : m.standard.retired }">
+                  <span ng-if="m.standard.retired">Expired | </span>
+                  <chpl-ellipsis-bridge text="m.standard.regulatoryTextCitation + ' ' + m.standard.value" max-length="160" word-boundaries="true"></chpl-ellipsis-bridge>
                 </li>
               </ul>
             </td>

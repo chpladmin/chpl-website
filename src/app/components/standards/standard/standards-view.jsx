@@ -27,6 +27,7 @@ const headers = [
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
   { text: 'Applicable Criteria' },
+  { text: 'Group' },
   { text: 'Action', invisible: true },
 ];
 
@@ -99,7 +100,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                 <TableRow key={`${item.id}-${item.value}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.value }
-                    { item.retired && ' (Retired)'}
+                    { item.retired && ' (Expired)'}
                     <ChplUpdateIndicator
                       requiredDay={item.requiredDay}
                       endDay={item.endDay}
@@ -123,6 +124,9 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
+                  </TableCell>
+                  <TableCell>
+                    { item.groupName ?? '' }
                   </TableCell>
                   <TableCell align="right">
                     <Button
