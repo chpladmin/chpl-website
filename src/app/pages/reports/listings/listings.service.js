@@ -290,6 +290,7 @@ const briefLookup = {
   'certificationResults.allowedTestTools': { message: () => undefined },
   'certificationResults.apiDocumentation': { message: () => undefined },
   'certificationResults.attestationAnswer': { message: () => undefined },
+  'certificationResults.codeSets': { message: (before, after) => comparePrimitive(before, after, 'codeSets', 'Code Sets') },
   'certificationResults.conformanceMethods': { message: () => undefined },
   'certificationResults.documentationUrl': { message: () => undefined },
   'certificationResults.exportDocumentation': { message: () => undefined },
