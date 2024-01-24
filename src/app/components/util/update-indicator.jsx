@@ -43,7 +43,7 @@ function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
     return null;
   }
 
-  if (endDay && jsJoda.LocalDate.now() < endDay) {
+  if (endDay && jsJoda.LocalDate.now() <= endDay) {
     return (
       <ChplTooltip title={(
         <Box>
