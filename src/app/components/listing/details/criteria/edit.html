@@ -61,7 +61,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.standard">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.standard && $ctrl.cert.allowedStandards.length > 0">
           <td>
             <span>Standard</span>
           </td>

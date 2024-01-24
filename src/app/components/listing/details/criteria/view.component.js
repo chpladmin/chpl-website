@@ -1,5 +1,3 @@
-import * as jsJoda from '@js-joda/core';
-
 const CertificationCriteriaViewComponent = {
   templateUrl: 'chpl.components/listing/details/criteria/view.html',
   bindings: {
@@ -97,8 +95,7 @@ const CertificationCriteriaViewComponent = {
 
     showStandardsSection() {
       return this.cert.success
-        && this.cert.standards?.length > 0
-        && (this.isConfirming || this.cert.standards.some((std) => std.standard.endDay || jsJoda.LocalDate.now() < std.standard.requiredDay));
+        && this.cert.standards?.length > 0;
     }
 
     showOptionalStandardsSection() {
