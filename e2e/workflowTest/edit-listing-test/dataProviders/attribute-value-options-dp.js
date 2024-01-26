@@ -31,7 +31,7 @@ const criteriaOptions = [{
 }, {
   criteriaName: '170.315 (c)(3)',
   id: '172',
-  conformanceMethodOptions: ['ONC Test Procedure', 'NCQA eCQM Test Method'],
+  conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Cypress', 'NCQA ONC Health IT Testing', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (c)(4)',
