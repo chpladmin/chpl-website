@@ -5,7 +5,7 @@ const states = [{
   component: 'chplReports',
   data: {
     title: 'CHPL Activity',
-    roles: ['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
   },
 }, {
   name: 'reports.acbs',
@@ -13,7 +13,7 @@ const states = [{
   component: 'chplReportsAcbs',
   data: {
     title: 'CHPL Activity - ONC-ACBs',
-    roles: ['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
   },
 }, {
   name: 'reports.announcements',

@@ -338,7 +338,7 @@ function ChplDeveloperEdit(props) {
             />
           )}
           <CardContent className={classes.content}>
-            { hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])
+            { hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
             <FormControlLabel
               control={(

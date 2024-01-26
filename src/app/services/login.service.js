@@ -37,7 +37,7 @@
       if (hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
         return true;
       }
-      if (hasAnyRole(['ROLE_ACB'])) {
+      if (hasAnyRole(['chpl-onc-acb'])) {
         const currentUser = getCurrentUser();
         return currentUser.organizations
           .filter((o) => o.id === acb.id)
@@ -47,7 +47,7 @@
     }
 
     function canManageDeveloper(developer) {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'])) {
         return true;
       }
       if (hasAnyRole(['ROLE_DEVELOPER'])) {
@@ -64,7 +64,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -85,7 +85,7 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
         if (featureFlags.isOn('sso')) {
           return parseJwt(token).sub;
@@ -107,7 +107,10 @@
       if (roles.includes('chpl-admin')) {
         roles.push('ROLE_ADMIN');
       }
-      
+      if (roles.includes('chpl-onc-acb')) {
+        roles.push('ROLE_ACB');
+      }
+
       const token = getToken();
       if (token) {
         var userRole;
@@ -155,6 +158,7 @@
     }
 
     function saveToken(token) {
+      console.log(parseJwt(token));
       $localStorage.jwtToken = token;
     }
   }

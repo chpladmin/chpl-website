@@ -45,7 +45,7 @@ function ChplChangeRequestHistory(props) {
         case 'ROLE_ONC':
           updated.actingOrganization = 'ONC';
           break;
-        case 'ROLE_ACB':
+        case 'chpl-onc-acb':
           updated.actingOrganization = item.certificationBody.name;
           break;
         case 'ROLE_DEVELOPER':

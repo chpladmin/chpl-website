@@ -22,7 +22,7 @@ const mock = {
       comment: 'comment by admin',
     }, {
       id: 3,
-      userPermission: { authority: 'ROLE_ACB' },
+      userPermission: { authority: 'chpl-onc-acb' },
       statusChangeDateTime: '2022-03-21T04:30:32.000',
       changeRequestStatusType: { name: 'status done by ACB' },
       certificationBody: { name: 'an ACB' },

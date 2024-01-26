@@ -241,7 +241,7 @@ function ChplChangeRequest(props) {
       ...data,
     });
     setDetails(data.details);
-    if (data.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
+    if (data.certificationBodies.length > 1 && hasAnyRole(['chpl-onc-acb'])) {
       setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
       setIsConfirming(true);
     }
@@ -370,7 +370,7 @@ function ChplChangeRequest(props) {
         handleUpdate(payload);
         break;
       case 'save':
-        if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
+        if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['chpl-onc-acb'])) {
           setConfirmationMessage('All associated ONC-ACBs have been consulted regarding this change');
           setIsConfirming(true);
         } else {

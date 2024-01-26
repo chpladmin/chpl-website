@@ -609,7 +609,7 @@ function ChplListingInformationEdit() {
               ))}
             </ChplTextField>
           )}
-        { hasAnyRole(['ROLE_ACB'])
+        { hasAnyRole(['chpl-onc-acb'])
           && (
             <Typography>
               { listing.certifyingBody?.name }
