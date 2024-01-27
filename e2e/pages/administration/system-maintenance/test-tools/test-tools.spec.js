@@ -39,7 +39,7 @@ describe('the Test Tools component', () => {
       await (await page.citation).setValue('Citation-01-TestTool');
       await (await page.itemName).setValue(toolValue);
       await (await page.criterionSelector).click();
-      await browser.keys(['ArrowUp','Enter']);
+      await browser.keys(['ArrowUp','ArrowDown', 'Enter']);
       await (await page.ruleSelector).click();
       await browser.keys(['ArrowDown', 'ArrowDown','ArrowDown', 'ArrowDown', 'Enter']);
       await (await page.testToolStartDay).click();
