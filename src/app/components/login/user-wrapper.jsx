@@ -37,13 +37,20 @@ function UserWrapper(props) {
   }, [$rootScope, authService]);
 
   const hasAnyRole = (roles) => {
-    if (!user || !roles || roles.length === 0 || !user.role) {
+    if (!user || !roles || roles.length === 0 || !user.groupName) {
       return false;
     }
     if (roles.includes('chpl-admin')) {
       roles.push('ROLE_ADMIN');
     }
-    return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
+    if (roles.includes('chpl-onc-acb')) {
+      roles.push('ROLE_ACB');
+    }
+    if (roles.includes('chpl-developer')) {
+      roles.push('ROLE_DEVELOPER');
+    }
+
+    return roles.reduce((ret, role) => ret || user.groupName === role, false); // true iff user has a role in the required list
   };
 
   const hasAuthorityOn = (organization) => user?.organizations

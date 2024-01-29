@@ -163,7 +163,6 @@
     }
 
     function saveToken(token) {
-      console.log(parseJwt(token));
       $localStorage.jwtToken = token;
     }
   }
