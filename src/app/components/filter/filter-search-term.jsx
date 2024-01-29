@@ -56,7 +56,7 @@ function ChplFilterSearchTerm(props) {
   } = useFilterContext();
 
   useEffect(() => {
-    setTerm(searchTerm);
+    setTerm(decodeURI(searchTerm));
   }, [searchTerm]);
 
   const handleClear = () => {
@@ -71,7 +71,7 @@ function ChplFilterSearchTerm(props) {
     if (analytics) {
       $analytics.eventTrack('Enter Value Into Text Filter', { category: analytics.category, label: term });
     }
-    setSearchTerm(term);
+    setSearchTerm(encodeURI(term));
     dispatch('hasSearched');
   };
 
