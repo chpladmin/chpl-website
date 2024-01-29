@@ -16,8 +16,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import ChplSedDownload from './sed-download';
-import ChplSedTaskView from './sed-task-view';
+import ChplSedDetailsEdit from './details';
 
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
@@ -62,45 +61,12 @@ function ChplSedEdit() {
     );
   }
 
-  console.log({listing});
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
       <Card>
         <CardHeader title="SED Summary" />
         <CardContent>
-          <Box className={classes.dataContainer}>
-            <Box width="100%">
-              <Typography variant="subtitle1">
-                Full Usability Report:
-              </Typography>
-              <Typography>
-                { listing.sedReportFileLocation
-                  && (
-                    <ChplLink
-                      href={listing.sedReportFileLocation}
-                      analytics={{ event: 'Usability Report', category: 'Download Details', label: listing.sedReportFileLocation }}
-                    />
-                  )}
-                {!listing.sedReportFileLocation && 'No report on file'}
-              </Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-              <Typography variant="subtitle1">
-                Description of Intended Users:
-              </Typography>
-              <Typography>
-                {listing.sedIntendedUserDescription ?? 'N/A'}
-              </Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-              <Typography variant="subtitle1">
-                Date SED Testing was Completed:
-              </Typography>
-              <Typography>
-                {getDisplayDateFormat(listing.sedTestingEndDay)}
-              </Typography>
-            </Box>
-          </Box>
+          <ChplSedDetailsEdit />
         </CardContent>
       </Card>
       <Card>
@@ -150,19 +116,12 @@ function ChplSedEdit() {
           <Card>
             <CardHeader title="SED Testing Tasks" />
             <CardContent>
-              <Box display="flex" justifyContent="flex-end" pb={4}>
-                <ChplSedDownload
-                  listing={listing}
-                />
-              </Box>
               { listing.sed.testTasks
                 .sort(sortTestTasks)
                 .map((task) => (
-                  <ChplSedTaskView
-                    key={task.id ?? task.uniqueId}
-                    listing={listing}
-                    task={task}
-                  />
+                  <Typography key={task.id ?? task.uniqueId}>
+                    {task.id ?? task.uniqueId}
+                  </Typography>
                 ))}
             </CardContent>
           </Card>

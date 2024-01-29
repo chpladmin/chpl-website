@@ -23,7 +23,7 @@ import * as yup from 'yup';
 import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplG1G2sEdit from './details/g1g2/g1g2s-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
-import ChplSedEdit from './details/sed/sed-edit';
+import ChplSedEdit from './details/sed/edit/edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
