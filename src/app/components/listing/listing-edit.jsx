@@ -23,6 +23,7 @@ import * as yup from 'yup';
 import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplG1G2sEdit from './details/g1g2/g1g2s-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
+import ChplSedEdit from './details/sed/sed-edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
@@ -336,6 +337,20 @@ function ChplListingEdit() {
             />
           </CardContent>
         </Card>
+        { (listing.edition === null || listing.edition.name !== '2011')
+          && (
+            <Card>
+              <span className="anchor-element">
+                <span id="sed" className="page-anchor" />
+              </span>
+              <Box className={classes.sectionHeader}>
+                <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+              </Box>
+              <CardContent>
+                <ChplSedEdit />
+              </CardContent>
+            </Card>
+          )}
         { (listing.edition === null || listing.edition.name === '2015')
           && (
             <Card>
