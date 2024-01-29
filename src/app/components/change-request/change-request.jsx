@@ -253,7 +253,7 @@ function ChplChangeRequest(props) {
     }
     const types = crstQuery.data.data
       .filter((type) => {
-        if (hasAnyRole(['ROLE_DEVELOPER'])) {
+        if (hasAnyRole(['chpl-developer'])) {
           return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
         }
         return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
@@ -261,13 +261,13 @@ function ChplChangeRequest(props) {
       .sort((a, b) => (a.name < b.name ? -1 : 1));
     setChangeRequestStatusTypes(types);
 
-    if (hasAnyRole(['ROLE_DEVELOPER'])) {
+    if (hasAnyRole(['chpl-developer'])) {
       formik.setFieldValue('changeRequestStatusType', types.find((type) => type.name === 'Pending ONC-ACB Action'));
     }
   }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
 
   const canEdit = () => {
-    if (hasAnyRole(['ROLE_DEVELOPER'])) {
+    if (hasAnyRole(['chpl-developer'])) {
       return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester';
@@ -278,14 +278,14 @@ function ChplChangeRequest(props) {
       && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
   };
 
-  const canWithdraw = () => hasAnyRole(['ROLE_DEVELOPER'])
+  const canWithdraw = () => hasAnyRole(['chpl-developer'])
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
 
   const editCr = () => {
-    if (hasAnyRole(['ROLE_DEVELOPER'])
+    if (hasAnyRole(['chpl-developer'])
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
       $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
     } else {
@@ -387,10 +387,10 @@ function ChplChangeRequest(props) {
     }
   };
 
-  const isReasonDisabled = () => hasAnyRole(['ROLE_DEVELOPER']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
+  const isReasonDisabled = () => hasAnyRole(['chpl-developer']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
 
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
-        || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
+        || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['chpl-developer']));
 
   save = (request) => {
     setIsSaving(true);
@@ -562,7 +562,7 @@ function ChplChangeRequest(props) {
                           </Typography>
                         )}
                     </div>
-                    {hasAnyRole(['ROLE_DEVELOPER'])
+                    {hasAnyRole(['chpl-developer'])
                       ? (
                         <Typography className={classes.fullWidth}>
                           {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
@@ -626,7 +626,7 @@ function ChplChangeRequest(props) {
       <ChplActionBar
         dispatch={handleDispatch}
         canEdit={!isEditing && canEdit()}
-        canWithdraw={(!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['ROLE_DEVELOPER']))}
+        canWithdraw={(!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['chpl-developer']))}
         canClose={!isEditing}
         canCancel={isEditing}
         canSave={isEditing}

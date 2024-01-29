@@ -21,7 +21,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   this.$onInit = () => {
     $rootScope.bodyClass = 'navigation-shown';
 
-    if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+    if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
       vm.toggleNavClosed();
     } else {
       vm.toggleNavOpen();
@@ -29,7 +29,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
     const showCmsWidgetHook = $rootScope.$on('ShowCmsWidget', () => {
       vm.showCmsWidget(true);
-      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         vm.toggleNavOpen();
       }
     });
@@ -42,7 +42,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
     const showCompareWidgetHook = $rootScope.$on('ShowCompareWidget', () => {
       vm.showCompareWidget(true);
-      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         vm.toggleNavOpen();
       }
     });
@@ -68,7 +68,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', loggedOut);
 
     const flags = $rootScope.$on('flags loaded', () => {
-      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         vm.toggleNavClosed();
       }
     });
@@ -96,7 +96,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   }
 
   function getDevelopers() {
-    if (vm.hasAnyRole(['ROLE_DEVELOPER']) && authService.getCurrentUser()) {
+    if (vm.hasAnyRole(['chpl-developer']) && authService.getCurrentUser()) {
       return authService.getCurrentUser().organizations
         .map((developer) => developer)
         .sort((a, b) => (a.name < b.name ? -1 : 1));

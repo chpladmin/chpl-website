@@ -183,7 +183,7 @@ function ChplDeveloperView(props) {
       return canEdit
         && (hasAnyRole(['chpl-admin', 'ROLE_ONC']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-          || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+          || (hasAnyRole(['chpl-developer']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
       return canJoin

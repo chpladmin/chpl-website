@@ -29,7 +29,7 @@ const mock = {
       comment: 'an acb comment',
     }, {
       id: 4,
-      userPermission: { authority: 'ROLE_DEVELOPER' },
+      userPermission: { authority: 'chpl-developer' },
       statusChangeDateTime: '2022-03-21T04:23:32.000',
       changeRequestStatusType: { name: 'dev status' },
       comment: 'developers have comments too',

@@ -50,7 +50,7 @@
       if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'])) {
         return true;
       }
-      if (hasAnyRole(['ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-developer'])) {
         const currentUser = getCurrentUser();
         return currentUser.organizations
           .filter((d) => d.id === developer.id)
@@ -64,7 +64,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -85,9 +85,11 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         if (featureFlags.isOn('sso')) {
+          console.log(parseJwt(token));
+          console.log(parseJwt(token).sub);
           return parseJwt(token).sub;
         } else {
           const identity = parseJwt(token).Identity;
@@ -109,6 +111,9 @@
       }
       if (roles.includes('chpl-onc-acb')) {
         roles.push('ROLE_ACB');
+      }
+      if (roles.includes('chpl-developer')) {
+        roles.push('ROLE_DEVELOPER');
       }
 
       const token = getToken();

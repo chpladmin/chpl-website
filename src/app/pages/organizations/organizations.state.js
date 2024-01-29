@@ -35,7 +35,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Edit',
-      roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_DEVELOPER'],
+      roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'chpl-developer'],
     },
   }, {
     name: 'organizations.developers.developer.split',
@@ -67,7 +67,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Attestation',
-      roles: ['ROLE_DEVELOPER'],
+      roles: ['chpl-developer'],
     },
   }, {
     name: 'organizations.developers.developer.attestation.edit',
@@ -86,7 +86,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Attestation',
-      roles: ['ROLE_DEVELOPER'],
+      roles: ['chpl-developer'],
     },
   }, {
     name: 'organizations.developers.developer.product',
