@@ -69,13 +69,13 @@ function ChplUpload() {
               <Box className={classes.uploadCards}>
                 <ChplUploadRealWorldTesting />
               </Box>
-              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <Box className={classes.uploadCards}>
                     <ChplUploadPromotingInteroperability />
                   </Box>
                 )}
-              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <Box className={classes.uploadCards}>
                     <ChplUploadApiDocumentation />

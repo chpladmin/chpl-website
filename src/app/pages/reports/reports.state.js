@@ -5,7 +5,7 @@ const states = [{
   component: 'chplReports',
   data: {
     title: 'CHPL Activity',
-    roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
   name: 'reports.acbs',
@@ -13,7 +13,7 @@ const states = [{
   component: 'chplReportsAcbs',
   data: {
     title: 'CHPL Activity - ONC-ACBs',
-    roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
   name: 'reports.announcements',
@@ -21,7 +21,7 @@ const states = [{
   component: 'chplReportsAnnouncements',
   data: {
     title: 'CHPL Activity - Announcements',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
   name: 'reports.api-keys',
@@ -29,7 +29,7 @@ const states = [{
   component: 'chplReportsApiKeys',
   data: {
     title: 'CHPL Activity - Api Key Management',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
   name: 'reports.atls',
@@ -37,7 +37,7 @@ const states = [{
   component: 'chplReportsAtls',
   data: {
     title: 'CHPL Activity - ONC-ATLs',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
   name: 'reports.listings',
@@ -70,7 +70,7 @@ const states = [{
   component: 'chplQuestionableActivityWrapperBridge',
   data: {
     title: 'CHPL Activity - Questionable Activity',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
   name: 'reports.user-actions',
@@ -78,7 +78,7 @@ const states = [{
   component: 'chplReportsUserActions',
   data: {
     title: 'CHPL Activity - User Actions',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
   name: 'reports.users',
@@ -86,7 +86,7 @@ const states = [{
   component: 'chplReportsUsers',
   data: {
     title: 'CHPL Activity - Users',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
   name: 'reports.versions',

@@ -216,7 +216,7 @@ function ChplOncOrganizations() {
                   ONC Organization maintenance
                 </Typography>
               </CardContent>
-              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <CardActions>
                     <Button
@@ -232,7 +232,7 @@ function ChplOncOrganizations() {
                 )}
             </Card>
           )}
-        { isCreating && hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+        { isCreating && hasAnyRole(['chpl-admin', 'chpl-onc'])
           && (
             <ChplOncOrganization
               dispatch={handleDispatch}

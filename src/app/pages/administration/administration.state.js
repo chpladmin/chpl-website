@@ -36,7 +36,7 @@ const states = [
       apiKeys: (authService, networkService) => {
         'ngInject';
 
-        if (authService.hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
+        if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
           return networkService.getApiUsers();
         }
         return [];
@@ -44,7 +44,7 @@ const states = [
     },
     data: {
       title: 'CHPL Administration - API Keys',
-      roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
   }, {
     name: 'administration.change-requests',
@@ -52,7 +52,7 @@ const states = [
     component: 'chplChangeRequestsWrapperBridge',
     data: {
       title: 'CHPL Administration - Change Requests',
-      roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
   }, {
     name: 'administration.cms',
@@ -60,7 +60,7 @@ const states = [
     component: 'chplCmsWrapperBridge',
     data: {
       title: 'CHPL Administration - CMS',
-      roles: ['chpl-admin', 'ROLE_ONC', 'ROLE_CMS_STAFF'],
+      roles: ['chpl-admin', 'chpl-onc', 'ROLE_CMS_STAFF'],
     },
   }, {
     name: 'administration.confirm',
@@ -101,7 +101,7 @@ const states = [
     component: 'chplReportsWrapperBridge',
     data: {
       title: 'CHPL Administration - Reports',
-      roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
   }, {
     name: 'administration.system-maintenance',
@@ -109,7 +109,7 @@ const states = [
     component: 'chplSystemMaintenanceWrapperBridge',
     data: {
       title: 'CHPL Administration - System Maintenance',
-      roles: ['chpl-admin', 'ROLE_ONC'],
+      roles: ['chpl-admin', 'chpl-onc'],
     },
   }, {
     name: 'administration.upload',
@@ -117,7 +117,7 @@ const states = [
     component: 'chplUploadPageWrapperBridge',
     data: {
       title: 'CHPL Administration - Upload',
-      roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
   }, {
     name: 'login',

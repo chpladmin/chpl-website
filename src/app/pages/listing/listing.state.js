@@ -9,7 +9,7 @@ const states = [{
   component: 'chplListingEditFlagged',
   data: {
     title: 'CHPL Listing Details - new edit',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'chpl-onc-acb'],
+    roles: ['ROLE_ADMIN', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
   name: 'listing.edit',
@@ -17,7 +17,7 @@ const states = [{
   component: 'chplListingEditPage',
   data: {
     title: 'CHPL Listing Details - Edit',
-    roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
   resolve: {
     listing: (networkService, $transition$) => {

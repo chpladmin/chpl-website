@@ -30,11 +30,11 @@
       const targetRole = target.role;
       return !isImpersonating()
         && (((userRole === 'ROLE_ADMIN' || userRole === 'chpl-admin') && (targetRole !== 'ROLE_ADMIN' && targetRole !== 'chpl-admin'))
-                 || (userRole === 'ROLE_ONC' && targetRole !== 'chpl-admin' && targetRole !== 'ROLE_ONC'));
+                 || (userRole === 'chpl-onc' && targetRole !== 'chpl-admin' && targetRole !== 'chpl-onc'));
     }
 
     function canManageAcb(acb) {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc'])) {
         return true;
       }
       if (hasAnyRole(['chpl-onc-acb'])) {
@@ -47,7 +47,7 @@
     }
 
     function canManageDeveloper(developer) {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
         return true;
       }
       if (hasAnyRole(['chpl-developer'])) {
@@ -64,7 +64,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -85,11 +85,11 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      console.log(parseJwt(getToken()));
+          
+      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         if (featureFlags.isOn('sso')) {
-          console.log(parseJwt(token));
-          console.log(parseJwt(token).sub);
           return parseJwt(token).sub;
         } else {
           const identity = parseJwt(token).Identity;
@@ -114,6 +114,9 @@
       }
       if (roles.includes('chpl-developer')) {
         roles.push('ROLE_DEVELOPER');
+      }
+      if (roles.includes('chpl-onc')) {
+        roles.push('ROLE_ONC');
       }
 
       const token = getToken();

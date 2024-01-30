@@ -11,7 +11,7 @@ const hocMock = {
   dispatch: jest.fn(),
 };
 
-const rolesMock = ['ROLE_ADMIN', 'ROLE_ONC'];
+const rolesMock = ['ROLE_ADMIN', 'chpl-onc'];
 
 describe('the ChplUserInvite component', () => {
   beforeEach(async () => {

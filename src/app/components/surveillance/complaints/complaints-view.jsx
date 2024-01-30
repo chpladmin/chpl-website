@@ -237,7 +237,7 @@ function ChplComplaintsView(props) {
   }
 
   const getButtons = () => {
-    if (hasAnyRole(['ROLE_ONC'])) {
+    if (hasAnyRole(['chpl-onc'])) {
       return (
         <ButtonGroup className={classes.wrap}>
           <Button

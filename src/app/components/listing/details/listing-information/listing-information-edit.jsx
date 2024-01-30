@@ -590,7 +590,7 @@ function ChplListingInformationEdit() {
             </>
           )}
         <Typography variant="subtitle1">ONC-ACB & ONC-ATL:</Typography>
-        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+        { hasAnyRole(['ROLE_ADMIN', 'chpl-onc'])
           && (
             <ChplTextField
               select

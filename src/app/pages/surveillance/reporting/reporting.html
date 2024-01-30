@@ -37,7 +37,7 @@
                                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
                           Initiate
                         </button>
-                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
+                        <span ng-if="$ctrl.hasAnyRole(['chpl-onc']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
                       </td>
                       <td>
                         <button class="btn btn-sm btn-default" id="act-{{ acb.name }}-{{ year }}"
@@ -54,7 +54,7 @@
                                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
                           Initiate
                         </button>
-                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
+                        <span ng-if="$ctrl.hasAnyRole(['chpl-onc']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
                       </td>
                     </tr>
                   </tbody>

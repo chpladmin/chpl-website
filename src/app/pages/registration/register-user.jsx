@@ -40,7 +40,7 @@ function ChplRegisterUser(props) {
   let handleDispatch;
 
   useEffect(() => {
-    if (authService.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
       handleDispatch('authorize', {});
     }
   }, []);

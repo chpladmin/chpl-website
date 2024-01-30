@@ -5,7 +5,7 @@ const states = [{
   component: 'chplSurveillance',
   data: {
     title: 'CHPL Surveillance',
-    roles: ['chpl-admin', 'ROLE_ONC', 'chpl-onc-acb'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
   ncyBreadcrumb: {
     label: 'Surveillance',
@@ -50,7 +50,7 @@ const states = [{
   component: 'chplSurveillanceActivityReporting',
   data: {
     title: 'CHPL Surveillance - Activity Reporting',
-    roles: ['chpl-admin', 'ROLE_ONC'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
   ncyBreadcrumb: {
     label: 'Activity Reporting',

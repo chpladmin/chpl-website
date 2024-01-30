@@ -76,7 +76,7 @@ const CertificationCriteriaEditComponent = {
     }
 
     canEdit() {
-      return this.hasAnyRole(['chpl-admin', 'ROLE_ONC']) // can always edit
+      return this.hasAnyRole(['chpl-admin', 'chpl-onc']) // can always edit
         || this.cert.criterion.editable; // chpl-onc-acb can only edit when criteria has been recently removed
     }
 

@@ -85,7 +85,7 @@ function ChplReportJobTypesView(props) {
   }, []);
 
   const filterHeaders = () => headers.filter((item) => hasAnyRole(['chpl-admin'])
-                          || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC']))
+                          || (item.property === 'oncAcbSpecific' && hasAnyRole(['chpl-onc']))
                           || (item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -121,7 +121,7 @@ function ChplReportJobTypesView(props) {
                     <TableCell>
                       { item.description }
                     </TableCell>
-                    { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+                    { hasAnyRole(['chpl-admin', 'chpl-onc'])
                       && (
                         <TableCell>
                           { item.oncAcbSpecific }
