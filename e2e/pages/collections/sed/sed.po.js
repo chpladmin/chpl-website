@@ -6,7 +6,7 @@ class SedPage extends CollectionPage {
     super();
     this.elements = {
       ...this.elements,
-      header: 'h1=SED Information for 2015 Edition Products',
+      header: 'h1=SED Information',
       downloadSedDetails: 'a=Download All SED Details',
     };
   }
