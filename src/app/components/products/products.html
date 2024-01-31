@@ -112,7 +112,7 @@
                 <chpl-contact contact="product.contact"></chpl-contact>
               </div>
             </div>
-            <div class="product__listings">
+            <div ng-class="$ctrl.editionlessIsOn ? 'product__listings-editionless' : 'product__listings'">
               <div class="product__listing" ng-repeat="listing in product.activeVersion.listings | filter:{displayed:true}">
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL&nbsp;Product&nbsp;Number</div>
@@ -122,7 +122,7 @@
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Status</div>
                   <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i><span class="sr-only"> {{ listing.certificationStatus }} tooltip</span></a> {{ listing.certificationStatus }}</div>
                 </div>
-                <div class="product__listing-data-item">
+                <div class="product__listing-data-item" feature-flag="editionless" feature-flag-hide>
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Edition</div>
                   <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.edition !== null && listing.curesUpdate"> Cures Update</span></div>
                 </div>
