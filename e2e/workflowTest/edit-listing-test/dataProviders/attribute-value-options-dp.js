@@ -54,11 +54,6 @@ const criteriaOptions = [{
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
-  criteriaName: '170.315 (b)(6)',
-  id: '21',
-  conformanceMethodOptions: ['ONC Test Procedure'],
-  testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
-}, {
   criteriaName: '170.315 (b)(7)',
   id: '168',
   conformanceMethodOptions: ['ONC Test Procedure'],
