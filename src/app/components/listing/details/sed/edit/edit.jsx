@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 
 import ChplSedDetailsEdit from './details';
+import ChplUcdProcessEdit from './process';
 
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
@@ -72,42 +73,16 @@ function ChplSedEdit() {
       <Card>
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
-          <Card className={classes.tableScrolling}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Certification Criteria</TableCell>
-                  <TableCell>UCD Process</TableCell>
-                  <TableCell>UCD Process Details</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { listing.sed.ucdProcesses
-                  .sort(sortUcdProcesses)
-                  .map((ucd) => (
-                    <TableRow key={ucd.id}>
-                      <TableCell>
-                        <List>
-                          {ucd.criteria
-                            .sort(sortCriteria)
-                            .map((criterion) => (
-                              <ListItem key={criterion.id}>
-                                {criterion.removed && 'Removed | '}
-                                {criterion.number}
-                              </ListItem>
-                            ))}
-                        </List>
-                      </TableCell>
-                      <TableCell>
-                        {ucd.name}
-                      </TableCell>
-                      <TableCell>
-                        {ucd.details}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+          <Card>
+            { listing.sed.ucdProcesses
+              .sort(sortUcdProcesses)
+              .map((ucd) => (
+                <div key={ucd.id}>
+                  <ChplUcdProcessEdit
+                    ucdProcess={ucd}
+                  />
+                </div>
+              ))}
           </Card>
         </CardContent>
       </Card>
