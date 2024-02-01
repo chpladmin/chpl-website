@@ -50,7 +50,7 @@ function UserWrapper(props) {
       roles.push('ROLE_DEVELOPER');
     }
     if (roles.includes('chpl-onc')) {
-      roles.push('chpl-onc');
+      roles.push('ROLE_ONC');
     }
 
     return roles.reduce((ret, role) => ret || user.groupName === role, false); // true iff user has a role in the required list
