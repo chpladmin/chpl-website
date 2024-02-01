@@ -37,7 +37,7 @@ function UserWrapper(props) {
   }, [$rootScope, authService]);
 
   const hasAnyRole = (roles) => {
-    if (!user || !roles || roles.length === 0 || !user.groupName) {
+    if (!user || !roles || roles.length === 0 || !user.role) {
       return false;
     }
     if (roles.includes('chpl-admin')) {
@@ -53,7 +53,7 @@ function UserWrapper(props) {
       roles.push('ROLE_ONC');
     }
 
-    return roles.reduce((ret, role) => ret || user.groupName === role, false); // true iff user has a role in the required list
+    return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
   };
 
   const hasAuthorityOn = (organization) => user?.organizations
