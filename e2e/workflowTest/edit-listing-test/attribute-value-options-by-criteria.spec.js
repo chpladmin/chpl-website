@@ -35,22 +35,29 @@ inputs.forEach((input) => {
         login.logOut();
       });
 
-      it(`can see correct options for Test Tools and Conformance Methods for ${criteriaName}`, () => {
+      it(`can see correct options for Test Tools and Conformance Methods for ${criteriaName} with id ${id}`, () => {
         const expectedTt = testToolsOptions;
         const expectedCm = conformanceMethodOptions;
         criteria.editCriteriaButton(criteriaName, id).scrollIntoView({ block: 'center', inline: 'center' });
         criteria.openUnattestedCriteria(criteriaName, id);
         criteria.attestCriteria(criteriaName);
-        const actualTt = new Set(criteria.testToolsDropdownOptions.map((item) => item.getText()));
-        expect(actualTt.size - 2).toBe(expectedTt.length);
+        const actualTt = new Set(criteria.testToolsDropdownOptions.map((item) => item.getText()).filter((item) => item !== '' && item !== 'Select a Test Tool'));
         expectedTt.forEach((exp) => {
-          expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
+          expect(actualTt.has(exp)).toBe(true, `did not find expected Test Tool: "${exp}"`);
         });
-        const actualCm = new Set(criteria.conformanceMethodDropdownOptions.map((item) => item.getText()));
-        expect(actualCm.size - 2).toBe(expectedCm.length);
+        actualTt.forEach((act) => {
+          expect(expectedTt.includes(act)).toBe(true, `found unexpected Test Tool: "${act}"`);
+        });
+        expect(actualTt.size).toBe(expectedTt.length);
+
+        const actualCm = new Set(criteria.conformanceMethodDropdownOptions.map((item) => item.getText()).filter((item) => item !== '' && item !== 'Select a Conformance Method'));
         expectedCm.forEach((exp) => {
-          expect(actualCm.has(exp)).toBe(true, `did not find expected option of Conformance Method: "${exp}"`);
+          expect(actualCm.has(exp)).toBe(true, `did not find expected Conformance Method: "${exp}"`);
         });
+        actualCm.forEach((act) => {
+          expect(expectedCm.includes(act)).toBe(true, `found unexpected Conformance Method: "${act}"`);
+        });
+        expect(actualCm.size).toBe(expectedCm.length);
       });
     });
   });

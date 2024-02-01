@@ -10,7 +10,7 @@ const criteriaOptions = [{
   testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool', 'Electronic Prescribing', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (b)(1)',
-  id: '16',
+  id: '165',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
@@ -30,8 +30,8 @@ const criteriaOptions = [{
   testToolsOptions: ['Cypress', 'NCQA ONC Health IT Testing', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (c)(3)',
-  id: '27',
-  conformanceMethodOptions: ['ONC Test Procedure', 'NCQA eCQM Test Method'],
+  id: '172',
+  conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Cypress', 'NCQA ONC Health IT Testing', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (c)(4)',
@@ -50,32 +50,22 @@ const criteriaOptions = [{
   testToolsOptions: ['Edge Testing Tool', 'Direct Certificate Discovery Tool', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (b)(2)',
-  id: '17',
-  conformanceMethodOptions: ['ONC Test Procedure'],
-  testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
-}, {
-  criteriaName: '170.315 (b)(6)',
-  id: '21',
+  id: '166',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (b)(7)',
-  id: '22',
+  id: '168',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (b)(8)',
-  id: '23',
+  id: '169',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (b)(9)',
-  id: '24',
-  conformanceMethodOptions: ['ONC Test Procedure'],
-  testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
-}, {
-  criteriaName: '170.315 (e)(1)',
-  id: '40',
+  id: '170',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
@@ -85,12 +75,12 @@ const criteriaOptions = [{
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (g)(6)',
-  id: '55',
+  id: '180',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
   criteriaName: '170.315 (g)(9)',
-  id: '58',
+  id: '181',
   conformanceMethodOptions: ['ONC Test Procedure'],
   testToolsOptions: ['Edge Testing Tool', 'Not Applicable'],
 }, {
