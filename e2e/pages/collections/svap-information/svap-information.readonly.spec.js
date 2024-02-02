@@ -14,7 +14,7 @@ describe('the SVAP Information collection page', () => {
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Status', 'SVAP Information', 'SVAP Notice', 'Actions'];
+    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', 'SVAP Information', 'SVAP Notice', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
@@ -35,13 +35,6 @@ describe('the SVAP Information collection page', () => {
 
       afterEach(async () => {
         await page.resetFilters();
-      });
-
-      /* ignoring test below because no Active 2015 listings with SVAPs are found; returns 0 results and hence fails */
-      xit('should filter on Certification Edition', async () => {
-        await page.removeFilter('Certification Edition', '2015');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
       });
 
       it('should filter on ONC-ACB', async () => {
@@ -65,14 +58,14 @@ describe('the SVAP Information collection page', () => {
 
       it('should show only listings that match the developer', async () => {
         const searchTerm = 'AssureCare LLC';
-        const columnIndex = 2;
+        const columnIndex = 1;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
       });
 
       it('should show only listings that match the product', async () => {
         const searchTerm = 'Soarian Clinicals';
-        const columnIndex = 3;
+        const columnIndex = 2;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
       });
