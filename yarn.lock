@@ -5059,6 +5059,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.6.5":
+  version: 1.6.7
+  resolution: "axios@npm:1.6.7"
+  dependencies:
+    follow-redirects: ^1.15.4
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 87d4d429927d09942771f3b3a6c13580c183e31d7be0ee12f09be6d5655304996bb033d85e54be81606f4e89684df43be7bf52d14becb73a12727bf33298a082
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:^3.1.1":
   version: 3.1.1
   resolution: "axobject-query@npm:3.1.1"
@@ -6559,7 +6570,7 @@ __metadata:
     bootstrap-sass: 3.4.3
     browser-sync: ~2.9.12
     browser-sync-spa: ~1.0.3
-    chromedriver: ^119.0.0
+    chromedriver: ^121.0.0
     clean-webpack-plugin: ^0.1.19
     concurrently: ^7.6.0
     css-loader: ^0.28.11
@@ -6656,12 +6667,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromedriver@npm:^119.0.0":
-  version: 119.0.1
-  resolution: "chromedriver@npm:119.0.1"
+"chromedriver@npm:^121.0.0":
+  version: 121.0.0
+  resolution: "chromedriver@npm:121.0.0"
   dependencies:
     "@testim/chrome-version": ^1.1.4
-    axios: ^1.6.0
+    axios: ^1.6.5
     compare-versions: ^6.1.0
     extract-zip: ^2.0.1
     https-proxy-agent: ^5.0.1
@@ -6669,7 +6680,7 @@ __metadata:
     tcp-port-used: ^1.0.2
   bin:
     chromedriver: bin/chromedriver
-  checksum: 2b4e1f09bf02f3d40e0542bed94e665dda052b00b91e2f0d8cde9343f7ca068b843f31df2873daa4dbf8a78bfd43aa37f538b42befd0f9237f711100f3b72e49
+  checksum: 15ecfd6959e50817ae4a689e1cf3e09b49318c271b80bc563b0af3d1bd17adb6faa845f7d9bd9dc3ffe38e30941d595755748e6ac0f98a1043bdd2e4376ff431
   languageName: node
   linkType: hard
 
@@ -9574,7 +9585,7 @@ __metadata:
 "export-to-csv@https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac":
   version: 0.2.1
   resolution: "export-to-csv@https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac"
-  checksum: 5b8d5645f8a82b7079146bcf79f24fd7c5858e87e3b7106dc62ec12c126577a9632012c022ca247451b69d80767968f805bdfdd0bd385f161e1d1dcfdf1b79f0
+  checksum: f970f5875eabfbf15dc4ee28878eefc82675ea24b6a128c88d1e0e09f99fb343361caea343f24fca7342038ea6abbee94b2d585cec97f8ee0993f7ee8614288d
   languageName: node
   linkType: hard
 
@@ -10143,6 +10154,16 @@ __metadata:
     debug:
       optional: true
   checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.4":
+  version: 1.15.5
+  resolution: "follow-redirects@npm:1.15.5"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 5ca49b5ce6f44338cbfc3546823357e7a70813cecc9b7b768158a1d32c1e62e7407c944402a918ea8c38ae2e78266312d617dc68783fac502cbb55e1047b34ec
   languageName: node
   linkType: hard
 
@@ -11296,7 +11317,7 @@ __metadata:
     ignore: ^3.3.5
     strip-ansi: ^4.0.0
     text-table: ^0.2.0
-  checksum: 1c215a977968637c363e423d3b35b9f32dedae7666277e03146b9f7c222ae512e7567fd3ecbf3e9c34a4233133e4f785098697c5eb334b34079753ca52b199c3
+  checksum: 1f333d8b4292b43f2ba090112a404778ceb932c087c52ebe1c05d1aadc35a8360d99720882bd22c555d8ecee3447c288e2cd6f1d21d5f6b8431afd778712e675
   languageName: node
   linkType: hard
 

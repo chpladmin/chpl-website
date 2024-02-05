@@ -89,12 +89,13 @@
           
       if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
-        if (featureFlags.isOn('sso')) {
-          return parseJwt(token).sub;
-        } else {
+        if (parseJwt(token).Identity) {
           const identity = parseJwt(token).Identity;
           return identity[0];
+        } else {
+          return parseJwt(token).sub;
         }
+
       } else {
         logout();
         return '';
@@ -121,12 +122,7 @@
 
       const token = getToken();
       if (token) {
-        var userRole;
-        if (featureFlags.isOn('sso')) {
-          userRole = parseJwt(token)['cognito:groups'][0];
-        } else {
-          userRole = parseJwt(token).Authority;
-        }
+        var userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
