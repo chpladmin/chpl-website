@@ -42,6 +42,7 @@ const standard = shape({
   criteria: arrayOf(criterion),
   description: string,
   endDay: string,
+  groupName: string,
   id: number,
   name: string,
   regulatoryTextCitation: string,
