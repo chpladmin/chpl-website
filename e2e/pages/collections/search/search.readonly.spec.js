@@ -9,11 +9,11 @@ describe('the Search page', () => {
   });
 
   it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.');
+    await expect(await page.getBodyText()).toContain('Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated listings.');
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Certification Date', 'Status', 'Actions'];
+    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Certification Date', 'Status', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
@@ -71,14 +71,14 @@ describe('the Search page', () => {
 
       it('should show only listings that match the developer', async () => {
         const searchTerm = 'Nextech';
-        const columnIndex = 2;
+        const columnIndex = 1;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
       });
 
       it('should show only listings that match the product', async () => {
         const searchTerm = 'Haystack';
-        const columnIndex = 3;
+        const columnIndex = 2;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
       });
