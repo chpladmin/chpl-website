@@ -19,6 +19,7 @@ import {
 import ChplSedDetailsEdit from './details';
 import ChplUcdProcessEdit from './process';
 
+import { useFetchUcdProcesses } from 'api/standards';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -54,7 +55,14 @@ const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 
 function ChplSedEdit() {
   const { listing } = useContext(ListingContext);
+  const { data, isLoading, isSuccess } = useFetchUcdProcesses();
+  const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) { return; }
+    setUcdProcessOptions(data);
+  }, [data, isLoading, isSuccess]);
 
   if (!listing) {
     return (
@@ -80,6 +88,7 @@ function ChplSedEdit() {
                 <div key={ucd.id}>
                   <ChplUcdProcessEdit
                     ucdProcess={ucd}
+                    ucdProcessOptions={ucdProcessOptions}
                   />
                 </div>
               ))}

@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   Chip,
+  CircularProgress,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
@@ -60,11 +61,11 @@ function ChplUcdProcessEdit(props) {
   let formik;
 
   useEffect(() => {
-    setCriteria(props.ucdProcess.criteria?.map((criterion) => ({
+    setCriteria(ucdProcess.criteria?.map((criterion) => ({
       ...criterion,
     })) || []);
-    setCanDelete(!!props.ucdProcess.guid);
-  }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
+    setCanDelete(!!ucdProcess.guid);
+  }, [ucdProcess]);
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
@@ -101,10 +102,16 @@ function ChplUcdProcessEdit(props) {
     setCriteria((prev) => prev.filter((ele) => ele.id !== item.id));
   };
 
+  if (!ucdProcess || !ucdProcessOptions || ucdProcessOptions.length === 0) {
+    return (
+      <CircularProgress />
+    );
+  }
+
   formik = useFormik({
     initialValues: {
-      ucdProcess: ucdProcessOptions.find((process) => process.id === props.ucdProcess.id) || '',
-      details: props.ucdProcess?.details || '', // eslint-disable-line react/destructuring-assignment
+      ucdProcess: ucdProcessOptions.find((process) => process.id === ucdProcess.id),
+      details: ucdProcess.details,
     },
     onSubmit: () => {
       //props.dispatch({ action: 'save', payload: buildPayload() });
@@ -193,10 +200,9 @@ export default ChplUcdProcessEdit;
 ChplUcdProcessEdit.propTypes = {
   criteriaOptions: arrayOf(criterionPropType),
   ucdProcess: ucdProcessPropType.isRequired,
-  ucdProcessOptions: arrayOf(ucdProcessType),
+  ucdProcessOptions: arrayOf(ucdProcessType).isRequired,
 };
 
 ChplUcdProcessEdit.defaultProps = {
   criteriaOptions: [],
-  ucdProcessOptions: [],
 };
