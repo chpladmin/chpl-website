@@ -16,7 +16,7 @@ exports.config = {
   runner: 'local',
   path: '/',
   specs: [
-    'e2e/**/acbs.readonly.spec.js',
+    'e2e/**/*.spec.js',
   ],
   suites: {
     components: [
