@@ -102,12 +102,6 @@ function ChplUcdProcessEdit(props) {
     setCriteria((prev) => prev.filter((ele) => ele.id !== item.id));
   };
 
-  if (!ucdProcess || !ucdProcessOptions || ucdProcessOptions.length === 0) {
-    return (
-      <CircularProgress />
-    );
-  }
-
   formik = useFormik({
     initialValues: {
       ucdProcess: ucdProcessOptions.find((process) => process.id === ucdProcess.id),
@@ -118,6 +112,12 @@ function ChplUcdProcessEdit(props) {
     },
     validationSchema,
   });
+
+  if (!ucdProcess || !ucdProcessOptions || ucdProcessOptions.length === 0) {
+    return (
+      <CircularProgress />
+    );
+  }
 
   return (
     <Card>
