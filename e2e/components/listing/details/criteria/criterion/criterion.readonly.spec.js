@@ -1,21 +1,19 @@
 import CriteriaComponent from '../criteria.po';
-import Hooks from '../../../../../utilities/hooks';
 import ListingPage from '../../../../../pages/listing/listing.po';
 
+import { open as openPage } from '../../../../../utilities/hooks.async';
+
 let criteria;
-let hooks;
 let page;
 
 beforeEach(async () => {
   criteria = new CriteriaComponent();
-  page = new ListingPage();
-  hooks = new Hooks();
+  page = new ListingPage(); 
 });
 
 describe('the Criterion Component', () => {
   beforeEach(async () => {
-    await hooks.open('#/listing/9833');
-    await hooks.waitForSpinnerToDisappear();
+    await openPage('#/listing/9833');
     await page.criteriaLeftNavButton();
   });
 
