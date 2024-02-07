@@ -56,12 +56,12 @@ const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 function ChplSedEdit() {
   const { listing } = useContext(ListingContext);
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
-  const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
+  const [ucdProcesses, setUcdProcesses] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setUcdProcessOptions(data);
+    setUcdProcesses(data);
   }, [data, isLoading, isSuccess]);
 
   if (!listing) {
@@ -88,7 +88,7 @@ function ChplSedEdit() {
                 <div key={ucd.id}>
                   <ChplUcdProcessEdit
                     ucdProcess={ucd}
-                    ucdProcessOptions={ucdProcessOptions}
+                    ucdProcesses={ucdProcesses}
                   />
                 </div>
               ))}

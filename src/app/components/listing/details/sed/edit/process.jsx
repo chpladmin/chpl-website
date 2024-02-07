@@ -52,20 +52,27 @@ const useStyles = makeStyles({
 });
 
 function ChplUcdProcessEdit(props) {
-  const { criteriaOptions, ucdProcess, ucdProcessOptions } = props;
+  const { criteriaOptions, ucdProcess, ucdProcesses } = props;
   const { listing, setListing } = useContext(ListingContext);
   const [canDelete, setCanDelete] = useState(false);
   const [criteria, setCriteria] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
+  const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
     setCriteria(ucdProcess.criteria?.map((criterion) => ({
       ...criterion,
-    })) || []);
+    })) ?? []);
     setCanDelete(!!ucdProcess.guid);
   }, [ucdProcess]);
+
+  useEffect(() => {
+    setUcdProcessOptions(ucdProcesses
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((process) => process.name));
+  }, [ucdProcesses]);
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
@@ -74,7 +81,7 @@ function ChplUcdProcessEdit(props) {
 
   const buildPayload = () => ({
     ...formik.values.ucdProcess,
-    guid: props.ucdProcess.guid || Date.now(),
+    guid: props.ucdProcess.guid ?? Date.now(),
     details: formik.values.details,
     criteria,
   });
@@ -104,7 +111,7 @@ function ChplUcdProcessEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      ucdProcess: ucdProcessOptions.find((process) => process.id === ucdProcess.id),
+      ucdProcess: ucdProcess.name,
       details: ucdProcess.details,
     },
     onSubmit: () => {
@@ -113,7 +120,7 @@ function ChplUcdProcessEdit(props) {
     validationSchema,
   });
 
-  if (!ucdProcess || !ucdProcessOptions || ucdProcessOptions.length === 0) {
+  if (!ucdProcess || ucdProcessOptions.length === 0) {
     return (
       <CircularProgress />
     );
@@ -135,14 +142,8 @@ function ChplUcdProcessEdit(props) {
           helperText={formik.touched.name && formik.errors.name}
         >
           { ucdProcessOptions
-            .sort((a, b) => (a.name < b.name ? -1 : 1))
             .map((item) => (
-              <MenuItem
-                value={item}
-                key={item.id}
-              >
-                {item.name}
-              </MenuItem>
+              <MenuItem value={item} key={item}>{item}</MenuItem>
             ))}
         </ChplTextField>
         <ChplTextField
@@ -200,7 +201,7 @@ export default ChplUcdProcessEdit;
 ChplUcdProcessEdit.propTypes = {
   criteriaOptions: arrayOf(criterionPropType),
   ucdProcess: ucdProcessPropType.isRequired,
-  ucdProcessOptions: arrayOf(ucdProcessType).isRequired,
+  ucdProcesses: arrayOf(ucdProcessType).isRequired,
 };
 
 ChplUcdProcessEdit.defaultProps = {
