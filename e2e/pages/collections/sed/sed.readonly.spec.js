@@ -7,18 +7,18 @@ const config = require('../../../config/mainConfig');
 
 let page;
 
-describe('the SED Information for 2015 Edition Products collection page', () => {
+describe('the SED Information page', () => {
   beforeEach(async () => {
     page = new SedPage();
     await page.open();
   });
 
   it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED).');
+    await expect(await page.getBodyText()).toContain('This list includes all health IT products that have been certified with Safety Enhanced Design (SED).');
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Status', 'Actions'];
+    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
@@ -62,14 +62,14 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
 
       it('should show only listings that match the developer', async () => {
         const searchTerm = 'Eprosystem Inc.';
-        const columnIndex = 2;
+        const columnIndex = 1;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
       });
 
       it('should show only listings that match the product', async () => {
         const searchTerm = 'Veracity';
-        const columnIndex = 3;
+        const columnIndex = 2;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
       });
