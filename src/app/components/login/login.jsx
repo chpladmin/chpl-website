@@ -222,9 +222,7 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.token);
-        console.log(authService.parseJwt(response.token));
         if (authService.parseJwt(response.token).iss === 'ONCCHPL') {
-          console.log('calling getUserById');
           networkService.getUserById(authService.getUserId())
             .then((data) => {
               setUser(data);
@@ -238,7 +236,6 @@ function ChplLogin({ dispatch }) {
               toastWhenUsernameUsed(signinFormik.values.userName, data);
             });
         } else {
-          console.log('calling getCognitoUser');
           networkService.getCognitoUser(authService.getUserId())
             .then((data) => {
               setUser(data);

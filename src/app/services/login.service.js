@@ -85,8 +85,6 @@
     }
 
     function getUserId() {
-      console.log(parseJwt(getToken()));
-          
       if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         if (parseJwt(token).Identity) {
