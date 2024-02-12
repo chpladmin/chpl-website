@@ -19,7 +19,7 @@ const mock = {
   changeRequest: {
     statuses: [{
       id: 1,
-      userPermission: { authority: 'chpl-onc' },
+      userPermission: { authority: 'ROLE_ONC' },
       statusChangeDateTime: '2022-03-21T04:25:32.000',
       changeRequestStatusType: { name: 'status by onc' },
       comment: 'onc comment',

@@ -10,7 +10,7 @@ const mock = {
   changeRequest: {
     statuses: [{
       id: 1,
-      userPermission: { authority: 'chpl-onc' },
+      userPermission: { authority: 'ROLE_ONC' },
       statusChangeDateTime: '2022-03-21T04:25:32.000',
       changeRequestStatusType: { name: 'status by onc' },
       comment: 'onc comment',
@@ -22,14 +22,14 @@ const mock = {
       comment: 'comment by admin',
     }, {
       id: 3,
-      userPermission: { authority: 'chpl-onc-acb' },
+      userPermission: { authority: 'ROLE_ACB' },
       statusChangeDateTime: '2022-03-21T04:30:32.000',
       changeRequestStatusType: { name: 'status done by ACB' },
       certificationBody: { name: 'an ACB' },
       comment: 'an acb comment',
     }, {
       id: 4,
-      userPermission: { authority: 'chpl-developer' },
+      userPermission: { authority: 'ROLE_DEVELOPER' },
       statusChangeDateTime: '2022-03-21T04:23:32.000',
       changeRequestStatusType: { name: 'dev status' },
       comment: 'developers have comments too',
