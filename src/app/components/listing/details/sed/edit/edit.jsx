@@ -17,9 +17,8 @@ import {
 } from '@material-ui/core';
 
 import ChplSedDetailsEdit from './details';
-import ChplUcdProcessEdit from './process';
+import ChplUcdProcessesEdit from './processes-edit';
 
-import { useFetchUcdProcesses } from 'api/standards';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -55,14 +54,7 @@ const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 
 function ChplSedEdit() {
   const { listing } = useContext(ListingContext);
-  const { data, isLoading, isSuccess } = useFetchUcdProcesses();
-  const [ucdProcesses, setUcdProcesses] = useState([]);
   const classes = useStyles();
-
-  useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setUcdProcesses(data);
-  }, [data, isLoading, isSuccess]);
 
   if (!listing) {
     return (
@@ -82,16 +74,7 @@ function ChplSedEdit() {
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
           <Card>
-            { listing.sed.ucdProcesses
-              .sort(sortUcdProcesses)
-              .map((ucd) => (
-                <div key={ucd.id}>
-                  <ChplUcdProcessEdit
-                    ucdProcess={ucd}
-                    ucdProcesses={ucdProcesses}
-                  />
-                </div>
-              ))}
+            <ChplUcdProcessesEdit />
           </Card>
         </CardContent>
       </Card>
