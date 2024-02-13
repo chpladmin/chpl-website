@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Box,
   Paper,
   Table,
@@ -131,6 +132,7 @@ function ChplSearchView(props) {
   const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
+  const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
@@ -158,7 +160,8 @@ function ChplSearchView(props) {
       ...listing,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading, analytics]);
+    setSearchTermRecordCount(data.searchTermRecordCount);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -184,6 +187,10 @@ function ChplSearchView(props) {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
+  };
+
+  const seeAllResults = () => {
+    dispatch('seeAllTextSearchResults');
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
@@ -231,9 +238,19 @@ function ChplSearchView(props) {
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
                   && (
-                    <Typography>
-                      No results found
-                    </Typography>
+                    <>
+                      <Typography>
+                        No results found
+                      </Typography>
+                      { searchTermRecordCount > 0
+                        && (
+                          <Button
+                            onClick={seeAllResults}
+                          >
+                            { `See ${searchTermRecordCount} more?` }
+                          </Button>
+                        )}
+                    </>
                   )}
                 { listings.length > 0
                   && (
