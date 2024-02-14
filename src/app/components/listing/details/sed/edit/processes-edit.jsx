@@ -122,11 +122,9 @@ function ChplUcdProcessesEdit() {
           )}
         { addingProcess
           && (
-            <>
-              <ChplProcessAdd
-                dispatch={handleDispatch}
-              />
-            </>
+            <ChplProcessAdd
+              dispatch={handleDispatch}
+            />
           )}
       </Box>
     </>
