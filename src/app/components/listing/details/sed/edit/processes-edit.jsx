@@ -14,11 +14,9 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import InfoIcon from '@material-ui/icons/Info';
 
 import ChplProcessAdd from './process-add';
 
-import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -54,7 +52,6 @@ function ChplUcdProcessesEdit() {
   };
 
   const remove = (process) => {
-    // todo
     setListing({
       ...listing,
       sed: {
@@ -62,8 +59,6 @@ function ChplUcdProcessesEdit() {
         ucdProcesses: listing.sed.ucdProcesses
           .filter((p) => p.name !== process.name),
       },
-      //measures: listing.measures
-        //.filter((m) => m.measure.id !== measure.measure.id),
     });
   };
 

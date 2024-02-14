@@ -171,7 +171,6 @@ function ChplSed({ listing }) {
                 .map((task) => (
                   <ChplSedTaskView
                     key={task.id ?? task.uniqueId}
-                    listing={listing}
                     task={task}
                   />
                 ))}
