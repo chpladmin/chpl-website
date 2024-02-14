@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Box,
-  Card,
   Paper,
   Table,
   TableBody,
@@ -12,10 +11,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import { shape, string } from 'prop-types';
 
 import ChplLandingPage from './landing-page';
-import FindReplaceIcon from '@material-ui/icons/FindReplace';
+
 import { useFetchCollection } from 'api/collections';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
@@ -52,18 +52,18 @@ const initialHeaders = [
 ];
 
 const useStyles = makeStyles({
-  cantFindContent:{
-    display: "flex", 
-    alignItems: "center", 
-    justifyContent: "center", 
-    flexDirection: "row",
+  cantFindContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
-  cantFindContainer:{
-    display: "flex", 
-    alignItems: "center", 
+  cantFindContainer: {
+    display: 'flex',
+    alignItems: 'center',
     padding: 8,
-    justifyContent: "center", 
-    flexDirection: "column",
+    justifyContent: 'center',
+    flexDirection: 'column',
   },
   linkWrap: {
     overflowWrap: 'anywhere',
@@ -271,25 +271,23 @@ function ChplSearchView(props) {
                   />
                 )}
             </div>
-            
             { listings.length === 0 && searchTermRecordCount > 0
               && (
                 <Box className={classes.cantFindContainer}>
-                    <FindReplaceIcon htmlColor={palette.primaryLight} style={{fontSize:"64px"}}/>
-                    <Box className={classes.cantFindContent}>
-                      <Typography>Can't find what you're looking for? Clear filters to</Typography>
-                      <Button 
-                        onClick={seeAllResults}
-                        variant="text" 
-                        color="primary" 
-                        style={{ 
-                          paddingLeft:'4px', 
-                          paddingRight:'4px', 
-                          textTransform:'none'}} 
-                        >
+                  <FindReplaceIcon htmlColor={palette.primaryLight} style={{ fontSize: '64px' }} />
+                  <Box className={classes.cantFindContent}>
+                    <Typography>Can&apos;t find what you&apos;re looking for? Clear filters to</Typography>
+                    <Button
+                      onClick={seeAllResults}
+                      variant="text"
+                      color="primary"
+                      style={{ paddingLeft: '4px',
+                        paddingRight: '4px',
+                        textTransform: 'none' }}
+                    >
                       { `see ${searchTermRecordCount} more` }
-                      </Button>
-                    </Box>
+                    </Button>
+                  </Box>
                 </Box>
               )}
             { listings.length > 0
