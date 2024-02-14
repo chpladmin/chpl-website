@@ -60,9 +60,34 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  newProcess: yup.object()
+  description: yup.string()
     .required('Field is required'),
-  newProcessDetails: yup.string()
+  taskRatingScale: yup.string()
+    .max(50, 'Field is too long')
+    .required('Field is required'),
+  taskRating: yup.number()
+    .required('Field is required'),
+  taskRatingStddev: yup.number()
+    .required('Field is required'),
+  taskTimeAvg: yup.number()
+    .required('Field is required'),
+  taskTimeStddev: yup.number()
+    .required('Field is required'),
+  taskTimeDeviationObservedAvg: yup.number()
+    .required('Field is required'),
+  taskTimeDeviationOptimalAvg: yup.number()
+    .required('Field is required'),
+  taskSuccessAverage: yup.number()
+    .required('Field is required'),
+  taskSuccessStddev: yup.number()
+    .required('Field is required'),
+  taskErrors: yup.number()
+    .required('Field is required'),
+  taskErrorsStddev: yup.number()
+    .required('Field is required'),
+  taskPathDeviationObserved: yup.number()
+    .required('Field is required'),
+  taskPathDeviationOptimal: yup.number()
     .required('Field is required'),
 });
 
@@ -95,10 +120,24 @@ function ChplSedTaskAdd({ dispatch }) {
 
   const add = () => {
     const task = {
-      name: formik.values.newProcess.name,
-      details: formik.values.newProcessDetails,
+      uniqueId: Date.now(),
+      description: formik.values.description,
+      taskRatingScale: formik.values.taskRatingScale,
+      taskRating: formik.values.taskRating,
+      taskRatingStddev: formik.values.taskRatingStddev,
+      taskTimeAvg: formik.values.taskTimeAvg,
+      taskTimeStddev: formik.values.taskTimeStddev,
+      taskTimeDeviationObservedAvg: formik.values.taskTimeDeviationObservedAvg,
+      taskTimeDeviationOptimalAvg: formik.values.taskTimeDeviationOptimalAvg,
+      taskSuccessAverage: formik.values.taskSuccessAverage,
+      taskSuccessStddev: formik.values.taskSuccessStddev,
+      taskErrors: formik.values.taskErrors,
+      taskErrorsStddev: formik.values.taskErrorsStddev,
+      taskPathDeviationObserved: formik.values.taskPathDeviationObserved,
+      taskPathDeviationOptimal: formik.values.taskPathDeviationOptimal,
       criteria: availableCriteria.filter((cc) => criteria.has(cc.criterion.number))
         .map((cr) => cr.criterion),
+      participants: [],
     };
     setListing({
       ...listing,
@@ -111,10 +150,22 @@ function ChplSedTaskAdd({ dispatch }) {
     close();
   };
 
-  const isEnabled = () => !!formik.values.newProcess
-        && !!formik.values.newProcessDetails
-        && criteria.size > 0
-        && participants.length >= 10;
+  const isEnabled = () => !!formik.values.description
+        && !!formik.values.taskRatingScale
+        && formik.values.taskRating !== ''
+        && formik.values.taskRatingStddev !== ''
+        && formik.values.taskTimeAvg !== ''
+        && formik.values.taskTimeStddev !== ''
+        && formik.values.taskTimeDeviationObservedAvg !== ''
+        && formik.values.taskTimeDeviationOptimalAvg !== ''
+        && formik.values.taskSuccessAverage !== ''
+        && formik.values.taskSuccessStddev !== ''
+        && formik.values.taskErrors !== ''
+        && formik.values.taskErrorsStddev !== ''
+        && formik.values.taskPathDeviationObserved !== ''
+        && formik.values.taskPathDeviationOptimal !== ''
+        && criteria.size > 0;
+//        && participants.length >= 10;
 
   const toggleCriteria = (event) => {
     if (event.target.checked) {
@@ -130,8 +181,20 @@ function ChplSedTaskAdd({ dispatch }) {
 
   formik = useFormik({
     initialValues: {
-      newProcess: '',
-      newProcessDetails: '',
+      description: '',
+      taskRatingScale: '',
+      taskRating: '',
+      taskRatingStddev: '',
+      taskTimeAvg: '',
+      taskTimeStddev: '',
+      taskTimeDeviationObservedAvg: '',
+      taskTimeDeviationOptimalAvg: '',
+      taskSuccessAverage: '',
+      taskSuccessStddev: '',
+      taskErrors: '',
+      taskErrorsStddev: '',
+      taskPathDeviationObserved: '',
+      taskPathDeviationOptimal: '',
     },
     validationSchema,
   });
@@ -196,6 +259,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskRating"
             label="Task Rating"
             required
+            type="number"
             value={formik.values.taskRating}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -207,6 +271,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskRatingStddev"
             label="Task Rating - Standard Deviation"
             required
+            type="number"
             value={formik.values.taskRatingStddev}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -221,6 +286,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskTimeAvg"
             label="Task Time - Mean (s)"
             required
+            type="number"
             value={formik.values.taskTimeAvg}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -232,6 +298,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskTimeStddev"
             label="Task Time - Standard Deviation (s)"
             required
+            type="number"
             value={formik.values.taskTimeStddev}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -243,6 +310,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskTimeDeviationObservedAvg"
             label="Task Time Deviation - Observed (s)"
             required
+            type="number"
             value={formik.values.taskTimeDeviationObservedAvg}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -254,6 +322,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskTimeDeviationOptimalAvg"
             label="Task Time Deviation - Optimal (s)"
             required
+            type="number"
             value={formik.values.taskTimeDeviationOptimalAvg}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -268,6 +337,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskSuccessAverage"
             label="Task Success - Mean (%)"
             required
+            type="number"
             value={formik.values.taskSuccessAverage}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -279,6 +349,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskSuccessStddev"
             label="Task Success - Standard Deviation (%)"
             required
+            type="number"
             value={formik.values.taskSuccessStddev}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -293,6 +364,7 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskErrors"
             label="Task Errors - Mean (%)"
             required
+            type="number"
             value={formik.values.taskErrors}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -304,33 +376,36 @@ function ChplSedTaskAdd({ dispatch }) {
             name="taskErrorsStddev"
             label="Task Errors - Standard Deviation (%)"
             required
+            type="number"
             value={formik.values.taskErrorsStddev}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.taskErrorsStddev && !!formik.errorsStddev.taskErrorsStddev}
-            helperText={formik.touched.taskErrorsStddev && formik.errorsStddev.taskErrorsStddev}
+            error={formik.touched.taskErrorsStddev && !!formik.errors.taskErrorsStddev}
+            helperText={formik.touched.taskErrorsStddev && formik.errors.taskErrorsStddev}
           />
           <ChplTextField
             id="task-path-deviation-observed"
             name="taskPathDeviationObserved"
             label="Task Path Deviation - Observed (# of Steps)"
             required
+            type="number"
             value={formik.values.taskPathDeviationObserved}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.taskPathDeviationObserved && !!formik.pathDeviationObserved.taskPathDeviationObserved}
-            helperText={formik.touched.taskPathDeviationObserved && formik.pathDeviationObserved.taskPathDeviationObserved}
+            error={formik.touched.taskPathDeviationObserved && !!formik.errors.taskPathDeviationObserved}
+            helperText={formik.touched.taskPathDeviationObserved && formik.errors.taskPathDeviationObserved}
           />
           <ChplTextField
             id="task-path-deviation-optimal"
             name="taskPathDeviationOptimal"
             label="Task Path Deviation - Optimal (# of Steps)"
             required
+            type="number"
             value={formik.values.taskPathDeviationOptimal}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.taskPathDeviationOptimal && !!formik.pathDeviationOptimal.taskPathDeviationOptimal}
-            helperText={formik.touched.taskPathDeviationOptimal && formik.pathDeviationOptimal.taskPathDeviationOptimal}
+            error={formik.touched.taskPathDeviationOptimal && !!formik.errors.taskPathDeviationOptimal}
+            helperText={formik.touched.taskPathDeviationOptimal && formik.errors.taskPathDeviationOptimal}
           />
         </Card>
         <Card className={classes.fullWidthGridRow} id="participants">
