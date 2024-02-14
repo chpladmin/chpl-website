@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Box,
+  Card,
   Paper,
   Table,
   TableBody,
@@ -14,7 +15,7 @@ import {
 import { shape, string } from 'prop-types';
 
 import ChplLandingPage from './landing-page';
-
+import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import { useFetchCollection } from 'api/collections';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
@@ -51,6 +52,19 @@ const initialHeaders = [
 ];
 
 const useStyles = makeStyles({
+  cantFindContent:{
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    flexDirection: "row",
+  },
+  cantFindContainer:{
+    display: "flex", 
+    alignItems: "center", 
+    padding: 8,
+    justifyContent: "center", 
+    flexDirection: "column",
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -238,19 +252,9 @@ function ChplSearchView(props) {
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
                   && (
-                    <>
-                      <Typography>
-                        No results found
-                      </Typography>
-                      { searchTermRecordCount > 0
-                        && (
-                          <Button
-                            onClick={seeAllResults}
-                          >
-                            { `See ${searchTermRecordCount} more?` }
-                          </Button>
-                        )}
-                    </>
+                    <Typography>
+                      No results found
+                    </Typography>
                   )}
                 { listings.length > 0
                   && (
@@ -267,6 +271,27 @@ function ChplSearchView(props) {
                   />
                 )}
             </div>
+            
+            { listings.length === 0 && searchTermRecordCount > 0
+              && (
+                <Box className={classes.cantFindContainer}>
+                    <FindReplaceIcon htmlColor={palette.primaryLight} style={{fontSize:"64px"}}/>
+                    <Box className={classes.cantFindContent}>
+                      <Typography>Can't find what you're looking for? Clear filters to</Typography>
+                      <Button 
+                        onClick={seeAllResults}
+                        variant="text" 
+                        color="primary" 
+                        style={{ 
+                          paddingLeft:'4px', 
+                          paddingRight:'4px', 
+                          textTransform:'none'}} 
+                        >
+                      { `see ${searchTermRecordCount} more` }
+                      </Button>
+                    </Box>
+                </Box>
+              )}
             { listings.length > 0
               && (
                 <>
