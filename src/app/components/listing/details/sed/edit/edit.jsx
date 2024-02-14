@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 
 import ChplSedDetailsEdit from './details';
+import ChplSedTaskEdit from './sed-task-edit';
 import ChplUcdProcessesEdit from './processes-edit';
 
 import { ChplLink } from 'components/util';
@@ -86,9 +87,10 @@ function ChplSedEdit() {
               { listing.sed.testTasks
                 .sort(sortTestTasks)
                 .map((task) => (
-                  <Typography key={task.id ?? task.uniqueId}>
-                    {task.id ?? task.uniqueId}
-                  </Typography>
+                  <ChplSedTaskEdit
+                    key={task.id ?? task.uniqueId}
+                    task={task}
+                  />
                 ))}
             </CardContent>
           </Card>
