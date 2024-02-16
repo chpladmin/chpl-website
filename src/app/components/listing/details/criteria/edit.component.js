@@ -98,16 +98,16 @@ const CertificationCriteriaEditComponent = {
     codeSetsOnChange(action) {
       switch (action.action) {
         case 'Remove':
-          this.cert.codeSetDates = this.cert.codeSetDates
+          this.cert.codeSets = this.cert.codeSets
             .filter((crcs) => {
               if (action.item.item.id === 'newItem') {
                 return crcs.codeSet.requiredDay !== action.item.item.value;
               }
-              return crcs.codeSetDate.id !== action.item.item.id;
+              return crcs.codeSet.id !== action.item.item.id;
             });
           break;
         case 'Add':
-          this.cert.codeSetDates = [].concat(this.cert.codeSetDates).concat({ codeSetDate: action.item.item }).filter((item) => item);
+          this.cert.codeSets = [].concat(this.cert.codeSets).concat({ codeSet: action.item.item }).filter((item) => item);
           break;
         default:
       }
@@ -283,13 +283,13 @@ const CertificationCriteriaEditComponent = {
     // setup helper functions
     getSelectedCodeSetKeys() {
       const that = this;
-      if (!this.cert.codeSetDates) {
+      if (!this.cert.codeSets) {
         return [];
       }
-      return this.cert.codeSetDates
-        .filter((cs) => cs.codeSetDate.id
-                && that.resources.codeSets.filter((acs) => acs.id === cs.codeSetDate.id).length > 0)
-        .map((cs) => ({ key: cs.codeSetDate.id }));
+      return this.cert.codeSets
+        .filter((cs) => cs.codeSet.id
+                && that.resources.codeSets.filter((acs) => acs.id === cs.codeSet.id).length > 0)
+        .map((cs) => ({ key: cs.codeSet.id }));
     }
 
     getSelectedConformanceMethodKeys() {
