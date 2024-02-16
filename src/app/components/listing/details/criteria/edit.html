@@ -29,6 +29,36 @@
           <td><label class="control-label" for="data_gap{{ $ctrl.cert.criterion.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.criterion.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
+        <!--<tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.codeSet && $ctrl.cert.allowedCodeSets.length > 0">-->
+          <tr>
+          <td>
+            <span>Code Sets</span>
+          </td>
+          <td ng-if="$ctrl.canEdit()">
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                  <chpl-expandable-list
+                    identifier="codeSet"
+                    item-key="id"
+                    item-text="dropDownText"
+                    items="$ctrl.cert.allowedCodeSets"
+                    selected-item-keys="$ctrl.selectedCodeSetKeys"
+                    placeholder="Select a Code Set"
+                    on-change="$ctrl.codeSetsOnChange(action)">
+                  </chpl-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td ng-if="$ctrl.cert.codeSets && $ctrl.cert.codeSets.length > 0 && !$ctrl.canEdit()">
+            <ul>
+              <li ng-repeat="m in $ctrl.cert.codeSets">
+                {{ m.requiredDate }}
+              </li>
+            </ul>
+          </td>
+        </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.svap && $ctrl.allowedSvaps.length > 0">
           <td>Standards Version Advancement Process</td>
           <td ng-if="$ctrl.canEdit()">

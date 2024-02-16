@@ -190,6 +190,10 @@ export default class NetworkService {
     return this.apiGET('/change-requests');
   }
 
+  getCodeSets() {
+    return this.apiGET('/code-set-dates');
+  }
+
   getCognitoUser(ssoUserId) {
     return this.apiGET(`/cognito/users/${ssoUserId}`);
   }

@@ -50,12 +50,14 @@ const CertificationCriteriaEditComponent = {
       this.cert.metViaAdditionalSoftware = this.cert.additionalSoftware && this.cert.additionalSoftware.length > 0;
       this.certSave = angular.copy(this.cert);
 
+      this.setAvailableCodeSets();
       this.setAvailableTestTools();
       this.setAvailableStandards();
       this.setAvailableOptionalStandards();
       this.setAvailableConformanceMethods();
       this.setAvailableTestValues();
       this.setAvailableSvaps();
+      this.selectedCodeSetKeys = this.getSelectedCodeSetKeys();
       this.selectedConformanceMethodKeys = this.getSelectedConformanceMethodKeys();
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
       this.selectedFunctionalityTestedKeys = this.getSelectedFunctionalityTestedKeys();
@@ -89,6 +91,24 @@ const CertificationCriteriaEditComponent = {
 
     save() {
       this.close({ $value: this.cert });
+    }
+
+    codeSetsOnChange(action) {
+      switch (action.action) {
+        case 'Remove':
+          this.cert.codeSetDates = this.cert.codeSetDates
+            .filter((crcs) => {
+              if (action.item.item.id === 'newItem') {
+                return crcs.codeSet.value !== action.item.item.value;
+              }
+              return crcs.codeSet.id !== action.item.item.id;
+            });
+          break;
+        case 'Add':
+          this.cert.codeSetDates = [].concat(this.cert.codeSetDates).concat({ codeSetDate: action.item.item }).filter((item) => item);
+          break;
+        default:
+      }
     }
 
     conformanceMethodsOnChange(action) {
@@ -259,6 +279,17 @@ const CertificationCriteriaEditComponent = {
     /// /////////////////////////////////////////////////////////////////
 
     // setup helper functions
+    getSelectedCodeSetKeys() {
+      const that = this;
+      if (!this.cert.codeSetDates) {
+        return [];
+      }
+      return this.cert.codeSetDates
+        .filter((cs) => cs.codeSetDate.id
+                && that.resources.codeSets.filter((acs) => acs.id === cs.codeSetDate.id).length > 0)
+        .map((cs) => ({ key: cs.codeSetDate.id }));
+    }
+
     getSelectedConformanceMethodKeys() {
       const that = this;
       if (!this.cert.conformanceMethods) {
@@ -404,6 +435,18 @@ const CertificationCriteriaEditComponent = {
           .map((tt) => ({
             ...tt,
             dropDownText: (tt.retired ? 'Retired | ' : '') + tt.value,
+          }));
+      }
+    }
+
+    setAvailableCodeSets() {
+      if (Array.isArray(this.resources.codeSets)) {
+        this.cert.allowedCodeSets = this.resources.codeSets
+          .filter((cs) => cs.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          //.filter((cs) => cs.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
+          .map((cs) => ({
+            ...cs,
+            dropDownText: cs.requiredDay,
           }));
       }
     }

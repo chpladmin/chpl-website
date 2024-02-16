@@ -34,6 +34,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => f.chplProductNumber,
       };
       break;
+    case 'codeSetDates':
+      options = {
+        sort: (p, c) => (p.codeSetDate.requiredDay < c.codeSetDate.requiredDay ? -1 : p.codeSetDate.requiredDay > c.codeSetDate.requiredDay ? 1 : 0),
+        write: (f) => `Code Set "${f.codeSetDate.requiredDay}"`,
+      };
+      break;
     case 'conformanceMethods':
       options = {
         sort: (p, c) => (p.conformanceMethod.name < c.conformanceMethod.name ? -1 : p.conformanceMethod.name > c.conformanceMethod.name ? 1 : 0),
@@ -290,6 +296,7 @@ const briefLookup = {
   'certificationResults.allowedTestTools': { message: () => undefined },
   'certificationResults.apiDocumentation': { message: () => undefined },
   'certificationResults.attestationAnswer': { message: () => undefined },
+  'certificationResults.codeSetDates': { message: () => undefined },
   'certificationResults.conformanceMethods': { message: () => undefined },
   'certificationResults.documentationUrl': { message: () => undefined },
   'certificationResults.exportDocumentation': { message: () => undefined },
@@ -523,6 +530,7 @@ const lookup = {
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.apiDocumentation': { message: (before, after) => comparePrimitive(before, after, 'apiDocumentation', 'API Documentation') },
   'certificationResults.attestationAnswer': { message: (before, after) => comparePrimitive(before, after, 'attestationAnswer', 'Attestation') },
+  'certificationResults.codeSetDates': { message: (before, after) => compare(before, after, 'codeSetDates', 'Code Sets') },
   'certificationResults.conformanceMethods': { message: (before, after) => compare(before, after, 'conformanceMethods', 'Conformance Methods') },
   'certificationResults.documentationUrl': { message: (before, after) => comparePrimitive(before, after, 'documentationUrl', 'Documentation URL') },
   'certificationResults.exportDocumentation': { message: (before, after) => comparePrimitive(before, after, 'exportDocumentation', 'Export Documentation') },
