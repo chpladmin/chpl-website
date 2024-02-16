@@ -101,9 +101,9 @@ const CertificationCriteriaEditComponent = {
           this.cert.codeSetDates = this.cert.codeSetDates
             .filter((crcs) => {
               if (action.item.item.id === 'newItem') {
-                return crcs.codeSet.value !== action.item.item.value;
+                return crcs.codeSet.requiredDay !== action.item.item.value;
               }
-              return crcs.codeSet.id !== action.item.item.id;
+              return crcs.codeSetDate.id !== action.item.item.id;
             });
           break;
         case 'Add':
