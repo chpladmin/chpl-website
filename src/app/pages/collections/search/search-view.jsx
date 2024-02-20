@@ -64,6 +64,10 @@ const useStyles = makeStyles({
     padding: 8,
     justifyContent: 'center',
     flexDirection: 'column',
+    width: 'auto',
+    borderRadius: '4px',
+    margin: '0 32px',
+    border: `1px solid ${palette.greyMain}`,
   },
   linkWrap: {
     overflowWrap: 'anywhere',
@@ -276,7 +280,7 @@ function ChplSearchView(props) {
                 <Box className={classes.cantFindContainer}>
                   <FindReplaceIcon htmlColor={palette.primaryLight} style={{ fontSize: '64px' }} />
                   <Box className={classes.cantFindContent}>
-                    <Typography>Can&apos;t find what you&apos;re looking for? Clear filters to</Typography>
+                    <Typography>Can&apos;t find what you&apos;re looking for?</Typography>
                     <Button
                       onClick={seeAllResults}
                       variant="text"
@@ -285,7 +289,7 @@ function ChplSearchView(props) {
                         paddingRight: '4px',
                         textTransform: 'none' }}
                     >
-                      { `see ${searchTermRecordCount} more` }
+                      { `Clear filters to see ${searchTermRecordCount} more` }
                     </Button>
                   </Box>
                 </Box>
