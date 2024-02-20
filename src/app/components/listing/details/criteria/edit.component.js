@@ -445,7 +445,7 @@ const CertificationCriteriaEditComponent = {
       if (Array.isArray(this.resources.codeSets)) {
         this.cert.allowedCodeSets = this.resources.codeSets
           .filter((cs) => cs.criteria.some((cc) => cc.id === this.cert.criterion.id))
-          // .filter((cs) => cs.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
+          .filter((cs) => cs.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
           .map((cs) => ({
             ...cs,
             dropDownText: getCodeSetFormat(cs.requiredDay),
