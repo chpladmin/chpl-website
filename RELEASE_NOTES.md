@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.10.1
+_20 February 2024_
+
+### Flagged User Interface Updates
+* Remove "Certification Edition" as appropriate
+
+---
+
 ## Version 13.10.0
 _5 February 2024_
 
