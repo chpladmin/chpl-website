@@ -284,7 +284,6 @@ function ChplSearchView(props) {
                     <Button
                       onClick={seeAllResults}
                       variant="text"
-                      id="Clear filters to see more"
                       color="primary"
                       style={{ paddingLeft: '4px',
                         paddingRight: '4px',
