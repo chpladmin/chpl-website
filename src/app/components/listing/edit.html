@@ -36,8 +36,8 @@
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250" ng-change="$ctrl.update()">
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
   </div>
-  <div ng-if="$ctrl.listing.edition">
-    <strong>Certification Edition:</strong> {{ $ctrl.listing.edition.name }}</span> <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
+  <div feature-flag="editionless" feature-flag-hide>
+    <strong>Certification Edition:</strong> {{ $ctrl.listing.edition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
   </div>
   <div>
     <strong>Certification Date</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}
