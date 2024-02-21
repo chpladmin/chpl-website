@@ -22,7 +22,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { object } from 'prop-types';
 
-import ChplSedTaskParticipantsView from '../sed-task-participants-view';
+import ChplSedParticipantsEdit from './sed-participants-edit';
 
 import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
@@ -295,52 +295,9 @@ function ChplSedTaskEdit({ task: initialTask }) {
             </Card>
             <Card className={classes.fullWidthGridRow} id="participants">
               <CardHeader title="Participants" />
-              <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4}>
-                <ChplSedTaskParticipantsView
-                  participants={task.testParticipants}
-                />
-              </Box>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Total Number of Participants</TableCell>
-                    <TableCell>{ task.testParticipants.length }</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Occupation Breakdown</TableCell>
-                    <TableCell>
-                      <List>
-                        {occupations
-                          .map((occupation) => (
-                            <ListItem key={occupation.name}>
-                              { occupation.name }
-                              :
-                              {' '}
-                              { occupation.count}
-                              {' '}
-                              /
-                              { task.testParticipants.length }
-                              {' '}
-                              (
-                              { occupation.percentage }
-                              )
-                            </ListItem>
-                          ))}
-                      </List>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Product Experience - Mean (Months)</TableCell>
-                    <TableCell>{ meanExperience }</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <ChplSedParticipantsEdit
+                task={task}
+              />
             </Card>
           </Box>
           <Button
