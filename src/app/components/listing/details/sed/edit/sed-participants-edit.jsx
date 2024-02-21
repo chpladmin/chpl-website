@@ -124,7 +124,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
           <TableBody>
             {allParticipants
              .map((participant) => (
-               <TableRow id={participant.id ?? participant.uniqueId}>
+               <TableRow key={participant.id ?? participant.uniqueId}>
                  <TableCell>{ participant.id }</TableCell>
                  <TableCell>{ participant.productExperienceMonths }</TableCell>
                  <TableCell>{ task.testTasks?.testParticipants.some((p) => p.id === participant.id) ? 'used' : 'not used'}</TableCell>
