@@ -1,5 +1,30 @@
 # Release Notes
 
+## Version 13.10.1
+_20 February 2024_
+
+### Flagged User Interface Updates
+* Remove "Certification Edition" as appropriate
+
+---
+
+## Version 13.10.0
+_5 February 2024_
+
+### Features
+* Remove references to d14 criterion
+
+### Bug Fixes
+* Handle URI-disallowed characters in free text search
+
+### User Interface Updates
+* Display all applicable Standards on criteria details
+
+### Flagged User Interface Updates
+* Remove "Edition" from Developer pages
+
+---
+
 ## Version 13.9.1
 _23 January 2024_
 
