@@ -1,36 +1,24 @@
 import CriteriaComponent from '../criteria.po';
-import Hooks from '../../../../../utilities/hooks';
+import ListingPage from '../../../../../pages/listing/listing.po';
 
-import CriterionComponent from './criterion.po';
+import { open as openPage } from '../../../../../utilities/hooks.async';
 
 let criteria;
-let criterion;
-let hooks;
+let page;
 
 beforeEach(async () => {
   criteria = new CriteriaComponent();
-  criterion = new CriterionComponent();
-  hooks = new Hooks();
+  page = new ListingPage(); 
 });
 
 describe('the Criterion Component', () => {
-  beforeEach(() => {
-    hooks.open('#/listing/9833');
-    hooks.waitForSpinnerToDisappear();
-    criteria.expandRemovedCriteria();
-    browser.waitUntil(() => criteria.criteriaCount() > 1);
+  beforeEach(async () => {
+    await openPage('#/listing/9833');
+    await page.criteriaLeftNavButton();
   });
 
-  it('should display criteria title correctly', () => {
-    const header = criterion.criterionHeader(1);
-    expect(header.getText()).toContain('170.315 (a)(1)');
-    expect(header.getText().toUpperCase()).not.toContain('REMOVED');
-  });
-
-  //ignored test due to flakiness
-  xit('should display removed criteria title correctly', () => {
-    const header = criterion.criterionHeader(6);
-    expect(header.getText()).toContain('170.315 (a)(6)');
-    expect(header.getText().toUpperCase()).toContain('REMOVED');
+  it('should display criteria title correctly', async () => {
+    await expect(await (await criteria.criteriaHeader(1)).getText()).toContain('170.315 (a)(1)');
+    await expect(await (await criteria.criteriaHeader(1)).getText()).not.toContain('Removed');
   });
 });

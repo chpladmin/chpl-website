@@ -5,6 +5,7 @@ class ListingPage {
       seeAllCriteria: '#see-all-criteria',
       editCertifiedProduct: '//span[text()="Edit"]',
       newEditCertifiedProductButton: '//span[text()="Edit - New"]',
+      criteriaLeftNavButton: '#certificationCriteria-navigation-button',
       cqmLeftNavButton: '#clinicalQualityMeasures-navigation-button',
       versionSelectHelperText: '#version-select-helper-text',
       g1g2MeasuresLeftNavButton: '#g1g2Measures-navigation-button',
@@ -36,6 +37,10 @@ class ListingPage {
 
   async newEditCertifiedProductButton() {
     await (await $(this.elements.newEditCertifiedProductButton)).click();
+  }
+
+  async criteriaLeftNavButton() {
+    await (await $(this.elements.criteriaLeftNavButton)).click();
   }
 
   async cqmLeftNavButton() {
