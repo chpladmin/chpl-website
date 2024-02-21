@@ -50,8 +50,8 @@ const useStyles = makeStyles(() => ({
 
 function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
-  const [canSeeHistory] = useState(props.listing)
-  const [listing] = useState(props.listing)
+  const [canSeeHistory] = useState(props.canSeeHistory);
+  const [listing] = useState(props.listing);
   const [open, setOpen] = useState(false);
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');

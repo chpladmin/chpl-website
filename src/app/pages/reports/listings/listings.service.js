@@ -23,8 +23,8 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'certificationEvents':
       options = {
-        sort: (p, c) => ((p.status?.name ?? p.certificationStatusName) === (c.status?.name ?? c.certificationStatusName) ? 0 : p.eventDate - c.eventDate),
-        write: (f) => `Certification Status "${f.status?.name ?? f.certificationStatusName}"`,
+        sort: (p, c) => ((p.status?.name ?? p.certificationStatusName) === (c.status?.name ?? c.certificationStatusName) ? 0 : (p.eventDate ? (p.eventDate - c.eventDate) : (p.eventDay < c.eventDay ? -1 : 1))),
+        write: (f) => `Certification Status "${f.status?.name ?? f.certificationStatusName}" as of "${getDisplayDateFormat(f.eventDay || f.eventDate)}"`,
       };
       break;
     case 'children':
