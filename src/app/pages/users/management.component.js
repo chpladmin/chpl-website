@@ -26,12 +26,12 @@ const UserManagementComponent = {
     $onChanges(changes) {
       if (changes.users.currentValue) {
         this.users = changes.users.currentValue.users
-          .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER'].includes(user.role));
+          .filter((user) => !['chpl-onc-acb', 'chpl-developer'].includes(user.role));
       }
     }
 
     handleRole() {
-      this.roles = ['ROLE_ONC', 'ROLE_CMS_STAFF'];
+      this.roles = ['chpl-onc', 'ROLE_CMS_STAFF'];
       if (this.hasAnyRole(['chpl-admin'])) {
         this.roles.push('chpl-admin');
       }
@@ -64,11 +64,11 @@ const UserManagementComponent = {
           this.networkService.getUsers()
             .then((response) => {
               that.users = response.users
-                .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER'].includes(user.role));
+                .filter((user) => !['chpl-onc-acb', 'chpl-developer'].includes(user.role));
             });
           break;
         case 'impersonate':
-          if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+          if (this.hasAnyRole(['chpl-developer'])) {
             this.$state.go('dashboard');
           } else {
             this.$state.reload();

@@ -222,19 +222,7 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.token);
-        if (isOn('sso')) {
-          networkService.getCognitoUser(authService.getUserId())
-            .then((data) => {
-              setUser(data);
-              signinFormik.resetForm();
-              $analytics.eventTrack('Log In', { category: 'Authentication' });
-              authService.saveCurrentUser(data);
-              Idle.watch();
-              //Keepalive.ping();
-              $rootScope.$broadcast('loggedIn');
-              dispatch('loggedIn');
-            });
-        } else {
+        if (authService.parseJwt(response.token).iss === 'ONCCHPL') {
           networkService.getUserById(authService.getUserId())
             .then((data) => {
               setUser(data);
@@ -246,6 +234,18 @@ function ChplLogin({ dispatch }) {
               $rootScope.$broadcast('loggedIn');
               dispatch('loggedIn');
               toastWhenUsernameUsed(signinFormik.values.userName, data);
+            });
+        } else {
+          networkService.getCognitoUser(authService.getUserId())
+            .then((data) => {
+              setUser(data);
+              signinFormik.resetForm();
+              $analytics.eventTrack('Log In', { category: 'Authentication' });
+              authService.saveCurrentUser(data);
+              Idle.watch();
+              //Keepalive.ping();
+              $rootScope.$broadcast('loggedIn');
+              dispatch('loggedIn');
             });
         }
       },

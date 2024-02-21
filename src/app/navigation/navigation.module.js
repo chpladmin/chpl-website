@@ -85,7 +85,7 @@ function authInterceptor($log, API, authService, toaster) {
       if (response.config.url.indexOf(API) === 0) {
         response.data = parseToken(response.data);
       }
-      if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         authService.logout();
       }
       return response;

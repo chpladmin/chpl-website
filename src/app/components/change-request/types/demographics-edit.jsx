@@ -165,7 +165,7 @@ function ChplChangeRequestDemographicsEdit(props) {
               id="self-developer"
               name="selfDeveloper"
               color="primary"
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+              disabled={!hasAnyRole(['chpl-developer'])}
               checked={formik.values.selfDeveloper}
               onChange={handleChange}
             />
@@ -179,7 +179,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="fullName"
             label="Full Name"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.fullName}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -190,7 +190,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             id="title"
             name="title"
             label="Title"
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.title}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -202,7 +202,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="email"
             label="Email"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.email}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -214,7 +214,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="phoneNumber"
             label="Phone"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.phoneNumber}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -229,7 +229,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="line1"
             label="Address"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.line1}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -240,7 +240,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             id="line2"
             name="line2"
             label="Line 2"
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.line2}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -252,7 +252,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="city"
             label="City"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.city}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -264,7 +264,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="state"
             label="State"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.state}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -276,7 +276,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="zipcode"
             label="Zip"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.zipcode}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -288,7 +288,7 @@ function ChplChangeRequestDemographicsEdit(props) {
             name="country"
             label="Country"
             required
-            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            disabled={!hasAnyRole(['chpl-developer'])}
             value={formik.values.country}
             onChange={handleChange}
             onBlur={formik.handleBlur}
@@ -302,7 +302,7 @@ function ChplChangeRequestDemographicsEdit(props) {
           name="website"
           label="Website"
           required
-          disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+          disabled={!hasAnyRole(['chpl-developer'])}
           value={formik.values.website}
           onChange={handleChange}
           onBlur={formik.handleBlur}

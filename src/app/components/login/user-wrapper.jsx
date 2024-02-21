@@ -43,6 +43,16 @@ function UserWrapper(props) {
     if (roles.includes('chpl-admin')) {
       roles.push('ROLE_ADMIN');
     }
+    if (roles.includes('chpl-onc-acb')) {
+      roles.push('ROLE_ACB');
+    }
+    if (roles.includes('chpl-developer')) {
+      roles.push('ROLE_DEVELOPER');
+    }
+    if (roles.includes('chpl-onc')) {
+      roles.push('ROLE_ONC');
+    }
+
     return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
   };
 

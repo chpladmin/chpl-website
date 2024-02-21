@@ -44,7 +44,7 @@ function ChplAttestationsView(props) {
   const [attestationsOpen, setAttestationsOpen] = useState(false);
   const [attestations, setAttestations] = useState([]);
   const [developer, setDeveloper] = useState({});
-  const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
+  const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) });
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
   const classes = useStyles();
 
@@ -59,10 +59,10 @@ function ChplAttestationsView(props) {
     props.dispatch('createAttestation');
   };
 
-  const canSeeAttestationData = () => hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])
-        || (hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.id }));
+  const canSeeAttestationData = () => hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+        || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }));
 
-  const canSeeUnsubmittedAttestationData = () => hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB']);
+  const canSeeUnsubmittedAttestationData = () => hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']);
 
   const closeAttestations = () => setAttestationsOpen(false);
 
@@ -174,7 +174,7 @@ function ChplAttestationsView(props) {
               />
             )}
         </CardContent>
-        { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.id })
+        { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id })
           && (
             <CardActions>
               <Button

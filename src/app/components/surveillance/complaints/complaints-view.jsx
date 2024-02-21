@@ -161,7 +161,7 @@ function ChplComplaintsView(props) {
   }, [data, isLoading, isSuccess]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = (hasAnyRole(['ROLE_ACB']) || bonusQuery) ? [
+  const headers = (hasAnyRole(['chpl-onc-acb']) || bonusQuery) ? [
     { property: 'current_status', text: 'Status', sortable: true },
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
@@ -237,7 +237,7 @@ function ChplComplaintsView(props) {
   }
 
   const getButtons = () => {
-    if (hasAnyRole(['ROLE_ONC'])) {
+    if (hasAnyRole(['chpl-onc'])) {
       return (
         <ButtonGroup className={classes.wrap}>
           <Button
@@ -252,7 +252,7 @@ function ChplComplaintsView(props) {
         </ButtonGroup>
       );
     }
-    if (hasAnyRole(['ROLE_ACB'])) {
+    if (hasAnyRole(['chpl-onc-acb'])) {
       if (canAdd) {
         return (
           <ButtonGroup className={classes.wrap}>
@@ -372,7 +372,7 @@ function ChplComplaintsView(props) {
                           {complaints
                             .map((complaint) => (
                               <TableRow key={complaint.id}>
-                                { !hasAnyRole(['ROLE_ACB']) && !bonusQuery
+                                { !hasAnyRole(['chpl-onc-acb']) && !bonusQuery
                                   && (
                                     <TableCell>{complaint.certificationBody.name}</TableCell>
                                   )}

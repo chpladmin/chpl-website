@@ -138,7 +138,7 @@ function ChplComplaints(props) {
   }, [initialDisallowedFilters]);
 
   useEffect(() => {
-    if (!hasAnyRole(['ROLE_ACB'])) { return; }
+    if (!hasAnyRole(['chpl-onc-acb'])) { return; }
     setBonusQuery((bq) => [...(new Set(bq
       .split('&')
       .concat(`certificationBodies=${user.organizations[0].name}`)

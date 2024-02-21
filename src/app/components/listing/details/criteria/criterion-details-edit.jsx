@@ -140,7 +140,7 @@ function ChplCriterionDetailsEdit(props) {
           )}
           label={`${criterion.criterion.number}: ${criterion.criterion.title}`}
         />
-        { (hasAnyRole(['chpl-admin', 'ROLE_ONC']) || !criterion.criterion.removed)
+        { (hasAnyRole(['chpl-admin', 'chpl-onc']) || !criterion.criterion.removed)
           && (
             <Collapse in={formik.values.success}>
               { criterion.additionalSoftware !== null

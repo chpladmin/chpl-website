@@ -162,7 +162,7 @@ function ChplChangeRequestsView(props) {
   }, [data, isLoading, isSuccess]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
+  const headers = hasAnyRole(['chpl-developer']) ? [
     { property: 'change_request_type', text: 'Request Type', sortable: true },
     { property: 'change_request_status', text: 'Request Status', sortable: true },
     { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
@@ -307,7 +307,7 @@ function ChplChangeRequestsView(props) {
                                 {changeRequests
                                   .map((item) => (
                                     <TableRow key={item.id}>
-                                      { !hasAnyRole(['ROLE_DEVELOPER'])
+                                      { !hasAnyRole(['chpl-developer'])
                                        && (
                                          <TableCell className={classes.tableFirstColumn}>
                                            <div className={classes.tableDeveloperCell}>
@@ -325,7 +325,7 @@ function ChplChangeRequestsView(props) {
                                          </TableCell>
                                        )}
                                       <TableCell>{item.changeRequestType.name}</TableCell>
-                                      { !hasAnyRole(['ROLE_DEVELOPER'])
+                                      { !hasAnyRole(['chpl-developer'])
                                        && <TableCell>{getDisplayDateFormat(item.submittedDateTime)}</TableCell>}
                                       <TableCell>{item.currentStatus.name}</TableCell>
                                       <TableCell>
@@ -337,7 +337,7 @@ function ChplChangeRequestsView(props) {
                                           {item.currentStatus.statusChangeDateTime}
                                         </Moment>
                                       </TableCell>
-                                      { !hasAnyRole(['ROLE_DEVELOPER'])
+                                      { !hasAnyRole(['chpl-developer'])
                                        && (
                                          <TableCell>
                                            { item.certificationBodies.length === 0

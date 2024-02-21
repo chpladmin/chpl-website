@@ -30,14 +30,14 @@
       const targetRole = target.role;
       return !isImpersonating()
         && (((userRole === 'ROLE_ADMIN' || userRole === 'chpl-admin') && (targetRole !== 'ROLE_ADMIN' && targetRole !== 'chpl-admin'))
-                 || (userRole === 'ROLE_ONC' && targetRole !== 'chpl-admin' && targetRole !== 'ROLE_ONC'));
+                 || (userRole === 'chpl-onc' && targetRole !== 'chpl-admin' && targetRole !== 'chpl-onc'));
     }
 
     function canManageAcb(acb) {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc'])) {
         return true;
       }
-      if (hasAnyRole(['ROLE_ACB'])) {
+      if (hasAnyRole(['chpl-onc-acb'])) {
         const currentUser = getCurrentUser();
         return currentUser.organizations
           .filter((o) => o.id === acb.id)
@@ -47,10 +47,10 @@
     }
 
     function canManageDeveloper(developer) {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
         return true;
       }
-      if (hasAnyRole(['ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-developer'])) {
         const currentUser = getCurrentUser();
         return currentUser.organizations
           .filter((d) => d.id === developer.id)
@@ -64,7 +64,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -85,14 +85,15 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
-        if (featureFlags.isOn('sso')) {
-          return parseJwt(token).sub;
-        } else {
+        if (parseJwt(token).Identity) {
           const identity = parseJwt(token).Identity;
           return identity[0];
+        } else {
+          return parseJwt(token).sub;
         }
+
       } else {
         logout();
         return '';
@@ -107,15 +108,19 @@
       if (roles.includes('chpl-admin')) {
         roles.push('ROLE_ADMIN');
       }
-      
+      if (roles.includes('chpl-onc-acb')) {
+        roles.push('ROLE_ACB');
+      }
+      if (roles.includes('chpl-developer')) {
+        roles.push('ROLE_DEVELOPER');
+      }
+      if (roles.includes('chpl-onc')) {
+        roles.push('ROLE_ONC');
+      }
+
       const token = getToken();
       if (token) {
-        var userRole;
-        if (featureFlags.isOn('sso')) {
-          userRole = parseJwt(token)['cognito:groups'][0];
-        } else {
-          userRole = parseJwt(token).Authority;
-        }
+        var userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list

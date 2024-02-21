@@ -28,7 +28,7 @@ export const SurveillanceReportAnnualComponent = {
     }
 
     can (action) {
-      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'ROLE_ACB']);
+      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'chpl-onc-acb']);
     }
 
     cancel () {

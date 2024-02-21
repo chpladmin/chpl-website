@@ -75,7 +75,7 @@ function ChplOncOrganizations() {
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
-  const roles = ['ROLE_ACB'];
+  const roles = ['chpl-onc-acb'];
   const classes = useStyles();
 
   useEffect(() => {
@@ -139,7 +139,7 @@ function ChplOncOrganizations() {
         }
         break;
       case 'invite':
-        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
+        invite({ role: 'chpl-onc-acb', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {
             enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
               variant: 'success',
@@ -216,7 +216,7 @@ function ChplOncOrganizations() {
                   ONC Organization maintenance
                 </Typography>
               </CardContent>
-              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <CardActions>
                     <Button
@@ -232,7 +232,7 @@ function ChplOncOrganizations() {
                 )}
             </Card>
           )}
-        { isCreating && hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+        { isCreating && hasAnyRole(['chpl-admin', 'chpl-onc'])
           && (
             <ChplOncOrganization
               dispatch={handleDispatch}
