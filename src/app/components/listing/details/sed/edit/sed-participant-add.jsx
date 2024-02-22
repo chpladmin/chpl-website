@@ -42,7 +42,7 @@ const validationSchema = yup.object({
   occupation: yup.string()
     .max(250, 'Field is too long')
     .required('Field is required'),
-  education: yup.object()
+  educationTypeName: yup.string()
     .required('Field is required'),
   productExperienceMonths: yup.number()
     .required('Field is required'),
@@ -50,9 +50,9 @@ const validationSchema = yup.object({
     .required('Field is required'),
   computerExperienceMonths: yup.number()
     .required('Field is required'),
-  ageRange: yup.object()
+  ageRange: yup.string()
     .required('Field is required'),
-  gender: yup.object()
+  gender: yup.string()
     .required('Field is required'),
   assistiveTechnologyNeeds: yup.string()
     .max(250, 'Field is too long')
@@ -65,7 +65,7 @@ function ChplSedParticipantAdd({ dispatch }) {
 
   const close = () => {
     formik.setFieldValue('occupation', '');
-    formik.setFieldValue('education', '');
+    formik.setFieldValue('educationTypeName', '');
     formik.setFieldValue('productExperienceMonths', '');
     formik.setFieldValue('professionalExperienceMonths', '');
     formik.setFieldValue('computerExperienceMonths', '');
@@ -79,7 +79,7 @@ function ChplSedParticipantAdd({ dispatch }) {
     const participant = {
       uniqueId: Date.now(),
       occupation: formik.values.occupation,
-      education: formik.values.education,
+      educationTypeName: formik.values.educationTypeName,
       productExperienceMonths: formik.values.productExperienceMonths,
       professionalExperienceMonths: formik.values.professionalExperienceMonths,
       computerExperienceMonths: formik.values.computerExperienceMonths,
@@ -91,7 +91,7 @@ function ChplSedParticipantAdd({ dispatch }) {
   };
 
   const isEnabled = () => !!formik.values.occupation
-        && !!formik.values.education
+        && !!formik.values.educationTypeName
         && formik.values.productExperienceMonths !== ''
         && formik.values.professionalExperienceMonths !== ''
         && formik.values.computerExperienceMonths !== ''
@@ -102,7 +102,7 @@ function ChplSedParticipantAdd({ dispatch }) {
   formik = useFormik({
     initialValues: {
       occupation: '',
-      education: '',
+      educationTypeName: '',
       productExperienceMonths: '',
       professionalExperienceMonths: '',
       computerExperienceMonths: '',
@@ -129,15 +129,15 @@ function ChplSedParticipantAdd({ dispatch }) {
           helperText={formik.touched.occupation && formik.errors.occupation}
         />
         <ChplTextField
-          id="education"
-          name="education"
+          id="education-type-name"
+          name="educationTypeName"
           label="Education"
           required
-          value={formik.values.education}
+          value={formik.values.educationTypeName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.education && !!formik.errors.education}
-          helperText={formik.touched.education && formik.errors.education}
+          error={formik.touched.educationTypeName && !!formik.errors.educationTypeName}
+          helperText={formik.touched.educationTypeName && formik.errors.educationTypeName}
         />
         <ChplTextField
           id="product-experience-months"
@@ -187,6 +187,7 @@ function ChplSedParticipantAdd({ dispatch }) {
           helperText={formik.touched.ageRange && formik.errors.ageRange}
         />
         <ChplTextField
+          select
           id="gender"
           name="gender"
           label="Gender"
@@ -196,7 +197,11 @@ function ChplSedParticipantAdd({ dispatch }) {
           onBlur={formik.handleBlur}
           error={formik.touched.gender && !!formik.errors.gender}
           helperText={formik.touched.gender && formik.errors.gender}
-        />
+          >
+          <MenuItem value="Female">Female</MenuItem>
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Unknown">Unknown</MenuItem>
+        </ChplTextField>
         <ChplTextField
           id="assistive-technology-needs"
           name="assistiveTechnologyNeeds"
