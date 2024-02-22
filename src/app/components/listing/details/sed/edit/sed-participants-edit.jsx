@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -11,7 +12,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { object } from 'prop-types';
 
@@ -80,6 +80,36 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
     setExpanded(!expanded);
   };
 
+  const add = (participant) => {
+    const updatedTask = {
+      ...task,
+      testParticipants: task.testParticipants.concat(participant),
+    };
+    const updatedListing = {
+      ...listing,
+      sed: {
+        ...listing.sed,
+        testTasks: listing.sed.testTasks.filter((t) => t.id !== task.id).concat(updatedTask), // figure out new task filtering
+      },
+    };
+    setListing(updatedListing);
+  };
+
+  const remove = (participant) => {
+    const updatedTask = {
+      ...task,
+      testParticipants: task.testParticipants.filter((p) => p.id !== participant.id),
+    };
+    const updatedListing = {
+      ...listing,
+      sed: {
+        ...listing.sed,
+        testTasks: listing.sed.testTasks.filter((t) => t.id !== task.id).concat(updatedTask), // figure out new task filtering
+      },
+    };
+    setListing(updatedListing);
+  };
+
   if (!task) { return null; }
 
   return (
@@ -131,7 +161,22 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                      <TableCell>{ participant.gender }</TableCell>
                      <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
                      { */ }
-                  <TableCell>{ task.testParticipants.some((p) => p.id === participant.id) ? 'used' : 'not used'}</TableCell>
+                  <TableCell>
+                    { task.testParticipants.some((p) => p.id === participant.id)
+                      ? (
+                        <Button
+                          onClick={() => remove(participant)}
+                        >
+                          Remove
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => add(participant)}
+                        >
+                          Add
+                        </Button>
+                      )}
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -144,5 +189,5 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
 export default ChplSedParticipantsEdit;
 
 ChplSedParticipantsEdit.propTypes = {
-  task: object.isRequired,
+  task: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
