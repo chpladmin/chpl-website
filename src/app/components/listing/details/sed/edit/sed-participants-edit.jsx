@@ -3,13 +3,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  List,
-  ListItem,
   Table,
   TableBody,
   TableCell,
@@ -22,9 +15,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { object } from 'prop-types';
 
-import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
-import { palette, utilStyles, theme } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -51,10 +43,6 @@ const useStyles = makeStyles({
     transform: 'rotate(180deg)',
   },
 });
-
-const makeRounded = (val) => Math.round(val * 1000) / 1000;
-
-const makePercentage = (val) => `${makeRounded(val * 100)}%`;
 
 function ChplSedParticipantsEdit({ task: initialTask }) {
   const { listing, setListing } = useContext(ListingContext);
@@ -84,8 +72,8 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
 
   useEffect(() => {
     if (!listing) { return; }
-    setAllParticipants(listing.sed.testTasks.reduce((parts, task) => parts.concat(task.testParticipants.filter((tp) => !parts.some((p) => p.id === tp.id))), [])
-        .sort((a, b) => a.id - b.id));
+    setAllParticipants(listing.sed.testTasks.reduce((parts, t) => parts.concat(t.testParticipants.filter((tp) => !parts.some((p) => p.id === tp.id))), [])
+      .sort((a, b) => a.id - b.id));
   }, [listing]);
 
   const handleAccordionChange = () => {
@@ -106,7 +94,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
         id={`task-participants-id-${task.id}-header`}
       >
         <Typography variant="subtitle1" className={classes.summaryText}>
-          { `${allParticipants.filter((participant) => task.testParticipants.some((p) => p.id === participant.id)).length } Participants Selected`}
+          { `${allParticipants.filter((participant) => task.testParticipants.some((p) => p.id === participant.id)).length} Participants Selected`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails
@@ -131,21 +119,21 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
           </TableHead>
           <TableBody>
             {allParticipants
-             .map((participant) => (
-               <TableRow key={participant.id ?? participant.uniqueId}>
-                 <TableCell>{ participant.occupation }</TableCell>
-                 <TableCell>{ participant.educationTypeName }</TableCell>
-                 <TableCell>{ participant.productExperienceMonths }</TableCell>
-                 <TableCell>{ participant.professionalExperienceMonths }</TableCell>
-                 <TableCell>{ participant.computerExperienceMonths }</TableCell>
-                 { /* }
+              .map((participant) => (
+                <TableRow key={participant.id ?? participant.uniqueId}>
+                  <TableCell>{ participant.occupation }</TableCell>
+                  <TableCell>{ participant.educationTypeName }</TableCell>
+                  <TableCell>{ participant.productExperienceMonths }</TableCell>
+                  <TableCell>{ participant.professionalExperienceMonths }</TableCell>
+                  <TableCell>{ participant.computerExperienceMonths }</TableCell>
+                  { /* }
                      <TableCell>{ participant.ageRange }</TableCell>
                      <TableCell>{ participant.gender }</TableCell>
                      <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
                      { */ }
-                 <TableCell>{ task.testParticipants.some((p) => p.id === participant.id) ? 'used' : 'not used'}</TableCell>
-               </TableRow>
-             ))}
+                  <TableCell>{ task.testParticipants.some((p) => p.id === participant.id) ? 'used' : 'not used'}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </AccordionDetails>
