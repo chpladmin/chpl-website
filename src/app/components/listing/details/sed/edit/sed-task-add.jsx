@@ -11,12 +11,6 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -25,10 +19,7 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import ChplSedTaskParticipantsView from '../sed-task-participants-view';
-
 import { ChplTextField } from 'components/util';
-import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -96,7 +87,6 @@ function ChplSedTaskAdd({ dispatch }) {
   const [availableCriteria, setAvailableCriteria] = useState([]);
   const [criteria, setCriteria] = useState(new Set());
   const [criteriaOptions, setCriteriaOptions] = useState([]);
-  const [participants, setParticipants] = useState([]);
   const classes = useStyles();
   let formik;
 
@@ -165,7 +155,6 @@ function ChplSedTaskAdd({ dispatch }) {
         && formik.values.taskPathDeviationObserved !== ''
         && formik.values.taskPathDeviationOptimal !== ''
         && criteria.size > 0;
-//        && participants.length >= 10;
 
   const toggleCriteria = (event) => {
     if (event.target.checked) {
@@ -407,28 +396,6 @@ function ChplSedTaskAdd({ dispatch }) {
             error={formik.touched.taskPathDeviationOptimal && !!formik.errors.taskPathDeviationOptimal}
             helperText={formik.touched.taskPathDeviationOptimal && formik.errors.taskPathDeviationOptimal}
           />
-        </Card>
-        <Card className={classes.fullWidthGridRow} id="participants">
-          <CardHeader title="Participants" />
-          <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4}>
-            <ChplSedTaskParticipantsView
-              participants={[]}
-            />
-          </Box>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Description</TableCell>
-                <TableCell>Value</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>Total Number of Participants</TableCell>
-                <TableCell>{ 0 }</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
         </Card>
       </Box>
       <Box className={classes.cancelAndSaveButton}>
