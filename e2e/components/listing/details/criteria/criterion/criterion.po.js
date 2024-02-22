@@ -1,12 +1,12 @@
 class CriterionComponent {
   constructor() {
     this.elements = {
-      criterionHeader: (id) => `#criterion-id-${id}-header`,
+      criterionHeader: async id => `#criterion-id-${id}-header`,
     };
   }
 
-  criterionHeader(id) {
-    return $(this.elements.criterionHeader(id)).$('h6');
+  async criterionHeader(id) {
+    return $(await this.elements.criterionHeader(id)).$('h6');
   }
 }
 
