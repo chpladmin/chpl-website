@@ -106,7 +106,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
         id={`task-participants-id-${task.id}-header`}
       >
         <Typography variant="subtitle1" className={classes.summaryText}>
-          participants data
+          { `${allParticipants.filter((participant) => task.testParticipants.some((p) => p.id === participant.id)).length } Participants Selected`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails
@@ -116,8 +116,16 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Product Experience (months)</TableCell>
+              <TableCell>Occupation</TableCell>
+              <TableCell>Education Type</TableCell>
+              <TableCell>Product Experience (Months)</TableCell>
+              <TableCell>Professional Experience (Months)</TableCell>
+              <TableCell>Computer Experience (Months)</TableCell>
+              { /* }
+                  <TableCell>Age (Years)</TableCell>
+                  <TableCell>Gender</TableCell>
+                  <TableCell>Assistive Technology Needs</TableCell>
+                  { */ }
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -125,9 +133,17 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
             {allParticipants
              .map((participant) => (
                <TableRow key={participant.id ?? participant.uniqueId}>
-                 <TableCell>{ participant.id }</TableCell>
+                 <TableCell>{ participant.occupation }</TableCell>
+                 <TableCell>{ participant.educationTypeName }</TableCell>
                  <TableCell>{ participant.productExperienceMonths }</TableCell>
-                 <TableCell>{ task.testTasks?.testParticipants.some((p) => p.id === participant.id) ? 'used' : 'not used'}</TableCell>
+                 <TableCell>{ participant.professionalExperienceMonths }</TableCell>
+                 <TableCell>{ participant.computerExperienceMonths }</TableCell>
+                 { /* }
+                     <TableCell>{ participant.ageRange }</TableCell>
+                     <TableCell>{ participant.gender }</TableCell>
+                     <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
+                     { */ }
+                 <TableCell>{ task.testParticipants.some((p) => p.id === participant.id) ? 'used' : 'not used'}</TableCell>
                </TableRow>
              ))}
           </TableBody>
