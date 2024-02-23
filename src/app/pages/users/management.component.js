@@ -26,7 +26,7 @@ const UserManagementComponent = {
     $onChanges(changes) {
       if (changes.users.currentValue) {
         this.users = changes.users.currentValue.users
-          .filter((user) => !['chpl-onc-acb', 'chpl-developer'].includes(user.role));
+          .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER'].includes(user.role));
       }
     }
 
@@ -64,7 +64,7 @@ const UserManagementComponent = {
           this.networkService.getUsers()
             .then((response) => {
               that.users = response.users
-                .filter((user) => !['chpl-onc-acb', 'chpl-developer'].includes(user.role));
+                .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER'].includes(user.role));
             });
           break;
         case 'impersonate':
