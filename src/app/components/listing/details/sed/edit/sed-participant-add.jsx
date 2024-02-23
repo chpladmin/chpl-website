@@ -1,12 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  FormLabel,
   MenuItem,
   Typography,
   makeStyles,
@@ -16,6 +11,7 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useFetchSedAgeRanges, useFetchSedEducation } from 'api/sed';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
@@ -42,7 +38,7 @@ const validationSchema = yup.object({
   occupation: yup.string()
     .max(250, 'Field is too long')
     .required('Field is required'),
-  educationTypeName: yup.string()
+  educationType: yup.object()
     .required('Field is required'),
   productExperienceMonths: yup.number()
     .required('Field is required'),
@@ -50,7 +46,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
   computerExperienceMonths: yup.number()
     .required('Field is required'),
-  ageRange: yup.string()
+  ageRange: yup.object()
     .required('Field is required'),
   gender: yup.string()
     .required('Field is required'),
@@ -59,17 +55,46 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
+const getAgeSortValue = (ageRange) => {
+  if (ageRange.name.length === 3) {
+    return 0;
+  } if (ageRange.name.length === 4) {
+    return 10;
+  }
+  return parseInt(ageRange.name.charAt(0), 10);
+};
+
 function ChplSedParticipantAdd({ dispatch }) {
   const classes = useStyles();
+  const ageRangesQuery = useFetchSedAgeRanges();
+  const educationQuery = useFetchSedEducation();
+  const [ageRanges, setAgeRanges] = useState([]);
+  const [education, setEducation] = useState([]);
   let formik;
+
+  useEffect(() => {
+    if (ageRangesQuery.isLoading || !ageRangesQuery.isSuccess) {
+      return;
+    }
+    setAgeRanges(ageRangesQuery.data.data
+      .sort((a, b) => (getAgeSortValue(a) < getAgeSortValue(b) ? -1 : 1)));
+  }, [ageRangesQuery.data, ageRangesQuery.isLoading, ageRangesQuery.isSuccess]);
+
+  useEffect(() => {
+    if (educationQuery.isLoading || !educationQuery.isSuccess) {
+      return;
+    }
+    setEducation(educationQuery.data.data
+      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [educationQuery.data, educationQuery.isLoading, educationQuery.isSuccess]);
 
   const close = () => {
     formik.setFieldValue('occupation', '');
-    formik.setFieldValue('educationTypeName', '');
+    formik.setFieldValue('educationType', '');
     formik.setFieldValue('productExperienceMonths', '');
     formik.setFieldValue('professionalExperienceMonths', '');
     formik.setFieldValue('computerExperienceMonths', '');
-    formik.setFieldValue('ageRangeObj', '');
+    formik.setFieldValue('ageRange', '');
     formik.setFieldValue('gender', '');
     formik.setFieldValue('assistiveTechnologyNeeds', '');
     dispatch({ action: 'close' });
@@ -79,7 +104,7 @@ function ChplSedParticipantAdd({ dispatch }) {
     const participant = {
       uniqueId: Date.now(),
       occupation: formik.values.occupation,
-      educationTypeName: formik.values.educationTypeName,
+      educationType: formik.values.educationType,
       productExperienceMonths: formik.values.productExperienceMonths,
       professionalExperienceMonths: formik.values.professionalExperienceMonths,
       computerExperienceMonths: formik.values.computerExperienceMonths,
@@ -91,7 +116,7 @@ function ChplSedParticipantAdd({ dispatch }) {
   };
 
   const isEnabled = () => !!formik.values.occupation
-        && !!formik.values.educationTypeName
+        && !!formik.values.educationType
         && formik.values.productExperienceMonths !== ''
         && formik.values.professionalExperienceMonths !== ''
         && formik.values.computerExperienceMonths !== ''
@@ -102,7 +127,7 @@ function ChplSedParticipantAdd({ dispatch }) {
   formik = useFormik({
     initialValues: {
       occupation: '',
-      educationTypeName: '',
+      educationType: '',
       productExperienceMonths: '',
       professionalExperienceMonths: '',
       computerExperienceMonths: '',
@@ -129,16 +154,21 @@ function ChplSedParticipantAdd({ dispatch }) {
           helperText={formik.touched.occupation && formik.errors.occupation}
         />
         <ChplTextField
-          id="education-type-name"
-          name="educationTypeName"
+          select
+          id="education-type"
+          name="educationType"
           label="Education"
           required
-          value={formik.values.educationTypeName}
+          value={formik.values.educationType}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.educationTypeName && !!formik.errors.educationTypeName}
-          helperText={formik.touched.educationTypeName && formik.errors.educationTypeName}
-        />
+          error={formik.touched.educationType && !!formik.errors.educationType}
+          helperText={formik.touched.educationType && formik.errors.educationType}
+        >
+          {education.map((e) => (
+            <MenuItem value={e} key={e.id}>{e.name}</MenuItem>
+          ))}
+        </ChplTextField>
         <ChplTextField
           id="product-experience-months"
           name="productExperienceMonths"
@@ -176,6 +206,7 @@ function ChplSedParticipantAdd({ dispatch }) {
           helperText={formik.touched.computerExperienceMonths && formik.errors.computerExperienceMonths}
         />
         <ChplTextField
+          select
           id="age-range"
           name="ageRange"
           label="Age Range"
@@ -185,7 +216,11 @@ function ChplSedParticipantAdd({ dispatch }) {
           onBlur={formik.handleBlur}
           error={formik.touched.ageRange && !!formik.errors.ageRange}
           helperText={formik.touched.ageRange && formik.errors.ageRange}
-        />
+        >
+          {ageRanges.map((ar) => (
+            <MenuItem value={ar} key={ar.id}>{ar.name}</MenuItem>
+          ))}
+        </ChplTextField>
         <ChplTextField
           select
           id="gender"
@@ -197,7 +232,7 @@ function ChplSedParticipantAdd({ dispatch }) {
           onBlur={formik.handleBlur}
           error={formik.touched.gender && !!formik.errors.gender}
           helperText={formik.touched.gender && formik.errors.gender}
-          >
+        >
           <MenuItem value="Female">Female</MenuItem>
           <MenuItem value="Male">Male</MenuItem>
           <MenuItem value="Unknown">Unknown</MenuItem>
