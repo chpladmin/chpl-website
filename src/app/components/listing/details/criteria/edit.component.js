@@ -1,5 +1,7 @@
 import * as jsJoda from '@js-joda/core';
 
+import { getCodeSetFormat } from 'services/date-util';
+
 const isStandardInteresting = (standard) => (standard.endDay && jsJoda.LocalDate.now() <= standard.endDay) // interesting because soon to expire
       || (standard.endDay && jsJoda.LocalDate.now() > standard.endDay) // interesting because it's already expired
       || (standard.requiredDay && jsJoda.LocalDate.now() < standard.requiredDay); // interesting because it will be required soon
@@ -50,12 +52,14 @@ const CertificationCriteriaEditComponent = {
       this.cert.metViaAdditionalSoftware = this.cert.additionalSoftware && this.cert.additionalSoftware.length > 0;
       this.certSave = angular.copy(this.cert);
 
+      this.setAvailableCodeSets();
       this.setAvailableTestTools();
       this.setAvailableStandards();
       this.setAvailableOptionalStandards();
       this.setAvailableConformanceMethods();
       this.setAvailableTestValues();
       this.setAvailableSvaps();
+      this.selectedCodeSetKeys = this.getSelectedCodeSetKeys();
       this.selectedConformanceMethodKeys = this.getSelectedConformanceMethodKeys();
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
       this.selectedFunctionalityTestedKeys = this.getSelectedFunctionalityTestedKeys();
@@ -89,6 +93,24 @@ const CertificationCriteriaEditComponent = {
 
     save() {
       this.close({ $value: this.cert });
+    }
+
+    codeSetsOnChange(action) {
+      switch (action.action) {
+        case 'Remove':
+          this.cert.codeSets = this.cert.codeSets
+            .filter((crcs) => {
+              if (action.item.item.id === 'newItem') {
+                return crcs.codeSet.requiredDay !== action.item.item.value;
+              }
+              return crcs.codeSet.id !== action.item.item.id;
+            });
+          break;
+        case 'Add':
+          this.cert.codeSets = [].concat(this.cert.codeSets).concat({ codeSet: action.item.item }).filter((item) => item);
+          break;
+        default:
+      }
     }
 
     conformanceMethodsOnChange(action) {
@@ -259,6 +281,17 @@ const CertificationCriteriaEditComponent = {
     /// /////////////////////////////////////////////////////////////////
 
     // setup helper functions
+    getSelectedCodeSetKeys() {
+      const that = this;
+      if (!this.cert.codeSets) {
+        return [];
+      }
+      return this.cert.codeSets
+        .filter((cs) => cs.codeSet.id
+                && that.resources.codeSets.filter((acs) => acs.id === cs.codeSet.id).length > 0)
+        .map((cs) => ({ key: cs.codeSet.id }));
+    }
+
     getSelectedConformanceMethodKeys() {
       const that = this;
       if (!this.cert.conformanceMethods) {
@@ -404,6 +437,18 @@ const CertificationCriteriaEditComponent = {
           .map((tt) => ({
             ...tt,
             dropDownText: (tt.retired ? 'Retired | ' : '') + tt.value,
+          }));
+      }
+    }
+
+    setAvailableCodeSets() {
+      if (Array.isArray(this.resources.codeSets)) {
+        this.cert.allowedCodeSets = this.resources.codeSets
+          .filter((cs) => cs.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          .filter((cs) => cs.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
+          .map((cs) => ({
+            ...cs,
+            dropDownText: getCodeSetFormat(cs.requiredDay),
           }));
       }
     }

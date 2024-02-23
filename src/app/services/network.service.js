@@ -133,7 +133,7 @@ export default class NetworkService {
   getAllCriteria(props) {
     const params = Object
       .entries(props)
-      .filter(([_, value]) => value !== null && value !== undefined)
+      .filter(([, value]) => value !== null && value !== undefined)
       .map(([key, value]) => `${key}=${value}`)
       .join('&');
     let query = '/certification-criteria';
@@ -188,6 +188,10 @@ export default class NetworkService {
 
   getChangeRequests() {
     return this.apiGET('/change-requests');
+  }
+
+  getCodeSets() {
+    return this.apiGET('/code-sets');
   }
 
   getCognitoUser(ssoUserId) {

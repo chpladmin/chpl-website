@@ -20,6 +20,14 @@ const isLocalDateTime = (dateTimeToTest) => {
   }
 };
 
+const getCodeSetFormat = (date) => jsJoda
+  .LocalDate
+  .parse(date)
+  .format(jsJoda
+    .DateTimeFormatter
+    .ofPattern('MMM y')
+    .withLocale(Locale.US));
+
 const getDisplayDateFormat = (date, fallback = 'N/A') => {
   const timeFormatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y h:mm:ss a').withLocale(Locale.US);
   const dateFormatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y').withLocale(Locale.US);
@@ -51,6 +59,7 @@ const toTimestamp = (date) => {
 };
 
 export {
+  getCodeSetFormat,
   getDisplayDateFormat,
   jsJoda,
   toTimestamp,
