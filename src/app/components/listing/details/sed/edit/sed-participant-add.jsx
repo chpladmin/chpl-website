@@ -46,7 +46,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
   computerExperienceMonths: yup.number()
     .required('Field is required'),
-  ageRange: yup.object()
+  age: yup.object()
     .required('Field is required'),
   gender: yup.string()
     .required('Field is required'),
@@ -94,7 +94,7 @@ function ChplSedParticipantAdd({ dispatch }) {
     formik.setFieldValue('productExperienceMonths', '');
     formik.setFieldValue('professionalExperienceMonths', '');
     formik.setFieldValue('computerExperienceMonths', '');
-    formik.setFieldValue('ageRange', '');
+    formik.setFieldValue('age', '');
     formik.setFieldValue('gender', '');
     formik.setFieldValue('assistiveTechnologyNeeds', '');
     dispatch({ action: 'close' });
@@ -108,7 +108,7 @@ function ChplSedParticipantAdd({ dispatch }) {
       productExperienceMonths: formik.values.productExperienceMonths,
       professionalExperienceMonths: formik.values.professionalExperienceMonths,
       computerExperienceMonths: formik.values.computerExperienceMonths,
-      ageRange: formik.values.ageRange,
+      age: formik.values.age,
       gender: formik.values.gender,
       assistiveTechnologyNeeds: formik.values.assistiveTechnologyNeeds,
     };
@@ -120,7 +120,7 @@ function ChplSedParticipantAdd({ dispatch }) {
         && formik.values.productExperienceMonths !== ''
         && formik.values.professionalExperienceMonths !== ''
         && formik.values.computerExperienceMonths !== ''
-        && !!formik.values.ageRange
+        && !!formik.values.age
         && !!formik.values.gender
         && !!formik.values.assistiveTechnologyNeeds;
 
@@ -131,7 +131,7 @@ function ChplSedParticipantAdd({ dispatch }) {
       productExperienceMonths: '',
       professionalExperienceMonths: '',
       computerExperienceMonths: '',
-      ageRange: '',
+      age: '',
       gender: '',
       assistiveTechnologyNeeds: '',
     },
@@ -207,15 +207,15 @@ function ChplSedParticipantAdd({ dispatch }) {
         />
         <ChplTextField
           select
-          id="age-range"
-          name="ageRange"
+          id="age"
+          name="age"
           label="Age Range"
           required
-          value={formik.values.ageRange}
+          value={formik.values.age}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.ageRange && !!formik.errors.ageRange}
-          helperText={formik.touched.ageRange && formik.errors.ageRange}
+          error={formik.touched.age && !!formik.errors.age}
+          helperText={formik.touched.age && formik.errors.age}
         >
           {ageRanges.map((ar) => (
             <MenuItem value={ar} key={ar.id}>{ar.name}</MenuItem>
