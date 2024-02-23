@@ -236,6 +236,11 @@ function FilterProvider(props) {
           })),
         })));
         break;
+      case 'seeAllTextSearchResults':
+        filters.forEach((c) => {
+          clearFilter(filters.find((f) => f.key === c.key), c, setFilters);
+        });
+        break;
       case 'setFilterDisability':
         setFilterDisability(filters, category, value, setFilters);
         break;
