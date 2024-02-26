@@ -153,8 +153,8 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                 <TableCell>Product Experience (Months)</TableCell>
                 <TableCell>Professional Experience (Months)</TableCell>
                 <TableCell>Computer Experience (Months)</TableCell>
+                <TableCell>Age (Years)</TableCell>
                 { /* }
-                    <TableCell>Age (Years)</TableCell>
                     <TableCell>Gender</TableCell>
                     <TableCell>Assistive Technology Needs</TableCell>
                     { */ }
@@ -166,17 +166,17 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                 .map((participant) => (
                   <TableRow key={participant.id ?? participant.uniqueId}>
                     <TableCell>{ participant.occupation }</TableCell>
-                    <TableCell>{ participant.educationTypeName }</TableCell>
+                    <TableCell>{ participant.educationType.name }</TableCell>
                     <TableCell>{ participant.productExperienceMonths }</TableCell>
                     <TableCell>{ participant.professionalExperienceMonths }</TableCell>
                     <TableCell>{ participant.computerExperienceMonths }</TableCell>
+                    <TableCell>{ participant.age.name }</TableCell>
                     { /* }
-                       <TableCell>{ participant.ageRange }</TableCell>
                        <TableCell>{ participant.gender }</TableCell>
                        <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
                        { */ }
                     <TableCell>
-                      { task.testParticipants.some((p) => p.id === participant.id)
+                      { task.testParticipants.some((p) => (p.id ? (p.id === participant.id) : (p.uniqueId === participant.uniqueId)))
                         ? (
                           <Button
                             onClick={() => remove(participant)}
