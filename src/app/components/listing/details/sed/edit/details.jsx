@@ -56,8 +56,7 @@ function ChplSedDetailsEdit() {
   }
 
   return (
-    <Card>
-      <CardContent className={classes.container}>
+      <div className={classes.container}>
         <ChplTextField
           id="sed-report-file-location"
           name="sedReportFileLocation"
@@ -90,8 +89,7 @@ function ChplSedDetailsEdit() {
           error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
           helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
         />
-      </CardContent>
-    </Card>
+      </div>
   );
 }
 
