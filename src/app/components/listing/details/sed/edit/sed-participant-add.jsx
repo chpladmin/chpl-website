@@ -55,13 +55,13 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
-const getAgeSortValue = (ageRange) => {
-  if (ageRange.name.length === 3) {
+const getAgeSortValue = (age) => {
+  if (age.name.length === 3) {
     return 0;
-  } if (ageRange.name.length === 4) {
+  } if (age.name.length === 4) {
     return 10;
   }
-  return parseInt(ageRange.name.charAt(0), 10);
+  return parseInt(age.name.charAt(0), 10);
 };
 
 function ChplSedParticipantAdd({ dispatch }) {
