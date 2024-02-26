@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Card,
+  CardContent,
   CircularProgress,
   IconButton,
   Table,
@@ -71,61 +72,65 @@ function ChplUcdProcessesEdit() {
   return (
     <>
       <Box className={classes.column}>
-        <Card className={classes.cardContainer}>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>UCD Process</TableCell>
-                <TableCell>UCD Process Details</TableCell>
-                <TableCell>Associated Criteria</TableCell>
-                <TableCell><span className="sr-only">Action</span></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { listing.sed.ucdProcesses
-                .map((process) => (
-                  <TableRow key={process.name}>
-                    <TableCell>
-                      { process.name }
-                    </TableCell>
-                    <TableCell>
-                      { process.details}
-                    </TableCell>
-                    <TableCell>
-                      { getDisplayCriteria(process.criteria) }
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        onClick={() => remove(process)}
-                      >
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </Card>
-        { !addingProcess
-          && (
-            <Box>
-              <Button
-                size="medium"
-                color="primary"
-                variant="outlined"
-                onClick={() => setAddingProcess(true)}
-                endIcon={<AddIcon fontSize="medium" />}
-              >
-                Add UCD Process
-              </Button>
-            </Box>
-          )}
-        { addingProcess
-          && (
-            <ChplProcessAdd
-              dispatch={handleDispatch}
-            />
-          )}
+        <div className={classes.cardContainer}>
+            <Card>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>UCD Process</TableCell>
+                  <TableCell>UCD Process Details</TableCell>
+                  <TableCell>Associated Criteria</TableCell>
+                  <TableCell><span className="sr-only">Action</span></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { listing.sed.ucdProcesses
+                  .map((process) => (
+                    <TableRow key={process.name}>
+                      <TableCell>
+                        { process.name }
+                      </TableCell>
+                      <TableCell>
+                        { process.details}
+                      </TableCell>
+                      <TableCell>
+                        { getDisplayCriteria(process.criteria) }
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          onClick={() => remove(process)}
+                        >
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            </Card>
+          { !addingProcess
+            && (
+              <Box pt={4}>
+                <Button
+                  size="medium"
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => setAddingProcess(true)}
+                  endIcon={<AddIcon fontSize="medium" />}
+                >
+                  Add UCD Process
+                </Button>
+              </Box>
+            )}
+          { addingProcess
+            && (
+              <Box pt={4}>
+                <ChplProcessAdd
+                  dispatch={handleDispatch}
+                />
+              </Box>
+            )}
+        </div>
       </Box>
     </>
   );

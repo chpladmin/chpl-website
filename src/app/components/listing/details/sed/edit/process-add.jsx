@@ -33,19 +33,25 @@ const useStyles = makeStyles({
     width: '100%',
   },
   criteriaForm: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     width: '100%',
-    gap: '16px',
+    paddingTop: '16px',
+    paddingBottom: '16px',
   },
   criteriaList: {
     display: 'flex',
     flexDirection: 'row',
   },
   addContainer: {
-    alignItems: 'center',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
+    alignItems: 'baseline',
+    display: 'flex',
     width: '100%',
     gap: '16px',
+  },
+  formLegend: {
+    marginBottom: '0',
   },
 });
 
@@ -142,7 +148,7 @@ function ChplUcdProcessAdd({ dispatch }) {
 
   return (
     <>
-      <Typography variant="subtitle1">Adding UCD Process</Typography>
+      <Typography variant="subtitle1" gutterBottom>Adding UCD Process</Typography>
       <Box className={classes.addContainer}>
         <ChplTextField
           select
@@ -175,7 +181,7 @@ function ChplUcdProcessAdd({ dispatch }) {
       </Box>
       <Box className={classes.criteriaForm}>
         <FormControl required error={criteria.size === 0} component="fieldset">
-          <FormLabel component="legend">Certification Criteria</FormLabel>
+          <FormLabel className={classes.formLegend} component="legend">Certification Criteria</FormLabel>
           <FormGroup className={classes.criteriaList}>
             { criteriaOptions.map((cc) => (
               <FormControlLabel
