@@ -50,12 +50,8 @@ const useStyles = makeStyles({
     borderRadius: '0 0 8px 8px',
   },
   deleteButton: {
-    backgroundColor: palette.white,
     color: palette.error,
-    marginTop: '16px',
-    '&:hover': {
-      backgroundColor: palette.greyLight,
-    },
+    marginTop: '12px',
   },
   taskData: {
     display: 'grid',
@@ -162,7 +158,14 @@ function ChplSedTaskEdit({ task: initialTask }) {
         <CardContent>
           <Box className={classes.taskData}>
             <Card className={classes.fullWidthGridRow} id="summary">
-              <CardHeader title="Summary" />
+              <CardHeader
+                action={(
+                  <Button endIcon={<DeleteIcon fontSize="small" color="error" />} onClick={() => remove()} className={classes.deleteButton}>
+                    Delete Tasking Task
+                  </Button>
+              )}
+                title="Summary"
+              />
               <Table>
                 <TableHead>
                   <TableRow>
@@ -172,12 +175,12 @@ function ChplSedTaskEdit({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Description</TableCell>
-                    <TableCell size='small'>{ task.description }</TableCell>
+                    <TableCell size="small">Task Description</TableCell>
+                    <TableCell size="small">{ task.description }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Associated Certification Criteria</TableCell>
-                    <TableCell size='small'>
+                    <TableCell size="small">Associated Certification Criteria</TableCell>
+                    <TableCell size="small">
                       <List>
                         {task.criteria
                           .sort(sortCriteria)
@@ -204,16 +207,16 @@ function ChplSedTaskEdit({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Rating Scale</TableCell>
-                    <TableCell size='small'>{ task.taskRatingScale }</TableCell>
+                    <TableCell size="small">Rating Scale</TableCell>
+                    <TableCell size="small">{ task.taskRatingScale }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Rating</TableCell>
-                    <TableCell size='small'>{ task.taskRating }</TableCell>
+                    <TableCell size="small">Task Rating</TableCell>
+                    <TableCell size="small">{ task.taskRating }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Rating - Standard Deviation</TableCell>
-                    <TableCell size='small'>{ task.taskRatingStddev }</TableCell>
+                    <TableCell size="small">Task Rating - Standard Deviation</TableCell>
+                    <TableCell size="small">{ task.taskRatingStddev }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -229,16 +232,16 @@ function ChplSedTaskEdit({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Time - Mean (s) </TableCell>
-                    <TableCell size='small'>{ task.taskTimeAvg }</TableCell>
+                    <TableCell size="small">Task Time - Mean (s) </TableCell>
+                    <TableCell size="small">{ task.taskTimeAvg }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Time - Standard Deviation (s)</TableCell>
-                    <TableCell size='small'>{ task.taskTimeStddev }</TableCell>
+                    <TableCell size="small">Task Time - Standard Deviation (s)</TableCell>
+                    <TableCell size="small">{ task.taskTimeStddev }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Time Deviation - Observed/Optimal (s)</TableCell>
-                    <TableCell size='small'>
+                    <TableCell size="small">Task Time Deviation - Observed/Optimal (s)</TableCell>
+                    <TableCell size="small">
                       { task.taskTimeDeviationObservedAvg }
                       {' '}
                       /
@@ -260,12 +263,12 @@ function ChplSedTaskEdit({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Success - Mean (%) </TableCell>
-                    <TableCell size='small'>{ task.taskSuccessAverage }</TableCell>
+                    <TableCell size="small">Task Success - Mean (%) </TableCell>
+                    <TableCell size="small">{ task.taskSuccessAverage }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Success - Standard Deviation (%)</TableCell>
-                    <TableCell size='small'>{ task.taskSuccessStddev }</TableCell>
+                    <TableCell size="small">Task Success - Standard Deviation (%)</TableCell>
+                    <TableCell size="small">{ task.taskSuccessStddev }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -281,16 +284,16 @@ function ChplSedTaskEdit({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Errors - Mean (%) </TableCell>
-                    <TableCell size='small'>{ task.taskErrors }</TableCell>
+                    <TableCell size="small">Task Errors - Mean (%) </TableCell>
+                    <TableCell size="small">{ task.taskErrors }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Errors - Standard Deviation (%)</TableCell>
-                    <TableCell size='small'>{ task.taskErrorsStddev }</TableCell>
+                    <TableCell size="small">Task Errors - Standard Deviation (%)</TableCell>
+                    <TableCell size="small">{ task.taskErrorsStddev }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
-                    <TableCell size='small'>
+                    <TableCell size="small">Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
+                    <TableCell size="small">
                       { task.taskPathDeviationObserved }
                       {' '}
                       /
@@ -307,13 +310,6 @@ function ChplSedTaskEdit({ task: initialTask }) {
               />
             </Box>
           </Box>
-          <Button
-            onClick={() => remove()}
-            className={classes.deleteButton}
-            endIcon={ <DeleteIcon color='error'/>}
-          >
-            Delete Task
-          </Button>
         </CardContent>
       </AccordionDetails>
     </Accordion>
