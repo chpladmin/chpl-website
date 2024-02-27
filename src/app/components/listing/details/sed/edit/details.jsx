@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import {
-  Card,
-  CardContent,
   CircularProgress,
   makeStyles,
 } from '@material-ui/core';
