@@ -118,7 +118,7 @@ const useStyles = makeStyles({
     },
   },
   reasonCardMobile: {
-    display:'block',
+    display: 'block',
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -392,26 +392,26 @@ function ChplListingEdit() {
         </Card>
       </div>
       <Card className={classes.reasonCardMobile}>
-          <CardContent>
-            <ChplTextField
-              id="reason"
-              name="reason"
-              label="Reason"
-              value={formik.values.reason}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.productCode && !!formik.errors.productCode}
-              helperText={formik.touched.productCode && formik.errors.productCode}
-            />
-            <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography>
-            <List dense>
-              <ListItem>Clinical Quality Measure Removed</ListItem>
-              <ListItem>Certification Criteria Removed</ListItem>
-              <ListItem>Editing of a non-active Certified Product</ListItem>
-              <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
-            </List>
-          </CardContent>
-        </Card>
+        <CardContent>
+          <ChplTextField
+            id="reason"
+            name="reason"
+            label="Reason"
+            value={formik.values.reason}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.productCode && !!formik.errors.productCode}
+            helperText={formik.touched.productCode && formik.errors.productCode}
+          />
+          <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography>
+          <List dense>
+            <ListItem>Clinical Quality Measure Removed</ListItem>
+            <ListItem>Certification Criteria Removed</ListItem>
+            <ListItem>Editing of a non-active Certified Product</ListItem>
+            <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+          </List>
+        </CardContent>
+      </Card>
       <ChplActionBar
         dispatch={handleDispatch}
         errors={getErrors()}
