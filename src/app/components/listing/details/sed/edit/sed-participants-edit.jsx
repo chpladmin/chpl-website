@@ -14,12 +14,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Delete } from '@material-ui/icons';
-
+import { RemoveCircleOutline } from '@material-ui/icons';
 import { object } from 'prop-types';
+
 import ChplSedParticipantAdd from './sed-participant-add';
 
 import { ListingContext } from 'shared/contexts';
@@ -184,14 +183,14 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                         <IconButton
                           onClick={() => remove(participant)}
                         >
-                          <Delete color="error" />
+                          <RemoveCircleOutline color="error" />
                         </IconButton>
                       ) : (
-                        <Button
+                        <IconButton
                           onClick={() => add(participant)}
                         >
-                          Add
-                        </Button>
+                          <AddIcon color="primary" />
+                        </IconButton>
                       )}
                   </TableCell>
                 </TableRow>
