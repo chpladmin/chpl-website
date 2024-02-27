@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +17,7 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { object } from 'prop-types';
+import { Delete } from '@material-ui/icons';
 
 import ChplSedParticipantAdd from './sed-participant-add';
 
@@ -26,15 +28,15 @@ const useStyles = makeStyles({
   ...utilStyles,
   accordion: {
     borderRadius: '4px',
-    display: 'grid',
     borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
   },
   accordionSummary: {
-    backgroundColor: `${palette.white} !important`,
+    backgroundColor: `${palette.secondary} !important`,
     borderRadius: '4px',
     padding: '0 4px',
+    fontSize: '1.25em',
     borderBottom: `.5px solid ${palette.divider}`,
   },
   summaryText: {
@@ -43,6 +45,11 @@ const useStyles = makeStyles({
   accordionDetails: {
     borderRadius: '0 0 8px 8px',
     flexDirection: 'column',
+    width: '100%',
+    maxHeight: '700px',
+    overflowY: 'scroll',
+    overflowX: 'scroll',
+    padding: '0',
   },
   rotate: {
     transform: 'rotate(180deg)',
@@ -144,79 +151,76 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
         className={classes.accordionDetails}
         id={`task-participants-id-${task.id}-details`}
       >
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Occupation</TableCell>
-                <TableCell>Education Type</TableCell>
-                <TableCell>Product Experience (Months)</TableCell>
-                <TableCell>Professional Experience (Months)</TableCell>
-                <TableCell>Computer Experience (Months)</TableCell>
-                { /* }
-                    <TableCell>Age (Years)</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell>Assistive Technology Needs</TableCell>
-                    { */ }
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {allParticipants
-                .map((participant) => (
-                  <TableRow key={participant.id ?? participant.uniqueId}>
-                    <TableCell>{ participant.occupation }</TableCell>
-                    <TableCell>{ participant.educationTypeName }</TableCell>
-                    <TableCell>{ participant.productExperienceMonths }</TableCell>
-                    <TableCell>{ participant.professionalExperienceMonths }</TableCell>
-                    <TableCell>{ participant.computerExperienceMonths }</TableCell>
-                    { /* }
-                       <TableCell>{ participant.ageRange }</TableCell>
-                       <TableCell>{ participant.gender }</TableCell>
-                       <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
-                       { */ }
-                    <TableCell>
-                      { task.testParticipants.some((p) => p.id === participant.id)
-                        ? (
-                          <Button
-                            onClick={() => remove(participant)}
-                          >
-                            Remove
-                          </Button>
-                        ) : (
-                          <Button
-                            onClick={() => add(participant)}
-                          >
-                            Add
-                          </Button>
-                        )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-          { !addingParticipant
-            && (
-              <Box>
-                <Button
-                  size="medium"
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => setAddingParticipant(true)}
-                  endIcon={<AddIcon fontSize="medium" />}
-                >
-                  Add Test Participant
-                </Button>
-              </Box>
-            )}
-          { addingParticipant
-            && (
-              <ChplSedParticipantAdd
-                dispatch={handleDispatch}
-              />
-            )}
-        </>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Occupation</TableCell>
+              <TableCell style={{ minWidth: 200 }}>Education Type</TableCell>
+              <TableCell>Product Experience (Months)</TableCell>
+              <TableCell>Professional Experience (Months)</TableCell>
+              <TableCell>Computer Experience (Months)</TableCell>
+              <TableCell>Age (Years)</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Assistive Technology Needs</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody size="small">
+            {allParticipants
+              .map((participant) => (
+                <TableRow key={participant.id ?? participant.uniqueId}>
+                  <TableCell size="small">{ participant.occupation }</TableCell>
+                  <TableCell style={{ minWidth: 200 }}>{ participant.educationTypeName }</TableCell>
+                  <TableCell size="small">{ participant.productExperienceMonths }</TableCell>
+                  <TableCell size="small">{ participant.professionalExperienceMonths }</TableCell>
+                  <TableCell size="small">{ participant.computerExperienceMonths }</TableCell>
+                  <TableCell size="small">{ participant.ageRange }</TableCell>
+                  <TableCell size="small">{ participant.gender }</TableCell>
+                  <TableCell size="small">{ participant.assistiveTechnologyNeeds }</TableCell>
+                  <TableCell size="small">
+                    { task.testParticipants.some((p) => p.id === participant.id)
+                      ? (
+                        <IconButton
+                          onClick={() => remove(participant)}
+                        >
+                          <Delete color="error" />
+                        </IconButton>
+                      ) : (
+                        <Button
+                          onClick={() => add(participant)}
+                        >
+                          Add
+                        </Button>
+                      )}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+
       </AccordionDetails>
+      <>
+        { !addingParticipant
+              && (
+                <Box paddingX={2} paddingY={2}>
+                  <Button
+                    size="medium"
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => setAddingParticipant(true)}
+                    endIcon={<AddIcon fontSize="medium" />}
+                  >
+                    Add Test Participant
+                  </Button>
+                </Box>
+              )}
+        { addingParticipant
+              && (
+                <ChplSedParticipantAdd
+                  dispatch={handleDispatch}
+                />
+              )}
+      </>
     </Accordion>
   );
 }
