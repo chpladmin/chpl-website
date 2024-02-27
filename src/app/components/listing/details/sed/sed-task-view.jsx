@@ -149,12 +149,12 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Task Description</TableCell>
-                    <TableCell>{ task.description }</TableCell>
+                    <TableCell size='small'>Task Description</TableCell>
+                    <TableCell size='small'>{ task.description }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Associated Certification Criteria</TableCell>
-                    <TableCell>
+                    <TableCell size='small'>Associated Certification Criteria</TableCell>
+                    <TableCell size='small'>
                       <List>
                         {task.criteria
                           .sort(sortCriteria)
@@ -181,16 +181,16 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Rating Scale</TableCell>
-                    <TableCell>{ task.taskRatingScale }</TableCell>
+                    <TableCell> size='small'Rating Scale</TableCell>
+                    <TableCell size='small'>{ task.taskRatingScale }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Rating</TableCell>
-                    <TableCell>{ task.taskRating }</TableCell>
+                    <TableCell size='small'>Task Rating</TableCell>
+                    <TableCell size='small'>{ task.taskRating }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Rating - Standard Deviation</TableCell>
-                    <TableCell>{ task.taskRatingStddev }</TableCell>
+                    <TableCell size='small'>Task Rating - Standard Deviation</TableCell>
+                    <TableCell size='small'>{ task.taskRatingStddev }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -206,16 +206,16 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Task Time - Mean (s) </TableCell>
-                    <TableCell>{ task.taskTimeAvg }</TableCell>
+                    <TableCell size='small'>Task Time - Mean (s) </TableCell>
+                    <TableCell size='small'>{ task.taskTimeAvg }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Time - Standard Deviation (s)</TableCell>
-                    <TableCell>{ task.taskTimeStddev }</TableCell>
+                    <TableCell size='small'>Task Time - Standard Deviation (s)</TableCell>
+                    <TableCell size='small'>{ task.taskTimeStddev }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Time Deviation - Observed/Optimal (s)</TableCell>
-                    <TableCell>
+                    <TableCell size='small'>Task Time Deviation - Observed/Optimal (s)</TableCell>
+                    <TableCell size='small'>
                       { task.taskTimeDeviationObservedAvg }
                       {' '}
                       /
@@ -237,12 +237,12 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Task Success - Mean (%) </TableCell>
-                    <TableCell>{ task.taskSuccessAverage }</TableCell>
+                    <TableCell size='small'>Task Success - Mean (%) </TableCell>
+                    <TableCell size='small'>{ task.taskSuccessAverage }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Success - Standard Deviation (%)</TableCell>
-                    <TableCell>{ task.taskSuccessStddev }</TableCell>
+                    <TableCell size='small'>Task Success - Standard Deviation (%)</TableCell>
+                    <TableCell size='small'>{ task.taskSuccessStddev }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -258,16 +258,16 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Task Errors - Mean (%) </TableCell>
-                    <TableCell>{ task.taskErrors }</TableCell>
+                    <TableCell size='small'>Task Errors - Mean (%) </TableCell>
+                    <TableCell size='small'>{ task.taskErrors }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Errors - Standard Deviation (%)</TableCell>
-                    <TableCell>{ task.taskErrorsStddev }</TableCell>
+                    <TableCell size='small'>Task Errors - Standard Deviation (%)</TableCell>
+                    <TableCell size='small'>{ task.taskErrorsStddev }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
-                    <TableCell>
+                    <TableCell size='small'>Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
+                    <TableCell size='small'>
                       { task.taskPathDeviationObserved }
                       {' '}
                       /
@@ -294,12 +294,12 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Total Number of Participants</TableCell>
-                    <TableCell>{ task.testParticipants.length }</TableCell>
+                    <TableCell size='small'>Total Number of Participants</TableCell>
+                    <TableCell size='small'>{ task.testParticipants.length }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Occupation Breakdown</TableCell>
-                    <TableCell>
+                    <TableCell size='small'>Occupation Breakdown</TableCell>
+                    <TableCell size='small'>
                       <List>
                         {occupations
                           .map((occupation) => (
@@ -321,8 +321,8 @@ function ChplSedTaskView({ task: initialTask }) {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Product Experience - Mean (Months)</TableCell>
-                    <TableCell>{ meanExperience }</TableCell>
+                    <TableCell size='small'>Product Experience - Mean (Months)</TableCell>
+                    <TableCell size='small'>{ meanExperience }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
