@@ -14,11 +14,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { object } from 'prop-types';
 import { Delete } from '@material-ui/icons';
 
+import { object } from 'prop-types';
 import ChplSedParticipantAdd from './sed-participant-add';
 
 import { ListingContext } from 'shared/contexts';
@@ -197,7 +198,6 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
               ))}
           </TableBody>
         </Table>
-
       </AccordionDetails>
       <>
         { !addingParticipant
