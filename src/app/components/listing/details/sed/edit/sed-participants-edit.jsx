@@ -151,52 +151,54 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
         className={classes.accordionDetails}
         id={`task-participants-id-${task.id}-details`}
       >
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Occupation</TableCell>
-              <TableCell style={{ minWidth: 200 }}>Education Type</TableCell>
-              <TableCell>Product Experience (Months)</TableCell>
-              <TableCell>Professional Experience (Months)</TableCell>
-              <TableCell>Computer Experience (Months)</TableCell>
-              <TableCell>Age (Years)</TableCell>
-              <TableCell>Gender</TableCell>
-              <TableCell>Assistive Technology Needs</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody size="small">
-            {allParticipants
-              .map((participant) => (
-                <TableRow key={participant.id ?? participant.uniqueId}>
-                  <TableCell size="small">{ participant.occupation }</TableCell>
-                  <TableCell style={{ minWidth: 200 }}>{ participant.educationTypeName }</TableCell>
-                  <TableCell size="small">{ participant.productExperienceMonths }</TableCell>
-                  <TableCell size="small">{ participant.professionalExperienceMonths }</TableCell>
-                  <TableCell size="small">{ participant.computerExperienceMonths }</TableCell>
-                  <TableCell size="small">{ participant.ageRange }</TableCell>
-                  <TableCell size="small">{ participant.gender }</TableCell>
-                  <TableCell size="small">{ participant.assistiveTechnologyNeeds }</TableCell>
-                  <TableCell size="small">
-                    { task.testParticipants.some((p) => p.id === participant.id)
-                      ? (
-                        <IconButton
-                          onClick={() => remove(participant)}
-                        >
-                          <RemoveCircleOutline color="error" />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          onClick={() => add(participant)}
-                        >
-                          <AddIcon color="primary" />
-                        </IconButton>
-                      )}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+        <>
+          <Table size='small'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Occupation</TableCell>
+                <TableCell>Education Type</TableCell>
+                <TableCell>Product Experience (Months)</TableCell>
+                <TableCell>Professional Experience (Months)</TableCell>
+                <TableCell>Computer Experience (Months)</TableCell>
+                <TableCell>Age (Years)</TableCell>
+                <TableCell>Gender</TableCell>
+                <TableCell>Assistive Technology Needs</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allParticipants
+                .map((participant) => (
+                  <TableRow key={participant.id ?? participant.uniqueId}>
+                    <TableCell size='small'>{ participant.occupation }</TableCell>
+                    <TableCell size='small'>{ participant.educationType.name }</TableCell>
+                    <TableCell size='small'>{ participant.productExperienceMonths }</TableCell>
+                    <TableCell size='small'>{ participant.professionalExperienceMonths }</TableCell>
+                    <TableCell size='small'>{ participant.computerExperienceMonths }</TableCell>
+                    <TableCell size='small'>{ participant.age.name }</TableCell>
+                    <TableCell size='small'>{ participant.gender }</TableCell>
+                    <TableCell size='small'>{ participant.assistiveTechnologyNeeds }</TableCell>
+                    <TableCell size='small'>
+                      { task.testParticipants.some((p) => (p.id ? (p.id === participant.id) : (p.uniqueId === participant.uniqueId)))
+                        ? (
+                          <Button
+                            onClick={() => remove(participant)}
+                          >
+                            Remove
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => add(participant)}
+                          >
+                            Add
+                          </Button>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </>
       </AccordionDetails>
       <>
         { !addingParticipant

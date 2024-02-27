@@ -138,7 +138,7 @@ function ChplSedTaskAdd({ dispatch }) {
       taskPathDeviationOptimal: formik.values.taskPathDeviationOptimal,
       criteria: availableCriteria.filter((cc) => criteria.has(cc.criterion.number))
         .map((cr) => cr.criterion),
-      participants: [],
+      testParticipants: [],
     };
     setListing({
       ...listing,
