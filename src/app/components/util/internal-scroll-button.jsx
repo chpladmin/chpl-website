@@ -7,6 +7,7 @@ import { node, string } from 'prop-types';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { analyticsConfig } from '../../shared/prop-types';
+import palette from '../../themes/palette';
 
 const useStyles = makeStyles({
   noButtonWrap: {
@@ -14,6 +15,18 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
+    backgroundColor: palette.white,
+    color: palette.primary,
+    padding: '8px 16px',
+    '&:hover': {
+      backgroundColor: palette.white,
+      color: palette.black,
+    },
+    '&:focus': {
+      backgroundColor: palette.secondary,
+      color: palette.black,
+      fontWeight: 900,
+    },
   },
 });
 
@@ -42,7 +55,7 @@ const InternalScrollButton = ({ analytics, children, id }) => {
     <Button
       onClick={handleClick}
       color="primary"
-      className={classes.noButtonWrap}
+      className={`${classes.noButtonWrap}`}
       id={`${id}-navigation-button`}
     >
       {children}
