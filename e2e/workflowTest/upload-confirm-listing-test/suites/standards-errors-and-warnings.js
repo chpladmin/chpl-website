@@ -22,7 +22,7 @@ const suite = {
     expectedWarnings: [
     ],
   }, {
-    listingId: '15.04.04.1722.SND3.V1.00.1.190607',
+    listingId: '15.04.04.1722.SND3.V1.00.1.210607',
     expectedErrors: [
     ],
     expectedWarnings: [
