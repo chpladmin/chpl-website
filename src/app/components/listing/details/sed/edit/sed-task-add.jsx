@@ -46,8 +46,8 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   formContainer: {
-    display:'flex',
-    flexDirection:'column',
+    display: 'flex',
+    flexDirection: 'column',
     gap: 16,
   },
   taskData: {
@@ -211,35 +211,35 @@ function ChplSedTaskAdd({ dispatch }) {
       <Box className={classes.taskData}>
         <Card className={classes.fullWidthGridRow} id="summary">
           <CardHeader title="Summary" />
-            <CardContent className={classes.formContainer}>
-              <ChplTextField
-                id="description"
-                name="description"
-                label="Description"
-                required
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.description && !!formik.errors.description}
-                helperText={formik.touched.description && formik.errors.description}
-              />
-              <Box className={classes.criteriaForm}>
-                <FormControl required error={criteria.size === 0} component="fieldset">
-                  <FormLabel component="legend">Certification Criteria</FormLabel>
-                  <FormGroup className={classes.criteriaList}>
-                    { criteriaOptions.map((cc) => (
-                      <FormControlLabel
-                        control={<Checkbox color="primary" checked={criteria.has(cc)} onChange={toggleCriteria} name={cc} />}
-                        label={cc}
-                        key={cc}
-                      />
-                    ))}
-                  </FormGroup>
-                  { criteria.size === 0
-                    && (
-                      <FormHelperText>At least one must be selected</FormHelperText>
-                    )}
-                </FormControl>
+          <CardContent className={classes.formContainer}>
+            <ChplTextField
+              id="description"
+              name="description"
+              label="Description"
+              required
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.description && !!formik.errors.description}
+              helperText={formik.touched.description && formik.errors.description}
+            />
+            <Box className={classes.criteriaForm}>
+              <FormControl required error={criteria.size === 0} component="fieldset">
+                <FormLabel component="legend">Certification Criteria</FormLabel>
+                <FormGroup className={classes.criteriaList}>
+                  { criteriaOptions.map((cc) => (
+                    <FormControlLabel
+                      control={<Checkbox color="primary" checked={criteria.has(cc)} onChange={toggleCriteria} name={cc} />}
+                      label={cc}
+                      key={cc}
+                    />
+                  ))}
+                </FormGroup>
+                { criteria.size === 0
+                  && (
+                    <FormHelperText>At least one must be selected</FormHelperText>
+                  )}
+              </FormControl>
             </Box>
           </CardContent>
         </Card>
@@ -285,85 +285,85 @@ function ChplSedTaskAdd({ dispatch }) {
         </Card>
         <Card id="time">
           <CardHeader title="Task Time" />
-            <CardContent className={classes.formContainer}>
-              <ChplTextField
-                id="task-time-avg"
-                name="taskTimeAvg"
-                label="Task Time - Mean (s)"
-                required
-                type="number"
-                value={formik.values.taskTimeAvg}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.taskTimeAvg && !!formik.errors.taskTimeAvg}
-                helperText={formik.touched.taskTimeAvg && formik.errors.taskTimeAvg}
-              />
-              <ChplTextField
-                id="task-time-stddev"
-                name="taskTimeStddev"
-                label="Task Time - Standard Deviation (s)"
-                required
-                type="number"
-                value={formik.values.taskTimeStddev}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.taskTimeStddev && !!formik.errors.taskTimeStddev}
-                helperText={formik.touched.taskTimeStddev && formik.errors.taskTimeStddev}
-              />
-              <ChplTextField
-                id="task-time-deviation-observed-avg"
-                name="taskTimeDeviationObservedAvg"
-                label="Task Time Deviation - Observed (s)"
-                required
-                type="number"
-                value={formik.values.taskTimeDeviationObservedAvg}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.taskTimeDeviationObservedAvg && !!formik.errors.taskTimeDeviationObservedAvg}
-                helperText={formik.touched.taskTimeDeviationObservedAvg && formik.errors.taskTimeDeviationObservedAvg}
-              />
-              <ChplTextField
-                id="task-time-deviation-optimal-avg"
-                name="taskTimeDeviationOptimalAvg"
-                label="Task Time Deviation - Optimal (s)"
-                required
-                type="number"
-                value={formik.values.taskTimeDeviationOptimalAvg}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.taskTimeDeviationOptimalAvg && !!formik.errors.taskTimeDeviationOptimalAvg}
-                helperText={formik.touched.taskTimeDeviationOptimalAvg && formik.errors.taskTimeDeviationOptimalAvg}
-              />
-            </CardContent>
+          <CardContent className={classes.formContainer}>
+            <ChplTextField
+              id="task-time-avg"
+              name="taskTimeAvg"
+              label="Task Time - Mean (s)"
+              required
+              type="number"
+              value={formik.values.taskTimeAvg}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.taskTimeAvg && !!formik.errors.taskTimeAvg}
+              helperText={formik.touched.taskTimeAvg && formik.errors.taskTimeAvg}
+            />
+            <ChplTextField
+              id="task-time-stddev"
+              name="taskTimeStddev"
+              label="Task Time - Standard Deviation (s)"
+              required
+              type="number"
+              value={formik.values.taskTimeStddev}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.taskTimeStddev && !!formik.errors.taskTimeStddev}
+              helperText={formik.touched.taskTimeStddev && formik.errors.taskTimeStddev}
+            />
+            <ChplTextField
+              id="task-time-deviation-observed-avg"
+              name="taskTimeDeviationObservedAvg"
+              label="Task Time Deviation - Observed (s)"
+              required
+              type="number"
+              value={formik.values.taskTimeDeviationObservedAvg}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.taskTimeDeviationObservedAvg && !!formik.errors.taskTimeDeviationObservedAvg}
+              helperText={formik.touched.taskTimeDeviationObservedAvg && formik.errors.taskTimeDeviationObservedAvg}
+            />
+            <ChplTextField
+              id="task-time-deviation-optimal-avg"
+              name="taskTimeDeviationOptimalAvg"
+              label="Task Time Deviation - Optimal (s)"
+              required
+              type="number"
+              value={formik.values.taskTimeDeviationOptimalAvg}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.taskTimeDeviationOptimalAvg && !!formik.errors.taskTimeDeviationOptimalAvg}
+              helperText={formik.touched.taskTimeDeviationOptimalAvg && formik.errors.taskTimeDeviationOptimalAvg}
+            />
+          </CardContent>
         </Card>
         <Card id="success">
           <CardHeader title="Task Success" />
-            <CardContent className={classes.formContainer}>
-              <ChplTextField
-                id="task-success-average"
-                name="taskSuccessAverage"
-                label="Task Success - Mean (%)"
-                required
-                type="number"
-                value={formik.values.taskSuccessAverage}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.taskSuccessAverage && !!formik.errors.taskSuccessAverage}
-                helperText={formik.touched.taskSuccessAverage && formik.errors.taskSuccessAverage}
-              />
-              <ChplTextField
-                id="task-success-stddev"
-                name="taskSuccessStddev"
-                label="Task Success - Standard Deviation (%)"
-                required
-                type="number"
-                value={formik.values.taskSuccessStddev}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.taskSuccessStddev && !!formik.errors.taskSuccessStddev}
-                helperText={formik.touched.taskSuccessStddev && formik.errors.taskSuccessStddev}
-              />
-            </CardContent>
+          <CardContent className={classes.formContainer}>
+            <ChplTextField
+              id="task-success-average"
+              name="taskSuccessAverage"
+              label="Task Success - Mean (%)"
+              required
+              type="number"
+              value={formik.values.taskSuccessAverage}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.taskSuccessAverage && !!formik.errors.taskSuccessAverage}
+              helperText={formik.touched.taskSuccessAverage && formik.errors.taskSuccessAverage}
+            />
+            <ChplTextField
+              id="task-success-stddev"
+              name="taskSuccessStddev"
+              label="Task Success - Standard Deviation (%)"
+              required
+              type="number"
+              value={formik.values.taskSuccessStddev}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.taskSuccessStddev && !!formik.errors.taskSuccessStddev}
+              helperText={formik.touched.taskSuccessStddev && formik.errors.taskSuccessStddev}
+            />
+          </CardContent>
         </Card>
         <Card id="errors">
           <CardHeader title="Task Errors" />

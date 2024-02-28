@@ -55,7 +55,7 @@ const InternalScrollButton = ({ analytics, children, id }) => {
     <Button
       onClick={handleClick}
       color="primary"
-      className={`${classes.noButtonWrap}`}
+      className={classes.noButtonWrap}
       id={`${id}-navigation-button`}
     >
       {children}
