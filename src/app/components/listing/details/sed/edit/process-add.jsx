@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   addContainer: {
-    alignItems: 'baseline',
+    alignItems: 'center',
     display: 'flex',
     width: '100%',
     gap: '16px',

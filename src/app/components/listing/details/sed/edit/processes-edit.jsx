@@ -104,7 +104,7 @@ function ChplUcdProcessesEdit() {
       </Card>
       { !addingProcess
         && (
-          <Box pt={4}>
+          <Box pt={2}>
             <Button
               size="medium"
               color="primary"
@@ -118,7 +118,7 @@ function ChplUcdProcessesEdit() {
         )}
       { addingProcess
         && (
-          <Box pt={4}>
+          <Box width="100%" pt={2}>
             <ChplProcessAdd
               dispatch={handleDispatch}
             />
