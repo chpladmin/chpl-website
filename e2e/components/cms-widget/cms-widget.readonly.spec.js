@@ -124,7 +124,7 @@ describe('on cms widget', () => {
 
     //ignoring these tests as they are flaky - will address these tests later
     it('should have progress bar with the right text and value', async () => {
-      await expect(await (await cms.progressBarText.getText())).toBe('100% Base Criteria Met');
+      await expect(await cms.progressBarText.getText()).toBe('100% Base Criteria Met');
       await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('100');
     });
 
