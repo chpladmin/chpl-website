@@ -14,16 +14,9 @@ import ChplSedTaskAdd from './sed-task-add';
 import ChplSedTaskEdit from './sed-task-edit';
 import ChplUcdProcessesEdit from './processes-edit';
 
-// Wasnt sure if this was suppose to be deleted, not being used?
-// import { ChplLink } from 'components/util';
-// import { sortCriteria } from 'services/criteria.service';
-// import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext } from 'shared/contexts';
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
-
-// Wasnt sure if this was suppose to be deleted, not being used?
-// const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 
 function ChplSedEdit() {
   const { listing } = useContext(ListingContext);

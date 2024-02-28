@@ -54,40 +54,40 @@ function ChplSedDetailsEdit() {
   }
 
   return (
-      <div className={classes.container}>
-        <ChplTextField
-          id="sed-report-file-location"
-          name="sedReportFileLocation"
-          label="Full Usability Report"
-          value={formik.values.sedReportFileLocation}
-          onChange={handleBasicChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.sedReportFileLocation && !!formik.errors.sedReportFileLocation}
-          helperText={formik.touched.sedReportFileLocation && formik.errors.sedReportFileLocation}
-        />
-        <ChplTextField
-          id="sed-intended-user-description"
-          name="sedIntendedUserDescription"
-          label="SED Intended User Description"
-          value={formik.values.sedIntendedUserDescription}
-          multiline
-          onChange={handleBasicChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.sedIntendedUserDescription && !!formik.errors.sedIntendedUserDescription}
-          helperText={formik.touched.sedIntendedUserDescription && formik.errors.sedIntendedUserDescription}
-        />
-        <ChplTextField
-          id="sed-testing-end-day"
-          name="sedTestingEndDay"
-          label="SED Testing Completion Date"
-          type="date"
-          value={formik.values.sedTestingEndDay}
-          onChange={handleBasicChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
-          helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
-        />
-      </div>
+    <div className={classes.container}>
+      <ChplTextField
+        id="sed-report-file-location"
+        name="sedReportFileLocation"
+        label="Full Usability Report"
+        value={formik.values.sedReportFileLocation}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.sedReportFileLocation && !!formik.errors.sedReportFileLocation}
+        helperText={formik.touched.sedReportFileLocation && formik.errors.sedReportFileLocation}
+      />
+      <ChplTextField
+        id="sed-intended-user-description"
+        name="sedIntendedUserDescription"
+        label="SED Intended User Description"
+        value={formik.values.sedIntendedUserDescription}
+        multiline
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.sedIntendedUserDescription && !!formik.errors.sedIntendedUserDescription}
+        helperText={formik.touched.sedIntendedUserDescription && formik.errors.sedIntendedUserDescription}
+      />
+      <ChplTextField
+        id="sed-testing-end-day"
+        name="sedTestingEndDay"
+        label="SED Testing Completion Date"
+        type="date"
+        value={formik.values.sedTestingEndDay}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
+        helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
+      />
+    </div>
   );
 }
 

@@ -20,7 +20,6 @@ import * as yup from 'yup';
 
 import { useFetchUcdProcesses } from 'api/standards';
 import { ChplTextField } from 'components/util';
-import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -51,7 +50,7 @@ const useStyles = makeStyles({
     gap: '16px',
   },
   formLegend: {
-    marginBottom: '0',
+    marginBottom: 0,
   },
 });
 
@@ -73,7 +72,7 @@ function ChplUcdProcessAdd({ dispatch }) {
   let formik;
 
   useEffect(() => {
-    if (!listing) { return; };
+    if (!listing) { return; }
     setAvailableCriteria(listing
       .certificationResults
       .filter((cert) => cert.success && cert.sed));

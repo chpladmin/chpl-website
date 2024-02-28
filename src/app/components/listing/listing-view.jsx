@@ -64,7 +64,7 @@ const useStyles = makeStyles({
   },
   menuItems: {
     display: 'flex',
-    padding: '0px',
+    padding: 0,
     justifyContent: 'space-between',
     '&.Mui-disabled': {
       color: palette.black,

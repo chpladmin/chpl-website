@@ -140,21 +140,21 @@ function ChplSedTaskView({ task: initialTask }) {
           <Box className={classes.taskData}>
             <Card className={classes.fullWidthGridRow} id="summary">
               <CardHeader title="Summary" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Description</TableCell>
-                    <TableCell size='small'>{ task.description }</TableCell>
+                    <TableCell>Task Description</TableCell>
+                    <TableCell>{ task.description }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Associated Certification Criteria</TableCell>
-                    <TableCell size='small'>
+                    <TableCell>Associated Certification Criteria</TableCell>
+                    <TableCell>
                       <List>
                         {task.criteria
                           .sort(sortCriteria)
@@ -172,50 +172,50 @@ function ChplSedTaskView({ task: initialTask }) {
             </Card>
             <Card id="rating">
               <CardHeader title="Rating" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell> size='small'Rating Scale</TableCell>
-                    <TableCell size='small'>{ task.taskRatingScale }</TableCell>
+                    <TableCell>Rating Scale</TableCell>
+                    <TableCell>{ task.taskRatingScale }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Rating</TableCell>
-                    <TableCell size='small'>{ task.taskRating }</TableCell>
+                    <TableCell>Task Rating</TableCell>
+                    <TableCell>{ task.taskRating }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Rating - Standard Deviation</TableCell>
-                    <TableCell size='small'>{ task.taskRatingStddev }</TableCell>
+                    <TableCell>Task Rating - Standard Deviation</TableCell>
+                    <TableCell>{ task.taskRatingStddev }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </Card>
             <Card>
               <CardHeader title="Task Time" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Time - Mean (s) </TableCell>
-                    <TableCell size='small'>{ task.taskTimeAvg }</TableCell>
+                    <TableCell>Task Time - Mean (s) </TableCell>
+                    <TableCell>{ task.taskTimeAvg }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Time - Standard Deviation (s)</TableCell>
-                    <TableCell size='small'>{ task.taskTimeStddev }</TableCell>
+                    <TableCell>Task Time - Standard Deviation (s)</TableCell>
+                    <TableCell>{ task.taskTimeStddev }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Time Deviation - Observed/Optimal (s)</TableCell>
-                    <TableCell size='small'>
+                    <TableCell>Task Time Deviation - Observed/Optimal (s)</TableCell>
+                    <TableCell>
                       { task.taskTimeDeviationObservedAvg }
                       {' '}
                       /
@@ -228,46 +228,46 @@ function ChplSedTaskView({ task: initialTask }) {
             </Card>
             <Card id="success">
               <CardHeader title="Task Success" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Success - Mean (%) </TableCell>
-                    <TableCell size='small'>{ task.taskSuccessAverage }</TableCell>
+                    <TableCell>Task Success - Mean (%) </TableCell>
+                    <TableCell>{ task.taskSuccessAverage }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Success - Standard Deviation (%)</TableCell>
-                    <TableCell size='small'>{ task.taskSuccessStddev }</TableCell>
+                    <TableCell>Task Success - Standard Deviation (%)</TableCell>
+                    <TableCell>{ task.taskSuccessStddev }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </Card>
             <Card>
               <CardHeader title="Task Errors" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Task Errors - Mean (%) </TableCell>
-                    <TableCell size='small'>{ task.taskErrors }</TableCell>
+                    <TableCell>Task Errors - Mean (%) </TableCell>
+                    <TableCell>{ task.taskErrors }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Errors - Standard Deviation (%)</TableCell>
-                    <TableCell size='small'>{ task.taskErrorsStddev }</TableCell>
+                    <TableCell>Task Errors - Standard Deviation (%)</TableCell>
+                    <TableCell>{ task.taskErrorsStddev }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
-                    <TableCell size='small'>
+                    <TableCell>Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
+                    <TableCell>
                       { task.taskPathDeviationObserved }
                       {' '}
                       /
@@ -285,21 +285,21 @@ function ChplSedTaskView({ task: initialTask }) {
                   participants={task.testParticipants}
                 />
               </Box>
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell size='small'>Total Number of Participants</TableCell>
-                    <TableCell size='small'>{ task.testParticipants.length }</TableCell>
+                    <TableCell>Total Number of Participants</TableCell>
+                    <TableCell>{ task.testParticipants.length }</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Occupation Breakdown</TableCell>
-                    <TableCell size='small'>
+                    <TableCell>Occupation Breakdown</TableCell>
+                    <TableCell>
                       <List>
                         {occupations
                           .map((occupation) => (
@@ -321,8 +321,8 @@ function ChplSedTaskView({ task: initialTask }) {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell size='small'>Product Experience - Mean (Months)</TableCell>
-                    <TableCell size='small'>{ meanExperience }</TableCell>
+                    <TableCell>Product Experience - Mean (Months)</TableCell>
+                    <TableCell>{ meanExperience }</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

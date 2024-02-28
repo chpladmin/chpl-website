@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
   CircularProgress,
   IconButton,
   Table,
@@ -28,13 +27,10 @@ const useStyles = makeStyles({
     width: '100%',
     maxHeight: '700px',
     overflowY: 'auto',
-  },
-  column: {
     display: 'flex',
     flexDirection: 'column',
     gridGap: '16px',
     alignItems: 'flex-start',
-    width: '100%',
   },
 });
 
@@ -70,69 +66,65 @@ function ChplUcdProcessesEdit() {
   }
 
   return (
-    <>
-      <Box className={classes.column}>
-        <div className={classes.cardContainer}>
-            <Card>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell>UCD Process</TableCell>
-                  <TableCell>UCD Process Details</TableCell>
-                  <TableCell>Associated Criteria</TableCell>
-                  <TableCell><span className="sr-only">Action</span></TableCell>
+    <Box className={classes.cardContainer}>
+      <Card>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>UCD Process</TableCell>
+              <TableCell>UCD Process Details</TableCell>
+              <TableCell>Associated Criteria</TableCell>
+              <TableCell><span className="sr-only">Action</span></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { listing.sed.ucdProcesses
+              .map((process) => (
+                <TableRow key={process.name}>
+                  <TableCell>
+                    { process.name }
+                  </TableCell>
+                  <TableCell>
+                    { process.details}
+                  </TableCell>
+                  <TableCell>
+                    { getDisplayCriteria(process.criteria) }
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => remove(process)}
+                    >
+                      <DeleteIcon color="error" />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                { listing.sed.ucdProcesses
-                  .map((process) => (
-                    <TableRow key={process.name}>
-                      <TableCell>
-                        { process.name }
-                      </TableCell>
-                      <TableCell>
-                        { process.details}
-                      </TableCell>
-                      <TableCell>
-                        { getDisplayCriteria(process.criteria) }
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          onClick={() => remove(process)}
-                        >
-                          <DeleteIcon color="error" />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-            </Card>
-          { !addingProcess
-            && (
-              <Box pt={4}>
-                <Button
-                  size="medium"
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => setAddingProcess(true)}
-                  endIcon={<AddIcon fontSize="medium" />}
-                >
-                  Add UCD Process
-                </Button>
-              </Box>
-            )}
-          { addingProcess
-            && (
-              <Box pt={4}>
-                <ChplProcessAdd
-                  dispatch={handleDispatch}
-                />
-              </Box>
-            )}
-        </div>
-      </Box>
-    </>
+              ))}
+          </TableBody>
+        </Table>
+      </Card>
+      { !addingProcess
+        && (
+          <Box pt={4}>
+            <Button
+              size="medium"
+              color="primary"
+              variant="outlined"
+              onClick={() => setAddingProcess(true)}
+              endIcon={<AddIcon fontSize="medium" />}
+            >
+              Add UCD Process
+            </Button>
+          </Box>
+        )}
+      { addingProcess
+        && (
+          <Box pt={4}>
+            <ChplProcessAdd
+              dispatch={handleDispatch}
+            />
+          </Box>
+        )}
+    </Box>
   );
 }
 

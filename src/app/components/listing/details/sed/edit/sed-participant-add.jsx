@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  CardContent,
   MenuItem,
   Typography,
   makeStyles,
@@ -141,7 +140,7 @@ function ChplSedParticipantAdd({ dispatch }) {
   });
 
   return (
-    <CardContent>
+    <>
       <Typography gutterBottom variant="subtitle1">Adding Test Participant</Typography>
       <Box className={classes.participantData}>
         <ChplTextField
@@ -272,7 +271,7 @@ function ChplSedParticipantAdd({ dispatch }) {
           Save
         </Button>
       </Box>
-    </CardContent>
+    </>
   );
 }
 
