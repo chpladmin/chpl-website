@@ -5,6 +5,8 @@ import {
   AccordionSummary,
   Box,
   Button,
+  CardContent,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +17,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { object } from 'prop-types';
 
 import ChplSedParticipantAdd from './sed-participant-add';
@@ -154,7 +157,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
             <TableHead>
               <TableRow>
                 <TableCell size="medium">Occupation</TableCell>
-                <TableCell size="medium">Education Type</TableCell>
+                <TableCell size="medium" style={{ minWidth: 150 }}>Education Type</TableCell>
                 <TableCell size="medium">Product Experience (Months)</TableCell>
                 <TableCell size="medium">Professional Experience (Months)</TableCell>
                 <TableCell size="medium">Computer Experience (Months)</TableCell>
@@ -169,7 +172,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                 .map((participant) => (
                   <TableRow key={participant.id ?? participant.uniqueId}>
                     <TableCell>{ participant.occupation }</TableCell>
-                    <TableCell>{ participant.educationType.name }</TableCell>
+                    <TableCell style={{ minWidth: 150 }}>{ participant.educationType.name }</TableCell>
                     <TableCell>{ participant.productExperienceMonths }</TableCell>
                     <TableCell>{ participant.professionalExperienceMonths }</TableCell>
                     <TableCell>{ participant.computerExperienceMonths }</TableCell>
@@ -179,45 +182,51 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                     <TableCell>
                       { task.testParticipants.some((p) => ((p.id ?? p.uniqueId) === (participant.id ?? participant.uniqueId)))
                         ? (
-                          <Button
+                          <IconButton
                             onClick={() => remove(participant)}
                           >
-                            Remove
-                          </Button>
+                            <RemoveCircleOutlineIcon color="error" />
+                          </IconButton>
                         ) : (
-                          <Button
+                          <IconButton
                             onClick={() => add(participant)}
                           >
-                            Add
-                          </Button>
+                            <AddIcon color="primary" />
+                          </IconButton>
                         )}
                     </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
-          { !addingParticipant
-            && (
-              <Box paddingX={2} paddingY={2}>
-                <Button
-                  size="medium"
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => setAddingParticipant(true)}
-                  endIcon={<AddIcon fontSize="medium" />}
-                >
-                  Add Test Participant
-                </Button>
-              </Box>
-            )}
-          { addingParticipant
-            && (
-              <ChplSedParticipantAdd
-                dispatch={handleDispatch}
-              />
-            )}
         </>
       </AccordionDetails>
+      <>
+        { !addingParticipant
+          && (
+            <Box paddingX={2} paddingY={2}>
+              <Button
+                size="medium"
+                color="primary"
+                variant="outlined"
+                onClick={() => setAddingParticipant(true)}
+                endIcon={<AddIcon fontSize="medium" />}
+              >
+                Add Test Participant
+              </Button>
+            </Box>
+          )}
+        { addingParticipant
+          && (
+            <>
+              <CardContent>
+                <ChplSedParticipantAdd
+                  dispatch={handleDispatch}
+                />
+              </CardContent>
+            </>
+          )}
+      </>
     </Accordion>
   );
 }
