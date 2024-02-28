@@ -111,16 +111,18 @@ const useStyles = makeStyles({
   reason: {
     paddingTop: '8px',
   },
-  reasonCardDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'block',
+  reasonCard: {
+    [theme.breakpoints.down('sm')]: {
+      // Styles for mobile design
+      position: 'fixed',
+      bottom: '64px',
+      left: 0,
+      width: '100%',
+      boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
     },
-  },
-  reasonCardMobile: {
-    display: 'block',
     [theme.breakpoints.up('md')]: {
-      display: 'none',
+      // Styles for desktop design
+      position: 'relative',
     },
   },
 });
@@ -284,7 +286,7 @@ function ChplListingEdit() {
             </Box>
           </Box>
         </div>
-        <Card className={classes.reasonCardDesktop}>
+        <Card className={classes.reasonCard}>
           <CardContent>
             <ChplTextField
               id="reason"
@@ -391,27 +393,6 @@ function ChplListingEdit() {
           </CardContent>
         </Card>
       </div>
-      <Card className={classes.reasonCardMobile}>
-        <CardContent>
-          <ChplTextField
-            id="reason"
-            name="reason"
-            label="Reason"
-            value={formik.values.reason}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.productCode && !!formik.errors.productCode}
-            helperText={formik.touched.productCode && formik.errors.productCode}
-          />
-          <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography>
-          <List dense>
-            <ListItem>Clinical Quality Measure Removed</ListItem>
-            <ListItem>Certification Criteria Removed</ListItem>
-            <ListItem>Editing of a non-active Certified Product</ListItem>
-            <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
-          </List>
-        </CardContent>
-      </Card>
       <ChplActionBar
         dispatch={handleDispatch}
         errors={getErrors()}
