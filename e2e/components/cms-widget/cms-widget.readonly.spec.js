@@ -1,13 +1,13 @@
 import SearchPage from '../../pages/collections/search/search.po';
-import Hooks from '../../utilities/hooks';
+import { open as openPage } from '../../utilities/hooks.async';
 
 import CmsWidgetComponent from './cms-widget.po';
 
 const listingId1 = 11084;
-const listingId2 = 10974;
-const listingId3 = 10964;
+const listingId2 = 11407;
+const listingId3 = 11406;
 const search1 = '1043'; // developer code for listingId1
-const search2 = '3121'; // developer code for listingId2
+const search2 = '2666'; // developer code for listingId2
 const chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
 const cmsReverseLookup = '#/resources/cms-lookup';
 const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition';
@@ -15,14 +15,12 @@ const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-
 const config = require('../../config/mainConfig');
 
 let cms;
-let hooks;
 let search;
 
 beforeAll(async () => {
   search = new SearchPage();
   cms = new CmsWidgetComponent();
-  hooks = new Hooks();
-  await hooks.open('#/search');
+  await openPage('#/search');
 });
 
 describe('on cms widget', () => {
@@ -125,13 +123,13 @@ describe('on cms widget', () => {
     });
 
     //ignoring these tests as they are flaky - will address these tests later
-    xit('should have progress bar with the right text and value', async () => {
-      await expect(await cms.progressBarText.getText()).toBe('100% Base Criteria Met');
+    it('should have progress bar with the right text and value', async () => {
+      await expect(await (await cms.progressBarText.getText())).toBe('100% Base Criteria Met');
       await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('100');
     });
 
     //ignoring these tests as they are flaky - will address these tests later
-    xit('should not have missing base criteria list', async () => {
+    it('should not have missing base criteria list', async () => {
       await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(false);
       await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(false);
     });
@@ -142,23 +140,23 @@ describe('on cms widget', () => {
     });
 
     //ignoring these tests as they are flaky - will address these tests later
-    xit('should not have a base criteria link', async () => {
+    it('should not have a base criteria link', async () => {
       await expect(await (await cms.baseCriteriaLink()).isDisplayed()).toBe(false);
     });
 
     //ignoring these tests as they are flaky - will address these tests later
-    xit('should not have link to CHPL public guide', async () => {
+    it('should not have link to CHPL public guide', async () => {
       await expect(await cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse();
     });
 
     //ignoring these tests as they are flaky - will address these tests later
-    xit('should have remove all products button and enabled', async () => {
+    it('should have remove all products button and enabled', async () => {
       await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(true);
       await expect(await (await cms.removeProductsButton()).isClickable()).toBe(true);
     });
 
     //ignoring these tests as they are flaky - will address these tests later
-    xit('should have get cert Id button and enabled', async () => {
+    it('should have get cert Id button and enabled', async () => {
       await expect(await (await cms.getCertIdButton()).isDisplayed()).toBe(true);
       await expect(await (await cms.getCertIdButton()).isClickable()).toBe(true);
     });
