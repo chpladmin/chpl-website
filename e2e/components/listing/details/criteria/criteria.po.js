@@ -22,8 +22,8 @@ class CriteriaComponent {
     return $(this.elements.removedCriteria);
   }
 
-  editCriteria(criteria) {
-    $(`button#criterion-id-${criteria}-edit`).$('span').click();
+  async editCriteria(criteria) {
+    await (await $(`button#criterion-id-${criteria}-edit`).$('span')).click();
   }
 
   get conformanceMethod() {
@@ -50,93 +50,95 @@ class CriteriaComponent {
     return $(elementsOld.saveCertifiedProduct);
   }
 
-  chipText(text) {
+  async chipText(text) {
     return $(`//span[text()="${text}"]`);
   }
 
-  expandRemovedCriteria() {
-    $(this.elements.removedCriteria).$$('div')[1].scrollIntoView();
-    $(this.elements.removedCriteria).$$('div')[1].click();
+  async expandRemovedCriteria() {
+    await (await $(this.elements.removedCriteria).$$('div'))[1].click();
   }
 
-  expandCriteria(id) {
-    $(`#criterion-id-${id}-header`).scrollIntoView({ block: 'center', inline: 'center' });
-    $(`#criterion-id-${id}-header`).$$('div')[2].click();
+  async expandCriteria(id) {
+    await (await $(`#criterion-id-${id}-header`).$$('div'))[2].click();
   }
 
-  criteriaHeader(id) {
+  async criteriaHeader(id) {
     return $(`#criterion-id-${id}-header`);
   }
 
-  criteriaCount() {
-    return $$('//*[starts-with(@id,"criteri")] [contains(@id,"header")]').length;
+  criteriaDetails(id) {
+    return $(`#criterion-id-${id}-details`);
   }
 
-  criteriaDetailTable(id) {
+  async criteriaCount() {
+    return (await $$('//*[starts-with(@id,"criteri")] [contains(@id,"header")]')).length;
+  }
+
+  async criteriaDetailTable(id) {
     return $(`//*[@id="criterion-id-${id}-header"]/parent::div`).$('table');
   }
 
-  addItem(type) {
-    $(`#${type}-add-item`).click();
+  async addItem(type) {
+    await $(`#${type}-add-item`).click();
   }
 
-  checkItem(type) {
-    $(`#${type}-check-item`).click();
+  async checkItem(type) {
+    await $(`#${type}-check-item`).click();
   }
 
-  choosePrivacySecurityFramework(value) {
-    $('#privacy-security-framework').click();
-    $(`//*[@data-value="${value}"]`).click();
+  async choosePrivacySecurityFramework(value) {
+    await $('#privacy-security-framework').click();
+    await $(`//*[@data-value="${value}"]`).click();
   }
 
-  addConformanceMethods(name, version) {
-    this.addItem('conformance-methods');
-    $(this.elements.conformanceMethodName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.conformanceMethodName).click();
-    $('#menu-name').$(`li*=${name}`).click();
-    $(this.elements.version).addValue(version);
-    this.checkItem('conformance-methods');
+  async addConformanceMethods(name, version) {
+    await this.addItem('conformance-methods');
+    await $(this.elements.conformanceMethodName).scrollIntoView({ block: 'center', inline: 'center' });
+    await $(this.elements.conformanceMethodName).click();
+    await (await $('#menu-name').$(`li*=${name}`)).click();
+    await $(this.elements.version).addValue(version);
+    await this.checkItem('conformance-methods');
   }
 
-  addTestTools(name, version) {
-    this.addItem('test-tools');
-    $(this.elements.testToolsName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.testToolsName).click();
-    $('#menu-tt').$(`li*=${name}`).click();
-    $(this.elements.version).addValue(version);
-    this.checkItem('test-tools');
+  async addTestTools(name, version) {
+    await this.addItem('test-tools');
+    await $(this.elements.testToolsName).scrollIntoView({ block: 'center', inline: 'center' });
+    await $(this.elements.testToolsName).click();
+    await (await $('#menu-tt').$(`li*=${name}`)).click();
+    await $(this.elements.version).addValue(version);
+    await this.checkItem('test-tools');
   }
 
-  addPrivacySecurity(value) {
-    $(this.elements.privacySecurityName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.privacySecurityName).click();
-    $(`//*[@data-value="${value}"]`).click();
+  async addPrivacySecurity(value) {
+    await $(this.elements.privacySecurityName).scrollIntoView({ block: 'center', inline: 'center' });
+    await $(this.elements.privacySecurityName).click();
+    await $(`//*[@data-value="${value}"]`).click();
   }
 
-  editCriteriaButton(criteria, id) {
+  async editCriteriaButton(criteria, id) {
     return $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit');
   }
 
-  openAttestedCriteria(criteria, id) {
-    $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit').click();
+  async openAttestedCriteria(criteria, id) {
+    await (await $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit')).click();
   }
 
-  openUnattestedCriteria(criteria, id) {
-    $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit').click();
+  async openUnattestedCriteria(criteria, id) {
+    await (await $(`//*[@id="criteria_${criteria}_details_header${id}"]`).$('button=Edit')).click();
   }
 
-  attestCriteria(criteria) {
-    $(`//*[@id="data${criteria}"]`).click();
+  async attestCriteria(criteria) {
+    await $(`//*[@id="data${criteria}"]`).click();
   }
 
-  addConformanceMethodsOld(name, version) {
-    $(elementsOld.conformanceMethodName).selectByVisibleText(name);
-    $('//*[starts-with(@id,"conformanceMethods-additional-input")]').addValue(version);
+  async addConformanceMethodsOld(name, version) {
+    await $(elementsOld.conformanceMethodName).selectByVisibleText(name);
+    await $('//*[starts-with(@id,"conformanceMethods-additional-input")]').addValue(version);
   }
 
-  addTestToolsOld(name, version) {
-    $(elementsOld.testToolsName).selectByVisibleText(name);
-    $('//*[starts-with(@id,"testTools-additional-input")]').addValue(version);
+  async addTestToolsOld(name, version) {
+    await $(elementsOld.testToolsName).selectByVisibleText(name);
+    await $('//*[starts-with(@id,"testTools-additional-input")]').addValue(version);
   }
 
   get conformanceMethodDropdownOptions() {
@@ -147,8 +149,8 @@ class CriteriaComponent {
     return this.testTools.$$('option');
   }
 
-  closeItem(type) {
-    $(`#${type}-close-item`).click();
+  async closeItem(type) {
+    await $(`#${type}-close-item`).click();
   }
 }
 
