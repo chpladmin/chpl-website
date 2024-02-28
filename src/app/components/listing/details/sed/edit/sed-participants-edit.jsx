@@ -179,7 +179,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                     <TableCell size='small'>{ participant.gender }</TableCell>
                     <TableCell size='small'>{ participant.assistiveTechnologyNeeds }</TableCell>
                     <TableCell size='small'>
-                      { task.testParticipants.some((p) => (p.id ? (p.id === participant.id) : (p.uniqueId === participant.uniqueId)))
+                      { task.testParticipants.some((p) => ((p.id ?? p.uniqueId) === (participant.id ?? participant.uniqueId)))
                         ? (
                           <Button
                             onClick={() => remove(participant)}
