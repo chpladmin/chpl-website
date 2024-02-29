@@ -52,6 +52,7 @@ const useStyles = makeStyles({
   deleteButton: {
     color: palette.error,
     marginTop: '12px',
+    border: `1px solid ${palette.error}`,
   },
   taskData: {
     display: 'grid',
