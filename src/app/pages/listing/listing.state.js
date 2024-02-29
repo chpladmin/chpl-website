@@ -40,6 +40,7 @@ const states = [{
           }),
         networkService.getAccessibilityStandards().then((response) => { resources.accessibilityStandards = response; }),
         networkService.getAtls(false).then((response) => { resources.testingLabs = response.atls; }),
+        networkService.getCodeSets().then((response) => { resources.codeSets = response; }),
         networkService.getConformanceMethods().then((response) => { resources.conformanceMethods = response; }),
         networkService.getFunctionalitiesTested().then((response) => { resources.functionalitiesTested = response; }),
         networkService.getMeasures().then((response) => { resources.measures = response; }),
