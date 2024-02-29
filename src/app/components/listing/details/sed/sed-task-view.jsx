@@ -140,11 +140,11 @@ function ChplSedTaskView({ task: initialTask }) {
           <Box className={classes.taskData}>
             <Card className={classes.fullWidthGridRow} id="summary">
               <CardHeader title="Summary" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -172,11 +172,11 @@ function ChplSedTaskView({ task: initialTask }) {
             </Card>
             <Card id="rating">
               <CardHeader title="Rating" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -197,11 +197,11 @@ function ChplSedTaskView({ task: initialTask }) {
             </Card>
             <Card>
               <CardHeader title="Task Time" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -228,11 +228,11 @@ function ChplSedTaskView({ task: initialTask }) {
             </Card>
             <Card id="success">
               <CardHeader title="Task Success" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -249,11 +249,11 @@ function ChplSedTaskView({ task: initialTask }) {
             </Card>
             <Card>
               <CardHeader title="Task Errors" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -285,11 +285,11 @@ function ChplSedTaskView({ task: initialTask }) {
                   participants={task.testParticipants}
                 />
               </Box>
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

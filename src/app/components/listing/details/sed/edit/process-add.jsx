@@ -20,7 +20,6 @@ import * as yup from 'yup';
 
 import { useFetchUcdProcesses } from 'api/standards';
 import { ChplTextField } from 'components/util';
-import { sortCriteria } from 'services/criteria.service';
 import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -33,8 +32,12 @@ const useStyles = makeStyles({
     width: '100%',
   },
   criteriaForm: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     width: '100%',
-    gap: '16px',
+    paddingTop: '16px',
+    paddingBottom: '16px',
   },
   criteriaList: {
     display: 'flex',
@@ -42,10 +45,12 @@ const useStyles = makeStyles({
   },
   addContainer: {
     alignItems: 'center',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
+    display: 'flex',
     width: '100%',
     gap: '16px',
+  },
+  formLegend: {
+    marginBottom: 0,
   },
 });
 
@@ -67,7 +72,7 @@ function ChplUcdProcessAdd({ dispatch }) {
   let formik;
 
   useEffect(() => {
-    if (!listing) { return; };
+    if (!listing) { return; }
     setAvailableCriteria(listing
       .certificationResults
       .filter((cert) => cert.success && cert.sed));
@@ -142,7 +147,7 @@ function ChplUcdProcessAdd({ dispatch }) {
 
   return (
     <>
-      <Typography variant="subtitle1">Adding UCD Process</Typography>
+      <Typography variant="subtitle1" gutterBottom>Adding UCD Process</Typography>
       <Box className={classes.addContainer}>
         <ChplTextField
           select
@@ -175,7 +180,7 @@ function ChplUcdProcessAdd({ dispatch }) {
       </Box>
       <Box className={classes.criteriaForm}>
         <FormControl required error={criteria.size === 0} component="fieldset">
-          <FormLabel component="legend">Certification Criteria</FormLabel>
+          <FormLabel className={classes.formLegend} component="legend">Certification Criteria</FormLabel>
           <FormGroup className={classes.criteriaList}>
             { criteriaOptions.map((cc) => (
               <FormControlLabel

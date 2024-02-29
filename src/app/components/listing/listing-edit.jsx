@@ -66,7 +66,7 @@ const useStyles = makeStyles({
   },
   menuItems: {
     display: 'flex',
-    padding: '8px',
+    padding: 0,
     justifyContent: 'space-between',
     '&.Mui-disabled': {
       color: palette.black,
@@ -110,6 +110,20 @@ const useStyles = makeStyles({
   },
   reason: {
     paddingTop: '8px',
+  },
+  reasonCard: {
+    [theme.breakpoints.down('sm')]: {
+      // Styles for mobile design
+      position: 'fixed',
+      bottom: '64px',
+      left: 0,
+      width: '100%',
+      boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
+    },
+    [theme.breakpoints.up('md')]: {
+      // Styles for desktop design
+      position: 'relative',
+    },
   },
 });
 
@@ -272,7 +286,7 @@ function ChplListingEdit() {
             </Box>
           </Box>
         </div>
-        <Card>
+        <Card className={classes.reasonCard}>
           <CardContent>
             <ChplTextField
               id="reason"

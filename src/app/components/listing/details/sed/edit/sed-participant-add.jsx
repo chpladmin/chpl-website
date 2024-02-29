@@ -22,6 +22,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridGap: '8px',
     width: '100%',
+    marginTop: '16px',
   },
   participantData: {
     display: 'grid',
@@ -140,7 +141,7 @@ function ChplSedParticipantAdd({ dispatch }) {
 
   return (
     <>
-      <Typography variant="subtitle1">Adding Test Participant</Typography>
+      <Typography gutterBottom variant="subtitle1">Adding Test Participant</Typography>
       <Box className={classes.participantData}>
         <ChplTextField
           id="occupation"

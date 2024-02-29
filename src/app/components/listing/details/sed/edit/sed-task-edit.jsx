@@ -49,6 +49,10 @@ const useStyles = makeStyles({
   accordionDetails: {
     borderRadius: '0 0 8px 8px',
   },
+  deleteButton: {
+    color: palette.error,
+    marginTop: '12px',
+  },
   taskData: {
     display: 'grid',
     flexDirection: 'column',
@@ -63,16 +67,10 @@ const useStyles = makeStyles({
   },
 });
 
-const makeRounded = (val) => Math.round(val * 1000) / 1000;
-
-const makePercentage = (val) => `${makeRounded(val * 100)}%`;
-
 function ChplSedTaskEdit({ task: initialTask }) {
   const { listing, setListing } = useContext(ListingContext);
   const [expanded, setExpanded] = useState(false);
-  const [meanExperience, setMeanExperience] = useState(0);
   const [task, setTask] = useState(undefined);
-  const [occupations, setOccupations] = useState([]);
   const classes = useStyles();
 
   const getIcon = () => (expanded
@@ -92,27 +90,6 @@ function ChplSedTaskEdit({ task: initialTask }) {
   useEffect(() => {
     if (!initialTask) { return; }
     setTask(initialTask);
-    setMeanExperience(makeRounded(initialTask.testParticipants.reduce((sum, participant) => sum + participant.productExperienceMonths, 0) / initialTask.testParticipants.length));
-    const occupationsObj = initialTask.testParticipants.reduce((obj, participant) => {
-      if (!obj[participant.occupation]) {
-        return {
-          ...obj,
-          [participant.occupation]: 1,
-        };
-      }
-      return {
-        ...obj,
-        [participant.occupation]: obj[participant.occupation] + 1,
-      };
-    }, {});
-    setOccupations(Object
-      .entries(occupationsObj)
-      .map(([key, value]) => ({
-        name: key,
-        count: value,
-        percentage: makePercentage(value / initialTask.testParticipants.length),
-      }))
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [initialTask]);
 
   const handleAccordionChange = () => {
@@ -154,12 +131,19 @@ function ChplSedTaskEdit({ task: initialTask }) {
         <CardContent>
           <Box className={classes.taskData}>
             <Card className={classes.fullWidthGridRow} id="summary">
-              <CardHeader title="Summary" />
-              <Table>
+              <CardHeader
+                action={(
+                  <Button endIcon={<DeleteIcon fontSize="small" color="error" />} onClick={() => remove()} className={classes.deleteButton}>
+                    Delete Tasking Task
+                  </Button>
+              )}
+                title="Summary"
+              />
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -187,11 +171,11 @@ function ChplSedTaskEdit({ task: initialTask }) {
             </Card>
             <Card id="rating">
               <CardHeader title="Rating" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -212,11 +196,11 @@ function ChplSedTaskEdit({ task: initialTask }) {
             </Card>
             <Card>
               <CardHeader title="Task Time" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -243,11 +227,11 @@ function ChplSedTaskEdit({ task: initialTask }) {
             </Card>
             <Card id="success">
               <CardHeader title="Task Success" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -264,11 +248,11 @@ function ChplSedTaskEdit({ task: initialTask }) {
             </Card>
             <Card>
               <CardHeader title="Task Errors" />
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell size="medium">Description</TableCell>
+                    <TableCell size="medium">Value</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -293,19 +277,12 @@ function ChplSedTaskEdit({ task: initialTask }) {
                 </TableBody>
               </Table>
             </Card>
-            <Card className={classes.fullWidthGridRow} id="participants">
-              <CardHeader title="Participants" />
+            <Box className={classes.fullWidthGridRow} id="participants">
               <ChplSedParticipantsEdit
                 task={task}
               />
-            </Card>
+            </Box>
           </Box>
-          <Button
-            onClick={() => remove()}
-          >
-            Delete Task
-            <DeleteIcon color="error" />
-          </Button>
         </CardContent>
       </AccordionDetails>
     </Accordion>
