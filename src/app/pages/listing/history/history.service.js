@@ -1,3 +1,5 @@
+import * as jsJoda from '@js-joda/core';
+
 import { briefLookup, compareListing } from 'pages/reports/listings/listings.service';
 
 const interpretActivity = (activity) => {
@@ -37,6 +39,7 @@ const interpretActivity = (activity) => {
 
 const interpretCertificationStatusChanges = (listing) => listing.certificationEvents
   .filter((e) => !e.eventTypeId || e.eventTypeId === 1)
+  .filter((e) => e.eventDay <= jsJoda.LocalDate.now())
   .map((e) => {
     e.activityDate = parseInt(e.eventDate, 10);
     if (e.eventTypeId && e.eventTypeId === 1) {
