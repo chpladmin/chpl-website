@@ -133,7 +133,12 @@ function ChplSedTaskEdit({ task: initialTask }) {
             <Card className={classes.fullWidthGridRow} id="summary">
               <CardHeader
                 action={(
-                  <Button endIcon={<DeleteIcon fontSize="small" color="error" />} onClick={() => remove()} className={classes.deleteButton}>
+                  <Button
+                    endIcon={<DeleteIcon fontSize="small" color="error" />}
+                    onClick={() => remove()}
+                    className={classes.deleteButton}
+                    variant="outlined"
+                  >
                     Delete Testing Task
                   </Button>
               )}

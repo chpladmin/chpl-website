@@ -48,7 +48,7 @@ const useStyles = makeStyles({
   formContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 16,
+    gap: '16px',
   },
   taskData: {
     display: 'grid',
