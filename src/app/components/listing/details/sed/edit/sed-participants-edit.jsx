@@ -218,13 +218,11 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
           )}
         { addingParticipant
           && (
-            <>
-              <CardContent>
-                <ChplSedParticipantAdd
-                  dispatch={handleDispatch}
-                />
-              </CardContent>
-            </>
+            <CardContent>
+              <ChplSedParticipantAdd
+                dispatch={handleDispatch}
+              />
+            </CardContent>
           )}
       </>
     </Accordion>
