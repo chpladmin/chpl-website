@@ -134,7 +134,7 @@ function ChplSedTaskEdit({ task: initialTask }) {
               <CardHeader
                 action={(
                   <Button endIcon={<DeleteIcon fontSize="small" color="error" />} onClick={() => remove()} className={classes.deleteButton}>
-                    Delete Tasking Task
+                    Delete Testing Task
                   </Button>
               )}
                 title="Summary"
@@ -292,5 +292,5 @@ function ChplSedTaskEdit({ task: initialTask }) {
 export default ChplSedTaskEdit;
 
 ChplSedTaskEdit.propTypes = {
-  task: object.isRequired,
+  task: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
