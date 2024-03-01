@@ -561,10 +561,6 @@ export default class NetworkService {
     return this.apiPUT('/surveillance-report/quarterly', report);
   }
 
-  updateRelevantListing(reportId, listing) {
-    return this.apiPUT(`/surveillance-report/quarterly/${reportId}/listings/${listing.id}`, listing);
-  }
-
   updateRelevantSurveillance(reportId, surveillance) {
     return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
   }
