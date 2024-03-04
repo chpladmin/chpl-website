@@ -31,9 +31,9 @@ const UserManagementComponent = {
     }
 
     handleRole() {
-      this.roles = ['chpl-onc', 'ROLE_CMS_STAFF'];
+      this.roles = ['ROLE_ONC', 'ROLE_CMS_STAFF'];
       if (this.hasAnyRole(['chpl-admin'])) {
-        this.roles.push('chpl-admin');
+        this.roles.push('ROLE_ADMIN');
       }
     }
 
