@@ -28,9 +28,10 @@
     function canImpersonate(target) {
       const userRole = parseJwt(getToken())?.Authority;
       const targetRole = target.role;
+      
       return !isImpersonating()
-        && (((userRole === 'ROLE_ADMIN' || userRole === 'chpl-admin') && (targetRole !== 'ROLE_ADMIN' && targetRole !== 'chpl-admin'))
-                 || (userRole === 'chpl-onc' && targetRole !== 'chpl-admin' && targetRole !== 'chpl-onc'));
+        && (((userRole === 'ROLE_ADMIN') && (targetRole !== 'ROLE_ADMIN'))
+                 || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
     }
 
     function canManageAcb(acb) {
