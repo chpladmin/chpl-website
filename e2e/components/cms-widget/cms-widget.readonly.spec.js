@@ -1,5 +1,5 @@
 import SearchPage from '../../pages/collections/search/search.po';
-import Hooks from '../../utilities/hooks';
+import { open as openPage } from '../../utilities/hooks.async';
 
 import CmsWidgetComponent from './cms-widget.po';
 
@@ -15,14 +15,12 @@ const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-
 const config = require('../../config/mainConfig');
 
 let cms;
-let hooks;
 let search;
 
 beforeAll(async () => {
   search = new SearchPage();
   cms = new CmsWidgetComponent();
-  hooks = new Hooks();
-  await hooks.open('#/search');
+  await openPage('#/search');
 });
 
 describe('on cms widget', () => {
