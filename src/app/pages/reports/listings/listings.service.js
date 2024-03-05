@@ -1,7 +1,7 @@
 import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
-import { getDisplayDateFormat } from 'services/date-util';
+import { getCodeSetFormat, getDisplayDateFormat } from 'services/date-util';
 
 let rules;
 
@@ -23,8 +23,8 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'certificationEvents':
       options = {
-        sort: (p, c) => ((p.status?.name ?? p.certificationStatusName) === (c.status?.name ?? c.certificationStatusName) ? 0 : p.eventDate - c.eventDate),
-        write: (f) => `Certification Status "${f.status?.name ?? f.certificationStatusName}"`,
+        sort: (p, c) => ((p.status?.name ?? p.certificationStatusName) === (c.status?.name ?? c.certificationStatusName) ? 0 : (p.eventDate ? (p.eventDate - c.eventDate) : (p.eventDay < c.eventDay ? -1 : 1))),
+        write: (f) => `Certification Status "${f.status?.name ?? f.certificationStatusName}" as of "${getDisplayDateFormat(f.eventDay || f.eventDate)}"`,
       };
       break;
     case 'children':
@@ -32,6 +32,12 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => (p.chplProductNumber < c.chplProductNumber ? -1 : p.chplProductNumber > c.chplProductNumber ? 1 : 0),
         write: (f) => f.chplProductNumber,
+      };
+      break;
+    case 'codeSets':
+      options = {
+        sort: (p, c) => (p.codeSet.requiredDay < c.codeSet.requiredDay ? -1 : p.codeSet.requiredDay > c.codeSet.requiredDay ? 1 : 0),
+        write: (f) => `Code Set "${getCodeSetFormat(f.codeSet.requiredDay)}"`,
       };
       break;
     case 'conformanceMethods':
@@ -290,6 +296,7 @@ const briefLookup = {
   'certificationResults.allowedTestTools': { message: () => undefined },
   'certificationResults.apiDocumentation': { message: () => undefined },
   'certificationResults.attestationAnswer': { message: () => undefined },
+  'certificationResults.codeSets': { message: () => undefined },
   'certificationResults.conformanceMethods': { message: () => undefined },
   'certificationResults.documentationUrl': { message: () => undefined },
   'certificationResults.exportDocumentation': { message: () => undefined },
@@ -523,6 +530,7 @@ const lookup = {
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.apiDocumentation': { message: (before, after) => comparePrimitive(before, after, 'apiDocumentation', 'API Documentation') },
   'certificationResults.attestationAnswer': { message: (before, after) => comparePrimitive(before, after, 'attestationAnswer', 'Attestation') },
+  'certificationResults.codeSets': { message: (before, after) => compare(before, after, 'codeSets', 'Code Sets') },
   'certificationResults.conformanceMethods': { message: (before, after) => compare(before, after, 'conformanceMethods', 'Conformance Methods') },
   'certificationResults.documentationUrl': { message: (before, after) => comparePrimitive(before, after, 'documentationUrl', 'Documentation URL') },
   'certificationResults.exportDocumentation': { message: (before, after) => comparePrimitive(before, after, 'exportDocumentation', 'Export Documentation') },
