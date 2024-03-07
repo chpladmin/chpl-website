@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 13.11.0
+_5 March 2024_
+
+### Features
+* Enable editing of "Code Sets"
+* Enable "See all nnn results" button on search results
+
+### Bug Fixes
+* Remove button from history screen as appropriate
+
+### User Interface Updates
+* Display date of certification status change in Listing Activity reporting
+* Hide "future" status changes in "listing history" modal
+
+---
+
 ## Version 13.10.1
 _20 February 2024_
 
