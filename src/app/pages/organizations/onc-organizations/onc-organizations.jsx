@@ -139,7 +139,7 @@ function ChplOncOrganizations() {
         }
         break;
       case 'invite':
-        invite({ role: 'chpl-onc-acb', emailAddress: payload.email, permissionObjectId: activeId }, {
+        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {
             enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
               variant: 'success',
