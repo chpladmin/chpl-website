@@ -41,6 +41,10 @@ const SurveillanceReportRelevantSurveillanceComponent = {
     cancel() {
       this.onCancel();
     }
+
+    shouldShowOtherSurveillanceProcessTypesExplanation() {
+      return this.surveillance.surveillanceProcessTypes?.some((spt) => spt.name === 'Other - [Please describe]');
+    }
   },
 };
 

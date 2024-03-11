@@ -45,7 +45,7 @@
               ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"
               ng-options="type as type.name for type in $ctrl.surveillanceProcessTypes track by type.id"></select>
     </div>
-    <div class="form-group" ng-if="$ctrl.surveillance.surveillanceProcessType.name === 'Other - [Please describe]'">
+    <div class="form-group" ng-if="$ctrl.shouldShowOtherSurveillanceProcessTypesExplanation()">
       <label class="control-label" for="surveillance-process-type-other">Surveillance Process Type - Other Explanation <span class="text-danger">*</span></label>
       <input type="text" class="form-control" id="surveillance-process-type-other" name="surveillanceProcessTypeOther" ng-model="$ctrl.surveillance.surveillanceProcessTypeOther"
              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])" required></input>
