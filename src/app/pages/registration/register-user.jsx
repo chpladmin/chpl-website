@@ -87,6 +87,7 @@ function ChplRegisterUser(props) {
           hash,
           user: data,
         };
+        /*
         networkService.createInvitedUser(packet)
           .then(() => {
             $analytics.eventTrack('Create Account', { category: 'Authentication' });
@@ -99,6 +100,17 @@ function ChplRegisterUser(props) {
               setMessage(error.data.error);
             }
           });
+        */
+        networkService.createInvitedCognitoUser(packet)
+          .then((resp) => {
+            console.log("Response: " + resp);
+          }, (error) => {
+            if (error.data.errorMessages) {
+              setMessage(error.data.errorMessages);
+            } else if (error.data.error) {
+              setMessage(error.data.error);
+            }
+          }); 
         break;
         // no default
     }

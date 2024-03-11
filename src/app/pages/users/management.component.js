@@ -47,9 +47,22 @@ const UserManagementComponent = {
             }));
           break;
         case 'invite':
+          /*
           this.networkService.inviteUser({
             role: data.role,
             emailAddress: data.email,
+          }).then(() => that.toaster.pop({
+            type: 'success',
+            title: 'Email sent',
+            body: `Email sent successfully to ${data.email}`,
+          })).catch((error) => that.toaster.pop({
+            type: 'error',
+            title: 'Email was not sent',
+            body: error.data.error,
+          }));
+          */
+          this.networkService.inviteCognitoUser({
+            email: data.email,
           }).then(() => that.toaster.pop({
             type: 'success',
             title: 'Email sent',
