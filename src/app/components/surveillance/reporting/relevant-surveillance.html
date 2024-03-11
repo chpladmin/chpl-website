@@ -40,7 +40,7 @@
     <div class="form-group">
       <label class="control-label" for="surveillance-process-type">Surveillance Process Type</label>
       <p class="form-control-static">Select all activities that were conducted as part of the process to surveil this listing/developer for potential non-conformities.</p>
-      <select class="form-control" id="surveillance-process-type" name="surveillanceProcessType" ng-model="$ctrl.surveillance.surveillanceProcessType"
+      <select class="form-control" id="surveillance-process-types" name="surveillanceProcessTypes" ng-model="$ctrl.surveillance.surveillanceProcessTypes"
               multiple
               ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"
               ng-options="type as type.name for type in $ctrl.surveillanceProcessTypes track by type.id"></select>
