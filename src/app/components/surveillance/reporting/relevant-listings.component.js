@@ -6,7 +6,6 @@ const SurveillanceReportRelevantListingsComponent = {
     relevantListing: '<',
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
-    onSave: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
     constructor($log, DateUtil) {
@@ -46,11 +45,6 @@ const SurveillanceReportRelevantListingsComponent = {
     }
 
     cancelEdit() {
-      this.activeListing = undefined;
-    }
-
-    save(listing) {
-      this.onSave({ listing });
       this.activeListing = undefined;
     }
   },
