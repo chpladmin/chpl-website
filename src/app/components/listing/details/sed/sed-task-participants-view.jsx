@@ -91,14 +91,14 @@ function ChplSedTaskParticipantsView(props) {
                 <TableBody>
                   { participants.map((participant) => (
                     <TableRow key={participant.id}>
-                      <TableCell>{ participant.occupation }</TableCell>
-                      <TableCell>{ participant.educationTypeName }</TableCell>
-                      <TableCell>{ participant.productExperienceMonths }</TableCell>
-                      <TableCell>{ participant.professionalExperienceMonths }</TableCell>
-                      <TableCell>{ participant.computerExperienceMonths }</TableCell>
-                      <TableCell>{ participant.ageRange }</TableCell>
-                      <TableCell>{ participant.gender }</TableCell>
-                      <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
+                      <TableCell size="small">{ participant.occupation }</TableCell>
+                      <TableCell size="small">{ participant.educationTypeName }</TableCell>
+                      <TableCell size="small">{ participant.productExperienceMonths }</TableCell>
+                      <TableCell size="small">{ participant.professionalExperienceMonths }</TableCell>
+                      <TableCell size="small">{ participant.computerExperienceMonths }</TableCell>
+                      <TableCell size="small">{ participant.ageRange }</TableCell>
+                      <TableCell size="small">{ participant.gender }</TableCell>
+                      <TableCell size="small">{ participant.assistiveTechnologyNeeds }</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
