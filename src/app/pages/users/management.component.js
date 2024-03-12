@@ -46,11 +46,9 @@ const UserManagementComponent = {
               that.users = response.users;
             }));
           break;
-        case 'invite':
-          /*
-          this.networkService.inviteUser({
-            role: data.role,
-            emailAddress: data.email,
+        case 'cognito-invite' :
+          this.networkService.inviteCognitoUser({
+            email: data.email,
           }).then(() => that.toaster.pop({
             type: 'success',
             title: 'Email sent',
@@ -60,9 +58,11 @@ const UserManagementComponent = {
             title: 'Email was not sent',
             body: error.data.error,
           }));
-          */
-          this.networkService.inviteCognitoUser({
-            email: data.email,
+          break;
+        case 'invite':
+          this.networkService.inviteUser({
+            role: data.role,
+            emailAddress: data.email,
           }).then(() => that.toaster.pop({
             type: 'success',
             title: 'Email sent',

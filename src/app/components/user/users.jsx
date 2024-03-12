@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -11,6 +11,7 @@ import { arrayOf, func, string } from 'prop-types';
 
 import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
+import ChplCognitoUserInvite from './cognito-user-invite';
 import ChplUserView from './user-view';
 
 import { usePutUser } from 'api/users';
@@ -18,6 +19,7 @@ import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
+import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -58,15 +60,21 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const { mutate } = usePutUser();
+  const { mutate } = usePutUser();7
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const classes = useStyles();
+  const { isOn } = useContext(FlagContext);
+  const [ssoIsOn, setSsoIsOn] = useState(false);
 
   useEffect(() => {
     setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
   }, [initialUsers]);
+
+  useEffect(() => {
+    setSsoIsOn(isOn('sso'));
+  }, [isOn]);
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
@@ -109,6 +117,9 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
         break;
       case 'invite':
         dispatch('invite', data);
+        break;
+      case 'cognito-invite':
+        dispatch('cognito-invite', data);
         break;
       case 'save':
         mutate(data, {
@@ -171,6 +182,12 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
                     roles={roles}
                     dispatch={handleDispatch}
                   />
+                  { (ssoIsOn) 
+                    && (
+                      <ChplCognitoUserInvite
+                        dispatch={handleDispatch}
+                      />
+                    )}
                 </div>
                 <div className={classes.users}>
                   { users.map((u) => (
