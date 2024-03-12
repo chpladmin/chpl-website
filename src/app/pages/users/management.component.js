@@ -33,7 +33,7 @@ const UserManagementComponent = {
     handleRole() {
       this.roles = ['ROLE_ONC', 'ROLE_CMS_STAFF'];
       if (this.hasAnyRole(['chpl-admin'])) {
-        this.roles.push('chpl-admin');
+        this.roles.push('ROLE_ADMIN');
       }
     }
 
@@ -68,7 +68,7 @@ const UserManagementComponent = {
             });
           break;
         case 'impersonate':
-          if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+          if (this.hasAnyRole(['chpl-developer'])) {
             this.$state.go('dashboard');
           } else {
             this.$state.reload();
