@@ -6,7 +6,7 @@ const suite = {
     expectedErrors: [
     ],
     expectedWarnings: [
-      'Required standards were added to 170.315 (b)(1) and 170.315 (c)(3).',
+      'Required standards were added to 170.315 (b)(1), 170.315 (c)(3), and 170.315 (f)(5).',
       'Criteria 170.315 (d)(7) contains an invalid Standard \'170.205(a)(4)\'. It has been removed from the pending listing.',
       'Criteria 170.315 (d)(2) contains an invalid Standard \'bad standard\'. It has been removed from the pending listing.',
       'Criteria 170.315 (d)(1) contains an invalid Standard \'170.205(o)(1)\'. It has been removed from the pending listing.',
