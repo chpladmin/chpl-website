@@ -9,7 +9,6 @@ const suite = {
     listingId: '15.04.04.1722.MEA4.V1.00.1.210607',
     expectedErrors: [
       'The G1 measure Electronic Prescribing: Eligible Clinician for RT1 cannot have associated criterion 170.315 (b)(2).',
-      'The G1 measure Electronic Prescribing: Eligible Clinician for RT1 cannot have associated criterion 170.315 (b)(2).',
       'Invalid G1/G2 Measure Type: \'G5\' was not found.',
     ],
     expectedWarnings: [
