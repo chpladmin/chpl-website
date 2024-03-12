@@ -10,9 +10,10 @@ import { string } from 'prop-types';
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
+  ChplCognitoUserCreate,
 } from 'components/registration';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -39,6 +40,13 @@ function ChplRegisterUser(props) {
 
   let handleDispatch;
 
+  const { isOn } = useContext(FlagContext);
+  const [ssoIsOn, setSsoIsOn] = useState(false);
+
+  useEffect(() => {
+    setSsoIsOn(isOn('sso'));
+  }, [isOn]);
+  
   useEffect(() => {
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
       handleDispatch('authorize', {});
@@ -82,12 +90,27 @@ function ChplRegisterUser(props) {
             }
           });
         break;
+      case 'cognito-create':
+        packet = {
+          hash,
+          user: data,
+        };
+        networkService.createInvitedCognitoUser(packet)
+          .then((resp) => {
+            console.log("Response: " + resp);
+          }, (error) => {
+            if (error.data.errorMessages) {
+              setMessage(error.data.errorMessages);
+            } else if (error.data.error) {
+              setMessage(error.data.error);
+            }
+          }); 
+        break;
       case 'create':
         packet = {
           hash,
           user: data,
         };
-        /*
         networkService.createInvitedUser(packet)
           .then(() => {
             $analytics.eventTrack('Create Account', { category: 'Authentication' });
@@ -100,17 +123,6 @@ function ChplRegisterUser(props) {
               setMessage(error.data.error);
             }
           });
-        */
-        networkService.createInvitedCognitoUser(packet)
-          .then((resp) => {
-            console.log("Response: " + resp);
-          }, (error) => {
-            if (error.data.errorMessages) {
-              setMessage(error.data.errorMessages);
-            } else if (error.data.error) {
-              setMessage(error.data.error);
-            }
-          }); 
         break;
         // no default
     }
@@ -129,7 +141,14 @@ function ChplRegisterUser(props) {
                 { message }
               </Typography>
               )}
-            <ChplUserCreate dispatch={handleDispatch} />
+            { (ssoIsOn)
+              && (
+                <ChplCognitoUserCreate dispatch={handleDispatch} />
+              )}
+            { (!ssoIsOn)
+              && (  
+                <ChplUserCreate dispatch={handleDispatch} />
+              )}
             <Typography>
               Or
               {' '}
