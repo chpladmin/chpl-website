@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Box,
   Paper,
   Table,
@@ -10,6 +11,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import { shape, string } from 'prop-types';
 
 import ChplLandingPage from './landing-page';
@@ -50,6 +52,23 @@ const initialHeaders = [
 ];
 
 const useStyles = makeStyles({
+  cantFindContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  cantFindContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 8,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    width: 'auto',
+    borderRadius: '4px',
+    margin: '0 32px',
+    border: `1px solid ${palette.greyMain}`,
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -131,6 +150,7 @@ function ChplSearchView(props) {
   const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
+  const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
@@ -158,7 +178,8 @@ function ChplSearchView(props) {
       ...listing,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading, analytics]);
+    setSearchTermRecordCount(data.searchTermRecordCount);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -184,6 +205,10 @@ function ChplSearchView(props) {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
+  };
+
+  const seeAllResults = () => {
+    dispatch('seeAllTextSearchResults');
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
@@ -250,6 +275,25 @@ function ChplSearchView(props) {
                   />
                 )}
             </div>
+            { listings.length === 0 && searchTermRecordCount > 0
+              && (
+                <Box className={classes.cantFindContainer}>
+                  <FindReplaceIcon htmlColor={palette.primaryLight} style={{ fontSize: '64px' }} />
+                  <Box className={classes.cantFindContent}>
+                    <Typography>Can&apos;t find what you&apos;re looking for?</Typography>
+                    <Button
+                      onClick={seeAllResults}
+                      variant="text"
+                      color="primary"
+                      style={{ paddingLeft: '4px',
+                        paddingRight: '4px',
+                        textTransform: 'none' }}
+                    >
+                      { `Clear filters to see ${searchTermRecordCount} more` }
+                    </Button>
+                  </Box>
+                </Box>
+              )}
             { listings.length > 0
               && (
                 <>
