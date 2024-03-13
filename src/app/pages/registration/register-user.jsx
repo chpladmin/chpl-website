@@ -97,15 +97,16 @@ function ChplRegisterUser(props) {
         };
         networkService.createInvitedCognitoUser(packet)
           .then((resp) => {
-            console.log("Response: " + resp);
+            setMessage('Your account has been created.  A one-time password has been emailed to you.')
+            setState('success');
           }, (error) => {
             if (error.data.errorMessages) {
               setMessage(error.data.errorMessages);
             } else if (error.data.error) {
               setMessage(error.data.error);
             }
-          }); 
-        break;
+          });
+        break;  
       case 'create':
         packet = {
           hash,
