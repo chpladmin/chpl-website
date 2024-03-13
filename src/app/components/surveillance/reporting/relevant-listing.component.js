@@ -3,7 +3,7 @@ const calculateCompletion = (surveillance) => {
     ...surveillance,
     completed: Math.round((
       (surveillance.surveillanceOutcome ? 1 : 0)
-        + (surveillance.surveillanceProcessType ? 1 : 0)
+        + (surveillance.surveillanceProcessTypes?.length > 0 ? 1 : 0)
         + (surveillance.k1Reviewed ? 1 : 0)
         + (surveillance.groundsForInitiating ? 1 : 0)
         + (surveillance.nonconformityCauses ? 1 : 0)
