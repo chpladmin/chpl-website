@@ -306,7 +306,7 @@ function ChplSvapCollectionView(props) {
                     </Typography>
                   )}
               </div>
-              { listings.length > 0 && hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { listings.length > 0 && hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <ChplDownloadListings
                     analytics={analytics}

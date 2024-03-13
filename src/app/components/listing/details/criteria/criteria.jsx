@@ -140,7 +140,7 @@ function ChplCriteria(props) {
                       <ChplCriterion
                         key={cc.criterion.id}
                         certificationResult={cc}
-                        canEdit={canEdit && !isConfirming && (cc.success || hasAnyRole(['chpl-admin', 'ROLE_ONC']))}
+                        canEdit={canEdit && !isConfirming && (cc.success || hasAnyRole(['chpl-admin', 'chpl-onc']))}
                         onSave={handleSave}
                         resources={prepareResources(cc.criterion)}
                         listing={listing}

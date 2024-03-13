@@ -33,7 +33,7 @@ const DeveloperViewComponent = {
 
     $onInit() {
       const that = this;
-      if (this.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
+      if (this.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
         this.loadData();
       }
       this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
@@ -69,19 +69,19 @@ const DeveloperViewComponent = {
 
     can(action) {
       if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
-      if (action === 'manageTracking') { return this.hasAnyRole(['ROLE_DEVELOPER']); } // only DEVELOPER can manage tracking
+      if (action === 'manageTracking') { return this.hasAnyRole(['chpl-developer']); } // only DEVELOPER can manage tracking
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
-      if (this.hasAnyRole(['chpl-admin', 'ROLE_ONC'])) { return true; } // can do everything
+      if (this.hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
       if (action === 'join') { return false; } // if not above roles, can't join
-      if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
+      if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb']); } // ACB can split
       if (action === 'edit') {
         if (this.featureFlags.isOn('demographic-change-request')) {
-          return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); // Developer can only edit based on flag
+          return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb', 'chpl-developer']); // Developer can only edit based on flag
         }
-        return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // ACB can only edit Active
+        return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
       }
-      if (action === 'manageUsers') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); }
-      return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+      if (action === 'manageUsers') { return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
+      return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb']); // must be active
     }
 
     cancel() {
@@ -103,7 +103,7 @@ const DeveloperViewComponent = {
       this.networkService.getAcbs(true).then((response) => {
         that.allowedAcbs = response.acbs;
       });
-      if (this.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.id) {
+      if (this.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) && this.$stateParams.id) {
         this.networkService.getUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
       }
     }
