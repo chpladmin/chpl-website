@@ -44,7 +44,7 @@ const ReportsListingsComponent = {
             .map((a) => ({
               value: a.id,
               display: `${a.name}${a.retired ? ' (Retired)' : ''}`,
-              selected: that.authService.hasAnyRole(['ROLE_ACB']) ? (user.organizations.filter((o) => o.name === a.name).length > 0) : true,
+              selected: that.authService.hasAnyRole(['chpl-onc-acb']) ? (user.organizations.filter((o) => o.name === a.name).length > 0) : true,
             }));
         });
       if (this.$stateParams.listingId) {
