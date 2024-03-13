@@ -42,6 +42,10 @@ export default class NetworkService {
     return this.apiPOST('/users/create', contactDetails);
   }
 
+  createInvitedCognitoUser(contactDetails) {
+    return this.apiPOST('/cognito/users/create', contactDetails);
+  }
+
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
@@ -479,6 +483,10 @@ export default class NetworkService {
 
   inviteUser(invitationObject) {
     return this.apiPOST('/users/invite', invitationObject);
+  }
+
+  inviteCognitoUser(invitationObject) {
+    return this.apiPOST('/cognito/users/invite', invitationObject);
   }
 
   keepalive() {
