@@ -14,7 +14,6 @@ import * as yup from 'yup';
 
 import theme from '../../themes/theme';
 import { ChplTextField } from '../util';
-import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -24,6 +23,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const phoneRegExp = /\(?\d{3}\)?-? *\d{3}-? *-?\d{4}/;
+
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
@@ -31,8 +32,8 @@ const validationSchema = yup.object({
     .required('Email is required')
     .email('Enter a valid Email'),
   phoneNumber: yup.string()
-    .required('Phone Number is required'),
-  
+    .required('Phone Number is required')
+    .matches(phoneRegExp, 'Phone number is not valid'),
 });
 
 function ChplCognitoUserCreate(props) {
