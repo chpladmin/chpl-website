@@ -182,7 +182,7 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
                     roles={roles}
                     dispatch={handleDispatch}
                   />
-                  { (ssoIsOn) 
+                  { (ssoIsOn && authService.hasAnyRole(['chpl-admin'])) 
                     && (
                       <ChplCognitoUserInvite
                         dispatch={handleDispatch}
