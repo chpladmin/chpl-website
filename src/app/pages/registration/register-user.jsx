@@ -6,6 +6,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { string } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import {
   ChplUserAddPermissions,
@@ -27,6 +28,7 @@ function ChplRegisterUser(props) {
   const { hash } = props;
   const [message, setMessage] = useState('');
   const [state, setState] = useState('signin');
+  const { enqueueSnackbar } = useSnackbar();
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
@@ -101,9 +103,14 @@ function ChplRegisterUser(props) {
             setState('success');
           }, (error) => {
             if (error.data.errorMessages) {
-              setMessage(error.data.errorMessages);
+              error.data.errorMessages.forEach((message) => {
+                enqueueSnackbar(message, {
+                  variant: 'error',
+                })});
             } else if (error.data.error) {
-              setMessage(error.data.error);
+              enqueueSnackbar(error.data.error, {
+                variant: 'error',
+              })
             }
           });
         break;  
