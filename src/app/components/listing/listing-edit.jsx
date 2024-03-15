@@ -23,6 +23,7 @@ import * as yup from 'yup';
 import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplG1G2sEdit from './details/g1g2/g1g2s-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
+import ChplSedEdit from './details/sed/edit/edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
@@ -65,7 +66,7 @@ const useStyles = makeStyles({
   },
   menuItems: {
     display: 'flex',
-    padding: '8px',
+    padding: 0,
     justifyContent: 'space-between',
     '&.Mui-disabled': {
       color: palette.black,
@@ -109,6 +110,20 @@ const useStyles = makeStyles({
   },
   reason: {
     paddingTop: '8px',
+  },
+  reasonCard: {
+    [theme.breakpoints.down('sm')]: {
+      // Styles for mobile design
+      position: 'fixed',
+      bottom: '64px',
+      left: 0,
+      width: '100%',
+      boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
+    },
+    [theme.breakpoints.up('md')]: {
+      // Styles for desktop design
+      position: 'relative',
+    },
   },
 });
 
@@ -271,7 +286,7 @@ function ChplListingEdit() {
             </Box>
           </Box>
         </div>
-        <Card>
+        <Card className={classes.reasonCard}>
           <CardContent>
             <ChplTextField
               id="reason"
@@ -336,6 +351,20 @@ function ChplListingEdit() {
             />
           </CardContent>
         </Card>
+        { (listing.edition === null || listing.edition.name !== '2011')
+          && (
+            <Card>
+              <span className="anchor-element">
+                <span id="sed" className="page-anchor" />
+              </span>
+              <Box className={classes.sectionHeader}>
+                <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+              </Box>
+              <CardContent>
+                <ChplSedEdit />
+              </CardContent>
+            </Card>
+          )}
         { (listing.edition === null || listing.edition.name === '2015')
           && (
             <Card>
