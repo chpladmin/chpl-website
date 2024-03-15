@@ -67,13 +67,7 @@ module.exports = (env) => {
         exclude: /node_modules/,
         use: [
           { loader: 'html-loader' },
-          {
-            loader: 'htmllint-loader',
-            query: {
-              failOnError: false,
-              failOnWarning: false,
-            },
-          },
+          { loader: 'htmllint-loader' },
         ],
       }, {
         test: /\.png$/,
