@@ -103,10 +103,7 @@ function ChplRegisterUser(props) {
             setState('success');
           }, (error) => {
             if (error.data.errorMessages) {
-              error.data.errorMessages.forEach((message) => {
-                enqueueSnackbar(message, {
-                  variant: 'error',
-                })});
+              setMessage('You have the following errors: ' + error.data.errorMessages.join('; '));
             } else if (error.data.error) {
               enqueueSnackbar(error.data.error, {
                 variant: 'error',
