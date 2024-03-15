@@ -1,3 +1,4 @@
+import codeSetsErrorsAndWarnings from './code-sets-errors-and-warnings';
 import columnsErrorsAndWarnings from './columns-errors-and-warnings';
 import conformanceMethodsErrorsAndWarnings from './conformance-methods-errors-and-warnings';
 import cqmsErrorsAndWarnings from './cqms-errors-and-warnings';
@@ -16,6 +17,7 @@ import svapErrorsAndWarnings from './svap-errors-and-warnings';
 import testDataErrorsAndWarnings from './test-data-errors-and-warnings';
 
 const suites = [
+  codeSetsErrorsAndWarnings,
   columnsErrorsAndWarnings,
   conformanceMethodsErrorsAndWarnings,
   cqmsErrorsAndWarnings,
@@ -36,6 +38,7 @@ const suites = [
 
 export {
   suites,
+  codeSetsErrorsAndWarnings,
   columnsErrorsAndWarnings,
   conformanceMethodsErrorsAndWarnings,
   cqmsErrorsAndWarnings,
