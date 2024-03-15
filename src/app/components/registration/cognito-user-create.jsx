@@ -12,12 +12,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-<<<<<<< HEAD
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
-=======
 import { ChplTextField } from 'components/util';
->>>>>>> OCD-4532
 
 const useStyles = makeStyles(() => ({
   content: {
