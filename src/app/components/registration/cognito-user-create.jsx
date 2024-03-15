@@ -12,8 +12,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
+import { ChplTextField } from 'components/util';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -71,7 +70,7 @@ function ChplCognitoUserCreate(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Paper className={classes.content}>
         <Typography>
           Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the ‘create account’ button below.
@@ -149,7 +148,7 @@ function ChplCognitoUserCreate(props) {
           and select “Certified Health IT Product List (CHPL)” to submit a ticket.
         </Typography>
       </Paper>
-    </ThemeProvider>
+    </>
   );
 }
 

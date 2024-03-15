@@ -60,7 +60,7 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const { mutate } = usePutUser();7
+  const { mutate } = usePutUser();
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
