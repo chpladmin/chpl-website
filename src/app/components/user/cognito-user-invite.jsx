@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import {
+  func,
+} from 'prop-types';
+import {
   Button,
   Dialog,
   DialogActions,
@@ -11,7 +14,6 @@ import EmailIcon from '@material-ui/icons/Email';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
 import { ChplDialogTitle, ChplTooltip, ChplTextField } from '../util';
 
 const useStyles = makeStyles({
