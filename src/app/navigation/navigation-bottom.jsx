@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
@@ -8,15 +9,19 @@ import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
 import ChplAnnouncementsDisplay from 'components/announcement/announcements-display';
 
-Amplify.configure({
-  Auth: {
-    region: awsExports.REGION,
-    userPoolId: awsExports.USER_POOL_ID,
-    userPoolWebClientId: awsExports.USER_POOL_APP_CLIENT_ID,
-  }
-})
-
 function ChplNavigationBottom() {
+
+  useEffect(() => {
+    console.log({awsExports});
+    Amplify.configure({
+      Auth: {
+        region: awsExports.REGION,
+        userPoolId: awsExports.USER_POOL_ID,
+        userPoolWebClientId: awsExports.USER_POOL_APP_CLIENT_ID,
+      }
+    })
+  }, []);
+
   return (
     <UserWrapper>
       <ApiWrapper showQueryTools={false}>
@@ -59,7 +64,7 @@ function ChplNavigationBottom() {
   );
 }
 
-export default ChplNavigationBottom;
+export default withAuthenticator(ChplNavigationBottom);
 
 ChplNavigationBottom.propTypes = {
 };
