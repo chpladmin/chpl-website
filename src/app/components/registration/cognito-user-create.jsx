@@ -5,7 +5,6 @@ import {
 import {
   Button,
   Paper,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
