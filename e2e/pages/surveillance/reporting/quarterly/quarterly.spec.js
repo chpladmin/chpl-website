@@ -64,7 +64,7 @@ describe('the quarterly surveillance reporting page', () => {
     it('can edit surveillance data of relevant listings under quarterly report', async () => {
       const surData = {
         outcome: '3',
-        processType: '1',
+        processType: '2',
         grounds: `grounds ${timestamp}`,
         nonCoformityCause: `nonCoformityCause ${timestamp}`,
         nonConformityNature: `nonConformityNature ${timestamp}`,
