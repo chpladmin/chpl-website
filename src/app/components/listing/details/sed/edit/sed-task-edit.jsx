@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -17,12 +18,14 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { object } from 'prop-types';
 
-import ChplSedTaskParticipantsView from './sed-task-participants-view';
+import ChplSedParticipantsEdit from './sed-participants-edit';
 
 import { sortCriteria } from 'services/criteria.service';
+import { ListingContext } from 'shared/contexts';
 import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -46,6 +49,11 @@ const useStyles = makeStyles({
   accordionDetails: {
     borderRadius: '0 0 8px 8px',
   },
+  deleteButton: {
+    color: palette.error,
+    marginTop: '12px',
+    border: `1px solid ${palette.error}`,
+  },
   taskData: {
     display: 'grid',
     flexDirection: 'column',
@@ -60,15 +68,10 @@ const useStyles = makeStyles({
   },
 });
 
-const makeRounded = (val) => Math.round(val * 1000) / 1000;
-
-const makePercentage = (val) => `${makeRounded(val * 100)}%`;
-
-function ChplSedTaskView({ task: initialTask }) {
+function ChplSedTaskEdit({ task: initialTask }) {
+  const { listing, setListing } = useContext(ListingContext);
   const [expanded, setExpanded] = useState(false);
-  const [meanExperience, setMeanExperience] = useState(0);
   const [task, setTask] = useState(undefined);
-  const [occupations, setOccupations] = useState([]);
   const classes = useStyles();
 
   const getIcon = () => (expanded
@@ -88,31 +91,21 @@ function ChplSedTaskView({ task: initialTask }) {
   useEffect(() => {
     if (!initialTask) { return; }
     setTask(initialTask);
-    setMeanExperience(makeRounded(initialTask.testParticipants.reduce((sum, participant) => sum + participant.productExperienceMonths, 0) / initialTask.testParticipants.length));
-    const occupationsObj = initialTask.testParticipants.reduce((obj, participant) => {
-      if (!obj[participant.occupation]) {
-        return {
-          ...obj,
-          [participant.occupation]: 1,
-        };
-      }
-      return {
-        ...obj,
-        [participant.occupation]: obj[participant.occupation] + 1,
-      };
-    }, {});
-    setOccupations(Object
-      .entries(occupationsObj)
-      .map(([key, value]) => ({
-        name: key,
-        count: value,
-        percentage: makePercentage(value / initialTask.testParticipants.length),
-      }))
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [initialTask]);
 
   const handleAccordionChange = () => {
     setExpanded(!expanded);
+  };
+
+  const remove = () => {
+    setListing({
+      ...listing,
+      sed: {
+        ...listing.sed,
+        testTasks: listing.sed.testTasks
+          .filter((t) => t.description !== task.description),
+      },
+    });
   };
 
   if (!task) { return null; }
@@ -139,7 +132,19 @@ function ChplSedTaskView({ task: initialTask }) {
         <CardContent>
           <Box className={classes.taskData}>
             <Card className={classes.fullWidthGridRow} id="summary">
-              <CardHeader title="Summary" />
+              <CardHeader
+                action={(
+                  <Button
+                    endIcon={<DeleteIcon fontSize="small" color="error" />}
+                    onClick={() => remove()}
+                    className={classes.deleteButton}
+                    variant="outlined"
+                  >
+                    Delete Testing Task
+                  </Button>
+              )}
+                title="Summary"
+              />
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -278,55 +283,11 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableBody>
               </Table>
             </Card>
-            <Card className={classes.fullWidthGridRow} id="participants">
-              <CardHeader title="Participants" />
-              <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4}>
-                <ChplSedTaskParticipantsView
-                  participants={task.testParticipants}
-                />
-              </Box>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell size="medium">Description</TableCell>
-                    <TableCell size="medium">Value</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Total Number of Participants</TableCell>
-                    <TableCell>{ task.testParticipants.length }</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Occupation Breakdown</TableCell>
-                    <TableCell>
-                      <List>
-                        {occupations
-                          .map((occupation) => (
-                            <ListItem key={occupation.name}>
-                              { occupation.name }
-                              :
-                              {' '}
-                              { occupation.count}
-                              {' '}
-                              /
-                              { task.testParticipants.length }
-                              {' '}
-                              (
-                              { occupation.percentage }
-                              )
-                            </ListItem>
-                          ))}
-                      </List>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Product Experience - Mean (Months)</TableCell>
-                    <TableCell>{ meanExperience }</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Card>
+            <Box className={classes.fullWidthGridRow} id="participants">
+              <ChplSedParticipantsEdit
+                task={task}
+              />
+            </Box>
           </Box>
         </CardContent>
       </AccordionDetails>
@@ -334,8 +295,8 @@ function ChplSedTaskView({ task: initialTask }) {
   );
 }
 
-export default ChplSedTaskView;
+export default ChplSedTaskEdit;
 
-ChplSedTaskView.propTypes = {
-  task: object.isRequired,
+ChplSedTaskEdit.propTypes = {
+  task: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
