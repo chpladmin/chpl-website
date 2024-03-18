@@ -12,6 +12,7 @@ import measuresErrorsAndWarnings from './measures-errors-and-warnings';
 import noErrors from './no-errors';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
 import removedCriteriaErrorsAndWarnings from './removed-criteria-errors-and-warnings';
+import rwtErrorsAndWarnings from './rwt-errors-and-warnings';
 import sedErrorsAndWarnings from './sed-errors-and-warnings';
 import svapErrorsAndWarnings from './svap-errors-and-warnings';
 import testDataErrorsAndWarnings from './test-data-errors-and-warnings';
@@ -31,6 +32,7 @@ const suites = [
   noErrors,
   optionalStandardsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
+  rwtErrorsAndWarnings,
   sedErrorsAndWarnings,
   svapErrorsAndWarnings,
   testDataErrorsAndWarnings,
@@ -52,6 +54,7 @@ export {
   noErrors,
   optionalStandardsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
+  rwtErrorsAndWarnings,
   sedErrorsAndWarnings,
   svapErrorsAndWarnings,
   testDataErrorsAndWarnings,
