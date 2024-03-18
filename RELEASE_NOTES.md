@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.12.0
+_18 March 2024_
+
+### Features
+* Add Roles chpl-onc, chpl-developer, chpl-onc-acb to Cognito
+
+### Flagged Features
+* Enable editing of SED in new UI/UX
+
+---
+
 ## Version 13.11.0
 _5 March 2024_
 
