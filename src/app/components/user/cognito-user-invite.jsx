@@ -14,7 +14,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplDialogTitle, ChplTooltip, ChplTextField } from '../util';
+import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
 
 const useStyles = makeStyles({
   content: {
@@ -33,7 +33,7 @@ const validationSchema = yup.object({
 });
 
 function ChplCognitoUserInvite(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const classes = useStyles();
   let formik;
