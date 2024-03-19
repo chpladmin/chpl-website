@@ -27,7 +27,7 @@ describe('On Listing details page', () => {
 
   describe('when changing CHPL Product Number data of a listing', () => {
     beforeEach(async () => {
-      await hooks.open('#/listing/10904');
+      await hooks.open('#/listing/10804');
       await login.logIn('admin');
       await browser.waitUntil(async () => (await page.productHistory).isDisplayed());
     });

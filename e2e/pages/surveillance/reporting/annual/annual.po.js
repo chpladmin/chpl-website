@@ -11,6 +11,10 @@ class AnnualPage {
     return $(this.elements.obstacle);
   }
 
+  async obstacleSummaryfield() {
+    return $(this.elements.obstacle);
+  }
+
   get prioritySummary() {
     return $(this.elements.priority);
   }
@@ -19,9 +23,9 @@ class AnnualPage {
     return $(this.elements.download);
   }
 
-  set(fields) {
-    $(this.elements.obstacle).setValue(fields.obstacle);
-    $(this.elements.priority).setValue(fields.priority);
+  async set(fields) {
+    await $(this.elements.obstacle).setValue(fields.obstacle);
+    await $(this.elements.priority).setValue(fields.priority);
   }
 }
 
