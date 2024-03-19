@@ -12,6 +12,7 @@ import noErrors from './no-errors';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
 import removedCriteriaErrorsAndWarnings from './removed-criteria-errors-and-warnings';
 import sedErrorsAndWarnings from './sed-errors-and-warnings';
+import standardsErrorsAndWarnings from './standards-errors-and-warnings';
 import svapErrorsAndWarnings from './svap-errors-and-warnings';
 import testDataErrorsAndWarnings from './test-data-errors-and-warnings';
 
@@ -30,6 +31,7 @@ const suites = [
   optionalStandardsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
   sedErrorsAndWarnings,
+  standardsErrorsAndWarnings,
   svapErrorsAndWarnings,
   testDataErrorsAndWarnings,
 ];
@@ -50,6 +52,7 @@ export {
   optionalStandardsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
   sedErrorsAndWarnings,
+  standardsErrorsAndWarnings,
   svapErrorsAndWarnings,
   testDataErrorsAndWarnings,
 };
