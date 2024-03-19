@@ -616,7 +616,7 @@ export default class NetworkService {
         if (angular.isObject(response.data)) {
           return response.data;
         }
-        return this.$q.reject(response);
+        return;
       }, (response) => this.$q.reject(response));
   }
 
