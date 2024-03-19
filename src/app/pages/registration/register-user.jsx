@@ -98,7 +98,7 @@ function ChplRegisterUser(props) {
           user: data,
         };
         networkService.createInvitedCognitoUser(packet)
-          .then((resp) => {
+          .then(() => {
             setMessage('Your account has been created.  A one-time password has been emailed to you.')
             setState('success');
           }, (error) => {
