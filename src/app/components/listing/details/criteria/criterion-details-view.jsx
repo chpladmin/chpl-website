@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Card,
@@ -26,6 +26,7 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
+import { UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
   certificationResult,
@@ -55,6 +56,7 @@ function ChplCriterionDetailsView(props) {
     qmsStandards,
     accessibilityStandards,
   } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -133,6 +135,30 @@ function ChplCriterionDetailsView(props) {
                       Gap
                     </TableCell>
                     <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
+                  </TableRow>
+                )}
+              { criterion.success && criterion.criterion.attributes?.codeSet && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-acb'])
+                && (
+                  <TableRow key="codeSet">
+                    <TableCell component="th" scope="row">
+                      <ChplTooltip title="The Code Sets this criterion is up to date with.">
+                        <IconButton className={classes.infoIcon}>
+                          <InfoIcon
+                            className={classes.infoIconColor}
+                          />
+                        </IconButton>
+                      </ChplTooltip>
+                      Code Sets
+                    </TableCell>
+                    <TableCell>
+                      <List>
+                        { criterion.codeSets.map((cs) => (
+                          <ListItem key={cs.id}>
+                            { cs.codeSet.name }
+                          </ListItem>
+                        ))}
+                      </List>
+                    </TableCell>
                   </TableRow>
                 )}
               { criterion.success && criterion.svaps?.length > 0
