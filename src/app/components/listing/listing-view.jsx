@@ -347,7 +347,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
              </CardContent>
            </Card>
          )}
-        { (listing.edition === null || listing.certificationEdition.name === '2015')
+        { (listing.edition === null || listing.edition.name === '2015')
           && (
             <Card>
               <span className="anchor-element">
