@@ -43,7 +43,7 @@ const SurveillanceReportRelevantSurveillanceComponent = {
     }
 
     shouldShowOtherSurveillanceProcessTypesExplanation() {
-      return this.surveillance.surveillanceProcessTypes?.some((spt) => spt.name === 'Other - [Please describe]');
+      return this.surveillance.surveillanceProcessTypes?.some((spt) => spt.name === 'Other');
     }
   },
 };
