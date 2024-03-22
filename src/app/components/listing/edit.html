@@ -163,7 +163,7 @@
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.url">Improper format (http://www.example.com)</div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.maxlength">Field is too long</div>
   </div>
-  <div class="edit-listing__rwt-container" ng-if="($ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015') && $ctrl.workType !== 'confirm'">
+  <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'">
     <div class="edit-listing__rwt-container-header">
       <div class="data-label">Real World Testing</div>
     </div>
