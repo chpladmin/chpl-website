@@ -154,7 +154,7 @@ class QuarterlyPage {
 
   async setSurvData(fields) {
     await (await $(this.elements.outcome)).selectByAttribute('value', fields.outcome);
-    await (await $(this.elements.processType)).selectByAttribute('value', fields.processType);
+    await (await $(this.elements.processType)).selectByAttribute('value', fields.processType).click();
     await (await $(this.elements.grounds)).setValue(fields.grounds);
     await (await $(this.elements.nonCoformityCause)).setValue(fields.nonCoformityCause);
     await (await $(this.elements.nonConformityNature)).setValue(fields.nonConformityNature);
