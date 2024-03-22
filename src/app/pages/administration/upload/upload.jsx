@@ -60,7 +60,7 @@ function ChplUpload() {
         <Container maxWidth="lg">
           <Box className={classes.uploadCardColumns}>
             <Box className={classes.uploadCardContainer}>
-              { hasAnyRole(['chpl-admin', 'ROLE_ACB'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                 && (
                   <Box className={classes.uploadCards}>
                     <ChplUploadListings />
@@ -69,13 +69,13 @@ function ChplUpload() {
               <Box className={classes.uploadCards}>
                 <ChplUploadRealWorldTesting />
               </Box>
-              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <Box className={classes.uploadCards}>
                     <ChplUploadPromotingInteroperability />
                   </Box>
                 )}
-              { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <Box className={classes.uploadCards}>
                     <ChplUploadApiDocumentation />
