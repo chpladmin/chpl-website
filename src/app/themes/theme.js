@@ -300,6 +300,7 @@ const theme = createTheme({
     },
     MuiSelect: {
       icon: {
+        top: 0,
         position: 'inherit',
         color: paletteColors.primary,
       },
