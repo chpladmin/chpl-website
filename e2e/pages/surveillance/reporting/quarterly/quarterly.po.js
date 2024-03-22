@@ -13,7 +13,7 @@ class QuarterlyPage {
       complaintsHeader: '#complaints-header',
       download: '#surveillance-report-download',
       outcome: '#surveillance-outcome',
-      processType: '#surveillance-process-type',
+      processType: '#surveillance-process-types',
       grounds: '#grounds-for-initiating',
       nonCoformityCause: '#nonconformity-causes',
       nonConformityNature: '#nonconformity-nature',
