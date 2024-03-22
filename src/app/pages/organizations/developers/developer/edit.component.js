@@ -51,7 +51,7 @@ const DevelopersEditComponent = {
     }
 
     save(developer) {
-      if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+      if (this.hasAnyRole(['chpl-developer'])) {
         this.saveRequest(developer);
       } else {
         this.errorMessages = [];
