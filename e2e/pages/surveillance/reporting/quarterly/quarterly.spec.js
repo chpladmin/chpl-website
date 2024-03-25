@@ -64,7 +64,6 @@ describe('the quarterly surveillance reporting page', () => {
     it('can edit surveillance data of relevant listings under quarterly report', async () => {
       const surData = {
         outcome: '3',
-        // processType: '3',
         grounds: `grounds ${timestamp}`,
         nonCoformityCause: `nonCoformityCause ${timestamp}`,
         nonConformityNature: `nonConformityNature ${timestamp}`,
@@ -87,7 +86,6 @@ describe('the quarterly surveillance reporting page', () => {
       await browser.waitUntil(async () => (await quarterlyPage.progressBar).isDisplayed());
       await quarterlyPage.editSurveillanceData();
       await expect(await (await quarterlyPage.outcome).getValue()).toBe(surData.outcome);
-      // await expect(await (await quarterlyPage.processType).getValue()).toBe(surData.processType);
       await expect(await (await quarterlyPage.grounds).getValue()).toBe(surData.grounds);
       await expect(await (await quarterlyPage.nonCoformityCause).getValue()).toBe(surData.nonCoformityCause);
       await expect(await (await quarterlyPage.nonConformityNature).getValue()).toBe(surData.nonConformityNature);
