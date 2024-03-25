@@ -19,14 +19,6 @@ class ActionBarComponent {
     await (await $(this.elements.delete)).click();
   }
   
-  get deleteButton() {
-    return $(this.elements.delete);
-  }
-
-  get saveButton() {
-    return $(this.elements.save);
-  }
-  
   async closeMessages() {
     await (await $(this.elements.closeMessages)).click();
   }
