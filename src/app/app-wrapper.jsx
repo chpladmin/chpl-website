@@ -1,6 +1,7 @@
 import React from 'react';
 import { bool, node } from 'prop-types';
 import { Amplify } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
@@ -39,7 +40,11 @@ Amplify.configure({
 });
 
 function AppWrapper({ children, showQueryTools }) {
-  console.log(Amplify.getConfig());
+  fetchAuthSession().then((result) => {
+    const { accessToken, idToken } = result.tokens;
+    console.log({ accessToken, idToken });
+    console.log(result);
+  });
 
   return (
     <Authenticator>
