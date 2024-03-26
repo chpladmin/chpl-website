@@ -12,7 +12,7 @@ class ChangeRequestsPage extends CollectionPage {
 
   async open() {
     await openPage('#/administration/change-requests');
-    await (browser.waitUntil(async () => (await $(this.elements.searchResultsHeader)).isDisplayed()));
+    await (browser.waitUntil(async () => (await $(this.elements.filterPanelToggle)).isDisplayed()));
   }
 }
 

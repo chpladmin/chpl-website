@@ -223,6 +223,27 @@ class CollectionPage {
     }
   }
   /* eslint-enable indent */
+  
+  /* eslint-disable indent */
+  async clearFilter(category, value) {   
+    await
+    (await
+     (await
+      (await
+       (await
+        (await
+         (await
+          (await
+           $(this.elements.filterChipsSection)
+          ).$(`p=${category}`)
+         ).parentElement()
+        ).$(`span=${value}`)
+       ).parentElement()
+      ).$('svg')
+     ).click()
+    );
+  }
+  /* eslint-enable indent */
 }
 
 export default CollectionPage;
