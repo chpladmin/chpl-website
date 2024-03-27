@@ -22,7 +22,7 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     $onInit () {
-      this.displayEdit = this.hasAnyRole((['chpl-admin', 'ROLE_ACB']));
+      this.displayEdit = this.hasAnyRole((['chpl-admin', 'chpl-onc-acb']));
     }
 
     $onChanges (changes) {
@@ -54,7 +54,7 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     can (action) {
-      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'ROLE_ACB']);
+      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'chpl-onc-acb']);
     }
 
     cancel () {
@@ -100,21 +100,6 @@ export const SurveillanceReportQuarterComponent = {
             body: message,
           });
         });
-    }
-
-    saveRelevantListing (listing) {
-      let that = this;
-      this.networkService.updateRelevantListing(this.report.id, listing).then(() => {
-        that.networkService.getRelevantListings(that.report.id).then(results => {
-          that.relevantListings = results;
-          that.parseRelevantListings(that.relevantListings);
-        });
-      }, () => {
-        that.networkService.getRelevantListings(that.report.id).then(results => {
-          that.relevantListings = results;
-          that.parseRelevantListings(that.relevantListings);
-        });
-      });
     }
 
     isRelevantSurveillance (surveillance) {

@@ -21,97 +21,99 @@
     <div class="form-group">
       <label class="control-label" for="k1-reviewed">
         <input type="checkbox" id="k1-reviewed" name="k1Reviewed" ng-model="$ctrl.surveillance.k1Reviewed"
-               ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+               ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
         &sect;170.523(k)(1) Reviewed
       </label>
     </div>
     <div class="form-group">
       <label class="control-label" for="surveillance-outcome">Outcome of Surveillance</label>
       <select class="form-control" id="surveillance-outcome" name="surveillanceOutcome" ng-model="$ctrl.surveillance.surveillanceOutcome"
-              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"
+              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
               ng-options="outcome as outcome.name for outcome in $ctrl.surveillanceOutcomes track by outcome.id"></select>
     </div>
     <div class="form-group" ng-if="$ctrl.surveillance.surveillanceOutcome.name === 'Non-conformity substantiated - Unresolved - Other - [Please describe]'">
       <label class="control-label" for="surveillance-outcome-other">Outcome of Surveillance - Other Explanation <span class="text-danger">*</span></label>
       <input type="text" class="form-control" id="surveillance-outcome-other" name="surveillanceOutcomeOther" ng-model="$ctrl.surveillance.surveillanceOutcomeOther"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])" required></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])" required></input>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.surveillanceOutcomeOther.$touched) && $ctrl.form.surveillanceOutcomeOther.$error.required">Value is required</div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="surveillance-process-type">Surveillance Process Type</label>
-      <select class="form-control" id="surveillance-process-type" name="surveillanceProcessType" ng-model="$ctrl.surveillance.surveillanceProcessType"
-              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"
+      <label class="control-label" for="surveillance-process-types">Surveillance Process Type</label>
+      <p class="form-control-static">Select all activities that were conducted as part of the process to surveil this listing/developer for potential non-conformities.</p>
+      <select class="form-control" id="surveillance-process-types" name="surveillanceProcessTypes" ng-model="$ctrl.surveillance.surveillanceProcessTypes"
+              multiple
+              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
               ng-options="type as type.name for type in $ctrl.surveillanceProcessTypes track by type.id"></select>
     </div>
-    <div class="form-group" ng-if="$ctrl.surveillance.surveillanceProcessType.name === 'Other - [Please describe]'">
+    <div class="form-group" ng-if="$ctrl.shouldShowOtherSurveillanceProcessTypesExplanation()">
       <label class="control-label" for="surveillance-process-type-other">Surveillance Process Type - Other Explanation <span class="text-danger">*</span></label>
       <input type="text" class="form-control" id="surveillance-process-type-other" name="surveillanceProcessTypeOther" ng-model="$ctrl.surveillance.surveillanceProcessTypeOther"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])" required></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])" required></input>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.surveillanceProcessTypeOther.$touched) && $ctrl.form.surveillanceProcessTypeOther.$error.required">Value is required</div>
     </div>
     <div class="form-group">
       <label class="control-label" for="grounds-for-initiating">Grounds For Initiating Surveillance</label>
       <p class="form-control-static">On what grounds did the ONC-ACB initiate surveillance (i.e., the particular facts and circumstances from which a reasonable person would have had grounds to question the continued conformity of the Health IT Module)? For randomized surveillance, it is acceptable to state it was chosen randomly.</p>
       <input type="text" class="form-control" id="grounds-for-initiating" name="groundsForInitiating" ng-model="$ctrl.surveillance.groundsForInitiating"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="nonconformity-causes">Potential Causes of Non-Conformities or Suspected Non-Conformities</label>
       <p class="form-control-static">What were the substantial factors that, in the ONC-ACB's assessment, caused or contributed to the suspected non-conformity or non-conformities (e.g., implementation problem, user error, limitations on the use of capabilities in the field, a failure to disclose known material information, etc.)?</p>
       <input type="text" class="form-control" id="nonconformity-causes" name="nonconformityCauses" ng-model="$ctrl.surveillance.nonconformityCauses"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="nonconformity-nature">Nature of Any Substantiated Non-Conformities</label>
       <p class="form-control-static">Did ONC-ACB substantiate any non-conformities? If so, what was the nature of the non-conformity or non-conformities that were substantiated?Please include specific criteria involved.</p>
       <input type="text" class="form-control" id="nonconformity-nature" name="nonconformityNature" ng-model="$ctrl.surveillance.nonconformityNature"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="steps-to-surveil">Steps to Surveil and Substantiate</label>
       <p class="form-control-static">What steps did the ONC-ACB take to surveil the Health IT Module, to analyze evidence, and to substantiate the non-conformity or non-conformities?</p>
       <input type="text" class="form-control" id="steps-to-surveil" name="stepsToSurveil" ng-model="$ctrl.surveillance.stepsToSurveil"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="steps-to-engage">Steps to Engage and Work with Developer and End-Users</label>
       <p class="form-control-static">What steps were taken by ONC-ACB to engage and work with the developer and end-users to analyze and determine the causes of any suspected non-conformities and related deficiencies?</p>
       <input type="text" class="form-control" id="steps-to-engage" name="stepsToEngage" ng-model="$ctrl.surveillance.stepsToEngage"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="additional-costs-evaluation">Additional Costs Evaluation</label>
       <p class="form-control-static">If a suspected non-conformity resulted from additional types of costs or fees that a user was required to pay in order to implement or use the Health IT Module's certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?</p>
       <input type="text" class="form-control" id="additional-costs-evaluation" name="additionalCostsEvaluation" ng-model="$ctrl.surveillance.additionalCostsEvaluation"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="limitations-evaluation">Limitations Evaluation</label>
       <p class="form-control-static">If a suspected non-conformity resulted from limitations that a user encountered in the course of implementing and using the Health IT Module's certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?</p>
       <input type="text" class="form-control" id="limitations-evaluation" name="limitationsEvaluation" ng-model="$ctrl.surveillance.limitationsEvaluation"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="nondisclosure-evaluation">Non-Disclosure Evaluation</label>
       <p class="form-control-static">If a suspected non-conformity resulted from the non-disclosure of material information by the developer about additional types of costs or fees associated with the Health IT Module, how did the ONC-ACB evaluate the suspected non-conformity?</p>
       <input type="text" class="form-control" id="nondisclosure-evaluation" name="nondisclosureEvaluation" ng-model="$ctrl.surveillance.nondisclosureEvaluation"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="direction-developer-resolution">Direction for Developer Resolution</label>
       <p class="form-control-static">If a non-conformity was substantiated, what direction was given to the developer to resolve the non-conformity?</p>
       <input type="text" class="form-control" id="direction-developer-resolution" name="directionDeveloperResolution" ng-model="$ctrl.surveillance.directionDeveloperResolution"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="completed-cap-verification">Verification of Completed CAP</label>
       <p class="form-control-static">If an approved Corrective Action Plan was received and completed, how did ONC-ACB verify that the developer has completed all requirements specified in the Plan?</p>
       <input type="text" class="form-control" id="completed-cap-verification" name="completedCapVerification" ng-model="$ctrl.surveillance.completedCapVerification"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></input>
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="pull-right">
       <button class="btn" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()" id="save-surveillance-data"
-              ng-if="$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])">Save Surveillance Data</button>
+              ng-if="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])">Save Surveillance Data</button>
       <button class="btn btn-link" ng-click="$ctrl.cancel()" id="cancel-surveillance-data-edit">Cancel</button>
     </div>
   </div>

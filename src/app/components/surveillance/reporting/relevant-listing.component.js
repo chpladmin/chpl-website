@@ -3,7 +3,7 @@ const calculateCompletion = (surveillance) => {
     ...surveillance,
     completed: Math.round((
       (surveillance.surveillanceOutcome ? 1 : 0)
-        + (surveillance.surveillanceProcessType ? 1 : 0)
+        + (surveillance.surveillanceProcessTypes?.length > 0 ? 1 : 0)
         + (surveillance.k1Reviewed ? 1 : 0)
         + (surveillance.groundsForInitiating ? 1 : 0)
         + (surveillance.nonconformityCauses ? 1 : 0)
@@ -83,7 +83,7 @@ const SurveillanceReportRelevantListingComponent = {
     }
 
     displaySurveillance(relevantSurveillance) {
-      if (this.hasAnyRole(['chpl-admin', 'ROLE_ACB'])) {
+      if (this.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])) {
         this.editSurveillance(relevantSurveillance);
       } else {
         this.viewSurveillance(relevantSurveillance);
@@ -96,7 +96,7 @@ const SurveillanceReportRelevantListingComponent = {
       this.networkService.getListing(this.listing.id, true).then((listing) => {
         const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
         that.$uibModal.open({
-          component: that.hasAnyRole(['chpl-admin', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
+          component: that.hasAnyRole(['chpl-admin', 'chpl-onc-acb']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
           animation: false,
           backdrop: 'static',
           keyboard: false,
