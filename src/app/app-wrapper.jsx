@@ -67,9 +67,11 @@ function AppWrapper({ children, showQueryTools }) {
       },
     });
     fetchAuthSession().then((result) => {
-      const { accessToken, idToken } = result.tokens;
+      const { accessToken, idToken } = result.tokens ?? {};
       console.log({ accessToken, idToken });
       console.log(result);
+      console.log(accessToken.toString());
+      console.log(idToken.toString());
     });
   }, []);
 
