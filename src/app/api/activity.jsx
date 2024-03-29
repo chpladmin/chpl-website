@@ -22,7 +22,18 @@ const useFetchStandardsActivity = ({ isEnabled }) => {
   });
 };
 
+const useFetchSvapsActivity = ({ isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/svaps'], async () => {
+    const response = await axios.get('activity/metadata/svaps');
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 export {
   useFetchActivity,
   useFetchStandardsActivity,
+  useFetchSvapsActivity,
 };

@@ -13,7 +13,7 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import InfoIcon from '@material-ui/icons/Info';
 
-import { useFetchStandardsActivity } from 'api/activity';
+import { useFetchSvapsActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -42,12 +42,12 @@ const getDisplay = ({
   );
 };
 
-function ChplStandardsActivity() {
+function ChplSvapsActivity() {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchStandardsActivity({
+  const { data, isError, isLoading } = useFetchSvapsActivity({
     isEnabled: open,
   });
 
@@ -70,10 +70,10 @@ function ChplStandardsActivity() {
 
   return (
     <>
-      <ChplTooltip title="Standards Activity">
+      <ChplTooltip title="Svaps Activity">
         <Button
-          id="view-standards-activity"
-          aria-label="Open Standards Activity dialog"
+          id="view-svaps-activity"
+          aria-label="Open Svaps Activity dialog"
           color="secondary"
           variant="contained"
           onClick={handleClickOpen}
@@ -84,16 +84,16 @@ function ChplStandardsActivity() {
       </ChplTooltip>
       <Dialog
         onClose={handleClose}
-        aria-labelledby="view-standards-activity"
+        aria-labelledby="view-svaps-activity"
         open={open}
         maxWidth="sm"
       >
         <ChplDialogTitle
-          id="standards-activity-title"
+          id="svaps-activity-title"
           onClose={handleClose}
           className={classes.legendTitle}
         >
-          Standards Activity
+          Svaps Activity
         </ChplDialogTitle>
         <DialogContent dividers>
           <Timeline>
@@ -105,7 +105,7 @@ function ChplStandardsActivity() {
   );
 }
 
-export default ChplStandardsActivity;
+export default ChplSvapsActivity;
 
-ChplStandardsActivity.propTypes = {
+ChplSvapsActivity.propTypes = {
 };
