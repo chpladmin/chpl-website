@@ -13,7 +13,8 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-import ChplSvapsActivity from 'components/activity/svaps-activity';
+import { useFetchSvapsActivity } from 'api/activity';
+import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { svap as svapPropType } from 'shared/prop-types';
@@ -69,7 +70,10 @@ function ChplSvapsView(props) {
   return (
     <>
       <div className={classes.tableResultsHeaderContainer}>
-        <ChplSvapsActivity />
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchSvapsActivity}
+          title="SVAP"
+        />
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
           id="add-new-svap"

@@ -12,8 +12,8 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import InfoIcon from '@material-ui/icons/Info';
+import { func, string } from 'prop-types';
 
-import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -42,12 +42,12 @@ const getDisplay = ({
   );
 };
 
-function ChplFunctionalitiesTestedActivity() {
+function ChplSystemMaintenanceActivity({ fetch, title }) {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchFunctionalitiesTestedActivity({
+  const { data, isError, isLoading } = fetch({
     isEnabled: open,
   });
 
@@ -70,10 +70,10 @@ function ChplFunctionalitiesTestedActivity() {
 
   return (
     <>
-      <ChplTooltip title="Functionalities Tested Activity">
+      <ChplTooltip title={`${title} Activity`}>
         <Button
-          id="view-functionalities-tested-activity"
-          aria-label="Open Functionalities Tested Activity dialog"
+          id="view-system-maintenance-activity"
+          aria-label={`Open ${title} Activity dialog`}
           color="secondary"
           variant="contained"
           onClick={handleClickOpen}
@@ -84,16 +84,18 @@ function ChplFunctionalitiesTestedActivity() {
       </ChplTooltip>
       <Dialog
         onClose={handleClose}
-        aria-labelledby="view-functionalities-tested-activity"
+        aria-labelledby="view-system-maintenance-activity"
         open={open}
         maxWidth="sm"
       >
         <ChplDialogTitle
-          id="functionalities-tested-activity-title"
+          id="system-maintenance-activity-title"
           onClose={handleClose}
           className={classes.legendTitle}
         >
-          Functionalities Tested Activity
+          { title }
+          {' '}
+          Activity
         </ChplDialogTitle>
         <DialogContent dividers>
           <Timeline>
@@ -105,7 +107,9 @@ function ChplFunctionalitiesTestedActivity() {
   );
 }
 
-export default ChplFunctionalitiesTestedActivity;
+export default ChplSystemMaintenanceActivity;
 
-ChplFunctionalitiesTestedActivity.propTypes = {
+ChplSystemMaintenanceActivity.propTypes = {
+  fetch: func.isRequired,
+  title: string.isRequired
 };
