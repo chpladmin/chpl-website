@@ -12,6 +12,16 @@ const useFetchActivity = ({ id, isEnabled }) => {
   });
 };
 
+const useFetchFunctionalitiesTestedActivity = ({ isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/functionalities-tested'], async () => {
+    const response = await axios.get('activity/metadata/functionalities-tested');
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 const useFetchStandardsActivity = ({ isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/standards'], async () => {
@@ -34,6 +44,7 @@ const useFetchSvapsActivity = ({ isEnabled }) => {
 
 export {
   useFetchActivity,
+  useFetchFunctionalitiesTestedActivity,
   useFetchStandardsActivity,
   useFetchSvapsActivity,
 };

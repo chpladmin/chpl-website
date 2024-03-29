@@ -13,6 +13,7 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
+import ChplFunctionalitiesTestedActivity from 'components/activity/functionalities-tested-activity';
 import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
@@ -73,6 +74,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
   return (
     <>
       <div className={classes.tableResultsHeaderContainer}>
+        <ChplFunctionalitiesTestedActivity />
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
           id="add-new-functionality-tested"
