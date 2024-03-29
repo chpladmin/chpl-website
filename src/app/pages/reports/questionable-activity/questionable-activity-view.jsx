@@ -13,7 +13,7 @@ import {
 import { shape, string } from 'prop-types';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
-import ChplActivityDetails from 'components/activity/activity-details';
+import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
 import {
   ChplLink,
   ChplPagination,
@@ -288,7 +288,7 @@ function ChplQuestionableActivityView(props) {
                                   )}
                               </TableCell>
                               <TableCell>
-                                <ChplActivityDetails activity={item} />
+                                <ChplQuestionableActivityDetails activity={item} />
                               </TableCell>
                             </TableRow>
                           ))}
