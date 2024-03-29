@@ -158,6 +158,7 @@ function ChplCriterionDetailsView(props) {
                           </ListItem>
                         ))}
                       </List>
+                      { criterion.codeSets?.length === 0 && 'None' }
                     </TableCell>
                   </TableRow>
                 )}
