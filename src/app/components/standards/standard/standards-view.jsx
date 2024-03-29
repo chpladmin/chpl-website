@@ -13,6 +13,7 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
+import ChplStandardsActivity from 'components/activity/standards-activity';
 import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
@@ -73,6 +74,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
   return (
     <>
       <div className={classes.tableResultsHeaderContainer}>
+        <ChplStandardsActivity />
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
           id="add-new-standard"

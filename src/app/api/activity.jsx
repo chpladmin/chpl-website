@@ -12,6 +12,17 @@ const useFetchActivity = ({ id, isEnabled }) => {
   });
 };
 
+const useFetchStandardsActivity = ({ isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/standards'], async () => {
+    const response = await axios.get('activity/metadata/standards');
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 export {
-  useFetchActivity, // eslint-disable-line import/prefer-default-export
+  useFetchActivity,
+  useFetchStandardsActivity,
 };
