@@ -137,7 +137,7 @@ function ChplCriterionDetailsView(props) {
                     <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
                   </TableRow>
                 )}
-              { criterion.success && criterion.criterion.attributes?.codeSet && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-acb'])
+              { criterion.success && criterion.criterion.attributes?.codeSet && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
                 && (
                   <TableRow key="codeSet">
                     <TableCell component="th" scope="row">

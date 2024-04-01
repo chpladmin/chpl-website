@@ -32,7 +32,7 @@
             </td>
             <td>{{ $ctrl.cert.gap ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.codeSet && $ctrl.cert.codeSets.length > 0 && $ctrl.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-acb'])">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.codeSet && $ctrl.cert.codeSets.length > 0 && $ctrl.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])">
             <td>
               <span>Code Sets</span>
             </td>
