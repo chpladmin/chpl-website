@@ -18,7 +18,7 @@ const useDeleteFunctionalityTested = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`functionalities-tested/${data.id}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['functionalities-tested']);
+      queryClient.invalidateQueries(['functionalities-tested', 'activity/metadata/functionalities-tested']);
     },
   });
 };
@@ -202,7 +202,7 @@ const usePostFunctionalityTested = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('functionalities-tested', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['functionalities-tested']);
+      queryClient.invalidateQueries(['functionalities-tested', 'activity/metadata/functionalities-tested']);
     },
   });
 };
@@ -272,7 +272,7 @@ const usePutFunctionalityTested = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put('functionalities-tested', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['functionalities-tested']);
+      queryClient.invalidateQueries(['functionalities-tested', 'activity/metadata/functionalities-tested']);
     },
   });
 };
