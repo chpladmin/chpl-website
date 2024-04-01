@@ -13,7 +13,7 @@ class QuarterlyPage {
       complaintsHeader: '#complaints-header',
       download: '#surveillance-report-download',
       outcome: '#surveillance-outcome',
-      processType: '#surveillance-process-type',
+      processType: '#surveillance-process-types',
       grounds: '#grounds-for-initiating',
       nonCoformityCause: '#nonconformity-causes',
       nonConformityNature: '#nonconformity-nature',
@@ -154,7 +154,6 @@ class QuarterlyPage {
 
   async setSurvData(fields) {
     await (await $(this.elements.outcome)).selectByAttribute('value', fields.outcome);
-    await (await $(this.elements.processType)).selectByAttribute('value', fields.processType);
     await (await $(this.elements.grounds)).setValue(fields.grounds);
     await (await $(this.elements.nonCoformityCause)).setValue(fields.nonCoformityCause);
     await (await $(this.elements.nonConformityNature)).setValue(fields.nonConformityNature);

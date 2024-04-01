@@ -102,21 +102,6 @@ export const SurveillanceReportQuarterComponent = {
         });
     }
 
-    saveRelevantListing (listing) {
-      let that = this;
-      this.networkService.updateRelevantListing(this.report.id, listing).then(() => {
-        that.networkService.getRelevantListings(that.report.id).then(results => {
-          that.relevantListings = results;
-          that.parseRelevantListings(that.relevantListings);
-        });
-      }, () => {
-        that.networkService.getRelevantListings(that.report.id).then(results => {
-          that.relevantListings = results;
-          that.parseRelevantListings(that.relevantListings);
-        });
-      });
-    }
-
     isRelevantSurveillance (surveillance) {
       let reportStart = this.report.startDay;
       let reportEnd = this.report.endDay;

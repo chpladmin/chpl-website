@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.13.0
+_1 April 2024_
+
+### Features
+* Enable "multi-select" on "surveillance process type" value
+
+### Flagged Features
+* Create/invite new ADMIN Cognito users that can login to CHPL
+
+---
+
 ## Version 13.12.0
 _18 March 2024_
 

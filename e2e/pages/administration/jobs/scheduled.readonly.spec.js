@@ -43,6 +43,7 @@ describe('the Reports page', () => {
         'Service Base URL List Uptime Report',
         'Summary Statistics Email',
         'Trigger Developer Ban Notification',
+        'Updated Criteria Status Report',
         'Updated Listing Status Report',
       ];
       let jobs = page.getAvailableJobs();

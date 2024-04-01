@@ -42,6 +42,10 @@ export default class NetworkService {
     return this.apiPOST('/users/create', contactDetails);
   }
 
+  createInvitedCognitoUser(contactDetails) {
+    return this.apiPOST('/cognito/users/create', contactDetails);
+  }
+
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
@@ -481,6 +485,10 @@ export default class NetworkService {
     return this.apiPOST('/users/invite', invitationObject);
   }
 
+  inviteCognitoUser(invitationObject) {
+    return this.apiPOST('/cognito/users/invite', invitationObject);
+  }
+
   keepalive() {
     return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
   }
@@ -561,10 +569,6 @@ export default class NetworkService {
     return this.apiPUT('/surveillance-report/quarterly', report);
   }
 
-  updateRelevantListing(reportId, listing) {
-    return this.apiPUT(`/surveillance-report/quarterly/${reportId}/listings/${listing.id}`, listing);
-  }
-
   updateRelevantSurveillance(reportId, surveillance) {
     return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
   }
@@ -612,7 +616,7 @@ export default class NetworkService {
         if (angular.isObject(response.data)) {
           return response.data;
         }
-        return this.$q.reject(response);
+        return;
       }, (response) => this.$q.reject(response));
   }
 
@@ -622,7 +626,10 @@ export default class NetworkService {
         if (angular.isObject(response.data)) {
           return response.data;
         }
-        return this.$q.reject(response);
+        if (response.status !== 200) {
+          return this.$q.reject(response);
+        }
+        return response;
       }, (response) => this.$q.reject(response));
   }
 

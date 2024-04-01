@@ -6,13 +6,15 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { string } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
+  ChplCognitoUserCreate,
 } from 'components/registration';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -26,6 +28,7 @@ function ChplRegisterUser(props) {
   const { hash } = props;
   const [message, setMessage] = useState('');
   const [state, setState] = useState('signin');
+  const { enqueueSnackbar } = useSnackbar();
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
@@ -39,6 +42,13 @@ function ChplRegisterUser(props) {
 
   let handleDispatch;
 
+  const { isOn } = useContext(FlagContext);
+  const [ssoIsOn, setSsoIsOn] = useState(false);
+
+  useEffect(() => {
+    setSsoIsOn(isOn('sso'));
+  }, [isOn]);
+  
   useEffect(() => {
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
       handleDispatch('authorize', {});
@@ -82,6 +92,25 @@ function ChplRegisterUser(props) {
             }
           });
         break;
+      case 'cognito-create':
+        packet = {
+          hash,
+          user: data,
+        };
+        networkService.createInvitedCognitoUser(packet)
+          .then(() => {
+            setMessage('Your account has been created.  A one-time password has been emailed to you.')
+            setState('success');
+          }, (error) => {
+            if (error.data.errorMessages) {
+              setMessage('You have the following errors: ' + error.data.errorMessages.join('; '));
+            } else if (error.data.error) {
+              enqueueSnackbar(error.data.error, {
+                variant: 'error',
+              })
+            }
+          });
+        break;  
       case 'create':
         packet = {
           hash,
@@ -117,7 +146,14 @@ function ChplRegisterUser(props) {
                 { message }
               </Typography>
               )}
-            <ChplUserCreate dispatch={handleDispatch} />
+            { (ssoIsOn)
+              && (
+                <ChplCognitoUserCreate dispatch={handleDispatch} />
+              )}
+            { (!ssoIsOn)
+              && (  
+                <ChplUserCreate dispatch={handleDispatch} />
+              )}
             <Typography>
               Or
               {' '}
