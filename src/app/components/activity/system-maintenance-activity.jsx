@@ -5,15 +5,18 @@ import {
   DialogContent,
   makeStyles,
 } from '@material-ui/core';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
+} from '@material-ui/lab';
 import InfoIcon from '@material-ui/icons/Info';
 import { func, string } from 'prop-types';
 
+import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 
