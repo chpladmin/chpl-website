@@ -7,7 +7,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
-  Timeline,
   TimelineConnector,
   TimelineContent,
   TimelineDot,
@@ -17,13 +16,13 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { bool, object } from 'prop-types';
 
+import compareFunctionalityTested from './services/functionality-tested.service';
+
 import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
 });
-
-import compareFunctionalityTested from './services/functionality-tested.service';
 
 function ChplSystemMaintenanceActivityDetails({ activity, last }) {
   const [details, setDetails] = useState([]);
@@ -40,23 +39,14 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
       setDetails([]);
       return;
     }
-    console.log('switch');
-    let details;
     switch (activity.concept) {
       case 'FUNCTIONALITY_TESTED':
-        /*
         setDetails(compareFunctionalityTested(data?.originalData, data?.newData)
           .map((item) => `<li>${item}</li>`)
           .join(''));
-          */
-        details = compareFunctionalityTested(data?.originalData, data?.newData)
-          .map((item) => `<li>${item}</li>`)
-          .join('');
-        console.log(details);
-        setDetails(details);
         break;
       default:
-          console.info(data);
+        console.info(data);
     }
   }, [data, isError, isLoading]);
 
@@ -98,5 +88,5 @@ export default ChplSystemMaintenanceActivityDetails;
 
 ChplSystemMaintenanceActivityDetails.propTypes = {
   activity: object.isRequired,
-  last: bool.isRequired
+  last: bool.isRequired,
 };
