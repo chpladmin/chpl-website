@@ -26,7 +26,7 @@ const InspectListingComponent = {
         this.networkService.getAllCriteria({
           activeStartDay: this.listing.certificationDay,
           activeEndDay: jsJoda.LocalDate.now(),
-          certificationEdition: this.listing.certificationEdition?.name,
+          certificationEdition: this.listing.edition?.name,
         }).then((data) => {
           const allCriteria = data.map((c) => ({
             success: false,
