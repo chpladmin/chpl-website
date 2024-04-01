@@ -10,7 +10,7 @@ const compare = (before, after, key, title = 'unknown') => {
   let options;
   switch (key) {
 
-    case 'criteria-bak':
+    case 'criteria':
       options = {
         sort: (p, c) => sortCriteria(p.criterion ?? p, c.criterion ?? c),
         write: (f) => (f.criterion ? `${f.criterion.number}` : `${f.number ?? f.certificationNumber}`),
@@ -420,8 +420,9 @@ const lookup = {
 };
 
 const compareFunctionalityTested = (prev, curr) => {
+  rules = lookup;
   if (prev && curr) {
-    return compareObject(prev, curr, lookup);
+    return compareObject(prev, curr, rules);
   }
   return [];
 };

@@ -49,11 +49,9 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
           .map((item) => `<li>${item}</li>`)
           .join(''));
           */
-        details = compareFunctionalityTested(data?.originalData, data?.newData);
-        //console.log(details);
-        details = details.map((item) => `<li>${item}</li>`);
-        //console.log(details);
-        details = details.join('');
+        details = compareFunctionalityTested(data?.originalData, data?.newData)
+          .map((item) => `<li>${item}</li>`)
+          .join('');
         console.log(details);
         setDetails(details);
         break;
