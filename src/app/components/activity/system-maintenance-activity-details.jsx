@@ -18,6 +18,7 @@ import { bool, object } from 'prop-types';
 
 import compareFunctionalityTested from './services/functionality-tested.service';
 import compareStandard from './services/standard.service';
+import compareSvap from './services/svap.service';
 
 import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -48,6 +49,11 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
         break;
       case 'STANDARD':
         setDetails(compareStandard(data?.originalData, data?.newData)
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
+        break;
+      case 'SVAP':
+        setDetails(compareSvap(data?.originalData, data?.newData)
           .map((item) => `<li>${item}</li>`)
           .join(''));
         break;
