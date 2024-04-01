@@ -16,7 +16,8 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { func, string } from 'prop-types';
 
-import { useFetchActivity } from 'api/activity';
+import ChplSystemMaintenanceActivityDetails from './system-maintenance-activity-details';
+
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -25,25 +26,6 @@ const useStyles = makeStyles({
     fontSize: '1.25em',
   },
 });
-
-const getDisplay = ({
-  date, description, id, responsibleUser,
-}, last = false) => {
-  if (!description) { return null; }
-  return (
-    <TimelineItem key={id}>
-      <TimelineSeparator>
-        <TimelineDot />
-        { !last
-          && <TimelineConnector />}
-      </TimelineSeparator>
-      <TimelineContent>
-        { `${responsibleUser.fullName}: ${description}` }
-        { getDisplayDateFormat(date) }
-      </TimelineContent>
-    </TimelineItem>
-  );
-};
 
 function ChplSystemMaintenanceActivity({ fetch, title }) {
   const [activities, setActivities] = useState([]);
@@ -60,7 +42,14 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
       setActivities([]);
       return;
     }
-    setActivities(data.activities.map((activity, idx, arr) => getDisplay(activity, idx === arr.length - 1)));
+    setActivities(data.activities.map((activity, idx, arr) =>
+      (
+        <ChplSystemMaintenanceActivityDetails
+          key={activity.id}
+          activity={activity}
+          last={idx === arr.length - 1}
+        />
+      )));
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
