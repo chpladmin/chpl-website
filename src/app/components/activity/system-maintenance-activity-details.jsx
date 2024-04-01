@@ -16,9 +16,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { bool, object } from 'prop-types';
 
-import compareFunctionalityTested from './services/functionality-tested.service';
-import compareStandard from './services/standard.service';
-import compareSvap from './services/svap.service';
+import compareSystemMaintenance from './services/system-maintenance.service';
 
 import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -41,25 +39,9 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
       setDetails([]);
       return;
     }
-    switch (activity.concept) {
-      case 'FUNCTIONALITY_TESTED':
-        setDetails(compareFunctionalityTested(data?.originalData, data?.newData)
-          .map((item) => `<li>${item}</li>`)
-          .join(''));
-        break;
-      case 'STANDARD':
-        setDetails(compareStandard(data?.originalData, data?.newData)
-          .map((item) => `<li>${item}</li>`)
-          .join(''));
-        break;
-      case 'SVAP':
-        setDetails(compareSvap(data?.originalData, data?.newData)
-          .map((item) => `<li>${item}</li>`)
-          .join(''));
-        break;
-      default:
-        console.info(data);
-    }
+    setDetails(compareSystemMaintenance(data?.originalData, data?.newData)
+      .map((item) => `<li>${item}</li>`)
+      .join(''));
   }, [data, isError, isLoading]);
 
   if (!activity) {

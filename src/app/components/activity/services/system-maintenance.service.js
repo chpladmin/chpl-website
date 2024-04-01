@@ -29,22 +29,28 @@ const compare = (before, after, key, title = 'unknown') => {
 
 const lookup = {
   shortCircuit: ['criteria'],
-  //'root.additionalInformation': { message: (before, after) => comparePrimitive(before, after, 'additionalInformation', 'Additional Information') },
+  'root.additionalInformation': { message: (before, after) => comparePrimitive(before, after, 'additionalInformation', 'Additional Information') },
   'root.approvedStandardVersion': { message: (before, after) => comparePrimitive(before, after, 'approvedStandardVersion', 'Approved Standard Version') },
   'root.criteria': { message: (before, after) => compare(before, after, 'criteria', 'Certification Criteria') },
-  //'root.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Date', getDisplayDateFormat) },
-  //'root.groupName': { message: (before, after) => comparePrimitive(before, after, 'groupName', 'Group') }, // not in FT
+  'root.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Date', getDisplayDateFormat) },
+  'root.groupName': { message: (before, after) => comparePrimitive(before, after, 'groupName', 'Group') },
+  'root.id': { message: () => undefined },
+  'root.practiceType': { message: () => 'Practice Type' },
+  'root.practiceType.description': { message: () => undefined },
+  'root.practiceType.id': { message: () => undefined },
+  'root.practiceType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
   'root.regulatoryTextCitation': { message: (before, after) => comparePrimitive(before, after, 'regulatoryTextCitation', 'Regulatory Text Citation') },
   'root.replaced': { message: (before, after) => comparePrimitive(before, after, 'replaced', 'Replaced') },
-  //'root.requiredDay': { message: (before, after) => comparePrimitive(before, after, 'requiredDay', 'Required Date', getDisplayDateFormat) },
-  //'root.rule': { message: () => 'Rule' },
-  //'root.rule.id': { message: () => undefined },
-  //'root.rule.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
-  //'root.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Date', getDisplayDateFormat) },
-  //'root.value': { message: (before, after) => comparePrimitive(before, after, 'value', 'Value') },
+  'root.requiredDay': { message: (before, after) => comparePrimitive(before, after, 'requiredDay', 'Required Date', getDisplayDateFormat) },
+  'root.retired': { message: (before, after) => comparePrimitive(before, after, 'retired', 'Retired') },
+  'root.rule': { message: () => 'Rule' },
+  'root.rule.id': { message: () => undefined },
+  'root.rule.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'root.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Date', getDisplayDateFormat) },
+  'root.value': { message: (before, after) => comparePrimitive(before, after, 'value', 'Value') },
 };
 
-const compareSvap = (prev, curr) => {
+const compareSystemMaintenance = (prev, curr) => {
   rules = lookup;
   if (prev && curr) {
     return compareObject(prev, curr, rules);
@@ -52,4 +58,4 @@ const compareSvap = (prev, curr) => {
   return [];
 };
 
-export default compareSvap;
+export default compareSystemMaintenance;
