@@ -7,11 +7,6 @@ import {
 } from '@material-ui/core';
 import {
   Timeline,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineItem,
-  TimelineSeparator,
 } from '@material-ui/lab';
 import InfoIcon from '@material-ui/icons/Info';
 import { func, string } from 'prop-types';
@@ -19,7 +14,6 @@ import { func, string } from 'prop-types';
 import ChplSystemMaintenanceActivityDetails from './system-maintenance-activity-details';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
-import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -42,14 +36,13 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
       setActivities([]);
       return;
     }
-    setActivities(data.activities.map((activity, idx, arr) =>
-      (
-        <ChplSystemMaintenanceActivityDetails
-          key={activity.id}
-          activity={activity}
-          last={idx === arr.length - 1}
-        />
-      )));
+    setActivities(data.activities.map((activity, idx, arr) => (
+      <ChplSystemMaintenanceActivityDetails
+        key={activity.id}
+        activity={activity}
+        last={idx === arr.length - 1}
+      />
+    )));
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
@@ -103,5 +96,5 @@ export default ChplSystemMaintenanceActivity;
 
 ChplSystemMaintenanceActivity.propTypes = {
   fetch: func.isRequired,
-  title: string.isRequired
+  title: string.isRequired,
 };
