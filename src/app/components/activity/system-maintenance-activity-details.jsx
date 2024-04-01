@@ -17,6 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { bool, object } from 'prop-types';
 
 import compareFunctionalityTested from './services/functionality-tested.service';
+import compareStandard from './services/standard.service';
 
 import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -42,6 +43,11 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
     switch (activity.concept) {
       case 'FUNCTIONALITY_TESTED':
         setDetails(compareFunctionalityTested(data?.originalData, data?.newData)
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
+        break;
+      case 'STANDARD':
+        setDetails(compareStandard(data?.originalData, data?.newData)
           .map((item) => `<li>${item}</li>`)
           .join(''));
         break;
