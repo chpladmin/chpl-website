@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -12,7 +10,6 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from '@material-ui/lab';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { bool, object } from 'prop-types';
 
 import compareSystemMaintenance from './services/system-maintenance.service';
@@ -32,12 +29,7 @@ const useStyles = makeStyles({
 
 function ChplSystemMaintenanceActivityDetails({ activity, last }) {
   const [details, setDetails] = useState([]);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const classes = useStyles();
-
-  const handleButtonClick = () => {
-    setIsDetailsOpen(!isDetailsOpen);
-  };
 
   const { data, isError, isLoading } = useFetchActivity({
     id: activity.id,
@@ -67,32 +59,14 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
       </TimelineSeparator>
       <TimelineContent>
         <span style={{ fontWeight: 'bold' }}>
-          {activity.responsibleUser.fullName}
+          {activity.description}
         </span>
-        :
-        {' '}
-        {activity.description}
+        {` (${activity.responsibleUser.fullName})`}
         <br />
         <Typography variant="body2" className={classes.dateText}>{ getDisplayDateFormat(activity.date) }</Typography>
         { activity.id && details?.length > 0
           && (
-            <>
-              <Button
-                className={classes.buttonActivity}
-                variant="text"
-                onClick={handleButtonClick}
-                color="primary"
-                endIcon={<ExpandMoreIcon color="primary" />}
-              >
-                <strong>Activity Details</strong>
-              </Button>
-              { isDetailsOpen
-                && (
-                  <Box>
-                    <ul dangerouslySetInnerHTML={{ __html: details }} />
-                  </Box>
-                )}
-            </>
+            <ul dangerouslySetInnerHTML={{ __html: details }} />
           )}
       </TimelineContent>
     </TimelineItem>
