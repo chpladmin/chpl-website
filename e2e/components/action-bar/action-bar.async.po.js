@@ -18,7 +18,7 @@ class ActionBarComponent {
   async delete() {
     await (await $(this.elements.delete)).click();
   }
-
+  
   async closeMessages() {
     await (await $(this.elements.closeMessages)).click();
   }
