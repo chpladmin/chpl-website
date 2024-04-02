@@ -14,7 +14,7 @@ import {
 } from '@material-ui/lab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { bool, object } from 'prop-types';
-
+import { palette } from 'themes';
 import compareSystemMaintenance from './services/system-maintenance.service';
 
 import { useFetchActivity } from 'api/activity';
@@ -24,6 +24,9 @@ const useStyles = makeStyles({
   buttonActivity: {
     marginTop: '8px',
   },
+  dateText:{
+    color: palette.greyDark,
+  }
 });
 
 function ChplSystemMaintenanceActivityDetails({ activity, last }) {
@@ -66,7 +69,7 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
         :
         {activity.description}
         <br />
-        <Typography variant="body2">{ getDisplayDateFormat(activity.date) }</Typography>
+        <Typography variant="body2" className={classes.dateText}>{ getDisplayDateFormat(activity.date) }</Typography>
         { activity.id && details?.length > 0
           && (
           <div>
