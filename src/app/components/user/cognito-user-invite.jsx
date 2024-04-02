@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import {
-  func,
-} from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  MenuItem,
   makeStyles,
 } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -33,6 +32,10 @@ const validationSchema = yup.object({
 });
 
 function ChplCognitoUserInvite(props) {
+  /* eslint-disable react/destructuring-assignment */
+  const [roles] = useState(props.roles.sort((a, b) => (a < b ? -1 : 1)));
+  /* eslint-enable react/destructuring-assignment */
+
   const [open, setOpen] = useState(false);
 
   const classes = useStyles();
@@ -50,6 +53,7 @@ function ChplCognitoUserInvite(props) {
   const invite = () => {
     const invitation = {
       email: formik.values.email,
+      groupName: formik.values.role,
     };
     props.dispatch('cognito-invite', invitation);
     handleClose();
@@ -58,6 +62,7 @@ function ChplCognitoUserInvite(props) {
   formik = useFormik({
     initialValues: {
       email: '',
+      role: roles.length > 1 ? '' : roles[0],
     },
     onSubmit: () => {
       invite();
@@ -95,7 +100,7 @@ function ChplCognitoUserInvite(props) {
             dividers
             className={classes.content}
         >
-            <ChplTextField
+          <ChplTextField
             id="email"
             name="email"
             label="Email"
@@ -105,7 +110,26 @@ function ChplCognitoUserInvite(props) {
             onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
-            />
+          />
+          { roles.length > 1
+            && (
+            <ChplTextField
+              select
+              id="role"
+              name="role"
+              label="ROLE"
+              required
+              value={formik.values.role}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.role && !!formik.errors.role}
+              helperText={formik.touched.role && formik.errors.role}
+            >
+              { roles.map((item) => (
+                <MenuItem value={item} key={item}>{item}</MenuItem>
+              ))}
+            </ChplTextField>
+            )}
         </DialogContent>
         <DialogActions>
           <Button
@@ -126,5 +150,6 @@ function ChplCognitoUserInvite(props) {
 export default ChplCognitoUserInvite;
 
 ChplCognitoUserInvite.propTypes = {
+  roles: arrayOf(string).isRequired,
   dispatch: func.isRequired,
 };
