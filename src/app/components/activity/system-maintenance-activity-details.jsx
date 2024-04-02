@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Typography,
-  Box,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -14,28 +14,29 @@ import {
 } from '@material-ui/lab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { bool, object } from 'prop-types';
-import { palette } from 'themes';
+
 import compareSystemMaintenance from './services/system-maintenance.service';
 
 import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   buttonActivity: {
     marginTop: '8px',
   },
-  dateText:{
+  dateText: {
     color: palette.greyDark,
-  }
+  },
 });
 
 function ChplSystemMaintenanceActivityDetails({ activity, last }) {
   const [details, setDetails] = useState([]);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false); // Define isDetailsOpen state
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const classes = useStyles();
 
   const handleButtonClick = () => {
-    setIsDetailsOpen(!isDetailsOpen); // Toggle details visibility
+    setIsDetailsOpen(!isDetailsOpen);
   };
 
   const { data, isError, isLoading } = useFetchActivity({
@@ -62,41 +63,45 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
     <TimelineItem key={activity.id}>
       <TimelineSeparator>
         <TimelineDot color="primary" />
-        { !last && <TimelineConnector />}
+        { !last && <TimelineConnector /> }
       </TimelineSeparator>
       <TimelineContent>
-        <span style={{ fontWeight: 'bold' }}>{activity.responsibleUser.fullName}</span>
+        <span style={{ fontWeight: 'bold' }}>
+          {activity.responsibleUser.fullName}
+        </span>
         :
+        {' '}
         {activity.description}
         <br />
         <Typography variant="body2" className={classes.dateText}>{ getDisplayDateFormat(activity.date) }</Typography>
         { activity.id && details?.length > 0
           && (
-          <div>
-            <Button
-              className={classes.buttonActivity}
-              variant="text"
-              onClick={handleButtonClick}
-              color="primary"
-              endIcon={<ExpandMoreIcon color="primary" />}
-            >
-              <strong>Activity Details</strong>
-            </Button>
-            {isDetailsOpen && (
-              <Box>
-                <ul dangerouslySetInnerHTML={{ __html: details }} />
-              </Box>
-            )}
-          </div>
+            <>
+              <Button
+                className={classes.buttonActivity}
+                variant="text"
+                onClick={handleButtonClick}
+                color="primary"
+                endIcon={<ExpandMoreIcon color="primary" />}
+              >
+                <strong>Activity Details</strong>
+              </Button>
+              { isDetailsOpen
+                && (
+                  <Box>
+                    <ul dangerouslySetInnerHTML={{ __html: details }} />
+                  </Box>
+                )}
+            </>
           )}
       </TimelineContent>
     </TimelineItem>
   );
 }
 
+export default ChplSystemMaintenanceActivityDetails;
+
 ChplSystemMaintenanceActivityDetails.propTypes = {
   activity: object.isRequired,
   last: bool.isRequired,
 };
-
-export default ChplSystemMaintenanceActivityDetails;

@@ -8,12 +8,12 @@ import {
 import {
   Timeline,
 } from '@material-ui/lab';
+import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
 import { func, string } from 'prop-types';
 
 import ChplSystemMaintenanceActivityDetails from './system-maintenance-activity-details';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
-import TrackChangesOutlined  from '@material-ui/icons/TrackChangesOutlined';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -63,7 +63,7 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
           variant="contained"
           onClick={handleClickOpen}
           endIcon={<TrackChangesOutlined />}
-          style={{marginRight: '8px',}}
+          style={{ marginRight: '8px' }}
         >
           Details
         </Button>
