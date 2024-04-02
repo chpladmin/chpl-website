@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
+  Button,
   Typography,
+  Box,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -22,11 +21,19 @@ import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
+  buttonActivity: {
+    marginTop: '8px',
+  },
 });
 
 function ChplSystemMaintenanceActivityDetails({ activity, last }) {
   const [details, setDetails] = useState([]);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false); // Define isDetailsOpen state
   const classes = useStyles();
+
+  const handleButtonClick = () => {
+    setIsDetailsOpen(!isDetailsOpen); // Toggle details visibility
+  };
 
   const { data, isError, isLoading } = useFetchActivity({
     id: activity.id,
@@ -44,43 +51,49 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
       .join(''));
   }, [data, isError, isLoading]);
 
-  if (!activity) {
+  if (!activity || !activity.id) {
     return null;
   }
 
   return (
     <TimelineItem key={activity.id}>
       <TimelineSeparator>
-        <TimelineDot />
-        { !last
-          && <TimelineConnector />}
+        <TimelineDot color="primary" />
+        { !last && <TimelineConnector />}
       </TimelineSeparator>
       <TimelineContent>
-        { `${activity.responsibleUser.fullName}: ${activity.description}` }
-        { getDisplayDateFormat(activity.date) }
+        <span style={{ fontWeight: 'bold' }}>{activity.responsibleUser.fullName}</span>
+        :
+        {activity.description}
+        <br />
+        <Typography variant="body2">{ getDisplayDateFormat(activity.date) }</Typography>
         { activity.id && details?.length > 0
           && (
-            <Accordion variant="outlined">
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography
-                  variant="subtitle2"
-                >
-                  Activity Details
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
+          <div>
+            <Button
+              className={classes.buttonActivity}
+              variant="text"
+              onClick={handleButtonClick}
+              color="primary"
+              endIcon={<ExpandMoreIcon color="primary" />}
+            >
+              <strong>Activity Details</strong>
+            </Button>
+            {isDetailsOpen && (
+              <Box>
                 <ul dangerouslySetInnerHTML={{ __html: details }} />
-              </AccordionDetails>
-            </Accordion>
+              </Box>
+            )}
+          </div>
           )}
       </TimelineContent>
     </TimelineItem>
   );
 }
 
-export default ChplSystemMaintenanceActivityDetails;
-
 ChplSystemMaintenanceActivityDetails.propTypes = {
   activity: object.isRequired,
   last: bool.isRequired,
 };
+
+export default ChplSystemMaintenanceActivityDetails;
