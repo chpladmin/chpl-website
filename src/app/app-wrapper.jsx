@@ -14,10 +14,10 @@ function AppWrapper({ children, showQueryTools }) {
     {
       trackingId: 'GTM-KC3FP96',
       gaOptions: {
-        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
+        debug_mode: window.location.origin !== 'https://chpl-dev.healthit.gov',
       },
       gtagOptions: {
-        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
+        debug_mode: window.location.origin !== 'https://chpl-dev.healthit.gov',
       },
     },
   ]);
