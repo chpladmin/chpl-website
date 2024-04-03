@@ -47,6 +47,11 @@ const usePostUserInvitation = () => {
   return useMutation(async (data) => axios.post('users/invite', data));
 };
 
+const usePostCognitoUserInvitation = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/invite', data));
+};
+
 const usePutAcb = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -63,5 +68,6 @@ export {
   useFetchUsersAtAcb,
   usePostAcb,
   usePostUserInvitation,
+  usePostCognitoUserInvitation,
   usePutAcb,
 };

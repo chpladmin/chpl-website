@@ -23,6 +23,7 @@ const DeveloperViewComponent = {
       this.movingProducts = [];
       this.activeAcbs = [];
       this.roles = ['ROLE_DEVELOPER'];
+      this.cognitoGroups = ['chpl-developer'];
       this.users = [];
       this.disallowedFilters = ['submittedDateTime', 'searchTerm'];
       this.closeConfirmation = this.closeConfirmation.bind(this);
@@ -192,6 +193,22 @@ const DeveloperViewComponent = {
             role: data.role,
             emailAddress: data.email,
             permissionObjectId: this.$stateParams.id,
+          }).then(() => that.toaster.pop({
+            type: 'success',
+            title: 'Email sent',
+            body: `Email sent successfully to ${data.email}`,
+          })).catch((error) => that.toaster.pop({
+            type: 'error',
+            title: 'Email was not sent',
+            body: error.data.error,
+          }));
+          break;
+        case 'cognito-invite':
+          this.action = undefined;
+          this.networkService.inviteCognitoUser({
+            groupName: data.groupName,
+            email: data.email,
+            organizationId: this.$stateParams.id,
           }).then(() => that.toaster.pop({
             type: 'success',
             title: 'Email sent',
