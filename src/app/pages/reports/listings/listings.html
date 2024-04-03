@@ -111,8 +111,8 @@
             <td>{{ activity.edition }}</td>
             <td>{{ activity.acbName }}</td>
             <td>
-              <a ui-sref="listing({id: activity.objectId })">{{ activity.chplProductNumber }}</a>
-              <a ui-sref="listing.edit({id: activity.objectId })" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
+              <a ui-sref="listing({id: activity.object.id })">{{ activity.chplProductNumber }}</a>
+              <a ui-sref="listing.edit({id: activity.object.id })" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
             </td>
             <td>
               {{ $ctrl.DateUtil.getCertificationDay(activity) }}
