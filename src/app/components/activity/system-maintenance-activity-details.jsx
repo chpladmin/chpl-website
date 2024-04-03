@@ -26,6 +26,38 @@ const useStyles = makeStyles({
   },
 });
 
+const getDescription = (activity) => {
+  let verb;
+  switch (activity.categories[0]) {
+    case 'CREATE':
+      verb = 'updated';
+      break;
+    case 'DELETE':
+      verb = 'deleted';
+      break;
+    case 'UPDATE':
+      verb = 'updated';
+      break;
+      // no default
+  }
+  const action = (
+    <span>
+      <span style={{ fontWeight: 'bold' }}>
+        {activity.object.name}
+      </span>
+      {' '}
+      was
+      {' '}
+      { verb }
+      {' '}
+      by
+      {' '}
+      {activity.responsibleUser.fullName}
+    </span>
+  );
+  return action;
+};
+
 function ChplSystemMaintenanceActivityDetails({ activity, last }) {
   const [details, setDetails] = useState([]);
   const classes = useStyles();
@@ -57,15 +89,11 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
         { !last && <TimelineConnector /> }
       </TimelineSeparator>
       <TimelineContent>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
-          <span style={{ fontWeight: 'bold' }}>
-            {activity.description}
-          </span>
-          <Chip size='small' variant="outlined" label="placeholder"/>
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          { getDescription(activity) }
+          <Chip size="small" variant="outlined" label={activity.categories[0]} />
         </Box>
         <Typography variant="body2" className={classes.dateText}>
-          {` (${activity.responsibleUser.fullName})`}
-          {' '}
           { getDisplayDateFormat(activity.date) }
         </Typography>
         { activity.id && details?.length > 0
