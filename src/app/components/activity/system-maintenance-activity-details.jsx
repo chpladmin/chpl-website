@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
+  Chip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -19,9 +21,6 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
-  buttonActivity: {
-    marginTop: '8px',
-  },
   dateText: {
     color: palette.greyDark,
   },
@@ -58,12 +57,17 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
         { !last && <TimelineConnector /> }
       </TimelineSeparator>
       <TimelineContent>
-        <span style={{ fontWeight: 'bold' }}>
-          {activity.description}
-        </span>
-        {` (${activity.responsibleUser.fullName})`}
-        <br />
-        <Typography variant="body2" className={classes.dateText}>{ getDisplayDateFormat(activity.date) }</Typography>
+        <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
+          <span style={{ fontWeight: 'bold' }}>
+            {activity.description}
+          </span>
+          <Chip size='small' variant="outlined" label="placeholder"/>
+        </Box>
+        <Typography variant="body2" className={classes.dateText}>
+          {` (${activity.responsibleUser.fullName})`}
+          {' '}
+          { getDisplayDateFormat(activity.date) }
+        </Typography>
         { activity.id && details?.length > 0
           && (
             <ul dangerouslySetInnerHTML={{ __html: details }} />
