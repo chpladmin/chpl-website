@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Chip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -41,19 +39,12 @@ const getDescription = (activity) => {
       // no default
   }
   const action = (
-    <span>
+    <>
       <span style={{ fontWeight: 'bold' }}>
         {activity.object.name}
       </span>
-      {' '}
-      was
-      {' '}
-      { verb }
-      {' '}
-      by
-      {' '}
-      {activity.responsibleUser.fullName}
-    </span>
+      {` was ${verb}`}
+    </>
   );
   return action;
 };
@@ -89,12 +80,10 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
         { !last && <TimelineConnector /> }
       </TimelineSeparator>
       <TimelineContent>
-        <Box display="flex" flexDirection="row" justifyContent="space-between">
-          { getDescription(activity) }
-          <Chip size="small" variant="outlined" label={activity.categories[0]} />
-        </Box>
+        { getDescription(activity) }
         <Typography variant="body2" className={classes.dateText}>
           { getDisplayDateFormat(activity.date) }
+          {` (${activity.responsibleUser.fullName})` }
         </Typography>
         { activity.id && details?.length > 0
           && (
