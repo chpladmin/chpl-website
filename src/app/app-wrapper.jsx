@@ -41,7 +41,7 @@ Amplify.configure({
 });
 */
 function AppWrapper({ children, showQueryTools }) {
-  useEffect(() => {
+/*  useEffect(() => {
     Amplify.configure({
       Auth: {
         Cognito: {
@@ -74,7 +74,7 @@ function AppWrapper({ children, showQueryTools }) {
       console.log(idToken.toString());
     });
   }, []);
-
+*/
   /*
   fetchAuthSession().then((result) => {
     const { accessToken, idToken } = result.tokens;
@@ -84,7 +84,6 @@ function AppWrapper({ children, showQueryTools }) {
   */
 
   return (
-    <Authenticator>
       <UserWrapper>
         <ApiWrapper showQueryTools={showQueryTools}>
           <FlagWrapper>
@@ -98,7 +97,6 @@ function AppWrapper({ children, showQueryTools }) {
           </FlagWrapper>
         </ApiWrapper>
       </UserWrapper>
-    </Authenticator>
   );
 }
 
