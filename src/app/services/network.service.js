@@ -39,7 +39,6 @@ export default class NetworkService {
   }
 
   createInvitedUser(contactDetails) {
-    console.log(contactDetails);
     return this.apiPOST('/users/create', contactDetails);
   }
 

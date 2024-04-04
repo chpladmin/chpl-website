@@ -32,10 +32,7 @@ const validationSchema = yup.object({
 });
 
 function ChplCognitoUserInvite(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [roles] = useState(props.roles.sort((a, b) => (a < b ? -1 : 1)));
-  /* eslint-enable react/destructuring-assignment */
-
+  const groupNames = props.groupNames.sort((a, b) => (a < b ? -1 : 1));
   const [open, setOpen] = useState(false);
 
   const classes = useStyles();
@@ -53,7 +50,7 @@ function ChplCognitoUserInvite(props) {
   const invite = () => {
     const invitation = {
       email: formik.values.email,
-      groupName: formik.values.role,
+      groupName: formik.values.groupName,
     };
     props.dispatch('cognito-invite', invitation);
     handleClose();
@@ -62,7 +59,7 @@ function ChplCognitoUserInvite(props) {
   formik = useFormik({
     initialValues: {
       email: '',
-      role: roles.length > 1 ? '' : roles[0],
+      groupName: groupNames.length > 1 ? '' : groupNames[0],
     },
     onSubmit: () => {
       invite();
@@ -111,21 +108,21 @@ function ChplCognitoUserInvite(props) {
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
-          { roles.length > 1
+          { groupNames.length > 1
             && (
             <ChplTextField
               select
-              id="role"
-              name="role"
-              label="ROLE"
+              id="group-name"
+              name="groupName"
+              label="Group Name"
               required
-              value={formik.values.role}
+              value={formik.values.groupName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.role && !!formik.errors.role}
-              helperText={formik.touched.role && formik.errors.role}
+              error={formik.touched.groupName && !!formik.errors.groupName}
+              helperText={formik.touched.groupName && formik.errors.groupName}
             >
-              { roles.map((item) => (
+              { groupNames.map((item) => (
                 <MenuItem value={item} key={item}>{item}</MenuItem>
               ))}
             </ChplTextField>
@@ -150,6 +147,6 @@ function ChplCognitoUserInvite(props) {
 export default ChplCognitoUserInvite;
 
 ChplCognitoUserInvite.propTypes = {
-  roles: arrayOf(string).isRequired,
+  groupNames: arrayOf(string).isRequired,
   dispatch: func.isRequired,
 };

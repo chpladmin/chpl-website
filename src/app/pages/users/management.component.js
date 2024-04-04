@@ -32,10 +32,10 @@ const UserManagementComponent = {
 
     handleRole() {
       this.roles = ['ROLE_ONC', 'ROLE_CMS_STAFF'];
-      this.cognitoGroups = ['chpl-onc', 'chpl-cms-staff'];
+      this.groupName = ['chpl-onc', 'chpl-cms-staff'];
       if (this.hasAnyRole(['chpl-admin'])) {
         this.roles.push('ROLE_ADMIN');
-        this.cognitoGroups.push('chpl-admin');
+        this.groupNames.push('chpl-admin');
       }
     }
 

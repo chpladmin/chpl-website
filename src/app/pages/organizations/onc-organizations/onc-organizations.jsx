@@ -219,7 +219,7 @@ function ChplOncOrganizations() {
                   <ChplUsers
                     users={users}
                     roles={roles}
-                    cognitoGroups={roles}
+                    groupNames={roles}
                     dispatch={handleDispatch}
                   />
                 )}
