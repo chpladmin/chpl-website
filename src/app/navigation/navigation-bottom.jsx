@@ -81,6 +81,7 @@ function ChplNavigationBottom() {
 */
   return (
     <Authenticator>
+   {({ signOut, user }) => (
     <AppWrapper showQueryTools={false}>
       <footer>
         <nav className="navbar navbar-default navbar-fixed-bottom">
@@ -105,14 +106,18 @@ function ChplNavigationBottom() {
             <div className="navbar-nav navbar-right">
               <ChplAnnouncementsDisplay />
             </div>
+          <h1>Hello {user.username}</h1>
+          <button onClick={signOut}>Sign out</button>
           </div>
         </nav>
       </footer>
     </AppWrapper>
+   )}
     </Authenticator>
   );
 }
 
+//export default withAuthenticator(ChplNavigationBottom);
 export default ChplNavigationBottom;
 
 ChplNavigationBottom.propTypes = {
