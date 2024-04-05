@@ -31,6 +31,10 @@ describe('the Functionalities Tested component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
+    it('should have Details button', async () => {
+      await expect(await (await page.detailsButton).isDisplayed()).toBe(true);
+    });
+
     it('should be able to add and edit Functionality Tested', async () => {
       const funcTestedValue = `1FunctionalityTested - ${Date.now()}`;
       const newfuncTestedValue = `2FunctionalityTested - ${Date.now()}`;

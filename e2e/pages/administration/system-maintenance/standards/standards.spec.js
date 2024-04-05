@@ -30,6 +30,10 @@ describe('the Standards component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
+    it('should have Details button', async () => {
+      await expect(await (await page.detailsButton).isDisplayed()).toBe(true);
+    });
+
     it('should be able to add and edit Standards', async () => {
       const standardsValue = `1Standards - ${Date.now()}`;
       const newstandardsValue = `2Standards - ${Date.now()}`;
