@@ -2,47 +2,83 @@ import React, { useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { fetchAuthSession } from 'aws-amplify/auth';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
+import { Hub } from 'aws-amplify/utils';
 
 import awsExports from '../aws-exports';
 
 import AppWrapper from 'app-wrapper';
 import ChplAnnouncementsDisplay from 'components/announcement/announcements-display';
 
-function ChplNavigationBottom() {
-  useEffect(() => {
-    Amplify.configure({
-      Auth: {
-        Cognito: {
-          userPoolId: awsExports.USER_POOL_ID,
-          userPoolClientId: awsExports.USER_POOL_CLIENT_ID,
-          allowGuestAccess: false, // maybe change this
-          loginWith: {
-            oauth: {
-              domain: awsExports.DOMAIN,
-              redirectSignIn: [awsExports.REDIRECT_LOCAL],
-              redirectSignOut: [awsExports.REDIRECT_LOCAL],
-              responseType: 'token',
-              scopes: [
-                'aws.cognito.signin.user.admin',
-                'email',
-                'openid',
-                'phone',
-                'profile',
-              ],
-            },
-          },
+Amplify.configure({
+  Auth: {
+    Cognito: {
+      userPoolId: awsExports.USER_POOL_ID,
+      userPoolClientId: awsExports.USER_POOL_CLIENT_ID,
+      allowGuestAccess: false, // maybe change this
+      loginWith: {
+        oauth: {
+          domain: awsExports.DOMAIN,
+          redirectSignIn: [awsExports.REDIRECT_LOCAL],
+          redirectSignOut: [awsExports.REDIRECT_LOCAL],
+          responseType: 'token',
+          scopes: [
+            'aws.cognito.signin.user.admin',
+            'email',
+            'openid',
+            'phone',
+            'profile',
+          ],
         },
       },
-    });
+    },
+  },
+});
+
+Hub.listen('auth', ({ payload }) => {
+  console.log(payload);
+  switch (payload.event) {
+    case 'signedIn':
+      console.log('user have been signedIn successfully.');
+      fetchAuthSession().then((result) => {
+        const { idToken } = result.tokens ?? {};
+        console.log({ idToken });
+        console.log(idToken?.toString());
+        window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
+      });
+      break;
+    case 'signedOut':
+      console.log('user have been signedOut successfully.');
+      break;
+    case 'tokenRefresh':
+      console.log('auth tokens have been refreshed.');
+      break;
+    case 'tokenRefresh_failure':
+      console.log('failure while refreshing auth tokens.');
+      break;
+    case 'signInWithRedirect':
+      console.log('signInWithRedirect API has successfully been resolved.');
+      break;
+    case 'signInWithRedirect_failure':
+      console.log('failure while trying to resolve signInWithRedirect API.');
+      break;
+    case 'customOAuthState':
+      logger.info('custom state returned from CognitoHosted UI');
+      break;
+  }
+});
+
+function ChplNavigationBottom() {
+  /*
+  useEffect(() => {
     fetchAuthSession().then((result) => {
       const { accessToken, idToken } = result.tokens ?? {};
       console.log({ accessToken, idToken });
       console.log(result);
-      console.log(accessToken.toString());
-      console.log(idToken.toString());
+      console.log(accessToken?.toString());
+      console.log(idToken?.toString());
     });
   }, []);
-
+*/
   return (
     <Authenticator>
     <AppWrapper showQueryTools={false}>
