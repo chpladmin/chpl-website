@@ -96,7 +96,6 @@ const signinSchema = yup.object({
 });
 
 function ChplLogin({ dispatch }) {
-  // const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $stateParams = getAngularService('$stateParams');
   const Idle = getAngularService('Idle');
@@ -174,7 +173,6 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         if (response.passwordUpdated) {
-          // $analytics.eventTrack('Change Password', { category: 'Authentication' });
           ReactGA.event({ action: 'Change Password', category: 'Authentication', label: 'test' });
           setState('LOGGEDIN');
           changeFormik.resetForm();
@@ -227,7 +225,6 @@ function ChplLogin({ dispatch }) {
             .then((data) => {
               setUser(data);
               signinFormik.resetForm();
-              // $analytics.eventTrack('Log In', { category: 'Authentication' });
               ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
               authService.saveCurrentUser(data);
               Idle.watch();
@@ -241,11 +238,9 @@ function ChplLogin({ dispatch }) {
             .then((data) => {
               setUser(data);
               signinFormik.resetForm();
-              // $analytics.eventTrack('Log In', { category: 'Authentication' });
               ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
               authService.saveCurrentUser(data);
               Idle.watch();
-              // Keepalive.ping();
               $rootScope.$broadcast('loggedIn');
               dispatch('loggedIn');
             });
@@ -273,7 +268,6 @@ function ChplLogin({ dispatch }) {
     setUser({});
     setState('SIGNIN');
     authService.logout();
-    // $analytics.eventTrack('Log Out', { category: 'Authentication' });
     ReactGA.event({ action: 'Log Out', category: 'Authentication', label: 'test' });
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
@@ -314,7 +308,6 @@ function ChplLogin({ dispatch }) {
   sendReset = () => {
     postEmailResetPassword.mutate({ email: sendResetFormik.values.email }, {
       onSuccess: () => {
-        // $analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
         ReactGA.event({ action: 'Send Reset Email', category: 'Authentication', label: 'test' });
         setState('SIGNIN');
         sendResetFormik.resetForm();
