@@ -1,7 +1,7 @@
 import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
-import { getCodeSetFormat, getDisplayDateFormat } from 'services/date-util';
+import { getDisplayDateFormat } from 'services/date-util';
 
 let rules;
 
@@ -37,7 +37,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'codeSets':
       options = {
         sort: (p, c) => (p.codeSet.requiredDay < c.codeSet.requiredDay ? -1 : p.codeSet.requiredDay > c.codeSet.requiredDay ? 1 : 0),
-        write: (f) => `Code Set "${getCodeSetFormat(f.codeSet.requiredDay)}"`,
+        write: (f) => f.codeSet.name,
       };
       break;
     case 'conformanceMethods':

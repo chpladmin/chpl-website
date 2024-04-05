@@ -1,7 +1,5 @@
 import * as jsJoda from '@js-joda/core';
 
-import { getCodeSetFormat } from 'services/date-util';
-
 const isStandardInteresting = (standard) => (standard.endDay && jsJoda.LocalDate.now() <= standard.endDay) // interesting because soon to expire
       || (standard.endDay && jsJoda.LocalDate.now() > standard.endDay) // interesting because it's already expired
       || (standard.requiredDay && jsJoda.LocalDate.now() < standard.requiredDay); // interesting because it will be required soon
@@ -448,7 +446,7 @@ const CertificationCriteriaEditComponent = {
           .filter((cs) => cs.startDay <= jsJoda.LocalDate.now()) // starts in the future; can't be used now
           .map((cs) => ({
             ...cs,
-            dropDownText: getCodeSetFormat(cs.requiredDay),
+            dropDownText: cs.name,
           }));
       }
     }
