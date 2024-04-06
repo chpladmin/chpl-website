@@ -9,7 +9,7 @@ function ChplNavigationBottomWrapper() {
     <AppWrapper showQueryTools={false}>
       <ChplNavigationBottom />
     </AppWrapper>
-  )
+  );
 }
 
 export default ChplNavigationBottomWrapper;

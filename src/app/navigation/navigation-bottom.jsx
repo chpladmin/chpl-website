@@ -36,7 +36,6 @@ Amplify.configure({
 });
 
 Hub.listen('auth', ({ payload }) => {
-  console.log(payload);
   switch (payload.event) {
     case 'signedIn':
       console.log('user have been signedIn successfully.');
@@ -44,7 +43,7 @@ Hub.listen('auth', ({ payload }) => {
         const { idToken } = result.tokens ?? {};
         console.log({ idToken });
         console.log(idToken?.toString());
-        //window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
+        // window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
       });
       break;
     case 'signedOut':
@@ -63,8 +62,10 @@ Hub.listen('auth', ({ payload }) => {
       console.log('failure while trying to resolve signInWithRedirect API.');
       break;
     case 'customOAuthState':
-      logger.info('custom state returned from CognitoHosted UI');
+      console.log('custom state returned from CognitoHosted UI');
       break;
+    default:
+      console.log(payload);
   }
 });
 
@@ -103,7 +104,10 @@ function ChplNavigationBottom() {
                 <div className="navbar-nav navbar-right">
                   <ChplAnnouncementsDisplay />
                 </div>
-                <h1>Hello {user.username}</h1>
+                <h1>
+                  Hello
+                  {user.username}
+                </h1>
                 <button onClick={signOut}>Sign out</button>
               </div>
             </nav>

@@ -45,17 +45,18 @@ function authInterceptor($log, API, authService, toaster) {
 
   // If a token was sent back, save it
   function parseToken(data) {
+    let response = data;
     try {
-      if (angular.isString(data)) {
-        data = angular.fromJson(data);
+      if (angular.isString(response)) {
+        response = angular.fromJson(response);
       }
-      if (data.token) {
-        authService.saveToken(data.token);
+      if (response.token) {
+        authService.saveToken(response.token);
       }
     } catch (e) {
       // console.log('data is not json', response.config.url, response.data, e);
     }
-    return data;
+    return response;
   }
   return {
     // automatically attach Authorization header
