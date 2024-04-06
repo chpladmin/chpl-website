@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Amplify } from 'aws-amplify';
 import { fetchAuthSession } from 'aws-amplify/auth';
-import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
 import { Hub } from 'aws-amplify/utils';
+import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
 
-import AppWrapper from 'app-wrapper';
 import ChplAnnouncementsDisplay from 'components/announcement/announcements-display';
+import { FlagContext } from 'shared/contexts';
 
 Amplify.configure({
   Auth: {
@@ -43,7 +44,7 @@ Hub.listen('auth', ({ payload }) => {
         const { idToken } = result.tokens ?? {};
         console.log({ idToken });
         console.log(idToken?.toString());
-        window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
+        //window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
       });
       break;
     case 'signedOut':
@@ -68,56 +69,80 @@ Hub.listen('auth', ({ payload }) => {
 });
 
 function ChplNavigationBottom() {
-  /*
+  const { isOn } = useContext(FlagContext);
+  const [ssoIsOn, setSsoIsOn] = useState(false);
+
   useEffect(() => {
-    fetchAuthSession().then((result) => {
-      const { accessToken, idToken } = result.tokens ?? {};
-      console.log({ accessToken, idToken });
-      console.log(result);
-      console.log(accessToken?.toString());
-      console.log(idToken?.toString());
-    });
-  }, []);
-*/
+    setSsoIsOn(isOn('sso'));
+  }, [isOn]);
+
+  if (ssoIsOn) {
+    return (
+      <Authenticator>
+        {({ signOut, user }) => (
+          <footer>
+            <nav className="navbar navbar-default navbar-fixed-bottom">
+              <div className="container-fluid">
+                <p className="navbar-left nav-text spaced-out">
+                  <a href="#/search">Home</a>
+                  {' | '}
+                  <a href="http://www.hhs.gov/privacy.html">Privacy Policy</a>
+                  {' | '}
+                  <a href="http://www.hhs.gov/disclaimer.html">Disclaimer</a>
+                  {' | '}
+                  <a href="https://www.whitehouse.gov/">White House</a>
+                  {' | '}
+                  <a href="http://www.hhs.gov/">HHS</a>
+                  {' | '}
+                  <a href="https://www.usa.gov/">USA.gov</a>
+                  {' | '}
+                  <a href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
+                  {' | '}
+                  <a href="https://gobierno.usa.gov/">GobiernoUSA.gov</a>
+                </p>
+                <div className="navbar-nav navbar-right">
+                  <ChplAnnouncementsDisplay />
+                </div>
+                <h1>Hello {user.username}</h1>
+                <button onClick={signOut}>Sign out</button>
+              </div>
+            </nav>
+          </footer>
+        )}
+      </Authenticator>
+    );
+  }
+
   return (
-    <Authenticator>
-   {({ signOut, user }) => (
-    <AppWrapper showQueryTools={false}>
-      <footer>
-        <nav className="navbar navbar-default navbar-fixed-bottom">
-          <div className="container-fluid">
-            <p className="navbar-left nav-text spaced-out">
-              <a href="#/search">Home</a>
-              {' | '}
-              <a href="http://www.hhs.gov/privacy.html">Privacy Policy</a>
-              {' | '}
-              <a href="http://www.hhs.gov/disclaimer.html">Disclaimer</a>
-              {' | '}
-              <a href="https://www.whitehouse.gov/">White House</a>
-              {' | '}
-              <a href="http://www.hhs.gov/">HHS</a>
-              {' | '}
-              <a href="https://www.usa.gov/">USA.gov</a>
-              {' | '}
-              <a href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
-              {' | '}
-              <a href="https://gobierno.usa.gov/">GobiernoUSA.gov</a>
-            </p>
-            <div className="navbar-nav navbar-right">
-              <ChplAnnouncementsDisplay />
-            </div>
-          <h1>Hello {user.username}</h1>
-          <button onClick={signOut}>Sign out</button>
+    <footer>
+      <nav className="navbar navbar-default navbar-fixed-bottom">
+        <div className="container-fluid">
+          <p className="navbar-left nav-text spaced-out">
+            <a href="#/search">Home</a>
+            {' | '}
+            <a href="http://www.hhs.gov/privacy.html">Privacy Policy</a>
+            {' | '}
+            <a href="http://www.hhs.gov/disclaimer.html">Disclaimer</a>
+            {' | '}
+            <a href="https://www.whitehouse.gov/">White House</a>
+            {' | '}
+            <a href="http://www.hhs.gov/">HHS</a>
+            {' | '}
+            <a href="https://www.usa.gov/">USA.gov</a>
+            {' | '}
+            <a href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
+            {' | '}
+            <a href="https://gobierno.usa.gov/">GobiernoUSA.gov</a>
+          </p>
+          <div className="navbar-nav navbar-right">
+            <ChplAnnouncementsDisplay />
           </div>
-        </nav>
-      </footer>
-    </AppWrapper>
-   )}
-    </Authenticator>
+        </div>
+      </nav>
+    </footer>
   );
 }
 
-//export default withAuthenticator(ChplNavigationBottom);
 export default ChplNavigationBottom;
 
 ChplNavigationBottom.propTypes = {
