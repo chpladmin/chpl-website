@@ -1,3 +1,4 @@
+import codeSetsErrorsAndWarnings from './code-sets-errors-and-warnings';
 import columnsErrorsAndWarnings from './columns-errors-and-warnings';
 import conformanceMethodsErrorsAndWarnings from './conformance-methods-errors-and-warnings';
 import cqmsErrorsAndWarnings from './cqms-errors-and-warnings';
@@ -11,12 +12,14 @@ import measuresErrorsAndWarnings from './measures-errors-and-warnings';
 import noErrors from './no-errors';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
 import removedCriteriaErrorsAndWarnings from './removed-criteria-errors-and-warnings';
+import rwtErrorsAndWarnings from './rwt-errors-and-warnings';
 import sedErrorsAndWarnings from './sed-errors-and-warnings';
 import standardsErrorsAndWarnings from './standards-errors-and-warnings';
 import svapErrorsAndWarnings from './svap-errors-and-warnings';
 import testDataErrorsAndWarnings from './test-data-errors-and-warnings';
 
 const suites = [
+  codeSetsErrorsAndWarnings,
   columnsErrorsAndWarnings,
   conformanceMethodsErrorsAndWarnings,
   cqmsErrorsAndWarnings,
@@ -30,6 +33,7 @@ const suites = [
   noErrors,
   optionalStandardsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
+  rwtErrorsAndWarnings,
   sedErrorsAndWarnings,
   standardsErrorsAndWarnings,
   svapErrorsAndWarnings,
@@ -38,6 +42,7 @@ const suites = [
 
 export {
   suites,
+  codeSetsErrorsAndWarnings,
   columnsErrorsAndWarnings,
   conformanceMethodsErrorsAndWarnings,
   cqmsErrorsAndWarnings,
@@ -51,6 +56,7 @@ export {
   noErrors,
   optionalStandardsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
+  rwtErrorsAndWarnings,
   sedErrorsAndWarnings,
   standardsErrorsAndWarnings,
   svapErrorsAndWarnings,
