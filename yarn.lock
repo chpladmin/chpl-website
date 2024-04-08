@@ -6625,6 +6625,7 @@ __metadata:
     react: ^17.0.2
     react-cytoscapejs: ^2.0.0
     react-dom: ^17.0.2
+    react-ga4: ^2.1.0
     react-moment: ^1.1.3
     react-query: ^3.39.3
     react-test-renderer: ^17.0.2
@@ -18317,6 +18318,13 @@ __metadata:
   version: 2.0.4
   resolution: "react-fast-compare@npm:2.0.4"
   checksum: 06046595f90a4e3e3a56f40a8078c00aa71bdb064ddb98343f577f546aa22e888831fd45f009c93b34707cc842b4c637737e956fd13d6f80607ee92fb9cf9a1c
+  languageName: node
+  linkType: hard
+
+"react-ga4@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-ga4@npm:2.1.0"
+  checksum: f7fb41141418d4ad14756f1126a1e9958db37d4d84ae6cd798043dc03a390b6dba74d69311af0349f0b9580a43bda8930138194ccc29c4100efe446e2d6eb057
   languageName: node
   linkType: hard
 
