@@ -34,6 +34,7 @@
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.codeSet && $ctrl.cert.codeSets.length > 0 && $ctrl.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])">
             <td>
+              <button class="btn btn-link btn-xs pull-right" uib-tooltip="The Code Sets this criterion is up to date with." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The Code Sets this criterion is up to date with.</span><i class="fa fa-info-circle fa-lg"></i></button>
               <span>Code Sets</span>
             </td>
             <td>
