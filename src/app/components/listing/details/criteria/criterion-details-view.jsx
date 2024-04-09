@@ -141,7 +141,7 @@ function ChplCriterionDetailsView(props) {
                 && (
                   <TableRow key="codeSet">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="The Code Sets this criterion is up to date with.">
+                      <ChplTooltip title="Complies with the month/year Code set for this criterion.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
