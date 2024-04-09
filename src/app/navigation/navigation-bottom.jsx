@@ -7,8 +7,10 @@ import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
 
+import { getAngularService } from 'services/angular-react-helper';
 import ChplAnnouncementsDisplay from 'components/announcement/announcements-display';
 import { FlagContext } from 'shared/contexts';
+
 
 Amplify.configure({
   Auth: {
@@ -35,43 +37,69 @@ Amplify.configure({
   },
 });
 
-Hub.listen('auth', ({ payload }) => {
-  switch (payload.event) {
-    case 'signedIn':
-      console.log('user have been signedIn successfully.');
-      fetchAuthSession().then((result) => {
-        const { idToken } = result.tokens ?? {};
-        console.log({ idToken });
-        console.log(idToken?.toString());
-        // window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
-      });
-      break;
-    case 'signedOut':
-      console.log('user have been signedOut successfully.');
-      break;
-    case 'tokenRefresh':
-      console.log('auth tokens have been refreshed.');
-      break;
-    case 'tokenRefresh_failure':
-      console.log('failure while refreshing auth tokens.');
-      break;
-    case 'signInWithRedirect':
-      console.log('signInWithRedirect API has successfully been resolved.');
-      break;
-    case 'signInWithRedirect_failure':
-      console.log('failure while trying to resolve signInWithRedirect API.');
-      break;
-    case 'customOAuthState':
-      console.log('custom state returned from CognitoHosted UI');
-      break;
-    default:
-      console.log(payload);
-  }
-});
+
 
 function ChplNavigationBottom() {
   const { isOn } = useContext(FlagContext);
   const [ssoIsOn, setSsoIsOn] = useState(false);
+  const authService = getAngularService('authService');
+  const networkService = getAngularService('networkService');
+  const $rootScope = getAngularService('$rootScope');
+  const Idle = getAngularService('Idle');
+
+  Hub.listen('auth', ({ payload }) => {
+    switch (payload.event) {
+      case 'signedIn':
+        console.log('user have been signedIn successfully.');
+        fetchAuthSession().then((result) => {
+          const { idToken } = result.tokens ?? {};
+          console.log({ idToken });
+          console.log(idToken?.toString());
+          
+          authService.saveToken(idToken?.toString());
+          
+          console.log('Calling getCognitoUser');
+          networkService.getCognitoUser(authService.getUserId())
+          .then((data) => {
+            console.log('Calling getCognitoUser promise');
+            //setUser(data);
+            //signinFormik.resetForm();
+            //ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
+            authService.saveCurrentUser(data);
+            Idle.watch();
+            //Keepalive.ping();
+            $rootScope.$broadcast('loggedIn');
+            //dispatch('loggedIn');
+            //toastWhenUsernameUsed(signinFormik.values.userName, data);
+          });
+
+
+
+          //window.localStorage.setItem('ngStorage-jwtToken', '' + idToken?.toString());
+        });
+        break;
+      case 'signedOut':
+        console.log('user have been signedOut successfully.');
+        break;
+      case 'tokenRefresh':
+        console.log('auth tokens have been refreshed.');
+        break;
+      case 'tokenRefresh_failure':
+        console.log('failure while refreshing auth tokens.');
+        break;
+      case 'signInWithRedirect':
+        console.log('signInWithRedirect API has successfully been resolved.');
+        break;
+      case 'signInWithRedirect_failure':
+        console.log('failure while trying to resolve signInWithRedirect API.');
+        break;
+      case 'customOAuthState':
+        console.log('custom state returned from CognitoHosted UI');
+        break;
+      default:
+        console.log(payload);
+    }
+  });
 
   useEffect(() => {
     setSsoIsOn(isOn('sso'));
