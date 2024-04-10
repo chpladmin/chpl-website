@@ -28,7 +28,7 @@ const getDescription = (activity) => {
   let verb;
   switch (activity.categories[0]) {
     case 'CREATE':
-      verb = 'updated';
+      verb = 'created';
       break;
     case 'DELETE':
       verb = 'deleted';
