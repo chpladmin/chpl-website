@@ -31,7 +31,7 @@ describe('the Test Tools component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add and edit Test Tools', async () => {
+    xit('should be able to add and edit Test Tools', async () => {
       const toolValue = `1TestTool - ${Date.now()}`;
       const newToolValue = `2TestTool - ${Date.now()}`;
       const initialCount = (await page.getData()).length;

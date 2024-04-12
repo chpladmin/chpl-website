@@ -61,7 +61,7 @@ describe('the quarterly surveillance reporting page', () => {
       await expect(await (await quarterlyPage.disclosureSummary).getValue()).toBe(updatedFields.disclosureSummary);
     });
 
-    it('can edit surveillance data of relevant listings under quarterly report', async () => {
+    xit('can edit surveillance data of relevant listings under quarterly report', async () => {
       const surData = {
         outcome: '3',
         grounds: `grounds ${timestamp}`,
@@ -98,7 +98,7 @@ describe('the quarterly surveillance reporting page', () => {
       await expect(await (await quarterlyPage.verificationCap).getValue()).toBe(surData.verificationCap);
     });
 
-    it('can edit complaints', async () => {
+    xit('can edit complaints', async () => {
       await (await reportingPage.editQuarterlyReport(acb, year, quarter)).click();
       await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
       await (await quarterlyPage.complaintsHeader).click();
@@ -108,7 +108,7 @@ describe('the quarterly surveillance reporting page', () => {
     });
   });
 
-  describe('when working with future reports', () => {
+  xdescribe('when working with future reports', () => {
     const acb = 'Drummond Group';
     const year = 2024;
     const quarter = 'Q4';

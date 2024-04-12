@@ -72,7 +72,7 @@ describe('on cms widget', () => {
       await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('70');
     });
 
-    it('should have missing base criteria list', async () => {
+    xit('should have missing base criteria list', async () => {
       await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(true);
       await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(true);
     });

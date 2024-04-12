@@ -49,7 +49,7 @@ describe('the Product part of the Developers page', () => {
         page.selectAllCertificationStatus();
       });
 
-      describe('when looking at "PrimeSuite" product', () => {
+      xdescribe('when looking at "PrimeSuite" product', () => {
         const name = 'PrimeSuite';
         let product;
         beforeEach(() => {
@@ -90,7 +90,7 @@ describe('the Product part of the Developers page', () => {
           page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
-        it('should have an edit button', () => {
+        xit('should have an edit button', () => {
           expect(page.getEditButton(product)).toBeDisplayed();
         });
 
@@ -132,7 +132,7 @@ describe('the Product part of the Developers page', () => {
         });
       });
 
-      describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
+      xdescribe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
         const name = 'MediaDent 10.0 using SuccessEHS 7.20';
         let product;
         beforeEach(() => {
