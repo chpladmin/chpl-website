@@ -30,10 +30,6 @@
         <th scope="row">Version</th>
         <td>{{ $ctrl.listing.version.version }}</td>
       </tr>
-      <tr feature-flag="editionless" feature-flag-hide>
-        <th scope="row">Certification Edition</th>
-        <td>{{ $ctrl.listing.edition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span></td>
-      </tr>
       <tr>
         <th scope="row">Certifying Body</th>
         <td>{{ $ctrl.listing.certifyingBody.name }}</td>

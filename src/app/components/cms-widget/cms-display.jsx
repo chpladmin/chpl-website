@@ -25,7 +25,7 @@ import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api
 import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext, FlagContext } from 'shared/contexts';
+import { CmsContext } from 'shared/contexts';
 
 const ProgressBar = (props) => {
   const { value } = props;
@@ -115,9 +115,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
-  const { isOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
@@ -132,17 +130,13 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
-    createPdf(pdfData, editionlessIsOn);
+    createPdf(pdfData);
     setIsDownloading(false);
-  }, [pdfData, pdfIsFetching, pdfIsSuccess, editionlessIsOn]);
+  }, [pdfData, pdfIsFetching, pdfIsSuccess]);
 
   useEffect(() => {
     setCertId(undefined);
   }, [listings]);
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });

@@ -31,7 +31,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -136,9 +136,8 @@ const parseSvap = ({ svaps }, data) => {
 };
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const initialHeaders = [
+const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-  { text: 'Certification Edition' },
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
@@ -155,10 +154,7 @@ function ChplSvapCollectionView(props) {
   const authService = getAngularService('authService');
   const { analytics } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
   const [downloadLink, setDownloadLink] = useState('');
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
-  const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -208,15 +204,6 @@ function ChplSvapCollectionView(props) {
   useEffect(() => {
     setDownloadLink(`${API}/svap/download?api_key=${authService.getApiKey()}`);
   }, [API, authService]);
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
-
-  useEffect(() => {
-    if (!editionlessIsOn) { return; }
-    setHeaders((prev) => prev.filter((header) => header.text !== 'Certification Edition'));
-  }, [editionlessIsOn]);
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -345,21 +332,6 @@ function ChplSvapCollectionView(props) {
                                   />
                                 </strong>
                               </TableCell>
-                              { !editionlessIsOn
-                                && (
-                                  <TableCell>
-                                    { item.edition
-                                      ? (
-                                        <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
-                                        </>
-                                      ) : (
-                                        <></>
-                                      )}
-                                  </TableCell>
-                                )}
                               <TableCell>
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}

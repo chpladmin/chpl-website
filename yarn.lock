@@ -11318,7 +11318,7 @@ __metadata:
     ignore: ^3.3.5
     strip-ansi: ^4.0.0
     text-table: ^0.2.0
-  checksum: 1c215a977968637c363e423d3b35b9f32dedae7666277e03146b9f7c222ae512e7567fd3ecbf3e9c34a4233133e4f785098697c5eb334b34079753ca52b199c3
+  checksum: 1f333d8b4292b43f2ba090112a404778ceb932c087c52ebe1c05d1aadc35a8360d99720882bd22c555d8ecee3447c288e2cd6f1d21d5f6b8431afd778712e675
   languageName: node
   linkType: hard
 
