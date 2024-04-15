@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 13.14.0
+_15 April 2024_
+
+### Features
+* Enable editing of Code Sets during upload/confirm
+* Enable editing of RWT data during upload/confirm
+
+### Bug Fix
+* Remove reference to certificationEdition and replace with edition
+
+### User Interface Updates
+* Display "code sets" data for specific users
+
+---
+
 ## Version 13.13.0
 _1 April 2024_
 

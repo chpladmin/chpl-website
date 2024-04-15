@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "13.13.0",
+  "version": "13.14.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -69,6 +69,7 @@
     "react": "^17.0.2",
     "react-cytoscapejs": "^2.0.0",
     "react-dom": "^17.0.2",
+    "react-ga4": "^2.1.0",
     "react-moment": "^1.1.3",
     "react-query": "^3.39.3",
     "sass": "^1.62.1",
