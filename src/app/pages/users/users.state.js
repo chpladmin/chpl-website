@@ -4,11 +4,18 @@ const states = [
     url: '/users',
     component: 'chplUserManagement',
     resolve: {
-      users: (authService, networkService) => {
+      users: (authService, featureFlags, networkService) => {
         'ngInject';
 
         if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-          return networkService.getUsers();
+          console.log(featureFlags.isOn);
+          if (featureFlags.isOn('sso')) {
+            console.log('Getting Cognito Users');
+            return networkService.getCognitoUsers();
+          } else {
+            console.log('Getting CHPL Users');
+            return networkService.getUsers();
+          }
         }
         return [];
       },
