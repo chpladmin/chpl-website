@@ -59,6 +59,7 @@ function ChplTestToolEdit(props) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [testTool, setTestTool] = useState({});
@@ -132,6 +133,7 @@ function ChplTestToolEdit(props) {
         hide('testTools.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('testTools.add.disabled');
         hide('testTools.edit.disabled');
@@ -274,6 +276,7 @@ function ChplTestToolEdit(props) {
         canDelete={!!testTool.id}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );
