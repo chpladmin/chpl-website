@@ -42,6 +42,11 @@ const usePostAcb = () => {
   });
 };
 
+const usePostCognitoUserInvitation = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/invite', data));
+};
+
 const usePostUserInvitation = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('users/invite', data));
@@ -62,6 +67,7 @@ export {
   useFetchAcbs,
   useFetchUsersAtAcb,
   usePostAcb,
+  usePostCognitoUserInvitation,
   usePostUserInvitation,
   usePutAcb,
 };

@@ -10,6 +10,7 @@ class SvapPage extends SystemMaintenancePage {
       itemName: '#approved-standard-version',
       criterionSelector: '#criteria-select',
       dataTable: 'table[aria-label="SVAP table"]',
+      detailsButton: 'button[aria-label="Open SVAP Activity dialog"]',
     };
   }
 
@@ -19,6 +20,10 @@ class SvapPage extends SystemMaintenancePage {
 
   get criterionSelector() {
     return $(this.elements.criterionSelector);
+  }
+
+  get detailsButton() {
+    return $(this.elements.detailsButton);
   }
 }
 

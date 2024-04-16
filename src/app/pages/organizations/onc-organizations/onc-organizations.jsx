@@ -18,6 +18,7 @@ import {
   useFetchAcbs,
   useFetchUsersAtAcb,
   usePostUserInvitation,
+  usePostCognitoUserInvitation,
 } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
@@ -72,6 +73,7 @@ function ChplOncOrganizations() {
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
   const { mutate: invite } = usePostUserInvitation();
+  const { mutate: cognitoInvite } = usePostCognitoUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
@@ -138,6 +140,20 @@ function ChplOncOrganizations() {
           setIsEditing(payload);
         }
         break;
+      case 'cognito-invite':
+        cognitoInvite({ groupName: 'chpl-onc-acb', email: payload.email, organizationId: activeId }, {
+          onSuccess: () => {
+            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
+              variant: 'success',
+            });
+          },
+          onError: () => {
+            enqueueSnackbar('Email was not sent', {
+              variant: 'error',
+            });
+          },
+        });
+        break;
       case 'invite':
         invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {
@@ -156,7 +172,7 @@ function ChplOncOrganizations() {
         setIsEditing('');
         break;
         // no default
-    }
+      }
   };
 
   return (
@@ -203,6 +219,7 @@ function ChplOncOrganizations() {
                   <ChplUsers
                     users={users}
                     roles={roles}
+                    groupNames={roles}
                     dispatch={handleDispatch}
                   />
                 )}

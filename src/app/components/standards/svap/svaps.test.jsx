@@ -59,6 +59,13 @@ jest.mock('api/standards', () => ({
   }),
 }));
 
+jest.mock('api/activity', () => ({
+  __esModule: true,
+  useFetchSvapsActivity: () => ({
+    ...mockApi,
+  }),
+}));
+
 const mockEnqueue = jest.fn();
 
 jest.mock('notistack', () => ({

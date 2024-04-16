@@ -16,6 +16,7 @@ class FunctionalitiesTestedPage extends SystemMaintenancePage {
       practiceType: '#practiceType',
       additionalInformation: '#additional-information',
       dataTable: 'table[aria-label="Functionalities Tested table"]',
+      detailsButton: 'button[aria-label="Open Functionalities Tested Activity dialog"]',
     };
   }
 
@@ -49,6 +50,10 @@ class FunctionalitiesTestedPage extends SystemMaintenancePage {
 
   get additionalInformation() {
     return $(this.elements.additionalInformation);
+  }
+
+  get detailsButton() {
+    return $(this.elements.detailsButton);
   }
 }
 
