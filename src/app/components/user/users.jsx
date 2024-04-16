@@ -146,12 +146,12 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
     
     //console.log(ssoIsOn + ' - ' + user.userId);
 
-    if (ssoIsOn && user.cognitoId) {
+    if (user.cognitoId) {
       return (<ChplCognitoUserView
         key={user.cognitoId}
         user={user}
       />); 
-    } else if (!ssoIsOn && user.userId) {
+    } else if (user.userId) {
       return (<ChplUserView
         key={user.userId}
         user={user}

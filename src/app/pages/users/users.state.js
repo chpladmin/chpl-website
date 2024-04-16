@@ -4,24 +4,36 @@ const states = [
     url: '/users',
     component: 'chplUserManagement',
     resolve: {
-      users: (authService, featureFlags, networkService) => {
+      users: (authService, networkService) => {
         'ngInject';
 
         if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-          console.log(featureFlags.isOn('sso'));
-          if (featureFlags.isOn('sso')) {
-            console.log('Getting Cognito Users');
-            return networkService.getCognitoUsers();
-          } else {
-            console.log('Getting CHPL Users');
             return networkService.getUsers();
           }
-        }
         return [];
       },
     },
     data: {
       title: 'CHPL Users',
+      roles: ['chpl-admin', 'chpl-onc'],
+    },
+  },
+  {
+    name: 'cognito-users',
+    url: '/cognito-users',
+    component: 'chplUserManagement',
+    resolve: {
+      users: (authService, networkService) => {
+        'ngInject';
+
+        if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
+            return networkService.getCognitoUsers();
+          }
+        return [];
+      },
+    },
+    data: {
+      title: 'Cognito Users',
       roles: ['chpl-admin', 'chpl-onc'],
     },
   },
