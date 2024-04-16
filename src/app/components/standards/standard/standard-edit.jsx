@@ -63,6 +63,7 @@ function ChplStandardEdit(props) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [standard, setStandard] = useState({});
@@ -139,6 +140,7 @@ function ChplStandardEdit(props) {
         hide('standards.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('standards.add.disabled');
         hide('standards.edit.disabled');
@@ -313,6 +315,7 @@ function ChplStandardEdit(props) {
         canDelete={!!standard.id}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );

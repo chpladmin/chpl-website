@@ -31,6 +31,10 @@ describe('the svap component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
+    it('should have Details button', async () => {
+      await expect(await (await page.detailsButton).isDisplayed()).toBe(true);
+    });
+
     it('should be able to add and edit svaps', async () => {
       const version = `0Test - ${Date.now()}`;
       const newVersion = `1Test - ${Date.now()}`;

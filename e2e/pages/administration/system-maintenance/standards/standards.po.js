@@ -15,6 +15,7 @@ class standardsPage extends SystemMaintenancePage {
       standardEndDay: '#end-day',
       additionalInformation: '#additional-information',
       dataTable: 'table[aria-label="Standards table"]',
+      detailsButton: 'button[aria-label="Open Standards Activity dialog"]',
     };
   }
 
@@ -44,6 +45,10 @@ class standardsPage extends SystemMaintenancePage {
 
   get additionalInformation() {
     return $(this.elements.additionalInformation);
+  }
+
+  get detailsButton() {
+    return $(this.elements.detailsButton);
   }
 }
 

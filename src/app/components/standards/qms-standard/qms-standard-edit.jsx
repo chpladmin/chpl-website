@@ -36,6 +36,7 @@ function ChplQmsStandardEdit(props) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
   const [qmsStandard, setQmsStandard] = useState({});
+  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -89,6 +90,7 @@ function ChplQmsStandardEdit(props) {
         hide('qmsStandards.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('qmsStandards.add.disabled');
         hide('qmsStandards.edit.disabled');
@@ -127,6 +129,7 @@ function ChplQmsStandardEdit(props) {
         canDelete={!!qmsStandard.id}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );
