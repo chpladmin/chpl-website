@@ -8,7 +8,7 @@ const states = [
         'ngInject';
 
         if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-          console.log(featureFlags.isOn);
+          console.log(featureFlags.isOn('sso'));
           if (featureFlags.isOn('sso')) {
             console.log('Getting Cognito Users');
             return networkService.getCognitoUsers();
