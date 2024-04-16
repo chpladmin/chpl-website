@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import {
-  func,
-} from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  MenuItem,
   makeStyles,
 } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -33,6 +32,7 @@ const validationSchema = yup.object({
 });
 
 function ChplCognitoUserInvite(props) {
+  const groupNames = props.groupNames.sort((a, b) => (a < b ? -1 : 1));
   const [open, setOpen] = useState(false);
 
   const classes = useStyles();
@@ -50,6 +50,7 @@ function ChplCognitoUserInvite(props) {
   const invite = () => {
     const invitation = {
       email: formik.values.email,
+      groupName: formik.values.groupName,
     };
     props.dispatch('cognito-invite', invitation);
     handleClose();
@@ -58,6 +59,7 @@ function ChplCognitoUserInvite(props) {
   formik = useFormik({
     initialValues: {
       email: '',
+      groupName: groupNames.length > 1 ? '' : groupNames[0],
     },
     onSubmit: () => {
       invite();
@@ -95,7 +97,7 @@ function ChplCognitoUserInvite(props) {
             dividers
             className={classes.content}
         >
-            <ChplTextField
+          <ChplTextField
             id="email"
             name="email"
             label="Email"
@@ -105,7 +107,26 @@ function ChplCognitoUserInvite(props) {
             onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
-            />
+          />
+          { groupNames.length > 1
+            && (
+            <ChplTextField
+              select
+              id="group-name"
+              name="groupName"
+              label="Group Name"
+              required
+              value={formik.values.groupName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.groupName && !!formik.errors.groupName}
+              helperText={formik.touched.groupName && formik.errors.groupName}
+            >
+              { groupNames.map((item) => (
+                <MenuItem value={item} key={item}>{item}</MenuItem>
+              ))}
+            </ChplTextField>
+            )}
         </DialogContent>
         <DialogActions>
           <Button
@@ -126,5 +147,6 @@ function ChplCognitoUserInvite(props) {
 export default ChplCognitoUserInvite;
 
 ChplCognitoUserInvite.propTypes = {
+  groupNames: arrayOf(string).isRequired,
   dispatch: func.isRequired,
 };
