@@ -48,7 +48,7 @@ const getDisplay = (title, value, fullWidth = false) => {
   );
 };
 
-function ChplActivityDetails({ activity }) {
+function ChplQuestionableActivityDetails({ activity }) {
   const [details, setDetails] = useState(undefined);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -164,8 +164,8 @@ function ChplActivityDetails({ activity }) {
   );
 }
 
-export default ChplActivityDetails;
+export default ChplQuestionableActivityDetails;
 
-ChplActivityDetails.propTypes = {
+ChplQuestionableActivityDetails.propTypes = {
   activity: object.isRequired,
 };

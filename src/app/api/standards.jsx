@@ -19,6 +19,7 @@ const useDeleteFunctionalityTested = () => {
   return useMutation(async (data) => axios.delete(`functionalities-tested/${data.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(['functionalities-tested']);
+      queryClient.invalidateQueries(['activity/metadata/functionalities-tested']);
     },
   });
 };
@@ -39,6 +40,7 @@ const useDeleteStandard = () => {
   return useMutation(async (data) => axios.delete(`standards/${data.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(['standards']);
+      queryClient.invalidateQueries(['activity/metadata/standards']);
     },
   });
 };
@@ -59,6 +61,7 @@ const useDeleteSvap = () => {
   return useMutation(async (data) => axios.delete(`svaps/${data.svapId}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(['svaps']);
+      queryClient.invalidateQueries(['activity/metadata/svaps']);
     },
   });
 };
@@ -203,6 +206,7 @@ const usePostFunctionalityTested = () => {
   return useMutation(async (data) => axios.post('functionalities-tested', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['functionalities-tested']);
+      queryClient.invalidateQueries(['activity/metadata/functionalities-tested']);
     },
   });
 };
@@ -223,6 +227,7 @@ const usePostStandard = () => {
   return useMutation(async (data) => axios.post('standards', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['standards']);
+      queryClient.invalidateQueries(['activity/metadata/standards']);
     },
   });
 };
@@ -243,6 +248,7 @@ const usePostSvap = () => {
   return useMutation(async (data) => axios.post('svaps', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['svaps']);
+      queryClient.invalidateQueries(['activity/metadata/svaps']);
     },
   });
 };
@@ -273,6 +279,7 @@ const usePutFunctionalityTested = () => {
   return useMutation(async (data) => axios.put('functionalities-tested', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['functionalities-tested']);
+      queryClient.invalidateQueries(['activity/metadata/functionalities-tested']);
     },
   });
 };
@@ -293,6 +300,7 @@ const usePutStandard = () => {
   return useMutation(async (data) => axios.put('standards', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['standards']);
+      queryClient.invalidateQueries(['activity/metadata/standards']);
     },
   });
 };
@@ -313,6 +321,7 @@ const usePutSvap = () => {
   return useMutation(async (data) => axios.put('svaps', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['svaps']);
+      queryClient.invalidateQueries(['activity/metadata/svaps']);
     },
   });
 };

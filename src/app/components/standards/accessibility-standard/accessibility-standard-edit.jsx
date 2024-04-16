@@ -36,6 +36,7 @@ function ChplAccessibilityStandardEdit(props) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
   const [accessibilityStandard, setAccessibilityStandard] = useState({});
+  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -89,6 +90,7 @@ function ChplAccessibilityStandardEdit(props) {
         hide('accessibilityStandards.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('accessibilityStandards.add.disabled');
         hide('accessibilityStandards.edit.disabled');
@@ -127,6 +129,7 @@ function ChplAccessibilityStandardEdit(props) {
         canDelete={!!accessibilityStandard.id}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );

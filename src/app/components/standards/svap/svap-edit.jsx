@@ -43,6 +43,7 @@ function ChplSvapEdit(props) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
   const classes = useStyles();
@@ -109,6 +110,7 @@ function ChplSvapEdit(props) {
         hide('svaps.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('svaps.add.disabled');
         hide('svaps.edit.disabled');
@@ -213,6 +215,7 @@ function ChplSvapEdit(props) {
         canDelete={!!svap.svapId}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );
