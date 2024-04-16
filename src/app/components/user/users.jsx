@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUsers({ dispatch, roles, users: initialUsers }) {
+function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
@@ -182,9 +182,10 @@ function ChplUsers({ dispatch, roles, users: initialUsers }) {
                     roles={roles}
                     dispatch={handleDispatch}
                   />
-                  { (ssoIsOn && authService.hasAnyRole(['chpl-admin'])) 
+                  { ssoIsOn
                     && (
                       <ChplCognitoUserInvite
+                        groupNames={groupNames}
                         dispatch={handleDispatch}
                       />
                     )}
@@ -212,4 +213,5 @@ ChplUsers.propTypes = {
   users: arrayOf(userPropType).isRequired,
   dispatch: func.isRequired,
   roles: arrayOf(string).isRequired,
+  groupNames: arrayOf(string).isRequired,
 };
