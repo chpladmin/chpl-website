@@ -6625,6 +6625,7 @@ __metadata:
     react: ^17.0.2
     react-cytoscapejs: ^2.0.0
     react-dom: ^17.0.2
+    react-ga4: ^2.1.0
     react-moment: ^1.1.3
     react-query: ^3.39.3
     react-test-renderer: ^17.0.2
@@ -9585,7 +9586,7 @@ __metadata:
 "export-to-csv@https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac":
   version: 0.2.1
   resolution: "export-to-csv@https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac"
-  checksum: 5b8d5645f8a82b7079146bcf79f24fd7c5858e87e3b7106dc62ec12c126577a9632012c022ca247451b69d80767968f805bdfdd0bd385f161e1d1dcfdf1b79f0
+  checksum: f970f5875eabfbf15dc4ee28878eefc82675ea24b6a128c88d1e0e09f99fb343361caea343f24fca7342038ea6abbee94b2d585cec97f8ee0993f7ee8614288d
   languageName: node
   linkType: hard
 
@@ -11317,7 +11318,7 @@ __metadata:
     ignore: ^3.3.5
     strip-ansi: ^4.0.0
     text-table: ^0.2.0
-  checksum: 1c215a977968637c363e423d3b35b9f32dedae7666277e03146b9f7c222ae512e7567fd3ecbf3e9c34a4233133e4f785098697c5eb334b34079753ca52b199c3
+  checksum: 1f333d8b4292b43f2ba090112a404778ceb932c087c52ebe1c05d1aadc35a8360d99720882bd22c555d8ecee3447c288e2cd6f1d21d5f6b8431afd778712e675
   languageName: node
   linkType: hard
 
@@ -18317,6 +18318,13 @@ __metadata:
   version: 2.0.4
   resolution: "react-fast-compare@npm:2.0.4"
   checksum: 06046595f90a4e3e3a56f40a8078c00aa71bdb064ddb98343f577f546aa22e888831fd45f009c93b34707cc842b4c637737e956fd13d6f80607ee92fb9cf9a1c
+  languageName: node
+  linkType: hard
+
+"react-ga4@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-ga4@npm:2.1.0"
+  checksum: f7fb41141418d4ad14756f1126a1e9958db37d4d84ae6cd798043dc03a390b6dba74d69311af0349f0b9580a43bda8930138194ccc29c4100efe446e2d6eb057
   languageName: node
   linkType: hard
 
