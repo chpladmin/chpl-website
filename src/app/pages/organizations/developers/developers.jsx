@@ -1,102 +1,59 @@
 import React, { useEffect, useState } from 'react';
+
+import ChplDevelopersView from './developers-view';
+
+import { useFetchAcbs } from 'api/acbs';
+import { FilterProvider } from 'components/filter';
 import {
-  Card,
-  CardContent,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+  certificationBodies,
+  decertificationDate,
+} from 'components/filter/filters';
 
-import { useFetchDevelopers } from 'api/developer';
-import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+const staticFilters = [
+  decertificationDate,
+];
 
-const useStyles = makeStyles({
-  headingPadding: {
-    padding: '16px 0',
-  },
-});
+function ChplDevelopersPage() {
+  const [filters, setFilters] = useState(staticFilters);
+  const acbQuery = useFetchAcbs();
 
-function ChplDevelopers() {
-  const $state = getAngularService('$state');
-  const DateUtil = getAngularService('DateUtil');
-  const { data, isLoading } = useFetchDevelopers();
-  const [developers, setDevelopers] = useState([]);
-  const [developerValueToLoad, setDeveloperValueToLoad] = useState('');
-  const classes = useStyles();
   useEffect(() => {
-    if (isLoading) { return; }
-    setDevelopers(data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  }, [data, isLoading]);
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    const values = acbQuery.data.acbs
+      .map((acb) => ({
+        ...acb,
+        value: acb.name,
+        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
+        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationBodies')
+      .concat({
+        ...certificationBodies,
+        values,
+      }));
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
-  const goToDeveloper = (_, { id }) => {
-    $state.go('.developer', { id });
+  const analytics = {
+    category: 'Developers',
   };
 
   return (
-    <>
-      <Typography className={classes.headingPadding} variant="h1">
-        View Developers
-      </Typography>
-      { /* eslint-disable react/jsx-props-no-spreading */}
-      <Card>
-        <CardContent>
-          <Autocomplete
-            id="developers"
-            name="developers"
-            options={developers}
-            onChange={goToDeveloper}
-            inputValue={developerValueToLoad}
-            onInputChange={(event, newValue) => {
-              setDeveloperValueToLoad(newValue);
-            }}
-            getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
-            renderInput={(params) => <ChplTextField {...params} label="Choose Developer" />}
-          />
-        </CardContent>
-      </Card>
-      <br />
-      { /* eslint-enable react/jsx-props-no-spreading */}
-      {developers.length > 0
-          && (
-            <Card>
-              <CardContent>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Code</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Last modified Date</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {developers.map((developer) => (
-                        <TableRow key={developer.id}>
-                          <TableCell>{developer.developerCode}</TableCell>
-                          <TableCell>{developer.name}</TableCell>
-                          <TableCell>{developer.status.status}</TableCell>
-                          <TableCell>{DateUtil.getDisplayDateFormat(parseInt(developer.lastModifiedDate, 10))}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </CardContent>
-            </Card>
-          )}
-    </>
+    <FilterProvider
+      analytics={analytics}
+      filters={filters}
+      storageKey="storageKey-DevelopersPage"
+    >
+      <ChplDevelopersView
+        analytics={analytics}
+      />
+    </FilterProvider>
   );
 }
 
-export default ChplDevelopers;
+export default ChplDevelopersPage;
 
-ChplDevelopers.propTypes = {
+ChplDevelopersPage.propTypes = {
 };

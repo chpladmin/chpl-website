@@ -19,7 +19,7 @@ const useFetchBannedDevelopersCollection = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['developers/search/v2', {
+  return useQuery(['developers/search/v3', {
     orderBy, pageNumber, pageSize, sortDescending, query,
   }], async () => {
     const response = await axios.get(`/developers/search/v2?statuses=Under certification ban by ONC&${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
