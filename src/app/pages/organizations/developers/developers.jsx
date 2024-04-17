@@ -28,7 +28,7 @@ const staticFilters = [
       { value: 'has_no_active', display: 'Has No Active' },
       { value: 'had_any_active_during_most_recent_past_attestation_period', display: 'Had Any Active During Most Recent Past Attestation Period' },
     ],
-  }
+  },
 ];
 
 function ChplDevelopersPage() {
@@ -47,9 +47,19 @@ function ChplDevelopersPage() {
         default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
       }));
     setFilters((f) => f
-      .filter((filter) => filter.key !== 'certificationBodies')
+      .filter((filter) => filter.key !== 'acbsForActiveListings')
       .concat({
         ...certificationBodies,
+        key: 'acbsForActiveListings',
+        display: 'Has active Listings with ONC-ACB',
+        values,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'acbsForAllListings')
+      .concat({
+        ...certificationBodies,
+        key: 'acbsForAllListings',
+        display: 'Has any Listings with ONC-ACB',
         values,
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
