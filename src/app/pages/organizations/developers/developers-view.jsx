@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -23,6 +24,7 @@ import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
+  ChplFilterQuickFilters,
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
@@ -56,6 +58,11 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 10fr auto',
     },
+  },
+  searchButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gridGap: '8px',
   },
   stickyColumn: {
     position: 'sticky',
@@ -171,7 +178,10 @@ function ChplDevelopersView(props) {
         <ChplFilterSearchTerm
           placeholder="Search by Developer Name or Code..."
         />
-        <ChplFilterPanel />
+        <Box className={classes.searchButtonContainer}>
+          <ChplFilterPanel />
+          <ChplFilterQuickFilters />
+        </Box>
       </div>
       <div>
         <ChplFilterChips />

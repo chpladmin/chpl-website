@@ -7,6 +7,7 @@ import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
   decertificationDate,
+  quickFilters,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 
@@ -46,6 +47,8 @@ function ChplDevelopersPage() {
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
 
+  let getQuery;
+
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
       return;
@@ -75,8 +78,28 @@ function ChplDevelopersPage() {
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
+  useEffect(() => {
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'quickFilters')
+      .concat({
+        ...quickFilters,
+        getQuery,
+        values: [
+          { value: 'Not Yet Submitted Attestations' },
+        ],
+      }));
+  }, []);
+
   const analytics = {
     category: 'Developers',
+  };
+
+  getQuery = (state) => {
+    const value = state.values[0]?.value;
+    if (value === 'Not Yet Submitted Attestations') {
+      return 'activeListingsOptions=had_any_active_during_most_recent_past_attestation_period,has_any_active&activeListingsOptionsOperator=and&hasSubmittedAttestationsForMostRecentPastPeriod=false';
+    }
+    return null;
   };
 
   return (
