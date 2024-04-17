@@ -7,10 +7,12 @@ import { FilterProvider } from 'components/filter';
 import {
   certificationBodies,
   decertificationDate,
+  developerStatus,
 } from 'components/filter/filters';
 
 const staticFilters = [
   decertificationDate,
+  developerStatus,
 ];
 
 function ChplDevelopersPage() {

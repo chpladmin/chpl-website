@@ -126,7 +126,7 @@ function ChplDevelopersView(props) {
     if (isLoading || !data.results) { return; }
     setDevelopers(data.results.map((developer) => ({
       ...developer,
-      oncAcbDisplay: 'todo', //developer.associatedAcbs.map((acb) => acb.name).join(', '),
+      oncAcbDisplay: `${developer.acbsForAllListings.map((acb) => acb.name).sort((a, b) => (a < b ? -1 : 1)).join(', ')} (should this be "only active" instead?)`,
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
@@ -184,7 +184,7 @@ function ChplDevelopersView(props) {
           </Typography>
         </div>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm
           placeholder="Search by Developer Name or Code..."
         />
