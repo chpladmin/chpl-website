@@ -8,6 +8,7 @@ import {
   certificationBodies,
   decertificationDate,
 } from 'components/filter/filters';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 
 const staticFilters = [
   decertificationDate, {
@@ -27,6 +28,16 @@ const staticFilters = [
       { value: 'has_any_active', display: 'Has Any Active' },
       { value: 'has_no_active', display: 'Has No Active' },
       { value: 'had_any_active_during_most_recent_past_attestation_period', display: 'Had Any Active During Most Recent Past Attestation Period' },
+    ],
+  }, {
+    ...defaultFilter,
+    key: 'hasSubmittedAttestationsForMostRecentPastPeriod',
+    display: 'Attestations',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
+    values: [
+      { value: 'true', display: 'Has submitted Attestations for the most recent past period' },
+      { value: 'false', display: 'Has not submitted Attestations for the most recent past period' },
     ],
   },
 ];
@@ -72,7 +83,7 @@ function ChplDevelopersPage() {
     <FilterProvider
       analytics={analytics}
       filters={filters}
-      storageKey="storageKey-DevelopersPage"
+      storageKey="storageKey-developersPage"
     >
       <ChplDevelopersView
         analytics={analytics}
