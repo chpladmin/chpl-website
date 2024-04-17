@@ -24,7 +24,7 @@ const useFetchAcbs = (editable = false) => {
 const useFetchCognitoUsersAtAcb = (acb, orgType) => {
   const id = acb?.id;
   const axios = useAxios();
-  return useQuery(['acbs', 'users', id], async () => {
+  return useQuery(['acbs', 'cognito-users', id], async () => {
     const response = await axios.get(`acbs/${id}/cognito-users`);
     return response.data;
   }, {

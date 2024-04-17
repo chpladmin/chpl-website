@@ -117,7 +117,7 @@ function ChplOncOrganizations() {
   useEffect(() => {
     if (orgType !== 'acb') { return; }
     if (cognitoUserQuery.isLoading || !cognitoUserQuery.isSuccess) { return; }
-    setCognitoUsers(userQuery.data.users);
+    setCognitoUsers(cognitoUserQuery.data.users);
   }, [cognitoUserQuery.data, cognitoUserQuery.isLoading, cognitoUserQuery.isSuccess, orgType]);
 
   useEffect(() => {

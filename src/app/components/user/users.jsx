@@ -144,8 +144,6 @@ function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
   const displayUser = (user) => {
     if (!isOn) { return null; }
     
-    //console.log(ssoIsOn + ' - ' + user.userId);
-
     if (user.cognitoId) {
       return (<ChplCognitoUserView
         key={user.cognitoId}
