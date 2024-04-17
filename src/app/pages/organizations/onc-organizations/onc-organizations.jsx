@@ -16,6 +16,7 @@ import { useSnackbar } from 'notistack';
 import {
   useDeleteUserFromAcb,
   useFetchAcbs,
+  useFetchCognitoUsersAtAcb,
   useFetchUsersAtAcb,
   usePostUserInvitation,
   usePostCognitoUserInvitation,
@@ -24,6 +25,7 @@ import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
 import { UserContext } from 'shared/contexts';
+import { FlagContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -64,18 +66,22 @@ const sortOrgs = (a, b) => {
 
 function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
+  const { isOn } = useContext(FlagContext);
   const { enqueueSnackbar } = useSnackbar();
   const [orgs, setOrgs] = useState([]);
   const [activeId, setActiveId] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
   const [orgType, setOrgType] = useState('');
+  const [ssoIsOn, setSsoIsOn] = useState(false);
   const [users, setUsers] = useState([]);
+  const [cognitoUsers, setCognitoUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
   const { mutate: invite } = usePostUserInvitation();
   const { mutate: cognitoInvite } = usePostCognitoUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
+  const cognitoUserQuery = useFetchCognitoUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['chpl-onc-acb'];
   const classes = useStyles();
@@ -107,6 +113,16 @@ function ChplOncOrganizations() {
     if (userQuery.isLoading || !userQuery.isSuccess) { return; }
     setUsers(userQuery.data.users);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess, orgType]);
+
+  useEffect(() => {
+    if (orgType !== 'acb') { return; }
+    if (cognitoUserQuery.isLoading || !cognitoUserQuery.isSuccess) { return; }
+    setCognitoUsers(userQuery.data.users);
+  }, [cognitoUserQuery.data, cognitoUserQuery.isLoading, cognitoUserQuery.isSuccess, orgType]);
+
+  useEffect(() => {
+    setSsoIsOn(isOn('sso'));
+  }, [isOn]);
 
   const navigate = (target) => {
     const next = target || (orgs.length === 1 ? orgs[0] : undefined);
@@ -217,7 +233,7 @@ function ChplOncOrganizations() {
               { isEditing !== 'org' && orgType === 'acb'
                 && (
                   <ChplUsers
-                    users={users}
+                    users={ssoIsOn ? cognitoUsers : users}
                     roles={roles}
                     groupNames={roles}
                     dispatch={handleDispatch}
