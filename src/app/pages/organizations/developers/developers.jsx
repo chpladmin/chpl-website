@@ -7,12 +7,18 @@ import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
   decertificationDate,
-  developerStatus,
 } from 'components/filter/filters';
 
 const staticFilters = [
-  decertificationDate,
-  developerStatus, {
+  decertificationDate, {
+    ...defaultFilter,
+    key: 'statuses',
+    display: 'Developer Status',
+    values: [
+      { value: 'Suspended by ONC' },
+      { value: 'Under certification ban by ONC' },
+    ],
+  }, {
     ...defaultFilter,
     key: 'activeListingsOptions',
     display: 'Active Listings',
@@ -22,7 +28,7 @@ const staticFilters = [
       { value: 'has_no_active', display: 'Has No Active' },
       { value: 'had_any_active_during_most_recent_past_attestation_period', display: 'Had Any Active During Most Recent Past Attestation Period' },
     ],
-  },
+  }
 ];
 
 function ChplDevelopersPage() {

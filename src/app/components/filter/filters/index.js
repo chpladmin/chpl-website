@@ -5,7 +5,6 @@ import certificationStatuses from './certification-statuses';
 import cqms from './cqms';
 import decertificationDate from './decertification-date';
 import derivedCertificationEditions from './derived-certification-editions';
-import developerStatus from './developer-status';
 import quickFilters from './quick-filters';
 import subscriberRoles from './subscriber-roles';
 import subscriberStatuses from './subscriber-statuses';
@@ -20,7 +19,6 @@ export {
   cqms,
   decertificationDate,
   derivedCertificationEditions,
-  developerStatus,
   quickFilters,
   subscriberRoles,
   subscriberStatuses,
