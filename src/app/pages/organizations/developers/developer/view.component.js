@@ -105,7 +105,11 @@ const DeveloperViewComponent = {
         that.allowedAcbs = response.acbs;
       });
       if (this.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) && this.$stateParams.id) {
-        this.networkService.getUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
+        if (this.featureFlags.isOn('sso')) {
+          this.networkService.getCognitoUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
+        } else {       
+          this.networkService.getUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
+        }  
       }
     }
 
