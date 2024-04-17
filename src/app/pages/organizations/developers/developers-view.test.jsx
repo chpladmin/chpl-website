@@ -5,7 +5,7 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import ChplBannedDevelopersCollectionView from './banned-developers-view';
+import ChplDevelopersView from './developers-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
@@ -37,24 +37,23 @@ jest.mock('components/filter', () => ({
 }));
 /* eslint-enable react/display-name */
 
-jest.mock('api/collections', () => ({
+jest.mock('api/developer', () => ({
   __esModule: true,
-  useFetchBannedDevelopersCollection: () => mockApi,
-  useFetchBannedDevelopersData: () => mockApi,
+  useFetchDevelopersBySearch: () => mockApi,
 }));
 
-describe('the ChplBannedDevelopersCollectionView component', () => {
+describe('the ChplDevelopersView component', () => {
   afterEach(() => {
     cleanup();
   });
 
   it('has a title', async () => {
     render(
-      <ChplBannedDevelopersCollectionView analytics={{ category: 'test' }} />,
+      <ChplDevelopersView analytics={{ category: 'test' }} />,
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Developers Under Certification Ban');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Developers');
     });
   });
 });
