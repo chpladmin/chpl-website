@@ -202,9 +202,6 @@ export default class NetworkService {
     return this.apiGET(`/cognito/users/${ssoUserId}`);
   }
 
-  getCognitoUsersAtDeveloper(id) {
-    return this.apiGET(`/developers/${id}/cognito-users`);
-  }
   getCollection(type) {
     switch (type) {
       case 'complaintListings':
