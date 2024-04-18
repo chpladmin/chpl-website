@@ -64,7 +64,6 @@ const sortOrgs = (a, b) => {
 
 function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
   const { enqueueSnackbar } = useSnackbar();
   const [orgs, setOrgs] = useState([]);
   const [activeId, setActiveId] = useState(undefined);
