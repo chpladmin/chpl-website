@@ -1,4 +1,4 @@
-import DevelopersPage from './developers.po';
+import DeveloperPage from './developer.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks;
@@ -9,17 +9,14 @@ describe('the Developer pages', () => {
     beforeEach(async () => {
       browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
       browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
-      page = new DevelopersPage();
       hooks = new Hooks();
-      await hooks.open('#/organizations/developers');
     });
 
     describe('on the "GE Healthcare" Developer page', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
+        page = new DeveloperPage();
         const developer = 'GE Healthcare';
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
+        await hooks.open('#/organizations/developers/2070');
       });
 
       it('should have a Direct Reviews section', () => {
@@ -27,20 +24,20 @@ describe('the Developer pages', () => {
       });
 
       it('should have Products', () => {
+        page.selectAllCertificationStatus();
         expect(page.products.length).toBeGreaterThan(0);
       });
     });
 
     describe('when on the "Breeze EHR" Developer page with only one product', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
+        page = new DeveloperPage();
         const developer = 'Breeze EHR';
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
+        await hooks.open('#/organizations/developers/169');
       });
 
       it('should not have split developer button', () => {
+        page.selectAllCertificationStatus();
         expect(page.splitDeveloper.isDisplayed()).toBe(false);
       });
     });

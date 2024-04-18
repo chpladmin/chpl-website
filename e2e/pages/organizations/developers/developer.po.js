@@ -1,5 +1,4 @@
 const elements = {
-  developersSelect: '#developers',
   directReviewsHeader: 'h2=Direct Review Activities',
   productsHeader: 'h2=Products',
   editProductsHeader: 'h2=Edit Product Details',
@@ -39,7 +38,7 @@ const elements = {
   },
 };
 
-class DevelopersPage {
+class DeveloperPage {
   constructor() {
     this.elements = elements;
   }
@@ -122,12 +121,6 @@ class DevelopersPage {
 
   get editDeveloper() {
     return $(this.elements.editDeveloper);
-  }
-
-  selectDeveloper(developerName) {
-    $(this.elements.developersSelect).click();
-    $(this.elements.developersSelect).addValue(developerName);
-    $(`//li[contains(text(),"${developerName}")]`).click();
   }
 
   getEditButton(product) {
@@ -344,4 +337,4 @@ class DevelopersPage {
   }
 }
 
-export default DevelopersPage;
+export default DeveloperPage;
