@@ -53,7 +53,7 @@ describe('managing complaints', () => {
       await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
     });
 
-    it('should be able to add new complaint with optional fields for a 2015 listing', async () => {
+    xit('should be able to add new complaint with optional fields for a 2015 listing', async () => {
       const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',

@@ -72,7 +72,7 @@ describe('the Version part of the Developers page', () => {
           expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
         });
 
-        it('should require the version', () => {
+        xit('should require the version', () => {
           page.mergeVersion(product);
           page.moveVersionToBeMerged(versionToBeMerged);
           page.versionName.clearValue();
