@@ -16,7 +16,7 @@ const elements = {
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
   list: '.selectable-item.ng-scope.selectable-item',
-  developerContact: 'chpl-deveeloper-bridge',
+  developerContact: 'chpl-developer-bridge',
   developerWebsite: '//div[text()=\'Website\']/following-sibling::div/a',
   developerStatus: '#developer-status-0',
   splitDeveloper: '#developer-component-split',
