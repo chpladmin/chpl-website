@@ -1,5 +1,6 @@
-import DeveloperPage from './developer.po';
 import Hooks from '../../../utilities/hooks';
+
+import DeveloperPage from './developer.po';
 
 let hooks;
 let page;
@@ -15,7 +16,6 @@ describe('the Developer pages', () => {
     describe('on the "GE Healthcare" Developer page', () => {
       beforeEach(async () => {
         page = new DeveloperPage();
-        const developer = 'GE Healthcare';
         await hooks.open('#/organizations/developers/2070');
       });
 
@@ -32,7 +32,6 @@ describe('the Developer pages', () => {
     describe('when on the "Breeze EHR" Developer page with only one product', () => {
       beforeEach(async () => {
         page = new DeveloperPage();
-        const developer = 'Breeze EHR';
         await hooks.open('#/organizations/developers/169');
       });
 
