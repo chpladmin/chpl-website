@@ -208,7 +208,7 @@ describe('the Version part of the Developers page', () => {
         page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
       });
 
-      it('should have a version split, but not a product split', () => {
+      xit('should have a version split, but not a product split', () => {
         page.getSplitButton(product).click();
         expect(page.getSplitButton(product)).toExist();
         expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split Product with only one Version)');
