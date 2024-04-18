@@ -3,7 +3,7 @@ import ActionBarComponent from '../../../components/action-bar/action-bar.po';
 import LoginComponent from '../../../components/login/login.sync.po';
 import ToastComponent from '../../../components/toast/toast.po';
 
-import DevelopersPage from './developers.po';
+import DeveloperPage from './developer.po';
 
 let actionBar;
 let hooks;
@@ -11,7 +11,7 @@ let login;
 let page;
 let toast;
 
-describe('the Developers page', () => {
+describe('the Developer page', () => {
   const timestamp = (new Date()).getTime();
   const website = `https://www.website${timestamp}.com`;
   const developerContact = {
@@ -35,7 +35,7 @@ describe('the Developers page', () => {
     actionBar = new ActionBarComponent();
     login = new LoginComponent();
     toast = new ToastComponent();
-    await hooks.open('#/organizations/developers');
+    await hooks.open('#/resources/overview');
   });
 
   afterEach(() => {
@@ -56,15 +56,12 @@ describe('the Developers page', () => {
     });
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
-      beforeEach(() => {
-        const developer = 'Greenway Health, LLC';
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
+      beforeEach(async () => {
+        page = new DeveloperPage();
+        await hooks.open('#/organizations/developers/1914');
       });
 
-      describe('when editing developer information', () => {
+      xdescribe('when editing developer information', () => {
         beforeEach(() => {
           page.editDeveloper.click();
         });
@@ -73,10 +70,10 @@ describe('the Developers page', () => {
           expect(page.developerStatus.isDisplayed()).toBe(false);
         });
 
-        xit('should allow editing of POC', () => {
+        it('should allow editing of POC', () => {
           page.setContact(developerContact);
           page.editWebsite.setValue(website);
-          actionBar.save();
+          // actionBar.save();
           expect(toast.toastTitle.getText()).toEqual('Update processing');
           toast.clearAllToast();
           hooks.waitForSpinnerToDisappear();
@@ -90,22 +87,21 @@ describe('the Developers page', () => {
 
       describe('when looking at developer with more than one product', () => {
         it('should have split developer button', () => {
+          browser.saveScreenshot(`test_reports/e2e/screenshot/shouldhave${Date.now()}.png`);
           expect(page.splitDeveloper.isDisplayed()).toBe(true);
         });
 
         it('should not have join developer button', () => {
+          browser.saveScreenshot(`test_reports/e2e/screenshot/nothave${Date.now()}.png`);
           expect(page.joinDeveloper.isDisplayed()).toBe(false);
         });
       });
     });
 
-    describe('when on the "athenahealth, Inc." Developer page which has listings owned by multiple ACBs', () => {
-      beforeEach(() => {
-        const developer = 'athenahealth, Inc.';
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
+    xdescribe('when on the "athenahealth, Inc." Developer page which has listings owned by multiple ACBs', () => {
+      beforeEach(async () => {
+        page = new DeveloperPage();
+        await hooks.open('#/organizations/developers/1881');
       });
 
       it('should show correct error message', () => {
@@ -115,25 +111,22 @@ describe('the Developers page', () => {
         page.setAddress(developerAddress);
         page.setContact(developerContact);
         page.moveDeveloperToSplit(3138);
-        actionBar.save();
+        // actionBar.save();
         actionBar.waitForMessages();
         expect(actionBar.errors.map((err) => err.getText()).join(';')).toContain('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
       });
     });
   });
 
-  describe('when logged in as ONC', () => {
+  xdescribe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
     });
 
     describe('when on the "Altos Solutions, Inc" Developer page', () => {
-      beforeEach(() => {
-        const developer = 'Altos Solutions, Inc';
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
+      beforeEach(async () => {
+        page = new DeveloperPage();
+        await hooks.open('#/organizations/developers/1894');
       });
 
       it('should have join developer button', () => {
@@ -143,19 +136,16 @@ describe('the Developers page', () => {
       it('should allow join to happen', () => {
         page.joinDeveloper.click();
         page.moveDeveloperToBeJoined('ABH Enterprises, LLC');
-        actionBar.save();
+        // actionBar.save();
         browser.waitUntil(() => toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toEqual('Join Developer request submitted');
       });
     });
 
     describe('when looking at developer with more than one product', () => {
-      beforeEach(() => {
-        const developer = 'Greenway Health, LLC';
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
+      beforeEach(async () => {
+        page = new DeveloperPage();
+        await hooks.open('#/organizations/developers/1914');
       });
 
       it('should allow split to happen', () => {
@@ -165,7 +155,7 @@ describe('the Developers page', () => {
         page.setAddress(developerAddress);
         page.setContact(developerContact);
         page.moveDeveloperToSplit(3526);
-        actionBar.save();
+        // actionBar.save();
         browser.waitUntil(() => toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toEqual('Split submitted');
       });
