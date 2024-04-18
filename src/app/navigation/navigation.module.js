@@ -1,4 +1,4 @@
-import ChplNavigationBottom from './navigation-bottom';
+import ChplNavigationBottomWrapper from './navigation-bottom-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -45,17 +45,18 @@ function authInterceptor($log, API, authService, toaster) {
 
   // If a token was sent back, save it
   function parseToken(data) {
+    let response = data;
     try {
-      if (angular.isString(data)) {
-        data = angular.fromJson(data);
+      if (angular.isString(response)) {
+        response = angular.fromJson(response);
       }
-      if (data.token) {
-        authService.saveToken(data.token);
+      if (response.token) {
+        authService.saveToken(response.token);
       }
     } catch (e) {
       // console.log('data is not json', response.config.url, response.data, e);
     }
-    return data;
+    return response;
   }
   return {
     // automatically attach Authorization header
@@ -104,4 +105,4 @@ angular.module('chpl.navigation', [
   .config(($httpProvider) => {
     $httpProvider.interceptors.push('authInterceptor');
   })
-  .component('chplNavigationBottomBridge', reactToAngularComponent(ChplNavigationBottom));
+  .component('chplNavigationBottomBridge', reactToAngularComponent(ChplNavigationBottomWrapper));

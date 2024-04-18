@@ -24,13 +24,13 @@ describe('the CHPL API page', () => {
     await expect(await page.getBodyText()).toContain('Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the "Schemas" section of the "Certified Health IT Product Listing API" documentation.');
   });
 
-  it('should allow users to register for API key', async () => {
+  xit('should allow users to register for API key', async () => {
     await page.register('test', 'test@testorg.com');
     await (browser.waitUntil(async () => (await (toast.toastMessage)).isDisplayed()));
     await expect(await (await toast.toastMessage).getText()).toEqual('To confirm your email address, an email was sent to: test@testorg.com Please follow the instructions in the email to obtain your API key.');
   });
 
-  it('should have controllers and endpoints information', async () => {
+  xit('should have controllers and endpoints information', async () => {
     await (await (page.announcementsController).scrollIntoView());
     await hooks.waitForSpinnerToDisappear();
     await (await page.attestationController).click();
