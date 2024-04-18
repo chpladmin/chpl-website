@@ -21,17 +21,6 @@ const useFetchAcbs = (editable = false) => {
   }, editable ? {} : options.daily);
 };
 
-const useFetchCognitoUsersAtAcb = (acb, orgType) => {
-  const id = acb?.id;
-  const axios = useAxios();
-  return useQuery(['acbs', 'cognito-users', id], async () => {
-    const response = await axios.get(`acbs/${id}/cognito-users`);
-    return response.data;
-  }, {
-    enabled: !!id && orgType === 'acb',
-  });
-};
-
 const useFetchUsersAtAcb = (acb, orgType) => {
   const id = acb?.id;
   const axios = useAxios();
@@ -76,7 +65,6 @@ const usePutAcb = () => {
 export {
   useDeleteUserFromAcb,
   useFetchAcbs,
-  useFetchCognitoUsersAtAcb,
   useFetchUsersAtAcb,
   usePostAcb,
   usePostCognitoUserInvitation,

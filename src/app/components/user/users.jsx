@@ -213,7 +213,7 @@ function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
                 </div>
                 <div className={classes.users}>
                   { users.map((u) => (
-                     displayUser(u) ))} 
+                    displayUser(u) ))} 
                 </div>
               </CardContent>
             </Card>

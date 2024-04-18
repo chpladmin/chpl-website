@@ -24,7 +24,6 @@ import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
 import { UserContext } from 'shared/contexts';
-import { FlagContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -72,7 +71,6 @@ function ChplOncOrganizations() {
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
   const [orgType, setOrgType] = useState('');
-  const [ssoIsOn, setSsoIsOn] = useState(false);
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
   const { mutate: invite } = usePostUserInvitation();
@@ -110,10 +108,6 @@ function ChplOncOrganizations() {
     if (userQuery.isLoading || !userQuery.isSuccess) { return; }
     setUsers(userQuery.data.users);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess, orgType]);
-
-  useEffect(() => {
-    setSsoIsOn(isOn('sso'));
-  }, [isOn]);
 
   const navigate = (target) => {
     const next = target || (orgs.length === 1 ? orgs[0] : undefined);
@@ -160,7 +154,6 @@ function ChplOncOrganizations() {
             });
           },
         });
-        break;
       case 'invite':
         invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {
