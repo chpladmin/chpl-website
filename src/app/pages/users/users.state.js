@@ -18,25 +18,6 @@ const states = [
       roles: ['chpl-admin', 'chpl-onc'],
     },
   },
-  {
-    name: 'cognito-users',
-    url: '/cognito-users',
-    component: 'chplUserManagement',
-    resolve: {
-      users: (authService, networkService) => {
-        'ngInject';
-
-        if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-            return networkService.getCognitoUsers();
-          }
-        return [];
-      },
-    },
-    data: {
-      title: 'Cognito Users',
-      roles: ['chpl-admin', 'chpl-onc'],
-    },
-  },
 ];
 
 function usersStatesConfig($stateProvider) {

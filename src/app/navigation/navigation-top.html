@@ -99,7 +99,6 @@
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="users-toggle" ng-class="{'admin-active': vm.isActive('users')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.usersIsOpen">Users</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="users-toggle" id="users-dropdown-menu">
               <li><a ui-sref="users"><i class="fa fa-caret-right" ng-if="vm.isActive('users')"></i> User Management</a></li>
-              <li ng-if="vm.isOn('sso')"><a ui-sref="cognito-users"></a>><i class="fa fa-caret-right" ng-if="vm.isActive('cognito-users')"></i> Cognito User Management</a></li>
             </ul>
           </li>
           <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])" class="dropdown" uib-dropdown is-open="vm.organizationsIsOpen">
