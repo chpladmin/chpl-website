@@ -16,6 +16,7 @@ module.exports = (env) => {
     resolve: {
       modules: ['src/app', 'node_modules'],
     },
+    cache: false,
     entry: {
       app: path.resolve(__dirname, './src/app/index.js'),
       administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
@@ -67,13 +68,7 @@ module.exports = (env) => {
         exclude: /node_modules/,
         use: [
           { loader: 'html-loader' },
-          {
-            loader: 'htmllint-loader',
-            query: {
-              failOnError: false,
-              failOnWarning: false,
-            },
-          },
+          { loader: 'htmllint-loader' },
         ],
       }, {
         test: /\.png$/,
@@ -214,6 +209,7 @@ module.exports = (env) => {
     config.devServer = {
       clientLogLevel: 'silent',
       disableHostCheck: true,
+      liveReload: true,
       port: 3000,
       proxy: {
         '/rest': {
