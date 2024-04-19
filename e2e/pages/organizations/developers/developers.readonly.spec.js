@@ -13,7 +13,7 @@ describe('the Developers page', () => {
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['Developer', 'Decertification Date', 'ONC-ACB'];
+    const expectedHeaders = ['Developer', 'Developer Code', 'ONC-ACB for active Listings'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
@@ -25,12 +25,11 @@ describe('the Developers page', () => {
         await page.resetFilters();
       });
 
-      it('should filter results on ONC-ACBs', async () => {
+      it('should filter results on Active Listings', async () => {
         const initialCount = await page.getTotalResultCount();
-        await page.removeFilter('Has active Listings with ONC-ACB', 'Drummond Group');
-        await page.removeFilter('Has any Listings with ONC-ACB', 'Drummond Group');
+        await page.removeFilter('Active Listings', 'Has Any Active');
         const finalCount = await page.getTotalResultCount();
-        expect(finalCount).toBeLessThan(initialCount);
+        expect(finalCount).toBeGreaterThan(initialCount);
       });
     });
 
