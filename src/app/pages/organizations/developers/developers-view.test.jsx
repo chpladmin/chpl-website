@@ -15,8 +15,6 @@ const angularMock = {
 };
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock);
-when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue('fakeMock');
-when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),
@@ -32,6 +30,7 @@ jest.mock('components/filter', () => ({
   __esModule: true,
   ChplFilterChips: () => <div>Chips</div>,
   ChplFilterPanel: () => <div>Panel</div>,
+  ChplFilterQuickFilters: () => <div>Quick Filters</div>,
   ChplFilterSearchTerm: () => <div>Search Term</div>,
   useFilterContext: () => mockContext,
 }));
