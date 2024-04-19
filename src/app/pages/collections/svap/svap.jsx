@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplSvapCollectionView from './svap-view';
 
@@ -10,22 +10,13 @@ import {
   certificationCriteriaIds,
   certificationDate,
   certificationStatuses,
-  derivedCertificationEditions,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import ChplTabbedValueEntry from 'components/filter/filters/tabbed-value-entry';
-import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
   certificationStatuses, {
-    ...derivedCertificationEditions,
-    required: true,
-    values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
-    ],
-  }, {
     ...defaultFilter,
     key: 'hasAnySvap',
     display: 'Has any SVAP',
@@ -56,16 +47,10 @@ const getSvapValueEntry = (props) => (
 );
 
 function ChplSvapCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const svapQuery = useFetchSvaps();
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -129,11 +114,6 @@ function ChplSvapCollectionPage() {
         values,
       }));
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
-
-  useEffect(() => {
-    setFilters((f) => f
-      .filter((filter) => filter.key !== 'derivedCertificationEditions' || !editionlessIsOn));
-  }, [editionlessIsOn]);
 
   const analytics = {
     category: 'SVAP Information',

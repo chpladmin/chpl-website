@@ -12,16 +12,14 @@ import {
   certificationDate,
   certificationStatuses,
   cqms,
-  derivedCertificationEditions,
   quickFilters,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BrowserContext, FlagContext } from 'shared/contexts';
+import { BrowserContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
-  certificationStatuses,
-  derivedCertificationEditions, {
+  certificationStatuses, {
     ...defaultFilter,
     key: 'hasHadComplianceActivity',
     display: 'Compliance',
@@ -48,8 +46,6 @@ const staticFilters = [
 
 function ChplSearchPage() {
   const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
@@ -57,10 +53,6 @@ function ChplSearchPage() {
 
   let getValueDisplay;
   let getQuery;
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
 
   useEffect(() => {
     setFilters((f) => f
@@ -129,11 +121,6 @@ function ChplSearchPage() {
         values,
       }));
   }, [cqmQuery.data, cqmQuery.isLoading, cqmQuery.isSuccess]);
-
-  useEffect(() => {
-    setFilters((f) => f
-      .filter((filter) => filter.key !== 'derivedCertificationEditions' || !editionlessIsOn));
-  }, [editionlessIsOn]);
 
   const analytics = {
     category: 'Search',

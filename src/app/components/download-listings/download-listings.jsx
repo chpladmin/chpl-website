@@ -19,7 +19,7 @@ import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -35,7 +35,6 @@ const csvOptions = {
 
 const allHeaders = [
   { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-  { headerName: 'Certification Edition', objectKey: 'fullEdition' },
   { headerName: 'Developer', objectKey: 'developerName', group: 'productData' },
   { headerName: 'Product', objectKey: 'productName', group: 'productData' },
   { headerName: 'Version', objectKey: 'versionName', group: 'productData' },
@@ -67,7 +66,6 @@ const allHeaders = [
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const allCategories = [
   { name: 'CHPL ID', key: 'chplProductNumber', selected: true },
-  { name: 'Certification Edition', key: 'fullEdition', selected: true },
   { name: 'Product data', key: 'productData', selected: true },
   { name: 'Certification Date', key: 'certificationDate', selected: true },
   { name: 'Certification Status', key: 'certificationStatusName', selected: true },
@@ -99,14 +97,12 @@ const parseSvapCsv = ({ svaps }, data) => {
 function ChplDownloadListings(props) {
   const { analytics, toggled } = props;
   const $analytics = getAngularService('$analytics');
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [categories, setCategories] = useState(allCategories.map((h) => ({
     ...h,
     selected: toggled.includes(h.key) ? !h.selected : h.selected,
   })));
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
   const [svaps, setSvaps] = useState([]);
@@ -116,7 +112,6 @@ function ChplDownloadListings(props) {
   useEffect(() => {
     setListings(props.listings.map((listing) => ({
       ...listing,
-      fullEdition: listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,
@@ -145,10 +140,6 @@ function ChplDownloadListings(props) {
     setSvaps(svapQuery.data);
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
-
   const canDownload = () => categories.some((cat) => cat.selected);
 
   const handleClick = (e) => {
@@ -165,7 +156,7 @@ function ChplDownloadListings(props) {
   };
 
   const handleDownload = () => {
-    const activeCategories = categories.filter((cat) => cat.selected && (cat.key !== 'fullEdition' || !editionlessIsOn)).map((cat) => cat.key);
+    const activeCategories = categories.filter((cat) => cat.selected).map((cat) => cat.key);
     const csvExporter = new ExportToCsv({
       ...csvOptions,
       headers: allHeaders.filter((h) => activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)),
@@ -254,7 +245,7 @@ function ChplDownloadListings(props) {
           },
         }}
       >
-        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['chpl-admin', 'chpl-onc'])) && (c.key !== 'fullEdition' || !editionlessIsOn)).map((c) => [
+        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['chpl-admin', 'chpl-onc']))).map((c) => [
           <MenuItem
             onClick={() => toggle(c)}
             key={c.key}

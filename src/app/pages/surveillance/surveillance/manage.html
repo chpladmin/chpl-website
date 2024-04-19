@@ -35,20 +35,6 @@
                        register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
                   </ul>
                 </div>
-                <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" feature-flag="editionless" feature-flag-hide>
-                  <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                    <a ng-if="$ctrl.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-                    Certification Edition <i class="fa fa-filter"></i>
-                  </button>
-                  <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
-                    <st-list-multiple
-                       collection="$ctrl.availableListings"
-                       predicate="edition"
-                       fixed-items="$ctrl.filterItems.editionItems"
-                       has-changes="$ctrl.categoryChanged['edition']"
-                       register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
-                  </ul>
-                </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
                   <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationStatus" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
                     <a ng-if="$ctrl.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
@@ -97,7 +83,6 @@
                         <th scope="col" class="search-header" ai-multi-sort="product">Product</th>
                         <th scope="col" class="search-header" ai-multi-sort="version">Version</th>
                         <th scope="col" class="search-header" ai-multi-sort="acb">ONC-ACB</th>
-                        <th scope="col" class="search-header" ai-multi-sort="edition" feature-flag="editionless" feature-flag-hide>Certification Edition</th>
                         <th scope="col" class="search-header" ai-multi-sort="certificationStatus">Certification Status</th>
                         <th scope="col" class="search-header" ai-multi-sort="openSurveillanceCount" st-descending-first="true"># Open Surveillances</th>
                         <th scope="col" class="search-header" ai-multi-sort="closedSurveillanceCount" st-descending-first="true"># Closed Surveillances</th>
@@ -130,7 +115,6 @@
                         <td>{{ listing.product }}</td>
                         <td>{{ listing.version }}</td>
                         <td>{{ listing.acb }}</td>
-                        <td feature-flag="editionless" feature-flag-hide>{{ listing.edition }}</td>
                         <td>{{ listing.certificationStatus }}</td>
                         <td>{{ listing.openSurveillanceCount }}</td>
                         <td>{{ listing.closedSurveillanceCount }}</td>

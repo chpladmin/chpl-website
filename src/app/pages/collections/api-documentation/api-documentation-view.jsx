@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -33,7 +33,6 @@ import {
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -113,9 +112,8 @@ const criteriaLookup = {
 };
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const initialHeaders = [
+const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-  { text: 'Certification Edition' },
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
@@ -170,11 +168,8 @@ function ChplApiDocumentationCollectionView(props) {
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
-  const { isOn } = useContext(FlagContext);
   const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
-  const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -223,15 +218,6 @@ function ChplApiDocumentationCollectionView(props) {
     setDocumentationDate(documentation.associatedDate);
   }, [documentation?.associatedDate]);
 
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
-
-  useEffect(() => {
-    if (!editionlessIsOn) { return; }
-    setHeaders((prev) => prev.filter((header) => header.text !== 'Certification Edition'));
-  }, [editionlessIsOn]);
-
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
@@ -244,23 +230,13 @@ function ChplApiDocumentationCollectionView(props) {
   return (
     <>
       <div className={classes.pageHeader}>
-        { editionlessIsOn ? (
-          <Typography variant="h1">API Information</Typography>
-        ) : (
-          <Typography variant="h1">API Information for 2015 Edition Products</Typography>
-        )}
+        <Typography variant="h1">API Information</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
-          { editionlessIsOn ? (
-            <Typography variant="body1">
-              This list includes all health IT products that have been certified to at least one of the following API Criteria:
-            </Typography>
-          ) : (
-            <Typography variant="body1">
-              This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:
-            </Typography>
-          )}
+          <Typography variant="body1">
+            This list includes all health IT products that have been certified to at least one of the following API Criteria:
+          </Typography>
           <ul>
             <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
             <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
@@ -369,21 +345,6 @@ function ChplApiDocumentationCollectionView(props) {
                                   />
                                 </strong>
                               </TableCell>
-                              { !editionlessIsOn
-                                && (
-                                  <TableCell>
-                                    { item.edition
-                                      ? (
-                                        <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
-                                        </>
-                                      ) : (
-                                        <></>
-                                      )}
-                                  </TableCell>
-                                )}
                               <TableCell>
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
