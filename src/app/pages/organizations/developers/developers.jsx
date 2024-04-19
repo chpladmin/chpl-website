@@ -26,7 +26,7 @@ const staticFilters = [
     display: 'Active Listings',
     operatorKey: 'activeListingsOptionsOperator',
     values: [
-      { value: 'has_any_active', display: 'Has Any Active' },
+      { value: 'has_any_active', display: 'Has Any Active', default: true },
       { value: 'has_no_active', display: 'Has No Active' },
       { value: 'had_any_active_during_most_recent_past_attestation_period', display: 'Had Any Active During Most Recent Past Attestation Period' },
     ],
@@ -58,7 +58,6 @@ function ChplDevelopersPage() {
         ...acb,
         value: acb.name,
         display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
-        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'acbsForActiveListings')
