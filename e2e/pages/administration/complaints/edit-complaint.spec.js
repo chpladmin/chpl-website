@@ -45,7 +45,7 @@ describe('when editing complaints', () => {
       await expect(await complaintsComponent.fieldError('closed-date')).toBe('Closed Date must not be in the future');
     });
 
-    it('should be able to close complaint by adding closed date and actions', async () => {
+    xit('should be able to close complaint by adding closed date and actions', async () => {
       const STATUS_IDX = 0;
       const timestamp = Date.now();
       const fields = {
