@@ -146,9 +146,9 @@ function ChplDevelopersView(props) {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'decertification_date', text: 'Decertification Date', sortable: true, reverseDefault: true },
-    { text: 'ONC-ACB' },
+    { property: 'developer_name', text: 'Developer', sortable: true },
+    { property: 'developer_code', text: 'Developer Code', sortable: true },
+    { text: 'ONC-ACB for active Listings' },
   ];
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -241,7 +241,7 @@ function ChplDevelopersView(props) {
                                 </strong>
                               </TableCell>
                               <TableCell>
-                                { item.decertificationDate }
+                                { item.code }
                               </TableCell>
                               <TableCell>
                                 { item.oncAcbDisplay }

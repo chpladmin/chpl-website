@@ -139,7 +139,7 @@ function ChplBannedDevelopersCollectionView(props) {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
-    { property: 'developer', text: 'Developer', sortable: true },
+    { property: 'developer_name', text: 'Developer', sortable: true },
     { property: 'decertification_date', text: 'Decertification Date', sortable: true, reverseDefault: true },
     { text: 'ONC-ACB' },
   ];
