@@ -133,7 +133,7 @@ function ChplDevelopersView(props) {
     if (isLoading || !data.results) { return; }
     setDevelopers(data.results.map((developer) => ({
       ...developer,
-      oncAcbDisplay: `${developer.acbsForAllListings.map((acb) => acb.name).sort((a, b) => (a < b ? -1 : 1)).join(', ')} (should this be "only active" instead?)`,
+      oncAcbDisplay: developer.acbsForActiveListings.map((acb) => acb.name).sort((a, b) => (a < b ? -1 : 1)).join(', '),
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
