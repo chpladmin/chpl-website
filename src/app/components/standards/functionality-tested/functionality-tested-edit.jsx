@@ -68,6 +68,7 @@ function ChplFunctionalityTestedEdit(props) {
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [functionalityTested, setFunctionalityTested] = useState({});
+  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -141,6 +142,7 @@ function ChplFunctionalityTestedEdit(props) {
         hide('functionalitiesTested.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('functionalitiesTested.add.disabled');
         hide('functionalitiesTested.edit.disabled');
@@ -326,6 +328,7 @@ function ChplFunctionalityTestedEdit(props) {
         canDelete={!!functionalityTested.id}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );
