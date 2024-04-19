@@ -212,7 +212,9 @@ function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
                     )}
                 </div>
                 <div className={classes.users}>
-                  { users.map((u) => (
+                  { users
+                    .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
+                    .map((u) => (
                     displayUser(u) ))} 
                 </div>
               </CardContent>
