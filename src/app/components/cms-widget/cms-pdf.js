@@ -37,9 +37,8 @@ const checkCriterionIsMet = (key, criteriaMet) => {
   return [(criteriaMet.findIndex((criterion) => criterion.number === keys[0]) > -1)];
 };
 
-const getPdfCriteria = (editionlessIsOn) => {
+const getPdfCriteria = () => {
   /* eslint-disable object-curly-spacing */
-  if (editionlessIsOn) {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
@@ -62,33 +61,10 @@ const getPdfCriteria = (editionlessIsOn) => {
       {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
       {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
     ];
-  }
-  return [
-    {key: null, description: 'Demographics'},
-    {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
-    {key: null, description: 'Implantable Device List'},
-    {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
-    {key: null, description: 'Clinical Decision Support'},
-    {key: '170.315 (a)(9)', description: '#170.315(a)(9)'},
-    {key: null, description: 'Computerized Provider Order Entry'},
-    {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
-    {key: null, description: 'Clinical Quality Measures-Record and Export'},
-    {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
-    {key: null, description: 'Transitions of Care'},
-    {key: '170.315 (b)(1)', description: '#170.315(b)(1)'},
-    {key: null, description: 'Application Access-Patient Selection'},
-    {key: '170.315 (g)(7)', description: '#170.315(g)(7)'},
-    {key: null, description: 'Application Access-Data Category Request'},
-    {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
-    {key: null, description: 'Application Access-All Data Request'},
-    {key: '170.315 (g)(9)', description: '#170.315(g)(9)'},
-    {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
-    {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
-  ];
   /* eslint-enable object-curly-spacing */
 };
 
-const createPdf = (data, editionlessIsOn) => {
+const createPdf = (data) => {
   if (!data || data === 'undefined') {
     return;
   }
@@ -98,20 +74,6 @@ const createPdf = (data, editionlessIsOn) => {
     let software = decodeURIComponent(l.additionalSoftware);
     if (software) {
       software = software.replace(/\+/g, ' ');
-    }
-    if (editionlessIsOn) {
-      return {
-        head: [[`Listing ${idx + 1}`, '']],
-        body: [
-          ['Certifying Body', l.acb],
-          ['Practice Type', (l.practiceType ? l.practiceType : 'N/A')],
-          ['Product Certification #', l.chplProductNumber],
-          ['Developer', l.vendor],
-          ['Product Name', l.name],
-          ['Version', l.version],
-          ['Classification', (l.classification ? l.classification : 'N/A')],
-        ],
-      };
     }
     return {
       head: [[`Listing ${idx + 1}`, '']],
@@ -123,7 +85,6 @@ const createPdf = (data, editionlessIsOn) => {
         ['Product Name', l.name],
         ['Version', l.version],
         ['Classification', (l.classification ? l.classification : 'N/A')],
-        ['Certification Edition', l.year + (l.curesUpdate ? ' Cures Update' : '')],
       ],
     };
   });
@@ -136,7 +97,7 @@ const createPdf = (data, editionlessIsOn) => {
   const checkImages = [];
   const criteria = {
     head: [['2015 CMS EHR Base Criteria Met']],
-    body: getPdfCriteria(editionlessIsOn),
+    body: getPdfCriteria(),
   };
 
   // Start the PDF document
