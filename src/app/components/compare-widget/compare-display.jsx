@@ -13,6 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
+import ReactGA from "react-ga4";
 
 const useStyles = makeStyles({
   buttonContainer: {
@@ -44,22 +45,27 @@ const useStyles = makeStyles({
 });
 
 function ChplCompareDisplay() {
-  const $analytics = getAngularService('$analytics');
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
   const classes = useStyles();
 
   const compareAll = () => {
-    $analytics.eventTrack('Compare Listings', { category: 'Compare Widget' });
+    ReactGA.event({
+      category: "Compare Widget",
+      action: "Compare Listings",
+      label: listings.map((listing) => listing.id).join("&"),
+    });    
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();
   };
 
   const removeAll = () => {
-    $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
-    $rootScope.$broadcast('compare.removeAll');
+    ReactGA.event({
+      category: "Compare Widget",
+      action: "Remove all Listings",
+    });    $rootScope.$broadcast('compare.removeAll');
   };
 
   if (!listings || listings.length === 0) {
