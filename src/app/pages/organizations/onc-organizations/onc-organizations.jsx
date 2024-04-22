@@ -153,6 +153,7 @@ function ChplOncOrganizations() {
             });
           },
         });
+        break;
       case 'invite':
         invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {

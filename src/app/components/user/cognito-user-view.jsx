@@ -13,32 +13,25 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../themes/theme';
+import theme from 'themes/theme';
 import {
   user as userPropType,
-} from '../../shared/prop-types';
+} from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
-    //display: 'grid',
-    //gridTemplateColumns: '1fr',
     gap: '8px',
     overflowWrap: 'anywhere',
-    //[theme.breakpoints.up('sm')]: {
-    //  gridTemplateColumns: '1fr 1fr',
-    //},
   },
   userCard: {
     display: 'grid',
     gridTemplateRows: '64px auto 50px',
   },
-}));
+});
 
 function ChplCognitoUserView(props) {
-  /* eslint-disable react/destructuring-assignment */
   const [user, setUser] = useState({});
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setUser(props.user);
