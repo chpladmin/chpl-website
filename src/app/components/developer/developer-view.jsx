@@ -70,10 +70,11 @@ const useStyles = makeStyles({
 const getStatusData = (statusEvents, DateUtil, classes) => {
   const current = statusEvents
     .sort((a, b) => b.statusDate - a.statusDate)[0];
+  if (current.status.id === 1) { return; }
   const rest = statusEvents
     .sort((a, b) => b.statusDate - a.statusDate).slice(1);
   return (
-    <>
+    <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>
         <strong>Status</strong>
         <br />
@@ -157,7 +158,7 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
             </AccordionDetails>
           </Accordion>
         )}
-    </>
+    </div>
   );
 };
 
@@ -303,9 +304,7 @@ function ChplDeveloperView(props) {
               </Typography>
             )}
         </div>
-        <div className={classes.fullWidth}>
-          {developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes)}
-        </div>
+        {developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes)}
       </CardContent>
       {(can('edit') || can('split') || can('join'))
         && (
