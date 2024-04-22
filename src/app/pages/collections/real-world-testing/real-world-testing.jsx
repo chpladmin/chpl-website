@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
@@ -10,20 +10,11 @@ import {
   certificationCriteriaIds,
   certificationDate,
   certificationStatuses,
-  derivedCertificationEditions,
 } from 'components/filter/filters';
-import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
   certificationStatuses, {
-    ...derivedCertificationEditions,
-    required: true,
-    values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
-    ],
-  }, {
     ...defaultFilter,
     key: 'rwtOptions',
     display: 'Real World Testing',
@@ -37,15 +28,9 @@ const staticFilters = [
   }];
 
 function ChplRealWorldTestingCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -85,11 +70,6 @@ function ChplRealWorldTestingCollectionPage() {
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
-
-  useEffect(() => {
-    setFilters((f) => f
-      .filter((filter) => filter.key !== 'derivedCertificationEditions' || !editionlessIsOn));
-  }, [editionlessIsOn]);
 
   const analytics = {
     category: 'Real World Testing',

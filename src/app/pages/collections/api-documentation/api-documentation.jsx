@@ -10,31 +10,17 @@ import {
   certificationCriteriaIds,
   certificationDate,
   certificationStatuses,
-  derivedCertificationEditions,
 } from 'components/filter/filters';
-import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
-  certificationStatuses, {
-    ...derivedCertificationEditions,
-    required: true,
-    values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
-    ],
-  }];
+  certificationStatuses,
+];
 
 function ChplApiDocumentationCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -75,11 +61,6 @@ function ChplApiDocumentationCollectionPage() {
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
-
-  useEffect(() => {
-    setFilters((f) => f
-      .filter((filter) => filter.key !== 'derivedCertificationEditions' || !editionlessIsOn));
-  }, [editionlessIsOn]);
 
   const analytics = {
     category: 'API Information for 2015 Edition Products',

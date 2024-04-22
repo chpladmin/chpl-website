@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -30,12 +30,10 @@ import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const initialHeaders = [
+const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-  { text: 'Certification Edition' },
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
@@ -116,9 +114,6 @@ function ChplDecertifiedProductsCollectionView(props) {
   const storageKey = 'storageKey-decertifiedProductsView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
-  const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -155,15 +150,6 @@ function ChplDecertifiedProductsCollectionView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
-
-  useEffect(() => {
-    if (!editionlessIsOn) { return; }
-    setHeaders((prev) => prev.filter((header) => header.text !== 'Certification Edition'));
-  }, [editionlessIsOn]);
-
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
@@ -188,12 +174,6 @@ function ChplDecertifiedProductsCollectionView(props) {
           <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>
           . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
-        { !editionlessIsOn
-          && (
-            <Typography variant="body1">
-              Note: This list excludes 2011 and 2014 edition products. The 2011 and 2014 editions have been retired from the certification program.
-            </Typography>
-          )}
       </div>
       <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
@@ -264,21 +244,6 @@ function ChplDecertifiedProductsCollectionView(props) {
                                   />
                                 </strong>
                               </TableCell>
-                              { !editionlessIsOn
-                                && (
-                                  <TableCell>
-                                    { item.edition
-                                      ? (
-                                        <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
-                                        </>
-                                      ) : (
-                                        <></>
-                                      )}
-                                  </TableCell>
-                                )}
                               <TableCell>
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
