@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  func,
-} from 'prop-types';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
 import {
@@ -34,12 +31,8 @@ function ChplCognitoUserView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setUser(props.user);
+    setUser(props.user); // eslint-disable-line react/destructuring-assignment
   }, [props.user]); // eslint-disable-line react/destructuring-assignment
-
-  const edit = () => {
-    props.dispatch('edit', user);
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,56 +45,56 @@ function ChplCognitoUserView(props) {
           subheader={user.friendlyName}
         />
         <CardContent className={classes.content}>
-            <Typography gutterBottom>
-                <strong>Email:</strong>
-                <br />
-                {user.email}
-            </Typography>
-            {user.title
+          <Typography gutterBottom>
+            <strong>Email:</strong>
+            <br />
+            {user.email}
+          </Typography>
+          {user.title
                 && (
                 <Typography gutterBottom>
-                    <strong>Title:</strong>
-                    <br />
+                  <strong>Title:</strong>
+                  <br />
                     {user.title}
                 </Typography>
                 )}
-            {user.phoneNumber
+          {user.phoneNumber
                 && (
                 <Typography gutterBottom>
-                    <strong>Phone Number:</strong>
-                    <br />
+                  <strong>Phone Number:</strong>
+                  <br />
                     {user.phoneNumber}
                 </Typography>
                 )}
-            <Typography gutterBottom>
-                <strong>Group Name:</strong>
-                <br />
-                {user.role}
-            </Typography>
-            {user.organizations?.length > 0
+          <Typography gutterBottom>
+            <strong>Group Name:</strong>
+            <br />
+            {user.role}
+          </Typography>
+          {user.organizations?.length > 0
                 && (
                 <Typography gutterBottom>
-                    <strong>
+                  <strong>
                     Organization
                     {user.organizations.length !== 1 ? 's' : ''}
                     :
-                    </strong>
-                    <br />
+                  </strong>
+                  <br />
                     {user.organizations.map((org) => (org.name)).join('; ')}
                 </Typography>
                 )}
-            <Typography gutterBottom>
-                <strong>Status:</strong>
-                <br />
-                { user.status }
-            </Typography>
-            <Typography gutterBottom>
-                <strong>Account Enabled:</strong>
-                <br />
-                { user.accountEnabled
-                ? <CheckBoxIcon />
-                : <CheckBoxOutlineBlankOutlinedIcon />}
-            </Typography>
+          <Typography gutterBottom>
+            <strong>Status:</strong>
+            <br />
+            { user.status }
+          </Typography>
+          <Typography gutterBottom>
+            <strong>Account Enabled:</strong>
+            <br />
+            { user.accountEnabled
+              ? <CheckBoxIcon />
+              : <CheckBoxOutlineBlankOutlinedIcon />}
+          </Typography>
         </CardContent>
       </Card>
     </ThemeProvider>
@@ -112,9 +105,4 @@ export default ChplCognitoUserView;
 
 ChplCognitoUserView.propTypes = {
   user: userPropType.isRequired,
-  dispatch: func,
 };
-
-//ChplCognitoUserView.defaultProps = {
-//  dispatch: () => {},
-//};
