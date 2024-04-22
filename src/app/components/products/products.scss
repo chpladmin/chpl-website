@@ -76,13 +76,6 @@
 
 .product__listings {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
-    margin: 8px;
-    overflow-x: auto;
-}
-
-.product__listings-editionless {
-    display: grid;
     grid-template-columns: 2fr 2fr 1fr 1fr;
     margin: 8px;
     overflow-x: auto;

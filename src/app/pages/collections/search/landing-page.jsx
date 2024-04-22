@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { } from 'react';
 import {
   Box,
   Card,
@@ -21,7 +21,6 @@ import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
 import { ChplFilterQuickFilters, ChplFilterSearchTerm } from 'components/filter';
 import { ChplLink } from 'components/util';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
@@ -153,13 +152,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplLandingPage() {
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
 
   return (
     <>
@@ -180,30 +173,25 @@ function ChplLandingPage() {
               <ChplFilterSearchTerm />
               <ChplFilterQuickFilters />
             </Box>
-            { editionlessIsOn
-            && (
-              <>
-                <Box pb={4}>
-                  <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
-                    Feature Topic
-                  </Typography>
+            <Box pb={4}>
+              <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
+                Feature Topic
+              </Typography>
+            </Box>
+            <Card className={classes.collectionsCards}>
+              <CardContent>
+                <Box display="flex" flexDirection="row" gridGap={8}>
+                  <Box className={classes.collectionsCardText}>
+                    <Typography align="left" component="h3" variant="h4" color="primary">
+                      <strong>Discontinuing Year-Themed Editions for Health IT Certification Criteria</strong>
+                    </Typography>
+                    <Typography>
+                      To simplify the Certification Program and support more modular and extensible future updates, the HTI-1 final rule discontinues year-themed editions of certification criteria. This change also supports broader use of certification criteria and standards adopted by ONC for other federal agencies and programs.
+                    </Typography>
+                  </Box>
                 </Box>
-                <Card className={classes.collectionsCards}>
-                  <CardContent>
-                    <Box display="flex" flexDirection="row" gridGap={8}>
-                      <Box className={classes.collectionsCardText}>
-                        <Typography align="left" component="h3" variant="h4" color="primary">
-                          <strong>Discontinuing Year-Themed Editions for Health IT Certification Criteria</strong>
-                        </Typography>
-                        <Typography>
-                          To simplify the Certification Program and support more modular and extensible future updates, the HTI-1 final rule discontinues year-themed editions of certification criteria. This change also supports broader use of certification criteria and standards adopted by ONC for other federal agencies and programs.
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </>
-            )}
+              </CardContent>
+            </Card>
             <Box pt={6} pb={4}>
               <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
                 Use our collections pages to help find a particular category of listings
@@ -226,15 +214,9 @@ function ChplLandingPage() {
                               analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
                             />
                           </Typography>
-                          { editionlessIsOn ? (
-                            <Typography variant="body2">
-                              This list includes all health IT products that have been certified to at least one API Criteria
-                            </Typography>
-                          ) : (
-                            <Typography variant="body2">
-                              This list includes all 2015 Edition, including Cures update, health IT products that have been certified to at least one API Criteria
-                            </Typography>
-                          )}
+                          <Typography variant="body2">
+                            This list includes all health IT products that have been certified to at least one API Criteria
+                          </Typography>
                         </Box>
                       </Box>
                     </CardContent>

@@ -14,7 +14,7 @@ import {
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
-import { UserContext, FlagContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -40,8 +40,6 @@ const useStyles = makeStyles({
 
 function ChplListingInformation({ listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
-  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
 
@@ -54,12 +52,7 @@ function ChplListingInformation({ listing: initialListing }) {
     });
   }, [initialListing]);
 
-  useEffect(() => {
-    setEditionlessIsOn(isOn('editionless'));
-  }, [isOn]);
-
-  const canSeeEdition = () => listing.edition
-        && (listing.edition.name !== '2015' || !editionlessIsOn);
+  const canSeeEdition = () => listing.edition && (listing.edition.name !== '2015');
 
   const canViewRwtDates = () => {
     if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; }

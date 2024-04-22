@@ -35,7 +35,7 @@ const ProductsComponent = {
     searchOptions: '<',
   },
   controller: class ProductsComponent {
-    constructor($log, $q, $state, $uibModal, DateUtil, authService, featureFlags, networkService, utilService) {
+    constructor($log, $q, $state, $uibModal, DateUtil, authService, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
@@ -43,7 +43,6 @@ const ProductsComponent = {
       this.$state = $state;
       this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
-      this.editionlessIsOn = featureFlags.isOn('editionless');
       this.filter = {
         items: [],
         surveillance: {
