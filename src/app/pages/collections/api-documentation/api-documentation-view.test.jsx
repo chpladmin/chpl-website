@@ -54,7 +54,7 @@ describe('the ChplApiDocumentationCollectionView component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('API Information for 2015 Edition Products');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('API Information');
     });
   });
 });
