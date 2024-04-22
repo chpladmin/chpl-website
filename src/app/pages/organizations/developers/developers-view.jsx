@@ -168,102 +168,97 @@ function ChplDevelopersView(props) {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1">
-            Text here?
-          </Typography>
+        <div className={classes.searchContainer}>
+          <ChplFilterSearchTerm
+            placeholder="Search by Developer Name or Code..."
+          />
+          <Box className={classes.searchButtonContainer}>
+            <ChplFilterPanel />
+            <ChplFilterQuickFilters />
+          </Box>
         </div>
-      </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm
-          placeholder="Search by Developer Name or Code..."
-        />
-        <Box className={classes.searchButtonContainer}>
-          <ChplFilterPanel />
-          <ChplFilterQuickFilters />
-        </Box>
-      </div>
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <>Loading</>
-        )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { developers.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { developers.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <>Loading</>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.tableResultsHeaderContainer}>
+                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  { developers.length === 0
+                    && (
+                      <Typography>
+                        No results found
+                      </Typography>
+                    )}
+                  { developers.length > 0
+                    && (
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                      </Typography>
+                    )}
+                </div>
               </div>
-            </div>
-            { developers.length > 0
-              && (
-                <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Developers Under Certification Ban table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
+              { developers.length > 0
+                && (
+                  <>
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                      <Table
                         stickyHeader
-                      />
-                      <TableBody>
-                        { developers
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell className={classes.stickyColumn}>
-                                <strong>
-                                  <ChplLink
-                                    href={`#/organizations/developers/${item.id}`}
-                                    text={item.name}
-                                    analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
-                                    external={false}
-                                    router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                                  />
-                                </strong>
-                              </TableCell>
-                              <TableCell>
-                                { item.code }
-                              </TableCell>
-                              <TableCell>
-                                { item.oncAcbDisplay }
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                    analytics={analytics}
-                  />
-                </>
-              )}
-          </>
-        )}
+                        aria-label="Developers Under Certification Ban table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          onTableSort={handleTableSort}
+                          orderBy={orderBy}
+                          order={sortDescending ? 'desc' : 'asc'}
+                          stickyHeader
+                        />
+                        <TableBody>
+                          { developers
+                            .map((item) => (
+                              <TableRow key={item.id}>
+                                <TableCell className={classes.stickyColumn}>
+                                  <strong>
+                                    <ChplLink
+                                      href={`#/organizations/developers/${item.id}`}
+                                      text={item.name}
+                                      analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
+                                      external={false}
+                                      router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                                    />
+                                  </strong>
+                                </TableCell>
+                                <TableCell>
+                                  { item.code }
+                                </TableCell>
+                                <TableCell>
+                                  { item.oncAcbDisplay }
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                      analytics={analytics}
+                    />
+                  </>
+                )}
+            </>
+          )}
+      </div>
     </>
   );
 }
