@@ -9,11 +9,11 @@ import {
 } from '@material-ui/core';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ReactGA from 'react-ga4';
 
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
-import ReactGA from "react-ga4";
 
 const useStyles = makeStyles({
   buttonContainer: {
@@ -52,10 +52,10 @@ function ChplCompareDisplay() {
 
   const compareAll = () => {
     ReactGA.event({
-      category: "Compare Widget",
-      action: "Compare Listings",
-      label: listings.map((listing) => listing.id).join("&"),
-    });    
+      category: 'Compare Widget',
+      action: 'Compare Listings',
+      label: listings.map((listing) => listing.id).join('&'),
+    });
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();
@@ -63,9 +63,9 @@ function ChplCompareDisplay() {
 
   const removeAll = () => {
     ReactGA.event({
-      category: "Compare Widget",
-      action: "Remove all Listings",
-    });    $rootScope.$broadcast('compare.removeAll');
+      category: 'Compare Widget',
+      action: 'Remove all Listings',
+    }); $rootScope.$broadcast('compare.removeAll');
   };
 
   if (!listings || listings.length === 0) {
