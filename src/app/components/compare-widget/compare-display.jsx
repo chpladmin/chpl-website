@@ -54,7 +54,7 @@ function ChplCompareDisplay() {
     ReactGA.event({
       category: 'Compare Widget',
       action: 'Compare Listings',
-      label: listings.map((listing) => listing.id).join('&'),
+      label: 'test',
     });
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
@@ -65,7 +65,8 @@ function ChplCompareDisplay() {
     ReactGA.event({
       category: 'Compare Widget',
       action: 'Remove all Listings',
-    }); $rootScope.$broadcast('compare.removeAll');
+    }); 
+    $rootScope.$broadcast('compare.removeAll');
   };
 
   if (!listings || listings.length === 0) {
