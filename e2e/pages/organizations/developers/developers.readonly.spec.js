@@ -8,10 +8,6 @@ describe('the Developers page', () => {
     await page.open();
   });
 
-  it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('Text here?');
-  });
-
   it('should have table headers in a defined order', async () => {
     const expectedHeaders = ['Developer', 'Developer Code', 'ONC-ACB for active Listings'];
     const actualHeaders = await page.getTableHeaders();
