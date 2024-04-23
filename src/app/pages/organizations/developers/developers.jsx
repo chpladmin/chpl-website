@@ -84,7 +84,7 @@ function ChplDevelopersPage() {
         ...quickFilters,
         getQuery,
         values: [
-          { value: 'Not Yet Submitted Attestations' },
+          { value: 'Not Yet Submitted Attestations - old' },
         ],
       }));
   }, []);

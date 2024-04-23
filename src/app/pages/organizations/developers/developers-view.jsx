@@ -13,9 +13,7 @@ import {
 import { shape, string } from 'prop-types';
 
 import { theme, utilStyles } from 'themes';
-import {
-  useFetchDevelopersBySearch,
-} from 'api/developer';
+import { useFetchDevelopersBySearch } from 'api/developer';
 import {
   ChplLink,
   ChplPagination,
@@ -107,6 +105,7 @@ function ChplDevelopersView(props) {
   const storageKey = 'storageKey-developersView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
+  const { dispatch, filters, queryString } = useFilterContext();
   const [developers, setDevelopers] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -115,13 +114,12 @@ function ChplDevelopersView(props) {
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
-  const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchDevelopersBySearch({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
-    query: filterContext.queryString(),
+    query: queryString(),
   });
 
   useEffect(() => {
@@ -157,6 +155,23 @@ function ChplDevelopersView(props) {
     setSortDescending(orderDirection === 'desc');
   };
 
+  const notYetSubmittedAttestations = {
+    display: 'Not Yet Submitted Attestations',
+    toggle: () => {
+      let filter, value;
+      dispatch('resetAll');
+      //dispatch('clearFilter', { key: 'activeListingsOptions' });
+      filter = filters.find((f) => f.key === 'activeListingsOptions');
+      value = filter.values.find((v) => v.value === 'had_any_active_during_most_recent_past_attestation_period');
+      dispatch('toggle', filter, value);
+      filter = filters.find((f) => f.key === 'hasSubmittedAttestationsForMostRecentPastPeriod');
+      value = filter.values.find((v) => v.value === 'false');
+      dispatch('update', filter, { ...value, selected: true });
+      dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'or' });
+      console.log('toggling not yet submitted');
+    },
+  };
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
@@ -174,7 +189,9 @@ function ChplDevelopersView(props) {
           />
           <Box className={classes.searchButtonContainer}>
             <ChplFilterPanel />
-            <ChplFilterQuickFilters />
+            <ChplFilterQuickFilters
+              toggleMultipleFilters={notYetSubmittedAttestations}
+            />
           </Box>
         </div>
         <div>
