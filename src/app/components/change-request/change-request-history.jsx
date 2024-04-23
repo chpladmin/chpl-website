@@ -40,15 +40,19 @@ function ChplChangeRequestHistory(props) {
       const updated = {
         ...item,
       };
-      switch (item.userPermission.authority) {
+      switch (item.userGroupName) {
         case 'ROLE_ADMIN':
+        case 'chpl-admin':
         case 'ROLE_ONC':
+        case 'chpl-onc':
           updated.actingOrganization = 'ONC';
           break;
         case 'ROLE_ACB':
+        case 'chpl-onc-acb':
           updated.actingOrganization = item.certificationBody.name;
           break;
         case 'ROLE_DEVELOPER':
+        case 'chpl-developer':
           updated.actingOrganization = props.changeRequest.developer.name;
           break;
           // no default
