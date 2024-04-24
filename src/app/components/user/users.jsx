@@ -56,7 +56,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
+function ChplUsers({
+  dispatch, roles, groupNames, users: initialUsers,
+}) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
@@ -68,7 +70,7 @@ function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
   const [user, setUser] = useState(undefined);
   const [users, setUsers] = useState([]);
   const classes = useStyles();
-  
+
   useEffect(() => {
     setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
   }, [initialUsers]);
@@ -143,21 +145,23 @@ function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
 
   const displayUser = (user) => {
     if (user.cognitoId) {
-      return (<ChplCognitoUserView
-        key={user.cognitoId}
-        user={user}
-      />); 
-    } else if (user.userId) {
-      return (<ChplUserView
-        key={user.userId}
-        user={user}
-        dispatch={handleDispatch}
-      />);
+      return (
+        <ChplCognitoUserView
+          key={user.cognitoId}
+          user={user}
+        />
+      );
+    } if (user.userId) {
+      return (
+        <ChplUserView
+          key={user.userId}
+          user={user}
+          dispatch={handleDispatch}
+        />
+      );
     }
     return null;
   };
-
-  if (users.length === 0) { return null; }
 
   return (
     <Box>
@@ -213,7 +217,7 @@ function ChplUsers({ dispatch, roles, groupNames, users: initialUsers }) {
                   { users
                     .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
                     .map((u) => (
-                    displayUser(u) ))} 
+                      displayUser(u)))}
                 </div>
               </CardContent>
             </Card>
