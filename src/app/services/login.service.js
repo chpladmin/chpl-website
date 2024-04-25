@@ -86,9 +86,12 @@
     }
 
     function getUserId() {
+      const token = getToken();
+      console.log(parseJwt(token));
       if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         if (parseJwt(token).Identity) {
+          console.log(parseJwt(token));
           const identity = parseJwt(token).Identity;
           return identity[0];
         } else {
@@ -121,7 +124,7 @@
 
       const token = getToken();
       if (token) {
-        var userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
+        const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
@@ -150,7 +153,9 @@
         const vals = token.split('.');
         if (vals.length > 1) {
           const base64 = vals[1].replace('-', '+').replace('_', '/');
-          return angular.fromJson($window.atob(base64));
+          const user = angular.fromJson($window.atob(base64));
+          user['cognito:groups'] = user['cognito:groups'].filter((grp) => !grp.endsWith('-env'));
+          return user;
         }
         return {};
       }
