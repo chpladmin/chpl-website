@@ -4,6 +4,7 @@
       const CertificationResultOptionalStandard = (optionalStandard) => ({
         optionalStandardId: optionalStandard.id,
         citation: optionalStandard.citation,
+        displayValue: optionalStandard.displayValue,
         description: optionalStandard.description,
       });
 

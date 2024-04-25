@@ -109,8 +109,8 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'optionalStandards':
       options = {
-        sort: (p, c) => (p.citation < c.citation ? -1 : p.citation > c.citation ? 1 : 0),
-        write: (f) => `Optional Standard "${f.citation}: ${f.description}"`,
+        sort: (p, c) => (p.displayValue < c.displayValue ? -1 : p.displayValue > c.displayValue ? 1 : 0),
+        write: (f) => `Optional Standard "${f.displayValue}: ${f.description}"`,
       };
       break;
     case 'promotingInteroperabilityUserHistory':

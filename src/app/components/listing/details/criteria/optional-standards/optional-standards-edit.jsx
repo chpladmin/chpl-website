@@ -55,7 +55,7 @@ function ChplOptionalStandardsEdit(props) {
   const [options, setOptions] = useState(
     props.options
       .filter((option) => !(props.optionalStandards.find((used) => used.optionalStandardId === option.id)))
-      .sort((a, b) => (a.citation < b.citation ? -1 : 1)),
+      .sort((a, b) => (a.displayValue < b.displayValue ? -1 : 1)),
   );
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -72,6 +72,7 @@ function ChplOptionalStandardsEdit(props) {
       {
         optionalStandardId: formik.values.os.id,
         citation: formik.values.os.citation,
+        displayValue: formik.values.os.displayValue,
         description: formik.values.os.description,
         key: Date.now(),
       },
@@ -94,17 +95,18 @@ function ChplOptionalStandardsEdit(props) {
       if (s.optionalStandardId) {
         return s.optionalStandardId !== item.optionalStandardId;
       }
-      return s.citation !== item.citation;
+      return s.displayValue !== item.displayValue;
     });
     setOptionalStandards(updated);
     setOptions([
       ...options,
       {
         citation: item.citation,
+        displayValue: item.displayValue,
         description: item.description,
         id: item.optionalStandardId,
       },
-    ].sort((a, b) => (a.citation < b.citation ? -1 : 1)));
+    ].sort((a, b) => (a.displayValue < b.displayValue ? -1 : 1)));
     update(updated);
   };
 
@@ -136,7 +138,7 @@ function ChplOptionalStandardsEdit(props) {
                 { optionalStandards.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.description || item.citation} maxLength={100} wordBoundaries /></Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.displayValue} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
@@ -190,7 +192,7 @@ function ChplOptionalStandardsEdit(props) {
                 helperText={formik.touched.os && formik.errors.os}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.citation}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.displayValue}</MenuItem>
                 ))}
               </ChplTextField>
               <ButtonGroup

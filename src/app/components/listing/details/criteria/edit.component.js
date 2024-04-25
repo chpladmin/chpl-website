@@ -213,7 +213,7 @@ const CertificationCriteriaEditComponent = {
           this.cert.optionalStandards = this.cert.optionalStandards
             .filter((cros) => {
               if (action.item.item.id === 'newItem') {
-                return cros.citation !== action.item.item.citation;
+                return cros.displayValue !== action.item.item.displayValue;
               }
               return cros.optionalStandardId !== action.item.item.id;
             });
