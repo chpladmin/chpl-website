@@ -215,7 +215,7 @@ function ChplCriterionDetailsView(props) {
                           <List>
                             { criterion.optionalStandards.map((os, index) => (
                               <ListItem key={os.id || os.key || index}>
-                                <ChplEllipsis text={os.displayValue} maxLength={100} wordBoundaries />
+                                <ChplEllipsis text={os.optionalStandard.displayValue} maxLength={100} wordBoundaries />
                               </ListItem>
                             ))}
                           </List>

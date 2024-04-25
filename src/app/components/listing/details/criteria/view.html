@@ -85,7 +85,7 @@
             <td>
               <ul>
                 <li ng-repeat="m in $ctrl.cert.optionalStandards">
-                  <chpl-ellipsis-bridge text="m.displayValue" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
+                  <chpl-ellipsis-bridge text="m.optionalStandard.displayValue" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
                 </li>
                 <li ng-repeat="m in $ctrl.cert.testStandards">
                   <span ng-if="m.testStandardDescription"><chpl-ellipsis-bridge text="m.testStandardDescription" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge></span>
