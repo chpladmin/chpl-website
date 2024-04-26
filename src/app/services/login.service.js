@@ -154,7 +154,9 @@
         if (vals.length > 1) {
           const base64 = vals[1].replace('-', '+').replace('_', '/');
           const user = angular.fromJson($window.atob(base64));
-          user['cognito:groups'] = user['cognito:groups'].filter((grp) => !grp.endsWith('-env'));
+          if (user['cognito:groups']) {
+            user['cognito:groups'] = user['cognito:groups'].filter((grp) => !grp.endsWith('-env'));
+          }
           return user;
         }
         return {};
