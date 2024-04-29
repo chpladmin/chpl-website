@@ -105,7 +105,7 @@ function ChplDevelopersView(props) {
   const storageKey = 'storageKey-developersView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
-  const { dispatch, filters, queryString } = useFilterContext();
+  const { dispatch, queryString } = useFilterContext();
   const [developers, setDevelopers] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -158,16 +158,10 @@ function ChplDevelopersView(props) {
   const notYetSubmittedAttestations = {
     display: 'Not Yet Submitted Attestations',
     toggle: () => {
-      let filter, value;
       dispatch('resetAll');
-      filter = filters.find((f) => f.key === 'activeListingsOptions');
-      value = filter.values.find((v) => v.value === 'had_any_active_during_most_recent_past_attestation_period');
-      dispatch('toggle', filter, value);
-      filter = filters.find((f) => f.key === 'hasSubmittedAttestationsForMostRecentPastPeriod');
-      value = filter.values.find((v) => v.value === 'false');
-      dispatch('update', filter, { ...value, selected: true });
+      dispatch('toggle', { key: 'activeListingsOptions' }, { value: 'had_any_active_during_most_recent_past_attestation_period' });
+      dispatch('update', { key: 'hasSubmittedAttestationsForMostRecentPastPeriod' }, { value: 'false' });
       dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'or' });
-      console.log('toggling not yet submitted');
     },
   };
 

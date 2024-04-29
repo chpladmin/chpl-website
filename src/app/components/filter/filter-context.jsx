@@ -102,7 +102,7 @@ const toggleFilterOperator = (category, setFilters) => {
       ...filter,
       operator: filter.operator === 'or' ? 'and' : 'or',
     };
-    return prev.filter((f) => f.key !== category.key).concat(updatedFilter)
+    return prev.filter((f) => f.key !== category.key).concat(updatedFilter);
   });
 };
 
@@ -160,6 +160,7 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
         return updatedFilters;
       }
     }
+    return prev;
   });
 };
 
