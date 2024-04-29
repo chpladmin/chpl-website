@@ -86,18 +86,14 @@
     }
 
     function getUserId() {
-      const token = getToken();
-      console.log(parseJwt(token));
       if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
         const token = getToken();
         if (parseJwt(token).Identity) {
-          console.log(parseJwt(token));
           const identity = parseJwt(token).Identity;
           return identity[0];
         } else {
           return parseJwt(token).sub;
         }
-
       } else {
         logout();
         return '';
