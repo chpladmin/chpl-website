@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 13.15.0
+_29 April 2024_
+
+### Features
+* View Cognito user information
+* Display changes to "Functionalities Tested" on management page
+* Display SVAP activity on maintenance page
+* Display "Standards" activity on management page
+
+### User Interface Updates
+* Only display status of Developers when they are not active
+
+### Flagged Features
+* Enable SSO sign-in
+
+---
+
 ## Version 13.14.0
 _15 April 2024_
 
