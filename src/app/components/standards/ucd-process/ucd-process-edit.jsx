@@ -35,6 +35,7 @@ function ChplUcdProcessEdit(props) {
   const { dispatch } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
@@ -89,6 +90,7 @@ function ChplUcdProcessEdit(props) {
         hide('ucdProcesses.edit.disabled');
         break;
       case 'save':
+        setIsProcessing(true);
         formik.submitForm();
         hide('ucdProcesses.add.disabled');
         hide('ucdProcesses.edit.disabled');
@@ -127,6 +129,7 @@ function ChplUcdProcessEdit(props) {
         canDelete={!!ucdProcess.id}
         errors={errors}
         isDisabled={!isValid()}
+        isProcessing={isProcessing}
       />
     </div>
   );

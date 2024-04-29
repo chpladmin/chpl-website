@@ -27,7 +27,7 @@ import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import { ChplLink, InternalScrollButton } from 'components/util';
 import { isListingActive } from 'services/listing.service';
-import { UserContext, FlagContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -118,17 +118,11 @@ const useStyles = makeStyles({
 
 function ChplListingView({ isConfirming, listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
-  const [subscriptionsIsOn, setSubscriptionsIsOn] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    setSubscriptionsIsOn(isOn('subscriptions'));
-  }, [isOn]);
 
   useEffect(() => {
     if (!initialListing) { return; }
@@ -237,15 +231,12 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 </Box>
               </Box>
             </div>
-            { subscriptionsIsOn
-              && (
-                <Box className={classes.subscribe}>
-                  <ChplSubscribe
-                    subscribedObjectId={listing.id}
-                    subscribedObjectTypeId={1}
-                  />
-                </Box>
-              )}
+            <Box className={classes.subscribe}>
+              <ChplSubscribe
+                subscribedObjectId={listing.id}
+                subscribedObjectTypeId={1}
+              />
+            </Box>
           </div>
         )}
       <div className={classes.content}>
