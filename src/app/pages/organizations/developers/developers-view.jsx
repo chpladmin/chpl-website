@@ -160,7 +160,6 @@ function ChplDevelopersView(props) {
     toggle: () => {
       let filter, value;
       dispatch('resetAll');
-      //dispatch('clearFilter', { key: 'activeListingsOptions' });
       filter = filters.find((f) => f.key === 'activeListingsOptions');
       value = filter.values.find((v) => v.value === 'had_any_active_during_most_recent_past_attestation_period');
       dispatch('toggle', filter, value);

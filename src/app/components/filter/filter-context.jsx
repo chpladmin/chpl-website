@@ -75,31 +75,35 @@ const setFilterDisability = (filters, category, disabled, setFilters) => {
   setFilters((previous) => previous.filter((f) => f.key !== category).concat(updatedFilter));
 };
 
-const toggleFilter = (filters, category, value, setFilters) => {
-  const filter = filters.find((f) => f.key === category.key);
-  const item = filter.values.find((v) => v.value === value.value);
-  const updatedItem = {
-    ...item,
-    selected: !item.selected,
-  };
-  const updatedFilter = {
-    ...filter,
-    values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
-  };
-  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-  if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
-    setFilters(updatedFilters);
-  }
+const toggleFilter = (category, value, setFilters) => {
+  setFilters((prev) => {
+    const filter = prev.find((f) => f.key === category.key);
+    const item = filter.values.find((v) => v.value === value.value);
+    const updatedItem = {
+      ...item,
+      selected: !item.selected,
+    };
+    const updatedFilter = {
+      ...filter,
+      values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
+    };
+    const updatedFilters = prev.filter((f) => f.key !== category.key).concat(updatedFilter);
+    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+      return updatedFilters;
+    }
+    return prev;
+  });
 };
 
-const toggleFilterOperator = (filters, category, setFilters) => {
-  const filter = filters.find((f) => f.key === category.key);
-  const updatedFilter = {
-    ...filter,
-    operator: filter.operator === 'or' ? 'and' : 'or',
-  };
-  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-  setFilters(updatedFilters);
+const toggleFilterOperator = (category, setFilters) => {
+  setFilters((prev) => {
+    const filter = prev.find((f) => f.key === category.key);
+    const updatedFilter = {
+      ...filter,
+      operator: filter.operator === 'or' ? 'and' : 'or',
+    };
+    return prev.filter((f) => f.key !== category.key).concat(updatedFilter)
+  });
 };
 
 const toggleShowAll = (filters, category, setFilters) => {
@@ -112,49 +116,51 @@ const toggleShowAll = (filters, category, setFilters) => {
   setFilters(updatedFilters);
 };
 
-const updateFilter = (filters, category, value, setFilters, setSearchTerm) => {
-  const filter = filters.find((f) => f.key === category.key);
-  if (filter.singular) {
-    const values = filter.values.map((v) => ({
-      ...v,
-      selected: v.value === value.value,
-    }));
-    const updatedFilter = {
-      ...filter,
-      values,
-    };
-    let updatedFilters;
-    if (filter.loneFilter) {
-      updatedFilters = filters.map((f) => ({
-        ...f,
-        operator: f.operatorKey ? 'or' : undefined,
-        values: f.values.map((v) => ({
-          ...v,
-          selected: false,
-        })),
-      })).filter((f) => f.key !== category.key).concat(updatedFilter);
-      setSearchTerm('');
+const updateFilter = (category, value, setFilters, setSearchTerm) => {
+  setFilters((prev) => {
+    const filter = prev.find((f) => f.key === category.key);
+    if (filter.singular) {
+      const values = filter.values.map((v) => ({
+        ...v,
+        selected: v.value === value.value,
+      }));
+      const updatedFilter = {
+        ...filter,
+        values,
+      };
+      let updatedFilters;
+      if (filter.loneFilter) {
+        updatedFilters = prev.map((f) => ({
+          ...f,
+          operator: f.operatorKey ? 'or' : undefined,
+          values: f.values.map((v) => ({
+            ...v,
+            selected: false,
+          })),
+        })).filter((f) => f.key !== category.key).concat(updatedFilter);
+        setSearchTerm('');
+      } else {
+        updatedFilters = prev.filter((f) => f.key !== category.key).concat(updatedFilter);
+      }
+      if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+        return updatedFilters;
+      }
     } else {
-      updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+      const item = filter.values.find((v) => v.value === value.value);
+      const updatedItem = {
+        ...item,
+        selected: value.selected,
+      };
+      const updatedFilter = {
+        ...filter,
+        values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
+      };
+      const updatedFilters = prev.filter((f) => f.key !== category.key).concat(updatedFilter);
+      if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+        return updatedFilters;
+      }
     }
-    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
-      setFilters(updatedFilters);
-    }
-  } else {
-    const item = filter.values.find((v) => v.value === value.value);
-    const updatedItem = {
-      ...item,
-      selected: value.selected,
-    };
-    const updatedFilter = {
-      ...filter,
-      values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
-    };
-    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
-      setFilters(updatedFilters);
-    }
-  }
+  });
 };
 
 function FilterProvider(props) {
@@ -227,7 +233,7 @@ function FilterProvider(props) {
         if (analytics) {
           $analytics.eventTrack('Reset All Filters', { category: analytics.category });
         }
-        setFilters(filters.map((f) => ({
+        setFilters((prev) => prev.map((f) => ({
           ...f,
           operator: f.operatorKey ? 'or' : undefined,
           values: f.values.map((v) => ({
@@ -245,16 +251,16 @@ function FilterProvider(props) {
         setFilterDisability(filters, category, value, setFilters);
         break;
       case 'toggle':
-        toggleFilter(filters, category, value, setFilters);
+        toggleFilter(category, value, setFilters);
         break;
       case 'toggleOperator':
-        toggleFilterOperator(filters, category, setFilters);
+        toggleFilterOperator(category, setFilters);
         break;
       case 'toggleShowAll':
         toggleShowAll(filters, category, setFilters);
         break;
       case 'update':
-        updateFilter(filters, category, value, setFilters, setSearchTerm);
+        updateFilter(category, value, setFilters, setSearchTerm);
         break;
       default:
         console.log({ action, category, value });
