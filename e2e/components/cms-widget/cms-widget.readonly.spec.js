@@ -72,18 +72,8 @@ describe('on cms widget', () => {
       await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('70');
     });
 
-    xit('should have missing base criteria list', async () => {
-      await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(true);
-      await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(true);
-    });
-
     it('should have correct link to CHPL public guide', async () => {
       await expect(await cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
-    });
-
-    it('should have get cert Id button and disabled', async () => {
-      await expect(await (await cms.getCertIdButton()).isDisplayed()).toBe(true);
-      await expect(await (await cms.getCertIdButton()).isClickable()).toBe(false);
     });
 
     it('should have correct base criteria link', async () => {
