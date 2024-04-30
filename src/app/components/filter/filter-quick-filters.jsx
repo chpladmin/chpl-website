@@ -97,15 +97,17 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
               { toggleMultipleFilters.display }
             </MenuItem>
           )}
-        { quickFilter.values.map((v) => (
-          <MenuItem
-            key={v.value}
-            onClick={() => loadQuickFilter(v)}
-            disabled={quickFilter.getValueDisplay(v).includes('(0)')}
-          >
-            { quickFilter.getValueDisplay(v) }
-          </MenuItem>
-        ))}
+        { quickFilter.values
+          .filter((v) => toggleMultipleFilters?.display !== v.value)
+          .map((v) => (
+            <MenuItem
+              key={v.value}
+              onClick={() => loadQuickFilter(v)}
+              disabled={quickFilter.getValueDisplay(v).includes('(0)')}
+            >
+              { quickFilter.getValueDisplay(v) }
+            </MenuItem>
+          ))}
       </Menu>
     </>
   );
