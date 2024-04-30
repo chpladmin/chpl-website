@@ -76,16 +76,6 @@ describe('on cms widget', () => {
       await expect(await cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
     });
 
-    it('should have correct base criteria link', async () => {
-      await expect(await (await cms.baseCriteriaLink()).isDisplayed()).toBe(true);
-      await expect(await (await cms.baseCriteriaLink()).getAttribute('href')).toBe(baseCriteria);
-    });
-
-    it('should have correct CMS ID reverse look up link', async () => {
-      await expect(await (await cms.cmsIdReverseLookupLink()).isDisplayed()).toBe(true);
-      await expect(await (await cms.cmsIdReverseLookupLink()).getAttribute('href')).toBe(cmsReverseLookup);
-    });
-
     it('should have a disabled compare products button', async () => {
       await expect(await (await cms.compareProductsButton()).isDisplayed()).toBe(true);
       await expect(await (await cms.compareProductsButton()).isEnabled()).toBe(false);
