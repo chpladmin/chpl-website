@@ -1,4 +1,4 @@
-import Hooks from '../../utilities/hooks';
+import { open } from '../../utilities/hooks.async';
 import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
 
@@ -6,20 +6,18 @@ import ListingPage from './listing.po';
 
 let cmsComponent;
 let compareComponent;
-let hooks;
 let page;
 
 beforeEach(async () => {
   page = new ListingPage();
-  hooks = new Hooks();
   cmsComponent = new CmsWidgetComponent();
   compareComponent = new CompareWidgetComponent();
 });
 
 describe('when on 2015 listing page', () => {
   beforeEach(async () => {
-    await hooks.open('#/listing/9833');
-    await hooks.waitForSpinnerToDisappear();
+    await open('#/listing/9833');
+    await browser.waitUntil(async () => (await page.productHistory).isDisplayed());
   });
 
   describe('when clicking on product history button', () => {

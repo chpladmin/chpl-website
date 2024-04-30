@@ -1,9 +1,8 @@
 import LoginComponent from '../../../components/login/login.po';
-import Hooks from '../../../utilities/hooks';
+import { open } from '../../../utilities/hooks.async';
 
 import DownloadPage from './download.po';
 
-let hooks;
 let login;
 let page;
 
@@ -11,8 +10,7 @@ describe('the Download page', () => {
   beforeEach(async () => {
     page = new DownloadPage();
     login = new LoginComponent();
-    hooks = new Hooks();
-    await hooks.open('#/resources/download');
+    await open('#/resources/download');
   });
 
   describe('in the Certified Products Summary section', () => {

@@ -1,16 +1,14 @@
 import OverviewPage from './overview.po';
-import Hooks from '../../../utilities/hooks';
+import { open } from '../../../utilities/hooks.async';
 import EnvironmentIndicatorComponent from '../../../components/environment-indicator/environment-indicator.po';
 
-let hooks;
 let indicator;
 let page;
 
 beforeEach(async () => {
   page = new OverviewPage();
-  hooks = new Hooks();
   indicator = new EnvironmentIndicatorComponent();
-  await hooks.open('#/resources/overview');
+  await open('#/resources/overview');
 });
 
 describe('the Overview page', () => {

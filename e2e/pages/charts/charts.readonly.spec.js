@@ -1,18 +1,15 @@
-import Hooks from '../../utilities/hooks';
+import { open } from '../../utilities/hooks.async';
 
 import ChartsPage from './charts.po';
 
 const config = require('../../config/mainConfig');
 
-let hooks;
 let page;
 
 describe('the charts page', () => {
   beforeAll(async () => {
     page = new ChartsPage();
-    hooks = new Hooks();
-    await hooks.open('#/charts');
-    await hooks.waitForSpinnerToDisappear();
+    await open('#/charts');    
   });
 
   it('should display unique product charts tab', async () => {
@@ -25,7 +22,6 @@ describe('the charts page', () => {
 
   describe('unique product charts tab', () => {
     beforeEach(async () => {
-      await hooks.waitForSpinnerToDisappear();
       await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
 
@@ -41,7 +37,6 @@ describe('the charts page', () => {
   describe('non-conformity charts tab', () => {
     beforeEach(async () => {
       await (await page.chartTabs('Nonconformity charts')).click();
-      await hooks.waitForSpinnerToDisappear();
       await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
 
