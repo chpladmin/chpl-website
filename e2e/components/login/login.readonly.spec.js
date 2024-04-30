@@ -1,5 +1,5 @@
 import Hooks from '../../utilities/hooks';
-import ToastComponent from '../toast/toast.po';
+import ToastComponent from '../toast/toast.async.po';
 
 import LoginComponent from './login.po';
 
