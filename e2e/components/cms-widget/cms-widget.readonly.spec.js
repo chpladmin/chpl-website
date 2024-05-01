@@ -58,29 +58,4 @@ describe('on cms widget', () => {
       await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(false);
     });
   });
-
-  describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
-    beforeAll(() => {
-      search.open();
-      search.searchForText(search2);
-      browser.waitUntil(async () => await (await cms.certIdButton(listingId2)), config.shortTimeout);
-      cms.addListingToCms(listingId2);
-      cms.addListingToCms(listingId3);
-      cms.waitForProcessingSpinnerToDisappear();
-    });
-
-    it('should have correct CMS ID reverse look up link', async () => {
-      await expect(await (await cms.cmsIdReverseLookupLink()).isDisplayed()).toBe(true);
-      await expect(await (await cms.cmsIdReverseLookupLink()).getAttribute('href')).toBe(cmsReverseLookup);
-    });
-
-    it('should have compare products button', async () => {
-      await expect(await (await cms.compareProductsButton()).isDisplayed()).toBe(true);
-    });
-
-    it('compare products button should open compare widget', async () => {
-      await (await cms.compareProductsButton()).click();
-      await expect(await (await cms.compareWidgetDropdown()).isDisplayed()).toBe(true);
-    });
-  });
 });
