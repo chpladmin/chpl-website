@@ -14,9 +14,7 @@ import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 const staticFilters = [
   decertificationDate, {
     ...quickFilters,
-    values: [
-      { value: 'Not Yet Submitted Attestations' },
-    ],
+    values: [],
   }, {
     ...defaultFilter,
     key: 'statuses',
