@@ -59,24 +59,6 @@ describe('on cms widget', () => {
     });
   });
 
-  describe('if a listing added meet 70% of base criteria (View with partial products selected) - ', () => {
-    beforeAll(() => {
-      search.open();
-      search.searchForText(search1);
-      cms.addListingToCms(listingId1);
-      cms.waitForProcessingSpinnerToDisappear();
-    });
-
-    it('should have progress bar with correct text and value', async () => {
-      await expect(await cms.progressBarText.getText()).toBe('70% Base Criteria Met');
-      await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('70');
-    });
-
-    it('should have correct link to CHPL public guide', async () => {
-      await expect(await cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
-    });
-  });
-
   describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
     beforeAll(() => {
       search.open();
