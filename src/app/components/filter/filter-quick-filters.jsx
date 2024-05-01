@@ -5,7 +5,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { object } from 'prop-types';
+import { arrayOf, object } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
@@ -88,15 +88,15 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
         >
           Reset All Filters
         </MenuItem>
-        { toggleMultipleFilters
-          && (
+        { toggleMultipleFilters?.length > 0
+          && toggleMultipleFilters.map((f) => (
             <MenuItem
-              key={toggleMultipleFilters.display}
-              onClick={() => toggleMultipleFilters.toggle()}
+              key={f.display}
+              onClick={() => f.toggle()}
             >
-              { toggleMultipleFilters.display }
+              { f.display }
             </MenuItem>
-          )}
+          ))}
         { quickFilter.values
           .filter((v) => toggleMultipleFilters?.display !== v.value)
           .map((v) => (
@@ -116,7 +116,7 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
 export default ChplFilterQuickFilters;
 
 ChplFilterQuickFilters.propTypes = {
-  toggleMultipleFilters: object,
+  toggleMultipleFilters: arrayOf(object),
 };
 
 ChplFilterQuickFilters.defaultProps = {
