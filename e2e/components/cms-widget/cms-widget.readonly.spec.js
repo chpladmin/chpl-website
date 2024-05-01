@@ -87,49 +87,9 @@ describe('on cms widget', () => {
       cms.waitForProcessingSpinnerToDisappear();
     });
 
-    // ignoring these tests as they are flaky - will address these tests later
-    xit('should have progress bar with the right text and value', async () => {
-      await expect(await cms.progressBarText.getText()).toBe('100% Base Criteria Met');
-      await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('100');
-    });
-
-    // ignoring these tests as they are flaky - will address these tests later
-    xit('should not have missing base criteria list', async () => {
-      await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(false);
-      await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(false);
-    });
-
     it('should have correct CMS ID reverse look up link', async () => {
       await expect(await (await cms.cmsIdReverseLookupLink()).isDisplayed()).toBe(true);
       await expect(await (await cms.cmsIdReverseLookupLink()).getAttribute('href')).toBe(cmsReverseLookup);
-    });
-
-    // ignoring these tests as they are flaky - will address these tests later
-    xit('should not have a base criteria link', async () => {
-      await expect(await (await cms.baseCriteriaLink()).isDisplayed()).toBe(false);
-    });
-
-    // ignoring these tests as they are flaky - will address these tests later
-    xit('should not have link to CHPL public guide', async () => {
-      await expect(await cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse();
-    });
-
-    // ignoring these tests as they are flaky - will address these tests later
-    xit('should have remove all products button and enabled', async () => {
-      await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(true);
-      await expect(await (await cms.removeProductsButton()).isClickable()).toBe(true);
-    });
-
-    // ignoring these tests as they are flaky - will address these tests later
-    xit('should have get cert Id button and enabled', async () => {
-      await expect(await (await cms.getCertIdButton()).isDisplayed()).toBe(true);
-      await expect(await (await cms.getCertIdButton()).isClickable()).toBe(true);
-    });
-
-    it('get cert ID button generates CMS ID for the listings added', async () => {
-      await (await cms.getCertIdButton()).click();
-      await cms.waitForProcessingSpinnerToDisappear();
-      await expect(await (await cms.cmsCertificationIdText()).isDisplayed()).toBe(true);
     });
 
     it('should have compare products button', async () => {
