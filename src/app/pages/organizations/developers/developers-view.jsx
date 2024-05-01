@@ -155,6 +155,16 @@ function ChplDevelopersView(props) {
     setSortDescending(orderDirection === 'desc');
   };
 
+  const notYetPublishedAttestations = {
+    display: 'Not Yet Published Attestations',
+    toggle: () => {
+      dispatch('resetAll');
+      dispatch('toggle', { key: 'activeListingsOptions' }, { value: 'had_any_active_during_most_recent_past_attestation_period' });
+      dispatch('update', { key: 'hasPublishedAttestationsForMostRecentPastPeriod' }, { value: 'false' });
+      dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'or' });
+    },
+  };
+
   const notYetSubmittedAttestations = {
     display: 'Not Yet Submitted Attestations',
     toggle: () => {
@@ -164,6 +174,8 @@ function ChplDevelopersView(props) {
       dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'or' });
     },
   };
+
+  const bonusQuickFilters = [notYetPublishedAttestations, notYetSubmittedAttestations];
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
@@ -183,7 +195,7 @@ function ChplDevelopersView(props) {
           <Box className={classes.searchButtonContainer}>
             <ChplFilterPanel />
             <ChplFilterQuickFilters
-              toggleMultipleFilters={notYetSubmittedAttestations}
+              toggleMultipleFilters={bonusQuickFilters}
             />
           </Box>
         </div>

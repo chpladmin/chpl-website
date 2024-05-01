@@ -35,8 +35,18 @@ const staticFilters = [
     ],
   }, {
     ...defaultFilter,
+    key: 'hasPublishedAttestationsForMostRecentPastPeriod',
+    display: 'Attestations Published',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
+    values: [
+      { value: 'true', display: 'Has published Attestations for the most recent past period' },
+      { value: 'false', display: 'Has not published Attestations for the most recent past period' },
+    ],
+  }, {
+    ...defaultFilter,
     key: 'hasSubmittedAttestationsForMostRecentPastPeriod',
-    display: 'Attestations',
+    display: 'Attestations Submitted',
     getValueEntry: getRadioValueEntry,
     singular: true,
     values: [
