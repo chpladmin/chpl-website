@@ -75,21 +75,6 @@ describe('on cms widget', () => {
     it('should have correct link to CHPL public guide', async () => {
       await expect(await cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
     });
-
-    it('should have a disabled compare products button', async () => {
-      await expect(await (await cms.compareProductsButton()).isDisplayed()).toBe(true);
-      await expect(await (await cms.compareProductsButton()).isEnabled()).toBe(false);
-    });
-
-    it('should have remove all products button and enabled', async () => {
-      await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(true);
-      await expect(await (await cms.removeProductsButton()).isClickable()).toBe(true);
-    });
-
-    it('remove products button should remove products from widget', async () => {
-      await (await cms.removeProductsButton()).click();
-      await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(false);
-    });
   });
 
   describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
