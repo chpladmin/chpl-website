@@ -9,7 +9,6 @@ import {
   decertificationDate,
   quickFilters,
 } from 'components/filter/filters';
-import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 
 const staticFilters = [
   decertificationDate, {
@@ -35,23 +34,14 @@ const staticFilters = [
     ],
   }, {
     ...defaultFilter,
-    key: 'hasPublishedAttestationsForMostRecentPastPeriod',
-    display: 'Attestations Published',
-    getValueEntry: getRadioValueEntry,
-    singular: true,
+    key: 'attestationsOptions',
+    display: 'Attestations',
+    operatorKey: 'attestationsOptionsOperator',
     values: [
-      { value: 'true', display: 'Has published Attestations for the most recent past period' },
-      { value: 'false', display: 'Has not published Attestations for the most recent past period' },
-    ],
-  }, {
-    ...defaultFilter,
-    key: 'hasSubmittedAttestationsForMostRecentPastPeriod',
-    display: 'Attestations Submitted',
-    getValueEntry: getRadioValueEntry,
-    singular: true,
-    values: [
-      { value: 'true', display: 'Has submitted Attestations for the most recent past period' },
-      { value: 'false', display: 'Has not submitted Attestations for the most recent past period' },
+      { value: 'has_published', display: 'Has published Attestations for the most recent past period' },
+      { value: 'has_not_published', display: 'Has not published Attestations for the most recent past period' },
+      { value: 'has_submitted', display: 'Has submitted Attestations for the most recent past period' },
+      { value: 'has_not_submitted', display: 'Has not submitted Attestations for the most recent past period' },
     ],
   },
 ];

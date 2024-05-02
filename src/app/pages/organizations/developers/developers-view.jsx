@@ -160,8 +160,8 @@ function ChplDevelopersView(props) {
     toggle: () => {
       dispatch('resetAll');
       dispatch('toggle', { key: 'activeListingsOptions' }, { value: 'had_any_active_during_most_recent_past_attestation_period' });
-      dispatch('update', { key: 'hasPublishedAttestationsForMostRecentPastPeriod' }, { value: 'false' });
-      dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'or' });
+      dispatch('toggle', { key: 'attestationsOptions' }, { value: 'has_not_published' });
+      dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'and' });
     },
   };
 
@@ -170,8 +170,8 @@ function ChplDevelopersView(props) {
     toggle: () => {
       dispatch('resetAll');
       dispatch('toggle', { key: 'activeListingsOptions' }, { value: 'had_any_active_during_most_recent_past_attestation_period' });
-      dispatch('update', { key: 'hasSubmittedAttestationsForMostRecentPastPeriod' }, { value: 'false' });
-      dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'or' });
+      dispatch('toggle', { key: 'attestationsOptions' }, { value: 'has_not_submitted' });
+      dispatch('toggleOperator', { key: 'activeListingsOptions', operator: 'and' });
     },
   };
 
