@@ -685,7 +685,7 @@ function ChplCriterionDetailsView(props) {
                     <TableCell>
                       { criterion.riskManagementSummaryInformation
                         && <ChplLink href={criterion.riskManagementSummaryInformation} analytics={{ event: 'Risk Management Summary Information', category: 'Download Details', label: criterion.riskManagementSummaryInformation }} />}
-                      { !criterion.riskManagementSummaryInformation && 'None' }
+                      { !criterion.riskManagementSummaryInformation && 'TBD' }
                     </TableCell>
                   </TableRow>
                 )}
