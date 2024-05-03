@@ -1,8 +1,8 @@
 import ListingPage from '../../pages/listing/listing.po';
-import { open } from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks';
 import LoginComponent from '../../components/login/login.po';
-import ActionBarComponent from '../../components/action-bar/action-bar.async.po';
-import ToastComponent from '../../components/toast/toast.async.po';
+import ActionBarComponent from '../../components/action-bar/action-bar.po';
+import ToastComponent from '../../components/toast/toast.po';
 import ListingEditComponent from '../../components/listing/edit/listing-edit.po';
 import RealWorldTestingPage from '../../pages/collections/real-world-testing/real-world-testing.po';
 

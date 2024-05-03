@@ -1,5 +1,5 @@
 import SearchPage from '../../pages/collections/search/search.po';
-import { open as openPage } from '../../utilities/hooks.async';
+import { open as openPage } from '../../utilities/hooks';
 
 import CmsWidgetComponent from './cms-widget.po';
 

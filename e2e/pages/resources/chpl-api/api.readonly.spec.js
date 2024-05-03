@@ -1,5 +1,5 @@
-import { open } from '../../../utilities/hooks.async';
-import ToastComponent from '../../../components/toast/toast.async.po';
+import { open } from '../../../utilities/hooks';
+import ToastComponent from '../../../components/toast/toast.po';
 
 import ApiPage from './api.po';
 

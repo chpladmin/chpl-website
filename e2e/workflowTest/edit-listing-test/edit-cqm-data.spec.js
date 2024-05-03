@@ -1,5 +1,5 @@
 import ListingPage from '../../pages/listing/listing.po';
-import { open } from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks';
 import LoginComponent from '../../components/login/login.po';
 
 let login;

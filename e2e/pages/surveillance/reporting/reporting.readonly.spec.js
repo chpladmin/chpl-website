@@ -1,7 +1,7 @@
 import LoginComponent from '../../../components/login/login.po';
-import { open } from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks';
 
-import ReportingPage from './reporting.async.po';
+import ReportingPage from './reporting.po';
 
 let login;
 let page;

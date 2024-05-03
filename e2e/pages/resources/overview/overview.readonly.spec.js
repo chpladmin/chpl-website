@@ -1,5 +1,5 @@
 import OverviewPage from './overview.po';
-import { open } from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks';
 import EnvironmentIndicatorComponent from '../../../components/environment-indicator/environment-indicator.po';
 
 let indicator;

@@ -1,4 +1,4 @@
-import { open } from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks';
 import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
 

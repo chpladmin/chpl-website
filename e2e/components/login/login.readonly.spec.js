@@ -1,5 +1,5 @@
-import { open } from '../../utilities/hooks.async;
-import ToastComponent from '../toast/toast.async.po';
+import { open } from '../../utilities/hooks';
+import ToastComponent from '../toast/toast.po';
 
 import LoginComponent from './login.po';
 
