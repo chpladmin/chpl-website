@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -12,9 +12,11 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import ReactGA from 'react-ga4';
 
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { acb as acbPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -38,6 +40,7 @@ function ChplOncOrganizationView(props) {
     organization: initialOrg,
     dispatch,
   } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const [organization, setOrganization] = useState(undefined);
   const classes = useStyles();
 
@@ -46,6 +49,27 @@ function ChplOncOrganizationView(props) {
   }, [initialOrg]);
 
   const edit = () => {
+    if (hasAnyRole(['chpl-admin'])) {
+      ReactGA.event({
+        category: 'Organizations',
+        action: 'Edit',
+        label: `${organization.name} | chpl-admin`,
+      });
+    }
+    if (hasAnyRole(['chpl-onc'])) {
+      ReactGA.event({
+        category: 'Organizations',
+        action: 'Edit',
+        label: `${organization.name} | chpl-onc`,
+      });
+    }
+    if (hasAnyRole(['chpl-onc-acb'])) {
+      ReactGA.event({
+        category: 'Organizations',
+        action: 'Edit',
+        label: `${organization.name} | chpl-onc-acb`,
+      });
+    }
     dispatch('edit');
   };
 
@@ -139,7 +163,9 @@ function ChplOncOrganizationView(props) {
               aria-label={`Edit ${organization.name} Information`}
               id="organization-component-edit"
               onClick={edit}
+
             >
+
               <EditOutlinedIcon />
             </Button>
           </ChplTooltip>
