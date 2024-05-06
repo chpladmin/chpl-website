@@ -669,7 +669,7 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                   </TableRow>
                 )}
-              { criterion.success && criterion.riskManagementSummaryInformation
+              { criterion.success && criterion.criterion.attributes?.riskManagementSummaryInformation
                 && (
                   <TableRow key="riskManagementSummaryInformation">
                     <TableCell component="th" scope="row">
@@ -685,7 +685,7 @@ function ChplCriterionDetailsView(props) {
                     <TableCell>
                       { criterion.riskManagementSummaryInformation
                         && <ChplLink href={criterion.riskManagementSummaryInformation} analytics={{ event: 'Risk Management Summary Information', category: 'Download Details', label: criterion.riskManagementSummaryInformation }} />}
-                      { !criterion.riskManagementSummaryInformation && 'None' }
+                      { !criterion.riskManagementSummaryInformation && 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module' }
                     </TableCell>
                   </TableRow>
                 )}
