@@ -1,40 +1,40 @@
-const elements = {
-  editAddress: '#line1',
-  editCity: '#city',
-  editState: '#state',
-  editZip: '#zipcode',
-  editCountry: '#country',
-};
-
 class AddressComponent {
-  constructor () { }
-
-  get editAddress () {
-    return $(elements.editAddress);
+  constructor() {
+    this.elements = {
+      editAddress: '#line1',
+      editCity: '#city',
+      editState: '#state',
+      editZip: '#zipcode',
+      editCountry: '#country',
+    };
   }
 
-  get editCity () {
-    return $(elements.editCity);
+  async getEditAddress() {
+    return $(this.elements.editAddress);
   }
 
-  get editState () {
-    return $(elements.editState);
+  async getEditCity() {
+    return $(this.elements.editCity);
   }
 
-  get editZip () {
-    return $(elements.editZip);
+  async getEditState() {
+    return $(this.elements.editState);
   }
 
-  get editCountry () {
-    return $(elements.editCountry);
+  async getEditZip() {
+    return $(this.elements.editZip);
   }
 
-  set (address) {
-    this.editAddress.setValue(address.address);
-    this.editCity.setValue(address.city);
-    this.editState.setValue(address.state);
-    this.editZip.setValue(address.zip);
-    this.editCountry.setValue(address.country);
+  async getEditCountry() {
+    return $(this.elements.editCountry);
+  }
+
+  async set(address) {
+    await (await this.getEditAddress()).setValue(address.address);
+    await (await this.getEditCity()).setValue(address.city);
+    await (await this.getEditState()).setValue(address.state);
+    await (await this.getEditZip()).setValue(address.zip);
+    await (await this.getEditCountry()).setValue(address.country);
   }
 }
 

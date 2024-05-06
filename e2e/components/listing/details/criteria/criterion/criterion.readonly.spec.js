@@ -1,7 +1,7 @@
 import CriteriaComponent from '../criteria.po';
 import ListingPage from '../../../../../pages/listing/listing.po';
 
-import { open as openPage } from '../../../../../utilities/hooks.async';
+import { open as openPage } from '../../../../../utilities/hooks';
 
 let criteria;
 let page;
