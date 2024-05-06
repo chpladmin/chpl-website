@@ -1,19 +1,16 @@
-import Hooks from '../../../utilities/hooks';
-import ToastComponent from '../../../components/toast/toast.async.po';
+import { open } from '../../../utilities/hooks';
+import ToastComponent from '../../../components/toast/toast.po';
 
 import ApiPage from './api.po';
 
-let hooks;
 let page;
 let toast;
 
 describe('the CHPL API page', () => {
   beforeEach(async () => {
     page = new ApiPage();
-    hooks = new Hooks();
     toast = new ToastComponent();
-    await hooks.open('#/resources/api');
-    await hooks.waitForSpinnerToDisappear();
+    await open('#/resources/api');
   });
 
   it('should have a title', async () => {
@@ -22,19 +19,5 @@ describe('the CHPL API page', () => {
 
   it('should have body text', async () => {
     await expect(await page.getBodyText()).toContain('Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the "Schemas" section of the "Certified Health IT Product Listing API" documentation.');
-  });
-
-  xit('should allow users to register for API key', async () => {
-    await page.register('test', 'test@testorg.com');
-    await (browser.waitUntil(async () => (await (toast.toastMessage)).isDisplayed()));
-    await expect(await (await toast.toastMessage).getText()).toEqual('To confirm your email address, an email was sent to: test@testorg.com Please follow the instructions in the email to obtain your API key.');
-  });
-
-  xit('should have controllers and endpoints information', async () => {
-    await (await (page.announcementsController).scrollIntoView());
-    await hooks.waitForSpinnerToDisappear();
-    await (await page.attestationController).click();
-    await (await page.getAttestationEndpoint).click();
-    await expect(await (await page.getAttestationEndpoint).getText()).toContain('Attestation Periods define the time period which an Attestion applies.');
   });
 });

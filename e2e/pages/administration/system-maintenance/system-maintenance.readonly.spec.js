@@ -1,5 +1,5 @@
 import LoginComponent from '../../../components/login/login.po';
-import { open } from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks';
 
 import SystemMaintenancePage from './system-maintenance.po';
 

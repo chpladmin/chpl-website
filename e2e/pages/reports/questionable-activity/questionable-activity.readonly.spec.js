@@ -1,5 +1,5 @@
 import LoginComponent from '../../../components/login/login.po';
-import { open as openPage } from '../../../utilities/hooks.async';
+import { open as openPage } from '../../../utilities/hooks';
 
 import QuestionableActivityPage from './questionable-activity.po';
 

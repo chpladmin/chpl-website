@@ -17,9 +17,13 @@ class ToastComponent {
     return $(this.message);
   }
 
-  clearAllToast() {
-    if ($(this.container) && $(this.container).$$(this.message)) {
-      $(this.container).$$(this.message).forEach((toast) => toast.click());
+  async clearAllToast() {
+    if (await $(this.container) && (await (await $(this.container)).$$(this.message))) {
+      let codemod_placeholder_1462 = await (await $(this.container)).$$(this.message);
+
+      for (const toast of codemod_placeholder_1462) {
+        await toast.click();
+      }
     }
   }
 }
