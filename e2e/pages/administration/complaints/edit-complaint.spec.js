@@ -1,6 +1,6 @@
 import LoginComponent from '../../../components/login/login.po';
 import ComplaintsComponent from '../../../components/surveillance/complaints/complaints.po';
-import { open } from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks';
 
 let login;
 let complaintsComponent;

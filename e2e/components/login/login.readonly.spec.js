@@ -1,10 +1,9 @@
-import Hooks from '../../utilities/hooks';
+import { open } from '../../utilities/hooks';
 import ToastComponent from '../toast/toast.po';
 
 import LoginComponent from './login.po';
 
 let component;
-let hooks;
 let toast;
 
 describe('the login component', () => {
@@ -12,7 +11,7 @@ describe('the login component', () => {
     component = new LoginComponent();
     hooks = new Hooks();
     toast = new ToastComponent();
-    await hooks.open('#/resources/overview');
+    await open('#/resources/overview');
   });
 
   describe('when logging in', () => {

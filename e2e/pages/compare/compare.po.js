@@ -1,4 +1,4 @@
-import { open } from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks';
 
 class ComparePage {
   constructor() {

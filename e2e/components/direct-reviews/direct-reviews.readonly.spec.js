@@ -1,5 +1,5 @@
 import DevelopersPage from '../../pages/organizations/developers/developers.async.po';
-import { open } from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks';
 
 import DirectReviewsComponent from './direct-reviews.po';
 

@@ -3,6 +3,7 @@ class ReportingPage {
     this.elements = {
       acbHeader: '.panel.panel-default',
       secondaryPageTitle: 'h2',
+      expandAcb: ((acb) => `//*[@id="onc-acb-${acb}"]`),
     };
   }
 
@@ -14,27 +15,27 @@ class ReportingPage {
     return $(this.elements.acbHeader);
   }
 
-  get acbReportingCount() {
-    return $$(this.elements.acbHeader).length;
+  async getAcbReportingCount() {
+    return (await $$(this.elements.acbHeader)).length;
   }
 
-  expandAcb(acb) {
-    $(`//*[@id="onc-acb-${acb}"]`).click();
+  async expandAcb(acb) {
+    await (await $(this.elements.expandAcb(acb))).click();
   }
 
-  editQuarterlyReport(acb, year, quarter) {
+  async editQuarterlyReport(acb, year, quarter) {
     return $(`//*[@id="act-${acb}-${year}-${quarter}"]`);
   }
 
-  editAnnualReport(acb, year) {
+  async editAnnualReport(acb, year) {
     return $(`//*[@id="act-${acb}-${year}"]`);
   }
 
-  initiateQuarterlyReport(acb, year, quarter) {
+  async initiateQuarterlyReport(acb, year, quarter) {
     return $(`//*[@id="initiate-${acb}-${year}-${quarter}"]`);
   }
 
-  initiateAnnualReport(acb, year) {
+  async initiateAnnualReport(acb, year) {
     return $(`//*[@id="initiate-${acb}-${year}"]`);
   }
 }

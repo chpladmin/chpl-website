@@ -7,19 +7,20 @@ class ActionBarComponent {
       errors: '#action-bar-errors > ul > li',
       warnings: '#action-bar-warnings > ul > li',
       closeMessages: '#action-bar-messages-close',
+      confirmationYes: '#action-confirmation-yes',
     };
   }
 
-  save() {
-    $(this.elements.save).click();
+  async save() {
+    await (await $(this.elements.save)).click();
   }
 
-  delete() {
-    $(this.elements.delete).click();
+  async delete() {
+    await (await $(this.elements.delete)).click();
   }
-
-  closeMessages() {
-    $(this.elements.closeMessages).click();
+  
+  async closeMessages() {
+    await (await $(this.elements.closeMessages)).click();
   }
 
   get errors() {
@@ -30,8 +31,12 @@ class ActionBarComponent {
     return $$(this.elements.warnings);
   }
 
-  waitForMessages() {
-    $(this.elements.messages).waitForDisplayed();
+  async waitForMessages() {
+    await (await $(this.elements.messages)).waitForDisplayed();
+  }
+
+  async clickYesToConfirm() {
+    await (await $(this.elements.confirmationYes)).click();
   }
 }
 

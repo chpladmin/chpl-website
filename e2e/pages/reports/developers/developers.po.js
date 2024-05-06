@@ -1,4 +1,4 @@
-import { open as openPage } from '../../../utilities/hooks.async';
+import { open as openPage } from '../../../utilities/hooks';
 import ReportsPage from '../reports.po';
 
 class DevelopersPage extends ReportsPage {
