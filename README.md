@@ -58,11 +58,17 @@ On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpa
 
 #### E2E (AQA) Testing
 
-##### E2E (AQA) Credentials
+E2E tests can be run with the `yarn wdio` command
+
+##### Old notes
+
+Some of these items will need to be recreated, but at this time this is all OBE
+
+###### E2E (AQA) Credentials
 
 Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
 
-#### E2E (AQA) Running Tests
+###### E2E (AQA) Running Tests
 By default, E2E tests will be executed against http://localhost:3000/.
 
 The tests can be also be executed using different environments. The other URLs for other environments need to be configured in `e2e/config/urls.js` file and URLs must have the correct format. There is a `e2e/config/urlsEXAMPLE.js` that describes the necessary entries and formatting.
