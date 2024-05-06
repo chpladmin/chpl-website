@@ -1,44 +1,47 @@
-import LoginComponent from '../../../components/login/login.sync.po';
-import Hooks from '../../../utilities/hooks';
+import LoginComponent from '../../../components/login/login.po';
+import { open } from '../../../utilities/hooks';
 
 import ReportingPage from './reporting.po';
 
-let hooks; let loginComponent; let page;
+let login;
+let page;
 
 beforeEach(async () => {
-  loginComponent = new LoginComponent();
-  hooks = new Hooks();
+  login = new LoginComponent();
   page = new ReportingPage();
-  await hooks.open('#/surveillance/reporting');
+  await open('#/resources/overview');
 });
 
 describe('when ACB user is on surveillance reporting page', () => {
-  beforeEach(() => {
-    loginComponent.logIn('drummond');
+  beforeEach(async () => {
+    await login.logIn('drummond');
+    await open('#/surveillance/reporting');
+    await (await page.acbHeader).isDisplayed();
   });
 
-  afterEach(() => {
-    loginComponent.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
-  it('should only see their own reporting', () => {
-    browser.waitUntil(() => page.acbReportingCount > 0);
-    expect(page.acbReportingCount).toBe(1);
+  it('should only see their own reporting', async () => {
+    await browser.waitUntil(async () => (await page.getAcbReportingCount()) > 0);
+    await expect(await page.getAcbReportingCount()).toBe(1);
   });
 });
 
-//ignoring these tests as they start failing since chrome driver version updated to 118 - will address these tests later
+//ignoring quarantined test -will be addressed later
 xdescribe('when ONC user is on surveillance reporting page', () => {
-  beforeEach(() => {
-    loginComponent.logIn('onc');
+  beforeEach(async () => {
+    await login.logIn('onc');
+    await open('#/surveillance/reporting');
+    await (await page.acbHeader).isDisplayed();
   });
 
-  afterEach(() => {
-    loginComponent.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
-  it('should see all ACB\'s reporting', () => {
-    hooks.waitForSpinnerToDisappear();
-    expect(page.acbReportingCount).toBeGreaterThanOrEqual(3);
+  it('should see all ACB\'s reporting', async () => {
+    await expect(await page.getAcbReportingCount()).toBeGreaterThanOrEqual(3);
   });
 });

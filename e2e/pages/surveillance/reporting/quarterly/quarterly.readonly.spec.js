@@ -1,8 +1,8 @@
-import ReportingPage from '../reporting.async.po';
+import ReportingPage from '../reporting.po';
 import LoginComponent from '../../../../components/login/login.po';
-import { open } from '../../../../utilities/hooks.async';
-import ToastComponent from '../../../../components/toast/toast.async.po';
-import ActionBarComponent from '../../../../components/action-bar/action-bar-legacy.async.po';
+import { open } from '../../../../utilities/hooks';
+import ToastComponent from '../../../../components/toast/toast.po';
+import ActionBarComponent from '../../../../components/action-bar/action-bar-legacy.po';
 import ComplaintsComponent from '../../../../components/surveillance/complaints/complaints.po';
 
 import QuarterlyPage from './quarterly.po';
