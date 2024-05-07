@@ -3,6 +3,7 @@ let baseUrl = 'http://localhost:3000/';
 if (process.env.ENV) {
   baseUrl = urls[`${process.env.ENV}URL`];
 }
+console.log(urls, process.env.ENV, baseUrl);
 
 exports.config = {
   //
