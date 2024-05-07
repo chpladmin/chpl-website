@@ -1,6 +1,6 @@
-import ActionBarComponent from '../../../../components/action-bar/action-bar.async.po';
+import ActionBarComponent from '../../../../components/action-bar/action-bar.po';
 import LoginComponent from '../../../../components/login/login.po';
-import { open } from '../../../../utilities/hooks.async';
+import { open } from '../../../../utilities/hooks';
 import standardsPage from './standards.po';
 
 let login;
