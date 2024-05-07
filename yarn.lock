@@ -3706,6 +3706,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wdio/junit-reporter@npm:^8.36.1":
+  version: 8.36.1
+  resolution: "@wdio/junit-reporter@npm:8.36.1"
+  dependencies:
+    "@wdio/reporter": "npm:8.36.1"
+    "@wdio/types": "npm:8.36.1"
+    json-stringify-safe: "npm:^5.0.1"
+    junit-report-builder: "npm:^3.0.0"
+  checksum: 10/09ab60f3aa1dfe1c965e13ea7964428cc14187fba7f1d8e5abffd717c3f963f62246a7e6fa4e0023db31752f650afed469716017474df01d497fb90015e645f5
+  languageName: node
+  linkType: hard
+
 "@wdio/local-runner@npm:^8.36.1":
   version: 8.36.1
   resolution: "@wdio/local-runner@npm:8.36.1"
@@ -6456,6 +6468,7 @@ __metadata:
     "@testing-library/webdriverio": "npm:^3.2.1"
     "@wdio/cli": "npm:^8.36.1"
     "@wdio/jasmine-framework": "npm:^8.36.1"
+    "@wdio/junit-reporter": "npm:^8.36.1"
     "@wdio/local-runner": "npm:^8.36.1"
     "@wdio/spec-reporter": "npm:^8.36.1"
     angular: "npm:^1.8.3"
@@ -7594,6 +7607,13 @@ __metadata:
     whatwg-mimetype: "npm:^3.0.0"
     whatwg-url: "npm:^11.0.0"
   checksum: 10/033fc3dd0fba6d24bc9a024ddcf9923691dd24f90a3d26f6545d6a2f71ec6956f93462f2cdf2183cc46f10dc01ed3bcb36731a8208456eb1a08147e571fe2a76
+  languageName: node
+  linkType: hard
+
+"date-format@npm:4.0.3":
+  version: 4.0.3
+  resolution: "date-format@npm:4.0.3"
+  checksum: 10/5f5ea388dc211e8e5cab515b72b5b6fa071d42d029bdc8cc71a7f8a2d25726c3128a49d9ad78474d1b1ba39f83fe9837e431d0bfc8de5941f850d06cf5841eb5
   languageName: node
   linkType: hard
 
@@ -13638,7 +13658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-stringify-safe@npm:~5.0.1":
+"json-stringify-safe@npm:^5.0.1, json-stringify-safe@npm:~5.0.1":
   version: 5.0.1
   resolution: "json-stringify-safe@npm:5.0.1"
   checksum: 10/59169a081e4eeb6f9559ae1f938f656191c000e0512aa6df9f3c8b2437a4ab1823819c6b9fd1818a4e39593ccfd72e9a051fdd3e2d1e340ed913679e888ded8c
@@ -13872,6 +13892,18 @@ __metadata:
     array-includes: "npm:^3.1.5"
     object.assign: "npm:^4.1.3"
   checksum: 10/c85f6f239593e09d8445a7e43412234304addf4bfb5d2114dc19f5ce27dfe3a8f8b12a50ff74e94606d0ad48cf1d5aff2381c939446b3fe48a5d433bb52ccb29
+  languageName: node
+  linkType: hard
+
+"junit-report-builder@npm:^3.0.0":
+  version: 3.2.1
+  resolution: "junit-report-builder@npm:3.2.1"
+  dependencies:
+    date-format: "npm:4.0.3"
+    lodash: "npm:^4.17.21"
+    make-dir: "npm:^3.1.0"
+    xmlbuilder: "npm:^15.1.1"
+  checksum: 10/40743f6b37f6f57ed8eb4469ac05c4ae302ab4f7dfd736b58286c67a384d9555db6ddf08630c63fe854dc7815d5288c42fba9cb3276e63a4ec708a03120e5b61
   languageName: node
   linkType: hard
 
@@ -22205,6 +22237,13 @@ __metadata:
   version: 1.0.1
   resolution: "xml@npm:1.0.1"
   checksum: 10/6c4c31a1308e45732e5ac6b50edbca0e8f7abe5cb5de10215d8e3c688819fe7c7706e056f6fb59b1a23fdf1000c2d7a8bba0a89e94aa1796cd2376d9a5ba401e
+  languageName: node
+  linkType: hard
+
+"xmlbuilder@npm:^15.1.1":
+  version: 15.1.1
+  resolution: "xmlbuilder@npm:15.1.1"
+  checksum: 10/e6f4bab2504afdd5f80491bda948894d2146756532521dbe7db33ae0931cd3000e3b4da19b3f5b3f51bedbd9ee06582144d28136d68bd1df96579ecf4d4404a2
   languageName: node
   linkType: hard
 
