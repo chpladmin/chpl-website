@@ -155,12 +155,12 @@ exports.config = {
     // or website depending on the result. For example, it is pretty handy to take a screenshot every time
     // an assertion fails.
     expectationResultHandler: async function (passed, assertion) {
-      console.log('--------------------------------------------------------------------------------');
-      console.log({passed, assertion});
       if (passed) {
         return;
       }
-      const message = assertion.message.split('\n')[0].replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      console.log('--------------------------------------------------------------------------------');
+      console.log({passed, assertion});
+      const message = assertion.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
       const location = `${__dirname}/test_reports/e2e/screenshot/assertionError_${message}.png`;
       console.log(`Saving screenshot: ${location}`);
       console.log('--------------------------------------------------------------------------------');
