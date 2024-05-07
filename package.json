@@ -12,7 +12,8 @@
     "test:auto": "jest --watchAll",
     "lint": "eslint src",
     "lint:fix": "eslint --fix",
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./wdio.conf.js",
+    "wdio:clean": "rm -r test_reports/e2e/* || true"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
