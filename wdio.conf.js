@@ -165,12 +165,9 @@ exports.config = {
       if (passed) {
         return;
       }
-      console.log('--------------------------------------------------------------------------------');
-      console.log({passed, assertion});
       const message = assertion?.message?.replace(/[^a-z0-9]/gi, '_').toLowerCase() ?? Date.now();
       const location = `${__dirname}/test_reports/e2e/screenshot/assertionError_${message}.png`;
       console.log(`Saving screenshot: ${location}`);
-      console.log('--------------------------------------------------------------------------------');
       await browser.saveScreenshot(location);
     }
   },

@@ -1,4 +1,4 @@
-const { $ } = require('@wdio/globals')
+const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 const Page = require('./page');
 
 class OverviewPage extends Page {
