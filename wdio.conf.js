@@ -1,3 +1,9 @@
+const urls = require('./e2e/config/urls');
+let baseUrl = 'http://localhost:3000/';
+if (process.env.ENV) {
+  baseUrl = urls[`${process.env.ENV}URL`];
+}
+
 exports.config = {
   //
   // ====================
@@ -99,7 +105,7 @@ exports.config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  // baseUrl: 'http://localhost:8080',
+  baseUrl,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
