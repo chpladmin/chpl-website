@@ -13,6 +13,8 @@ import {
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
 
+import ChplMessaging from './messaging/messaging';
+
 import { theme, utilStyles } from 'themes';
 import { useFetchDevelopersBySearch } from 'api/developer';
 import {
@@ -114,6 +116,7 @@ function ChplDevelopersView(props) {
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
@@ -151,6 +154,10 @@ function ChplDevelopersView(props) {
     { text: 'ONC-ACB for active Listings' },
   ];
 
+  const handleDispatch = () => {
+    setMessaging(false);
+  };
+
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
@@ -181,6 +188,14 @@ function ChplDevelopersView(props) {
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
+
+  if (messaging) {
+    return (
+      <ChplMessaging
+        dispatch={handleDispatch}
+      />
+    );
+  }
 
   return (
     <>
@@ -229,10 +244,12 @@ function ChplDevelopersView(props) {
                 </div>
                 { developers.length > 0 && hasAnyRole(['chpl-admin', 'chpl-onc'])
                   && (
-                    <Button>
+                    <Button
+                      onClick={() => setMessaging(true)}
+                    >
                       send message to
                       {' '}
-                      { developers.filter((d) => d.selected).length }
+                      { recordCount }
                       {' '}
                       developers
                     </Button>
