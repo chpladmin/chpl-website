@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -28,6 +29,7 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -105,6 +107,7 @@ function ChplDevelopersView(props) {
   const storageKey = 'storageKey-developersView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
   const [developers, setDevelopers] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -142,7 +145,6 @@ function ChplDevelopersView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'developer_name', text: 'Developer', sortable: true },
     { property: 'developer_code', text: 'Developer Code', sortable: true },
@@ -225,6 +227,16 @@ function ChplDevelopersView(props) {
                       </Typography>
                     )}
                 </div>
+                { developers.length > 0 && hasAnyRole(['chpl-admin', 'chpl-onc'])
+                  && (
+                    <Button>
+                      send message to
+                      {' '}
+                      { developers.filter((d) => d.selected).length }
+                      {' '}
+                      developers
+                    </Button>
+                  )}
               </div>
               { developers.length > 0
                 && (
