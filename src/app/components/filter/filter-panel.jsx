@@ -108,6 +108,7 @@ function ChplFilterPanel() {
   useEffect(() => {
     setFilters(filterContext.filters
       .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
+      .filter((f) => f.values?.length > 0)
       .map((f) => ({
         ...f,
         values: f.values.sort((a, b) => f.sortValues(f, a, b)),

@@ -5,7 +5,7 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import ChplApiDocumentationCollectionView from './api-documentation-view';
+import ChplDevelopersView from './developers-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
@@ -15,8 +15,6 @@ const angularMock = {
 };
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock);
-when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue('fakeMock');
-when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),
@@ -32,29 +30,29 @@ jest.mock('components/filter', () => ({
   __esModule: true,
   ChplFilterChips: () => <div>Chips</div>,
   ChplFilterPanel: () => <div>Panel</div>,
+  ChplFilterQuickFilters: () => <div>Quick Filters</div>,
   ChplFilterSearchTerm: () => <div>Search Term</div>,
   useFilterContext: () => mockContext,
 }));
 /* eslint-enable react/display-name */
 
-jest.mock('api/collections', () => ({
+jest.mock('api/developer', () => ({
   __esModule: true,
-  useFetchApiDocumentationData: () => mockApi,
-  useFetchCollection: () => mockApi,
+  useFetchDevelopersBySearch: () => mockApi,
 }));
 
-describe('the ChplApiDocumentationCollectionView component', () => {
+describe('the ChplDevelopersView component', () => {
   afterEach(() => {
     cleanup();
   });
 
   it('has a title', async () => {
     render(
-      <ChplApiDocumentationCollectionView analytics={{ category: 'test' }} />,
+      <ChplDevelopersView analytics={{ category: 'test' }} />,
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('API Information');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Developers');
     });
   });
 });
