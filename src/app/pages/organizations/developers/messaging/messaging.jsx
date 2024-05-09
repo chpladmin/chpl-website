@@ -74,8 +74,7 @@ function ChplMessaging({ dispatch }) {
         dispatch();
       },
       onError: (error) => {
-        console.debug({ error });
-        const body = 'An error occurred';
+        const body = `An error occurred: ${error.response?.data?.error}`;
         enqueueSnackbar(body, { variant: 'error' });
       },
     });
