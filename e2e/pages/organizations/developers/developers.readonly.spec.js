@@ -1,61 +1,51 @@
 import DevelopersPage from './developers.po';
-import Hooks from '../../../utilities/hooks';
 
-let hooks;
 let page;
 
-describe('the Developer pages', () => {
-  describe('for existing Developers', () => {
-    beforeEach(async () => {
-      browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-      browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
-      page = new DevelopersPage();
-      hooks = new Hooks();
-      await hooks.open('#/organizations/developers');
-    });
-
-    describe('on the "GE Healthcare" Developer page', () => {
-      beforeEach(() => {
-        const developer = 'GE Healthcare';
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
-      });
-
-      it('should have a Direct Reviews section', () => {
-        expect(page.directReviewsHeader).toExist();
-      });
-
-      it('should have Products', () => {
-        expect(page.products.length).toBeGreaterThan(0);
-      });
-    });
-
-    describe('when on the "Breeze EHR" Developer page with only one product', () => {
-      beforeEach(() => {
-        const developer = 'Breeze EHR';
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.selectAllCertificationStatus();
-      });
-
-      it('should not have split developer button', () => {
-        expect(page.splitDeveloper.isDisplayed()).toBe(false);
-      });
-    });
+describe('the Developers page', () => {
+  beforeEach(async () => {
+    page = new DevelopersPage();
+    await page.open();
   });
 
-  describe('for nonexistent Developers', () => {
-    beforeEach(async () => {
-      hooks = new Hooks();
-      const dummyDeveloperId = '0000';
-      await hooks.open(`#/organizations/developers/${dummyDeveloperId}`);
+  it('should have table headers in a defined order', async () => {
+    const expectedHeaders = ['Developer', 'Developer Code', 'ONC-ACB for active Listings'];
+    const actualHeaders = await page.getTableHeaders();
+    await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
+    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
+  });
+
+  describe('when filtering', () => {
+    describe('using predefined filters', () => {
+      afterEach(async () => {
+        await page.resetFilters();
+      });
+
+      it('should filter results on Active Listings', async () => {
+        const initialCount = await page.getTotalResultCount();
+        await page.removeFilter('Active Listings', 'Has Any Active');
+        const finalCount = await page.getTotalResultCount();
+        expect(finalCount).toBeGreaterThan(initialCount);
+      });
     });
 
-    it('should go to the custom 404 page', () => {
-      hooks.waitForSpinnerToDisappear();
-      expect(browser.getUrl()).toContain('#/not-found');
+    describe('by text', () => {
+      afterEach(async () => {
+        await page.clearSearchTerm();
+      });
+
+      it('should search by developer name', async () => {
+        const searchTerm = 'Rabbit';
+        await page.searchForText(searchTerm);
+        await expect(await page.hasNoResults()).toBe(true);
+      });
+
+      it('should search by developer code', async () => {
+        const searchTerm = '3071';
+        await page.searchForText(searchTerm);
+        const finalCount = await page.getTotalResultCount();
+        expect(finalCount).toBe(1);
+      });
     });
   });
 });
