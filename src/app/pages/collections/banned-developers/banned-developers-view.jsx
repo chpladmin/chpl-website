@@ -126,7 +126,7 @@ function ChplBannedDevelopersCollectionView(props) {
     if (isLoading || !data.results) { return; }
     setDevelopers(data.results.map((developer) => ({
       ...developer,
-      oncAcbDisplay: developer.associatedAcbs.map((acb) => acb.name).join(', '),
+      oncAcbDisplay: developer.acbsForAllListings.map((acb) => acb.name).sort((a, b) => (a < b ? -1 : 1)).join(', '), // same question about "active"
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
@@ -139,7 +139,7 @@ function ChplBannedDevelopersCollectionView(props) {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
-    { property: 'developer', text: 'Developer', sortable: true },
+    { property: 'developer_name', text: 'Developer', sortable: true },
     { property: 'decertification_date', text: 'Decertification Date', sortable: true, reverseDefault: true },
     { text: 'ONC-ACB' },
   ];
@@ -184,7 +184,7 @@ function ChplBannedDevelopersCollectionView(props) {
           </Typography>
         </div>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm
           placeholder="Search by Developer Name or Code..."
         />

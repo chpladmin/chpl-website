@@ -1,4 +1,4 @@
-import { ChplDevelopersWrapper } from './developers';
+import ChplDevelopersWrapper from './developers/developers-wrapper';
 import ChplDevelopersJoin from './developers/developer/join-wrapper';
 import ChplOncOrganizations from './onc-organizations/onc-organizations-wrapper';
 
