@@ -135,6 +135,11 @@ function ChplMessaging({ dispatch }) {
         >
           Send Message
         </Button>
+        <Button
+          onClick={dispatch}
+        >
+          Cancel
+        </Button>
       </div>
     </>
   );
