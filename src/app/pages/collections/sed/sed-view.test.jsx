@@ -54,7 +54,7 @@ describe('the ChplSedCollectionView component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('SED Information for 2015 Edition Products');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('SED Information');
     });
   });
 });
