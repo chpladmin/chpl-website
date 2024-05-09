@@ -66,7 +66,7 @@ function ChplMessaging({ dispatch }) {
     postMessage.mutate({
       subject: formik.values.subject,
       body: formik.values.body,
-      params: queryParams(),
+      query: queryParams(),
     }, {
       onSuccess: (response) => {
         console.debug({ response });
