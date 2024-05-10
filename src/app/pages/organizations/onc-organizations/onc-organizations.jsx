@@ -80,7 +80,8 @@ function ChplOncOrganizations() {
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['chpl-onc-acb'];
   const classes = useStyles();
-  const organization = useEffect(() => {
+  
+  useEffect(() => {
     setOrgType(window.location.href.includes('onc-acbs') ? 'acb' : 'atl');
   }, []);
 
