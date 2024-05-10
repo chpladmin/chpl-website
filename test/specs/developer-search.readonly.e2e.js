@@ -1,7 +1,9 @@
 import DeveloperSearchPage from '../pageobjects/developer-search.page';
+import LoginComponent from '../pageobjects/login-component.page';
 
 const { browser, expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
+let login;
 let page;
 
 describe('the Developer Search page', () => {
@@ -18,7 +20,14 @@ describe('the Developer Search page', () => {
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
   });
 
-  it('should not have the compose message button', async () => {
+  it('should not have the compose message button for anonymous users', async () => {
     await expect(await page.composeMessageButton).not.toBeExisting();
+  });
+
+  it('should have the compose message button for ONC users', async () => {
+    login = new LoginComponent();
+    await login.logIn('onc');
+    await expect(await page.composeMessageButton).toBeExisting();
+    await login.logOut();
   });
 });
