@@ -163,9 +163,7 @@ function ChplOncOrganizationView(props) {
               aria-label={`Edit ${organization.name} Information`}
               id="organization-component-edit"
               onClick={edit}
-
             >
-
               <EditOutlinedIcon />
             </Button>
           </ChplTooltip>
