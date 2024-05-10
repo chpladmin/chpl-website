@@ -1,5 +1,5 @@
 import LoginComponent from '../../login/login.po';
-import { open } from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks';
 
 import ComplaintsComponent from './complaints.po';
 

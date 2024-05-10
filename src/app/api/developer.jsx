@@ -20,6 +20,22 @@ const useFetchDevelopers = () => {
   }, { keepPreviousData: true });
 };
 
+const useFetchDevelopersBySearch = ({
+  orderBy,
+  pageNumber,
+  pageSize,
+  sortDescending,
+  query,
+}) => {
+  const axios = useAxios();
+  return useQuery(['developers/search/v3', {
+    orderBy, pageNumber, pageSize, sortDescending, query,
+  }], async () => {
+    const response = await axios.get(`/developers/search/v3?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    return response.data;
+  }, { keepPreviousData: true });
+};
+
 const useFetchRealWorldTestingPlans = ({ developer }) => {
   const axios = useAxios();
   return useQuery(['developers/rwt-plans-urls', developer?.id], async () => {
@@ -65,6 +81,7 @@ const usePutJoinDevelopers = () => {
 export {
   useFetchAttestations,
   useFetchDevelopers,
+  useFetchDevelopersBySearch,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
   usePostAttestationException,

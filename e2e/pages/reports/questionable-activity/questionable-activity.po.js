@@ -1,4 +1,4 @@
-import { open as openPage } from '../../../utilities/hooks.async';
+import { open as openPage } from '../../../utilities/hooks';
 import CollectionPage from '../../collections/collection.po';
 
 class QuestionableActivityPage extends CollectionPage {

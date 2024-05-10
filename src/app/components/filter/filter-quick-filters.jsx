@@ -5,6 +5,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { arrayOf, object } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
@@ -12,7 +13,7 @@ import { ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { palette } from 'themes';
 
-function ChplFilterQuickFilters() {
+function ChplFilterQuickFilters({ toggleMultipleFilters }) {
   const $analytics = getAngularService('$analytics');
   const { analytics, dispatch, filters } = useFilterContext();
   const [anchor, setAnchor] = useState(null);
@@ -87,15 +88,26 @@ function ChplFilterQuickFilters() {
         >
           Reset All Filters
         </MenuItem>
-        { quickFilter.values.map((v) => (
-          <MenuItem
-            key={v.value}
-            onClick={() => loadQuickFilter(v)}
-            disabled={quickFilter.getValueDisplay(v).includes('(0)')}
-          >
-            { quickFilter.getValueDisplay(v) }
-          </MenuItem>
-        ))}
+        { toggleMultipleFilters?.length > 0
+          && toggleMultipleFilters.map((f) => (
+            <MenuItem
+              key={f.display}
+              onClick={() => f.toggle()}
+            >
+              { f.display }
+            </MenuItem>
+          ))}
+        { quickFilter.values
+          .filter((v) => toggleMultipleFilters?.display !== v.value)
+          .map((v) => (
+            <MenuItem
+              key={v.value}
+              onClick={() => loadQuickFilter(v)}
+              disabled={quickFilter.getValueDisplay(v).includes('(0)')}
+            >
+              { quickFilter.getValueDisplay(v) }
+            </MenuItem>
+          ))}
       </Menu>
     </>
   );
@@ -104,4 +116,9 @@ function ChplFilterQuickFilters() {
 export default ChplFilterQuickFilters;
 
 ChplFilterQuickFilters.propTypes = {
+  toggleMultipleFilters: arrayOf(object),
+};
+
+ChplFilterQuickFilters.defaultProps = {
+  toggleMultipleFilters: undefined,
 };

@@ -1,7 +1,7 @@
 import LoginComponent from '../../../components/login/login.po';
 import ComplaintsComponent from '../../../components/surveillance/complaints/complaints.po';
-import ActionBarComponent from '../../../components/action-bar/action-bar.async.po';
-import { open } from '../../../utilities/hooks.async';
+import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import { open } from '../../../utilities/hooks';
 
 let login;
 let complaintsComponent;

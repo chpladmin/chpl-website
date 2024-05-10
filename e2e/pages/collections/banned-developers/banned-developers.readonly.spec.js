@@ -1,4 +1,4 @@
-import { open } from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks';
 
 import BannedDevelopersPage from './banned-developers.po';
 

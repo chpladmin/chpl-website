@@ -669,11 +669,11 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                   </TableRow>
                 )}
-              { criterion.success && criterion.riskManagementSummaryInformation
+              { criterion.success && criterion.criterion.attributes?.riskManagementSummaryInformation
                 && (
                   <TableRow key="riskManagementSummaryInformation">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="The publicly accessible hyperlink to the Risk Management practices for a Health IT Module certified to &sect;170.315(b)(11), outlines the developers&apos; strategies to ensure that predictive Decision Support Interventions are fair, accurate, reliable, and maintain user safety and data privacy.">
+                      <ChplTooltip title="Developers certified to &sect; 170.315(b)(11) are required to provide access to summary risk management information for any Predictive DSI(s) they supply as part of their Health IT Modules. This summary information is provided here via publicly accessible hyperlink. If the developer does not supply a Predictive DSI at this time, information indicating this status will appear here instead of a public URL.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
@@ -685,7 +685,7 @@ function ChplCriterionDetailsView(props) {
                     <TableCell>
                       { criterion.riskManagementSummaryInformation
                         && <ChplLink href={criterion.riskManagementSummaryInformation} analytics={{ event: 'Risk Management Summary Information', category: 'Download Details', label: criterion.riskManagementSummaryInformation }} />}
-                      { !criterion.riskManagementSummaryInformation && 'None' }
+                      { !criterion.riskManagementSummaryInformation && 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module' }
                     </TableCell>
                   </TableRow>
                 )}
