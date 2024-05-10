@@ -246,6 +246,7 @@ function ChplDevelopersView(props) {
                   && (
                     <Button
                       onClick={() => setMessaging(true)}
+                      id="compose-message"
                     >
                       send message to
                       {' '}

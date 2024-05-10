@@ -1,5 +1,6 @@
-const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 import SearchPage from './search.page';
+
+const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 class DeveloperSearchPage extends SearchPage {
   constructor() {
@@ -12,8 +13,12 @@ class DeveloperSearchPage extends SearchPage {
     };
   }
 
-  open () {
+  open() {
     return super.open('organizations/developers');
+  }
+
+  get composeMessageButton() {
+    return $(this.elements.composeMessageButton);
   }
 }
 
