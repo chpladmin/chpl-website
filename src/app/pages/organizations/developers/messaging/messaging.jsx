@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
+  Card,
+  CardContent,
+  Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -8,6 +12,8 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import SendIcon from '@material-ui/icons/Send';
 
 import { useFetchDevelopersBySearch, usePostMessage } from 'api/developer';
 import { useFilterContext } from 'components/filter';
@@ -27,6 +33,19 @@ const useStyles = makeStyles({
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  actionBarButton: {
+    minWidth: '15vw',
+  },
+  actionBarButtons: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '16px 0',
+  },
 });
 
 const validationSchema = yup.object({
@@ -37,7 +56,7 @@ const validationSchema = yup.object({
 });
 
 function ChplMessaging({ dispatch }) {
-  const { queryParams, queryString } = useFilterContext(); // use "POST" values instead of query string
+  const { queryParams, queryString } = useFilterContext();
   const [recordCount, setRecordCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
@@ -99,47 +118,69 @@ function ChplMessaging({ dispatch }) {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        Messaging
-        {' '}
-        { recordCount }
-        {' '}
-        developers
-        <ChplTextField
-          id="subject"
-          name="subject"
-          label="Subject"
-          required
-          value={formik.values.subject}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.subject && !!formik.errors.subject}
-          helperText={formik.touched.subject && formik.errors.subject}
-        />
-        <ChplTextField
-          id="body"
-          name="body"
-          label="Message Body"
-          margin="none"
-          required
-          multiline
-          value={formik.values.body}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.body && !!formik.errors.body}
-          helperText={formik.touched.body && formik.errors.body}
-          minRows={4}
-        />
-        <Button
-          onClick={formik.handleSubmit}
-          disabled={!formik.isValid}
-        >
-          Send Message
-        </Button>
-        <Button
-          onClick={dispatch}
-        >
-          Cancel
-        </Button>
+        <Container maxWidth="md">
+          <Card>
+            <CardContent
+              className={classes.content}
+            >
+              <Typography variant="body1">
+                Messaging
+                {' '}
+                { recordCount }
+                {' '}
+                developers
+              </Typography>
+              <ChplTextField
+                id="subject"
+                name="subject"
+                label="Subject"
+                required
+                value={formik.values.subject}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.subject && !!formik.errors.subject}
+                helperText={formik.touched.subject && formik.errors.subject}
+              />
+              <ChplTextField
+                id="body"
+                name="body"
+                label="Message Body"
+                margin="none"
+                required
+                multiline
+                value={formik.values.body}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.body && !!formik.errors.body}
+                helperText={formik.touched.body && formik.errors.body}
+                minRows={4}
+              />
+            </CardContent>
+          </Card>
+        </Container>
+        <div className={classes.actionBarButtons}>
+          <ButtonGroup
+            color="primary"
+          >
+            <Button
+              onClick={dispatch}
+              variant="outlined"
+              className={classes.actionBarButton}
+              endIcon={<CloseOutlinedIcon />}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={formik.handleSubmit}
+              disabled={!formik.isValid}
+              variant="contained"
+              className={classes.actionBarButton}
+              endIcon={<SendIcon />}
+            >
+              Send Message
+            </Button>
+          </ButtonGroup>
+        </div>
       </div>
     </>
   );
