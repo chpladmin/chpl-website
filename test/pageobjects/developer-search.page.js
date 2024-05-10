@@ -2,16 +2,16 @@ const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extrane
 import SearchPage from './search.page';
 
 class DeveloperSearchPage extends SearchPage {
-  /*
   constructor() {
     super();
+    this.name = 'DeveloperSearchPage';
     this.elements = {
       ...this.elements,
       header: 'h1=Developers',
       composeMessageButton: '#compose-message',
     };
   }
-*/
+
   open () {
     return super.open('organizations/developers');
   }

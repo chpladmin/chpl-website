@@ -13,6 +13,10 @@ describe('the Developer Search page', () => {
 */
   it('should have table headers in a defined order', async () => {
     page = new DeveloperSearchPage();
+    console.log('--------------------------------------------------------------------------------');
+    console.log(page.name);
+    console.log(page.elements);
+    console.log('--------------------------------------------------------------------------------');
     await page.open();
     await (browser.waitUntil(async () => !(await page.isLoading())));
     const expectedHeaders = ['Developer', 'Developer Code', 'ONC-ACB for active Listings'];

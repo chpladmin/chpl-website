@@ -2,8 +2,9 @@ const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extrane
 import Page from './page.es6';
 
 class SearchPage extends Page {
-  /*
   constructor() {
+    super();
+    this.name = 'SearchPage';
     this.elements = {
       ...this.elements,
       loading: 'body*=Loading',
@@ -18,7 +19,7 @@ class SearchPage extends Page {
       clearSearchTermButton: 'button[aria-label="Clear search"]',
     };
   }
-*/
+
   open (path) {
     return super.open(path);
   }
@@ -35,16 +36,14 @@ class SearchPage extends Page {
 
   async isLoading() {
     return (await
-            //$(this.elements.loading)
-            $('body*=Loading')
+            $(this.elements.loading)
            ).isDisplayed();
   }
 
   async getTableHeaders() {
     return (await
             (await
-             $('table')
-             //$(this.elements.table)
+             $(this.elements.table)
             ).$('thead')
            ).$$('th');
   }

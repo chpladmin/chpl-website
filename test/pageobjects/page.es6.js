@@ -6,6 +6,7 @@ const { browser } = require('@wdio/globals'); // eslint-disable-line import/no-e
  */
 class Page {
   constructor() {
+    this.name = 'Page';
     this.elements = {};
   }
   /**
