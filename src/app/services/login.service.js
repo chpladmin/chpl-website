@@ -94,7 +94,6 @@
         } else {
           return parseJwt(token).sub;
         }
-
       } else {
         logout();
         return '';
@@ -121,7 +120,7 @@
 
       const token = getToken();
       if (token) {
-        var userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
+        const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
@@ -150,7 +149,11 @@
         const vals = token.split('.');
         if (vals.length > 1) {
           const base64 = vals[1].replace('-', '+').replace('_', '/');
-          return angular.fromJson($window.atob(base64));
+          const user = angular.fromJson($window.atob(base64));
+          if (user['cognito:groups']) {
+            user['cognito:groups'] = user['cognito:groups'].filter((grp) => !grp.endsWith('-env'));
+          }
+          return user;
         }
         return {};
       }

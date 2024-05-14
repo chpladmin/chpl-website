@@ -1,102 +1,101 @@
 import React, { useEffect, useState } from 'react';
+
+import ChplDevelopersView from './developers-view';
+
+import { useFetchAcbs } from 'api/acbs';
+import { FilterProvider, defaultFilter } from 'components/filter';
 import {
-  Card,
-  CardContent,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+  certificationBodies,
+  decertificationDate,
+  quickFilters,
+} from 'components/filter/filters';
 
-import { useFetchDevelopers } from 'api/developer';
-import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-
-const useStyles = makeStyles({
-  headingPadding: {
-    padding: '16px 0',
+const staticFilters = [
+  decertificationDate, {
+    ...quickFilters,
+    values: [],
+  }, {
+    ...defaultFilter,
+    key: 'statuses',
+    display: 'Developer Status',
+    values: [
+      { value: 'Suspended by ONC' },
+      { value: 'Under certification ban by ONC' },
+    ],
+  }, {
+    ...defaultFilter,
+    key: 'activeListingsOptions',
+    display: 'Active Listings',
+    operatorKey: 'activeListingsOptionsOperator',
+    values: [
+      { value: 'has_any_active', display: 'Has Any Active', default: true },
+      { value: 'has_no_active', display: 'Has No Active' },
+      { value: 'had_any_active_during_most_recent_past_attestation_period', display: 'Had Any Active During Most Recent Past Attestation Period' },
+    ],
+  }, {
+    ...defaultFilter,
+    key: 'attestationsOptions',
+    display: 'Attestations',
+    operatorKey: 'attestationsOptionsOperator',
+    values: [
+      { value: 'has_published', display: 'Has published Attestations for the most recent past period' },
+      { value: 'has_not_published', display: 'Has not published Attestations for the most recent past period' },
+      { value: 'has_submitted', display: 'Has submitted Attestations for the most recent past period' },
+      { value: 'has_not_submitted', display: 'Has not submitted Attestations for the most recent past period' },
+    ],
   },
-});
+];
 
-function ChplDevelopers() {
-  const $state = getAngularService('$state');
-  const DateUtil = getAngularService('DateUtil');
-  const { data, isLoading } = useFetchDevelopers();
-  const [developers, setDevelopers] = useState([]);
-  const [developerValueToLoad, setDeveloperValueToLoad] = useState('');
-  const classes = useStyles();
+function ChplDevelopersPage() {
+  const [filters, setFilters] = useState(staticFilters);
+  const acbQuery = useFetchAcbs();
+
   useEffect(() => {
-    if (isLoading) { return; }
-    setDevelopers(data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  }, [data, isLoading]);
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    const values = acbQuery.data.acbs
+      .map((acb) => ({
+        ...acb,
+        value: acb.name,
+        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'acbsForActiveListings')
+      .concat({
+        ...certificationBodies,
+        key: 'acbsForActiveListings',
+        display: 'Has active Listings with ONC-ACB',
+        values,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'acbsForAllListings')
+      .concat({
+        ...certificationBodies,
+        key: 'acbsForAllListings',
+        display: 'Has any Listings with ONC-ACB',
+        values,
+      }));
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
-  const goToDeveloper = (_, { id }) => {
-    $state.go('.developer', { id });
+  const analytics = {
+    category: 'Developers',
   };
 
   return (
-    <>
-      <Typography className={classes.headingPadding} variant="h1">
-        View Developers
-      </Typography>
-      { /* eslint-disable react/jsx-props-no-spreading */}
-      <Card>
-        <CardContent>
-          <Autocomplete
-            id="developers"
-            name="developers"
-            options={developers}
-            onChange={goToDeveloper}
-            inputValue={developerValueToLoad}
-            onInputChange={(event, newValue) => {
-              setDeveloperValueToLoad(newValue);
-            }}
-            getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
-            renderInput={(params) => <ChplTextField {...params} label="Choose Developer" />}
-          />
-        </CardContent>
-      </Card>
-      <br />
-      { /* eslint-enable react/jsx-props-no-spreading */}
-      {developers.length > 0
-          && (
-            <Card>
-              <CardContent>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Code</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Last modified Date</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {developers.map((developer) => (
-                        <TableRow key={developer.id}>
-                          <TableCell>{developer.developerCode}</TableCell>
-                          <TableCell>{developer.name}</TableCell>
-                          <TableCell>{developer.status.status}</TableCell>
-                          <TableCell>{DateUtil.getDisplayDateFormat(parseInt(developer.lastModifiedDate, 10))}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </CardContent>
-            </Card>
-          )}
-    </>
+    <FilterProvider
+      analytics={analytics}
+      filters={filters}
+      storageKey="storageKey-developersPage"
+    >
+      <ChplDevelopersView
+        analytics={analytics}
+      />
+    </FilterProvider>
   );
 }
 
-export default ChplDevelopers;
+export default ChplDevelopersPage;
 
-ChplDevelopers.propTypes = {
+ChplDevelopersPage.propTypes = {
 };
