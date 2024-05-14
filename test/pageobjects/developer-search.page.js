@@ -1,6 +1,6 @@
 import SearchPage from './search.page';
 
-const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
+const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 class DeveloperSearchPage extends SearchPage {
   constructor() {
@@ -13,8 +13,9 @@ class DeveloperSearchPage extends SearchPage {
     };
   }
 
-  open() {
-    return super.open('organizations/developers');
+  async open() {
+    await super.open('organizations/developers');
+    await (browser.waitUntil(async () => !(await this.isLoading())));
   }
 
   get composeMessageButton() {

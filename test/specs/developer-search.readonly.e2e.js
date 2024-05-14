@@ -1,7 +1,7 @@
 import DeveloperSearchPage from '../pageobjects/developer-search.page';
 import LoginComponent from '../pageobjects/login-component.page';
 
-const { browser, expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
+const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 let login;
 let page;
@@ -10,7 +10,6 @@ describe('the Developer Search page', () => {
   beforeEach(async () => {
     page = new DeveloperSearchPage();
     await page.open();
-    await (browser.waitUntil(async () => !(await page.isLoading())));
   });
 
   it('should have table headers in a defined order', async () => {
