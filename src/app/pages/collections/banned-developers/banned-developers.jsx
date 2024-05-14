@@ -32,6 +32,7 @@ function ChplBannedDevelopersCollectionPage() {
       .filter((filter) => filter.key !== 'certificationBodies')
       .concat({
         ...certificationBodies,
+        key: 'acbsForAllListings',
         values,
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
