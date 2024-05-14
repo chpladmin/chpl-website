@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 13.16.0
+_14 May 2024_
+
+### Features
+* Congito users need to be associated with a CHPL env (DEV, QA,etc)
+* Update Change Requests to incorporate Cognito users
+* Provide new UI/UX for "Developers" organization page
+
+### User Interface Updates
+* Make "Risk Management Summary Information" not required
+
+---
+
 ## Version 13.15.0
 _29 April 2024_
 
