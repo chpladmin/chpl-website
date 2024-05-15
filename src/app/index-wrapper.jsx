@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import AppWrapper from './app-wrapper';
 
 import { ChplLoginToggle } from 'components/login';
+import ChplCognitoToggle from 'components/login/cognito-toggle';
 import { getAngularService } from 'services/angular-react-helper';
 
 function IndexWrapper() {
@@ -32,6 +33,7 @@ function IndexWrapper() {
 
   return (
     <AppWrapper showQueryTools={false}>
+      <ChplCognitoToggle />
       <ChplLoginToggle />
     </AppWrapper>
   );
