@@ -8,6 +8,17 @@ const usePostChangePassword = () => {
     .then((response) => response.data));
 };
 
+const usePostCognitoLogin = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('cognito/users/authenticate', data)
+    .then((response) => response.data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('listing');
+    },
+  });
+};
+
 const usePostEmailResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/email-reset-password', data)
@@ -33,6 +44,7 @@ const usePostResetPassword = () => {
 
 export {
   usePostChangePassword,
+  usePostCognitoLogin,
   usePostEmailResetPassword,
   usePostLogin,
   usePostResetPassword,

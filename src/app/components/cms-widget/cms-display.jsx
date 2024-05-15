@@ -151,9 +151,9 @@ function ChplCmsDisplay() {
     navigator.clipboard.writeText(certId);
   };
 
-  const createCertId = () => {
+  const createCertId = async () => {
     $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
-    mutate({}, {
+    await mutate({}, {
       onSuccess: (response) => {
         setCertId(response.data.ehrCertificationId);
       },
