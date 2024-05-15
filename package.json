@@ -5,23 +5,15 @@
   "repository": "chpladmin/chpl-website",
   "scripts": {
     "build": "webpack",
-    "html-lint": "htmllint src/app/**/*.html",
-    "html-lint:verbose": "htmllint --rc .htmllintrc.verbose src/app/**/*.html",
     "start": "webpack-dev-server --env.server",
     "start:dev": "webpack-dev-server --env.server --env.useDev",
     "start:prod": "webpack-dev-server --env.server --env.NODE_ENV=production",
-    "start:all": "concurrently -p \"[{name}]\" -n \"HTTP,AngularJS,ReactJS\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"yarn start\" \"yarn test:auto\"",
-    "profile": "webpack --profile --json > test_reports/stats.json",
     "test": "jest",
     "test:auto": "jest --watchAll",
-    "lint": "eslint src e2e",
+    "lint": "eslint src",
     "lint:fix": "eslint --fix",
-    "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
-    "e2e:full": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
-    "e2e:lint": "eslint e2e",
-    "e2e:clean": "rm -r test_reports/e2e/* || true",
-    "report:generate": "npx allure generate --clean /chpl/dev/allure/results/ -o /chpl/dev/allure/report",
-    "report:open": "npx allure open /chpl/dev/allure/report"
+    "wdio": "wdio run ./wdio.conf.js",
+    "wdio:clean": "rm -r test_reports/e2e/* || true"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
@@ -84,14 +76,12 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.5.0",
-    "@wdio/allure-reporter": "^7.31.1",
-    "@wdio/cli": "^7.31.1",
-    "@wdio/codemod": "^0.12.0",
-    "@wdio/jasmine-framework": "^7.30.2",
-    "@wdio/junit-reporter": "^7.31.1",
-    "@wdio/local-runner": "^7.31.1",
-    "@wdio/spec-reporter": "^7.31.1",
-    "@wdio/sync": "^7.31.1",
+    "@testing-library/webdriverio": "^3.2.1",
+    "@wdio/cli": "^8.36.1",
+    "@wdio/jasmine-framework": "^8.36.1",
+    "@wdio/junit-reporter": "^8.36.1",
+    "@wdio/local-runner": "^8.36.1",
+    "@wdio/spec-reporter": "^8.36.1",
     "angular-mocks": "^1.8.3",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^26.6.3",
@@ -101,7 +91,6 @@
     "browser-sync-spa": "~1.0.3",
     "chromedriver": "^123.0.0",
     "clean-webpack-plugin": "^0.1.19",
-    "concurrently": "^7.6.0",
     "css-loader": "^0.28.11",
     "del": "~2.0.2",
     "eslint": "7.32.0",
@@ -118,8 +107,6 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^5.6.0",
-    "htmllint-cli": "^0.0.7",
-    "htmllint-loader": "https://github.com/andlar/htmllint-loader.git#commit=8b317b18f71ff3027baea0619ce309d165ad11b6",
     "http-proxy-middleware": "~0.9.1",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
@@ -144,6 +131,7 @@
     "uglify-save-license": "~0.4.1",
     "url-loader": "^1.1.2",
     "wdio-chromedriver-service": "^7.3.2",
+    "wdio-wait-for": "^3.0.11",
     "webpack": "5.91.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.3",
@@ -151,10 +139,8 @@
     "wiredep": "~2.2.2",
     "zombie": "^5.0.8"
   },
-  "resolutions": {
-    "deasync": "0.1.16"
-  },
   "engines": {
     "node": ">=0.10.0"
-  }
+  },
+  "packageManager": "yarn@4.2.2"
 }
