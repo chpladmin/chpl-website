@@ -9,8 +9,7 @@ import {
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
-import { UserWrapper } from 'components/login';
-import { FlagContext } from 'shared/contexts';
+import AppWrapper from 'app-wrapper';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
@@ -18,48 +17,43 @@ function ChplDeveloper(props) {
     canEdit,
     canJoin,
     canSplit,
-    demographicChangeRequestIsOn,
     developer,
     dispatch,
     errorMessages,
     isEditing,
+    isInvalid: initialIsInvalid,
     isSplitting,
   } = props;
   const [isInvalid, setIsInvalid] = useState(false);
-  const flags = {
-    demographicChangeRequestIsOn,
-  };
 
   useEffect(() => {
-    setIsInvalid(props.isInvalid);
-  }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
+    setIsInvalid(initialIsInvalid);
+  }, [initialIsInvalid]);
 
   return (
-    <UserWrapper>
-      <FlagContext.Provider value={flags}>
-        { (isEditing)
-          && (
-            <ChplDeveloperEdit
-              developer={developer}
-              dispatch={dispatch}
-              isInvalid={isInvalid}
-              isSplitting={isSplitting}
-              errorMessages={errorMessages}
-            />
-          )}
-        { !isEditing
-          && (
-            <ChplDeveloperView
-              canEdit={canEdit}
-              canJoin={canJoin}
-              canSplit={canSplit}
-              developer={developer}
-              dispatch={dispatch}
-              isSplitting={isSplitting}
-            />
-          )}
-      </FlagContext.Provider>
-    </UserWrapper>
+    <AppWrapper>
+      { (isEditing)
+        && (
+          <ChplDeveloperEdit
+            developer={developer}
+            dispatch={dispatch}
+            isInvalid={isInvalid}
+            isSplitting={isSplitting}
+            errorMessages={errorMessages}
+          />
+        )}
+      { !isEditing
+        && (
+          <ChplDeveloperView
+            canEdit={canEdit}
+            canJoin={canJoin}
+            canSplit={canSplit}
+            developer={developer}
+            dispatch={dispatch}
+            isSplitting={isSplitting}
+          />
+        )}
+    </AppWrapper>
   );
 }
 
@@ -69,7 +63,6 @@ ChplDeveloper.propTypes = {
   canEdit: bool,
   canJoin: bool,
   canSplit: bool,
-  demographicChangeRequestIsOn: bool,
   developer: developerPropType.isRequired,
   dispatch: func,
   errorMessages: arrayOf(string),
@@ -82,7 +75,6 @@ ChplDeveloper.defaultProps = {
   canEdit: false,
   canJoin: false,
   canSplit: false,
-  demographicChangeRequestIsOn: false,
   dispatch: () => {},
   errorMessages: [],
   isEditing: false,
