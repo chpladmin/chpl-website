@@ -167,6 +167,7 @@ function ChplDeveloperEdit(props) {
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
@@ -246,6 +247,7 @@ function ChplDeveloperEdit(props) {
       },
       website: formik.values.website,
     };
+    setIsProcessing(true);
     dispatch('save', updatedDeveloper);
   };
 
@@ -507,6 +509,7 @@ function ChplDeveloperEdit(props) {
         <ChplActionBar
           dispatch={handleDispatch}
           isDisabled={isActionDisabled()}
+          isProcessing={isProcessing}
           errors={errorMessages.concat(errors)}
           warnings={warnings}
         />
