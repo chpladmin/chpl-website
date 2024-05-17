@@ -1,5 +1,8 @@
 const DevelopersEditComponent = {
-  templateUrl: 'chpl.organizations/developers/developer/edit.html',
+  template: `<chpl-developer-edit-bridge
+  developer="$ctrl.developer"
+  ></chpl-developer-edit-bridge>
+`,
   bindings: {
     developer: '<',
   },
@@ -127,7 +130,7 @@ const DevelopersEditComponent = {
       let type = 'error';
       let title = 'Error in submission';
       if (error && error.data && error.data.error
-                && error.data.error === 'No data was changed.') {
+          && error.data.error === 'No data was changed.') {
         messages = ['Cannot "Submit" a change request when no changes have been made.'];
         type = 'info';
         title = 'Please check your input';
@@ -135,7 +138,7 @@ const DevelopersEditComponent = {
         messages = error.data.errorMessages ? error.data.errorMessages : [];
       }
       const body = messages.length > 0 ? `Message${messages.length > 1 ? 's' : ''}:<ul>${messages.map((e) => `<li>${e}</li>`).join('')}</ul>`
-        : 'An unexpected error occurred. Please try again or contact ONC for support';
+            : 'An unexpected error occurred. Please try again or contact ONC for support';
       this.toaster.pop({
         type,
         title,
