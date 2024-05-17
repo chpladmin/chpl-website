@@ -58,11 +58,10 @@ On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpa
 
 #### E2E (AQA) Testing
 
-##### E2E (AQA) Credentials
+E2E tests can be run with the `yarn wdio` command
 
-Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
+##### Environments
 
-#### E2E (AQA) Running Tests
 By default, E2E tests will be executed against http://localhost:3000/.
 
 The tests can be also be executed using different environments. The other URLs for other environments need to be configured in `e2e/config/urls.js` file and URLs must have the correct format. There is a `e2e/config/urlsEXAMPLE.js` that describes the necessary entries and formatting.
@@ -70,9 +69,23 @@ The tests can be also be executed using different environments. The other URLs f
 Copy `e2e/config/urlsEXAMPLE.js` to the file `e2e/config/urls.js` and set the urls for each environments in the file
 
 To specify the environment to run the tests against, pass ENV variable with 'dev', 'qa' ,'stage' options. For example:
-* `ENV=dev yarn e2e`
-* `ENV=qa yarn e2e`
-* `ENV=stage yarn e2e`
+* `ENV=dev yarn wdio`
+* `ENV=qa yarn wdio`
+* `ENV=stage yarn wdio`
+
+##### Notes
+
+When debugging, taking screenshots can be useful. The command `await browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
+
+##### Old notes
+
+Some of these items will need to be recreated, but at this time this is all OBE
+
+###### E2E (AQA) Credentials
+
+Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
+
+###### E2E (AQA) Running Tests
 
 If a single spec file should be tested, instead of all of them:
 * `yarn e2e --spec path/to/file.spec.js`
@@ -84,8 +97,6 @@ To run a suite of tests:
 * `yarn e2e --suite suite-name`.
 
 For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
-
-When debugging, taking screenshots can be useful. The command `browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
 
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/
