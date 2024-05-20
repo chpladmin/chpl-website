@@ -1,29 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
   CircularProgress,
   Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
-import AddIcon from '@material-ui/icons/Add';
 import { useSnackbar } from 'notistack';
 
 import { usePutDeveloper } from 'api/developer';
-import { ChplActionBar } from 'components/action-bar';
 import ChplDeveloper from 'components/developer/developer';
-import { ChplConfirmation, ChplTextField } from 'components/util';
+import { ChplConfirmation } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -66,7 +53,6 @@ const useStyles = makeStyles({
 });
 
 function ChplEditDeveloper({ developer }) {
-  const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();

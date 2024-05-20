@@ -7,9 +7,6 @@ const DevelopersEditComponent = {
     developer: '<',
   },
   controller: class DevelopersEditComponent {
-    constructor() {
-    }
-
     $onChanges(changes) {
       if (changes.developer) {
         this.developer = angular.copy(changes.developer.currentValue);
