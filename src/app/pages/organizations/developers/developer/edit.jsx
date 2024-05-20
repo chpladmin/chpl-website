@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -18,13 +18,14 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useSnackbar } from 'notistack';
 
-import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
+import { usePutDeveloper } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
 import ChplDeveloper from 'components/developer/developer';
 import { ChplConfirmation, ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import { palette, theme } from 'themes';
 
@@ -67,11 +68,11 @@ const useStyles = makeStyles({
 function ChplEditDeveloper({ developer }) {
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
-  const toaster = getAngularService('toaster');
-  const { data, isLoading } = useFetchDevelopers();
-  const { mutate } = usePutJoinDevelopers();
-  const [action, setAction] = useState(undefined);
+  const { hasAnyRole } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = usePutDeveloper();
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
 
@@ -84,85 +85,56 @@ function ChplEditDeveloper({ developer }) {
         }, { reload: true });
         break;
       case 'save':
-        /*
-          if (this.hasAnyRole(['chpl-developer'])) {
-          this.saveRequest(developer);
-          } else {
-          this.errorMessages = [];
-          const that = this;
-          this.developer = developer;
-          this.networkService.updateDeveloper(this.developer).then((response) => {
-          let body;
-          if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-          that.developer = response;
-          that.backup.developer = angular.copy(response);
-          that.$state.go('^', undefined, { reload: true });
-          } else if (response.data.errorMessages) {
-          body = response.data.errorMessages.join(', ');
-          } else if (response.data.error) {
-          body = response.data.error;
-          } else {
-          body = 'An unexpected error has occurred.';
-          }
-          if (body) {
-          that.toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body,
+        if (hasAnyRole(['chpl-developer'])) {
+          saveRequest(developer);
+        } else {
+          setErrorMessages([]);
+          mutate({
+            developer,
+          }, {
+            onSuccess: (response) => {
+              setIsProcessing(false);
+              let body;
+              if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                $state.go('^', undefined, { reload: true });
+              } else if (response.data.errorMessages) {
+                body = response.data.errorMessages.join(', ');
+              } else if (response.data.error) {
+                body = response.data.error;
+              } else {
+                body = 'An unexpected error has occurred.';
+              }
+              if (body) {
+                enqueueSnackbar(body, {
+                  variant: 'error',
+                });
+              }
+            },
+            onError: (error) => {
+              setIsProcessing(false);
+              let body;
+              if (error.data.errorMessages) {
+                setErrorMessages(error.data.errorMessages);
+              } else if (error.data.error) {
+                body = error.data.error;
+              } else {
+                body = 'An unexpected error has occurred.';
+              }
+              if (body) {
+                enqueueSnackbar(body, {
+                  variant: 'error',
+                });
+              }
+            },
           });
-          }
-          }, (error) => {
-          let body;
-          if (error.data.errorMessages) {
-          that.errorMessages = error.data.errorMessages;
-          } else if (error.data.error) {
-          body = error.data.error;
-          } else {
-          body = 'An unexpected error has occurred.';
-          }
-          if (body) {
-          that.toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body,
-          });
-          }
-          });
-          }
-          }
-        */
-        setIsProcessing(true);
-        mutate({
-          developer: activeDeveloper,
-          developerIds: developersToJoin.map((dev) => dev.id),
-        }, {
-          onSuccess: (response) => {
-            setIsProcessing(false);
-            const message = `Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`;
-            toaster.pop({
-              type: 'success',
-              title: 'Join Developer request submitted',
-              body: message,
-            });
-            $state.go('^');
-          },
-          onError: (error) => {
-            setIsProcessing(false);
-            const message = error.response.data.error;
-            toaster.pop({
-              type: 'error',
-              title: 'An error has occurred',
-              body: message,
-            });
-            $rootScope.$digest();
-          },
-        });
+        }
         break;
         // no default
     }
   };
 
   const saveRequest = (data) => {
+    console.info('saving CR for developer edit');
     /*
       const that = this;
       const request = {
@@ -179,6 +151,7 @@ function ChplEditDeveloper({ developer }) {
   };
 
   const handleResponse = () => {
+    console.info('handling CR response for developer edit');
     /*
       let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
       if (this.isWithdrawing) {
@@ -192,6 +165,7 @@ function ChplEditDeveloper({ developer }) {
   };
 
   const handleError = (error) => {
+    console.info('handling CR error for developer edit');
     /*
       let messages;
       let type = 'error';
@@ -206,16 +180,21 @@ function ChplEditDeveloper({ developer }) {
       }
       const body = messages.length > 0 ? `Message${messages.length > 1 ? 's' : ''}:<ul>${messages.map((e) => `<li>${e}</li>`).join('')}</ul>`
       : 'An unexpected error occurred. Please try again or contact ONC for support';
-      this.toaster.pop({
-      type,
-      title,
-      body,
-      bodyOutputType: 'trustedHtml',
-      });
+            enqueueSnackbar(body, {
+              variant: type,
+              // bodyOutputType: 'trustedHtml', maybe?
+            });
     */
   };
 
-  if (isLoading || !developer) { return <CircularProgress />; }
+  /* is this needed?
+    closeConfirmation() {
+      this.action = undefined;
+      this.$state.go('^', undefined, { reload: true });
+    }
+    */
+
+  if (!developer) { return <CircularProgress />; }
 
   return (
     <>
@@ -232,7 +211,7 @@ function ChplEditDeveloper({ developer }) {
             isEditing
             errorMessages={errorMessages}
           />
-          { action === 'confirmation'
+          { isConfirming
             && (
               <ChplConfirmation
                 dispatch={() => handleDispatch('cancel')}

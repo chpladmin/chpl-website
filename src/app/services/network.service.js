@@ -557,10 +557,6 @@ export default class NetworkService {
     return this.apiPUT(`/certified_products/${cpObject.listing.id}`, cpObject);
   }
 
-  updateDeveloper(developer) {
-    return this.apiPUT(`/developers/${developer.id}`, developer);
-  }
-
   updateProduct(productObject) {
     return this.apiPUT('/products', productObject);
   }
