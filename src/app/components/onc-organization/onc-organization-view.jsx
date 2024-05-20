@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,7 +16,6 @@ import ReactGA from 'react-ga4';
 
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
 import { acb as acbPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -47,7 +46,7 @@ function ChplOncOrganizationView(props) {
     setOrganization(initialOrg);
   }, [initialOrg]);
 
- const edit = () => {
+  const edit = () => {
     dispatch('edit');
   };
 
@@ -142,12 +141,12 @@ function ChplOncOrganizationView(props) {
               id="organization-component-edit"
               onClick={() => {
                 edit(true);
-                ReactGA.event(`Save Organization Edit`, 
-                {
-                  category: 'Logged In User Actions',
-                  action: `test`,
-                  label: `${organization.name}`,
-                });
+                ReactGA.event('Save Organization Edit',
+                  {
+                    category: 'Logged In User Actions',
+                    action: 'test',
+                    label: `${organization.name}`,
+                  });
               }}
             >
               <EditOutlinedIcon />
