@@ -21,15 +21,15 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { citation: 'zz name', description: 'zz name', optionalStandardId: 2 },
-            { citation: 'name 1', description: 'name 1', optionalStandardId: 3 },
+            { displayValue: 'zz name', description: 'zz name', optionalStandardId: 2 },
+            { displayValue: 'name 1', description: 'name 1', optionalStandardId: 3 },
           ]}
           options={[
-            { citation: 'zz name', description: 'zz name', id: 2 },
-            { citation: 'extra name', description: 'extra name', id: 6 },
-            { citation: 'name 1', description: 'name 1', id: 3 },
-            { citation: 'fake name', description: 'fake name', id: 5 },
-            { citation: 'a name', description: 'a name', id: 4 },
+            { displayValue: 'zz name', description: 'zz name', id: 2 },
+            { displayValue: 'extra name', description: 'extra name', id: 6 },
+            { displayValue: 'name 1', description: 'name 1', id: 3 },
+            { displayValue: 'fake name', description: 'fake name', id: 5 },
+            { displayValue: 'a name', description: 'a name', id: 4 },
           ]}
           onChange={hocMock.onChange}
         />,
@@ -74,13 +74,13 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { citation: 'zz name', description: 'zz name', optionalStandardId: 2 },
-            { citation: 'name 1', description: 'name 1', optionalStandardId: 3 },
+            { displayValue: 'zz name', description: 'zz name', optionalStandardId: 2 },
+            { displayValue: 'name 1', description: 'name 1', optionalStandardId: 3 },
           ]}
           options={[
-            { citation: 'zz name', description: 'zz name', id: 2 },
-            { citation: 'name 1', description: 'name 1', id: 3 },
-            { citation: 'a name', description: 'a name', id: 4 },
+            { displayValue: 'zz name', description: 'zz name', id: 2 },
+            { displayValue: 'name 1', description: 'name 1', id: 3 },
+            { displayValue: 'a name', description: 'a name', id: 4 },
           ]}
           onChange={hocMock.onChange}
         />,
@@ -138,9 +138,9 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { optionalStandardId: 3, citation: 'name 1', description: 'name 1' },
-            { optionalStandardId: 2, citation: 'zz name', description: 'zz name' },
-            { optionalStandardId: 4, citation: 'a name', description: 'a name', key: expect.any(Number) },
+            { optionalStandardId: 3, displayValue: 'name 1', description: 'name 1' },
+            { optionalStandardId: 2, displayValue: 'zz name', description: 'zz name' },
+            { optionalStandardId: 4, displayValue: 'a name', description: 'a name', key: expect.any(Number) },
           ],
           key: 'optionalStandards',
         });
@@ -153,13 +153,13 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { citation: 'zz name', description: 'zz name', optionalStandardId: 2 },
-            { citation: 'name 1', description: 'name 1', optionalStandardId: 3 },
+            { displayValue: 'zz name', description: 'zz name', optionalStandardId: 2 },
+            { displayValue: 'name 1', description: 'name 1', optionalStandardId: 3 },
           ]}
           options={[
-            { citation: 'zz name', description: 'zz name', id: 2 },
-            { citation: 'name 1', description: 'name 1', id: 3 },
-            { citation: 'a name', description: 'a name', id: 4 },
+            { displayValue: 'zz name', description: 'zz name', id: 2 },
+            { displayValue: 'name 1', description: 'name 1', id: 3 },
+            { displayValue: 'a name', description: 'a name', id: 4 },
           ]}
           onChange={hocMock.onChange}
         />,
@@ -183,7 +183,7 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { optionalStandardId: 2, citation: 'zz name', description: 'zz name' },
+            { optionalStandardId: 2, displayValue: 'zz name', description: 'zz name' },
           ],
           key: 'optionalStandards',
         });
