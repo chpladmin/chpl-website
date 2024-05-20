@@ -48,11 +48,20 @@ function ChplOncOrganization(props) {
           onSuccess: () => {
             setIsEditing(false);
             setIsProcessing(false);
-            ReactGA.event('save', {
-              category: 'Organizations',
+            ReactGA.event('Save', {
+              category: 'Logged In Users',
               label: organization.name,
               group: hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb'),
             });
+          // New ReactGA event for creating * Not working 
+          // if (isCreating) {
+          //   ReactGA.event('Create', {
+          //     category: 'Logged In Users',
+          //     label: organization.name,
+          //     group: hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb'),
+          //   });
+          // }
+
             dispatch('edit', '');
           },
           onError: (error) => {
