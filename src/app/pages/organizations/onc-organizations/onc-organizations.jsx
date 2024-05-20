@@ -80,7 +80,7 @@ function ChplOncOrganizations() {
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['chpl-onc-acb'];
   const classes = useStyles();
-  
+
   useEffect(() => {
     setOrgType(window.location.href.includes('onc-acbs') ? 'acb' : 'atl');
   }, []);
@@ -112,13 +112,14 @@ function ChplOncOrganizations() {
   const navigate = (target) => {
     const next = target || (orgs.length === 1 ? orgs[0] : undefined);
     setActiveId(next?.id);
-    const category = `ONC-${target.acbCode ? 'ACB' : 'ATL'} Organizations`;
+    const category = `ONC-${target.acbCode ? 'ACB' : 'ATL'} Organization`;
     const group = hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb');
-    ReactGA.event('Select Menu', {
-      category,
-      label: target.name,
-      group,
-    });
+    ReactGA.event(`Go to ${category}`,
+      {
+        category: 'Navigation',
+        label: target.name,
+        group,
+      });
     setIsCreating(false);
     setIsEditing('');
     if (!next) {
@@ -146,11 +147,6 @@ function ChplOncOrganizations() {
           navigate(undefined);
         } else {
           setIsEditing(payload);
-          ReactGA.event('Create', {
-            category: 'Organizations',
-            label: organization.name,
-            group: hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb'),
-          });
         }
         break;
       case 'cognito-invite':
@@ -255,9 +251,7 @@ function ChplOncOrganizations() {
                       onClick={() => setIsCreating(true)}
                       endIcon={<AddIcon />}
                       id="create-new-organization"
-                    >
-                      Create
-                    </Button>
+                    />
                   </CardActions>
                 )}
             </Card>
