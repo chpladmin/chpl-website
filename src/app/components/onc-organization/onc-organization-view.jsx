@@ -40,7 +40,6 @@ function ChplOncOrganizationView(props) {
     organization: initialOrg,
     dispatch,
   } = props;
-  const { hasAnyRole } = useContext(UserContext);
   const [organization, setOrganization] = useState(undefined);
   const classes = useStyles();
 
@@ -48,28 +47,7 @@ function ChplOncOrganizationView(props) {
     setOrganization(initialOrg);
   }, [initialOrg]);
 
-  const edit = () => {
-    if (hasAnyRole(['chpl-admin'])) {
-      ReactGA.event({
-        category: 'Organizations',
-        action: 'Edit',
-        label: `${organization.name} | chpl-admin`,
-      });
-    }
-    if (hasAnyRole(['chpl-onc'])) {
-      ReactGA.event({
-        category: 'Organizations',
-        action: 'Edit',
-        label: `${organization.name} | chpl-onc`,
-      });
-    }
-    if (hasAnyRole(['chpl-onc-acb'])) {
-      ReactGA.event({
-        category: 'Organizations',
-        action: 'Edit',
-        label: `${organization.name} | chpl-onc-acb`,
-      });
-    }
+ const edit = () => {
     dispatch('edit');
   };
 
@@ -162,7 +140,15 @@ function ChplOncOrganizationView(props) {
               variant="contained"
               aria-label={`Edit ${organization.name} Information`}
               id="organization-component-edit"
-              onClick={edit}
+              onClick={() => {
+                edit(true);
+                ReactGA.event(`Save Organization Edit`, 
+                {
+                  category: 'Logged In User Actions',
+                  action: `test`,
+                  label: `${organization.name}`,
+                });
+              }}
             >
               <EditOutlinedIcon />
             </Button>
