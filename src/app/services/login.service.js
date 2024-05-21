@@ -120,7 +120,7 @@
 
       const token = getToken();
       if (token) {
-        const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'][0];
+        const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'].filter((grp) => !grp.endsWith('-env'))[0];
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
