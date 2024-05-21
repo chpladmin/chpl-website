@@ -27,7 +27,7 @@ import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplLink, ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
 import { FlagContext, UserContext } from 'shared/contexts';
 
@@ -67,22 +67,22 @@ const useStyles = makeStyles({
   },
 });
 
-const getStatusData = (statusEvents, DateUtil, classes) => {
-  const current = statusEvents
-    .sort((a, b) => b.statusDate - a.statusDate)[0];
-  if (current.status.id === 1) { return; }
-  const rest = statusEvents
-    .sort((a, b) => b.statusDate - a.statusDate).slice(1);
+const getStatusData = (statuses, classes) => {
+  const current = statuses
+    .sort((a, b) => b.startDay - a.startDay)[0];
+  if (current.endDay) { return undefined; }
+  const rest = statuses
+    .sort((a, b) => b.statuses - a.statuses);// .slice(1);
   return (
     <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>
         <strong>Status</strong>
         <br />
-        {current.status.status}
+        {current.status.name}
         {' '}
         as of
         {' '}
-        {DateUtil.getDisplayDateFormat(current.statusDate)}
+        {getDisplayDateFormat(current.startDay)}
         {current.reason
           && (
             <>
@@ -108,14 +108,14 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
             <AccordionDetails
               className={classes.historyContent}
             >
-              {rest.map((status) => (
+              {rest.map((status, idx) => (
                 <Timeline
                   key={status.id}
                 >
                   <TimelineItem>
                     <TimelineSeparator>
                       <TimelineDot />
-                      <TimelineConnector />
+                      { (idx !== statuses.length - 1) && <TimelineConnector /> }
                     </TimelineSeparator>
                     <TimelineContent>
                       <Typography
@@ -123,33 +123,41 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
                       >
                         <strong>Status</strong>
                         <br />
-                        {status.status.status === 'Suspended by ONC'
-                          && (
-                            <>
-                              <i className="fa status-bad fa-exclamation-circle" />
-                              {' '}
-                            </>
-                          )}
-                        {status.status.status === 'Under certification ban by ONC'
-                          && (
-                            <>
-                              <i className="fa status-bad fa-ban" />
-                              {' '}
-                            </>
-                          )}
-                        {status.status.status}
+                        {status.status.name === 'Suspended by ONC'
+                         && (
+                           <>
+                             <i className="fa status-bad fa-exclamation-circle" />
+                             {' '}
+                           </>
+                         )}
+                        {status.status.name === 'Under certification ban by ONC'
+                         && (
+                           <>
+                             <i className="fa status-bad fa-ban" />
+                             {' '}
+                           </>
+                         )}
+                        {status.status.name}
                         {' '}
                         as of
                         {' '}
-                        {DateUtil.getDisplayDateFormat(status.statusDate)}
+                        {getDisplayDateFormat(status.startDay)}
+                        { status.endDay
+                          && (
+                            <>
+                              ended
+                              {' '}
+                              {getDisplayDateFormat(status.endDay)}
+                            </>
+                          )}
                         .
                         {' '}
                         {status.reason
-                          && (
-                            <>
-                              {status.reason}
-                            </>
-                          )}
+                         && (
+                           <>
+                             {status.reason}
+                           </>
+                         )}
                       </Typography>
                     </TimelineContent>
                   </TimelineItem>
@@ -163,11 +171,12 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
 };
 
 function ChplDeveloperView(props) {
-  const DateUtil = getAngularService('DateUtil');
   const {
     canEdit,
     canJoin,
     canSplit,
+    developer: initialDeveloper,
+    dispatch,
     isSplitting,
   } = props;
   const [developer, setDeveloper] = useState({});
@@ -176,8 +185,8 @@ function ChplDeveloperView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setDeveloper(props.developer);
-  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+    setDeveloper(initialDeveloper);
+  }, [initialDeveloper]);
 
   const can = (action) => {
     if (action === 'edit') {
@@ -199,15 +208,15 @@ function ChplDeveloperView(props) {
   };
 
   const edit = () => {
-    props.dispatch('edit');
+    dispatch('edit');
   };
 
   const join = () => {
-    props.dispatch('join');
+    dispatch('join');
   };
 
   const split = () => {
-    props.dispatch('split');
+    dispatch('split');
   };
 
   return (
@@ -304,7 +313,7 @@ function ChplDeveloperView(props) {
               </Typography>
             )}
         </div>
-        {developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes)}
+        {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
       </CardContent>
       {(can('edit') || can('split') || can('join'))
         && (
