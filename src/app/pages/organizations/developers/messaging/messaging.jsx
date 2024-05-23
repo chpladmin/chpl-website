@@ -87,8 +87,7 @@ function ChplMessaging({ dispatch }) {
       body: formik.values.body,
       query: queryParams(),
     }, {
-      onSuccess: (response) => {
-        console.debug({ response });
+      onSuccess: () => {
         enqueueSnackbar('Message queued', { variant: 'success' });
         dispatch();
       },
