@@ -71,6 +71,7 @@ function ChplEditDeveloper({ developer }) {
         }, { reload: true });
         break;
       case 'save':
+        setIsProcessing(true);
         if (hasAnyRole(['chpl-developer'])) {
           saveRequest(payload);
         } else {
@@ -95,10 +96,13 @@ function ChplEditDeveloper({ developer }) {
               }
             },
             onError: (error) => {
+              console.log({error});
               setIsProcessing(false);
               let body;
               if (error.data.errorMessages) {
                 setErrorMessages(error.data.errorMessages);
+              } else if (error.response.data.errorMessages) {
+                setErrorMessages(error.response.data.errorMessages);
               } else if (error.data.error) {
                 body = error.data.error;
               } else {
@@ -193,6 +197,7 @@ function ChplEditDeveloper({ developer }) {
             developer={developer}
             dispatch={handleDispatch}
             isEditing
+            isProcessing
             errorMessages={errorMessages}
           />
           { isConfirming

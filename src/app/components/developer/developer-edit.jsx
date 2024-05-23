@@ -164,6 +164,7 @@ function ChplDeveloperEdit(props) {
   const {
     developer,
     dispatch,
+    isProcessing,
     isSplitting,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
@@ -171,7 +172,6 @@ function ChplDeveloperEdit(props) {
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const classes = useStyles();
   let formik;
@@ -236,7 +236,6 @@ function ChplDeveloperEdit(props) {
       },
       website: formik.values.website,
     };
-    setIsProcessing(true);
     dispatch('save', updatedDeveloper);
   };
 
@@ -269,7 +268,7 @@ function ChplDeveloperEdit(props) {
       {
         status: { name: formik.values.status },
         startDay: formik.values.startDay,
-        endDay: formik.values.startDay,
+        endDay: formik.values.endDay,
         reason: formik.values.reason,
       },
     ]);
