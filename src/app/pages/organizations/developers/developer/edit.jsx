@@ -62,7 +62,7 @@ function ChplEditDeveloper({ developer }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
 
-  const handleDispatch = (action) => {
+  const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
         $state.go('organizations.developers.developer', {
@@ -72,12 +72,10 @@ function ChplEditDeveloper({ developer }) {
         break;
       case 'save':
         if (hasAnyRole(['chpl-developer'])) {
-          saveRequest(developer);
+          saveRequest(payload);
         } else {
           setErrorMessages([]);
-          mutate({
-            developer,
-          }, {
+          mutate(payload, {
             onSuccess: (response) => {
               setIsProcessing(false);
               let body;

@@ -32,7 +32,7 @@ function ChplDeveloper(props) {
 
   return (
     <AppWrapper>
-      { (isEditing)
+      { isEditing
         && (
           <ChplDeveloperEdit
             developer={developer}

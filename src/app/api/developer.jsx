@@ -70,7 +70,7 @@ const usePostAttestationException = () => {
 const usePutDeveloper = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put(`developers/${data.developer.id}`, data)
+  return useMutation(async (data) => axios.put(`developers/${data.id}`, data)
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');

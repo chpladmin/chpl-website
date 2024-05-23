@@ -191,7 +191,7 @@ function ChplDeveloperEdit(props) {
   useEffect(() => {
     const warns = [];
     statuses
-      .sort((a, b) => a.startDay > b.startDay ? 1 : -1)
+      .sort((a, b) => a.startDay < b.startDay ? 1 : -1)
       .forEach((status, idx, arr) => {
         if (idx === 0) {
           if (status.endDay) {
@@ -267,7 +267,7 @@ function ChplDeveloperEdit(props) {
     setStatuses([
       ...statuses,
       {
-        status: { status: formik.values.status },
+        status: { name: formik.values.status },
         startDay: formik.values.startDay,
         endDay: formik.values.startDay,
         reason: formik.values.reason,
@@ -363,7 +363,7 @@ function ChplDeveloperEdit(props) {
                     </TableHead>
                     <TableBody>
                       { statuses
-                        ?.sort((a, b) => a.startDay > b.startDay ? 1 : -1)
+                        ?.sort((a, b) => a.startDay < b.startDay ? 1 : -1)
                         .map((status) => (
                           <TableRow key={status.id || status.startDay}>
                             <TableCell>

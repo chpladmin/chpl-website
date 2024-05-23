@@ -69,10 +69,10 @@ const useStyles = makeStyles({
 
 const getStatusData = (statuses, classes) => {
   const current = statuses
-    .sort((a, b) => b.startDay - a.startDay)[0];
+    .sort((a, b) => a.startDay < b.startDay ? 1 : -1)[0];
   if (current.endDay) { return undefined; }
   const rest = statuses
-    .sort((a, b) => b.statuses - a.statuses);// .slice(1);
+    .sort((a, b) => a.startDay < b.startDay ? 1 : -1);// .slice(1);
   return (
     <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>
