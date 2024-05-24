@@ -140,13 +140,12 @@ function ChplOncOrganizationView(props) {
               aria-label={`Edit ${organization.name} Information`}
               id="organization-component-edit"
               onClick={() => {
-                edit(true);
-                ReactGA.event('Save Organization Edit',
+                ReactGA.event('test',
                   {
-                    category: 'Logged In User Actions',
-                    action: 'test',
+                    category: 'ONC Organizations',
                     label: `${organization.name}`,
                   });
+                  edit(true);
               }}
             >
               <EditOutlinedIcon />
