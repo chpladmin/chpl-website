@@ -96,14 +96,12 @@ function ChplEditDeveloper({ developer }) {
               }
             },
             onError: (error) => {
-              console.log({error});
-              setIsProcessing(false);
               let body;
-              if (error.data.errorMessages) {
+              if (error.data?.errorMessages) {
                 setErrorMessages(error.data.errorMessages);
-              } else if (error.response.data.errorMessages) {
+              } else if (error.response?.data?.errorMessages) {
                 setErrorMessages(error.response.data.errorMessages);
-              } else if (error.data.error) {
+              } else if (error.data?.error) {
                 body = error.data.error;
               } else {
                 body = 'An unexpected error has occurred.';
@@ -112,6 +110,7 @@ function ChplEditDeveloper({ developer }) {
                 enqueueSnackbar(body, {
                   variant: 'error',
                 });
+              setIsProcessing(false);
               }
             },
           });
