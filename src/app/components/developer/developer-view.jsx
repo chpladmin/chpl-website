@@ -67,6 +67,8 @@ const useStyles = makeStyles({
   },
 });
 
+const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDay);
+
 const getStatusData = (statuses, classes) => {
   const current = statuses
     .sort((a, b) => a.startDay < b.startDay ? 1 : -1)[0];
@@ -179,21 +181,26 @@ function ChplDeveloperView(props) {
     dispatch,
     isSplitting,
   } = props;
-  const [developer, setDeveloper] = useState({});
-  const { demographicChangeRequestIsOn } = useContext(FlagContext);
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
+  const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
+  const [developer, setDeveloper] = useState({});
   const classes = useStyles();
 
   useEffect(() => {
     setDeveloper(initialDeveloper);
   }, [initialDeveloper]);
 
+  useEffect(() => {
+    setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
+  }, [isOn]);
+
   const can = (action) => {
     if (action === 'edit') {
       return canEdit
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
-          || (hasAnyRole(['chpl-onc-acb']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-          || (hasAnyRole(['chpl-developer']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+          || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses)) // allowed for ACB iff Developer is "Active"
+          || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
       return canJoin
@@ -202,7 +209,7 @@ function ChplDeveloperView(props) {
     if (action === 'split') {
       return canSplit
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
-          || (hasAnyRole(['chpl-onc-acb']) && developer.status.status === 'Active')); // allowed for ACB iff Developer is "Active"
+          || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses))); // allowed for ACB iff Developer is "Active"
     }
     return false;
   };
