@@ -145,7 +145,7 @@ function ChplOncOrganizationView(props) {
                     category: 'ONC Organizations',
                     label: `${organization.name}`,
                   });
-                  edit(true);
+                edit(true);
               }}
             >
               <EditOutlinedIcon />

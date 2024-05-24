@@ -250,9 +250,10 @@ function ChplOncOrganizations() {
                       color="primary"
                       onClick={() => setIsCreating(true)}
                       endIcon={<AddIcon />}
-                      id="create-new-organization">
+                      id="create-new-organization"
+                    >
                       Create
-                      </Button>
+                    </Button>
                   </CardActions>
                 )}
             </Card>
