@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
+import { usePostChangeRequest } from 'api/change-requests';
 import { usePutDeveloper } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
 import { ChplConfirmation } from 'components/util';
@@ -56,11 +57,48 @@ function ChplEditDeveloper({ developer }) {
   const $state = getAngularService('$state');
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePutDeveloper();
+  const { mutate: putDeveloper } = usePutDeveloper();
+  const { mutate: postChangeRequest } = usePostChangeRequest();
+  const [confirmationText, setConfirmationText] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
-  const [isConfirming, setIsConfirming] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
+
+  const handleResponse = () => {
+    setConfirmationText('The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.');
+  };
+
+  const handleError = (error) => {
+    let messages;
+    let type = 'error';
+    // todo: check on API to figure out how to trigger this
+    if (error.response?.data?.error === 'No data was changed.') {
+      messages = ['Cannot "Submit" a change request when no changes have been made.'];
+      type = 'info';
+    } else {
+      messages = error.response?.data?.errorMessages ? error.response.data.errorMessages : [];
+    }
+    const body = messages.length > 0 ? `Message${messages.length > 1 ? 's' : ''}:<ul>${messages.map((e) => `<li>${e}</li>`).join('')}</ul>`
+      : 'An unexpected error occurred. Please try again or contact ONC for support';
+    // todo: figure out how to make this a <List>
+    enqueueSnackbar(<div dangerouslySetInnerHTML={{ __html: body }} />, {
+      variant: type,
+    });
+  };
+
+  const saveRequest = (data) => {
+    postChangeRequest({
+      developer,
+      details: data,
+      changeRequestType: {
+        id: 2,
+        name: 'Developer Demographics Change Request',
+      },
+    }, {
+      onSuccess: () => handleResponse(),
+      onError: (error) => handleError(error),
+    });
+  };
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -76,7 +114,7 @@ function ChplEditDeveloper({ developer }) {
           saveRequest(payload);
         } else {
           setErrorMessages([]);
-          mutate(payload, {
+          putDeveloper(payload, {
             onSuccess: (response) => {
               setIsProcessing(false);
               let body;
@@ -110,7 +148,7 @@ function ChplEditDeveloper({ developer }) {
                 enqueueSnackbar(body, {
                   variant: 'error',
                 });
-              setIsProcessing(false);
+                setIsProcessing(false);
               }
             },
           });
@@ -119,67 +157,6 @@ function ChplEditDeveloper({ developer }) {
         // no default
     }
   };
-
-  const saveRequest = (data) => {
-    console.info('saving CR for developer edit');
-    /*
-      const that = this;
-      const request = {
-      developer: this.developer,
-      details: data,
-      changeRequestType: {
-      id: 2,
-      name: 'Developer Demographics Change Request',
-      },
-      };
-      this.networkService.submitChangeRequest(request)
-      .then(that.handleResponse.bind(that), that.handleError.bind(that));
-    */
-  };
-
-  const handleResponse = () => {
-    console.info('handling CR response for developer edit');
-    /*
-      let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
-      if (this.isWithdrawing) {
-      confirmationText = 'Your change request has been successfully withdrawn.';
-      }
-      this.networkService.getChangeRequests().then((response) => { this.changeRequests = response; });
-      this.action = 'confirmation';
-      this.confirmationText = confirmationText;
-      this.isWithdrawing = false;
-    */
-  };
-
-  const handleError = (error) => {
-    console.info('handling CR error for developer edit');
-    /*
-      let messages;
-      let type = 'error';
-      let title = 'Error in submission';
-      if (error && error.data && error.data.error
-      && error.data.error === 'No data was changed.') {
-      messages = ['Cannot "Submit" a change request when no changes have been made.'];
-      type = 'info';
-      title = 'Please check your input';
-      } else {
-      messages = error.data.errorMessages ? error.data.errorMessages : [];
-      }
-      const body = messages.length > 0 ? `Message${messages.length > 1 ? 's' : ''}:<ul>${messages.map((e) => `<li>${e}</li>`).join('')}</ul>`
-      : 'An unexpected error occurred. Please try again or contact ONC for support';
-            enqueueSnackbar(body, {
-              variant: type,
-              // bodyOutputType: 'trustedHtml', maybe?
-            });
-    */
-  };
-
-  /* is this needed?
-    closeConfirmation() {
-      this.action = undefined;
-      this.$state.go('^', undefined, { reload: true });
-    }
-    */
 
   if (!developer) { return <CircularProgress />; }
 
@@ -196,10 +173,10 @@ function ChplEditDeveloper({ developer }) {
             developer={developer}
             dispatch={handleDispatch}
             isEditing
-            isProcessing
+            isProcessing={isProcessing}
             errorMessages={errorMessages}
           />
-          { isConfirming
+          { confirmationText.length > 0
             && (
               <ChplConfirmation
                 dispatch={() => handleDispatch('cancel')}
