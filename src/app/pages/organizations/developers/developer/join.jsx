@@ -92,6 +92,18 @@ function ChplJoinDevelopers({ id }) {
 
   const canAdd = (developer) => !developersToJoin.find((dev) => dev.id === developer.id);
 
+  const getStatus = (developer) => {
+    if (developer.statuses?.length === 0) {
+      return undefined;
+    }
+    const current = developer.statuses
+          .sort((a, b) => a.startDay < b.startDay ? 1 : -1)[0];
+    if (current.endDay) {
+      return undefined;
+    }
+    return current.status.name;
+  }
+
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
@@ -180,7 +192,7 @@ function ChplJoinDevelopers({ id }) {
                            <TableRow key={developer.id}>
                              <TableCell>{developer.developerCode}</TableCell>
                              <TableCell>{developer.name}</TableCell>
-                             <TableCell>{developer.status.status}</TableCell>
+                             <TableCell>{getStatus(developer)}</TableCell>
                              <TableCell>
                                <Button
                                  onClick={() => removeDeveloper(developer)}
@@ -233,7 +245,7 @@ function ChplJoinDevelopers({ id }) {
                         <TableRow key={developer.id}>
                           <TableCell>{developer.developerCode}</TableCell>
                           <TableCell>{developer.name}</TableCell>
-                          <TableCell>{developer.status.status}</TableCell>
+                          <TableCell>{getStatus(developer)}</TableCell>
                           <TableCell>
                             <Button
                               onClick={() => addDeveloper(undefined, developer)}

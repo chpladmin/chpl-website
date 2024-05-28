@@ -189,6 +189,7 @@ function ChplDeveloperEdit(props) {
   }, [props.errorMessages]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
+    if (!statuses || statuses.length === 0) { return; }
     const warns = [];
     statuses
       .sort((a, b) => a.startDay < b.startDay ? 1 : -1)
