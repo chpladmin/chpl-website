@@ -97,12 +97,12 @@ function ChplJoinDevelopers({ id }) {
       return undefined;
     }
     const current = developer.statuses
-          .sort((a, b) => a.startDay < b.startDay ? 1 : -1)[0];
+      .sort((a, b) => (a.startDay < b.startDay ? 1 : -1))[0];
     if (current.endDay) {
       return undefined;
     }
     return current.status.name;
-  }
+  };
 
   const handleDispatch = (action) => {
     switch (action) {

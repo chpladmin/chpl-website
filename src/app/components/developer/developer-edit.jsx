@@ -168,7 +168,6 @@ function ChplDeveloperEdit(props) {
     isSplitting,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const [errors, setErrors] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
@@ -192,8 +191,8 @@ function ChplDeveloperEdit(props) {
     if (!statuses || statuses.length === 0) { return; }
     const warns = [];
     statuses
-      .sort((a, b) => a.startDay < b.startDay ? 1 : -1)
-      .forEach((status, idx, arr) => {
+      .sort((a, b) => (a.startDay < b.startDay ? 1 : -1))
+      .forEach((status, idx) => {
         if (idx === 0) {
           if (status.endDay) {
             // check that this is checking the most recent date
@@ -282,7 +281,7 @@ function ChplDeveloperEdit(props) {
     setStatuses(statuses.filter((item) => item.startDay !== status.startDay));
   };
 
-  const isActionDisabled = () => isInvalid || errors.length > 0 || !formik.isValid;
+  const isActionDisabled = () => isInvalid || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
@@ -363,7 +362,7 @@ function ChplDeveloperEdit(props) {
                     </TableHead>
                     <TableBody>
                       { statuses
-                        ?.sort((a, b) => a.startDay < b.startDay ? 1 : -1)
+                        ?.sort((a, b) => (a.startDay < b.startDay ? 1 : -1))
                         .map((status) => (
                           <TableRow key={status.id || status.startDay}>
                             <TableCell>
@@ -516,7 +515,7 @@ function ChplDeveloperEdit(props) {
           dispatch={handleDispatch}
           isDisabled={isActionDisabled()}
           isProcessing={isProcessing}
-          errors={errorMessages.concat(errors)}
+          errors={errorMessages}
           warnings={warnings}
         />
       </Container>
@@ -531,5 +530,6 @@ ChplDeveloperEdit.propTypes = {
   dispatch: func.isRequired,
   errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,
+  isProcessing: bool.isRequired,
   isSplitting: bool.isRequired,
 };
