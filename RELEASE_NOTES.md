@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 13.17.0
+_28 May 2024_
+
+### Features
+* Add new subscription subjects to filters
+
+### Bug Fixes
+* Get "CMS Certification ID" reliably
+
+### Flagged Features
+* Allow log in by Cognito users in CHPL UI
+
+---
+
 ## Version 13.16.0
 _14 May 2024_
 

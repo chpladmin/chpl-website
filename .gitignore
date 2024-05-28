@@ -24,4 +24,3 @@ e2e/config/urls.js
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-src/app/aws-exports.js
