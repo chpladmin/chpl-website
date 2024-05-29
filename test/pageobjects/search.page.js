@@ -1,6 +1,12 @@
-class CollectionPage {
+const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
+import Page from './page.es6';
+
+class SearchPage extends Page {
   constructor() {
+    super();
+    this.name = 'SearchPage';
     this.elements = {
+      ...this.elements,
       loading: 'body*=Loading',
       header: 'h1',
       table: 'table',
@@ -14,7 +20,10 @@ class CollectionPage {
     };
   }
 
-  /* eslint-disable indent */
+  open (path) {
+    return super.open(path);
+  }
+
   async getBodyText() {
     return (await
             (await
@@ -24,17 +33,13 @@ class CollectionPage {
             ).nextElement()
            ).getText();
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async isLoading() {
     return (await
             $(this.elements.loading)
            ).isDisplayed();
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async getTableHeaders() {
     return (await
             (await
@@ -42,14 +47,12 @@ class CollectionPage {
             ).$('thead')
            ).$$('th');
   }
-  /* eslint-enable indent */
 
   async hasNoResults() {
     const results = await this.getTotalResultCount();
     return results === 0;
   }
 
-  /* eslint-disable indent */
   async getTotalResultCount() {
     const results = (await
                      (await
@@ -62,9 +65,7 @@ class CollectionPage {
                     );
     return results === 'No results found' ? 0 : parseInt(results.split(' ')[2], 10);
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async resetFilters() {
     const initialResultCount = await this.getTotalResultCount();
     await
@@ -78,9 +79,7 @@ class CollectionPage {
     await browser.keys('Escape');
     await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async removeFilter(category, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
@@ -105,9 +104,7 @@ class CollectionPage {
       console.log(`removeFilter: ${err}`);
     }
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async toggleOperator(category) {
     const initialResultCount = await this.getTotalResultCount();
     await
@@ -122,9 +119,7 @@ class CollectionPage {
       console.log(`toggleOperator: ${err}`);
     }
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async setDateFilter(category, isBefore, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
@@ -152,9 +147,7 @@ class CollectionPage {
       console.log(`setDateFilter: ${err}`);
     }
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async setListFilter(category, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
@@ -182,9 +175,7 @@ class CollectionPage {
       console.log(`setListFilter: ${err}`);
     }
   }
-  /* eslint-enable indent */
 
-  /* eslint-disable indent */
   async getResults() {
     return (await
             (await
@@ -192,7 +183,6 @@ class CollectionPage {
             ).$('tbody')
            ).$$('tr');
   }
-  /* eslint-enable indent */
 
   async getCellInRow(rowIdx, colIdx) {
     const row = (await this.getResults())[rowIdx];
@@ -204,7 +194,6 @@ class CollectionPage {
     await this.searchForText('');
   }
 
-  /* eslint-disable indent */
   async searchForText(text) {
     const initialResultCount = await this.getTotalResultCount();
     await (
@@ -222,10 +211,8 @@ class CollectionPage {
       console.log(`searchForText: ${err}`);
     }
   }
-  /* eslint-enable indent */
-  
-  /* eslint-disable indent */
-  async clearFilter(category, value) {   
+
+  async clearFilter(category, value) {
     await
     (await
      (await
@@ -243,7 +230,6 @@ class CollectionPage {
      ).click()
     );
   }
-  /* eslint-enable indent */
 }
 
-export default CollectionPage;
+export default SearchPage;

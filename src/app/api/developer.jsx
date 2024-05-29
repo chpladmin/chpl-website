@@ -90,6 +90,12 @@ const usePutJoinDevelopers = () => {
   });
 };
 
+const usePostMessage = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('developers/messages', data)
+    .then((response) => response));
+};
+
 export {
   useFetchAttestations,
   useFetchDevelopers,
@@ -99,4 +105,5 @@ export {
   usePostAttestationException,
   usePutDeveloper,
   usePutJoinDevelopers,
+  usePostMessage,
 };

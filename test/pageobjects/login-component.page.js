@@ -1,4 +1,6 @@
-import credentials from '../../config/credentials';
+import credentials from '../../e2e/config/credentials';
+
+const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 class LoginComponent {
   constructor() {
