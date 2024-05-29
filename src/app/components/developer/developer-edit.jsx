@@ -164,6 +164,8 @@ function ChplDeveloperEdit(props) {
   const {
     developer,
     dispatch,
+    errorMessages: initialErrorMessages,
+    isInvalid: initialIsInvalid,
     isProcessing,
     isSplitting,
   } = props;
@@ -176,16 +178,16 @@ function ChplDeveloperEdit(props) {
   let formik;
 
   useEffect(() => {
-    setStatuses(props.developer.statuses);
-  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+    setStatuses(developer.statuses);
+  }, [developer]);
 
   useEffect(() => {
-    setIsInvalid(props.isInvalid);
-  }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
+    setIsInvalid(initialIsInvalid);
+  }, [initialIsInvalid]);
 
   useEffect(() => {
-    setErrorMessages(props.errorMessages);
-  }, [props.errorMessages]); // eslint-disable-line react/destructuring-assignment
+    setErrorMessages(initialErrorMessages);
+  }, [initialErrorMessages]);
 
   useEffect(() => {
     if (!statuses || statuses.length === 0) { return; }
