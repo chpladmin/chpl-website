@@ -67,14 +67,14 @@ const useStyles = makeStyles({
   },
 });
 
-const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDay);
+const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDate);
 
 const getStatusData = (statuses, classes) => {
   const current = statuses
-    .sort((a, b) => a.startDay < b.startDay ? 1 : -1)[0];
-  if (current.endDay) { return undefined; }
+    .sort((a, b) => a.startDate < b.startDate ? 1 : -1)[0];
+  if (current.endDate) { return undefined; }
   const rest = statuses
-    .sort((a, b) => a.startDay < b.startDay ? 1 : -1);// .slice(1);
+    .sort((a, b) => a.startDate < b.startDate ? 1 : -1);// .slice(1);
   return (
     <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>
@@ -84,7 +84,7 @@ const getStatusData = (statuses, classes) => {
         {' '}
         as of
         {' '}
-        {getDisplayDateFormat(current.startDay)}
+        {getDisplayDateFormat(current.startDate)}
         {current.reason
           && (
             <>
@@ -143,13 +143,13 @@ const getStatusData = (statuses, classes) => {
                         {' '}
                         as of
                         {' '}
-                        {getDisplayDateFormat(status.startDay)}
-                        { status.endDay
+                        {getDisplayDateFormat(status.startDate)}
+                        { status.endDate
                           && (
                             <>
                               ended
                               {' '}
-                              {getDisplayDateFormat(status.endDay)}
+                              {getDisplayDateFormat(status.endDate)}
                             </>
                           )}
                         .

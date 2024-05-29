@@ -85,13 +85,13 @@ const validationSchema = yup.object({
       then: yup.string()
         .required('Developer Status is required'),
     }),
-  startDay: yup.date()
+  startDate: yup.date()
     .when('isAdding', {
       is: true,
       then: yup.date()
         .required('Start Date is required'),
     }),
-  endDay: yup.date()
+  endDate: yup.date()
     .when('isAdding', {
       is: true,
       then: yup.date(),
@@ -191,10 +191,10 @@ function ChplDeveloperEdit(props) {
     if (!statuses || statuses.length === 0) { return; }
     const warns = [];
     statuses
-      .sort((a, b) => (a.startDay < b.startDay ? 1 : -1))
+      .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
       .forEach((status, idx) => {
         if (idx === 0) {
-          if (status.endDay) {
+          if (status.endDate) {
             // check that this is checking the most recent date
             warns.push('To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.');
           }
@@ -256,8 +256,8 @@ function ChplDeveloperEdit(props) {
       ...formik.values,
       isAdding: false,
       status: '',
-      startDay: '',
-      endDay: '',
+      startDate: '',
+      endDate: '',
       reason: '',
     });
   };
@@ -267,18 +267,18 @@ function ChplDeveloperEdit(props) {
       ...statuses,
       {
         status: { name: formik.values.status },
-        startDay: formik.values.startDay,
-        endDay: formik.values.endDay,
+        startDate: formik.values.startDate,
+        endDate: formik.values.endDate,
         reason: formik.values.reason,
       },
     ]);
     cancelAdd();
   };
 
-  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDay || !!formik.errors.reason;
+  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.reason;
 
   const removeStatus = (status) => {
-    setStatuses(statuses.filter((item) => item.startDay !== status.startDay));
+    setStatuses(statuses.filter((item) => item.startDate !== status.startDate));
   };
 
   const isActionDisabled = () => isInvalid || !formik.isValid;
@@ -288,8 +288,8 @@ function ChplDeveloperEdit(props) {
       name: developer.name || '',
       selfDeveloper: !!developer.selfDeveloper,
       status: '',
-      startDay: '',
-      endDay: '',
+      startDate: '',
+      endDate: '',
       reason: '',
       isAdding: false,
       fullName: developer.contact?.fullName || '',
@@ -362,17 +362,17 @@ function ChplDeveloperEdit(props) {
                     </TableHead>
                     <TableBody>
                       { statuses
-                        ?.sort((a, b) => (a.startDay < b.startDay ? 1 : -1))
+                        ?.sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
                         .map((status) => (
-                          <TableRow key={status.id || status.startDay}>
+                          <TableRow key={status.id || status.startDate}>
                             <TableCell>
                               <Typography variant="body2">{ status.status.name }</Typography>
                             </TableCell>
                             <TableCell>
-                              <Typography variant="body2">{ getDisplayDateFormat(status.startDay) }</Typography>
+                              <Typography variant="body2">{ getDisplayDateFormat(status.startDate) }</Typography>
                             </TableCell>
                             <TableCell>
-                              <Typography variant="body2">{ getDisplayDateFormat(status.endDay) }</Typography>
+                              <Typography variant="body2">{ getDisplayDateFormat(status.endDate) }</Typography>
                             </TableCell>
                             <TableCell>
                               <Typography variant="body2">{ status.reason }</Typography>
@@ -435,25 +435,25 @@ function ChplDeveloperEdit(props) {
                       <ChplTextField
                         type="date"
                         id="start-day"
-                        name="startDay"
+                        name="startDate"
                         label="Start Date"
                         required
-                        value={formik.values.startDay}
+                        value={formik.values.startDate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.startDay && !!formik.errors.startDay}
-                        helperText={formik.touched.startDay && formik.errors.startDay}
+                        error={formik.touched.startDate && !!formik.errors.startDate}
+                        helperText={formik.touched.startDate && formik.errors.startDate}
                       />
                       <ChplTextField
                         type="date"
                         id="end-day"
-                        name="endDay"
+                        name="endDate"
                         label="End Date"
-                        value={formik.values.endDay}
+                        value={formik.values.endDate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.endDay && !!formik.errors.endDay}
-                        helperText={formik.touched.endDay && formik.errors.endDay}
+                        error={formik.touched.endDate && !!formik.errors.endDate}
+                        helperText={formik.touched.endDate && formik.errors.endDate}
                       />
                       <ChplTextField
                         className={classes.fullWidth}

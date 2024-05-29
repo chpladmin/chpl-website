@@ -97,8 +97,8 @@ function ChplJoinDevelopers({ id }) {
       return undefined;
     }
     const current = developer.statuses
-      .sort((a, b) => (a.startDay < b.startDay ? 1 : -1))[0];
-    if (current.endDay) {
+      .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
+    if (current.endDate) {
       return undefined;
     }
     return current.status.name;
