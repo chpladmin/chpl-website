@@ -149,7 +149,7 @@ exports.config = {
     'spec',
     ['junit', {
       outputDir: './test_reports/e2e/junitreport',
-      outputFileFormat: () => `wdio-${(new Date()).getTime()}-junit-reporter.xml`,
+      outputFileFormat: (opts) => `wdio-${opts.cid}-junit-reporter.xml`,
     }],
   ],
 

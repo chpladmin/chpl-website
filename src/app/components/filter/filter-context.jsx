@@ -272,7 +272,7 @@ function FilterProvider(props) {
     .concat({
       ...defaultFilter,
       key: 'searchTerm',
-      values: [{ value: searchTerm, selected: searchTerm }],
+      values: [{ value: decodeURI(searchTerm), selected: decodeURI(searchTerm) }],
     })
     .map((f) => ({
       ...f,
