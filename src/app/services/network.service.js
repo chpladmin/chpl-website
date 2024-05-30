@@ -238,10 +238,7 @@ export default class NetworkService {
     return this.apiGET(`/developers/${id}/hierarchy`);
   }
 
-  getDevelopers(showDeleted) {
-    if (showDeleted) {
-      return this.apiGET('/developers?showDeleted=true');
-    }
+  getDevelopers() {
     return this.apiGET('/developers');
   }
 
