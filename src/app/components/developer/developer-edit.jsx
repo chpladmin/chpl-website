@@ -280,7 +280,10 @@ function ChplDeveloperEdit(props) {
   const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.reason;
 
   const removeStatus = (status) => {
-    setStatuses(statuses.filter((item) => item.startDate !== status.startDate));
+    setStatuses(statuses.filter((item) => item.startDate !== status.startDate
+        || item.endDate !== status.endDate
+        || item.reason !== status.reason
+        || item.status.name !== status.status.name));
   };
 
   const isActionDisabled = () => isInvalid || !formik.isValid;
