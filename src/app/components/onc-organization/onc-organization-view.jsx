@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import ReactGA from 'react-ga4';
 
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -138,7 +139,14 @@ function ChplOncOrganizationView(props) {
               variant="contained"
               aria-label={`Edit ${organization.name} Information`}
               id="organization-component-edit"
-              onClick={edit}
+              onClick={() => {
+                ReactGA.event('test',
+                  {
+                    category: 'ONC Organizations',
+                    label: `${organization.name}`,
+                  });
+                edit();
+              }}
             >
               <EditOutlinedIcon />
             </Button>
