@@ -12,6 +12,14 @@ import { UserWrapper } from 'components/login';
 function AppWrapper({ children, showQueryTools }) {
   ReactGA.initialize([
     {
+      trackingId: 'G-7SZDMS75VC',
+      gaOptions: {
+        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
+      },
+      gtagOptions: {
+        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
+      },
+    }, {
       trackingId: 'GTM-KC3FP96',
       gaOptions: {
         debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
