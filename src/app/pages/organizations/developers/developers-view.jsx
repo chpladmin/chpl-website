@@ -108,6 +108,8 @@ const useStyles = makeStyles({
 function ChplDevelopersView(props) {
   const storageKey = 'storageKey-developersView';
   const $analytics = getAngularService('$analytics');
+  const API = getAngularService('API');
+  const { getApiKey } = getAngularService('authService');
   const { analytics } = props;
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
@@ -153,6 +155,11 @@ function ChplDevelopersView(props) {
     { property: 'developer_code', text: 'Developer Code', sortable: true },
     { text: 'ONC-ACB for active Listings' },
   ];
+
+  const downloadDevelopers = () => {
+    const url = `${API}/developers/search/download?api_key=${getApiKey()}&${queryString()}`;
+    window.open(url);
+  };
 
   const handleDispatch = () => {
     setMessaging(false);
@@ -242,20 +249,37 @@ function ChplDevelopersView(props) {
                       </Typography>
                     )}
                 </div>
-                { developers.length > 0 && hasAnyRole(['chpl-admin', 'chpl-onc'])
+                { developers.length > 0
                   && (
-                    <Button
-                      onClick={() => setMessaging(true)}
-                      id="compose-message"
-                      variant="outlined"
-                      color="primary"
-                    >
-                      send message to
-                      {' '}
-                      { recordCount }
-                      {' '}
-                      developers
-                    </Button>
+                    <div>
+                      <Button
+                        onClick={downloadDevelopers}
+                        id="download-developers"
+                        variant="outlined"
+                        color="primary"
+                      >
+                        Download information for
+                        {' '}
+                        { recordCount }
+                        {' '}
+                        {`Developer${recordCount !== 1 ? 's' : ''}`}
+                      </Button>
+                      { hasAnyRole(['chpl-admin', 'chpl-onc'])
+                        && (
+                          <Button
+                            onClick={() => setMessaging(true)}
+                            id="compose-message"
+                            variant="outlined"
+                            color="primary"
+                          >
+                            Send message to
+                            {' '}
+                            { recordCount }
+                            {' '}
+                            {`Developer${recordCount !== 1 ? 's' : ''}`}
+                          </Button>
+                        )}
+                    </div>
                   )}
               </div>
               { developers.length > 0
