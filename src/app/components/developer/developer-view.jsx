@@ -147,6 +147,7 @@ const getStatusData = (statuses, classes) => {
                         { status.endDate
                           && (
                             <>
+                              {' '}
                               ended
                               {' '}
                               {getDisplayDateFormat(status.endDate)}
