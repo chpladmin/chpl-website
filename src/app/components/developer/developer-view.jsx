@@ -74,7 +74,7 @@ const getStatusData = (statuses, classes) => {
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
   if (current.endDate) { return undefined; }
   const rest = statuses
-    .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));// .slice(1);
+    .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
   return (
     <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>

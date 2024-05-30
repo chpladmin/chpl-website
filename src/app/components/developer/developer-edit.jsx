@@ -197,7 +197,6 @@ function ChplDeveloperEdit(props) {
       .forEach((status, idx) => {
         if (idx === 0) {
           if (status.endDate) {
-            // check that this is checking the most recent date
             warns.push('To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.');
           }
         }
@@ -535,6 +534,10 @@ ChplDeveloperEdit.propTypes = {
   dispatch: func.isRequired,
   errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,
-  isProcessing: bool.isRequired,
+  isProcessing: bool,
   isSplitting: bool.isRequired,
+};
+
+ChplDeveloperEdit.defaultProps = {
+  isProcessing: false,
 };
