@@ -109,7 +109,7 @@ function ChplDevelopersView(props) {
   const storageKey = 'storageKey-developersView';
   const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
-  const { getApiKey } = getAngularService('authService');
+  const { getApiKey, getToken } = getAngularService('authService');
   const { analytics } = props;
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
@@ -157,7 +157,10 @@ function ChplDevelopersView(props) {
   ];
 
   const downloadDevelopers = () => {
-    const url = `${API}/developers/search/download?api_key=${getApiKey()}&${queryString()}`;
+    let url = `${API}/developers/search/download?api_key=${getApiKey()}&${queryString()}`;
+    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
+      url += `&authorization=Bearer%20${getToken()}`;
+    }
     window.open(url);
   };
 
