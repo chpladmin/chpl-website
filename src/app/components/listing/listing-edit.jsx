@@ -20,6 +20,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplAdditionalInformationEdit from './details/additional-information/additional-information-edit';
 import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplG1G2sEdit from './details/g1g2/g1g2s-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
@@ -387,9 +388,7 @@ function ChplListingEdit() {
             <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>
           </Box>
           <CardContent>
-            <ChplAdditionalInformation
-              listing={listing}
-            />
+            <ChplAdditionalInformationEdit />
           </CardContent>
         </Card>
       </div>
