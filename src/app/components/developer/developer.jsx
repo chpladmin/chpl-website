@@ -22,6 +22,7 @@ function ChplDeveloper(props) {
     errorMessages,
     isEditing,
     isInvalid: initialIsInvalid,
+    isProcessing,
     isSplitting,
   } = props;
   const [isInvalid, setIsInvalid] = useState(false);
@@ -38,6 +39,7 @@ function ChplDeveloper(props) {
             developer={developer}
             dispatch={dispatch}
             isInvalid={isInvalid}
+            isProcessing={isProcessing}
             isSplitting={isSplitting}
             errorMessages={errorMessages}
           />
@@ -68,6 +70,7 @@ ChplDeveloper.propTypes = {
   errorMessages: arrayOf(string),
   isEditing: bool,
   isInvalid: bool,
+  isProcessing: bool,
   isSplitting: bool,
 };
 
@@ -79,5 +82,6 @@ ChplDeveloper.defaultProps = {
   errorMessages: [],
   isEditing: false,
   isInvalid: false,
+  isProcessing: false,
   isSplitting: false,
 };
