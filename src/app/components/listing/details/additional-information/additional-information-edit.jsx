@@ -76,6 +76,7 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)')
     .max(250, 'Field is too long'),
   ics: yup.boolean(),
+  otherAcb: yup.string(),
 
   productCode: yup.string()
     .required('Field is required')
@@ -330,6 +331,7 @@ function ChplAdditionalInformationEdit() {
     initialValues: {
       reportFileLocation: listing.reportFileLocation ?? '',
       ics: listing.ics?.inherits ?? false,
+      otherAcb: listing.otherAcb ?? '',
 
 
       acbCertificationId: listing.acbCertificationId ?? '',
@@ -389,7 +391,16 @@ function ChplAdditionalInformationEdit() {
         && (
           <>ICS stuff</>
         )}
-
+      <ChplTextField
+        id="other-acb"
+        name="otherAcb"
+        label="Other ONC-ACB"
+        value={formik.values.otherAcb}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.otherAcb && !!formik.errors.otherAcb}
+        helperText={formik.touched.otherAcb && formik.errors.otherAcb}
+      />
 
 
 
