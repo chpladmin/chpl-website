@@ -19,6 +19,8 @@ when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue('fa
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
+  dispatch: jest.fn(() => 'dispatch'),
+  hasSearched: true,
   queryString: jest.fn(() => 'queryString'),
 };
 
@@ -32,6 +34,7 @@ jest.mock('components/filter', () => ({
   __esModule: true,
   ChplFilterChips: () => <div>Chips</div>,
   ChplFilterPanel: () => <div>Panel</div>,
+  ChplFilterQuickFilters: () => <div>Quick Filters</div>,
   ChplFilterSearchTerm: () => <div>Search Term</div>,
   useFilterContext: () => mockContext,
 }));
@@ -54,7 +57,7 @@ describe('the ChplSearchView component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Search');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('CHPL Listings');
     });
   });
 });
