@@ -24,7 +24,7 @@ import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
-import { useFetchCertificationStatuses, useFetchClassificationTypes, useFetchPracticeTypes } from 'api/data';
+import { useFetchCertificationStatuses, useFetchClassificationTypes, useFetchPracticeTypes, useFetchTargetedUsers } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext, UserContext } from 'shared/contexts';
@@ -72,11 +72,13 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   reportFileLocation: yup.string()
-    .required('Field is required') // for 2014 edition
+    .required('Field is required') // TODO: for 2014 edition
     .url('Improper format (http://www.example.com)')
     .max(250, 'Field is too long'),
   ics: yup.boolean(),
   otherAcb: yup.string(),
+  newTargetedUser: yup.string()
+    .required('Filed is required'),
 
   productCode: yup.string()
     .required('Field is required')
@@ -124,6 +126,8 @@ function ChplAdditionalInformationEdit() {
   const { hasAnyRole } = useContext(UserContext);
   const [addingAtl, setAddingAtl] = useState(false);
   const [addingStatus, setAddingStatus] = useState(false);
+  const [addingExistingTargetedUser, setAddingExistingTargetedUser] = useState(true);
+  const [addingTargetedUser, setAddingTargetedUser] = useState(false);
   const [acbs, setAcbs] = useState([]);
   const [atls, setAtls] = useState([]);
   const [acbOptions, setAcbOptions] = useState([]);
@@ -133,11 +137,13 @@ function ChplAdditionalInformationEdit() {
   const [classificationTypeOptions, setClassificationTypeOptions] = useState([]);
   const [practiceTypes, setPracticeTypes] = useState([]);
   const [practiceTypeOptions, setPracticeTypeOptions] = useState([]);
+  const [targetedUsers, setTargetedUsers] = useState([]);
   const acbsQuery = useFetchAcbs();
   const atlsQuery = useFetchAtls();
   const certificationStatusesQuery = useFetchCertificationStatuses();
   const classificationTypesQuery = useFetchClassificationTypes();
   const practiceTypesQuery = useFetchPracticeTypes();
+  const targetedUsersQuery = useFetchTargetedUsers();
   const classes = useStyles();
   let formik;
 
@@ -188,6 +194,15 @@ function ChplAdditionalInformationEdit() {
       .map((type) => type.name));
   }, [practiceTypesQuery.data, practiceTypesQuery.isLoading, practiceTypesQuery.isSuccess]);
 
+  useEffect(() => {
+    if (targetedUsersQuery.isLoading || !targetedUsersQuery.isSuccess) {
+      return;
+    }
+    setTargetedUsers(targetedUsersQuery.data.data
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((type) => type.name));
+  }, [targetedUsersQuery.data, targetedUsersQuery.isLoading, targetedUsersQuery.isSuccess]);
+
   const handleBasicChange = (event) => {
     setListing((prev) => ({
       ...prev,
@@ -209,49 +224,35 @@ function ChplAdditionalInformationEdit() {
 
   const handleItemAddition = (type) => {
     switch (type) {
-      case 'certificationEvents':
+      case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
-          certificationEvents: prev.certificationEvents.concat({
-            status: formik.values.newStatusType,
-            eventDay: formik.values.newStatusDay,
-            reason: formik.values.newStatusReason,
-          }),
+          targetedUsers: prev.targetedUsers.concat(
+            targetedUsers
+              .find((tu) => tu.name === formik.values.newTargetedUser)
+              ?? {
+                targetedUserName: formik.values.newTargetedUser,
+              }
+          ),
         }));
-        formik.setFieldValue('newStatusType', '');
-        formik.setFieldValue('newStatusDay', '');
-        formik.setFieldValue('newStatusReason', '');
-        setAddingStatus(false);
+        formik.setFieldValue('newTargetedUser', '');
+        setAddingTargetedUser(false);
         break;
-      case 'oncAtls':
-        setListing((prev) => ({
-          ...prev,
-          testingLabs: prev.testingLabs.concat({
-            testingLab: atls.find((atl) => formik.values.testingLab.endsWith(atl.name)),
-          }),
-        }));
-        formik.setFieldValue('testingLab', '');
-        setAddingAtl(false);
-        break;
-        // no default
+      default:
+        console.error('not found', type, item);
     }
   };
 
   const handleItemRemoval = (type, item) => {
     switch (type) {
-      case 'certificationEvents':
+      case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
-          certificationEvents: prev.certificationEvents.filter((event) => event.eventDay !== item.eventDay),
+          targetedUsers: prev.targetedUsers.filter((tu) => tu.targetedUserName !== item.name),
         }));
         break;
-      case 'oncAtls':
-        setListing((prev) => ({
-          ...prev,
-          testingLabs: prev.testingLabs.filter((atl) => atl.testingLab.id !== item.testingLab.id),
-        }));
-        break;
-        // no default
+      default:
+        console.error('not found', type, item);
     }
   };
 
@@ -332,6 +333,7 @@ function ChplAdditionalInformationEdit() {
       reportFileLocation: listing.reportFileLocation ?? '',
       ics: listing.ics?.inherits ?? false,
       otherAcb: listing.otherAcb ?? '',
+      newTargetedUser: '',
 
 
       acbCertificationId: listing.acbCertificationId ?? '',
@@ -380,7 +382,7 @@ function ChplAdditionalInformationEdit() {
             id="ics"
             name="ics"
             color="primary"
-            value={formik.values.ics}
+            checked={formik.values.ics}
             onChange={handleIcsToggle}
             onBlur={formik.handleBlur}
           />
@@ -401,7 +403,126 @@ function ChplAdditionalInformationEdit() {
         error={formik.touched.otherAcb && !!formik.errors.otherAcb}
         helperText={formik.touched.otherAcb && formik.errors.otherAcb}
       />
-
+      <Typography variant="subtitle1">Targeted Users:</Typography>
+      { listing.targetedUsers?.length > 0
+        && (
+          <>
+            <Card className={classes.fullWidth}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className={classes.oneThirdWidth}>Certification Status</TableCell>
+                    <TableCell className={classes.oneThirdWidth}>Effective Date</TableCell>
+                    <TableCell className={classes.oneThirdWidth}>Reason for Status Change</TableCell>
+                    <TableCell className="sr-only">Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listing.targetedUsers
+                   .sort((a, b) => (a.targetedUserName < b.targetedUserName ? 1 : -1))
+                   .map((tu) => (
+                     <TableRow key={tu.targetedUserName}>
+                       <TableCell>
+                         { tu.targetedUserName }
+                       </TableCell>
+                       <TableCell>
+                         <IconButton variant="outlined" onClick={() => handleItemRemoval('targetedUsers', tu)}>
+                           <Delete color="error" />
+                         </IconButton>
+                       </TableCell>
+                     </TableRow>
+                   ))}
+                </TableBody>
+              </Table>
+            </Card>
+          </>
+        )}
+      { !addingTargetedUser
+        && (
+          <Button
+            size="medium"
+            color="primary"
+            variant="outlined"
+            onClick={() => setAddingTargetedUser(true)}
+            endIcon={<Add fontSize="medium" />}
+          >
+            Add Targeted User
+          </Button>
+        )}
+      { addingTargetedUser
+        && (
+          <>
+            <Typography variant="subtitle2">Adding New Targeted User:</Typography>
+            <Box className={classes.twoColumnContainer}>
+              { addingExistingTargetedUser
+                && (
+                  <ChplTextField
+                    select
+                    id="new-targeted-user"
+                    name="newTargetedUser"
+                    label="New Targeted User"
+                    required
+                    value={formik.values.newTargetedUser}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.newTargetedUser && !!formik.errors.newTargetedUser}
+                    helperText={formik.touched.newTargetedUser && formik.errors.newStatusType}
+                  >
+                    { targetedUsers.map((item, idx) => (
+                      <MenuItem value={item} key={`${item}-${idx}`}>{item}</MenuItem>
+                    ))}
+                  </ChplTextField>
+                )}
+              { !addingExistingTargetedUser
+                && (
+                  <ChplTextField
+                    id="new-targeted-user"
+                    name="newTargetedUser"
+                    label="New Targeted User"
+                    required
+                    value={formik.values.newTargetedUser}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.newTargetedUser && !!formik.errors.newTargetedUser}
+                    helperText={formik.touched.newTargetedUser && formik.errors.newStatusType}
+                  />
+                )}
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="add-existing-targeted-user"
+                    name="addExistingTargetedUser"
+                    color="primary"
+                    checked={addingExistingTargetedUser}
+                    onChange={() => setAddingExistingTargetedUser((prev) => !prev)}
+                  />
+                )}
+                label="Add Existing Targeted User"
+              />
+            </Box>
+            <Box className={classes.cancelAndSaveButton}>
+              <Button
+                size="medium"
+                endIcon={<Clear fontSize="small" />}
+                onClick={() => setAddingTargetedUser(false)}
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+              <Button
+                size="medium"
+                endIcon={<Save fontSize="small" />}
+                variant="contained"
+                color="primary"
+                onClick={() => handleItemAddition('targetedUsers')}
+                disabled={formik.values.newTargetedUser === ''}
+              >
+                Save
+              </Button>
+            </Box>
+          </>
+        )}
 
 
 
