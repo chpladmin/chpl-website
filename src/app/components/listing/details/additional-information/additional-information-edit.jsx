@@ -235,8 +235,8 @@ function ChplAdditionalInformationEdit() {
               }
           ),
         }));
-        formik.setFieldValue('newTargetedUser', '');
         setAddingTargetedUser(false);
+        formik.setFieldValue('newTargetedUser', '');
         break;
       default:
         console.error('not found', type, item);
@@ -248,7 +248,7 @@ function ChplAdditionalInformationEdit() {
       case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
-          targetedUsers: prev.targetedUsers.filter((tu) => tu.targetedUserName !== item.name),
+          targetedUsers: prev.targetedUsers.filter((tu) => tu.targetedUserName !== item.targetedUserName),
         }));
         break;
       default:
