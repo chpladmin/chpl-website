@@ -107,15 +107,15 @@ function ChplResourcesDownload() {
 
   useEffect(() => {
     const data = {
-      'Active products summary': { data: `${API}/download/active?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/active?api_key=${getApiKey()}&format=csv&definition=true`, label: 'Active products' },
-      'Inactive products summary': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/inactive?api_key=${getApiKey()}&format=csv&definition=true`, label: 'Inactive products' },
-      '2014 edition summary': { data: `${API}/download/2014?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/2014?api_key=${getApiKey()}&format=csv&definition=true`, label: '2014 products' },
+      'Active products summary': { data: `${API}/listings/download/active?api_key=${getApiKey()}&format=csv`, definition: `${API}/listings/download/active?api_key=${getApiKey()}&format=csv&definition=true`, label: 'Active products' },
+      'Inactive products summary': { data: `${API}/listings/download/inactive?api_key=${getApiKey()}&format=csv`, definition: `${API}/listings/download/inactive?api_key=${getApiKey()}&format=csv&definition=true`, label: 'Inactive products' },
+      '2014 edition summary': { data: `${API}/listings/download/2014?api_key=${getApiKey()}&format=csv`, definition: `${API}/listings/download/2014?api_key=${getApiKey()}&format=csv&definition=true`, label: '2014 products' },
       'SVAP Summary': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
       'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
       'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}`, definition: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}&definition=true`, label: 'Direct Review Activity' },
-      'Service Base URL List': { data: `${API}/download/service-base-url-list?api_key=${getApiKey()}`, definition: `${API}/download/service-base-url-list?api_key=${getApiKey()}&definition=true`, label: 'Service Base URL List' },
+      'Service Base URL List': { data: `${API}/service-base-url-list/download?api_key=${getApiKey()}`, definition: `${API}/service-base-url-list/download?api_key=${getApiKey()}&definition=true`, label: 'Service Base URL List' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
