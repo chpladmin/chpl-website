@@ -11,5 +11,5 @@ module.exports = {
     ['jest-junit', { outputDirectory: './test_reports/unit/jsx'}],
   ],
   testEnvironment: 'jsdom',
-  testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
+  testRegex: '.*test.jsx$',
 };
