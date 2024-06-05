@@ -78,7 +78,7 @@ const validationSchema = yup.object({
   ics: yup.boolean(),
   otherAcb: yup.string(),
   newTargetedUser: yup.string()
-    .required('Filed is required'),
+    .required('Field is required'),
 
   productCode: yup.string()
     .required('Field is required')
@@ -411,9 +411,7 @@ function ChplAdditionalInformationEdit() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell className={classes.oneThirdWidth}>Certification Status</TableCell>
-                    <TableCell className={classes.oneThirdWidth}>Effective Date</TableCell>
-                    <TableCell className={classes.oneThirdWidth}>Reason for Status Change</TableCell>
+                    <TableCell>Targeted User</TableCell>
                     <TableCell className="sr-only">Action</TableCell>
                   </TableRow>
                 </TableHead>
