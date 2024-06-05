@@ -89,6 +89,7 @@ const allOptions = [
   'Surveillance (Basic)',
   'Surveillance Non-Conformities',
   'Direct Review Activity',
+  'Service Base URL List',
 ];
 
 function ChplResourcesDownload() {
@@ -114,6 +115,7 @@ function ChplResourcesDownload() {
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
       'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}`, definition: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}&definition=true`, label: 'Direct Review Activity' },
+      'Service Base URL List': { data: `${API}/download/service-base-url-list?api_key=${getApiKey()}`, definition: `${API}/download/service-base-url-list?api_key=${getApiKey()}&definition=true`, label: 'Service Base URL List' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
@@ -277,6 +279,18 @@ function ChplResourcesDownload() {
                     <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
                     {' '}
                     Entire collection of Direct Review activity reported to the CHPL.
+                  </li>
+                  <li>
+                    <Typography gutterBottom><strong>Service Base URL List:</strong></Typography>
+                    {' '}
+                    TBD.
+                    {' '}
+                    <ChplLink
+                      href="https://www.healthit.gov"
+                      text={'Find more information on the "Service Base URL List" page'}
+                      analytics={{ event: 'Service Base URL List', category: 'Download CHPL' }}
+                      external={false}
+                    />
                   </li>
                 </ul>
               </div>
