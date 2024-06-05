@@ -89,12 +89,15 @@ const validationSchema = yup.object({
     .when('isAdding', {
       is: true,
       then: yup.date()
+        .max(new Date(), 'Start Date must not be in the future')
         .required('Start Date is required'),
     }),
   endDate: yup.date()
     .when('isAdding', {
       is: true,
-      then: yup.date(),
+      then: yup.date()
+        .max(new Date(), 'End Date must not be in the future')
+        .min(yup.ref('startDate'), 'End Date cannot be before the Start Date'),
     }),
   reason: yup.string()
     .max(500, 'Reason is too long')
