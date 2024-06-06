@@ -176,7 +176,6 @@ function ChplAdditionalInformationEdit() {
             color="primary"
             checked={formik.values.ics}
             onChange={handleIcsToggle}
-            onBlur={formik.handleBlur}
           />
         )}
         label="Inherited Certified Status"
