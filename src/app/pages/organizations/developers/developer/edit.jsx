@@ -134,6 +134,7 @@ function ChplEditDeveloper({ developer }) {
               }
             },
             onError: (error) => {
+              setIsProcessing(false);
               let body;
               if (error.data?.errorMessages) {
                 setErrorMessages(error.data.errorMessages);
@@ -148,7 +149,6 @@ function ChplEditDeveloper({ developer }) {
                 enqueueSnackbar(body, {
                   variant: 'error',
                 });
-                setIsProcessing(false);
               }
             },
           });
