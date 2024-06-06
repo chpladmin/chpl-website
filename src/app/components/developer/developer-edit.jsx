@@ -279,7 +279,7 @@ function ChplDeveloperEdit(props) {
     cancelAdd();
   };
 
-  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.reason;
+  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.endDate || !!formik.errors.reason;
 
   const removeStatus = (status) => {
     setStatuses(statuses.filter((item) => item.startDate !== status.startDate
