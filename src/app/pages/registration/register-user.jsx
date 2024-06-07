@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -8,6 +9,7 @@ import {
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
+import { useFetchInvitationType } from 'api/users';
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
@@ -37,6 +39,12 @@ function ChplRegisterUser(props) {
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
+  const { enqueueSnackbar } = useSnackbar();
+  const [invitationType, setInvitationType] = useState('');
+  const [message, setMessage] = useState('');
+  const [ssoIsOn, setSsoIsOn] = useState(false);
+  const [state, setState] = useState('signin');
+  const { data, isLoading, isSuccess } = useFetchInvitationType({ hash });
   const { setUser } = useContext(UserContext);
   const classes = useStyles();
 
@@ -54,6 +62,16 @@ function ChplRegisterUser(props) {
       handleDispatch('authorize', {});
     }
   }, []);
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setInvitationType(data);
+    if (data === 'COGNITO' || data === 'COGNTIO') {
+      setState('create');
+    }
+  }, [data, isLoading, isSuccess]);
 
   handleDispatch = (action, data) => {
     setMessage('');
@@ -146,25 +164,31 @@ function ChplRegisterUser(props) {
                 { message }
               </Typography>
               )}
-            { (ssoIsOn)
+            { ssoIsOn && (invitationType === 'COGNITO' || invitationType === 'COGNTIO')
               && (
                 <ChplCognitoUserCreate dispatch={handleDispatch} />
               )}
-            { (!ssoIsOn)
-              && (  
-                <ChplUserCreate dispatch={handleDispatch} />
+            { invitationType === 'CHPL'
+              && (
+                <>
+                  <ChplUserCreate dispatch={handleDispatch} />
+                  <Typography>
+                    Or
+                    {' '}
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => setState('signin')}
+                    >
+                      log in to your existing account
+                    </Button>
+                  </Typography>
+                </>
               )}
-            <Typography>
-              Or
-              {' '}
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={() => setState('signin')}
-              >
-                log in to your existing account
-              </Button>
-            </Typography>
+            { invitationType === ''
+              && (
+                <CircularProgress />
+              )}
           </>
         );
       case 'signin':

@@ -1,6 +1,17 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
+
+const useFetchInvitationType = ({ hash }) => {
+  const axios = useAxios();
+  return useQuery(['invitation', hash], async () => {
+    if (hash) {
+      const response = await axios.get(`users/invitation/${hash}`);
+      return response.data;
+    }
+    return '';
+  });
+};
 
 const usePutUser = () => {
   const axios = useAxios();
@@ -13,5 +24,6 @@ const usePutUser = () => {
 };
 
 export {
-  usePutUser, // eslint-disable-line import/prefer-default-export
+  useFetchInvitationType,
+  usePutUser,
 };
