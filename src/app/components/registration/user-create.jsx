@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import {
-  func,
-} from 'prop-types';
-import {
   Button,
   Paper,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
-import { PasswordStrengthMeter } from '../login';
+import { PasswordStrengthMeter } from 'components/login';
+import { ChplTextField } from 'components/util';
+import theme from 'themes/theme';
 
 const zxcvbn = require('zxcvbn');
 
@@ -48,7 +46,7 @@ const validationSchema = yup.object({
     .email('Enter a valid Email'),
 });
 
-function ChplUserCreate(props) {
+function ChplUserCreate({ dispatch }) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
@@ -63,7 +61,7 @@ function ChplUserCreate(props) {
       passwordVerify: formik.values.verificationPassword,
       phoneNumber: formik.values.phoneNumber,
     };
-    props.dispatch('create', user);
+    dispatch('create', user);
   };
 
   const updatePassword = (event) => {
@@ -84,26 +82,24 @@ function ChplUserCreate(props) {
 
   formik = useFormik({
     initialValues: {
-      newPassword: '',
-      verificationPassword: '',
-      passwordStrength: 0,
       fullName: '',
       phoneNumber: '',
       email: '',
+      newPassword: '',
+      verificationPassword: '',
+      passwordStrength: 0,
     },
     onSubmit: () => {
       create();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
     <ThemeProvider theme={theme}>
       <Paper className={classes.content}>
         <Typography>
-          Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the ‘create account’ button below.
+          Welcome to ONC&apos;s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the &quot;create account&quot; button below.
         </Typography>
         <Typography>
           Create a new account.
@@ -189,7 +185,7 @@ function ChplUserCreate(props) {
           {' '}
           <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
           {' '}
-          and select “Certified Health IT Product List (CHPL)” to submit a ticket.
+          and select &quot;Certified Health IT Product List (CHPL)&quot; to submit a ticket.
         </Typography>
       </Paper>
     </ThemeProvider>

@@ -1,13 +1,11 @@
-import React, { useContext, useState } from 'react';
-import {
-  func,
-} from 'prop-types';
+import React, { useState } from 'react';
 import {
   Button,
   Paper,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -51,11 +49,11 @@ const validationSchema = yup.object({
     ),
 });
 
-function ChplCognitoUserCreate(props) {
+function ChplCognitoUserCreate({ dispatch }) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
-  
+
   let formik;
 
   const create = () => {
@@ -66,7 +64,7 @@ function ChplCognitoUserCreate(props) {
       passwordVerify: formik.values.passwordVerify,
       phoneNumber: formik.values.phoneNumber,
     };
-    props.dispatch('cognito-create', user);
+    dispatch('cognito-create', user);
   };
 
   const updatePassword = (event) => {
@@ -98,14 +96,12 @@ function ChplCognitoUserCreate(props) {
       create();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
     <Paper className={classes.content}>
       <Typography>
-        Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the ‘create account’ button below.
+        Welcome to ONC&apos;s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization&apos;s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the &quot;create account&quot; button below.
       </Typography>
       <Typography>
         Create a new Cognito account.
@@ -192,7 +188,7 @@ function ChplCognitoUserCreate(props) {
         {' '}
         <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
         {' '}
-        and select “Certified Health IT Product List (CHPL)” to submit a ticket.
+        and select &quot;Certified Health IT Product List (CHPL)&quot; to submit a ticket.
       </Typography>
     </Paper>
   );

@@ -26,11 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplRegisterUser(props) {
-  const { hash } = props;
-  const [message, setMessage] = useState('');
-  const [state, setState] = useState('signin');
-  const { enqueueSnackbar } = useSnackbar();
+function ChplRegisterUser({ hash }) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
@@ -46,17 +42,14 @@ function ChplRegisterUser(props) {
   const [state, setState] = useState('signin');
   const { data, isLoading, isSuccess } = useFetchInvitationType({ hash });
   const { setUser } = useContext(UserContext);
-  const classes = useStyles();
-
-  let handleDispatch;
-
   const { isOn } = useContext(FlagContext);
-  const [ssoIsOn, setSsoIsOn] = useState(false);
+  const classes = useStyles();
+  let handleDispatch;
 
   useEffect(() => {
     setSsoIsOn(isOn('sso'));
   }, [isOn]);
-  
+
   useEffect(() => {
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
       handleDispatch('authorize', {});
@@ -73,18 +66,18 @@ function ChplRegisterUser(props) {
     }
   }, [data, isLoading, isSuccess]);
 
-  handleDispatch = (action, data) => {
+  handleDispatch = (action, payload) => {
     setMessage('');
     let packet;
     let userId;
     switch (action) {
       case 'authorize':
         packet = {
-          ...data,
-          userName: data.email,
+          ...payload,
+          userName: payload.email,
           hash,
         };
-        userId = data.email || authService.getUserId();
+        userId = payload.email || authService.getUserId();
         networkService.authorizeUser(packet, userId)
           .then(() => {
             $analytics.eventTrack('Log In To Your Account', { category: 'Authentication' });
@@ -113,11 +106,14 @@ function ChplRegisterUser(props) {
       case 'cognito-create':
         packet = {
           hash,
-          user: data,
+          user: payload,
         };
+        console.log({ packet });
+        /*
+        // TODO: change this logic
         networkService.createInvitedCognitoUser(packet)
           .then(() => {
-            setMessage('Your account has been created.  A one-time password has been emailed to you.')
+            setMessage('Your account has been created. A one-time password has been emailed to you.')
             setState('success');
           }, (error) => {
             if (error.data.errorMessages) {
@@ -128,11 +124,12 @@ function ChplRegisterUser(props) {
               })
             }
           });
-        break;  
+          */
+        break;
       case 'create':
         packet = {
           hash,
-          user: data,
+          user: payload,
         };
         networkService.createInvitedUser(packet)
           .then(() => {
