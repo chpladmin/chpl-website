@@ -58,12 +58,10 @@ function ChplUserCreate(props) {
   const create = () => {
     const user = {
       email: formik.values.email,
-      friendlyName: formik.values.friendlyName,
       fullName: formik.values.fullName,
       password: formik.values.newPassword,
       passwordVerify: formik.values.verificationPassword,
       phoneNumber: formik.values.phoneNumber,
-      title: formik.values.title,
     };
     props.dispatch('create', user);
   };
@@ -71,7 +69,6 @@ function ChplUserCreate(props) {
   const updatePassword = (event) => {
     const vals = ['chpl'];
     if (formik.values.fullName) { vals.push(formik.values.fullName); }
-    if (formik.values.friendlyName) { vals.push(formik.values.friendlyName); }
     if (formik.values.email) { vals.push(formik.values.email); }
     if (formik.values.phoneNumber) { vals.push(formik.values.phoneNumber); }
     const passwordStrength = zxcvbn(event.target.value, vals);
@@ -91,8 +88,6 @@ function ChplUserCreate(props) {
       verificationPassword: '',
       passwordStrength: 0,
       fullName: '',
-      friendlyName: '',
-      title: '',
       phoneNumber: '',
       email: '',
     },
@@ -123,26 +118,6 @@ function ChplUserCreate(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.fullName && !!formik.errors.fullName}
           helperText={formik.touched.fullName && formik.errors.fullName}
-        />
-        <ChplTextField
-          id="friendly-name"
-          name="friendlyName"
-          label="Friendly Name"
-          value={formik.values.friendlyName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-          helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-        />
-        <ChplTextField
-          id="title"
-          name="title"
-          label="Title"
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.title && !!formik.errors.title}
-          helperText={formik.touched.title && formik.errors.title}
         />
         <ChplTextField
           id="phone-number"

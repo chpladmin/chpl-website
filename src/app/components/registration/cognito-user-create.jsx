@@ -61,12 +61,10 @@ function ChplCognitoUserCreate(props) {
   const create = () => {
     const user = {
       email: formik.values.email,
-      friendlyName: formik.values.friendlyName,
       fullName: formik.values.fullName,
       password: formik.values.password,
       passwordVerify: formik.values.passwordVerify,
       phoneNumber: formik.values.phoneNumber,
-      title: formik.values.title,
     };
     props.dispatch('cognito-create', user);
   };
@@ -90,8 +88,6 @@ function ChplCognitoUserCreate(props) {
   formik = useFormik({
     initialValues: {
       fullName: '',
-      friendlyName: '',
-      title: '',
       phoneNumber: '',
       email: '',
       password: '',
@@ -124,26 +120,6 @@ function ChplCognitoUserCreate(props) {
         onBlur={formik.handleBlur}
         error={formik.touched.fullName && !!formik.errors.fullName}
         helperText={formik.touched.fullName && formik.errors.fullName}
-      />
-      <ChplTextField
-        id="friendly-name"
-        name="friendlyName"
-        label="Friendly Name"
-        value={formik.values.friendlyName}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-        helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-      />
-      <ChplTextField
-        id="title"
-        name="title"
-        label="Title"
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.title && !!formik.errors.title}
-        helperText={formik.touched.title && formik.errors.title}
       />
       <ChplTextField
         id="phone-number"
