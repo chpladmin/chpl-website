@@ -9,7 +9,7 @@ import {
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { useFetchInvitationType } from 'api/users';
+import { useFetchInvitationType, usePostCreateCognitoInvitedUser, usePostCreateInvitedUser } from 'api/users';
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
@@ -34,13 +34,14 @@ function ChplRegisterUser({ hash }) {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const toaster = getAngularService('toaster');
   const { enqueueSnackbar } = useSnackbar();
   const [invitationType, setInvitationType] = useState('');
   const [message, setMessage] = useState('');
   const [ssoIsOn, setSsoIsOn] = useState(false);
   const [state, setState] = useState('signin');
   const { data, isLoading, isSuccess } = useFetchInvitationType({ hash });
+  const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
+  const { mutate: createInvited } = usePostCreateInvitedUser();
   const { setUser } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
   const classes = useStyles();
@@ -81,10 +82,8 @@ function ChplRegisterUser({ hash }) {
         networkService.authorizeUser(packet, userId)
           .then(() => {
             $analytics.eventTrack('Log In To Your Account', { category: 'Authentication' });
-            toaster.pop({
-              type: 'success',
-              title: 'Success',
-              body: 'Your new permissions have been added',
+            enqueueSnackbar('Success: Your new permissions have been added', {
+              variant: 'success',
             });
             $state.go('administration');
             networkService.getUserById(authService.getUserId())
@@ -109,42 +108,40 @@ function ChplRegisterUser({ hash }) {
           user: payload,
         };
         console.log({ packet });
-        /*
-        // TODO: change this logic
-        networkService.createInvitedCognitoUser(packet)
-          .then(() => {
-            setMessage('Your account has been created. A one-time password has been emailed to you.')
-            setState('success');
-          }, (error) => {
-            if (error.data.errorMessages) {
-              setMessage('You have the following errors: ' + error.data.errorMessages.join('; '));
-            } else if (error.data.error) {
-              enqueueSnackbar(error.data.error, {
-                variant: 'error',
-              })
-            }
-          });
-          */
+        createCognitoInvited(packet, {
+          onSuccess: () => {
+            $analytics.eventTrack('Create Account', { category: 'Authentication' });
+            setMessage('Your account has been created. Please check your email to confirm your account');
+            setState('confirm-email');
+          },
+          onError: (error) => {
+            setMessage(error.response.data.error);
+            setState('confirm-email');
+          },
+        });
         break;
       case 'create':
         packet = {
           hash,
           user: payload,
         };
-        networkService.createInvitedUser(packet)
-          .then(() => {
+        createInvited(packet, {
+          onSuccess: () => {
             $analytics.eventTrack('Create Account', { category: 'Authentication' });
             setMessage('Your account has been created. Please check your email to confirm your account');
             setState('success');
-          }, (error) => {
+          },
+          onError: (error) => {
             if (error.data.errorMessages) {
               setMessage(error.data.errorMessages);
             } else if (error.data.error) {
               setMessage(error.data.error);
             }
-          });
+          },
+        });
         break;
-        // no default
+      default:
+        console.error(`No action matches ${action} with payload ${payload}`);
     }
   };
 
@@ -218,6 +215,7 @@ function ChplRegisterUser({ hash }) {
           <Typography>{ message }</Typography>
         );
       default:
+        console.error(`No statee matches ${state}`);
         return null;
     }
   };

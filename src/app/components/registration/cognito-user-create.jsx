@@ -53,7 +53,6 @@ function ChplCognitoUserCreate({ dispatch }) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
-
   let formik;
 
   const create = () => {

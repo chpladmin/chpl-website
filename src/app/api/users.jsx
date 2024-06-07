@@ -13,6 +13,16 @@ const useFetchInvitationType = ({ hash }) => {
   });
 };
 
+const usePostCreateCognitoInvitedUser = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/create', data));
+};
+
+const usePostCreateInvitedUser = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('users/create', data));
+};
+
 const usePutUser = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -25,5 +35,7 @@ const usePutUser = () => {
 
 export {
   useFetchInvitationType,
+  usePostCreateCognitoInvitedUser,
+  usePostCreateInvitedUser,
   usePutUser,
 };
