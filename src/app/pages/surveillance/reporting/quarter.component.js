@@ -85,7 +85,7 @@ export const SurveillanceReportQuarterComponent = {
       let that = this;
       this.networkService.generateQuarterlySurveillanceReport(this.report.id)
         .then(response => {
-          let name = response.job.jobDataMap.user.friendlyName || response.job.jobDataMap.user.fullName;
+          let name = response.job.jobDataMap.user.fullName;
           let email = response.job.jobDataMap.user.email;
           that.toaster.pop({
             type: 'success',

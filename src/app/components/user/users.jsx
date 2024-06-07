@@ -84,8 +84,6 @@ function ChplUsers({
     const regex = new RegExp(event.target.value, 'i');
     setUsers(initialUsers
       .filter((u) => regex.test(u.fullName)
-                     || regex.test(u.friendlyName)
-                     || regex.test(u.title)
                      || regex.test(u.email)
                      || regex.test(u.subjectName))
       .sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
@@ -204,7 +202,7 @@ function ChplUsers({
                   <ChplTextField
                     id="user-filter"
                     name="userFilter"
-                    label="Search by Name, Title, or Email"
+                    label="Search by Name or Email"
                     onChange={handleFilter}
                   />
                   { user.userId

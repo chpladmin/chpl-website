@@ -1,9 +1,4 @@
-import React, { useState } from 'react';
-import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -14,17 +9,20 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import {
+  arrayOf,
+  func,
+  string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
-import { ChplActionBar } from '../action-bar';
-import {
-  user as userPropType,
-} from '../../shared/prop-types';
+import { ChplActionBar } from 'components/action-bar';
+import { ChplTextField } from 'components/util';
+import { user as userPropType } from 'shared/prop-types';
+import theme from 'themes/theme';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '16px',
@@ -35,41 +33,40 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '8px',
   },
-}));
+});
 
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
 });
 
-function ChplUserEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [user] = useState(props.user);
+function ChplUserEdit({ user: initialUser, errors, dispatch }) {
+  const [user, setUser] = useState({});
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
   let formik;
 
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
+
   const cancel = () => {
-    props.dispatch('cancel', {});
+    dispatch('cancel', {});
   };
 
   const deleteUser = () => {
-    props.dispatch('delete', user.userId);
+    dispatch('delete', user.userId);
   };
 
   const save = () => {
     const updatedUser = {
       ...user,
       fullName: formik.values.fullName,
-      friendlyName: formik.values.friendlyName,
-      title: formik.values.title,
       phoneNumber: formik.values.phoneNumber,
       accountLocked: formik.values.accountLocked,
       accountEnabled: formik.values.accountEnabled,
       passwordResetRequired: formik.values.passwordResetRequired,
     };
-    props.dispatch('save', updatedUser);
+    dispatch('save', updatedUser);
   };
 
   const handleDispatch = (action) => {
@@ -90,8 +87,6 @@ function ChplUserEdit(props) {
   formik = useFormik({
     initialValues: {
       fullName: user.fullName,
-      friendlyName: user.friendlyName || '',
-      title: user.title || '',
       phoneNumber: user.phoneNumber || '',
       accountLocked: user.accountLocked,
       accountEnabled: user.accountEnabled,
@@ -125,26 +120,6 @@ function ChplUserEdit(props) {
               onBlur={formik.handleBlur}
               error={formik.touched.fullName && !!formik.errors.fullName}
               helperText={formik.touched.fullName && formik.errors.fullName}
-            />
-            <ChplTextField
-              id="friendly-name"
-              name="friendlyName"
-              label="Friendly Name"
-              value={formik.values.friendlyName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-              helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-            />
-            <ChplTextField
-              id="title"
-              name="title"
-              label="Title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.title && !!formik.errors.title}
-              helperText={formik.touched.title && formik.errors.title}
             />
             <ChplTextField
               id="phone-number"
@@ -206,7 +181,7 @@ function ChplUserEdit(props) {
       </Card>
       <ChplActionBar
         dispatch={handleDispatch}
-        errors={props.errors}
+        errors={errors}
         canDelete
         isDisabled={!formik.isValid}
       />
