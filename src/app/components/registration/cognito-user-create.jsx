@@ -80,6 +80,7 @@ function ChplCognitoUserCreate({ dispatch }) {
         id="phone-number"
         name="phoneNumber"
         label="Phone Number"
+        type="tel"
         required
         value={formik.values.phoneNumber}
         onChange={formik.handleChange}
@@ -91,6 +92,7 @@ function ChplCognitoUserCreate({ dispatch }) {
         id="email"
         name="email"
         label="Email"
+        type="email"
         required
         value={formik.values.email}
         onChange={formik.handleChange}

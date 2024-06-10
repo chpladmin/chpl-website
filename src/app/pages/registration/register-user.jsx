@@ -9,7 +9,12 @@ import {
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { useFetchInvitationType, usePostCreateCognitoInvitedUser, usePostCreateInvitedUser } from 'api/users';
+import {
+  useFetchInvitationType,
+  usePostCreateCognitoInvitedUser,
+  usePostCreateInvitedUser,
+} from 'api/users';
+import ChplCognitoLogin from 'components/login/cognito-login';
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
@@ -62,7 +67,7 @@ function ChplRegisterUser({ hash }) {
       return;
     }
     setInvitationType(data);
-    if (data === 'COGNITO' || data === 'COGNTIO') {
+    if (data === 'COGNITO') {
       setState('create');
     }
   }, [data, isLoading, isSuccess]);
@@ -111,12 +116,12 @@ function ChplRegisterUser({ hash }) {
         createCognitoInvited(packet, {
           onSuccess: () => {
             $analytics.eventTrack('Create Account', { category: 'Authentication' });
-            setMessage('Your account has been created. Please check your email to confirm your account');
-            setState('confirm-email');
+            setMessage('Your account has been created. Please check your email for your temporary password');
+            setState('cognito-login');
           },
           onError: (error) => {
             setMessage(error.response.data.error);
-            setState('confirm-email');
+            setState('cognito-login');
           },
         });
         break;
@@ -147,6 +152,13 @@ function ChplRegisterUser({ hash }) {
 
   const getState = () => {
     switch (state) {
+      case 'cognito-login':
+        return (
+          <>
+            <Typography>{ message }</Typography>
+            <ChplCognitoLogin />
+          </>
+        );
       case 'create':
         return (
           <>
@@ -158,7 +170,7 @@ function ChplRegisterUser({ hash }) {
                 { message }
               </Typography>
               )}
-            { ssoIsOn && (invitationType === 'COGNITO' || invitationType === 'COGNTIO')
+            { ssoIsOn && invitationType === 'COGNITO'
               && (
                 <ChplCognitoUserCreate dispatch={handleDispatch} />
               )}
@@ -215,7 +227,7 @@ function ChplRegisterUser({ hash }) {
           <Typography>{ message }</Typography>
         );
       default:
-        console.error(`No statee matches ${state}`);
+        console.error(`No state matches ${state}`);
         return null;
     }
   };
