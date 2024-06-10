@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.18.0
+_10 June 2024_
+
+### Features
+* Enable messaging to filtered Developers
+
+---
+
 ## Version 13.17.0
 _28 May 2024_
 
