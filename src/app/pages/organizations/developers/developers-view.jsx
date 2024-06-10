@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -11,6 +12,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
+
+import ChplMessaging from './messaging/messaging';
 
 import { theme, utilStyles } from 'themes';
 import { useFetchDevelopersBySearch } from 'api/developer';
@@ -28,6 +31,7 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -105,12 +109,14 @@ function ChplDevelopersView(props) {
   const storageKey = 'storageKey-developersView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
   const [developers, setDevelopers] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
@@ -142,12 +148,15 @@ function ChplDevelopersView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'developer_name', text: 'Developer', sortable: true },
     { property: 'developer_code', text: 'Developer Code', sortable: true },
     { text: 'ONC-ACB for active Listings' },
   ];
+
+  const handleDispatch = () => {
+    setMessaging(false);
+  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -179,6 +188,14 @@ function ChplDevelopersView(props) {
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
+
+  if (messaging) {
+    return (
+      <ChplMessaging
+        dispatch={handleDispatch}
+      />
+    );
+  }
 
   return (
     <>
@@ -225,6 +242,21 @@ function ChplDevelopersView(props) {
                       </Typography>
                     )}
                 </div>
+                { developers.length > 0 && hasAnyRole(['chpl-admin', 'chpl-onc'])
+                  && (
+                    <Button
+                      onClick={() => setMessaging(true)}
+                      id="compose-message"
+                      variant="outlined"
+                      color="primary"
+                    >
+                      send message to
+                      {' '}
+                      { recordCount }
+                      {' '}
+                      developers
+                    </Button>
+                  )}
               </div>
               { developers.length > 0
                 && (
