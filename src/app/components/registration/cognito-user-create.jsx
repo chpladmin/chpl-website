@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   Paper,
@@ -9,10 +9,7 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { PasswordStrengthMeter } from 'components/login';
 import { ChplTextField } from 'components/util';
-
-const zxcvbn = require('zxcvbn');
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -33,25 +30,9 @@ const validationSchema = yup.object({
   phoneNumber: yup.string()
     .required('Phone Number is required')
     .matches(phoneRegExp, 'Phone number is not valid'),
-  password: yup.string()
-    .required('Password is required')
-    .test(
-      'password-strength',
-      'Password is not strong enough',
-      (value, context) => context.parent.passwordStrength >= 3,
-    ),
-  passwordVerify: yup.string()
-    .required('Verify Password is required')
-    .test(
-      'password-matches',
-      'Verify Password does not match Password',
-      (value, context) => value === context.parent.password,
-    ),
 });
 
 function ChplCognitoUserCreate({ dispatch }) {
-  const [passwordMessages, setPasswordMessages] = useState([]);
-  const [strength, setStrength] = useState(0);
   const classes = useStyles();
   let formik;
 
@@ -59,27 +40,9 @@ function ChplCognitoUserCreate({ dispatch }) {
     const user = {
       email: formik.values.email,
       fullName: formik.values.fullName,
-      password: formik.values.password,
-      passwordVerify: formik.values.passwordVerify,
       phoneNumber: formik.values.phoneNumber,
     };
     dispatch('cognito-create', user);
-  };
-
-  const updatePassword = (event) => {
-    const vals = ['chpl'];
-    if (formik.values.fullName) { vals.push(formik.values.fullName); }
-    if (formik.values.email) { vals.push(formik.values.email); }
-    if (formik.values.phoneNumber) { vals.push(formik.values.phoneNumber); }
-    const passwordStrength = zxcvbn(event.target.value, vals);
-    formik.values.passwordStrength = passwordStrength.score;
-    setStrength(passwordStrength.score);
-    setPasswordMessages(
-      [passwordStrength.feedback?.warning]
-        .concat(passwordStrength.feedback?.suggestions)
-        .filter((msg) => msg),
-    );
-    formik.handleChange(event);
   };
 
   formik = useFormik({
@@ -87,9 +50,6 @@ function ChplCognitoUserCreate({ dispatch }) {
       fullName: '',
       phoneNumber: '',
       email: '',
-      password: '',
-      passwordVerify: '',
-      passwordStrength: 0,
     },
     onSubmit: () => {
       create();
@@ -137,41 +97,6 @@ function ChplCognitoUserCreate({ dispatch }) {
         onBlur={formik.handleBlur}
         error={formik.touched.email && !!formik.errors.email}
         helperText={formik.touched.email && formik.errors.email}
-      />
-      <ChplTextField
-        type="password"
-        id="password"
-        name="password"
-        label="Password"
-        required
-        value={formik.values.password}
-        onChange={updatePassword}
-        onBlur={formik.handleBlur}
-        error={formik.touched.password && !!formik.errors.password}
-        helperText={formik.touched.password && formik.errors.password}
-      />
-      <PasswordStrengthMeter
-        value={strength}
-      />
-      { passwordMessages.length > 0
-        && (
-          <ul>
-            { passwordMessages.map((msg) => (
-              <li key={msg}>{ msg }</li>
-            ))}
-          </ul>
-        )}
-      <ChplTextField
-        type="password"
-        id="password-verify"
-        name="passwordVerify"
-        label="Password Verify"
-        required
-        value={formik.values.passwordVerify}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.passwordVerify && !!formik.errors.passwordVerify}
-        helperText={formik.touched.passwordVerify && formik.errors.passwordVerify}
       />
       <Button
         color="primary"
