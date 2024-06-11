@@ -111,11 +111,11 @@ function ChplResourcesDownload() {
       'Inactive products summary': { data: `${API}/listings/download?listingType=inactive&api_key=${getApiKey()}&format=csv`, definition: `${API}/listings/download?listingType=inactive&api_key=${getApiKey()}&format=csv&definition=true`, label: 'Inactive products' },
       '2014 edition summary': { data: `${API}/listings/download?listingType=2014&api_key=${getApiKey()}&format=csv`, definition: `${API}/listings/download?listingType=2014&api_key=${getApiKey()}&format=csv&definition=true`, label: '2014 products' },
       'SVAP Summary': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
+      'Service Base URL List': { data: `${API}/service-base-url-list/download?api_key=${getApiKey()}`, definition: `${API}/service-base-url-list/download?api_key=${getApiKey()}&definition=true`, label: 'Service Base URL List' },
       'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
       'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}`, definition: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}&definition=true`, label: 'Direct Review Activity' },
-      'Service Base URL List': { data: `${API}/service-base-url-list/download?api_key=${getApiKey()}`, definition: `${API}/service-base-url-list/download?api_key=${getApiKey()}&definition=true`, label: 'Service Base URL List' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
@@ -258,6 +258,18 @@ function ChplResourcesDownload() {
                 </Box>
                 <ul className={classes.listSpacing}>
                   <li>
+                    <Typography gutterBottom><strong>Service Base URL List Availability:</strong></Typography>
+                    {' '}
+                    TBD.
+                    {' '}
+                    <ChplLink
+                      href="https://www.healthit.gov"
+                      text={'Find more information on the "Service Base URL List" page'}
+                      analytics={{ event: 'Service Base URL List', category: 'Download CHPL' }}
+                      external={false}
+                    />
+                  </li>
+                  <li>
                     <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
                     {' '}
                     Entire collection of surveillance activity reported to the CHPL.
@@ -279,18 +291,6 @@ function ChplResourcesDownload() {
                     <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
                     {' '}
                     Entire collection of Direct Review activity reported to the CHPL.
-                  </li>
-                  <li>
-                    <Typography gutterBottom><strong>Service Base URL List:</strong></Typography>
-                    {' '}
-                    TBD.
-                    {' '}
-                    <ChplLink
-                      href="https://www.healthit.gov"
-                      text={'Find more information on the "Service Base URL List" page'}
-                      analytics={{ event: 'Service Base URL List', category: 'Download CHPL' }}
-                      external={false}
-                    />
                   </li>
                 </ul>
               </div>
