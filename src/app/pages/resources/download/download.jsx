@@ -262,7 +262,7 @@ function ChplResourcesDownload() {
                   <li>
                     <Typography gutterBottom><strong>Service Base URL List Availability:</strong></Typography>
                     {' '}
-                    The Service Base URL List report provides information on the public availability of Service Base URLs for certified Health IT Modules. For more details, visit the
+                    The Service Base URL List report provides information on the public availability of Service Base URL Lists for certified Health IT Modules. For more details, visit the
                     {' '}
                     <ChplLink
                       href="https://www.healthit.gov/topic/certification-ehrs/program-resources/api-service-base-url-availability"
