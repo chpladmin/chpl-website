@@ -23,6 +23,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchTargetedUsers } from 'api/data';
+import { useFetchRelatedListings } from 'api/listing';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext } from 'shared/contexts';
@@ -61,6 +62,9 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)')
     .max(250, 'Field is too long'),
   ics: yup.boolean(),
+  newIcsSource: yup.string()
+    .required('Field is required')
+    .matches(/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/, 'Improper format (00.00.00.0000.XXXX.XX.00.0.000000'),
   otherAcb: yup.string(),
   newTargetedUser: yup.string()
     .required('Field is required'),
@@ -71,12 +75,27 @@ const validationSchema = yup.object({
 
 function ChplAdditionalInformationEdit() {
   const { listing, setListing } = useContext(ListingContext);
+  const [addingExistingIcsSource, setAddingExistingIcsSource] = useState(true);
   const [addingExistingTargetedUser, setAddingExistingTargetedUser] = useState(true);
+  const [addingIcsSource, setAddingIcsSource] = useState(false);
   const [addingTargetedUser, setAddingTargetedUser] = useState(false);
+  const [relatedListings, setRelatedListings] = useState([]);
   const [targetedUsers, setTargetedUsers] = useState([]);
+  const relatedListingsQuery = useFetchRelatedListings({ id: listing.product.id });
   const targetedUsersQuery = useFetchTargetedUsers();
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    if (relatedListingsQuery.isLoading || !relatedListingsQuery.isSuccess) {
+      return;
+    }
+    setRelatedListings(relatedListingsQuery.data
+      .filter((l) => l.edition === null || l.edition === '2015')
+      .filter((l) => l.id !== listing.id)
+      .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))
+      .map((l) => l.chplProductNumber));
+  }, [relatedListingsQuery.data, relatedListingsQuery.isLoading, relatedListingsQuery.isSuccess]);
 
   useEffect(() => {
     if (targetedUsersQuery.isLoading || !targetedUsersQuery.isSuccess) {
@@ -108,6 +127,19 @@ function ChplAdditionalInformationEdit() {
 
   const handleItemAddition = (type) => {
     switch (type) {
+      case 'icsSources':
+        setListing((prev) => ({
+          ...prev,
+          ics: {
+            ...prev.ics,
+            parents: prev.ics.parents.concat({
+              chplProductNumber: formik.values.newIcsSource,
+            }),
+          },
+        }));
+        setAddingIcsSource(false);
+        formik.setFieldValue('newIcsSource', '');
+        break;
       case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
@@ -129,6 +161,15 @@ function ChplAdditionalInformationEdit() {
 
   const handleItemRemoval = (type, item) => {
     switch (type) {
+      case 'icsSources':
+        setListing((prev) => ({
+          ...prev,
+          ics: {
+            ...prev.ics,
+            parents: prev.ics.parents.filter((p) => p.chplProductNumber !== item.chplProductNumber),
+          },
+        }));
+        break;
       case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
@@ -144,6 +185,7 @@ function ChplAdditionalInformationEdit() {
     initialValues: {
       reportFileLocation: listing.reportFileLocation ?? '',
       ics: listing.ics?.inherits ?? false,
+      newIcsSource: '',
       otherAcb: listing.otherAcb ?? '',
       newTargetedUser: '',
     },
@@ -168,21 +210,140 @@ function ChplAdditionalInformationEdit() {
         error={formik.touched.reportFileLocation && !!formik.errors.reportFileLocation}
         helperText={formik.touched.reportFileLocation && formik.errors.reportFileLocation}
       />
-      <FormControlLabel
-        control={(
-          <Switch
-            id="ics"
-            name="ics"
-            color="primary"
-            checked={formik.values.ics}
-            onChange={handleIcsToggle}
-          />
-        )}
-        label="Inherited Certified Status"
-      />
-      { formik.values.ics
+      { (listing.edition === null || listing.edition.name === '2015')
         && (
-          <>ICS stuff</>
+          <>
+            <FormControlLabel
+              control={(
+                <Switch
+                  id="ics"
+                  name="ics"
+                  color="primary"
+                  checked={formik.values.ics}
+                  onChange={handleIcsToggle}
+                />
+              )}
+              label="Inherited Certified Status"
+            />
+            { formik.values.ics && listing.ics.parents.length > 0
+              && (
+                <>
+                  <Typography>Inherits from</Typography>
+                  <Card className={classes.fullWidth}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>CHPL Product Number</TableCell>
+                          <TableCell className="sr-only">Action</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {listing.ics.parents
+                          .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? 1 : -1))
+                          .map((l) => (
+                            <TableRow key={l.chplProductNumber}>
+                              <TableCell>
+                                { l.chplProductNumber }
+                              </TableCell>
+                              <TableCell>
+                                <IconButton variant="outlined" onClick={() => handleItemRemoval('icsSources', l)}>
+                                  <Delete color="error" />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </Card>
+                </>
+              )}
+            { !addingIcsSource
+              && (
+                <Button
+                  size="medium"
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => setAddingIcsSource(true)}
+                  endIcon={<Add fontSize="medium" />}
+                >
+                  Add ICS Source
+                </Button>
+              )}
+            { addingIcsSource
+              && (
+                <>
+                  <Typography variant="subtitle2">Adding New ICS Source:</Typography>
+                  <Box className={classes.twoColumnContainer}>
+                    { addingExistingIcsSource
+                      && (
+                        <ChplTextField
+                          select
+                          id="new-ics-source"
+                          name="newIcsSource"
+                          label="New ICS Source"
+                          required
+                          value={formik.values.newIcsSource}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.newIcsSource && !!formik.errors.newIcsSource}
+                          helperText={formik.touched.newIcsSource && formik.errors.newStatusType}
+                        >
+                          { relatedListings.map((item) => (
+                            <MenuItem value={item} key={item}>{item}</MenuItem>
+                          ))}
+                        </ChplTextField>
+                      )}
+                    { !addingExistingIcsSource
+                      && (
+                        <ChplTextField
+                          id="new-ics-source"
+                          name="newIcsSource"
+                          label="New ICS Source (different Product)"
+                          required
+                          value={formik.values.newIcsSource}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.newIcsSource && !!formik.errors.newIcsSource}
+                          helperText={formik.touched.newIcsSource && formik.errors.newIcsSource}
+                        />
+                      )}
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="add-existing-ics-source"
+                          name="addExistingIcsSource"
+                          color="primary"
+                          checked={addingExistingIcsSource}
+                          onChange={() => setAddingExistingIcsSource((prev) => !prev)}
+                        />
+                      )}
+                      label="Add Existing ICS Source"
+                    />
+                  </Box>
+                  <Box className={classes.cancelAndSaveButton}>
+                    <Button
+                      size="medium"
+                      endIcon={<Clear fontSize="small" />}
+                      onClick={() => setAddingIcsSource(false)}
+                      variant="contained"
+                      color="secondary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      size="medium"
+                      endIcon={<Save fontSize="small" />}
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleItemAddition('icsSources')}
+                      disabled={formik.values.newIcsSource === '' || (!addingExistingIcsSource && !!formik.errors.newIcsSource)}
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                </>
+              )}
+          </>
         )}
       <ChplTextField
         id="other-acb"

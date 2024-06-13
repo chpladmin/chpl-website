@@ -27,6 +27,17 @@ const useFetchListing = ({ id, fetched = false }) => {
   }, fetched ? options.daily : {});
 };
 
+const useFetchRelatedListings = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['relatedListings', id], async () => {
+    if (id) {
+      const response = await axios.get(`products/${id}/listings`);
+      return response.data;
+    }
+    return {};
+  });
+};
+
 const usePutListing = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -40,5 +51,6 @@ const usePutListing = () => {
 export {
   useFetchIcsFamilyData,
   useFetchListing,
+  useFetchRelatedListings,
   usePutListing,
 };
