@@ -68,9 +68,10 @@ const validationSchema = yup.object({
   otherAcb: yup.string(),
   newTargetedUser: yup.string()
     .required('Field is required'),
-
-  newStatusDay: yup.date()
-    .required('Field is missing'),
+  newUserCount: yup.number()
+    .required('Field is required'),
+  newUserCountDate: yup.date()
+    .required('Field is required'),
 });
 
 function ChplAdditionalInformationEdit() {
@@ -78,6 +79,7 @@ function ChplAdditionalInformationEdit() {
   const [addingExistingIcsSource, setAddingExistingIcsSource] = useState(true);
   const [addingExistingTargetedUser, setAddingExistingTargetedUser] = useState(true);
   const [addingIcsSource, setAddingIcsSource] = useState(false);
+  const [addingPromotingInteroperability, setAddingPromotingInteroperability] = useState(false);
   const [addingTargetedUser, setAddingTargetedUser] = useState(false);
   const [relatedListings, setRelatedListings] = useState([]);
   const [targetedUsers, setTargetedUsers] = useState([]);
@@ -140,6 +142,18 @@ function ChplAdditionalInformationEdit() {
         setAddingIcsSource(false);
         formik.setFieldValue('newIcsSource', '');
         break;
+      case 'promotingInteroperability':
+        setListing((prev) => ({
+          ...prev,
+          promotingInteroperabilityUserHistory: prev.promotingInteroperabilityUserHistory.concat({
+            userCount: formik.values.newUserCount,
+            userCountDate: formik.values.newUserCountDate,
+          }),
+        }));
+        setAddingPromotingInteroperability(false);
+        formik.setFieldValue('newUserCount', 0);
+        formik.setFieldValue('newUserCountDate', '');
+        break;
       case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
@@ -170,6 +184,12 @@ function ChplAdditionalInformationEdit() {
           },
         }));
         break;
+      case 'promotingInteroperability':
+        setListing((prev) => ({
+          ...prev,
+          promotingInteroperabilityUserHistory: prev.promotingInteroperabilityUserHistory.filter((pi) => pi.userCountDate !== item.userCountDate),
+        }));
+        break;
       case 'targetedUsers':
         setListing((prev) => ({
           ...prev,
@@ -188,6 +208,8 @@ function ChplAdditionalInformationEdit() {
       newIcsSource: '',
       otherAcb: listing.otherAcb ?? '',
       newTargetedUser: '',
+      newUserCount: 0,
+      newUserCountDate: '',
     },
     validationSchema,
   });
@@ -467,6 +489,105 @@ function ChplAdditionalInformationEdit() {
                 color="primary"
                 onClick={() => handleItemAddition('targetedUsers')}
                 disabled={formik.values.newTargetedUser === ''}
+              >
+                Save
+              </Button>
+            </Box>
+          </>
+        )}
+      <Typography variant="subtitle1">Promoting Interoperability Users:</Typography>
+      { listing.promotingInteroperabilityUserHistory.length > 0
+        && (
+          <Card className={classes.fullWidth}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Estimated Number of Promoting Interoperability Users</TableCell>
+                  <TableCell>Effective Date</TableCell>
+                  <TableCell className="sr-only">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {listing.promotingInteroperabilityUserHistory
+                  .sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))
+                  .map((pi) => (
+                    <TableRow key={pi.userCountDate}>
+                      <TableCell>
+                        { pi.userCount }
+                      </TableCell>
+                      <TableCell>
+                        { getDisplayDateFormat(pi.userCountDate) }
+                      </TableCell>
+                      <TableCell>
+                        <IconButton variant="outlined" onClick={() => handleItemRemoval('promotingInteroperability', pi)}>
+                          <Delete color="error" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </Card>
+        )}
+      { !addingPromotingInteroperability
+        && (
+          <Button
+            size="medium"
+            color="primary"
+            variant="outlined"
+            onClick={() => setAddingPromotingInteroperability(true)}
+            endIcon={<Add fontSize="medium" />}
+          >
+            Add User Count
+          </Button>
+        )}
+      { addingPromotingInteroperability
+        && (
+          <>
+            <Typography variant="subtitle2">Adding New User Count:</Typography>
+            <Box className={classes.twoColumnContainer}>
+              <ChplTextField
+                type="number"
+                id="new-user-count"
+                name="newUserCount"
+                label="New User Count"
+                required
+                value={formik.values.newUserCount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.newUserCount && !!formik.errors.newUserCount}
+                helperText={formik.touched.newUserCount && formik.errors.newUserCount}
+              />
+              <ChplTextField
+                type="date"
+                id="new-user-count-date"
+                name="newUserCountDate"
+                label="Effective Date"
+                required
+                value={formik.values.newUserCountDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.newUserCountDate && !!formik.errors.newUserCountDate}
+                helperText={formik.touched.newUserCountDate && formik.errors.newUserCountDate}
+              />
+            </Box>
+            <Box className={classes.cancelAndSaveButton}>
+              <Button
+                size="medium"
+                endIcon={<Clear fontSize="small" />}
+                onClick={() => setAddingPromotingInteroperability(false)}
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+              <Button
+                size="medium"
+                endIcon={<Save fontSize="small" />}
+                variant="contained"
+                color="primary"
+                onClick={() => handleItemAddition('promotingInteroperability')}
+                disabled={formik.values.newUserCount === '' || formik.values.newUserCountDate === ''}
               >
                 Save
               </Button>
