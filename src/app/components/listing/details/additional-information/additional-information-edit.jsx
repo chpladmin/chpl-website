@@ -9,6 +9,7 @@ import * as yup from 'yup';
 
 import ChplIcsEdit from './components/ics-edit';
 import ChplPromotingInteroperabilityEdit from './components/promoting-interoperability-edit';
+import ChplQmsStandardsEdit from './components/qms-standards-edit';
 import ChplTargetedUsersEdit from './components/targeted-users-edit';
 
 import { ChplTextField } from 'components/util';
@@ -89,6 +90,7 @@ function ChplAdditionalInformationEdit() {
       />
       <ChplTargetedUsersEdit />
       <ChplPromotingInteroperabilityEdit />
+      <ChplQmsStandardsEdit />
     </Box>
   );
 }
