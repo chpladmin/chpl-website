@@ -128,7 +128,7 @@ function ChplTargetedUsersEdit() {
                           { tu.targetedUserName }
                         </TableCell>
                         <TableCell>
-                          <IconButton variant="outlined" onClick={() => handleItemRemoval('targetedUsers', tu)}>
+                          <IconButton variant="outlined" onClick={() => handleItemRemoval(tu)}>
                             <Delete color="error" />
                           </IconButton>
                         </TableCell>
@@ -217,7 +217,7 @@ function ChplTargetedUsersEdit() {
                 endIcon={<Save fontSize="small" />}
                 variant="contained"
                 color="primary"
-                onClick={() => handleItemAddition('targetedUsers')}
+                onClick={() => handleItemAddition()}
                 disabled={formik.values.newTargetedUser === ''}
               >
                 Save

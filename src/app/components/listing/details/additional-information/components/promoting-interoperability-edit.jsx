@@ -117,7 +117,7 @@ function ChplPromotingInteroperabilityEdit() {
                         { getDisplayDateFormat(pi.userCountDate) }
                       </TableCell>
                       <TableCell>
-                        <IconButton variant="outlined" onClick={() => handleItemRemoval('promotingInteroperability', pi)}>
+                        <IconButton variant="outlined" onClick={() => handleItemRemoval(pi)}>
                           <Delete color="error" />
                         </IconButton>
                       </TableCell>
@@ -184,7 +184,7 @@ function ChplPromotingInteroperabilityEdit() {
                 endIcon={<Save fontSize="small" />}
                 variant="contained"
                 color="primary"
-                onClick={() => handleItemAddition('promotingInteroperability')}
+                onClick={() => handleItemAddition()}
                 disabled={formik.values.newUserCount === '' || formik.values.newUserCountDate === ''}
               >
                 Save
