@@ -7,6 +7,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplAccessibilityStandardsEdit from './components/accessibility-standards-edit';
 import ChplIcsEdit from './components/ics-edit';
 import ChplPromotingInteroperabilityEdit from './components/promoting-interoperability-edit';
 import ChplQmsStandardsEdit from './components/qms-standards-edit';
@@ -91,6 +92,7 @@ function ChplAdditionalInformationEdit() {
       <ChplTargetedUsersEdit />
       <ChplPromotingInteroperabilityEdit />
       <ChplQmsStandardsEdit />
+      <ChplAccessibilityStandardsEdit />
     </Box>
   );
 }
