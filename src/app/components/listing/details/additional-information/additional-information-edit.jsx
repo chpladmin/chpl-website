@@ -257,7 +257,7 @@ function ChplAdditionalInformationEdit() {
                   </Card>
                 </>
               )}
-            { !addingIcsSource
+            { formik.values.ics && !addingIcsSource
               && (
                 <Button
                   size="medium"
