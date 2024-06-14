@@ -125,6 +125,7 @@ function ChplIcsEdit() {
 
   return (
     <>
+      <Typography variant="subtitle1">Inherited Certification Status:</Typography>
       <FormControlLabel
         control={(
           <Switch
@@ -135,7 +136,7 @@ function ChplIcsEdit() {
             onChange={handleIcsToggle}
           />
         )}
-        label="Inherited Certified Status"
+        label={`Inherited Certified Status (${formik.values.ics ? 'Yes' : 'No'})`}
       />
       { formik.values.ics && listing.ics.parents.length > 0
         && (
