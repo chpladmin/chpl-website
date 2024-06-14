@@ -308,7 +308,7 @@ function ChplAdditionalInformationEdit() {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           error={formik.touched.newIcsSource && !!formik.errors.newIcsSource}
-                          helperText={formik.touched.newIcsSource && formik.errors.newStatusType}
+                          helperText={formik.touched.newIcsSource && formik.errors.newIcsSource}
                         >
                           { relatedListings.map((item) => (
                             <MenuItem value={item} key={item}>{item}</MenuItem>
@@ -438,7 +438,7 @@ function ChplAdditionalInformationEdit() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.newTargetedUser && !!formik.errors.newTargetedUser}
-                    helperText={formik.touched.newTargetedUser && formik.errors.newStatusType}
+                    helperText={formik.touched.newTargetedUser && formik.errors.newTargetedUser}
                   >
                     { targetedUsers.map((item, idx) => (
                       <MenuItem value={item} key={`${item}-${idx}`}>{item}</MenuItem>
@@ -456,7 +456,7 @@ function ChplAdditionalInformationEdit() {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.newTargetedUser && !!formik.errors.newTargetedUser}
-                    helperText={formik.touched.newTargetedUser && formik.errors.newStatusType}
+                    helperText={formik.touched.newTargetedUser && formik.errors.newTargetedUser}
                   />
                 )}
               <FormControlLabel
