@@ -250,7 +250,7 @@ function ChplAdditionalInformationEdit() {
             { formik.values.ics && listing.ics.parents.length > 0
               && (
                 <>
-                  <Typography>Inherits from</Typography>
+                  <Typography variant="subtitle2">Inherits from</Typography>
                   <Card className={classes.fullWidth}>
                     <Table>
                       <TableHead>
