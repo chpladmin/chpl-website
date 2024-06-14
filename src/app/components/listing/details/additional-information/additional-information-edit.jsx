@@ -29,8 +29,13 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
+  is2014: yup.boolean(),
   reportFileLocation: yup.string()
-    .required('Field is required') // TODO: for 2014 edition
+    .when('is2014', {
+      is: true,
+      then: yup.string()
+        .required('Field is required'),
+    })
     .url('Improper format (http://www.example.com)')
     .max(250, 'Field is too long'),
   otherAcb: yup.string(),
@@ -51,6 +56,7 @@ function ChplAdditionalInformationEdit() {
 
   formik = useFormik({
     initialValues: {
+      is2014: listing.edition?.name === '2014',
       reportFileLocation: listing.reportFileLocation ?? '',
       otherAcb: listing.otherAcb ?? '',
     },
@@ -65,16 +71,20 @@ function ChplAdditionalInformationEdit() {
 
   return (
     <Box className={classes.column}>
-      <ChplTextField
-        id="report-file-location"
-        name="reportFileLocation"
-        label="Report File Location"
-        value={formik.values.reportFileLocation}
-        onChange={handleBasicChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.reportFileLocation && !!formik.errors.reportFileLocation}
-        helperText={formik.touched.reportFileLocation && formik.errors.reportFileLocation}
-      />
+      { (listing.edition?.name === '2014')
+        && (
+          <ChplTextField
+            id="report-file-location"
+            name="reportFileLocation"
+            label="Report File Location"
+            required={formik.values.is2014}
+            value={formik.values.reportFileLocation}
+            onChange={handleBasicChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.reportFileLocation && !!formik.errors.reportFileLocation}
+            helperText={formik.touched.reportFileLocation && formik.errors.reportFileLocation}
+          />
+        )}
       { (listing.edition === null || listing.edition.name === '2015')
         && (
           <ChplIcsEdit />
