@@ -121,7 +121,7 @@ function ChplTargetedUsersEdit() {
                 </TableHead>
                 <TableBody>
                   {listing.targetedUsers
-                    .sort((a, b) => (a.targetedUserName < b.targetedUserName ? 1 : -1))
+                    .sort((a, b) => (a.targetedUserName < b.targetedUserName ? -1 : 1))
                     .map((tu) => (
                       <TableRow key={tu.targetedUserName}>
                         <TableCell>
