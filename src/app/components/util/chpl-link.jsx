@@ -73,18 +73,6 @@ function ChplLink({
     }
   };
 
-  let disclaimerClicked = false;
-  const trackDisclaimer = (e) => {
-    if (!disclaimerClicked) {
-      e.preventDefault();
-      disclaimerClicked = true;
-      $analytics.eventTrack('Go to Website Disclaimers', {
-        category: 'Navigation',
-      });
-      e.target.click();
-    }
-  };
-
   if (inline && !external) {
     return (
       <a href={href} onClick={track}>
@@ -100,7 +88,7 @@ function ChplLink({
       </a>
       { external
         && (
-          <a href="http://www.hhs.gov/disclaimer.html" onClick={trackDisclaimer} title="Web Site Disclaimers" className={classes.disclaimerIcon}>
+          <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
             <ExitToAppIcon />
             <span className="sr-only">Web Site Disclaimers</span>
           </a>
