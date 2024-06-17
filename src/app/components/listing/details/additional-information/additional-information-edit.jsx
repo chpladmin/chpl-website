@@ -85,10 +85,7 @@ function ChplAdditionalInformationEdit() {
             helperText={formik.touched.reportFileLocation && formik.errors.reportFileLocation}
           />
         )}
-      { (listing.edition === null || listing.edition.name === '2015')
-        && (
-          <ChplIcsEdit />
-        )}
+      <ChplIcsEdit />
       <ChplTextField
         id="other-acb"
         name="otherAcb"

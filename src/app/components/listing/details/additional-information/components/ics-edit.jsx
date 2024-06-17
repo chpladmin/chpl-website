@@ -125,7 +125,7 @@ function ChplIcsEdit() {
 
   return (
     <>
-      <Typography variant="subtitle1">Inherited Certification Status:</Typography>
+      <Typography variant="subtitle1">Inherited Certified Status:</Typography>
       <FormControlLabel
         control={(
           <Switch
@@ -138,7 +138,7 @@ function ChplIcsEdit() {
         )}
         label={`Inherited Certified Status (${formik.values.ics ? 'Yes' : 'No'})`}
       />
-      { formik.values.ics && listing.ics.parents.length > 0
+      { formik.values.ics && listing.ics.parents.length > 0 && (listing.edition === null || listing.edition.name === '2015')
         && (
           <>
             <Typography variant="subtitle2">Inherits from</Typography>
@@ -170,7 +170,7 @@ function ChplIcsEdit() {
             </Card>
           </>
         )}
-      { formik.values.ics && !addingIcsSource
+      { formik.values.ics && !addingIcsSource && (listing.edition === null || listing.edition.name === '2015')
         && (
           <Button
             size="medium"
