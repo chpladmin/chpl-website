@@ -27,13 +27,14 @@ const prependLink = (url) => {
   return `http://${url}`;
 };
 
-function ChplLink(props) {
-  const {
-    analytics,
-    external,
-    inline,
-    router,
-  } = props;
+function ChplLink({
+  analytics,
+  external,
+  href: initialHref,
+  inline,
+  router,
+  text: initialText,
+}) {
   const classes = useStyles();
   const [href, setHref] = useState('');
   const [text, setText] = useState('');
@@ -41,9 +42,9 @@ function ChplLink(props) {
   const $state = getAngularService('$state');
 
   useEffect(() => {
-    setHref(prependLink(props.href));
-    setText(props.text || props.href);
-  }, [props.href, props.text]); // eslint-disable-line react/destructuring-assignment
+    setHref(prependLink(initialHref));
+    setText(initialText || initialHref);
+  }, [initialHref, initialText]);
 
   let clicked = false;
   const track = (e) => {
