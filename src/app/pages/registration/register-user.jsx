@@ -10,7 +10,6 @@ import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import {
-  useFetchInvitationType,
   usePostCreateCognitoInvitedUser,
   usePostCreateInvitedUser,
 } from 'api/users';
@@ -44,7 +43,6 @@ function ChplRegisterUser({ hash }) {
   const [message, setMessage] = useState('');
   const [ssoIsOn, setSsoIsOn] = useState(false);
   const [state, setState] = useState('signin');
-  const { data, isLoading, isSuccess } = useFetchInvitationType({ hash });
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
   const { mutate: createInvited } = usePostCreateInvitedUser();
   const { setUser } = useContext(UserContext);
@@ -63,14 +61,12 @@ function ChplRegisterUser({ hash }) {
   }, []);
 
   useEffect(() => {
-    if (isLoading || !isSuccess) {
-      return;
-    }
-    setInvitationType(data);
-    if (data === 'COGNITO') {
+    const type = hash.indexOf('-') > -1 ? 'COGNITO' : 'CHPL';
+    setInvitationType(type);
+    if (type === 'COGNITO') {
       setState('create');
     }
-  }, [data, isLoading, isSuccess]);
+  }, [hash]);
 
   handleDispatch = (action, payload) => {
     setMessage('');

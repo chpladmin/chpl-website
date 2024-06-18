@@ -1,17 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
-
-const useFetchInvitationType = ({ hash }) => {
-  const axios = useAxios();
-  return useQuery(['invitation', hash], async () => {
-    if (hash) {
-      const response = await axios.get(`users/invitation/${hash}`);
-      return response.data;
-    }
-    return '';
-  });
-};
 
 const usePostCreateCognitoInvitedUser = () => {
   const axios = useAxios();
@@ -34,7 +23,6 @@ const usePutUser = () => {
 };
 
 export {
-  useFetchInvitationType,
   usePostCreateCognitoInvitedUser,
   usePostCreateInvitedUser,
   usePutUser,
