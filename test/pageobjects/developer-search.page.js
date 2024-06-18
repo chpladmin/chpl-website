@@ -10,6 +10,7 @@ class DeveloperSearchPage extends SearchPage {
       ...this.elements,
       header: 'h1=Developers',
       composeMessageButton: '#compose-message',
+      downloadDevelopersButton: '#download-developers',
     };
   }
 
@@ -20,6 +21,10 @@ class DeveloperSearchPage extends SearchPage {
 
   get composeMessageButton() {
     return $(this.elements.composeMessageButton);
+  }
+
+  get downloadDevelopersButton() {
+    return $(this.elements.downloadDevelopersButton);
   }
 }
 
