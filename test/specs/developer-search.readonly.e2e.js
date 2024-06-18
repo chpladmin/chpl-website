@@ -23,10 +23,43 @@ describe('the Developer Search page', () => {
     await expect(await page.composeMessageButton).not.toBeExisting();
   });
 
-  it('should have the compose message button for ONC users', async () => {
-    login = new LoginComponent();
-    await login.logIn('onc');
-    await expect(await page.composeMessageButton).toBeExisting();
-    await login.logOut();
+  it('should have the Download Developers button for anonymous users', async () => {
+    await expect(await page.downloadDevelopersButton).toBeExisting();
+  });
+
+  describe('when logged in as ONC', () => {
+    beforeEach(async () => {
+      login = new LoginComponent();
+      await login.logIn('onc');
+    });
+    afterEach(async () => {
+      await login.logOut();
+    });
+
+    it('should have the compose message button for ONC users', async () => {
+      await expect(await page.composeMessageButton).toBeExisting();
+    });
+
+    it('should have the Download Developers button for ONC users', async () => {
+      await expect(await page.downloadDevelopersButton).toBeExisting();
+    });
+  });
+
+  describe('when logged in as ACB', () => {
+    beforeEach(async () => {
+      login = new LoginComponent();
+      await login.logIn('drummond');
+    });
+    afterEach(async () => {
+      await login.logOut();
+    });
+
+    it('should NOT have the compose message button for ACB users', async () => {
+      await expect(await page.composeMessageButton).not.toBeExisting();
+    });
+
+    it('should have the Download Developers button for ACB users', async () => {
+      await expect(await page.downloadDevelopersButton).toBeExisting();
+    });
   });
 });
