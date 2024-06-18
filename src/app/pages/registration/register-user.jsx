@@ -145,6 +145,9 @@ function ChplRegisterUser({ hash }) {
           },
         });
         break;
+      case 'loggedIn':
+        setMessage('');
+        break;
       default:
         console.error(`No action matches ${action} with payload ${payload}`);
     }

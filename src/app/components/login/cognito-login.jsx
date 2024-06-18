@@ -20,7 +20,7 @@ import ReactGA from 'react-ga4';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import {
-  usePostChangePassword,
+  usePostNewPasswordRequired,
   usePostCognitoLogin,
 } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
@@ -41,9 +41,9 @@ const useStyles = makeStyles({
   },
 });
 
-const changeSchema = yup.object({
-  oldPassword: yup.string()
-    .required('Old Password is required'),
+const forceChangeSchema = yup.object({
+  email: yup.string()
+    .required('Email is required'),
   newPassword: yup.string()
     .required('Password is required')
     .test(
@@ -73,14 +73,15 @@ function ChplCognitoLogin({ dispatch }) {
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const postChangePassword = usePostChangePassword();
   const postLogin = usePostCognitoLogin();
+  const postNewPasswordRequired = usePostNewPasswordRequired();
   const [passwordMessages, setPasswordMessages] = useState([]);
+  const [sessionId, setSessionId] = useState('');
   const [state, setState] = useState('SIGNIN');
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
 
-  let changeFormik;
+  let forceChangeFormik;
   let signinFormik;
 
   useEffect(() => {
@@ -92,7 +93,7 @@ function ChplCognitoLogin({ dispatch }) {
   const cancel = (e) => {
     e.stopPropagation();
     switch (state) {
-      case 'CHANGEPASSWORD':
+      case 'FORCECHANGEPASSWORD':
         setState('LOGGEDIN');
         break;
       default:
@@ -106,33 +107,25 @@ function ChplCognitoLogin({ dispatch }) {
     }
   };
 
-  const changePassword = () => {
-    postChangePassword.mutate({
-      oldPassword: changeFormik.values.oldPassword,
-      newPassword: changeFormik.values.newPassword,
+  const forceChangePassword = () => {
+    postNewPasswordRequired.mutate({
+      userName: forceChangeFormik.values.email,
+      password: forceChangeFormik.values.newPassword,
+      sessionId,
     }, {
       onSuccess: (response) => {
-        if (response.passwordUpdated) {
-          ReactGA.event({ action: 'Change Password', category: 'Authentication', label: 'test' });
-          setState('LOGGEDIN');
-          changeFormik.resetForm();
-          const body = 'Password successfully changed';
-          enqueueSnackbar(body, { variant: 'success' });
-        } else {
-          let body = 'Your password was not changed. ';
-          if (response.warning) {
-            body += response.warning;
-          }
-          if (response.suggestions && response.suggestions.length > 0) {
-            body += `Suggestion${response.suggestions.length > 1 ? 's' : ''}: ${response.suggestions.join(' ')}`;
-          }
-          if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
-            body += 'Please try again with a stronger password.';
-          }
-          enqueueSnackbar(body, { variant: 'error' });
-        }
+        authService.saveToken(response.accessToken);
+        setUser(response.user);
+        authService.saveCurrentUser(response.user);
+        signinFormik.resetForm();
+        ReactGA.event({ action: 'Log In', category: 'Authentication' });
+        Idle.watch();
+        $rootScope.$broadcast('loggedIn');
+        dispatch('loggedIn');
+        setState('LOGGEDIN');
       },
-      onError: () => {
+      onError: (error) => {
+        console.error(error);
         const body = 'Error. Please check your credentials or contact the administrator';
         enqueueSnackbar(body, { variant: 'error' });
       },
@@ -141,7 +134,7 @@ function ChplCognitoLogin({ dispatch }) {
 
   const getTitle = () => {
     switch (state) {
-      case 'CHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
+      case 'FORCECHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
       case 'LOGGEDIN': return user?.fullName ?? 'Logged in';
       case 'SIGNIN': return 'Cognito login required';
       default: return 'Unknown state';
@@ -165,13 +158,14 @@ function ChplCognitoLogin({ dispatch }) {
         setState('LOGGEDIN');
       },
       onError: (error) => {
-        if (error?.status === 461) {
+        if (error?.response?.status === 461) {
           const body = 'Your account has not been confirmed, please check your email to confirm your account.';
           enqueueSnackbar(body, { variant: 'info' });
-        } else if (error?.status === 470) {
+        } else if (error?.response?.status === 470) {
           const body = 'Password change is required';
           enqueueSnackbar(body, { variant: 'info' });
-          setState('CHANGEPASSWORD');
+          setSessionId(error?.response?.data?.sessionId);
+          setState('FORCECHANGEPASSWORD');
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
@@ -192,7 +186,7 @@ function ChplCognitoLogin({ dispatch }) {
 
   const submitChange = (e) => {
     e.stopPropagation();
-    changeFormik.handleSubmit();
+    forceChangeFormik.handleSubmit();
   };
 
   const submitSignin = (e) => {
@@ -206,20 +200,20 @@ function ChplCognitoLogin({ dispatch }) {
     if (user?.email) { vals.push(user.email); }
     if (user?.phoneNumber) { vals.push(user.phoneNumber); }
     const passwordStrength = zxcvbn(event.target.value, vals);
-    changeFormik.values.passwordStrength = passwordStrength.score;
+    forceChangeFormik.values.passwordStrength = passwordStrength.score;
     setStrength(passwordStrength.score);
     setPasswordMessages(
       [passwordStrength.feedback?.warning]
         .concat(passwordStrength.feedback?.suggestions)
         .filter((msg) => msg),
     );
-    changeFormik.handleChange(event);
+    forceChangeFormik.handleChange(event);
   };
 
-  changeFormik = useFormik({
-    validationSchema: changeSchema,
+  forceChangeFormik = useFormik({
+    validationSchema: forceChangeSchema,
     initialValues: {
-      oldPassword: '',
+      email: '',
       newPassword: '',
       verificationPassword: '',
       passwordStrength: 0,
@@ -227,7 +221,7 @@ function ChplCognitoLogin({ dispatch }) {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: () => {
-      changePassword();
+      forceChangePassword();
     },
   });
 
@@ -249,18 +243,24 @@ function ChplCognitoLogin({ dispatch }) {
         {state === 'CHANGEPASSWORD'
          && (
            <>
+             <Typography>To implement later</Typography>
+           </>
+         )}
+        {state === 'FORCECHANGEPASSWORD'
+         && (
+           <>
              <ChplTextField
-               type="password"
-               id="old-password"
-               name="oldPassword"
-               label="Old Password"
+               type="email"
+               id="email"
+               name="email"
+               label="Email"
                required
-               value={changeFormik.values.oldPassword}
-               onChange={changeFormik.handleChange}
-               onBlur={changeFormik.handleBlur}
+               value={forceChangeFormik.values.email}
+               onChange={forceChangeFormik.handleChange}
+               onBlur={forceChangeFormik.handleBlur}
                onKeyPress={(e) => catchEnter(e, submitChange)}
-               error={changeFormik.touched.oldPassword && !!changeFormik.errors.oldPassword}
-               helperText={changeFormik.touched.oldPassword && changeFormik.errors.oldPassword}
+               error={forceChangeFormik.touched.email && !!forceChangeFormik.errors.email}
+               helperText={forceChangeFormik.touched.email && forceChangeFormik.errors.email}
              />
              <ChplTextField
                type="password"
@@ -268,12 +268,12 @@ function ChplCognitoLogin({ dispatch }) {
                name="newPassword"
                label="New Password"
                required
-               value={changeFormik.values.newPassword}
+               value={forceChangeFormik.values.newPassword}
                onChange={updateChangePassword}
-               onBlur={changeFormik.handleBlur}
+               onBlur={forceChangeFormik.handleBlur}
                onKeyPress={(e) => catchEnter(e, submitChange)}
-               error={changeFormik.touched.newPassword && !!changeFormik.errors.newPassword}
-               helperText={changeFormik.touched.newPassword && changeFormik.errors.newPassword}
+               error={forceChangeFormik.touched.newPassword && !!forceChangeFormik.errors.newPassword}
+               helperText={forceChangeFormik.touched.newPassword && forceChangeFormik.errors.newPassword}
              />
              <PasswordStrengthMeter
                value={strength}
@@ -292,12 +292,12 @@ function ChplCognitoLogin({ dispatch }) {
                name="verificationPassword"
                label="Verify Password"
                required
-               value={changeFormik.values.verificationPassword}
-               onChange={changeFormik.handleChange}
-               onBlur={changeFormik.handleBlur}
+               value={forceChangeFormik.values.verificationPassword}
+               onChange={forceChangeFormik.handleChange}
+               onBlur={forceChangeFormik.handleBlur}
                onKeyPress={(e) => catchEnter(e, submitChange)}
-               error={changeFormik.touched.verificationPassword && !!changeFormik.errors.verificationPassword}
-               helperText={changeFormik.touched.verificationPassword && changeFormik.errors.verificationPassword}
+               error={forceChangeFormik.touched.verificationPassword && !!forceChangeFormik.errors.verificationPassword}
+               helperText={forceChangeFormik.touched.verificationPassword && forceChangeFormik.errors.verificationPassword}
              />
            </>
          )}
@@ -355,7 +355,7 @@ function ChplCognitoLogin({ dispatch }) {
              Change Password
            </Button>
          )}
-        {state === 'CHANGEPASSWORD'
+        {state === 'FORCECHANGEPASSWORD'
          && (
            <Button
              fullWidth
