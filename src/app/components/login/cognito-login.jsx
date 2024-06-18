@@ -158,10 +158,7 @@ function ChplCognitoLogin({ dispatch }) {
         setState('LOGGEDIN');
       },
       onError: (error) => {
-        if (error?.response?.status === 461) {
-          const body = 'Your account has not been confirmed, please check your email to confirm your account.';
-          enqueueSnackbar(body, { variant: 'info' });
-        } else if (error?.response?.status === 470) {
+        if (error?.response?.status === 470) {
           const body = 'Password change is required';
           enqueueSnackbar(body, { variant: 'info' });
           setSessionId(error?.response?.data?.sessionId);
