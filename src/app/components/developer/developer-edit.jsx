@@ -34,8 +34,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
-import { getDisplayDateFormat } from 'services/date-util';
 import { ChplTextField } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -279,7 +279,16 @@ function ChplDeveloperEdit(props) {
     cancelAdd();
   };
 
-  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.endDate || !!formik.errors.reason;
+  const getKey = (status) => status.id || `${status.startDate}-${status.endDate}-${status.reason}-${status.status?.name}`;
+
+  const isActionDisabled = () => isInvalid || !formik.isValid;
+
+  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.endDate || !!formik.errors.reason || statuses.some((status) => getKey(status) === getKey({
+    status: { name: formik.values.status },
+    startDate: formik.values.startDate,
+    endDate: formik.values.endDate,
+    reason: formik.values.reason,
+  }));
 
   const removeStatus = (status) => {
     setStatuses(statuses.filter((item) => item.startDate !== status.startDate
@@ -287,8 +296,6 @@ function ChplDeveloperEdit(props) {
         || item.reason !== status.reason
         || item.status.name !== status.status.name));
   };
-
-  const isActionDisabled = () => isInvalid || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
@@ -318,10 +325,9 @@ function ChplDeveloperEdit(props) {
   });
 
   return (
-    <>
-      <Container maxWidth="md">
-        <Card>
-          { isSplitting
+    <Container maxWidth="md">
+      <Card>
+        { isSplitting
           && (
             <CardHeader
               title="New Developer"
@@ -329,7 +335,7 @@ function ChplDeveloperEdit(props) {
               className={classes.developerHeader}
             />
           )}
-          { !isSplitting
+        { !isSplitting
           && (
             <CardHeader
               title={developer.name}
@@ -337,23 +343,23 @@ function ChplDeveloperEdit(props) {
               component="h2"
             />
           )}
-          <CardContent className={classes.content}>
-            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+        <CardContent className={classes.content}>
+          { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
-            <FormControlLabel
-              control={(
-                <Switch
-                  id="self-developer"
-                  name="selfDeveloper"
-                  color="primary"
-                  checked={formik.values.selfDeveloper}
-                  onChange={formik.handleChange}
-                  className={classes.fullWidth}
-                />
+          <FormControlLabel
+            control={(
+              <Switch
+                id="self-developer"
+                name="selfDeveloper"
+                color="primary"
+                checked={formik.values.selfDeveloper}
+                onChange={formik.handleChange}
+                className={classes.fullWidth}
+              />
             )}
-              label="Self-Developer"
-            />
-            { hasAnyRole(['chpl-admin', 'chpl-onc'])
+            label="Self-Developer"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc'])
             && (
               <>
                 <TableContainer className={classes.fullWidth}>
@@ -371,7 +377,7 @@ function ChplDeveloperEdit(props) {
                       { statuses
                         ?.sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
                         .map((status) => (
-                          <TableRow key={status.id || status.startDate}>
+                          <TableRow key={getKey(status)}>
                             <TableCell>
                               <Typography variant="body2">{ status.status.name }</Typography>
                             </TableCell>
@@ -502,31 +508,30 @@ function ChplDeveloperEdit(props) {
                   )}
               </>
             )}
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
-            { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
-            { getEnhancedEditField({ key: 'email', display: 'Email' }) }
-            { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
-            { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
-            { getEnhancedEditField({ key: 'city', display: 'City' }) }
-            { getEnhancedEditField({ key: 'state', display: 'State' }) }
-            { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
-            { getEnhancedEditField({ key: 'country', display: 'Country' }) }
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
-          </CardContent>
-        </Card>
-        <ChplActionBar
-          dispatch={handleDispatch}
-          isDisabled={isActionDisabled()}
-          isProcessing={isProcessing}
-          errors={errorMessages}
-          warnings={warnings}
-        />
-      </Container>
-    </>
+          <Divider className={classes.fullWidth} />
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
+          { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
+          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
+          <Divider className={classes.fullWidth} />
+          { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
+          { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
+          { getEnhancedEditField({ key: 'city', display: 'City' }) }
+          { getEnhancedEditField({ key: 'state', display: 'State' }) }
+          { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
+          { getEnhancedEditField({ key: 'country', display: 'Country' }) }
+          <Divider className={classes.fullWidth} />
+          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
+        </CardContent>
+      </Card>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        isDisabled={isActionDisabled()}
+        isProcessing={isProcessing}
+        errors={errorMessages}
+        warnings={warnings}
+      />
+    </Container>
   );
 }
 
