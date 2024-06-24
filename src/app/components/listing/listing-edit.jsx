@@ -138,6 +138,7 @@ function ChplListingEdit() {
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [messages, setMessages] = useState({
     businessErrors: new Set(),
     dataErrors: new Set(),
@@ -153,6 +154,7 @@ function ChplListingEdit() {
   const getWarnings = () => [...messages.warnings];
 
   const save = () => {
+    setIsProcessing(true);
     const payload = {
       listing,
       reason: formik.values.reason,
@@ -169,9 +171,11 @@ function ChplListingEdit() {
             variant: 'success',
           });
         }
+        setIsProcessing(false);
         setTimeout(() => $state.go('listing'), 5000);
       },
       onError: (error) => {
+        setIsProcessing(false);
         setMessages({
           businessErrors: new Set(error.response.data.businessErrorMessages ?? []),
           dataErrors: new Set(error.response.data.dataErrorMessages ?? []),
@@ -396,6 +400,7 @@ function ChplListingEdit() {
         dispatch={handleDispatch}
         errors={getErrors()}
         warnings={getWarnings()}
+        isProcessing={isProcessing}
         showErrorAcknowledgement={messages.businessErrors.size > 0 && messages.dataErrors.size === 0}
         showWarningAcknowledgement={messages.warnings.size > 0}
       />
