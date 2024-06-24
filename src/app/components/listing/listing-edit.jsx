@@ -28,7 +28,6 @@ import ChplSedEdit from './details/sed/edit/edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
-import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import { ChplTextField, InternalScrollButton } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
@@ -142,6 +141,7 @@ function ChplListingEdit() {
   const [messages, setMessages] = useState({
     businessErrors: new Set(),
     dataErrors: new Set(),
+    otherErrors: new Set(),
     warnings: new Set(),
   });
   const [seeAllCqms, setSeeAllCqms] = useState(true);
@@ -149,7 +149,7 @@ function ChplListingEdit() {
   const classes = useStyles();
   let formik;
 
-  const getErrors = () => [...messages.businessErrors].concat([...messages.dataErrors]);
+  const getErrors = () => [...messages.businessErrors].concat([...messages.dataErrors]).concat([...messages.otherErrors]);
 
   const getWarnings = () => [...messages.warnings];
 
@@ -179,6 +179,7 @@ function ChplListingEdit() {
         setMessages({
           businessErrors: new Set(error.response.data.businessErrorMessages ?? []),
           dataErrors: new Set(error.response.data.dataErrorMessages ?? []),
+          otherErrors: new Set([error.response.data.error] ?? []),
           warnings: new Set(error.response.data.warningMessages ?? []),
         });
       },
