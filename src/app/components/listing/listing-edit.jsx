@@ -179,7 +179,7 @@ function ChplListingEdit() {
         setMessages({
           businessErrors: new Set(error.response.data.businessErrorMessages ?? []),
           dataErrors: new Set(error.response.data.dataErrorMessages ?? []),
-          otherErrors: new Set([error.response.data.error] ?? []),
+          otherErrors: error.response.data.error ? new Set([error.response.data.error]) : new Set(),
           warnings: new Set(error.response.data.warningMessages ?? []),
         });
       },
