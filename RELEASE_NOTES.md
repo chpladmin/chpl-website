@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.19.0
+_24 June 2024_
+
+### Features
+* Enable download of Developer search results
+
+### Bug Fixes
+* Remove analytics tracking on "Web Site Disclaimers"
+
+---
+
 ## Version 13.18.0
 _10 June 2024_
 
