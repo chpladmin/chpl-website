@@ -5,6 +5,11 @@ import {
   Card,
   CardContent,
   Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,7 +20,7 @@ import { useSnackbar } from 'notistack';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import SendIcon from '@material-ui/icons/Send';
 
-import { useFetchDevelopersBySearch, usePostMessage } from 'api/developer';
+import { useFetchDevelopersBySearch, usePostMessage, usePostMessagePreview } from 'api/developer';
 import { useFilterContext } from 'components/filter';
 import { ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
@@ -46,6 +51,15 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     padding: '16px 0',
   },
+  styleDemoCode: {
+    fontColor: 'blue',
+  },
+  styleDemoItalic: {
+    fontColor: 'red',
+  },
+  styleDemoBold: {
+    fontColor: 'green',
+  },
 });
 
 const validationSchema = yup.object({
@@ -60,6 +74,7 @@ function ChplMessaging({ dispatch }) {
   const [recordCount, setRecordCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
+  const postMessagePreview = usePostMessagePreview();
   const classes = useStyles();
 
   let formik;
@@ -90,6 +105,22 @@ function ChplMessaging({ dispatch }) {
       onSuccess: () => {
         enqueueSnackbar('Message queued', { variant: 'success' });
         dispatch();
+      },
+      onError: (error) => {
+        const body = `An error occurred: ${error.response?.data?.error}`;
+        enqueueSnackbar(body, { variant: 'error' });
+      },
+    });
+  };
+
+  const sendMessagePreview = () => {
+    postMessagePreview.mutate({
+      subject: formik.values.subject,
+      body: formik.values.body,
+      query: queryParams(),
+    }, {
+      onSuccess: () => {
+        enqueueSnackbar('Message preview has been queued. Please check your email to verify formatting', { variant: 'success' });
       },
       onError: (error) => {
         const body = `An error occurred: ${error.response?.data?.error}`;
@@ -157,6 +188,58 @@ function ChplMessaging({ dispatch }) {
             </CardContent>
           </Card>
         </Container>
+        <Container maxWidth="md">
+          <Card>
+            <CardContent
+              className={classes.content}
+            >
+              <Typography variant="h2">
+                Markdown reference
+              </Typography>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Type</TableCell>
+                    <TableCell>... to Get</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}>_Italic_</TableCell>
+                    <TableCell className={classes.styleDemoItalic}>Italic</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}>**Bold**</TableCell>
+                    <TableCell className={classes.styleDemoBold}>Bold</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}># Heading 1</TableCell>
+                    <TableCell className={classes.styleDemoHeading1}>Heading 1</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}>## Heading 2</TableCell>
+                    <TableCell className={classes.styleDemoHeading2}>Heading 2</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}>[Link](http://www.example.com)</TableCell>
+                    <TableCell className={classes.styleDemoLink}><a href="http://www.example.com">Link</a></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}>* List<br />* List<br />* List</TableCell>
+                    <TableCell className={classes.styleDemoUnorderedList}><ul><li>List</li><li>List</li><li>List</li></ul></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.styleDemoCode}>1. One<br />2. Two<br />3. Three</TableCell>
+                    <TableCell className={classes.styleDemoUnorderedList}><ol><li>One</li><li>Two</li><li>Three</li></ol></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Typography variant="body2">
+                https://commonmark.org/help/
+              </Typography>
+            </CardContent>
+          </Card>
+        </Container>
         <div className={classes.actionBarButtons}>
           <ButtonGroup
             color="primary"
@@ -168,6 +251,15 @@ function ChplMessaging({ dispatch }) {
               endIcon={<CloseOutlinedIcon />}
             >
               Cancel
+            </Button>
+            <Button
+              onClick={sendMessagePreview}
+              disabled={!formik.isValid}
+              variant="outlined"
+              className={classes.actionBarButton}
+              endIcon={<SendIcon />}
+            >
+              Send Message Preview
             </Button>
             <Button
               onClick={formik.handleSubmit}
