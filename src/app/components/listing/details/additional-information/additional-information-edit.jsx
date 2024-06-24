@@ -76,7 +76,7 @@ function ChplAdditionalInformationEdit() {
           <ChplTextField
             id="report-file-location"
             name="reportFileLocation"
-            label="Report File Location"
+            label="Test Results Summary"
             required={formik.values.is2014}
             value={formik.values.reportFileLocation}
             onChange={handleBasicChange}
