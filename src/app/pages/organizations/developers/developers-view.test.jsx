@@ -12,9 +12,12 @@ import * as angularReactHelper from 'services/angular-react-helper';
 const angularMock = {
   eventTrack: jest.fn(),
   getApiKey: () => 'fake api key',
+  getToken: () => 'token',
 };
+
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock);
+when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),
