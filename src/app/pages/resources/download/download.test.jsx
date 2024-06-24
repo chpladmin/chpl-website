@@ -55,7 +55,7 @@ describe('the ChplResourcesDownload page', () => {
       const items = screen.getAllByRole('listitem');
 
       await waitFor(() => {
-        expect(items.length).toBe(8);
+        expect(items.length).toBe(9);
       });
     });
   });

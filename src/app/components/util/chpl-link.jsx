@@ -27,13 +27,14 @@ const prependLink = (url) => {
   return `http://${url}`;
 };
 
-function ChplLink(props) {
-  const {
-    analytics,
-    external,
-    inline,
-    router,
-  } = props;
+function ChplLink({
+  analytics,
+  external,
+  href: initialHref,
+  inline,
+  router,
+  text: initialText,
+}) {
   const classes = useStyles();
   const [href, setHref] = useState('');
   const [text, setText] = useState('');
@@ -41,9 +42,9 @@ function ChplLink(props) {
   const $state = getAngularService('$state');
 
   useEffect(() => {
-    setHref(prependLink(props.href));
-    setText(props.text || props.href);
-  }, [props.href, props.text]); // eslint-disable-line react/destructuring-assignment
+    setHref(prependLink(initialHref));
+    setText(initialText || initialHref);
+  }, [initialHref, initialText]);
 
   let clicked = false;
   const track = (e) => {
@@ -72,18 +73,6 @@ function ChplLink(props) {
     }
   };
 
-  let disclaimerClicked = false;
-  const trackDisclaimer = (e) => {
-    if (!disclaimerClicked) {
-      e.preventDefault();
-      disclaimerClicked = true;
-      $analytics.eventTrack('Go to Website Disclaimers', {
-        category: 'Navigation',
-      });
-      e.target.click();
-    }
-  };
-
   if (inline && !external) {
     return (
       <a href={href} onClick={track}>
@@ -99,7 +88,7 @@ function ChplLink(props) {
       </a>
       { external
         && (
-          <a href="http://www.hhs.gov/disclaimer.html" onClick={trackDisclaimer} title="Web Site Disclaimers" className={classes.disclaimerIcon}>
+          <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
             <ExitToAppIcon />
             <span className="sr-only">Web Site Disclaimers</span>
           </a>
