@@ -223,11 +223,16 @@ function ChplMessaging({ dispatch }) {
                     <TableCell><pre>1. One<br />2. Two<br />3. Three</pre></TableCell>
                     <TableCell><ol><li>One</li><li>Two</li><li>Three</li></ol></TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell><pre>A paragraph of text<br /><br />Followed by a blank line<br/><br/>To get multiple paragraphs</pre></TableCell>
+                    <TableCell>A paragraph of text<br /><br />Followed by a blank line<br/><br/>To get multiple paragraphs</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>From: (with two spaces at the end of the line)  <br />To put a newline in a paragraph</pre></TableCell>
+                    <TableCell>From:<br />To put a newline in a paragraph</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
-              <Typography variant="body2">
-                https://commonmark.org/help/
-              </Typography>
             </CardContent>
           </Card>
         </Container>
