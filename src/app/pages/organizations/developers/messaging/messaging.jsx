@@ -51,15 +51,6 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     padding: '16px 0',
   },
-  styleDemoCode: {
-    fontColor: 'blue',
-  },
-  styleDemoItalic: {
-    fontColor: 'red',
-  },
-  styleDemoBold: {
-    fontColor: 'green',
-  },
 });
 
 const validationSchema = yup.object({
@@ -199,38 +190,38 @@ function ChplMessaging({ dispatch }) {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Type</TableCell>
-                    <TableCell>... to Get</TableCell>
+                    <TableCell>Type ...</TableCell>
+                    <TableCell>... to get</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}>_Italic_</TableCell>
-                    <TableCell className={classes.styleDemoItalic}>Italic</TableCell>
+                    <TableCell><pre>_Italic_</pre></TableCell>
+                    <TableCell><i>Italic</i></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}>**Bold**</TableCell>
-                    <TableCell className={classes.styleDemoBold}>Bold</TableCell>
+                    <TableCell><pre>**Bold**</pre></TableCell>
+                    <TableCell><b>Bold</b></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}># Heading 1</TableCell>
-                    <TableCell className={classes.styleDemoHeading1}>Heading 1</TableCell>
+                    <TableCell><pre># Heading 1</pre></TableCell>
+                    <TableCell><h1>Heading 1</h1></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}>## Heading 2</TableCell>
-                    <TableCell className={classes.styleDemoHeading2}>Heading 2</TableCell>
+                    <TableCell><pre>## Heading 2</pre></TableCell>
+                    <TableCell><h2>Heading 2</h2></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}>[Link](http://www.example.com)</TableCell>
-                    <TableCell className={classes.styleDemoLink}><a href="http://www.example.com">Link</a></TableCell>
+                    <TableCell><pre>[Link](http://www.example.com)</pre></TableCell>
+                    <TableCell><a href="http://www.example.com">Link</a></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}>* List<br />* List<br />* List</TableCell>
-                    <TableCell className={classes.styleDemoUnorderedList}><ul><li>List</li><li>List</li><li>List</li></ul></TableCell>
+                    <TableCell><pre>* List<br />* List<br />* List</pre></TableCell>
+                    <TableCell><ul><li>List</li><li>List</li><li>List</li></ul></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.styleDemoCode}>1. One<br />2. Two<br />3. Three</TableCell>
-                    <TableCell className={classes.styleDemoUnorderedList}><ol><li>One</li><li>Two</li><li>Three</li></ol></TableCell>
+                    <TableCell><pre>1. One<br />2. Two<br />3. Three</pre></TableCell>
+                    <TableCell><ol><li>One</li><li>Two</li><li>Three</li></ol></TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
