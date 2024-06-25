@@ -22,7 +22,7 @@ import SendIcon from '@material-ui/icons/Send';
 
 import { useFetchDevelopersBySearch, usePostMessage, usePostMessagePreview } from 'api/developer';
 import { useFilterContext } from 'components/filter';
-import { ChplTextField } from 'components/util';
+import { ChplLink, ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -233,6 +233,13 @@ function ChplMessaging({ dispatch }) {
                   </TableRow>
                 </TableBody>
               </Table>
+              <Typography>
+                For more information about formatting, please see:
+                {' '}
+                <ChplLink
+                  href="https://commonmark.org/help/"
+                />
+              </Typography>
             </CardContent>
           </Card>
         </Container>
