@@ -101,10 +101,10 @@ function ChplResourcesApi() {
 
   useEffect(() => {
     const data = {
-      'Active products': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, label: 'Active' },
-      'Inactive products': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, label: 'Inactive' },
-      '2014 edition products': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, label: '2014' },
-      '2011 edition products': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, label: '2011' },
+      'Active products': { data: `${API}/listings/download?listingType=active&api_key=${getApiKey()}&format=json`, label: 'Active' },
+      'Inactive products': { data: `${API}/listings/download?listingType=inactive&api_key=${getApiKey()}&format=json`, label: 'Inactive' },
+      '2014 edition products': { data: `${API}/listings/download?listingType=2014&api_key=${getApiKey()}&format=json`, label: '2014' },
+      '2011 edition products': { data: `${API}/listings/download?listingType=2011&api_key=${getApiKey()}&format=json`, label: '2011' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
