@@ -216,8 +216,8 @@ function ChplMessaging({ dispatch }) {
                     <TableCell><a href="http://www.example.com">Link</a></TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell><pre>* List<br />* List<br />* List</pre></TableCell>
-                    <TableCell><ul><li>List</li><li>List</li><li>List</li></ul></TableCell>
+                    <TableCell><pre>* List<br />* List<br />    * Put four spaces before the "*" to make a sub-bullet<br />* List</pre></TableCell>
+                    <TableCell><ul><li>List</li><li>List</li><ul><li>Put four spaces before the "*" to make a sub-bullet</li></ul><li>List</li></ul></TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell><pre>1. One<br />2. Two<br />3. Three</pre></TableCell>
