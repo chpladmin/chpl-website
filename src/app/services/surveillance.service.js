@@ -28,7 +28,7 @@ const sortNonconformityTypes = (a, b) => {
 };
 
 const sortRequirementTypes = (a, b) => {
-  if (a.requirementGroupType.name === 'Certified Capability') {
+  if (a.requirementGroupType.name === 'Certified Capability' || a.requirementGroupType.name === 'Inherited Certified Status') {
     return sortCriteria(a, b);
   }
   return typeOrder.indexOf(a.title) - typeOrder.indexOf(b.title);
