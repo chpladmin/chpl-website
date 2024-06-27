@@ -73,16 +73,12 @@ function ChplTargetedUsersEdit() {
   const handleItemAddition = () => {
     setListing((prev) => ({
       ...prev,
-      targetedUsers: prev.targetedUsers.concat(
-        targetedUsers
-          .find((tu) => tu.name === formik.values.newTargetedUser)
-          ?? {
-            targetedUserName: formik.values.newTargetedUser,
-          },
-      ),
+      targetedUsers: prev.targetedUsers.concat({
+        targetedUserName: formik.values.newTargetedUser,
+      }),
     }));
     setAddingTargetedUser(false);
-    formik.setFieldValue('newTargetedUser', '');
+    formik.resetForm();
   };
 
   const handleItemRemoval = (item) => {
@@ -170,9 +166,11 @@ function ChplTargetedUsersEdit() {
                     error={formik.touched.newTargetedUser && !!formik.errors.newTargetedUser}
                     helperText={formik.touched.newTargetedUser && formik.errors.newTargetedUser}
                   >
-                    { targetedUsers.map((item, idx) => (
-                      <MenuItem value={item} key={`${item}-${idx}`}>{item}</MenuItem>
-                    ))}
+                    { targetedUsers
+                      .filter((item) => !listing.targetedUsers.some((tu) => tu.targetedUserName === item))
+                      .map((item, idx) => (
+                        <MenuItem value={item} key={`${item}-${idx}`}>{item}</MenuItem>
+                      ))}
                   </ChplTextField>
                 )}
               { !addingExistingTargetedUser

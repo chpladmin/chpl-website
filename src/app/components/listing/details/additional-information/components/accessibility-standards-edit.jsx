@@ -75,7 +75,7 @@ function ChplAccessibilityStandardsEdit() {
       }),
     }));
     setAddingAccessibilityStandard(false);
-    formik.setFieldValue('newAccessibilityStandard', '');
+    formik.resetForm();
   };
 
   const handleItemRemoval = (item) => {
@@ -114,7 +114,7 @@ function ChplAccessibilityStandardsEdit() {
                 </TableHead>
                 <TableBody>
                   {listing.accessibilityStandards
-                    .sort((a, b) => (a.accessibilityStandardName < b.accessibilityStandardName ? 1 : -1))
+                    .sort((a, b) => (a.accessibilityStandardName < b.accessibilityStandardName ? -1 : 1))
                     .map((std) => (
                       <TableRow key={std.accessibilityStandardName}>
                         <TableCell>
@@ -161,9 +161,11 @@ function ChplAccessibilityStandardsEdit() {
                 error={formik.touched.newAccessibilityStandard && !!formik.errors.newAccessibilityStandard}
                 helperText={formik.touched.newAccessibilityStandard && formik.errors.newAccessibilityStandard}
               >
-                { accessibilityStandards.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                ))}
+                { accessibilityStandards
+                  .filter((item) => !listing.accessibilityStandards.some((std) => std.accessibilityStandardId === item.id))
+                  .map((item) => (
+                    <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                  ))}
               </ChplTextField>
             </Box>
             <Box className={classes.cancelAndSaveButton}>

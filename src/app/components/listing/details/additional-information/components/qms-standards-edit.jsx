@@ -49,7 +49,8 @@ const validationSchema = yup.object({
   newQmsStandard: yup.object()
     .required('Field is required'),
   newQmsModification: yup.string(),
-  newQmsApplicableCriteria: yup.string(),
+  newQmsApplicableCriteria: yup.string()
+    .required('Field is required'),
 });
 
 function ChplQmsStandardsEdit() {
@@ -68,6 +69,8 @@ function ChplQmsStandardsEdit() {
       .sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [qmsStandardsQuery.data, qmsStandardsQuery.isLoading, qmsStandardsQuery.isSuccess]);
 
+  const getKey = (item) => `${item.qmsStandardId}-${item.qmsStandardName}-${item.qmsModification}-${item.applicableCriteria}`;
+
   const handleItemAddition = () => {
     setListing((prev) => ({
       ...prev,
@@ -79,17 +82,24 @@ function ChplQmsStandardsEdit() {
       }),
     }));
     setAddingQmsStandard(false);
-    formik.setFieldValue('newQmsStandard', '');
-    formik.setFieldValue('newQmsModification', '');
-    formik.setFieldValue('newQmsApplicableCriteria', '');
+    formik.resetForm();
   };
 
   const handleItemRemoval = (item) => {
     setListing((prev) => ({
       ...prev,
-      qmsStandards: prev.qmsStandards.filter((qms) => qms.qmsStandardName !== item.qmsStandardName),
+      qmsStandards: prev.qmsStandards.filter((qms) => qms.qmsStandardName !== item.qmsStandardName
+          || qms.qmsModification !== item.qmsModification
+          || qms.applicableCriteria !== item.applicableCriteria),
     }));
   };
+
+  const isAddDisabled = () => !!formik.errors.newQmsStandard || !!formik.errors.newQmsApplicableCriteria || listing.qmsStandards.some((item) => getKey(item) === getKey({
+    qmsStandardId: formik.values.newQmsStandard.id,
+    qmsStandardName: formik.values.newQmsStandard.name,
+    qmsModification: formik.values.newQmsModification,
+    applicableCriteria: formik.values.newQmsApplicableCriteria,
+  }));
 
   formik = useFormik({
     initialValues: {
@@ -124,9 +134,9 @@ function ChplQmsStandardsEdit() {
                 </TableHead>
                 <TableBody>
                   {listing.qmsStandards
-                    .sort((a, b) => (a.qmsStandardName < b.qmsStandardName ? 1 : -1))
+                    .sort((a, b) => (a.qmsStandardName < b.qmsStandardName ? -1 : 1))
                     .map((qms) => (
-                      <TableRow key={qms.qmsStandardName}>
+                      <TableRow key={getKey(qms)}>
                         <TableCell>
                           { qms.qmsStandardName }
                         </TableCell>
@@ -196,6 +206,7 @@ function ChplQmsStandardsEdit() {
                 name="newQmsApplicableCriteria"
                 label="Applicable Criteria"
                 value={formik.values.newQmsApplicableCriteria}
+                required
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.newQmsApplicableCriteria && !!formik.errors.newQmsApplicableCriteria}
@@ -218,7 +229,7 @@ function ChplQmsStandardsEdit() {
                 variant="contained"
                 color="primary"
                 onClick={() => handleItemAddition()}
-                disabled={formik.values.newQmsStandard === ''}
+                disabled={isAddDisabled()}
               >
                 Save
               </Button>

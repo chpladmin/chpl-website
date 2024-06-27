@@ -45,9 +45,9 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  newUserCount: yup.number()
+  userCount: yup.number()
     .required('Field is required'),
-  newUserCountDate: yup.date()
+  userCountDate: yup.date()
     .required('Field is required'),
 });
 
@@ -57,30 +57,36 @@ function ChplPromotingInteroperabilityEdit() {
   const classes = useStyles();
   let formik;
 
+  const getKey = (item) => `${item.userCountDate}-${item.userCount}`;
+
   const handleItemAddition = () => {
     setListing((prev) => ({
       ...prev,
       promotingInteroperabilityUserHistory: prev.promotingInteroperabilityUserHistory.concat({
-        userCount: formik.values.newUserCount,
-        userCountDate: formik.values.newUserCountDate,
+        userCount: formik.values.userCount,
+        userCountDate: formik.values.userCountDate,
       }),
     }));
     setAddingPromotingInteroperability(false);
-    formik.setFieldValue('newUserCount', 0);
-    formik.setFieldValue('newUserCountDate', '');
+    formik.resetForm();
   };
 
   const handleItemRemoval = (item) => {
     setListing((prev) => ({
       ...prev,
-      promotingInteroperabilityUserHistory: prev.promotingInteroperabilityUserHistory.filter((pi) => pi.userCount !== item.userCount && pi.userCountDate !== item.userCountDate),
+      promotingInteroperabilityUserHistory: prev.promotingInteroperabilityUserHistory.filter((pi) => pi.userCount !== item.userCount || pi.userCountDate !== item.userCountDate),
     }));
   };
 
+  const isAddDisabled = () => !!formik.errors.userCount || !!formik.errors.userCountDate || listing.promotingInteroperabilityUserHistory.some((item) => getKey(item) === getKey({
+    userCount: formik.values.userCount,
+    userCountDate: formik.values.userCountDate,
+  }));
+
   formik = useFormik({
     initialValues: {
-      newUserCount: 0,
-      newUserCountDate: '',
+      userCount: 0,
+      userCountDate: '',
     },
     validationSchema,
   });
@@ -109,7 +115,7 @@ function ChplPromotingInteroperabilityEdit() {
                 {listing.promotingInteroperabilityUserHistory
                   .sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))
                   .map((pi) => (
-                    <TableRow key={pi.userCountDate}>
+                    <TableRow key={getKey(pi)}>
                       <TableCell>
                         { pi.userCount }
                       </TableCell>
@@ -146,27 +152,27 @@ function ChplPromotingInteroperabilityEdit() {
             <Box className={classes.twoColumnContainer}>
               <ChplTextField
                 type="number"
-                id="new-user-count"
-                name="newUserCount"
+                id="user-count"
+                name="userCount"
                 label="New User Count"
                 required
-                value={formik.values.newUserCount}
+                value={formik.values.userCount}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.newUserCount && !!formik.errors.newUserCount}
-                helperText={formik.touched.newUserCount && formik.errors.newUserCount}
+                error={formik.touched.userCount && !!formik.errors.userCount}
+                helperText={formik.touched.userCount && formik.errors.userCount}
               />
               <ChplTextField
                 type="date"
-                id="new-user-count-date"
-                name="newUserCountDate"
+                id="user-count-date"
+                name="userCountDate"
                 label="Effective Date"
                 required
-                value={formik.values.newUserCountDate}
+                value={formik.values.userCountDate}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.newUserCountDate && !!formik.errors.newUserCountDate}
-                helperText={formik.touched.newUserCountDate && formik.errors.newUserCountDate}
+                error={formik.touched.userCountDate && !!formik.errors.userCountDate}
+                helperText={formik.touched.userCountDate && formik.errors.userCountDate}
               />
             </Box>
             <Box className={classes.cancelAndSaveButton}>
@@ -185,7 +191,7 @@ function ChplPromotingInteroperabilityEdit() {
                 variant="contained"
                 color="primary"
                 onClick={() => handleItemAddition()}
-                disabled={formik.values.newUserCount === '' || formik.values.newUserCountDate === ''}
+                disabled={isAddDisabled()}
               >
                 Save
               </Button>

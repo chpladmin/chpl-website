@@ -51,7 +51,7 @@ const validationSchema = yup.object({
   ics: yup.boolean(),
   newIcsSource: yup.string()
     .required('Field is required')
-    .matches(/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/, 'Improper format (00.00.00.0000.XXXX.XX.00.0.000000'),
+    .matches(/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/, 'Improper format (00.00.00.0000.XXXX.XX.00.0.000000)'),
 });
 
 function ChplIcsEdit() {
@@ -187,7 +187,7 @@ function ChplIcsEdit() {
           <>
             <Typography variant="subtitle2">Adding New ICS Source:</Typography>
             <Box className={classes.twoColumnContainer}>
-              { addingExistingIcsSource
+              { addingExistingIcsSource && relatedListings.length > 0
                 && (
                   <ChplTextField
                     select
@@ -201,12 +201,14 @@ function ChplIcsEdit() {
                     error={formik.touched.newIcsSource && !!formik.errors.newIcsSource}
                     helperText={formik.touched.newIcsSource && formik.errors.newIcsSource}
                   >
-                    { relatedListings.map((item) => (
-                      <MenuItem value={item} key={item}>{item}</MenuItem>
-                    ))}
+                    { relatedListings
+                      .filter((item) => !listing.ics.parents.some((p) => p.chplProductNumber === item))
+                      .map((item) => (
+                        <MenuItem value={item} key={item}>{item}</MenuItem>
+                      ))}
                   </ChplTextField>
                 )}
-              { !addingExistingIcsSource
+              { (!addingExistingIcsSource || relatedListings.length === 0)
                 && (
                   <ChplTextField
                     id="new-ics-source"
@@ -220,18 +222,21 @@ function ChplIcsEdit() {
                     helperText={formik.touched.newIcsSource && formik.errors.newIcsSource}
                   />
                 )}
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="add-existing-ics-source"
-                    name="addExistingIcsSource"
-                    color="primary"
-                    checked={addingExistingIcsSource}
-                    onChange={() => setAddingExistingIcsSource((prev) => !prev)}
+              { relatedListings.length > 0
+                && (
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        id="add-existing-ics-source"
+                        name="addExistingIcsSource"
+                        color="primary"
+                        checked={addingExistingIcsSource}
+                        onChange={() => setAddingExistingIcsSource((prev) => !prev)}
+                      />
+                    )}
+                    label="Add Existing ICS Source"
                   />
                 )}
-                label="Add Existing ICS Source"
-              />
             </Box>
             <Box className={classes.cancelAndSaveButton}>
               <Button
@@ -249,7 +254,7 @@ function ChplIcsEdit() {
                 variant="contained"
                 color="primary"
                 onClick={() => handleItemAddition()}
-                disabled={formik.values.newIcsSource === '' || (!addingExistingIcsSource && !!formik.errors.newIcsSource)}
+                disabled={!!formik.errors.newIcsSource}
               >
                 Save
               </Button>
