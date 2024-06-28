@@ -108,7 +108,6 @@ function ChplRegisterUser({ hash }) {
           hash,
           user: payload,
         };
-        console.log({ packet });
         createCognitoInvited(packet, {
           onSuccess: () => {
             $analytics.eventTrack('Create Account', { category: 'Authentication' });
@@ -116,8 +115,7 @@ function ChplRegisterUser({ hash }) {
             setState('cognito-login');
           },
           onError: (error) => {
-            setMessage(error.response.data.error);
-            setState('cognito-login');
+            setMessage(error.response.data.errorMessages[0]);
           },
         });
         break;
