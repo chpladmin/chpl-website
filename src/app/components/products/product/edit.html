@@ -37,7 +37,7 @@
           <span ng-if="$first">
             <div class="data-label sr-only"><label for="product-owner-current">Curren Product Owner <span class="text-danger">*</span></label></div>
             <select ng-model="$ctrl.currentOwner" id="product-owner-current" name="productOwnerCurrent" class="form-control" required
-                    ng-options="developer as developer.displayName for developer in $ctrl.developers"
+                    ng-options="developer as developer.name for developer in $ctrl.developers"
                     ng-change="$ctrl.updateCurrentOwner()">
             </select>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productOwnerCurrent.$touched) && $ctrl.form.productOwnerCurrent.$error.required">Field is required</div>
@@ -52,7 +52,7 @@
         <div class="product__history-of-product-item product__history-of-product-item--adding" ng-if="$ctrl.addingOwner">
           <div class="data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
           <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="form-control" required
-                  ng-options="developer as developer.displayName for developer in $ctrl.developers">
+                  ng-options="developer as developer.name for developer in $ctrl.developers">
           </select>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productOwner.$touched) && $ctrl.form.productOwner.$error.required">Field is required</div>
         </div>
