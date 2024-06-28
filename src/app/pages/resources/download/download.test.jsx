@@ -27,12 +27,16 @@ when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue(Api
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(analyticsMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 
+let jsDomOpen;
+
 describe('the ChplResourcesDownload page', () => {
   afterEach(() => {
+    window.open = jsDomOpen;
     cleanup();
   });
 
   beforeEach(async () => {
+    window.open = () => {};
     render(
       <ChplResourcesDownload />,
     );

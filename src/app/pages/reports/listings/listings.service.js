@@ -178,7 +178,7 @@ const compare = (before, after, key, title = 'unknown') => {
         sort: (p, c) => {
           if (!p.testProcedure) {
             if (p.testProcedureVersion !== c.testProcedureVersion) {
-              console.debug({ p, c, msg: 'Test Procedure Version change found; no name availble' });
+              console.debug({ p, c, msg: 'Test Procedure Version change found; no name available' });
             }
             return 0;
           }
