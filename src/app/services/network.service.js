@@ -238,10 +238,7 @@ export default class NetworkService {
     return this.apiGET(`/developers/${id}/hierarchy`);
   }
 
-  getDevelopers(showDeleted) {
-    if (showDeleted) {
-      return this.apiGET('/developers?showDeleted=true');
-    }
+  getDevelopers() {
     return this.apiGET('/developers');
   }
 
@@ -555,10 +552,6 @@ export default class NetworkService {
 
   updateCP(cpObject) {
     return this.apiPUT(`/certified_products/${cpObject.listing.id}`, cpObject);
-  }
-
-  updateDeveloper(developer) {
-    return this.apiPUT(`/developers/${developer.id}`, developer);
   }
 
   updateProduct(productObject) {

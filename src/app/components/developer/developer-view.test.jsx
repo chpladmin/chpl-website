@@ -26,7 +26,7 @@ const developerMock = {
 };
 
 const flagContextMock = {
-  demographicChangeRequestIsOn: false,
+  isOn: () => false,
 };
 
 const userContextMock = {

@@ -35,7 +35,7 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -85,11 +85,19 @@ const validationSchema = yup.object({
       then: yup.string()
         .required('Developer Status is required'),
     }),
-  statusDate: yup.date()
+  startDate: yup.date()
     .when('isAdding', {
       is: true,
       then: yup.date()
-        .required('Change Date is required'),
+        .max(new Date(), 'Start Date must not be in the future')
+        .required('Start Date is required'),
+    }),
+  endDate: yup.date()
+    .when('isAdding', {
+      is: true,
+      then: yup.date()
+        .max(new Date(), 'End Date must not be in the future')
+        .min(yup.ref('startDate'), 'End Date cannot be before the Start Date'),
     }),
   reason: yup.string()
     .max(500, 'Reason is too long')
@@ -156,62 +164,48 @@ const getEditField = ({
 );
 
 function ChplDeveloperEdit(props) {
-  const DateUtil = getAngularService('DateUtil');
   const {
     developer,
     dispatch,
+    errorMessages: initialErrorMessages,
+    isInvalid: initialIsInvalid,
+    isProcessing,
     isSplitting,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const [errors, setErrors] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
-  const [statusEvents, setStatusEvents] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setStatusEvents(props.developer.statusEvents);
-  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+    setStatuses(developer.statuses);
+  }, [developer]);
 
   useEffect(() => {
-    setIsInvalid(props.isInvalid);
-  }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
+    setIsInvalid(initialIsInvalid);
+  }, [initialIsInvalid]);
 
   useEffect(() => {
-    setErrorMessages(props.errorMessages);
-  }, [props.errorMessages]); // eslint-disable-line react/destructuring-assignment
+    setErrorMessages(initialErrorMessages);
+  }, [initialErrorMessages]);
 
   useEffect(() => {
-    if (!statusEvents || statusEvents.length === 0) {
-      setErrors(['Developer must have at least one Status']);
-      return;
-    }
-    const msgs = [];
+    if (!statuses || statuses.length === 0) { return; }
     const warns = [];
-    statusEvents
-      .sort((a, b) => a.statusDate - b.statusDate)
-      .forEach((status, idx, arr) => {
+    statuses
+      .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
+      .forEach((status, idx) => {
         if (idx === 0) {
-          if (status.status.status !== 'Active') {
-            msgs.push('The first Developer Status must be "Active"');
-          }
-        } else {
-          if (status.status.status === arr[idx - 1].status.status) {
-            msgs.push('Developer Status may not repeat');
-          }
-          if (DateUtil.getDisplayDateFormat(status.statusDate) === DateUtil.getDisplayDateFormat(arr[idx - 1].statusDate)) {
-            msgs.push('Only one change of status allowed per day');
-          }
-          if (status.status.status === 'Active') {
+          if (status.endDate) {
             warns.push('To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.');
           }
         }
       });
-    setErrors(msgs);
     setWarnings(warns);
-  }, [DateUtil, statusEvents]);
+  }, [statuses]);
 
   const cancel = () => {
     dispatch('cancel');
@@ -227,7 +221,7 @@ function ChplDeveloperEdit(props) {
       ...developer,
       name: formik.values.name,
       selfDeveloper: formik.values.selfDeveloper,
-      statusEvents,
+      statuses,
       contact: {
         ...developer.contact,
         fullName: formik.values.fullName,
@@ -266,37 +260,50 @@ function ChplDeveloperEdit(props) {
       ...formik.values,
       isAdding: false,
       status: '',
-      statusDate: '',
+      startDate: '',
+      endDate: '',
       reason: '',
     });
   };
 
   const addStatus = () => {
-    setStatusEvents([
-      ...statusEvents,
+    setStatuses([
+      ...statuses,
       {
-        status: { status: formik.values.status },
-        statusDate: (new Date(formik.values.statusDate)).getTime(),
+        status: { name: formik.values.status },
+        startDate: formik.values.startDate,
+        endDate: formik.values.endDate,
         reason: formik.values.reason,
       },
     ]);
     cancelAdd();
   };
 
-  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.statusDate || !!formik.errors.reason;
+  const getKey = (status) => status.id || `${status.startDate}-${status.endDate}-${status.reason}-${status.status?.name}`;
+
+  const isActionDisabled = () => isInvalid || !formik.isValid;
+
+  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.startDate || !!formik.errors.endDate || !!formik.errors.reason || statuses.some((status) => getKey(status) === getKey({
+    status: { name: formik.values.status },
+    startDate: formik.values.startDate,
+    endDate: formik.values.endDate,
+    reason: formik.values.reason,
+  }));
 
   const removeStatus = (status) => {
-    setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
+    setStatuses(statuses.filter((item) => item.startDate !== status.startDate
+        || item.endDate !== status.endDate
+        || item.reason !== status.reason
+        || item.status.name !== status.status.name));
   };
-
-  const isActionDisabled = () => isInvalid || errors.length > 0 || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
       name: developer.name || '',
       selfDeveloper: !!developer.selfDeveloper,
       status: '',
-      statusDate: '',
+      startDate: '',
+      endDate: '',
       reason: '',
       isAdding: false,
       fullName: developer.contact?.fullName || '',
@@ -318,10 +325,9 @@ function ChplDeveloperEdit(props) {
   });
 
   return (
-    <>
-      <Container maxWidth="md">
-        <Card>
-          { isSplitting
+    <Container maxWidth="md">
+      <Card>
+        { isSplitting
           && (
             <CardHeader
               title="New Developer"
@@ -329,7 +335,7 @@ function ChplDeveloperEdit(props) {
               className={classes.developerHeader}
             />
           )}
-          { !isSplitting
+        { !isSplitting
           && (
             <CardHeader
               title={developer.name}
@@ -337,23 +343,23 @@ function ChplDeveloperEdit(props) {
               component="h2"
             />
           )}
-          <CardContent className={classes.content}>
-            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+        <CardContent className={classes.content}>
+          { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
-            <FormControlLabel
-              control={(
-                <Switch
-                  id="self-developer"
-                  name="selfDeveloper"
-                  color="primary"
-                  checked={formik.values.selfDeveloper}
-                  onChange={formik.handleChange}
-                  className={classes.fullWidth}
-                />
+          <FormControlLabel
+            control={(
+              <Switch
+                id="self-developer"
+                name="selfDeveloper"
+                color="primary"
+                checked={formik.values.selfDeveloper}
+                onChange={formik.handleChange}
+                className={classes.fullWidth}
+              />
             )}
-              label="Self-Developer"
-            />
-            { hasAnyRole(['chpl-admin', 'chpl-onc'])
+            label="Self-Developer"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc'])
             && (
               <>
                 <TableContainer className={classes.fullWidth}>
@@ -361,21 +367,25 @@ function ChplDeveloperEdit(props) {
                     <TableHead>
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
-                        <TableCell><Typography variant="body2">Change Date</Typography></TableCell>
+                        <TableCell><Typography variant="body2">Start Date</Typography></TableCell>
+                        <TableCell><Typography variant="body2">End Date</Typography></TableCell>
                         <TableCell><Typography variant="body2">Reason</Typography></TableCell>
                         <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      { statusEvents
-                        ?.sort((a, b) => b.statusDate - a.statusDate)
+                      { statuses
+                        ?.sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
                         .map((status) => (
-                          <TableRow key={status.id || status.statusDate}>
+                          <TableRow key={getKey(status)}>
                             <TableCell>
-                              <Typography variant="body2">{ status.status.status }</Typography>
+                              <Typography variant="body2">{ status.status.name }</Typography>
                             </TableCell>
                             <TableCell>
-                              <Typography variant="body2">{ DateUtil.getDisplayDateFormat(status.statusDate) }</Typography>
+                              <Typography variant="body2">{ getDisplayDateFormat(status.startDate) }</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{ getDisplayDateFormat(status.endDate) }</Typography>
                             </TableCell>
                             <TableCell>
                               <Typography variant="body2">{ status.reason }</Typography>
@@ -432,21 +442,31 @@ function ChplDeveloperEdit(props) {
                         error={formik.touched.status && !!formik.errors.status}
                         helperText={formik.touched.status && formik.errors.status}
                       >
-                        <MenuItem key="Active" value="Active">Active</MenuItem>
                         <MenuItem key="Suspended by ONC" value="Suspended by ONC">Suspended by ONC</MenuItem>
                         <MenuItem key="Under certification ban by ONC" value="Under certification ban by ONC">Under certification ban by ONC</MenuItem>
                       </ChplTextField>
                       <ChplTextField
                         type="date"
-                        id="change-date"
-                        name="statusDate"
-                        label="Change Date"
+                        id="start-day"
+                        name="startDate"
+                        label="Start Date"
                         required
-                        value={formik.values.statusDate}
+                        value={formik.values.startDate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.statusDate && !!formik.errors.statusDate}
-                        helperText={formik.touched.statusDate && formik.errors.statusDate}
+                        error={formik.touched.startDate && !!formik.errors.startDate}
+                        helperText={formik.touched.startDate && formik.errors.startDate}
+                      />
+                      <ChplTextField
+                        type="date"
+                        id="end-day"
+                        name="endDate"
+                        label="End Date"
+                        value={formik.values.endDate}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.endDate && !!formik.errors.endDate}
+                        helperText={formik.touched.endDate && formik.errors.endDate}
                       />
                       <ChplTextField
                         className={classes.fullWidth}
@@ -488,30 +508,30 @@ function ChplDeveloperEdit(props) {
                   )}
               </>
             )}
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
-            { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
-            { getEnhancedEditField({ key: 'email', display: 'Email' }) }
-            { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
-            { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
-            { getEnhancedEditField({ key: 'city', display: 'City' }) }
-            { getEnhancedEditField({ key: 'state', display: 'State' }) }
-            { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
-            { getEnhancedEditField({ key: 'country', display: 'Country' }) }
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
-          </CardContent>
-        </Card>
-        <ChplActionBar
-          dispatch={handleDispatch}
-          isDisabled={isActionDisabled()}
-          errors={errorMessages.concat(errors)}
-          warnings={warnings}
-        />
-      </Container>
-    </>
+          <Divider className={classes.fullWidth} />
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
+          { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
+          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
+          <Divider className={classes.fullWidth} />
+          { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
+          { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
+          { getEnhancedEditField({ key: 'city', display: 'City' }) }
+          { getEnhancedEditField({ key: 'state', display: 'State' }) }
+          { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
+          { getEnhancedEditField({ key: 'country', display: 'Country' }) }
+          <Divider className={classes.fullWidth} />
+          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
+        </CardContent>
+      </Card>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        isDisabled={isActionDisabled()}
+        isProcessing={isProcessing}
+        errors={errorMessages}
+        warnings={warnings}
+      />
+    </Container>
   );
 }
 
@@ -522,5 +542,10 @@ ChplDeveloperEdit.propTypes = {
   dispatch: func.isRequired,
   errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,
+  isProcessing: bool,
   isSplitting: bool.isRequired,
+};
+
+ChplDeveloperEdit.defaultProps = {
+  isProcessing: false,
 };
