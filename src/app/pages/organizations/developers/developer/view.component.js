@@ -1,3 +1,5 @@
+const isActive = (statuses) => statuses.length === 0 || statuses.every((status) => status.endDay);
+
 const DeveloperViewComponent = {
   templateUrl: 'chpl.organizations/developers/developer/view.html',
   bindings: {
@@ -74,15 +76,15 @@ const DeveloperViewComponent = {
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
       if (this.hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
       if (action === 'join') { return false; } // if not above roles, can't join
-      if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb']); } // ACB can split
+      if (action === 'split-developer') { return isActive(this.developer.statuses) && this.hasAnyRole(['chpl-onc-acb']); } // ACB can split
       if (action === 'edit') {
         if (this.featureFlags.isOn('demographic-change-request')) {
-          return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb', 'chpl-developer']); // Developer can only edit based on flag
+          return isActive(this.developer.statuses) && this.hasAnyRole(['chpl-onc-acb', 'chpl-developer']); // Developer can only edit based on flag
         }
-        return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
+        return isActive(this.developer.statuses) && this.hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
       }
-      if (action === 'manageUsers') { return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
-      return this.developer.status.status === 'Active' && this.hasAnyRole(['chpl-onc-acb']); // must be active
+      if (action === 'manageUsers') { return isActive(this.developer.statuses) && this.hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
+      return isActive(this.developer.statuses) && this.hasAnyRole(['chpl-onc-acb']); // must be active
     }
 
     cancel() {

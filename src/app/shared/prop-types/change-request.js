@@ -20,13 +20,8 @@ const changeRequestStatus = shape({
   changeRequestStatusType,
   comment: string,
   id: number,
-  statusChangeDateTime: number,
-  userPermission: shape({
-    authority: string,
-    description: string,
-    id: number,
-    name: string,
-  }),
+  statusChangeDateTime: string,
+  userGroupName: string,
 });
 
 const changeRequest = shape({

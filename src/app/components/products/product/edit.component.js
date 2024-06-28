@@ -19,11 +19,10 @@ const ProductEditComponent = {
 
     $onInit() {
       const that = this;
-      this.networkService.getDevelopers(true).then((response) => {
+      this.networkService.getDevelopers().then((response) => {
         that.developers = response.developers
           .map((d) => ({
             ...d,
-            displayName: d.name + (d.deleted ? ' - deleted' : ' - active'),
           }))
           .sort((a, b) => (a.name < b.name ? -1 : 0));
         if (that.developers && that.product) {
