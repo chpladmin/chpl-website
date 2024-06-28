@@ -3,9 +3,9 @@ import {
   Card,
   CardHeader,
   CardContent,
+  CircularProgress,
   FormControlLabel,
   Switch,
-  ThemeProvider,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -20,7 +20,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { user as userPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   content: {
@@ -41,21 +40,13 @@ const validationSchema = yup.object({
 });
 
 function ChplUserEdit({ user: initialUser, errors, dispatch }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(undefined);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
     setUser(initialUser);
   }, [initialUser]);
-
-  const cancel = () => {
-    dispatch('cancel', {});
-  };
-
-  const deleteUser = () => {
-    dispatch('delete', user.userId);
-  };
 
   const save = () => {
     const updatedUser = {
@@ -72,10 +63,10 @@ function ChplUserEdit({ user: initialUser, errors, dispatch }) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        cancel();
+        dispatch('cancel', {});
         break;
       case 'delete':
-        deleteUser();
+        dispatch('delete', user.userId);
         break;
       case 'save':
         formik.submitForm();
@@ -86,22 +77,26 @@ function ChplUserEdit({ user: initialUser, errors, dispatch }) {
 
   formik = useFormik({
     initialValues: {
-      fullName: user.fullName,
-      phoneNumber: user.phoneNumber || '',
-      accountLocked: user.accountLocked,
-      accountEnabled: user.accountEnabled,
-      passwordResetRequired: user.passwordResetRequired,
+      fullName: initialUser.fullName,
+      phoneNumber: initialUser.phoneNumber || '',
+      accountLocked: initialUser.accountLocked,
+      accountEnabled: initialUser.accountEnabled,
+      passwordResetRequired: initialUser.passwordResetRequired,
     },
     onSubmit: () => {
       save();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
+  if (!user) {
+    return (
+      <CircularProgress />
+    );
+  }
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Card>
         <CardHeader
           title="Edit User"
@@ -185,7 +180,7 @@ function ChplUserEdit({ user: initialUser, errors, dispatch }) {
         canDelete
         isDisabled={!formik.isValid}
       />
-    </ThemeProvider>
+    </>
   );
 }
 
