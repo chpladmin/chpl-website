@@ -59,6 +59,14 @@ const useFetchPracticeTypes = () => {
   }, options.daily);
 };
 
+const useFetchTargetedUsers = () => {
+  const axios = useAxios();
+  return useQuery(['/data/targeted_users'], async () => {
+    const response = await axios.get('/data/targeted_users');
+    return response.data;
+  }, options.daily);
+};
+
 export {
   useFetchCertificationStatuses,
   useFetchClassificationTypes,
@@ -67,4 +75,5 @@ export {
   useFetchMeasures,
   useFetchMeasureTypes,
   useFetchPracticeTypes,
+  useFetchTargetedUsers,
 };

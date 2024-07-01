@@ -17,7 +17,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -56,9 +56,15 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
+  const [uiUpgradeEdit, setUiUpgradeEdit] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    setUiUpgradeEdit(isOn('ui-upgrade-edit'));
+  }, [isOn]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -111,7 +117,7 @@ function ChplListingPage({ id }) {
                 listing={listing}
                 horizontal
               >
-                { canEdit()
+                { canEdit() && !uiUpgradeEdit
                   && (
                     <Button
                       endIcon={<EditIcon />}
@@ -123,7 +129,7 @@ function ChplListingPage({ id }) {
                       Edit
                     </Button>
                   )}
-                { hasAnyRole(['ROLE_ADMIN'])
+                { canEdit() && uiUpgradeEdit
                   && (
                     <Button
                       endIcon={<EditIcon />}
@@ -132,7 +138,7 @@ function ChplListingPage({ id }) {
                       color="primary"
                       onClick={editFlagged}
                     >
-                      Edit - New
+                      Edit
                     </Button>
                   )}
                 <ChplListingHistory

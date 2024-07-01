@@ -20,6 +20,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplAdditionalInformationEdit from './details/additional-information/additional-information-edit';
 import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplG1G2sEdit from './details/g1g2/g1g2s-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
@@ -27,7 +28,6 @@ import ChplSedEdit from './details/sed/edit/edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
-import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import { ChplTextField, InternalScrollButton } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
@@ -137,9 +137,11 @@ function ChplListingEdit() {
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [messages, setMessages] = useState({
     businessErrors: new Set(),
     dataErrors: new Set(),
+    otherErrors: new Set(),
     warnings: new Set(),
   });
   const [seeAllCqms, setSeeAllCqms] = useState(true);
@@ -147,11 +149,12 @@ function ChplListingEdit() {
   const classes = useStyles();
   let formik;
 
-  const getErrors = () => [...messages.businessErrors].concat([...messages.dataErrors]);
+  const getErrors = () => [...messages.businessErrors].concat([...messages.dataErrors]).concat([...messages.otherErrors]);
 
   const getWarnings = () => [...messages.warnings];
 
   const save = () => {
+    setIsProcessing(true);
     const payload = {
       listing,
       reason: formik.values.reason,
@@ -168,12 +171,15 @@ function ChplListingEdit() {
             variant: 'success',
           });
         }
+        setIsProcessing(false);
         setTimeout(() => $state.go('listing'), 5000);
       },
       onError: (error) => {
+        setIsProcessing(false);
         setMessages({
           businessErrors: new Set(error.response.data.businessErrorMessages ?? []),
           dataErrors: new Set(error.response.data.dataErrorMessages ?? []),
+          otherErrors: error.response.data.error ? new Set([error.response.data.error]) : new Set(),
           warnings: new Set(error.response.data.warningMessages ?? []),
         });
       },
@@ -387,9 +393,7 @@ function ChplListingEdit() {
             <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>
           </Box>
           <CardContent>
-            <ChplAdditionalInformation
-              listing={listing}
-            />
+            <ChplAdditionalInformationEdit />
           </CardContent>
         </Card>
       </div>
@@ -397,6 +401,7 @@ function ChplListingEdit() {
         dispatch={handleDispatch}
         errors={getErrors()}
         warnings={getWarnings()}
+        isProcessing={isProcessing}
         showErrorAcknowledgement={messages.businessErrors.size > 0 && messages.dataErrors.size === 0}
         showWarningAcknowledgement={messages.warnings.size > 0}
       />

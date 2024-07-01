@@ -67,6 +67,17 @@ const usePostAttestationException = () => {
   });
 };
 
+const usePutDeveloper = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`developers/${data.id}`, data)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('developers');
+    },
+  });
+};
+
 const usePutJoinDevelopers = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -74,6 +85,7 @@ const usePutJoinDevelopers = () => {
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
+      queryClient.invalidateQueries('developers/search/v3');
     },
   });
 };
@@ -91,6 +103,7 @@ export {
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
   usePostAttestationException,
+  usePutDeveloper,
   usePutJoinDevelopers,
   usePostMessage,
 };

@@ -27,7 +27,7 @@ import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplLink, ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
 import { FlagContext, UserContext } from 'shared/contexts';
 
@@ -67,22 +67,24 @@ const useStyles = makeStyles({
   },
 });
 
-const getStatusData = (statusEvents, DateUtil, classes) => {
-  const current = statusEvents
-    .sort((a, b) => b.statusDate - a.statusDate)[0];
-  if (current.status.id === 1) { return; }
-  const rest = statusEvents
-    .sort((a, b) => b.statusDate - a.statusDate).slice(1);
+const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDate);
+
+const getStatusData = (statuses, classes) => {
+  const current = statuses
+    .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
+  if (current.endDate) { return undefined; }
+  const rest = statuses
+    .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
   return (
     <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>
         <strong>Status</strong>
         <br />
-        {current.status.status}
+        {current.status.name}
         {' '}
         as of
         {' '}
-        {DateUtil.getDisplayDateFormat(current.statusDate)}
+        {getDisplayDateFormat(current.startDate)}
         {current.reason
           && (
             <>
@@ -108,14 +110,14 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
             <AccordionDetails
               className={classes.historyContent}
             >
-              {rest.map((status) => (
+              {rest.map((status, idx) => (
                 <Timeline
                   key={status.id}
                 >
                   <TimelineItem>
                     <TimelineSeparator>
                       <TimelineDot />
-                      <TimelineConnector />
+                      { (idx !== statuses.length - 1) && <TimelineConnector /> }
                     </TimelineSeparator>
                     <TimelineContent>
                       <Typography
@@ -123,33 +125,42 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
                       >
                         <strong>Status</strong>
                         <br />
-                        {status.status.status === 'Suspended by ONC'
-                          && (
-                            <>
-                              <i className="fa status-bad fa-exclamation-circle" />
-                              {' '}
-                            </>
-                          )}
-                        {status.status.status === 'Under certification ban by ONC'
-                          && (
-                            <>
-                              <i className="fa status-bad fa-ban" />
-                              {' '}
-                            </>
-                          )}
-                        {status.status.status}
+                        {status.status.name === 'Suspended by ONC'
+                         && (
+                           <>
+                             <i className="fa status-bad fa-exclamation-circle" />
+                             {' '}
+                           </>
+                         )}
+                        {status.status.name === 'Under certification ban by ONC'
+                         && (
+                           <>
+                             <i className="fa status-bad fa-ban" />
+                             {' '}
+                           </>
+                         )}
+                        {status.status.name}
                         {' '}
                         as of
                         {' '}
-                        {DateUtil.getDisplayDateFormat(status.statusDate)}
+                        {getDisplayDateFormat(status.startDate)}
+                        { status.endDate
+                          && (
+                            <>
+                              {' '}
+                              ended
+                              {' '}
+                              {getDisplayDateFormat(status.endDate)}
+                            </>
+                          )}
                         .
                         {' '}
                         {status.reason
-                          && (
-                            <>
-                              {status.reason}
-                            </>
-                          )}
+                         && (
+                           <>
+                             {status.reason}
+                           </>
+                         )}
                       </Typography>
                     </TimelineContent>
                   </TimelineItem>
@@ -163,28 +174,34 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
 };
 
 function ChplDeveloperView(props) {
-  const DateUtil = getAngularService('DateUtil');
   const {
     canEdit,
     canJoin,
     canSplit,
+    developer: initialDeveloper,
+    dispatch,
     isSplitting,
   } = props;
-  const [developer, setDeveloper] = useState({});
-  const { demographicChangeRequestIsOn } = useContext(FlagContext);
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
+  const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
+  const [developer, setDeveloper] = useState({});
   const classes = useStyles();
 
   useEffect(() => {
-    setDeveloper(props.developer);
-  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+    setDeveloper(initialDeveloper);
+  }, [initialDeveloper]);
+
+  useEffect(() => {
+    setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
+  }, [isOn]);
 
   const can = (action) => {
     if (action === 'edit') {
       return canEdit
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
-          || (hasAnyRole(['chpl-onc-acb']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-          || (hasAnyRole(['chpl-developer']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+          || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses)) // allowed for ACB iff Developer is "Active"
+          || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
       return canJoin
@@ -193,21 +210,21 @@ function ChplDeveloperView(props) {
     if (action === 'split') {
       return canSplit
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
-          || (hasAnyRole(['chpl-onc-acb']) && developer.status.status === 'Active')); // allowed for ACB iff Developer is "Active"
+          || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses))); // allowed for ACB iff Developer is "Active"
     }
     return false;
   };
 
   const edit = () => {
-    props.dispatch('edit');
+    dispatch('edit');
   };
 
   const join = () => {
-    props.dispatch('join');
+    dispatch('join');
   };
 
   const split = () => {
-    props.dispatch('split');
+    dispatch('split');
   };
 
   return (
@@ -304,7 +321,7 @@ function ChplDeveloperView(props) {
               </Typography>
             )}
         </div>
-        {developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes)}
+        {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
       </CardContent>
       {(can('edit') || can('split') || can('join'))
         && (
