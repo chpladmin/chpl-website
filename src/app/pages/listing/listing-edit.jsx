@@ -35,14 +35,16 @@ const useStyles = makeStyles({
 });
 
 function ChplListingEditPage({ id }) {
-  const { data, isLoading, isSuccess } = useFetchListing({ id });
+  const [fetched, setFetched] = useState(false);
   const [listing, setListing] = useState(undefined);
+  const { data, isLoading, isSuccess } = useFetchListing({ id, fetched });
   const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
       return;
     }
+    setFetched(true);
     setListing(data);
   }, [data, isLoading, isSuccess]);
 
