@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useFetchIcsFamilyData = ({ id }) => {
   const axios = useAxios();
@@ -15,11 +16,22 @@ const useFetchIcsFamilyData = ({ id }) => {
   });
 };
 
-const useFetchListing = ({ id }) => {
+const useFetchListing = ({ id, fetched = false }) => {
   const axios = useAxios();
   return useQuery(['listing', id], async () => {
     if (id) {
       const response = await axios.get(`certified_products/${id}/details`);
+      return response.data;
+    }
+    return {};
+  }, fetched ? options.daily : {});
+};
+
+const useFetchRelatedListings = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['relatedListings', id], async () => {
+    if (id) {
+      const response = await axios.get(`products/${id}/listings`);
       return response.data;
     }
     return {};
@@ -39,5 +51,6 @@ const usePutListing = () => {
 export {
   useFetchIcsFamilyData,
   useFetchListing,
+  useFetchRelatedListings,
   usePutListing,
 };

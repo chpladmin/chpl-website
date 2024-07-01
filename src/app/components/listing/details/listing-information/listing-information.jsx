@@ -201,11 +201,11 @@ function ChplListingInformation({ listing: initialListing }) {
                   router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
                 />
               </Box>
-              { listing.developer.status && listing.developer.status.status !== 'Active'
+              { listing.developer.statuses.length > 0 && listing.developer.statuses.some((status) => !status.endDate)
                 && (
                   <Box className={classes.dataBox}>
                     <Typography variant="subtitle1">Developer Status:</Typography>
-                    <Typography gutterBottom>{listing.developer.status.status}</Typography>
+                    <Typography gutterBottom>{listing.developer.statuses.find((status) => !status.endDate).status.name}</Typography>
                   </Box>
                 )}
               { listing.developer.website
