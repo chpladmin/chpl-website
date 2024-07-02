@@ -15,13 +15,7 @@ import { shape, string } from 'prop-types';
 
 import ChplMessaging from './messaging/messaging';
 
-import { theme, utilStyles } from 'themes';
 import { useFetchDevelopersBySearch } from 'api/developer';
-import {
-  ChplLink,
-  ChplPagination,
-} from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -29,9 +23,11 @@ import {
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
+import { ChplLink, ChplPagination, ChplSortableHeaders } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext } from 'shared/contexts';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
