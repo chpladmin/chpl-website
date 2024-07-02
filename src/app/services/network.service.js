@@ -331,6 +331,10 @@ export default class NetworkService {
     return this.apiGET(`/surveillance-report/quarterly/${reportId}/listings`);
   }
 
+  getReportUrl(reportName) {
+    return this.apiGET(`/report-data/${reportName}/url`);
+  }
+
   getSearchOptions() {
     return this.apiGET('/data/search-options');
   }
