@@ -5,6 +5,11 @@ import {
   Card,
   CardContent,
   Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,9 +20,9 @@ import { useSnackbar } from 'notistack';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import SendIcon from '@material-ui/icons/Send';
 
-import { useFetchDevelopersBySearch, usePostMessage } from 'api/developer';
+import { useFetchDevelopersBySearch, usePostMessage, usePostMessagePreview } from 'api/developer';
 import { useFilterContext } from 'components/filter';
-import { ChplTextField } from 'components/util';
+import { ChplLink, ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -60,6 +65,7 @@ function ChplMessaging({ dispatch }) {
   const [recordCount, setRecordCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
+  const postMessagePreview = usePostMessagePreview();
   const classes = useStyles();
 
   let formik;
@@ -90,6 +96,22 @@ function ChplMessaging({ dispatch }) {
       onSuccess: () => {
         enqueueSnackbar('Message queued', { variant: 'success' });
         dispatch();
+      },
+      onError: (error) => {
+        const body = `An error occurred: ${error.response?.data?.error}`;
+        enqueueSnackbar(body, { variant: 'error' });
+      },
+    });
+  };
+
+  const sendMessagePreview = () => {
+    postMessagePreview.mutate({
+      subject: formik.values.subject,
+      body: formik.values.body,
+      query: queryParams(),
+    }, {
+      onSuccess: () => {
+        enqueueSnackbar('Message preview has been queued. Please check your email to verify formatting', { variant: 'success' });
       },
       onError: (error) => {
         const body = `An error occurred: ${error.response?.data?.error}`;
@@ -157,6 +179,70 @@ function ChplMessaging({ dispatch }) {
             </CardContent>
           </Card>
         </Container>
+        <Container maxWidth="md">
+          <Card>
+            <CardContent
+              className={classes.content}
+            >
+              <Typography variant="h2">
+                Markdown reference
+              </Typography>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Type ...</TableCell>
+                    <TableCell>... to get</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell><pre>_Italic_</pre></TableCell>
+                    <TableCell><i>Italic</i></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>**Bold**</pre></TableCell>
+                    <TableCell><b>Bold</b></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre># Heading 1</pre></TableCell>
+                    <TableCell><h1>Heading 1</h1></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>## Heading 2</pre></TableCell>
+                    <TableCell><h2>Heading 2</h2></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>[Link](http://www.example.com)</pre></TableCell>
+                    <TableCell><a href="http://www.example.com">Link</a></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>* List<br />* List<br />    * Put four spaces before the "*" to make a sub-bullet<br />* List</pre></TableCell>
+                    <TableCell><ul><li>List</li><li>List</li><ul><li>Put four spaces before the "*" to make a sub-bullet</li></ul><li>List</li></ul></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>1. One<br />2. Two<br />3. Three</pre></TableCell>
+                    <TableCell><ol><li>One</li><li>Two</li><li>Three</li></ol></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>A paragraph of text<br /><br />Followed by a blank line<br/><br/>To get multiple paragraphs</pre></TableCell>
+                    <TableCell>A paragraph of text<br /><br />Followed by a blank line<br/><br/>To get multiple paragraphs</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><pre>From: (with two spaces at the end of the line)  <br />To put a newline in a paragraph</pre></TableCell>
+                    <TableCell>From:<br />To put a newline in a paragraph</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Typography>
+                For more information about formatting, please see:
+                {' '}
+                <ChplLink
+                  href="https://commonmark.org/help/"
+                />
+              </Typography>
+            </CardContent>
+          </Card>
+        </Container>
         <div className={classes.actionBarButtons}>
           <ButtonGroup
             color="primary"
@@ -168,6 +254,15 @@ function ChplMessaging({ dispatch }) {
               endIcon={<CloseOutlinedIcon />}
             >
               Cancel
+            </Button>
+            <Button
+              onClick={sendMessagePreview}
+              disabled={!formik.isValid}
+              variant="outlined"
+              className={classes.actionBarButton}
+              endIcon={<SendIcon />}
+            >
+              Send Message Preview
             </Button>
             <Button
               onClick={formik.handleSubmit}

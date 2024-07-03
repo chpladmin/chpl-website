@@ -96,6 +96,12 @@ const usePostMessage = () => {
     .then((response) => response));
 };
 
+const usePostMessagePreview = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('developers/message-preview', data)
+    .then((response) => response));
+};
+
 export {
   useFetchAttestations,
   useFetchDevelopers,
@@ -106,4 +112,5 @@ export {
   usePutDeveloper,
   usePutJoinDevelopers,
   usePostMessage,
+  usePostMessagePreview,
 };
