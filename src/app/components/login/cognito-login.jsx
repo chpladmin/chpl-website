@@ -42,8 +42,6 @@ const useStyles = makeStyles({
 });
 
 const forceChangeSchema = yup.object({
-  email: yup.string()
-    .required('Email is required'),
   newPassword: yup.string()
     .required('Password is required')
     .test(
@@ -109,7 +107,7 @@ function ChplCognitoLogin({ dispatch }) {
 
   const forceChangePassword = () => {
     postNewPasswordRequired.mutate({
-      userName: forceChangeFormik.values.email,
+      userName: signinFormik.values.userName,
       password: forceChangeFormik.values.newPassword,
       sessionId,
     }, {
@@ -210,7 +208,6 @@ function ChplCognitoLogin({ dispatch }) {
   forceChangeFormik = useFormik({
     validationSchema: forceChangeSchema,
     initialValues: {
-      email: '',
       newPassword: '',
       verificationPassword: '',
       passwordStrength: 0,
@@ -246,19 +243,6 @@ function ChplCognitoLogin({ dispatch }) {
         {state === 'FORCECHANGEPASSWORD'
          && (
            <>
-             <ChplTextField
-               type="email"
-               id="email"
-               name="email"
-               label="Email"
-               required
-               value={forceChangeFormik.values.email}
-               onChange={forceChangeFormik.handleChange}
-               onBlur={forceChangeFormik.handleBlur}
-               onKeyPress={(e) => catchEnter(e, submitChange)}
-               error={forceChangeFormik.touched.email && !!forceChangeFormik.errors.email}
-               helperText={forceChangeFormik.touched.email && forceChangeFormik.errors.email}
-             />
              <ChplTextField
                type="password"
                id="new-password"
