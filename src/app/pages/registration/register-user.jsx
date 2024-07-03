@@ -115,7 +115,11 @@ function ChplRegisterUser({ hash }) {
             setState('cognito-login');
           },
           onError: (error) => {
-            setMessage(error.response.data.errorMessages[0]);
+            if (error.response.data.errorMessages?.length > 0) {
+              setMessage(error.response.data.errorMessages[0]);
+            } else {
+              setMessage('An error occurred');
+            }
           },
         });
         break;
