@@ -160,6 +160,7 @@ function ChplCognitoLogin({ dispatch }) {
           const body = 'Password change is required';
           enqueueSnackbar(body, { variant: 'warning' });
           setSessionId(error?.response?.data?.sessionId);
+          dispatch('forceChangePassword');
           setState('FORCECHANGEPASSWORD');
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';

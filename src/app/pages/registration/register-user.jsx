@@ -139,6 +139,9 @@ function ChplRegisterUser({ hash }) {
           },
         });
         break;
+      case 'forceChangePassword':
+        setMessage('');
+        break;
       case 'loggedIn':
         setMessage('');
         break;
@@ -153,7 +156,7 @@ function ChplRegisterUser({ hash }) {
         return (
           <>
             <Typography>{ message }</Typography>
-            <ChplCognitoLogin />
+            <ChplCognitoLogin dispatch={handleDispatch} />
           </>
         );
       case 'create':
