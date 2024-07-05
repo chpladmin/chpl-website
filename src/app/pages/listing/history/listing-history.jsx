@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  ButtonGroup,
   Dialog,
   DialogActions,
   DialogContent,
@@ -34,7 +33,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat, toTimestamp } from 'services/date-util';
 import theme from 'themes/theme';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   noWrap: {
     whiteSpace: 'nowrap',
   },
@@ -46,7 +45,7 @@ const useStyles = makeStyles(() => ({
       flexFlow: 'row',
     },
   },
-}));
+});
 
 function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
@@ -56,11 +55,8 @@ function ChplListingHistory(props) {
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
-  const ReportService = getAngularService('ReportService');
   const networkService = getAngularService('networkService');
-  const utilService = getAngularService('utilService');
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((metadata) => {
@@ -163,13 +159,6 @@ function ChplListingHistory(props) {
     $state.go('resources.api');
   };
 
-  const goToHistory = () => {
-    setOpen(false);
-    $state.go('reports.listings', {
-      listingId: listing.id,
-    });
-  };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -221,7 +210,7 @@ function ChplListingHistory(props) {
                       .map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>
-                            { item.eventDay ? getDisplayDateFormat (item.eventDay) : DateUtil.timestampToString(item.activityDate) }
+                            { item.eventDay ? getDisplayDateFormat(item.eventDay) : DateUtil.timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>
                             <ul className="list-unstyled">
@@ -250,27 +239,14 @@ function ChplListingHistory(props) {
               {' '}
               API call described on the CHPL API page.
             </Typography>
-            <ButtonGroup
-              className={classes.noWrap}
+            <Button
               color="primary"
               variant="outlined"
+              id="go-to-api"
+              onClick={goToApi}
             >
-              <Button
-                id="go-to-api"
-                onClick={goToApi}
-              >
-                Go to API
-              </Button>
-              { canSeeHistory
-              && (
-                <Button
-                  id="see-full-history"
-                  onClick={goToHistory}
-                >
-                  Go to Full History
-                </Button>
-              )}
-            </ButtonGroup>
+              Go to API
+            </Button>
           </Box>
         </DialogActions>
       </Dialog>
