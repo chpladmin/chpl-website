@@ -2,14 +2,14 @@ import * as jsJoda from '@js-joda/core';
 
 import { briefLookup, compareListing } from 'pages/reports/listings/listings.service';
 
-const interpretActivity = (activity) => {
+const interpretActivity = (activity, canSeeHistory) => {
   const ret = {
     ...activity,
     change: [],
   };
   const { originalData: prev, newData: curr } = activity;
   if (activity.description.startsWith('Updated certified product')) {
-    const listingChanges = compareListing(prev, curr, briefLookup);
+    const listingChanges = canSeeHistory ? compareListing(prev, curr) : compareListing(prev, curr, briefLookup);
     if (listingChanges.length > 0) {
       ret.change = [
         ...ret.change,

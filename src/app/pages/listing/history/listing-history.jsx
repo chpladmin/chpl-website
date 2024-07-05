@@ -65,7 +65,7 @@ function ChplListingHistory(props) {
   const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((metadata) => {
       metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-        const interpreted = interpretActivity(response, utilService, ReportService);
+        const interpreted = interpretActivity(response, canSeeHistory);
         if (interpreted.change.length > 0) {
           setActivity((activity) => [
             ...activity,
