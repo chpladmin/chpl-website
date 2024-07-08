@@ -64,7 +64,7 @@ function ChplChangeRequestHistory(props) {
   return (
     <div className={classes.container}>
       <div>
-        <Typography variant="subtitle2"> Change Request History</Typography>
+        <Typography variant="subtitle2">Change Request History</Typography>
       </div>
       <TableContainer className={classes.tableContainer} component={Paper}>
         <Table stickyHeader>
