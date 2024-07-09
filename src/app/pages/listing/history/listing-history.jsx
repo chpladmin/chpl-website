@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { bool, object } from 'prop-types';
+import { object } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import {
@@ -31,7 +31,8 @@ import {
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat, toTimestamp } from 'services/date-util';
-import theme from 'themes/theme';
+import { UserContext } from 'shared/contexts';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   noWrap: {
@@ -49,19 +50,19 @@ const useStyles = makeStyles({
 
 function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
-  const [canSeeHistory] = useState(props.canSeeHistory);
-  const [listing] = useState(props.listing);
+  const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
   const [open, setOpen] = useState(false);
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((metadata) => {
       metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-        const interpreted = interpretActivity(response, canSeeHistory);
+        const interpreted = interpretActivity(response, hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']));
         if (interpreted.change.length > 0) {
           setActivity((activity) => [
             ...activity,
@@ -257,10 +258,5 @@ function ChplListingHistory(props) {
 export default ChplListingHistory;
 
 ChplListingHistory.propTypes = {
-  canSeeHistory: bool,
   listing: object.isRequired,
-};
-
-ChplListingHistory.defaultProps = {
-  canSeeHistory: false,
 };
