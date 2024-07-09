@@ -359,7 +359,7 @@ function ChplDeveloperEdit(props) {
             )}
             label="Self-Developer"
           />
-          { hasAnyRole(['chpl-admin', 'chpl-onc'])
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
               <>
                 <TableContainer className={classes.fullWidth}>
