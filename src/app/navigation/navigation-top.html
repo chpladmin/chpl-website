@@ -111,7 +111,6 @@
           <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="reports-toggle" ng-class="{'admin-active' : vm.isActive('reports')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.reportsIsOpen">Activity</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
-              <li><a ui-sref="reports.listings()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.listings')"></i> Listings</a></li>
               <li><a ui-sref="reports.developers()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.developers')"></i> Developers</a></li>
               <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
               <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>

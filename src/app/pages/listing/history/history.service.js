@@ -1,6 +1,6 @@
 import * as jsJoda from '@js-joda/core';
 
-import { briefLookup, compareListing } from 'pages/reports/listings/listings.service';
+import { briefLookup, compareListing } from './listings.service';
 
 const interpretActivity = (activity, canSeeHistory) => {
   const ret = {
