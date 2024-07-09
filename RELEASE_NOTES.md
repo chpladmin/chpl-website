@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 13.20.0
+_8 July 2024_
+
+### Features
+* Enable message preview for Developer Messaging feature
+* Enable download of the "Service Base URL List" report
+
+### Flagged Feature
+* Enable editing of "additional information" in new edit screen
+
+### Bug Fixes
+* Eliminate "double click" on Developer save action
+
+---
+
 ## Version 13.19.0
 _24 June 2024_
 
