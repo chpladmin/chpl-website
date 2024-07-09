@@ -157,8 +157,6 @@ function ChplCognitoLogin({ dispatch }) {
       },
       onError: (error) => {
         if (error?.response?.status === 470) {
-          const body = 'Password change is required';
-          enqueueSnackbar(body, { variant: 'warning' });
           setSessionId(error?.response?.data?.sessionId);
           dispatch('forceChangePassword');
           setState('FORCECHANGEPASSWORD');
