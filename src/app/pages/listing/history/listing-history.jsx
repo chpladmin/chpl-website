@@ -35,9 +35,7 @@ import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-  noWrap: {
-    whiteSpace: 'nowrap',
-  },
+  ...utilStyles,
   listingHistoryActions: {
     display: 'flex',
     flexDirection: 'column',
