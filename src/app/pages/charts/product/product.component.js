@@ -4,13 +4,10 @@ const ChartsProductComponent = {
     uniqueProductsReportUrl: '<',
   },
   controller: class ChartsProductComponent {
-    constructor($analytics, $log, $sce, utilService) {
+    constructor($sce) {
       'ngInject';
 
-      this.$analytics = $analytics;
-      this.$log = $log;
       this.$sce = $sce;
-      this.utilService = utilService;
     }
 
     $onChanges(changes) {
