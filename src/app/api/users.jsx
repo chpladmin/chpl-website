@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
 
-import { user } from '../shared/prop-types';
-
 import { useAxios } from './axios';
 
 const usePutUser = () => {

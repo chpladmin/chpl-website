@@ -69,7 +69,7 @@ function ChplCognitoUserEdit(props) {
       accountEnabled: formik.values.accountEnabled,
       passwordResetRequired: formik.values.passwordResetRequired,
     };
-    props.dispatch('save', updatedUser);
+    props.dispatch('cognito-save', updatedUser);
   };
 
   const handleDispatch = (action) => {
