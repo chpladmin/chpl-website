@@ -14,8 +14,9 @@ import ChplUserInvite from './user-invite';
 import ChplCognitoUserInvite from './cognito-user-invite';
 import ChplUserView from './user-view';
 import ChplCognitoUserView from './cognito-user-view';
+import ChplCognitoUserEdit from './cognito-user-edit';
 
-import { usePutUser } from 'api/users';
+import { usePutCognitoUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
@@ -63,7 +64,7 @@ function ChplUsers({
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const { mutate } = usePutUser();
+  const { mutate } = usePutCognitoUser();
   const { isOn } = useContext(FlagContext);
   const [errors, setErrors] = useState([]);
   const [ssoIsOn, setSsoIsOn] = useState(false);
@@ -149,6 +150,7 @@ function ChplUsers({
         <ChplCognitoUserView
           key={user.cognitoId}
           user={user}
+          dispatch={handleDispatch}
         />
       );
     } if (user.userId) {
@@ -163,15 +165,32 @@ function ChplUsers({
     return null;
   };
 
+  const displayUserEdit = (user) => {
+    if (user.cognitoId) {
+      return (
+        <ChplCognitoUserEdit
+          user={user}
+          errors={errors}
+          dispatch={handleDispatch}
+        />
+      );
+    } if (user.userId) {
+      return (
+        <ChplUserEdit
+          user={user}
+          errors={errors}
+          dispatch={handleDispatch}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <Box>
       { user
         && (
-          <ChplUserEdit
-            user={user}
-            errors={errors}
-            dispatch={handleDispatch}
-          />
+          displayUserEdit(user)
         )}
       { !user
         && (

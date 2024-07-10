@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import {
+  func,
+} from 'prop-types';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import {
+  Button,
+  ButtonGroup,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   ThemeProvider,
@@ -10,6 +17,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { ChplTooltip } from '../util';
 import theme from 'themes/theme';
 import {
   user as userPropType,
@@ -33,6 +41,10 @@ function ChplCognitoUserView(props) {
   useEffect(() => {
     setUser(props.user); // eslint-disable-line react/destructuring-assignment
   }, [props.user]); // eslint-disable-line react/destructuring-assignment
+
+  const edit = () => {
+    props.dispatch('edit', user);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -96,6 +108,21 @@ function ChplCognitoUserView(props) {
               : <CheckBoxOutlineBlankOutlinedIcon />}
           </Typography>
         </CardContent>
+        <CardActions className={classes.cardActions}>
+          <ButtonGroup
+            color="primary"
+          >
+            <ChplTooltip title={`Edit ${user.fullName}`}>
+              <Button
+                variant="contained"
+                aria-label={`Edit ${user.fullName}`}
+                onClick={edit}
+              >
+                <EditOutlinedIcon />
+              </Button>
+            </ChplTooltip>
+          </ButtonGroup>
+        </CardActions>
       </Card>
     </ThemeProvider>
   );
@@ -105,4 +132,9 @@ export default ChplCognitoUserView;
 
 ChplCognitoUserView.propTypes = {
   user: userPropType.isRequired,
+  dispatch: func,
+};
+
+ChplCognitoUserView.defaultProps = {
+  dispatch: () => {},
 };
