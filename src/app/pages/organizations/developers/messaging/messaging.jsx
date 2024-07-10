@@ -77,9 +77,8 @@ const useStyles = makeStyles({
     gap: '32px',
     top: '110px',
     height: 'min-content',
-    width: '70%',
+    width: '100%',
     [theme.breakpoints.down('md')]: {
-      width: '100%',
       position: 'relative',
       top: 'auto',
     },
