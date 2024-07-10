@@ -163,20 +163,20 @@ function ChplUsers({
     }
   };
 
-  const displayUser = (user) => {
-    if (user.cognitoId) {
+  const displayUser = (userToDisplay) => {
+    if (userToDisplay.cognitoId) {
       return (
         <ChplCognitoUserView
-          key={user.cognitoId}
-          user={user}
+          key={userToDisplay.cognitoId}
+          user={userToDisplay}
           dispatch={handleDispatch}
         />
       );
-    } if (user.userId) {
+    } if (userToDisplay.userId) {
       return (
         <ChplUserView
-          key={user.userId}
-          user={user}
+          key={userToDisplay.userId}
+          user={userToDisplay}
           dispatch={handleDispatch}
         />
       );
@@ -184,19 +184,19 @@ function ChplUsers({
     return null;
   };
 
-  const displayUserEdit = (user) => {
-    if (user.cognitoId) {
+  const displayUserEdit = (userToEdit) => {
+    if (userToEdit.cognitoId) {
       return (
         <ChplCognitoUserEdit
-          user={user}
+          user={userToEdit}
           errors={errors}
           dispatch={handleDispatch}
         />
       );
-    } if (user.userId) {
+    } if (userToEdit.userId) {
       return (
         <ChplUserEdit
-          user={user}
+          user={userToEdit}
           errors={errors}
           dispatch={handleDispatch}
         />
