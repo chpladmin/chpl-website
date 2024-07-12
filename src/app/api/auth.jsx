@@ -36,6 +36,12 @@ const usePostLogin = () => {
   });
 };
 
+const usePostNewPasswordRequired = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/authenticate/challenge/new-password-required', data)
+    .then((response) => response.data));
+};
+
 const usePostResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/reset-password-request', data)
@@ -47,5 +53,6 @@ export {
   usePostCognitoLogin,
   usePostEmailResetPassword,
   usePostLogin,
+  usePostNewPasswordRequired,
   usePostResetPassword,
 };

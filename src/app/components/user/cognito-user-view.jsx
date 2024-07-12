@@ -34,13 +34,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoUserView(props) {
+function ChplCognitoUserView({ user: initialUser }) {
   const [user, setUser] = useState({});
   const classes = useStyles();
 
   useEffect(() => {
-    setUser(props.user); // eslint-disable-line react/destructuring-assignment
-  }, [props.user]); // eslint-disable-line react/destructuring-assignment
+    setUser(initialUser);
+  }, [initialUser]);
 
   const edit = () => {
     props.dispatch('edit', user);
@@ -54,7 +54,6 @@ function ChplCognitoUserView(props) {
       >
         <CardHeader
           title={user.fullName}
-          subheader={user.friendlyName}
         />
         <CardContent className={classes.content}>
           <Typography gutterBottom>
@@ -62,14 +61,6 @@ function ChplCognitoUserView(props) {
             <br />
             {user.email}
           </Typography>
-          {user.title
-                && (
-                <Typography gutterBottom>
-                  <strong>Title:</strong>
-                  <br />
-                    {user.title}
-                </Typography>
-                )}
           {user.phoneNumber
                 && (
                 <Typography gutterBottom>

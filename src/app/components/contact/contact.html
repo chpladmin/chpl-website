@@ -1,6 +1,6 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    <span class="sr-only">Full name: </span>{{ $ctrl.contact.fullName }}<span ng-if="$ctrl.contact.friendlyName"> (<span class="sr-only">Friendly name: </span>{{ $ctrl.contact.friendlyName }})</span><span ng-if="$ctrl.contact.title">, <span class="sr-only">Title: </span>{{ $ctrl.contact.title }}</span><br />
+    <span class="sr-only">Full name: </span>{{ $ctrl.contact.fullName }}<br />
     <span class="sr-only">Phone: </span>{{ $ctrl.contact.phoneNumber }}<br />
     <span class="sr-only">Email: </span>{{ $ctrl.contact.email }}
   </span>
@@ -17,26 +17,6 @@
             <li ng-repeat="option in $ctrl.getDifferences('fullName')">
               <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('fullName', option)">{{ option }}</button>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="flex-item" ng-if="!$ctrl.ignoreFriendlyName">
-        <label class="control-label" for="contactFriendly">Friendly Name</label>
-        <div>
-          <input class="input-sm form-control" type="text" ng-model="$ctrl.contact.friendlyName" ng-disabled="$ctrl.isDisabled" id="contactFriendly" name="contactFriendly" ng-maxlength="250" ng-change="$ctrl.update()"></input>
-          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFriendly.$touched) && $ctrl.form.contactFriendly.$error.maxlength">Field is too long</div>
-        </div>
-      </div>
-      <div class="flex-item">
-        <label class="control-label" for="contactTitle">Title</label>
-        <div>
-          <input class="input-sm form-control" type="text" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.title" id="contactTitle" name="contactTitle" ng-maxlength="250" ng-change="$ctrl.update()"></input>
-          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactTitle.$touched) && $ctrl.form.contactTitle.$error.maxlength">Field is too long</div>
-          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
-            <li ng-repeat="option in $ctrl.getDifferences('title')">
-              <button class="btn btn-secondary"
-                      ng-click="$ctrl.selectDifference('title', option)">{{ option }}</button>
             </li>
           </ul>
         </div>

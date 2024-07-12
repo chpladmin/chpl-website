@@ -10,9 +10,9 @@ const organization = shape({
 const user = shape({
   accountEnabled: bool,
   accountLocked: bool,
+  cognitoId: string,
   credentialsExpired: bool,
   email: string,
-  friendlyName: string,
   fullName: string,
   hash: string,
   lastLoggedInDate: number,
@@ -21,7 +21,6 @@ const user = shape({
   phoneNumber: string,
   role: string,
   subjectName: string,
-  title: string,
   userId: number,
 });
 
