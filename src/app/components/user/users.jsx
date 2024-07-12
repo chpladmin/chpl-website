@@ -146,7 +146,7 @@ function ChplUsers({
       case 'cognito-save':
         cognitoMutate(data, {
           onSuccess: () => {
-            setUser(undefined);
+            setActiveUser(undefined);
             dispatch('refresh');
           },
           onError: (error) => {
@@ -212,7 +212,7 @@ function ChplUsers({
     <Box>
       { activeUser
         && (
-          displayUserEdit(user)
+          displayUserEdit(activeUser)
         )}
       { !activeUser
         && (

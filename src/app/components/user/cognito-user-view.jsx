@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoUserView({ user: initialUser }) {
+function ChplCognitoUserView({ user: initialUser, dispatch }) {
   const [user, setUser] = useState({});
   const classes = useStyles();
 
@@ -43,7 +43,7 @@ function ChplCognitoUserView({ user: initialUser }) {
   }, [initialUser]);
 
   const edit = () => {
-    props.dispatch('edit', user);
+    dispatch('edit', user);
   };
 
   return (
