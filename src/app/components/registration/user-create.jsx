@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import {
-  func,
-} from 'prop-types';
-import {
   Button,
   Paper,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
-import { PasswordStrengthMeter } from '../login';
+import { PasswordStrengthMeter } from 'components/login';
+import { ChplTextField } from 'components/util';
+import theme from 'themes/theme';
 
 const zxcvbn = require('zxcvbn');
 
@@ -48,7 +46,7 @@ const validationSchema = yup.object({
     .email('Enter a valid Email'),
 });
 
-function ChplUserCreate(props) {
+function ChplUserCreate({ dispatch }) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
@@ -58,20 +56,17 @@ function ChplUserCreate(props) {
   const create = () => {
     const user = {
       email: formik.values.email,
-      friendlyName: formik.values.friendlyName,
       fullName: formik.values.fullName,
       password: formik.values.newPassword,
       passwordVerify: formik.values.verificationPassword,
       phoneNumber: formik.values.phoneNumber,
-      title: formik.values.title,
     };
-    props.dispatch('create', user);
+    dispatch('create', user);
   };
 
   const updatePassword = (event) => {
     const vals = ['chpl'];
     if (formik.values.fullName) { vals.push(formik.values.fullName); }
-    if (formik.values.friendlyName) { vals.push(formik.values.friendlyName); }
     if (formik.values.email) { vals.push(formik.values.email); }
     if (formik.values.phoneNumber) { vals.push(formik.values.phoneNumber); }
     const passwordStrength = zxcvbn(event.target.value, vals);
@@ -87,28 +82,24 @@ function ChplUserCreate(props) {
 
   formik = useFormik({
     initialValues: {
+      fullName: '',
+      phoneNumber: '',
+      email: '',
       newPassword: '',
       verificationPassword: '',
       passwordStrength: 0,
-      fullName: '',
-      friendlyName: '',
-      title: '',
-      phoneNumber: '',
-      email: '',
     },
     onSubmit: () => {
       create();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
     <ThemeProvider theme={theme}>
       <Paper className={classes.content}>
         <Typography>
-          Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the ‘create account’ button below.
+          Welcome to ONC&apos;s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the &quot;create account&quot; button below.
         </Typography>
         <Typography>
           Create a new account.
@@ -123,26 +114,6 @@ function ChplUserCreate(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.fullName && !!formik.errors.fullName}
           helperText={formik.touched.fullName && formik.errors.fullName}
-        />
-        <ChplTextField
-          id="friendly-name"
-          name="friendlyName"
-          label="Friendly Name"
-          value={formik.values.friendlyName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-          helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-        />
-        <ChplTextField
-          id="title"
-          name="title"
-          label="Title"
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.title && !!formik.errors.title}
-          helperText={formik.touched.title && formik.errors.title}
         />
         <ChplTextField
           id="phone-number"
@@ -214,7 +185,7 @@ function ChplUserCreate(props) {
           {' '}
           <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
           {' '}
-          and select “Certified Health IT Product List (CHPL)” to submit a ticket.
+          and select &quot;Certified Health IT Product List (CHPL)&quot; to submit a ticket.
         </Typography>
       </Paper>
     </ThemeProvider>

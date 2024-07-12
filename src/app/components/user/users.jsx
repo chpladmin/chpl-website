@@ -20,7 +20,7 @@ import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
-import { FlagContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -65,9 +65,10 @@ function ChplUsers({
   const networkService = getAngularService('networkService');
   const { mutate } = usePutUser();
   const { isOn } = useContext(FlagContext);
+  const { hasAnyRole, user } = useContext(UserContext);
+  const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [ssoIsOn, setSsoIsOn] = useState(false);
-  const [user, setUser] = useState(undefined);
   const [users, setUsers] = useState([]);
   const classes = useStyles();
 
@@ -83,8 +84,6 @@ function ChplUsers({
     const regex = new RegExp(event.target.value, 'i');
     setUsers(initialUsers
       .filter((u) => regex.test(u.fullName)
-                     || regex.test(u.friendlyName)
-                     || regex.test(u.title)
                      || regex.test(u.email)
                      || regex.test(u.subjectName))
       .sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
@@ -93,16 +92,16 @@ function ChplUsers({
   const handleDispatch = (action, data) => {
     switch (action) {
       case 'cancel':
-        setUser(undefined);
+        setActiveUser(undefined);
         handleFilter({ target: { value: '' } });
         dispatch('cancel');
         break;
       case 'delete':
-        setUser(undefined);
+        setActiveUser(undefined);
         dispatch('delete', data);
         break;
       case 'edit':
-        setUser(data);
+        setActiveUser(data);
         dispatch('edit', 'user');
         break;
       case 'impersonate':
@@ -127,7 +126,7 @@ function ChplUsers({
       case 'save':
         mutate(data, {
           onSuccess: () => {
-            setUser(undefined);
+            setActiveUser(undefined);
             dispatch('refresh');
           },
           onError: (error) => {
@@ -143,19 +142,20 @@ function ChplUsers({
     }
   };
 
-  const displayUser = (user) => {
-    if (user.cognitoId) {
+  const displayUser = (userToDisplay) => {
+    if (userToDisplay.cognitoId) {
       return (
         <ChplCognitoUserView
-          key={user.cognitoId}
-          user={user}
+          key={userToDisplay.cognitoId}
+          user={userToDisplay}
         />
       );
-    } if (user.userId) {
+    }
+    if (userToDisplay.userId) {
       return (
         <ChplUserView
-          key={user.userId}
-          user={user}
+          key={userToDisplay.userId}
+          user={userToDisplay}
           dispatch={handleDispatch}
         />
       );
@@ -163,17 +163,21 @@ function ChplUsers({
     return null;
   };
 
+  if (!hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
+    return null;
+  }
+
   return (
     <Box>
-      { user
+      { activeUser
         && (
           <ChplUserEdit
-            user={user}
+            user={activeUser}
             errors={errors}
             dispatch={handleDispatch}
           />
         )}
-      { !user
+      { !activeUser
         && (
           <div className={classes.container}>
             <Card>
@@ -198,14 +202,17 @@ function ChplUsers({
                   <ChplTextField
                     id="user-filter"
                     name="userFilter"
-                    label="Search by Name, Title, or Email"
+                    label="Search by Name or Email"
                     onChange={handleFilter}
                   />
-                  <ChplUserInvite
-                    roles={roles}
-                    dispatch={handleDispatch}
-                  />
-                  { ssoIsOn
+                  { user.userId
+                    && (
+                      <ChplUserInvite
+                        roles={roles}
+                        dispatch={handleDispatch}
+                      />
+                    )}
+                  { ssoIsOn && user.cognitoId
                     && (
                       <ChplCognitoUserInvite
                         groupNames={groupNames}

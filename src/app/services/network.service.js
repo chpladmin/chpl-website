@@ -38,14 +38,6 @@ export default class NetworkService {
     return this.apiPOST('/complaints', complaint);
   }
 
-  createInvitedUser(contactDetails) {
-    return this.apiPOST('/users/create', contactDetails);
-  }
-
-  createInvitedCognitoUser(contactDetails) {
-    return this.apiPOST('/cognito/users/create', contactDetails);
-  }
-
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
