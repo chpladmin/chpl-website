@@ -124,9 +124,9 @@ function ChplMessaging({ dispatch }) {
   });
 
   useEffect(() => {
-    if (isLoading) return;
-    if (isError || !data.results) return;
-    if (isLoading || !data.results) return;
+    if (isLoading) { return; }
+    if (isError || !data.results) { return; }
+    if (isLoading || !data.results) { return; }
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
 
@@ -159,10 +159,7 @@ function ChplMessaging({ dispatch }) {
       query: queryParams(),
     }, {
       onSuccess: () => {
-        enqueueSnackbar(
-          'Message preview has been queued. Please check your email to verify formatting',
-          { variant: 'success' },
-        );
+        enqueueSnackbar('Message preview has been queued. Please check your email to verify formatting', { variant: 'success' });
       },
       onError: (error) => {
         const body = `An error occurred: ${error.response?.data?.error}`;
