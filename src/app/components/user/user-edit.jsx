@@ -1,30 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CircularProgress,
+  FormControlLabel,
+  Switch,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import {
   arrayOf,
   func,
   string,
 } from 'prop-types';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  FormControlLabel,
-  Switch,
-  ThemeProvider,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
-import { ChplActionBar } from '../action-bar';
-import {
-  user as userPropType,
-} from '../../shared/prop-types';
+import { ChplActionBar } from 'components/action-bar';
+import { ChplTextField } from 'components/util';
+import { user as userPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '16px',
@@ -35,50 +32,41 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '8px',
   },
-}));
+});
 
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
 });
 
-function ChplUserEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [user] = useState(props.user);
+function ChplUserEdit({ user: initialUser, errors, dispatch }) {
+  const [user, setUser] = useState(undefined);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
   let formik;
 
-  const cancel = () => {
-    props.dispatch('cancel', {});
-  };
-
-  const deleteUser = () => {
-    props.dispatch('delete', user.userId);
-  };
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
 
   const save = () => {
     const updatedUser = {
       ...user,
       fullName: formik.values.fullName,
-      friendlyName: formik.values.friendlyName,
-      title: formik.values.title,
       phoneNumber: formik.values.phoneNumber,
       accountLocked: formik.values.accountLocked,
       accountEnabled: formik.values.accountEnabled,
       passwordResetRequired: formik.values.passwordResetRequired,
     };
-    props.dispatch('save', updatedUser);
+    dispatch('save', updatedUser);
   };
 
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        cancel();
+        dispatch('cancel', {});
         break;
       case 'delete':
-        deleteUser();
+        dispatch('delete', user.userId);
         break;
       case 'save':
         formik.submitForm();
@@ -89,24 +77,26 @@ function ChplUserEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      fullName: user.fullName,
-      friendlyName: user.friendlyName || '',
-      title: user.title || '',
-      phoneNumber: user.phoneNumber || '',
-      accountLocked: user.accountLocked,
-      accountEnabled: user.accountEnabled,
-      passwordResetRequired: user.passwordResetRequired,
+      fullName: initialUser.fullName,
+      phoneNumber: initialUser.phoneNumber || '',
+      accountLocked: initialUser.accountLocked,
+      accountEnabled: initialUser.accountEnabled,
+      passwordResetRequired: initialUser.passwordResetRequired,
     },
     onSubmit: () => {
       save();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
+  if (!user) {
+    return (
+      <CircularProgress />
+    );
+  }
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Card>
         <CardHeader
           title="Edit User"
@@ -125,26 +115,6 @@ function ChplUserEdit(props) {
               onBlur={formik.handleBlur}
               error={formik.touched.fullName && !!formik.errors.fullName}
               helperText={formik.touched.fullName && formik.errors.fullName}
-            />
-            <ChplTextField
-              id="friendly-name"
-              name="friendlyName"
-              label="Friendly Name"
-              value={formik.values.friendlyName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-              helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-            />
-            <ChplTextField
-              id="title"
-              name="title"
-              label="Title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.title && !!formik.errors.title}
-              helperText={formik.touched.title && formik.errors.title}
             />
             <ChplTextField
               id="phone-number"
@@ -206,11 +176,11 @@ function ChplUserEdit(props) {
       </Card>
       <ChplActionBar
         dispatch={handleDispatch}
-        errors={props.errors}
+        errors={errors}
         canDelete
         isDisabled={!formik.isValid}
       />
-    </ThemeProvider>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
+import { func } from 'prop-types';
 
 import ChplCognitoLogin from './cognito-login';
 
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoToggle() {
+function ChplCognitoToggle({ dispatch }) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -49,8 +50,14 @@ function ChplCognitoToggle() {
     setOpen(false);
   };
 
-  const handleDispatch = () => {
-    handleClose();
+  const handleDispatch = (action) => {
+    switch (action) {
+      case 'forceChangePassword':
+        dispatch(action);
+        break;
+      default:
+        handleClose();
+    }
   };
 
   useEffect(() => {
@@ -102,3 +109,11 @@ function ChplCognitoToggle() {
 }
 
 export default ChplCognitoToggle;
+
+ChplCognitoToggle.propTypes = {
+  dispatch: func,
+};
+
+ChplCognitoToggle.defaultProps = {
+  dispatch: () => {},
+};

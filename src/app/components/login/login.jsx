@@ -360,7 +360,6 @@ function ChplLogin({ dispatch }) {
   const updateChangePassword = (event) => {
     const vals = ['chpl'];
     if (user?.fullName) { vals.push(user.fullName); }
-    if (user?.friendlyName) { vals.push(user.friendlyName); }
     if (user?.email) { vals.push(user.email); }
     if (user?.phoneNumber) { vals.push(user.phoneNumber); }
     const passwordStrength = zxcvbn(event.target.value, vals);
