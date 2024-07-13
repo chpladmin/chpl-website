@@ -91,6 +91,7 @@ const validationSchema = yup.object({
 
 function ChplMessaging({ dispatch }) {
   const { queryParams, queryString } = useFilterContext();
+  const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
@@ -115,45 +116,40 @@ function ChplMessaging({ dispatch }) {
   }, [data?.results, data?.recordCount, isError, isLoading]);
 
   const sendMessage = () => {
-    postMessage.mutate(
-      {
-        subject: formik.values.subject,
-        body: formik.values.body,
-        query: queryParams(),
+    postMessage.mutate({
+      subject: formik.values.subject,
+      body: formik.values.body,
+      query: queryParams(),
+    }, {
+      onSuccess: () => {
+        enqueueSnackbar('Message queued', { variant: 'success' });
+        dispatch();
       },
-      {
-        onSuccess: () => {
-          enqueueSnackbar('Message queued', { variant: 'success' });
-          dispatch();
-        },
-        onError: (error) => {
-          const body = `An error occurred: ${error.response?.data?.error}`;
-          enqueueSnackbar(body, { variant: 'error' });
-        },
+      onError: (error) => {
+        const body = `An error occurred: ${error.response?.data?.error}`;
+        enqueueSnackbar(body, { variant: 'error' });
       },
-    );
+    });
   };
 
   const sendMessagePreview = () => {
-    postMessagePreview.mutate(
-      {
-        subject: formik.values.subject,
-        body: formik.values.body,
-        query: queryParams(),
+    setHasPreviewed(true);
+    postMessagePreview.mutate({
+      subject: formik.values.subject,
+      body: formik.values.body,
+      query: queryParams(),
+    }, {
+      onSuccess: () => {
+        enqueueSnackbar(
+          'Message preview has been queued. Please check your email to verify formatting',
+          { variant: 'success' },
+        );
       },
-      {
-        onSuccess: () => {
-          enqueueSnackbar(
-            'Message preview has been queued. Please check your email to verify formatting',
-            { variant: 'success' },
-          );
-        },
-        onError: (error) => {
-          const body = `An error occurred: ${error.response?.data?.error}`;
-          enqueueSnackbar(body, { variant: 'error' });
-        },
+      onError: (error) => {
+        const body = `An error occurred: ${error.response?.data?.error}`;
+        enqueueSnackbar(body, { variant: 'error' });
       },
-    );
+    });
   };
 
   formik = useFormik({
@@ -170,7 +166,7 @@ function ChplMessaging({ dispatch }) {
   const minRows = window.outerWidth >= 1200 ? 16 : 8;
 
   return (
-    <div>
+    <>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Messaging</Typography>
       </div>
@@ -241,7 +237,7 @@ function ChplMessaging({ dispatch }) {
                 <Button
                   onClick={sendMessagePreview}
                   disabled={!formik.isValid}
-                  variant="outlined"
+                  variant={hasPreviewed ? 'outlined' : 'contained'}
                   color="primary"
                   endIcon={<SendOutlined />}
                 >
@@ -250,7 +246,7 @@ function ChplMessaging({ dispatch }) {
               </Box>
               <Button
                 onClick={formik.handleSubmit}
-                disabled={!formik.isValid}
+                disabled={!formik.isValid || !hasPreviewed}
                 variant="contained"
                 color="primary"
                 endIcon={<SendIcon />}
@@ -420,7 +416,7 @@ function ChplMessaging({ dispatch }) {
           </Card>
         </Box>
       </Container>
-    </div>
+    </>
   );
 }
 
