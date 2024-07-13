@@ -85,8 +85,12 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  subject: yup.string().required('Subject is required'),
-  body: yup.string().required('Message body is required'),
+  subject: yup
+    .string()
+    .required('Subject is required'),
+  body: yup
+    .string()
+    .required('Message body is required'),
 });
 
 const semiAnnualAttestationsNotSubmitted = `Hello |DEVELOPERNAME|,
