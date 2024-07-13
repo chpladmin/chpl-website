@@ -21,6 +21,7 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 import * as yup from 'yup';
+
 import {
   useFetchDevelopersBySearch,
   usePostMessage,
@@ -32,10 +33,6 @@ import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  pre: {
-    wordBreak: 'break-all',
-    whiteSpace: 'break-spaces',
-  },
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -62,14 +59,6 @@ const useStyles = makeStyles({
     color: palette.error,
     border: `1px solid ${palette.error}`,
   },
-  actionBarButton: {
-    minWidth: '15vw',
-  },
-  actionBarButtons: {
-    display: 'flex',
-    justifyContent: 'center',
-    padding: '16px 0',
-  },
   stickyBox: {
     display: 'flex',
     flexDirection: 'column',
@@ -83,13 +72,13 @@ const useStyles = makeStyles({
       top: 'auto',
     },
   },
-  rightColumn:{
+  rightColumn: {
     width: '30%,',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
-  rowHeader:{
+  rowHeader: {
     paddingTop: '8px',
     padddingBottom: '8px',
   },
@@ -141,7 +130,7 @@ function ChplMessaging({ dispatch }) {
           const body = `An error occurred: ${error.response?.data?.error}`;
           enqueueSnackbar(body, { variant: 'error' });
         },
-      }
+      },
     );
   };
 
@@ -156,14 +145,14 @@ function ChplMessaging({ dispatch }) {
         onSuccess: () => {
           enqueueSnackbar(
             'Message preview has been queued. Please check your email to verify formatting',
-            { variant: 'success' }
+            { variant: 'success' },
           );
         },
         onError: (error) => {
           const body = `An error occurred: ${error.response?.data?.error}`;
           enqueueSnackbar(body, { variant: 'error' });
         },
-      }
+      },
     );
   };
 
@@ -186,7 +175,7 @@ function ChplMessaging({ dispatch }) {
         <Typography variant="h1">Messaging</Typography>
       </div>
       <Container
-        maxWidth={'xl'}
+        maxWidth="xl"
         className={classes.pageBody}
         id="main-content"
         tabIndex="-1"
@@ -196,9 +185,13 @@ function ChplMessaging({ dispatch }) {
         >
           <Card>
             <CardContent className={classes.content}>
-              <Typography variant="h3" component={'h2'}>
+              <Typography variant="h3" component="h2">
                 <strong>
-                  Messaging {recordCount} developers
+                  Messaging
+                  {' '}
+                  {recordCount}
+                  {' '}
+                  developers
                 </strong>
               </Typography>
               <Divider />
@@ -229,14 +222,14 @@ function ChplMessaging({ dispatch }) {
               />
             </CardContent>
           </Card>
-          <Card bgcolor={'white'}>
+          <Card bgcolor="white">
             <Box
-              padding={'16px'}
-              display={'flex'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
+              padding="16px"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
             >
-              <Box display={'flex'} flexDirection={'row'} gridGap={'16px'}>
+              <Box display="flex" flexDirection="row" gridGap="16px">
                 <Button
                   onClick={dispatch}
                   variant="outlined"
@@ -270,7 +263,7 @@ function ChplMessaging({ dispatch }) {
         <Box className={classes.rightColumn}>
           <Card>
             <CardContent className={classes.content}>
-              <Typography sx={{ mt: 0.5 }} variant="h4" component={'h3'}>
+              <Typography sx={{ mt: 0.5 }} variant="h4" component="h3">
                 <strong>Markdown reference</strong>
               </Typography>
               <Divider />
@@ -278,7 +271,7 @@ function ChplMessaging({ dispatch }) {
                 <Table size="small">
                   <TableHead sx={{ py: 4 }}>
                     <TableRow className={classes.rowHeader}>
-                      <TableCell>Type ...</TableCell>
+                      <TableCell width="45%">Type ...</TableCell>
                       <TableCell>... to get</TableCell>
                     </TableRow>
                   </TableHead>
@@ -287,7 +280,7 @@ function ChplMessaging({ dispatch }) {
                       <TableCell>
                         <pre className={classes.code}>_Italic_</pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <i>Italic</i>
                       </TableCell>
                     </TableRow>
@@ -295,7 +288,7 @@ function ChplMessaging({ dispatch }) {
                       <TableCell>
                         <pre className={classes.code}>**Bold**</pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <b>Bold</b>
                       </TableCell>
                     </TableRow>
@@ -303,7 +296,7 @@ function ChplMessaging({ dispatch }) {
                       <TableCell>
                         <pre className={classes.code}># Heading 1</pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <h1>Heading 1</h1>
                       </TableCell>
                     </TableRow>
@@ -311,7 +304,7 @@ function ChplMessaging({ dispatch }) {
                       <TableCell>
                         <pre className={classes.code}>## Heading 2</pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <h2>Heading 2</h2>
                       </TableCell>
                     </TableRow>
@@ -321,7 +314,7 @@ function ChplMessaging({ dispatch }) {
                           [Link](http://www.example.com)
                         </pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <a href="http://www.example.com">Link</a>
                       </TableCell>
                     </TableRow>
@@ -329,21 +322,21 @@ function ChplMessaging({ dispatch }) {
                       <TableCell>
                         <pre className={classes.code}>
                           * List
-                          <br />* List
-                          <br /> * Put four spaces before the "*" to make a
-                          sub-bullet
-                          <br />* List
+                          <br />
+                          * List
+                          <br />
+                          {' '}
+                          * Put four spaces before the &quot;*&quot; to make a sub-bullet
+                          <br />
+                          * List
                         </pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <ul>
                           <li>List</li>
                           <li>List</li>
                           <ul>
-                            <li>
-                              Put four spaces before the "*" to make a
-                              sub-bullet
-                            </li>
+                            <li>Put four spaces before the &quot;*&quot; to make a sub-bullet</li>
                           </ul>
                           <li>List</li>
                         </ul>
@@ -359,7 +352,7 @@ function ChplMessaging({ dispatch }) {
                           3. Three
                         </pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         <ol>
                           <li>One</li>
                           <li>Two</li>
@@ -379,7 +372,7 @@ function ChplMessaging({ dispatch }) {
                           To get multiple paragraphs
                         </pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         A paragraph of text
                         <br />
                         <br />
@@ -390,13 +383,14 @@ function ChplMessaging({ dispatch }) {
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={'45%'}>
-                        <pre className={classes.code}>
-                          From: (with two spaces at the end of the line) <br />
+                      <TableCell>
+                        <pre>
+                          From:  (with two spaces at the end of the line)
+                          <br />
                           To put a newline in a paragraph
                         </pre>
                       </TableCell>
-                      <TableCell size="small">
+                      <TableCell>
                         From:
                         <br />
                         To put a newline in a paragraph
@@ -408,13 +402,18 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell><pre className={classes.code}>This message has been sent to |DEVELOPERUSERS|.</pre></TableCell>
-                      <TableCell>This message has been sent to:<br />Tejal Vakharia &lt;tejal.vakharia@allscripts.com&gt;, Joshua &lt;joshua.albert@allscripts.com&gt;, Katie Little &lt;katie.little@allscripts.com&gt;.</TableCell>
+                      <TableCell>
+                        This message has been sent to:
+                        <br />
+                        Tejal Vakharia &lt;tejal.vakharia@allscripts.com&gt;, Joshua &lt;joshua.albert@allscripts.com&gt;, Katie Little &lt;katie.little@allscripts.com&gt;.
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
               </Card>
               <Typography>
-                For more information about formatting, please see:{' '}
+                For more information about formatting, please see:
+                {' '}
                 <ChplLink href="https://commonmark.org/help/" />
               </Typography>
             </CardContent>
