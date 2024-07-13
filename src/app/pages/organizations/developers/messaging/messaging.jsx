@@ -89,6 +89,17 @@ const validationSchema = yup.object({
   body: yup.string().required('Message body is required'),
 });
 
+const semiAnnualAttestationsNotSubmitted = `Hello |DEVELOPERNAME|,
+
+According to our records, the [Attestations Condition and Maintenance of Certification](https://www.healthit.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
+
+The following individuals have been identified by your ONC-Authorized Certification Body (ONC-ACB) as authorized contacts to submit Attestations for your developer organization: |DEVELOPERUSERS|.
+
+For questions related to authorized developer point of contacts, please reach out to your ONC-ACB for further assistance.
+
+Sincerely,
+The Office of the National Coordinator for Health IT`;
+
 function ChplMessaging({ dispatch }) {
   const { queryParams, queryString } = useFilterContext();
   const [hasPreviewed, setHasPreviewed] = useState(false);
@@ -114,6 +125,10 @@ function ChplMessaging({ dispatch }) {
     if (isLoading || !data.results) return;
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
+
+  const applyTemplate = () => {
+    formik.setFieldValue('body', semiAnnualAttestationsNotSubmitted);
+  };
 
   const sendMessage = () => {
     postMessage.mutate({
@@ -217,6 +232,11 @@ function ChplMessaging({ dispatch }) {
                 minRows={minRows}
               />
             </CardContent>
+            <Button
+              onClick={applyTemplate}
+            >
+              Apply &quot;Semi-Annual Attestations Not Submitted&quot; Template
+            </Button>
           </Card>
           <Card bgcolor="white">
             <Box
