@@ -402,6 +402,14 @@ function ChplMessaging({ dispatch }) {
                         To put a newline in a paragraph
                       </TableCell>
                     </TableRow>
+                    <TableRow>
+                      <TableCell><pre className={classes.code}>Hello |DEVELOPERNAME|!</pre></TableCell>
+                      <TableCell>Hello AllScripts!</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><pre className={classes.code}>This message has been sent to |DEVELOPERUSERS|.</pre></TableCell>
+                      <TableCell>This message has been sent to:<br />Tejal Vakharia &lt;tejal.vakharia@allscripts.com&gt;, Joshua &lt;joshua.albert@allscripts.com&gt;, Katie Little &lt;katie.little@allscripts.com&gt;.</TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               </Card>
