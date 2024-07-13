@@ -325,7 +325,7 @@ function ChplMessaging({ dispatch }) {
                           <br />
                           * List
                           <br />
-                          {' '}
+                          {'    '}
                           * Put four spaces before the &quot;*&quot; to make a sub-bullet
                           <br />
                           * List
