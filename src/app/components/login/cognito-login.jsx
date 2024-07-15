@@ -10,6 +10,8 @@ import {
 import ClearIcon from '@material-ui/icons/Clear';
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import SendIcon from '@material-ui/icons/Send';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -22,6 +24,7 @@ import PasswordStrengthMeter from './password-strength-meter';
 import {
   usePostNewPasswordRequired,
   usePostCognitoLogin,
+  usePostForgotPassword,
 } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
@@ -58,6 +61,12 @@ const forceChangeSchema = yup.object({
     ),
 });
 
+const forgotPasswordSchema = yup.object({
+  email: yup.string()
+    .required('Email is required')
+    .email('Email format is invalid'),
+});
+
 const signinSchema = yup.object({
   password: yup.string()
     .required('Password is required'),
@@ -71,6 +80,7 @@ function ChplCognitoLogin({ dispatch }) {
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
+  const postForgotPassword = usePostForgotPassword();
   const postLogin = usePostCognitoLogin();
   const postNewPasswordRequired = usePostNewPasswordRequired();
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -80,6 +90,7 @@ function ChplCognitoLogin({ dispatch }) {
   const classes = useStyles();
 
   let forceChangeFormik;
+  let forgotPasswordFormik;
   let signinFormik;
 
   useEffect(() => {
@@ -93,6 +104,9 @@ function ChplCognitoLogin({ dispatch }) {
     switch (state) {
       case 'FORCECHANGEPASSWORD':
         setState('LOGGEDIN');
+        break;
+      case 'FORGOTPASSWORD':
+        setState('SIGNIN');
         break;
       default:
         setState('');
@@ -133,6 +147,7 @@ function ChplCognitoLogin({ dispatch }) {
   const getTitle = () => {
     switch (state) {
       case 'FORCECHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
+      case 'FORGOTPASSWORD': return 'Forgotten password';
       case 'LOGGEDIN': return user?.fullName ?? 'Logged in';
       case 'SIGNIN': return 'Cognito login required';
       default: return 'Unknown state';
@@ -178,9 +193,30 @@ function ChplCognitoLogin({ dispatch }) {
     $rootScope.$broadcast('loggedOut');
   };
 
+  const sendForgottenPasswordEmail = () => {
+    postForgotPassword.mutate({ userName: forgotPasswordFormik.values.email }, {
+      onSuccess: () => {
+        ReactGA.event({ action: 'Send Forgotten Password Email', category: 'Authentication', label: 'test' });
+        setState('SIGNIN');
+        forgotPasswordFormik.resetForm();
+        const body = `Forgotten password email sent to ${forgotPasswordFormik.values.email}; please check your email`;
+        enqueueSnackbar(body, { variant: 'success' });
+      },
+      onError: () => {
+        const body = `Email could not be sent to ${forgotPasswordFormik.values.email}`;
+        enqueueSnackbar(body, { variant: 'error' });
+      },
+    });
+  };
+
   const submitChange = (e) => {
     e.stopPropagation();
     forceChangeFormik.handleSubmit();
+  };
+
+  const submitForgottenPasswordRequest = (e) => {
+    e.stopPropagation();
+    forgotPasswordFormik.handleSubmit();
   };
 
   const submitSignin = (e) => {
@@ -215,6 +251,18 @@ function ChplCognitoLogin({ dispatch }) {
     validateOnBlur: true,
     onSubmit: () => {
       forceChangePassword();
+    },
+  });
+
+  forgotPasswordFormik = useFormik({
+    validationSchema: forgotPasswordSchema,
+    initialValues: {
+      email: '',
+    },
+    validateOnChange: false,
+    validateOnBlur: true,
+    onSubmit: () => {
+      sendForgottenPasswordEmail();
     },
   });
 
@@ -280,6 +328,21 @@ function ChplCognitoLogin({ dispatch }) {
                helperText={forceChangeFormik.touched.verificationPassword && forceChangeFormik.errors.verificationPassword}
              />
            </>
+         )}
+        {state === 'FORGOTPASSWORD'
+         && (
+           <ChplTextField
+             id="email"
+             name="email"
+             label="Email"
+             required
+             value={forgotPasswordFormik.values.email}
+             onChange={forgotPasswordFormik.handleChange}
+             onBlur={forgotPasswordFormik.handleBlur}
+             onKeyPress={(e) => catchEnter(e, submitForgottenPasswordRequest)}
+             error={forgotPasswordFormik.touched.email && !!forgotPasswordFormik.errors.email}
+             helperText={forgotPasswordFormik.touched.email && forgotPasswordFormik.errors.email}
+           />
          )}
         {state === 'SIGNIN'
          && (
@@ -369,6 +432,42 @@ function ChplCognitoLogin({ dispatch }) {
              endIcon={<VpnKeyIcon />}
            >
              Log In (Cognito)
+           </Button>
+         )}
+        {state === 'SIGNIN'
+         && (
+           <Button
+             fullWidth
+             color="secondary"
+             variant="contained"
+             onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
+             endIcon={<HelpOutlineIcon />}
+           >
+             Forgot Password
+           </Button>
+         )}
+        {state === 'FORGOTPASSWORD'
+         && (
+           <Button
+             fullWidth
+             color="primary"
+             variant="contained"
+             onClick={submitForgottenPasswordRequest}
+             endIcon={<SendIcon />}
+           >
+             Send forgotten password email
+           </Button>
+         )}
+        {state === 'FORGOTPASSWORD'
+         && (
+           <Button
+             fullWidth
+             color="default"
+             variant="contained"
+             onClick={cancel}
+             endIcon={<ClearIcon />}
+           >
+             Cancel
            </Button>
          )}
         {state === 'SIGNIN'
