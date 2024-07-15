@@ -94,9 +94,10 @@ const validationSchema = yup.object({
     .required('Message body is required'),
 });
 
-const semiAnnualAttestationsNotSubmittedSubject = 'Semi-Annual Attestations Not Submitted';
-
-const semiAnnualAttestationsNotSubmittedBody = `Hello |DEVELOPERNAME|,
+const templateOptions = [
+  { key: '<blank>', subject: '', body: '' },
+  {
+    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', body: `Hello |DEVELOPERNAME|,
 
 According to our records, the [Attestations Condition and Maintenance of Certification](https://www.healthit.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
 
@@ -105,17 +106,15 @@ The following individuals have been identified by your ONC-Authorized Certificat
 For questions related to authorized developer point of contacts, please reach out to your ONC-ACB for further assistance.
 
 Sincerely,  
-The Office of the National Coordinator for Health IT`;
-
-const templateOptions = [
-  'Semi-Annual Attestations Not Submitted',
+The Office of the National Coordinator for Health IT`,
+  },
 ];
 
 function ChplMessaging({ dispatch }) {
   const { queryParams, queryString } = useFilterContext();
   const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState('Semi-Annual Attestations Not Submitted');
+  const [selectedOption, setSelectedOption] = useState(templateOptions[0]);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
   const postMessagePreview = usePostMessagePreview();
@@ -139,11 +138,8 @@ function ChplMessaging({ dispatch }) {
   }, [data?.results, data?.recordCount, isError, isLoading]);
 
   const applyTemplate = () => {
-    console.log(selectedOption);
-    if (selectedOption && selectedOption === 'Semi-Annual Attestations Not Submitted') {
-      formik.setFieldValue('subject', semiAnnualAttestationsNotSubmittedSubject);
-      formik.setFieldValue('body', semiAnnualAttestationsNotSubmittedBody);
-    }
+    formik.setFieldValue('subject', selectedOption.subject);
+    formik.setFieldValue('body', selectedOption.body);
   };
 
   const sendMessage = () => {
@@ -219,7 +215,7 @@ function ChplMessaging({ dispatch }) {
                 </strong>
               </Typography>
               <Divider />
-              <div className={classes.fullWidth}>
+              <Box display="flex" flexDirection="row" gridGap="16px">
                 <ChplTextField
                   select
                   id="template-select"
@@ -229,7 +225,7 @@ function ChplMessaging({ dispatch }) {
                   onChange={(event) => setSelectedOption(event.target.value)}
                 >
                   { templateOptions.map((item) => (
-                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                    <MenuItem value={item} key={item.key}>{item.key}</MenuItem>
                   ))}
                 </ChplTextField>
                 <Button
@@ -237,7 +233,7 @@ function ChplMessaging({ dispatch }) {
                 >
                   Apply Template
                 </Button>
-              </div>
+              </Box>
               <Divider />
               <ChplTextField
                 id="subject"
