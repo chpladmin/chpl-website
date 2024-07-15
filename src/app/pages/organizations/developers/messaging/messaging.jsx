@@ -230,6 +230,8 @@ function ChplMessaging({ dispatch }) {
                 </ChplTextField>
                 <Button
                   onClick={applyTemplate}
+                  variant="outlined"
+                  color="primary"
                 >
                   Apply Template
                 </Button>
