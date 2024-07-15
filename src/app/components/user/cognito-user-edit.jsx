@@ -42,7 +42,7 @@ const phoneRegExp = /^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}$/;
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
-    phoneNumber: yup.string()
+  phoneNumber: yup.string()
     .required('Phone Number is required')
     .matches(phoneRegExp, 'Phone number is not valid'),
 });
