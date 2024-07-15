@@ -8,7 +8,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
-import SendIcon from '@material-ui/icons/Send';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -16,13 +15,13 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
 
+import ChplForgotPassword from './components/forgot-password';
 import ChplLoggedIn from './components/logged-in';
 import ChplSignin from './components/signin';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import {
   usePostNewPasswordRequired,
-  usePostForgotPassword,
 } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
@@ -59,19 +58,12 @@ const forceChangeSchema = yup.object({
     ),
 });
 
-const forgotPasswordSchema = yup.object({
-  email: yup.string()
-    .required('Email is required')
-    .email('Email format is invalid'),
-});
-
 function ChplCognitoLogin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const postForgotPassword = usePostForgotPassword();
   const postNewPasswordRequired = usePostNewPasswordRequired();
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [sessionId] = useState('');
@@ -80,7 +72,6 @@ function ChplCognitoLogin({ dispatch }) {
   const classes = useStyles();
 
   let forceChangeFormik;
-  let forgotPasswordFormik;
 
   useEffect(() => {
     if (user?.fullName) {
@@ -93,9 +84,6 @@ function ChplCognitoLogin({ dispatch }) {
     switch (state) {
       case 'FORCECHANGEPASSWORD':
         setState('LOGGEDIN');
-        break;
-      case 'FORGOTPASSWORD':
-        setState('SIGNIN');
         break;
       default:
         setState('');
@@ -136,7 +124,6 @@ function ChplCognitoLogin({ dispatch }) {
   const getTitle = () => {
     switch (state) {
       case 'FORCECHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
-      case 'FORGOTPASSWORD': return 'Forgotten password';
       default: return 'Unknown state';
     }
   };
@@ -167,30 +154,9 @@ function ChplCognitoLogin({ dispatch }) {
     }
   };
 
-  const sendForgottenPasswordEmail = () => {
-    postForgotPassword.mutate({ userName: forgotPasswordFormik.values.email }, {
-      onSuccess: () => {
-        ReactGA.event({ action: 'Send Forgotten Password Email', category: 'Authentication', label: 'test' });
-        setState('SIGNIN');
-        forgotPasswordFormik.resetForm();
-        const body = `Forgotten password email sent to ${forgotPasswordFormik.values.email}; please check your email`;
-        enqueueSnackbar(body, { variant: 'success' });
-      },
-      onError: () => {
-        const body = `Email could not be sent to ${forgotPasswordFormik.values.email}`;
-        enqueueSnackbar(body, { variant: 'error' });
-      },
-    });
-  };
-
   const submitChange = (e) => {
     e.stopPropagation();
     forceChangeFormik.handleSubmit();
-  };
-
-  const submitForgottenPasswordRequest = (e) => {
-    e.stopPropagation();
-    forgotPasswordFormik.handleSubmit();
   };
 
   const updateChangePassword = (event) => {
@@ -217,26 +183,14 @@ function ChplCognitoLogin({ dispatch }) {
       verificationPassword: '',
       passwordStrength: 0,
     },
-    validateOnChange: false,
-    validateOnBlur: true,
     onSubmit: () => {
       forceChangePassword();
     },
   });
 
-  forgotPasswordFormik = useFormik({
-    validationSchema: forgotPasswordSchema,
-    initialValues: {
-      email: '',
-    },
-    validateOnChange: false,
-    validateOnBlur: true,
-    onSubmit: () => {
-      sendForgottenPasswordEmail();
-    },
-  });
-
   switch (state) {
+    case 'FORGOTPASSWORD':
+      return <ChplForgotPassword dispatch={handleDispatch} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn dispatch={handleDispatch} />;
     case 'SIGNIN':
@@ -294,21 +248,6 @@ function ChplCognitoLogin({ dispatch }) {
                  />
                </>
              )}
-            {state === 'FORGOTPASSWORD'
-             && (
-               <ChplTextField
-                 id="email"
-                 name="email"
-                 label="Email"
-                 required
-                 value={forgotPasswordFormik.values.email}
-                 onChange={forgotPasswordFormik.handleChange}
-                 onBlur={forgotPasswordFormik.handleBlur}
-                 onKeyPress={(e) => catchEnter(e, submitForgottenPasswordRequest)}
-                 error={forgotPasswordFormik.touched.email && !!forgotPasswordFormik.errors.email}
-                 helperText={forgotPasswordFormik.touched.email && forgotPasswordFormik.errors.email}
-               />
-             )}
             {state === 'FORCECHANGEPASSWORD'
              && (
                <Button
@@ -322,30 +261,6 @@ function ChplCognitoLogin({ dispatch }) {
                </Button>
              )}
             {state === 'CHANGEPASSWORD'
-             && (
-               <Button
-                 fullWidth
-                 color="default"
-                 variant="contained"
-                 onClick={cancel}
-                 endIcon={<ClearIcon />}
-               >
-                 Cancel
-               </Button>
-             )}
-            {state === 'FORGOTPASSWORD'
-             && (
-               <Button
-                 fullWidth
-                 color="primary"
-                 variant="contained"
-                 onClick={submitForgottenPasswordRequest}
-                 endIcon={<SendIcon />}
-               >
-                 Send forgotten password email
-               </Button>
-             )}
-            {state === 'FORGOTPASSWORD'
              && (
                <Button
                  fullWidth

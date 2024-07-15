@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -32,12 +32,6 @@ function ChplLoggedIn({ dispatch }) {
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const classes = useStyles();
-
-  useEffect(() => {
-    if (user?.fullName) {
-      dispatch({ action: 'isLoggedIn' });
-    }
-  }, [dispatch, user]);
 
   const logout = (e) => {
     e.stopPropagation();
