@@ -8,8 +8,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
-import CreateIcon from '@material-ui/icons/Create';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SendIcon from '@material-ui/icons/Send';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { func } from 'prop-types';
@@ -18,6 +16,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
 
+import ChplLoggedIn from './components/logged-in';
 import ChplSignin from './components/signin';
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -138,7 +137,6 @@ function ChplCognitoLogin({ dispatch }) {
     switch (state) {
       case 'FORCECHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
       case 'FORGOTPASSWORD': return 'Forgotten password';
-      case 'LOGGEDIN': return user?.fullName ?? 'Logged in';
       default: return 'Unknown state';
     }
   };
@@ -154,23 +152,19 @@ function ChplCognitoLogin({ dispatch }) {
       case 'forgotPassword':
         setState('FORGOTPASSWORD');
         break;
+      case 'isLoggedIn':
+        setState('LOGGEDIN');
+        break;
       case 'loggedIn':
         dispatch('loggedIn');
         setState('LOGGEDIN');
         break;
+      case 'loggedOut':
+        setState('SIGNIN');
+        break;
       default:
         console.error(`No action found for ${action}`);
     }
-  };
-
-  const logout = (e) => {
-    e.stopPropagation();
-    setUser({});
-    setState('SIGNIN');
-    authService.logout();
-    ReactGA.event({ action: 'Log Out', category: 'Authentication' });
-    Idle.unwatch();
-    $rootScope.$broadcast('loggedOut');
   };
 
   const sendForgottenPasswordEmail = () => {
@@ -243,6 +237,8 @@ function ChplCognitoLogin({ dispatch }) {
   });
 
   switch (state) {
+    case 'LOGGEDIN':
+      return <ChplLoggedIn dispatch={handleDispatch} />;
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
     default:
@@ -312,30 +308,6 @@ function ChplCognitoLogin({ dispatch }) {
                  error={forgotPasswordFormik.touched.email && !!forgotPasswordFormik.errors.email}
                  helperText={forgotPasswordFormik.touched.email && forgotPasswordFormik.errors.email}
                />
-             )}
-            {(state === 'LOGGEDIN')
-             && (
-               <Button
-                 fullWidth
-                 color="primary"
-                 variant="contained"
-                 onClick={logout}
-                 endIcon={<ExitToAppIcon />}
-               >
-                 Log Out (Cognito)
-               </Button>
-             )}
-            {state === 'LOGGEDIN'
-             && (
-               <Button
-                 fullWidth
-                 color="secondary"
-                 variant="contained"
-                 onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
-                 endIcon={<CreateIcon />}
-               >
-                 Change Password
-               </Button>
              )}
             {state === 'FORCECHANGEPASSWORD'
              && (

@@ -161,9 +161,5 @@ function ChplSignin({ dispatch }) {
 export default ChplSignin;
 
 ChplSignin.propTypes = {
-  dispatch: func,
-};
-
-ChplSignin.defaultProps = {
-  dispatch: () => {},
+  dispatch: func.isRequired,
 };
