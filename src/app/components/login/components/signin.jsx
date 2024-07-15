@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -46,7 +46,6 @@ function ChplSignin({ dispatch }) {
   const { setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
-  const [, setSessionId] = useState('');
   const classes = useStyles();
 
   let formik;
@@ -74,8 +73,13 @@ function ChplSignin({ dispatch }) {
       },
       onError: (error) => {
         if (error?.response?.status === 470) {
-          setSessionId(error?.response?.data?.sessionId);
-          dispatch({ action: 'forceChangePassword', payload: formik.values.userName });
+          dispatch({
+            action: 'forceChangePassword',
+            payload: {
+              userName: formik.values.userName,
+              sessionId: error?.response?.data?.sessionId,
+            },
+          });
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
