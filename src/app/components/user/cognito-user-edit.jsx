@@ -54,20 +54,12 @@ function ChplCognitoUserEdit(props) {
     props.dispatch('cancel', {});
   };
 
-  const deleteUser = () => {
-    props.dispatch('delete', user.userId);
-  };
-
   const save = () => {
     const updatedUser = {
       ...user,
       fullName: formik.values.fullName,
-      friendlyName: formik.values.friendlyName,
-      title: formik.values.title,
       phoneNumber: formik.values.phoneNumber,
-      accountLocked: formik.values.accountLocked,
       accountEnabled: formik.values.accountEnabled,
-      passwordResetRequired: formik.values.passwordResetRequired,
     };
     props.dispatch('cognito-save', updatedUser);
   };
@@ -76,9 +68,6 @@ function ChplCognitoUserEdit(props) {
     switch (action) {
       case 'cancel':
         cancel();
-        break;
-      case 'delete':
-        deleteUser();
         break;
       case 'save':
         formik.submitForm();
@@ -90,12 +79,8 @@ function ChplCognitoUserEdit(props) {
   formik = useFormik({
     initialValues: {
       fullName: user.fullName,
-      friendlyName: user.friendlyName || '',
-      title: user.title || '',
       phoneNumber: user.phoneNumber || '',
-      accountLocked: user.accountLocked,
       accountEnabled: user.accountEnabled,
-      passwordResetRequired: user.passwordResetRequired,
     },
     onSubmit: () => {
       save();
@@ -159,7 +144,6 @@ function ChplCognitoUserEdit(props) {
       <ChplActionBar
         dispatch={handleDispatch}
         errors={props.errors}
-        canDelete
         isDisabled={!formik.isValid}
       />
     </ThemeProvider>
