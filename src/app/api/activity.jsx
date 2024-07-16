@@ -1,6 +1,20 @@
-import { useQuery } from 'react-query';
+import { useQueries, useQuery } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
+
+const useFetchActivities = ({ ids, enabled }) => {
+  const axios = useAxios();
+  return useQueries(ids.map((id) => ({
+    ...options.daily,
+    queryKey: ['activity', id],
+    queryFn: async () => {
+      const response = await axios.get(`activity/${id}`);
+      return response.data;
+    },
+    enabled: enabled && !!ids,
+  })));
+};
 
 const useFetchActivity = ({ id, isEnabled }) => {
   const axios = useAxios();
@@ -19,6 +33,18 @@ const useFetchFunctionalitiesTestedActivity = ({ isEnabled }) => {
     return response.data;
   }, {
     enabled: isEnabled,
+  });
+};
+
+const useFetchListingActivityMetadata = ({ id, enabled }) => {
+  const axios = useAxios();
+  return useQuery({
+    queryKey: ['activity/metadata/listings', id],
+    queryFn: async () => {
+      const response = await axios.get(`activity/metadata/listings/${id}`);
+      return response.data;
+    },
+    enabled: enabled && !!id,
   });
 };
 
@@ -43,8 +69,10 @@ const useFetchSvapsActivity = ({ isEnabled }) => {
 };
 
 export {
+  useFetchActivities,
   useFetchActivity,
   useFetchFunctionalitiesTestedActivity,
+  useFetchListingActivityMetadata,
   useFetchStandardsActivity,
   useFetchSvapsActivity,
 };

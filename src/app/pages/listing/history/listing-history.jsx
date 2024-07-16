@@ -28,6 +28,10 @@ import {
   interpretVersion,
 } from './history.service';
 
+import {
+  useFetchActivities,
+  useFetchListingActivityMetadata,
+} from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat, toTimestamp } from 'services/date-util';
@@ -47,16 +51,47 @@ const useStyles = makeStyles({
 });
 
 function ChplListingHistory(props) {
-  const [activity, setActivity] = useState([]);
-  const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
-  const [open, setOpen] = useState(false);
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
+  const [activity, setActivity] = useState([])
+  const [evaluated, setEvaluated] = useState([]);
+  const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
+  const [listingActivityIds, setListingActivityIds] = useState([]);
+  const [open, setOpen] = useState(false);
+  const fetchListingActivities = useFetchActivities({
+    ids: listingActivityIds,
+    enabled: open,
+  });
+  const fetchListingActivityMetadata = useFetchListingActivityMetadata({
+    id: listing.id,
+    enabled: open,
+  });
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
+  useEffect(() => {
+    fetchListingActivities.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluated.includes(f.data.id)) { return; }
+      const interpreted = interpretActivity(f.data, hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']));
+      if (interpreted.change.length > 0) {
+        setActivity((activity) => [
+          ...activity,
+          interpreted,
+        ]);
+      }
+      setEvaluated((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchListingActivities]);
+
+  useEffect(() => {
+    if (fetchListingActivityMetadata.isLoading) { return; }
+    if (fetchListingActivityMetadata.isError || !fetchListingActivityMetadata.data) { return; }
+    setListingActivityIds(fetchListingActivityMetadata.data.map((activity) => activity.id));
+  }, [fetchListingActivityMetadata.data, fetchListingActivityMetadata.isError, fetchListingActivityMetadata.isLoading]);
+
+  /*
   const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((metadata) => {
       metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
@@ -70,7 +105,7 @@ function ChplListingHistory(props) {
       }));
     });
   };
-
+*/
   const interpretedDevelopers = new Set();
   const evaluateDeveloperActivity = (id, end = Date.now()) => {
     if (!interpretedDevelopers.has(id)) {
@@ -146,10 +181,10 @@ function ChplListingHistory(props) {
       ...interpretCertificationStatusChanges(listing),
       ...interpretPIHistory(listing, DateUtil),
     ]);
-    evaluateListingActivity();
-    evaluateDeveloperActivity(listing.developer.id);
-    evaluateProductActivity(listing.product.id);
-    evaluateVersionActivity(listing.version.id);
+    //evaluateListingActivity();
+    //evaluateDeveloperActivity(listing.developer.id);
+    //evaluateProductActivity(listing.product.id);
+    //evaluateVersionActivity(listing.version.id);
   }, [listing]);
 
   const goToApi = () => {
@@ -167,7 +202,7 @@ function ChplListingHistory(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Button
         id="view-listing-history"
         aria-label="Open Listing History dialog"
@@ -249,7 +284,7 @@ function ChplListingHistory(props) {
           </Box>
         </DialogActions>
       </Dialog>
-    </ThemeProvider>
+    </>
   );
 }
 
