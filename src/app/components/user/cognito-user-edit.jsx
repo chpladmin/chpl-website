@@ -10,21 +10,19 @@ import {
   CardContent,
   FormControlLabel,
   Switch,
-  ThemeProvider,
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
-import { ChplActionBar } from '../action-bar';
+import { ChplTextField } from 'components/util';
+import { ChplActionBar } from 'components/action-bar';
 import {
   user as userPropType,
-} from '../../shared/prop-types';
+} from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '16px',
@@ -35,7 +33,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '8px',
   },
-}));
+});
 
 const phoneRegExp = /^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}$/;
 
@@ -96,62 +94,60 @@ function ChplCognitoUserEdit(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Card>
-        <CardHeader
-          title="Edit User"
-          subheader={user.email}
-        />
-        <CardContent className={classes.content}>
-          <div className={classes.dataEntry}>
-            <Typography variant="body1">User Information</Typography>
-            <ChplTextField
-              id="full-name"
-              name="fullName"
-              label="Full Name"
-              required
-              value={formik.values.fullName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.fullName && !!formik.errors.fullName}
-              helperText={formik.touched.fullName && formik.errors.fullName}
-            />
-            <ChplTextField
-              id="phone-number"
-              name="phoneNumber"
-              label="Phone Number"
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-              helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-            />
-          </div>
-          <div className={classes.dataEntry}>
-            <Typography variant="body1">Settings</Typography>
-            <div>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="account-enabled"
-                    name="accountEnabled"
-                    color="primary"
-                    checked={formik.values.accountEnabled}
-                    onChange={formik.handleChange}
-                  />
-                  )}
-                label="Account Enabled"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        errors={props.errors}
-        isDisabled={!formik.isValid}
+    <Card>
+      <CardHeader
+        title="Edit User"
+        subheader={user.email}
       />
-    </ThemeProvider>
+      <CardContent className={classes.content}>
+        <div className={classes.dataEntry}>
+          <Typography variant="body1">User Information</Typography>
+          <ChplTextField
+            id="full-name"
+            name="fullName"
+            label="Full Name"
+            required
+            value={formik.values.fullName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.fullName && !!formik.errors.fullName}
+            helperText={formik.touched.fullName && formik.errors.fullName}
+          />
+          <ChplTextField
+            id="phone-number"
+            name="phoneNumber"
+            label="Phone Number"
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          />
+        </div>
+        <div className={classes.dataEntry}>
+          <Typography variant="body1">Settings</Typography>
+          <div>
+            <FormControlLabel
+              control={(
+                <Switch
+                  id="account-enabled"
+                  name="accountEnabled"
+                  color="primary"
+                  checked={formik.values.accountEnabled}
+                  onChange={formik.handleChange}
+                />
+                )}
+              label="Account Enabled"
+            />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+    <ChplActionBar
+      dispatch={handleDispatch}
+      errors={props.errors}
+      isDisabled={!formik.isValid}
+    />
   );
 }
 

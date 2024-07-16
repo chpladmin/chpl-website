@@ -17,7 +17,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { ChplTooltip } from '../util';
+import { ChplTooltip } from 'components/util';
 import theme from 'themes/theme';
 import {
   user as userPropType,

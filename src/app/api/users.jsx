@@ -33,8 +33,8 @@ const usePutCognitoUser = () => {
 };
 
 export {
-  usePutUser, // eslint-disable-line import/prefer-default-export
-  usePutCognitoUser, // eslint-disable-line import/prefer-default-export
   usePostCreateCognitoInvitedUser,
   usePostCreateInvitedUser,
+  usePutCognitoUser,
+  usePutUser,
 };

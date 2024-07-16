@@ -171,7 +171,8 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } if (userToDisplay.userId) {
+    } 
+    if (userToDisplay.userId) {
       return (
         <ChplUserView
           key={userToDisplay.userId}
@@ -192,7 +193,8 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } if (userToEdit.userId) {
+    } 
+    if (userToEdit.userId) {
       return (
         <ChplUserEdit
           user={userToEdit}
