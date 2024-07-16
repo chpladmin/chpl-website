@@ -38,12 +38,10 @@ xdescribe('the ChplUserCreate component', () => {
           'create',
           {
             email: 'email@sample.com',
-            friendlyName: '',
             fullName: 'full name',
             password: 'hopefullyThisIsAValidPassword654',
             passwordVerify: 'hopefullyThisIsAValidPassword654',
             phoneNumber: '',
-            title: '',
           },
         );
       });
