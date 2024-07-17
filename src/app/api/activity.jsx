@@ -26,6 +26,19 @@ const useFetchActivity = ({ id, isEnabled }) => {
   });
 };
 
+const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
+  const axios = useAxios();
+  return useQueries(developers.map((d) => ({
+    ...options.daily,
+    queryKey: ['activity/metadata/developers', d.id, d.end],
+    queryFn: async () => {
+      const response = await axios.get(`activity/metadata/developers/${d.id}?end=${d.end}`);
+      return response.data;
+    },
+    enabled: enabled && !!developers,
+  })));
+};
+
 const useFetchFunctionalitiesTestedActivity = ({ isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/functionalities-tested'], async () => {
@@ -71,6 +84,7 @@ const useFetchSvapsActivity = ({ isEnabled }) => {
 export {
   useFetchActivities,
   useFetchActivity,
+  useFetchDeveloperActivitiesMetadata,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,
   useFetchStandardsActivity,

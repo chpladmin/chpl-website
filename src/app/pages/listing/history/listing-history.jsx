@@ -26,6 +26,7 @@ import {
 
 import {
   useFetchActivities,
+  useFetchDeveloperActivitiesMetadata,
   useFetchListingActivityMetadata,
 } from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
@@ -40,8 +41,10 @@ function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
   const [evaluated, setEvaluated] = useState([]);
   const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
-  const [listingActivityIds, setListingActivityIds] = useState([]);
   const [open, setOpen] = useState(false);
+
+  /* listing activity */
+  const [listingActivityIds, setListingActivityIds] = useState([]);
   const fetchListingActivities = useFetchActivities({
     ids: listingActivityIds,
     enabled: open,
@@ -71,28 +74,55 @@ function ChplListingHistory(props) {
     setListingActivityIds(fetchListingActivityMetadata.data.map((a) => a.id));
   }, [fetchListingActivityMetadata.data, fetchListingActivityMetadata.isError, fetchListingActivityMetadata.isLoading]);
 
-  const interpretedDevelopers = new Set();
-  const evaluateDeveloperActivity = (id, end = Date.now()) => {
-    if (!interpretedDevelopers.has(id)) {
-      networkService.getSingleDeveloperActivityMetadata(id, { end }).then((metadata) => {
-        interpretedDevelopers.add(id);
-        metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          const { interpreted, merged, split } = interpretDeveloper(response);
-          if (interpreted.change.length > 0) {
-            setActivity((prev) => [
-              ...prev,
-              interpreted,
-            ]);
-          }
-          merged.forEach((next) => evaluateDeveloperActivity(next));
-          if (split?.id) {
-            evaluateDeveloperActivity(split.id, split.end);
-          }
-        }));
-      });
-    }
-  };
+  /* developer activity */
+  const [developers, setDevelopers] = useState([{ id: listing.developer.id, end: Date.now()}]);
+  const [developerActivityIds, setDeveloperActivityIds] = useState([]);
+  const [evaluatedDevelopers, setEvaluatedDevelopers] = useState([]);
+  const fetchDeveloperActivities = useFetchActivities({
+    ids: developerActivityIds,
+    enabled: open,
+  });
+  const fetchDeveloperActivitiesMetadata = useFetchDeveloperActivitiesMetadata({
+    developers: developers,
+    enabled: open,
+  });
 
+  useEffect(() => {
+    fetchDeveloperActivities.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluated.includes(f.data.id)) { return; }
+      const { interpreted, merged, split } = interpretDeveloper(f.data);
+      if (interpreted.change.length > 0) {
+        setActivity((prev) => [
+          ...prev,
+          interpreted,
+        ]);
+      }
+      setDevelopers((prev) => [
+        ...prev,
+        merged.map((d) => ({ id: d, end: Date.now })),
+      ]);
+      if (split?.id) {
+        setDevelopers((prev) => [
+          ...prev,
+          { id: split.id, end: split.end },
+        ]);
+      }
+      setEvaluated((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchDeveloperActivities]);
+
+  useEffect(() => {
+    fetchDeveloperActivitiesMetadata.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluatedDevelopers.includes(f.data.id)) { return; }
+      setDeveloperActivityIds((prev) => [
+        ...prev,
+        ...f.data.map((d) => d.id),
+      ]);
+      setEvaluatedDevelopers((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchDeveloperActivitiesMetadata]);
+
+  /* product activity */
   const interpretedProducts = new Set();
   const evaluateProductActivity = (id, end = Date.now()) => {
     if (!interpretedProducts.has(id)) {
@@ -109,7 +139,7 @@ function ChplListingHistory(props) {
             ]);
           }
           merged.forEach((next) => evaluateProductActivity(next));
-          ownerChanges.forEach((owner) => evaluateDeveloperActivity(owner.developer.id, toTimestamp(owner.transferDay)));
+          // TODO ownerChanges.forEach((owner) => evaluateDeveloperActivity(owner.developer.id, toTimestamp(owner.transferDay)));
           if (split?.id) {
             evaluateProductActivity(split.id, split.end);
           }
@@ -146,7 +176,6 @@ function ChplListingHistory(props) {
       ...interpretCertificationStatusChanges(listing),
       ...interpretPIHistory(listing, DateUtil),
     ]);
-    evaluateDeveloperActivity(listing.developer.id);
     evaluateProductActivity(listing.product.id);
     evaluateVersionActivity(listing.version.id);
   }, [listing]);
