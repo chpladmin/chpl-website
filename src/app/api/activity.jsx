@@ -61,6 +61,19 @@ const useFetchListingActivityMetadata = ({ id, enabled }) => {
   });
 };
 
+const useFetchProductActivitiesMetadata = ({ products, enabled }) => {
+  const axios = useAxios();
+  return useQueries(products.map((d) => ({
+    ...options.daily,
+    queryKey: ['activity/metadata/products', d.id, d.end],
+    queryFn: async () => {
+      const response = await axios.get(`activity/metadata/products/${d.id}?end=${d.end}`);
+      return response.data;
+    },
+    enabled: enabled && !!products,
+  })));
+};
+
 const useFetchStandardsActivity = ({ isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/standards'], async () => {
@@ -87,6 +100,7 @@ export {
   useFetchDeveloperActivitiesMetadata,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,
+  useFetchProductActivitiesMetadata,
   useFetchStandardsActivity,
   useFetchSvapsActivity,
 };

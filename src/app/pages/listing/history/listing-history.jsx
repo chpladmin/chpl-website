@@ -28,6 +28,7 @@ import {
   useFetchActivities,
   useFetchDeveloperActivitiesMetadata,
   useFetchListingActivityMetadata,
+  useFetchProductActivitiesMetadata,
 } from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -75,7 +76,7 @@ function ChplListingHistory(props) {
   }, [fetchListingActivityMetadata.data, fetchListingActivityMetadata.isError, fetchListingActivityMetadata.isLoading]);
 
   /* developer activity */
-  const [developers, setDevelopers] = useState([{ id: listing.developer.id, end: Date.now()}]);
+  const [developers, setDevelopers] = useState([{ id: listing.developer.id, end: Date.now() }]);
   const [developerActivityIds, setDeveloperActivityIds] = useState([]);
   const [evaluatedDevelopers, setEvaluatedDevelopers] = useState([]);
   const fetchDeveloperActivities = useFetchActivities({
@@ -83,7 +84,7 @@ function ChplListingHistory(props) {
     enabled: open,
   });
   const fetchDeveloperActivitiesMetadata = useFetchDeveloperActivitiesMetadata({
-    developers: developers,
+    developers,
     enabled: open,
   });
 
@@ -97,10 +98,12 @@ function ChplListingHistory(props) {
           interpreted,
         ]);
       }
-      setDevelopers((prev) => [
-        ...prev,
-        merged.map((d) => ({ id: d, end: Date.now })),
-      ]);
+      if (merged.length > 0) {
+        setDevelopers((prev) => [
+          ...prev,
+          ...merged.map((d) => ({ id: d, end: Date.now() })),
+        ]);
+      }
       if (split?.id) {
         setDevelopers((prev) => [
           ...prev,
@@ -123,31 +126,62 @@ function ChplListingHistory(props) {
   }, [fetchDeveloperActivitiesMetadata]);
 
   /* product activity */
-  const interpretedProducts = new Set();
-  const evaluateProductActivity = (id, end = Date.now()) => {
-    if (!interpretedProducts.has(id)) {
-      networkService.getSingleProductActivityMetadata(id, { end }).then((metadata) => {
-        interpretedProducts.add(id);
-        metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          const {
-            interpreted, merged, ownerChanges, split,
-          } = interpretProduct(response);
-          if (interpreted.change.length > 0) {
-            setActivity((prev) => [
-              ...prev,
-              interpreted,
-            ]);
-          }
-          merged.forEach((next) => evaluateProductActivity(next));
-          // TODO ownerChanges.forEach((owner) => evaluateDeveloperActivity(owner.developer.id, toTimestamp(owner.transferDay)));
-          if (split?.id) {
-            evaluateProductActivity(split.id, split.end);
-          }
-        }));
-      });
-    }
-  };
+  const [products, setProducts] = useState([{ id: listing.product.id, end: Date.now() }]);
+  const [productActivityIds, setProductActivityIds] = useState([]);
+  const [evaluatedProducts, setEvaluatedProducts] = useState([]);
+  const fetchProductActivities = useFetchActivities({
+    ids: productActivityIds,
+    enabled: open,
+  });
+  const fetchProductActivitiesMetadata = useFetchProductActivitiesMetadata({
+    products,
+    enabled: open,
+  });
 
+  useEffect(() => {
+    fetchProductActivities.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluated.includes(f.data.id)) { return; }
+      const { interpreted, merged, ownerChanges, split } = interpretProduct(f.data); // eslint-disable-line object-curly-newline
+      if (interpreted.change.length > 0) {
+        setActivity((prev) => [
+          ...prev,
+          interpreted,
+        ]);
+      }
+      if (merged.length > 0) {
+        setProducts((prev) => [
+          ...prev,
+          ...merged.map((p) => ({ id: p, end: Date.now() })),
+        ]);
+      }
+      if (ownerChanges.length > 0) {
+        setDevelopers((prev) => [
+          ...prev,
+          ...ownerChanges.map((o) => ({ id: o.developer.id, end: toTimestamp(o.transferDay) })),
+        ]);
+      }
+      if (split?.id) {
+        setProducts((prev) => [
+          ...prev,
+          { id: split.id, end: split.end },
+        ]);
+      }
+      setEvaluated((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchProductActivities]);
+
+  useEffect(() => {
+    fetchProductActivitiesMetadata.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluatedProducts.includes(f.data.id)) { return; }
+      setProductActivityIds((prev) => [
+        ...prev,
+        ...f.data.map((p) => p.id),
+      ]);
+      setEvaluatedProducts((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchProductActivitiesMetadata]);
+
+  /* version activity */
   const interpretedVersions = new Set();
   const evaluateVersionActivity = (id, end = Date.now()) => {
     if (!interpretedVersions.has(id)) {
@@ -176,7 +210,6 @@ function ChplListingHistory(props) {
       ...interpretCertificationStatusChanges(listing),
       ...interpretPIHistory(listing, DateUtil),
     ]);
-    evaluateProductActivity(listing.product.id);
     evaluateVersionActivity(listing.version.id);
   }, [listing]);
 
