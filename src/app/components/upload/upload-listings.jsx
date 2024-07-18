@@ -72,7 +72,28 @@ function ChplUploadListings() {
     setFile(event.target.files[0]);
     setEle(event.target);
   };
-
+  const UploadListing = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'Upload', {
+        event_category: 'Administrative',
+        event_label: 'Listing Upload',
+      })
+    }
+  }
+  const RemoveListing = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'Remove Upload', {
+        event_category: 'Administrative',
+      })
+    }
+  }
+  const SubmitListing = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'Submit Upload', {
+        event_category: 'Administrative',
+      })
+    }
+  }
   const uploadFile = () => {
     const item = {
       url: `${API}/listings/upload`,
@@ -143,6 +164,7 @@ function ChplUploadListings() {
                 type="file"
                 id="upload-file-selector"
                 onChange={onFileChange}
+                onClick={UploadListing}
                 style={{ display: 'none' }}
               />
             </Button>
@@ -172,6 +194,7 @@ function ChplUploadListings() {
                         color="primary"
                         variant="contained"
                         onClick={uploadFile}
+                        onClickCapture={SubmitListing}
                         endIcon={<DoneIcon />}
                         id="submit-upload-file"
                       >
@@ -181,6 +204,7 @@ function ChplUploadListings() {
                         className={classes.deleteButton}
                         variant="contained"
                         onClick={clearFile}
+                        onClickCapture={RemoveListing}
                         endIcon={<DeleteIcon />}
                         id="clear-upload-file"
                       >
