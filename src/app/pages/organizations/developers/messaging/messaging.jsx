@@ -170,8 +170,15 @@ function ChplMessaging({ dispatch }) {
         enqueueSnackbar('Message preview has been queued. Please check your email to verify formatting', { variant: 'success' });
       },
       onError: (error) => {
-        const body = `An error occurred: ${error.response?.data?.error}`;
-        enqueueSnackbar(body, { variant: 'error' });
+        let body = '';
+        if (error.response?.data?.error) {
+          body = `An error occurred: ${error.response.data.error}`;
+        } else if (error.response?.data?.errorMessages) {
+          body = error.response.data.errorMessages.join(', ');
+        }
+        if (body.length > 0) {
+          enqueueSnackbar(body, { variant: 'error' });
+        }
       },
     });
   };
