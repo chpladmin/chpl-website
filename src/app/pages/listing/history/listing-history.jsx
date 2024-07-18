@@ -29,6 +29,7 @@ import {
   useFetchDeveloperActivitiesMetadata,
   useFetchListingActivityMetadata,
   useFetchProductActivitiesMetadata,
+  useFetchVersionActivitiesMetadata,
 } from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -37,7 +38,6 @@ import { UserContext } from 'shared/contexts';
 
 function ChplListingHistory(props) {
   const DateUtil = getAngularService('DateUtil');
-  const networkService = getAngularService('networkService');
   const { hasAnyRole } = useContext(UserContext);
   const [activity, setActivity] = useState([]);
   const [evaluated, setEvaluated] = useState([]);
@@ -182,27 +182,54 @@ function ChplListingHistory(props) {
   }, [fetchProductActivitiesMetadata]);
 
   /* version activity */
-  const interpretedVersions = new Set();
-  const evaluateVersionActivity = (id, end = Date.now()) => {
-    if (!interpretedVersions.has(id)) {
-      networkService.getSingleVersionActivityMetadata(id, { end }).then((metadata) => {
-        interpretedVersions.add(id);
-        metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          const { interpreted, merged, split } = interpretVersion(response);
-          if (interpreted.change.length > 0) {
-            setActivity((prev) => [
-              ...prev,
-              interpreted,
-            ]);
-          }
-          merged.forEach((next) => evaluateVersionActivity(next));
-          if (split?.id) {
-            evaluateVersionActivity(split.id, split.end);
-          }
-        }));
-      });
-    }
-  };
+  const [versions, setVersions] = useState([{ id: listing.version.id, end: Date.now() }]);
+  const [versionActivityIds, setVersionActivityIds] = useState([]);
+  const [evaluatedVersions, setEvaluatedVersions] = useState([]);
+  const fetchVersionActivities = useFetchActivities({
+    ids: versionActivityIds,
+    enabled: open,
+  });
+  const fetchVersionActivitiesMetadata = useFetchVersionActivitiesMetadata({
+    versions,
+    enabled: open,
+  });
+
+  useEffect(() => {
+    fetchVersionActivities.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluated.includes(f.data.id)) { return; }
+      const { interpreted, merged, split } = interpretVersion(f.data);
+      if (interpreted.change.length > 0) {
+        setActivity((prev) => [
+          ...prev,
+          interpreted,
+        ]);
+      }
+      if (merged.length > 0) {
+        setVersions((prev) => [
+          ...prev,
+          ...merged.map((v) => ({ id: v, end: Date.now() })),
+        ]);
+      }
+      if (split?.id) {
+        setVersions((prev) => [
+          ...prev,
+          { id: split.id, end: split.end },
+        ]);
+      }
+      setEvaluated((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchVersionActivities]);
+
+  useEffect(() => {
+    fetchVersionActivitiesMetadata.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data || evaluatedVersions.includes(f.data.id)) { return; }
+      setVersionActivityIds((prev) => [
+        ...prev,
+        ...f.data.map((v) => v.id),
+      ]);
+      setEvaluatedVersions((prev) => [...prev, f.data.id]);
+    });
+  }, [fetchVersionActivitiesMetadata]);
 
   useEffect(() => {
     setActivity((prev) => [
@@ -210,7 +237,6 @@ function ChplListingHistory(props) {
       ...interpretCertificationStatusChanges(listing),
       ...interpretPIHistory(listing, DateUtil),
     ]);
-    evaluateVersionActivity(listing.version.id);
   }, [listing]);
 
   const handleClickOpen = () => {

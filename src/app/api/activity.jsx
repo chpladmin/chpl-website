@@ -63,11 +63,11 @@ const useFetchListingActivityMetadata = ({ id, enabled }) => {
 
 const useFetchProductActivitiesMetadata = ({ products, enabled }) => {
   const axios = useAxios();
-  return useQueries(products.map((d) => ({
+  return useQueries(products.map((p) => ({
     ...options.daily,
-    queryKey: ['activity/metadata/products', d.id, d.end],
+    queryKey: ['activity/metadata/products', p.id, p.end],
     queryFn: async () => {
-      const response = await axios.get(`activity/metadata/products/${d.id}?end=${d.end}`);
+      const response = await axios.get(`activity/metadata/products/${p.id}?end=${p.end}`);
       return response.data;
     },
     enabled: enabled && !!products,
@@ -94,6 +94,19 @@ const useFetchSvapsActivity = ({ isEnabled }) => {
   });
 };
 
+const useFetchVersionActivitiesMetadata = ({ versions, enabled }) => {
+  const axios = useAxios();
+  return useQueries(versions.map((v) => ({
+    ...options.daily,
+    queryKey: ['activity/metadata/versions', v.id, v.end],
+    queryFn: async () => {
+      const response = await axios.get(`activity/metadata/versions/${v.id}?end=${v.end}`);
+      return response.data;
+    },
+    enabled: enabled && !!versions,
+  })));
+};
+
 export {
   useFetchActivities,
   useFetchActivity,
@@ -103,4 +116,5 @@ export {
   useFetchProductActivitiesMetadata,
   useFetchStandardsActivity,
   useFetchSvapsActivity,
+  useFetchVersionActivitiesMetadata,
 };
