@@ -14,8 +14,8 @@ export const ChartsComponent = {
       this.chartState = {
         tab: 'product',
       };
-      this.loadCriterionProductCountChart();
       this.loadNonconformityCountChart();
+      this.loadUniquProductsReportUrl();
     }
 
     changeTab (target) {
@@ -30,10 +30,10 @@ export const ChartsComponent = {
     }
 
     ////////////////////////////////////////////////////////////////////
-
-    loadCriterionProductCountChart () {
+    loadUniquProductsReportUrl () {
       let that = this;
-      this.networkService.getCriterionProductStatistics().then(data => that.criterionProduct = data);
+      this.networkService.getReportUrl('UniqueProducts').then(data => that.uniqueProductsReportUrl = data.reportUrl);
+
     }
 
     loadNonconformityCountChart () {
