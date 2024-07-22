@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { bool, func, string } from 'prop-types';
-import ReactGA from 'react-ga4';
 
 import ChplOncOrganizationEdit from './onc-organization-edit';
 import ChplOncOrganizationView from './onc-organization-view';
@@ -48,11 +47,13 @@ function ChplOncOrganization(props) {
           onSuccess: () => {
             setIsEditing(false);
             setIsProcessing(false);
-            ReactGA.event('Save', {
-              category: 'ONC Organizations',
-              label: organization.name,
-              group: hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb'),
-            });
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'Save', {
+                event_category: 'ONC Organizations',
+                event_label: 'organization.name',
+                group: hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb'),
+              });
+            }
             dispatch('edit', '');
           },
           onError: (error) => {

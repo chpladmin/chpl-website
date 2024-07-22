@@ -11,7 +11,6 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import AddIcon from '@material-ui/icons/Add';
-import ReactGA from 'react-ga4';
 import { useSnackbar } from 'notistack';
 
 import {
@@ -114,12 +113,13 @@ function ChplOncOrganizations() {
     setActiveId(next?.id);
     const category = `ONC-${target.acbCode ? 'ACB' : 'ATL'} Organization`;
     const group = hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb');
-    ReactGA.event(`Go to ${category}`,
-      {
-        category: 'Navigation',
-        label: target.name,
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', `Go to ${category}`, {
+        event_category: 'ONC Organizations',
+        event_label: target.name,
         group,
       });
+    }
     setIsCreating(false);
     setIsEditing('');
     if (!next) {
@@ -253,7 +253,7 @@ function ChplOncOrganizations() {
                       id="create-new-organization"
                     >
                       Create
-                  </Button>
+                    </Button>
                   </CardActions>
                 )}
             </Card>
