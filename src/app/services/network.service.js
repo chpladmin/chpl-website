@@ -38,14 +38,6 @@ export default class NetworkService {
     return this.apiPOST('/complaints', complaint);
   }
 
-  createInvitedUser(contactDetails) {
-    return this.apiPOST('/users/create', contactDetails);
-  }
-
-  createInvitedCognitoUser(contactDetails) {
-    return this.apiPOST('/cognito/users/create', contactDetails);
-  }
-
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
@@ -221,10 +213,6 @@ export default class NetworkService {
     return this.apiGET('/conformance-methods');
   }
 
-  getCriterionProductStatistics() {
-    return this.apiGET('/statistics/criterion_product');
-  }
-
   getDeveloper(id) {
     return this.apiGET(`/developers/${id}`);
   }
@@ -329,6 +317,10 @@ export default class NetworkService {
 
   getRelevantListings(reportId) {
     return this.apiGET(`/surveillance-report/quarterly/${reportId}/listings`);
+  }
+
+  getReportUrl(reportName) {
+    return this.apiGET(`/report-data/${reportName}/url`);
   }
 
   getSearchOptions() {

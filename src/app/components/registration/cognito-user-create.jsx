@@ -1,13 +1,11 @@
-import React, { useContext, useState } from 'react';
-import {
-  func,
-} from 'prop-types';
+import React from 'react';
 import {
   Button,
   Paper,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -21,7 +19,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const phoneRegExp = /\(?\d{3}\)?-? *\d{3}-? *-?\d{4}/;
+const phoneRegExp = /^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}$/;
 
 const validationSchema = yup.object({
   fullName: yup.string()
@@ -34,29 +32,22 @@ const validationSchema = yup.object({
     .matches(phoneRegExp, 'Phone number is not valid'),
 });
 
-function ChplCognitoUserCreate(props) {
+function ChplCognitoUserCreate({ dispatch }) {
   const classes = useStyles();
-  
   let formik;
 
   const create = () => {
     const user = {
       email: formik.values.email,
-      friendlyName: formik.values.friendlyName,
       fullName: formik.values.fullName,
-      password: formik.values.newPassword,
-      passwordVerify: formik.values.verificationPassword,
       phoneNumber: formik.values.phoneNumber,
-      title: formik.values.title,
     };
-    props.dispatch('cognito-create', user);
+    dispatch('cognito-create', user);
   };
 
   formik = useFormik({
     initialValues: {
       fullName: '',
-      friendlyName: '',
-      title: '',
       phoneNumber: '',
       email: '',
     },
@@ -64,17 +55,15 @@ function ChplCognitoUserCreate(props) {
       create();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
     <Paper className={classes.content}>
       <Typography>
-        Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the ‘create account’ button below.
+        Welcome to ONC&apos;s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization&apos;s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the &quot;create account&quot; button below.
       </Typography>
       <Typography>
-        Create a new account.
+        Create a new Cognito account.
       </Typography>
       <ChplTextField
         id="full-name"
@@ -88,29 +77,10 @@ function ChplCognitoUserCreate(props) {
         helperText={formik.touched.fullName && formik.errors.fullName}
       />
       <ChplTextField
-        id="friendly-name"
-        name="friendlyName"
-        label="Friendly Name"
-        value={formik.values.friendlyName}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-        helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-      />
-      <ChplTextField
-        id="title"
-        name="title"
-        label="Title"
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.title && !!formik.errors.title}
-        helperText={formik.touched.title && formik.errors.title}
-      />
-      <ChplTextField
         id="phone-number"
         name="phoneNumber"
         label="Phone Number"
+        type="tel"
         required
         value={formik.values.phoneNumber}
         onChange={formik.handleChange}
@@ -122,6 +92,7 @@ function ChplCognitoUserCreate(props) {
         id="email"
         name="email"
         label="Email"
+        type="email"
         required
         value={formik.values.email}
         onChange={formik.handleChange}
@@ -143,7 +114,7 @@ function ChplCognitoUserCreate(props) {
         {' '}
         <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
         {' '}
-        and select “Certified Health IT Product List (CHPL)” to submit a ticket.
+        and select &quot;Certified Health IT Product List (CHPL)&quot; to submit a ticket.
       </Typography>
     </Paper>
   );

@@ -8,7 +8,7 @@ import { directReview as directReviewPropType, surveillance as surveillancePropT
 
 const isIcs = (req) => {
   if (!req.requirementType) { return false; } // req created before ICS type existed
-  return req.requirementType.title === 'Inherited Certified Status';
+  return req.requirementType.requirementGroupType.name === 'Inherited Certified Status';
 };
 
 function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: initialSurveillance }) {

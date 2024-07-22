@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -8,6 +9,11 @@ import {
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
+import {
+  usePostCreateCognitoInvitedUser,
+  usePostCreateInvitedUser,
+} from 'api/users';
+import ChplCognitoLogin from 'components/login/cognito-login';
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
@@ -24,11 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplRegisterUser(props) {
-  const { hash } = props;
-  const [message, setMessage] = useState('');
-  const [state, setState] = useState('signin');
-  const { enqueueSnackbar } = useSnackbar();
+function ChplRegisterUser({ hash }) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
@@ -36,44 +38,53 @@ function ChplRegisterUser(props) {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const toaster = getAngularService('toaster');
-  const { setUser } = useContext(UserContext);
-  const classes = useStyles();
-
-  let handleDispatch;
-
-  const { isOn } = useContext(FlagContext);
+  const { enqueueSnackbar } = useSnackbar();
+  const [invitationType, setInvitationType] = useState('');
+  const [message, setMessage] = useState('');
   const [ssoIsOn, setSsoIsOn] = useState(false);
+  const [state, setState] = useState('signin');
+  const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
+  const { mutate: createInvited } = usePostCreateInvitedUser();
+  const { setUser } = useContext(UserContext);
+  const { isOn } = useContext(FlagContext);
+  const classes = useStyles();
+  let handleDispatch;
 
   useEffect(() => {
     setSsoIsOn(isOn('sso'));
   }, [isOn]);
-  
+
   useEffect(() => {
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
       handleDispatch('authorize', {});
     }
   }, []);
 
-  handleDispatch = (action, data) => {
+  useEffect(() => {
+    const type = hash.indexOf('-') > -1 ? 'COGNITO' : 'CHPL';
+    setInvitationType(type);
+    if (type === 'COGNITO') {
+      setState('create');
+    }
+  }, [hash]);
+
+  handleDispatch = (action, payload) => {
     setMessage('');
     let packet;
     let userId;
     switch (action) {
       case 'authorize':
         packet = {
-          ...data,
-          userName: data.email,
+          ...payload,
+          userName: payload.email,
           hash,
         };
-        userId = data.email || authService.getUserId();
+        userId = payload.email || authService.getUserId();
         networkService.authorizeUser(packet, userId)
           .then(() => {
             $analytics.eventTrack('Log In To Your Account', { category: 'Authentication' });
-            toaster.pop({
-              type: 'success',
-              title: 'Success',
-              body: 'Your new permissions have been added',
+            enqueueSnackbar('Success: Your new permissions have been added', {
+              variant: 'success',
             });
             $state.go('administration');
             networkService.getUserById(authService.getUserId())
@@ -95,46 +106,63 @@ function ChplRegisterUser(props) {
       case 'cognito-create':
         packet = {
           hash,
-          user: data,
+          user: payload,
         };
-        networkService.createInvitedCognitoUser(packet)
-          .then(() => {
-            setMessage('Your account has been created.  A one-time password has been emailed to you.')
-            setState('success');
-          }, (error) => {
-            if (error.data.errorMessages) {
-              setMessage('You have the following errors: ' + error.data.errorMessages.join('; '));
-            } else if (error.data.error) {
-              enqueueSnackbar(error.data.error, {
-                variant: 'error',
-              })
+        createCognitoInvited(packet, {
+          onSuccess: () => {
+            $analytics.eventTrack('Create Account', { category: 'Authentication' });
+            setMessage('Your account has been created. Please check your email for your temporary password');
+            setState('cognito-login');
+          },
+          onError: (error) => {
+            if (error.response.data.errorMessages?.length > 0) {
+              setMessage(error.response.data.errorMessages[0]);
+            } else {
+              setMessage('An error occurred');
             }
-          });
-        break;  
+          },
+        });
+        break;
       case 'create':
         packet = {
           hash,
-          user: data,
+          user: payload,
         };
-        networkService.createInvitedUser(packet)
-          .then(() => {
+        createInvited(packet, {
+          onSuccess: () => {
             $analytics.eventTrack('Create Account', { category: 'Authentication' });
             setMessage('Your account has been created. Please check your email to confirm your account');
             setState('success');
-          }, (error) => {
+          },
+          onError: (error) => {
             if (error.data.errorMessages) {
               setMessage(error.data.errorMessages);
             } else if (error.data.error) {
               setMessage(error.data.error);
             }
-          });
+          },
+        });
         break;
-        // no default
+      case 'forceChangePassword':
+        setMessage('');
+        break;
+      case 'loggedIn':
+        setMessage('');
+        break;
+      default:
+        console.error(`No action matches ${action} with payload ${payload}`);
     }
   };
 
   const getState = () => {
     switch (state) {
+      case 'cognito-login':
+        return (
+          <>
+            <Typography>{ message }</Typography>
+            <ChplCognitoLogin dispatch={handleDispatch} />
+          </>
+        );
       case 'create':
         return (
           <>
@@ -146,25 +174,31 @@ function ChplRegisterUser(props) {
                 { message }
               </Typography>
               )}
-            { (ssoIsOn)
+            { ssoIsOn && invitationType === 'COGNITO'
               && (
                 <ChplCognitoUserCreate dispatch={handleDispatch} />
               )}
-            { (!ssoIsOn)
-              && (  
-                <ChplUserCreate dispatch={handleDispatch} />
+            { invitationType === 'CHPL'
+              && (
+                <>
+                  <ChplUserCreate dispatch={handleDispatch} />
+                  <Typography>
+                    Or
+                    {' '}
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => setState('signin')}
+                    >
+                      log in to your existing account
+                    </Button>
+                  </Typography>
+                </>
               )}
-            <Typography>
-              Or
-              {' '}
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={() => setState('signin')}
-              >
-                log in to your existing account
-              </Button>
-            </Typography>
+            { invitationType === ''
+              && (
+                <CircularProgress />
+              )}
           </>
         );
       case 'signin':
@@ -197,6 +231,7 @@ function ChplRegisterUser(props) {
           <Typography>{ message }</Typography>
         );
       default:
+        console.error(`No state matches ${state}`);
         return null;
     }
   };

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  func,
-} from 'prop-types';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import GroupIcon from '@material-ui/icons/Group';
-import {
   Button,
   ButtonGroup,
   Card,
@@ -17,15 +10,18 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import GroupIcon from '@material-ui/icons/Group';
+import { func } from 'prop-types';
 
-import { getAngularService } from '../../services/angular-react-helper';
-import { ChplTooltip } from '../util';
-import theme from '../../themes/theme';
-import {
-  user as userPropType,
-} from '../../shared/prop-types';
+import { ChplTooltip } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { user as userPropType } from 'shared/prop-types';
+import theme from 'themes/theme';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -39,26 +35,24 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateRows: '64px auto 50px',
   },
-}));
+});
 
-function ChplUserView(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [user, setUser] = useState({});
+function ChplUserView({ user: initialUser, dispatch }) {
   const DateUtil = getAngularService('DateUtil');
-  const canImpersonate = getAngularService('authService').canImpersonate(props.user);
+  const canImpersonate = getAngularService('authService').canImpersonate(initialUser);
+  const [user, setUser] = useState({});
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    setUser(props.user);
-  }, [props.user]); // eslint-disable-line react/destructuring-assignment
+    setUser(initialUser);
+  }, [initialUser]);
 
   const edit = () => {
-    props.dispatch('edit', user);
+    dispatch('edit', user);
   };
 
   const impersonate = () => {
-    props.dispatch('impersonate', user);
+    dispatch('impersonate', user);
   };
 
   return (
@@ -69,7 +63,6 @@ function ChplUserView(props) {
       >
         <CardHeader
           title={user.fullName}
-          subheader={user.friendlyName}
         />
         <CardContent className={classes.content}>
           <div>
@@ -78,14 +71,6 @@ function ChplUserView(props) {
               <br />
               {user.email}
             </Typography>
-            {user.title
-             && (
-               <Typography gutterBottom>
-                 <strong>Title:</strong>
-                 <br />
-                 {user.title}
-               </Typography>
-             )}
             {user.phoneNumber
              && (
                <Typography gutterBottom>
