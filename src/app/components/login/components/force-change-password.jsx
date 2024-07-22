@@ -143,7 +143,6 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           error={formik.touched.newPassword && !!formik.errors.newPassword}
           helperText={formik.touched.newPassword && formik.errors.newPassword}
         />
-        p
         {' '}
         <PasswordStrengthMeter
           value={strength}
