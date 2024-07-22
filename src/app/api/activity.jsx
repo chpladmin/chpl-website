@@ -33,7 +33,10 @@ const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
     queryKey: ['activity/metadata/developers', d.id, d.end],
     queryFn: async () => {
       const response = await axios.get(`activity/metadata/developers/${d.id}?end=${d.end}`);
-      return response.data;
+      return {
+        data: response.data,
+        id: d.id,
+      };
     },
     enabled: enabled && !!developers,
   })));
@@ -68,7 +71,10 @@ const useFetchProductActivitiesMetadata = ({ products, enabled }) => {
     queryKey: ['activity/metadata/products', p.id, p.end],
     queryFn: async () => {
       const response = await axios.get(`activity/metadata/products/${p.id}?end=${p.end}`);
-      return response.data;
+      return {
+        data: response.data,
+        id: p.id,
+      };
     },
     enabled: enabled && !!products,
   })));
@@ -101,7 +107,10 @@ const useFetchVersionActivitiesMetadata = ({ versions, enabled }) => {
     queryKey: ['activity/metadata/versions', v.id, v.end],
     queryFn: async () => {
       const response = await axios.get(`activity/metadata/versions/${v.id}?end=${v.end}`);
-      return response.data;
+      return {
+        data: response.data,
+        id: v.id,
+      };
     },
     enabled: enabled && !!versions,
   })));

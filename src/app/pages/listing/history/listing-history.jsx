@@ -119,7 +119,7 @@ function ChplListingHistory(props) {
       if (f.isLoading || f.isError || !f.data || evaluatedDevelopers.includes(f.data.id)) { return; }
       setDeveloperActivityIds((prev) => [
         ...prev,
-        ...f.data.map((d) => d.id),
+        ...f.data.data.map((d) => d.id),
       ]);
       setEvaluatedDevelopers((prev) => [...prev, f.data.id]);
     });
@@ -175,7 +175,7 @@ function ChplListingHistory(props) {
       if (f.isLoading || f.isError || !f.data || evaluatedProducts.includes(f.data.id)) { return; }
       setProductActivityIds((prev) => [
         ...prev,
-        ...f.data.map((p) => p.id),
+        ...f.data.data.map((p) => p.id),
       ]);
       setEvaluatedProducts((prev) => [...prev, f.data.id]);
     });
@@ -225,7 +225,7 @@ function ChplListingHistory(props) {
       if (f.isLoading || f.isError || !f.data || evaluatedVersions.includes(f.data.id)) { return; }
       setVersionActivityIds((prev) => [
         ...prev,
-        ...f.data.map((v) => v.id),
+        ...f.data.data.map((v) => v.id),
       ]);
       setEvaluatedVersions((prev) => [...prev, f.data.id]);
     });
