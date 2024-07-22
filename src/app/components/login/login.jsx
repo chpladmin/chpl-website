@@ -18,7 +18,6 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import ReactGA from 'react-ga4';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -173,7 +172,11 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         if (response.passwordUpdated) {
-          ReactGA.event({ action: 'Change Password', category: 'Authentication', label: 'test' });
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'Change Password', {
+              event_category: 'Authentication',
+            });
+          }
           setState('LOGGEDIN');
           changeFormik.resetForm();
           const body = 'Password successfully changed';
@@ -225,7 +228,11 @@ function ChplLogin({ dispatch }) {
             .then((data) => {
               setUser(data);
               signinFormik.resetForm();
-              ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'Log in', {
+                  event_category: 'Authentication',
+                });
+              }
               authService.saveCurrentUser(data);
               Idle.watch();
               Keepalive.ping();
@@ -238,7 +245,11 @@ function ChplLogin({ dispatch }) {
             .then((data) => {
               setUser(data);
               signinFormik.resetForm();
-              ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'Log in', {
+                  event_category: 'Authentication',
+                });
+              }
               authService.saveCurrentUser(data);
               Idle.watch();
               $rootScope.$broadcast('loggedIn');
@@ -268,7 +279,11 @@ function ChplLogin({ dispatch }) {
     setUser({});
     setState('SIGNIN');
     authService.logout();
-    ReactGA.event({ action: 'Log Out', category: 'Authentication', label: 'test' });
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'Log Out', {
+        event_category: 'Authentication',
+      });
+    }
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
   };
@@ -308,7 +323,11 @@ function ChplLogin({ dispatch }) {
   sendReset = () => {
     postEmailResetPassword.mutate({ email: sendResetFormik.values.email }, {
       onSuccess: () => {
-        ReactGA.event({ action: 'Send Reset Email', category: 'Authentication', label: 'test' });
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'Send Reset Email', {
+            event_category: 'Authentication',
+          });
+        }
         setState('SIGNIN');
         sendResetFormik.resetForm();
         const body = `Password email reset sent to ${sendResetFormik.values.email}; please check your email`;

@@ -15,7 +15,6 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import ReactGA from 'react-ga4';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -116,11 +115,15 @@ function ChplCognitoLogin({ dispatch }) {
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         signinFormik.resetForm();
-        ReactGA.event({ action: 'Log In', category: 'Authentication' });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
         dispatch('loggedIn');
         setState('LOGGEDIN');
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'Log In', {
+            event_category: 'Authentication',
+          });
+        }
       },
       onError: (error) => {
         console.error(error);
@@ -149,11 +152,15 @@ function ChplCognitoLogin({ dispatch }) {
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         signinFormik.resetForm();
-        ReactGA.event({ action: 'Log In', category: 'Authentication' });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
         dispatch('loggedIn');
         setState('LOGGEDIN');
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'Log In', {
+            event_category: 'Authentication',
+          });
+        }
       },
       onError: (error) => {
         if (error?.response?.status === 470) {
@@ -173,9 +180,13 @@ function ChplCognitoLogin({ dispatch }) {
     setUser({});
     setState('SIGNIN');
     authService.logout();
-    ReactGA.event({ action: 'Log Out', category: 'Authentication' });
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'Log Out', {
+        event_category: 'Authentication',
+      });
+    }
   };
 
   const submitChange = (e) => {
