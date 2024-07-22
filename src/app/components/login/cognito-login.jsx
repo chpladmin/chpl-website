@@ -8,11 +8,12 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 
 import ChplForceChangePassword from './components/force-change-password';
 import ChplForgotPassword from './components/forgot-password';
 import ChplLoggedIn from './components/logged-in';
+import ChplResetForgottenPassword from './components/reset-forgotten-password';
 import ChplSignin from './components/signin';
 
 const useStyles = makeStyles({
@@ -27,9 +28,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoLogin({ dispatch }) {
+function ChplCognitoLogin({ dispatch, initialState, uuid }) {
   const [sessionId, setSessionId] = useState('');
-  const [state, setState] = useState('SIGNIN');
+  const [state, setState] = useState(initialState);
   const [userName, setUserName] = useState('');
   const classes = useStyles();
 
@@ -78,6 +79,13 @@ function ChplCognitoLogin({ dispatch }) {
       return <ChplForgotPassword dispatch={handleDispatch} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn dispatch={handleDispatch} />;
+    case 'RESETFORGOTTENPASSWORD':
+      return (
+        <ChplResetForgottenPassword
+          dispatch={handleDispatch}
+          uuid={uuid}
+        />
+      );
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
     default:
@@ -113,8 +121,12 @@ export default ChplCognitoLogin;
 
 ChplCognitoLogin.propTypes = {
   dispatch: func,
+  initialState: string,
+  uuid: string,
 };
 
 ChplCognitoLogin.defaultProps = {
   dispatch: () => {},
+  initialState: 'SIGNIN',
+  uuid: '',
 };
