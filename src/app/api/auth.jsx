@@ -27,7 +27,7 @@ const usePostEmailResetPassword = () => {
 
 const usePostForgotPassword = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/forgot-password', data)
+  return useMutation(async (data) => axios.post('cognito/users/forgot-password/send-email', data)
     .then((response) => response?.data));
 };
 
@@ -54,6 +54,12 @@ const usePostResetPassword = () => {
     .then((response) => response.data));
 };
 
+const usePostSetForgottenPassword = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/forgot-password/set-password', data)
+    .then((response) => response?.data));
+};
+
 export {
   usePostChangePassword,
   usePostCognitoLogin,
@@ -62,4 +68,5 @@ export {
   usePostLogin,
   usePostNewPasswordRequired,
   usePostResetPassword,
+  usePostSetForgottenPassword,
 };
