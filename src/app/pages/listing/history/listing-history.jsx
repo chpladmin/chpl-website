@@ -32,12 +32,10 @@ import {
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { getDisplayDateFormat, toTimestamp } from 'services/date-util';
+import { getDisplayDateFormat, timestampToString, toTimestamp } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 
 function ChplListingHistory(props) {
-  const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole } = useContext(UserContext);
   const [activity, setActivity] = useState([]);
   const [evaluated, setEvaluated] = useState([]);
@@ -235,7 +233,7 @@ function ChplListingHistory(props) {
     setActivity((prev) => [
       ...prev,
       ...interpretCertificationStatusChanges(listing),
-      ...interpretPIHistory(listing, DateUtil),
+      ...interpretPIHistory(listing),
     ]);
   }, [listing]);
 
@@ -290,7 +288,7 @@ function ChplListingHistory(props) {
                       .map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>
-                            { item.eventDay ? getDisplayDateFormat(item.eventDay) : DateUtil.timestampToString(item.activityDate) }
+                            { item.eventDay ? getDisplayDateFormat(item.eventDay) : timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>
                             <ul className="list-unstyled">

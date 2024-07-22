@@ -2,6 +2,8 @@ import * as jsJoda from '@js-joda/core';
 
 import { briefLookup, compareListing } from './listings.service';
 
+import { getDisplayDateFormat, localDateToTimestamp } from 'services/date-util';
+
 const interpretActivity = (activity, canSeeHistory) => {
   const ret = {
     ...activity,
@@ -54,15 +56,15 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
     return e;
   });
 
-const interpretPIHistory = (listing, DateUtil) => listing.promotingInteroperabilityUserHistory
+const interpretPIHistory = (listing) => listing.promotingInteroperabilityUserHistory
   .sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1))
   .map((item, idx, arr) => {
     const title = 'Promoting Interoperability';
-    item.activityDate = DateUtil.localDateToTimestamp(item.userCountDate);
+    item.activityDate = localDateToTimestamp(item.userCountDate);
     if (idx > 0) {
-      item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
+      item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`];
     } else {
-      item.change = [`Estimated number of ${title} Users became ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
+      item.change = [`Estimated number of ${title} Users became ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`];
     }
     return item;
   });
