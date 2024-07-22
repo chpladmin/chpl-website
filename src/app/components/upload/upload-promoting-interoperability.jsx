@@ -62,6 +62,31 @@ const validationSchema = yup.object({
     .required('Enter the most accurate date for Promoting Interoperability Users associated with this upload, field required.'),
 });
 
+const UploadFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Upload', {
+      event_category: 'Administrative',
+      event_label: 'Promoting Interoperability Users',
+    })
+  }
+}
+const RemoveFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Remove Upload', {
+      event_category: 'Administrative',
+      event_label: 'Promoting Interoperability Users',
+    })
+  }
+}
+const SubmitFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Submit Upload', {
+      event_category: 'Administrative',
+      event_label: 'Promoting Interoperability Users',
+    })
+  }
+}
+
 function ChplUploadPromotingInteroperability() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -158,6 +183,7 @@ function ChplUploadPromotingInteroperability() {
               variant="outlined"
               component="label"
               endIcon={<CloudUploadOutlinedIcon />}
+              onClickCapture={UploadFile}
             >
               Choose file to upload
               <input
@@ -193,6 +219,7 @@ function ChplUploadPromotingInteroperability() {
                         color="primary"
                         variant="contained"
                         onClick={formik.handleSubmit}
+                        onClickCapture={SubmitFile}
                         endIcon={<DoneIcon />}
                         id="submit-upload-file"
                       >
@@ -202,6 +229,7 @@ function ChplUploadPromotingInteroperability() {
                         className={classes.deleteButton}
                         variant="contained"
                         onClick={clearFile}
+                        onClickCapture={RemoveFile}
                         endIcon={<DeleteIcon />}
                         id="clear-upload-file"
                       >

@@ -76,7 +76,7 @@ function ChplUploadListings() {
     if (typeof window.gtag === 'function') {
       window.gtag('event', 'Upload', {
         event_category: 'Administrative',
-        event_label: 'Listing Upload',
+        event_label: 'Certified Products',
       })
     }
   }
@@ -84,6 +84,7 @@ function ChplUploadListings() {
     if (typeof window.gtag === 'function') {
       window.gtag('event', 'Remove Upload', {
         event_category: 'Administrative',
+        event_label: 'Certified Products',
       })
     }
   }
@@ -91,6 +92,7 @@ function ChplUploadListings() {
     if (typeof window.gtag === 'function') {
       window.gtag('event', 'Submit Upload', {
         event_category: 'Administrative',
+        event_label: 'Certified Products',
       })
     }
   }

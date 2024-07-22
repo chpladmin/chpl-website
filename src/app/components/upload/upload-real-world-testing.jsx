@@ -54,6 +54,31 @@ const useStyles = makeStyles({
   },
 });
 
+const UploadFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Upload', {
+      event_category: 'Administrative',
+      event_label: 'Real World Testing',
+    })
+  }
+}
+const RemoveFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Remove Upload', {
+      event_category: 'Administrative',
+      event_label: 'Real World Testing',
+    })
+  }
+}
+const SubmitFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Submit Upload', {
+      event_category: 'Administrative',
+      event_label: 'Real World Testing',
+    })
+  }
+}
+
 function ChplUploadRealWorldTesting() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
@@ -113,6 +138,7 @@ function ChplUploadRealWorldTesting() {
             variant="outlined"
             component="label"
             endIcon={<CloudUploadOutlinedIcon />}
+            onClickCapture={UploadFile}
           >
             Choose file to upload
             <input
@@ -148,6 +174,7 @@ function ChplUploadRealWorldTesting() {
                       color="primary"
                       variant="contained"
                       onClick={uploadFile}
+                      onClickCapture={SubmitFile}
                       endIcon={<DoneIcon />}
                       id="submit-upload-file"
                     >
@@ -158,6 +185,7 @@ function ChplUploadRealWorldTesting() {
                       variant="contained"
                       onClick={clearFile}
                       endIcon={<DeleteIcon />}
+                      onClickCapture={RemoveFile}
                       id="clear-upload-file"
                     >
                       Remove

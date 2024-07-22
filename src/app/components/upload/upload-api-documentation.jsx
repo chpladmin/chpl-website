@@ -62,6 +62,31 @@ const validationSchema = yup.object({
     .required('Enter the most accurate date for API Documentation associated with this upload, field required.'),
 });
 
+const UploadFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Upload', {
+      event_category: 'Administrative',
+      event_label: 'Api Documentation',
+    })
+  }
+}
+const RemoveFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Remove Upload', {
+      event_category: 'Administrative',
+      event_label: 'Api Documentation',
+    })
+  }
+}
+const SubmitFile = () => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'Submit Upload', {
+      event_category: 'Administrative',
+      event_label: 'Api Documentation',
+    })
+  }
+}
+
 function ChplUploadApiDocumentation() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
@@ -151,6 +176,7 @@ function ChplUploadApiDocumentation() {
             variant="outlined"
             component="label"
             endIcon={<CloudUploadOutlinedIcon />}
+            onClickCapture={UploadFile}
           >
             Choose file to upload
             <input
@@ -185,7 +211,8 @@ function ChplUploadApiDocumentation() {
                     <Button
                       color="primary"
                       variant="contained"
-                      onClick={uploadFile}
+                      onClick={UploadFile}
+                      onClickCapture={SubmitFile}
                       endIcon={<DoneIcon />}
                       id="submit-upload-file"
                     >
@@ -195,6 +222,7 @@ function ChplUploadApiDocumentation() {
                       className={classes.deleteButton}
                       variant="contained"
                       onClick={clearFile}
+                      onClickCapture={RemoveFile}
                       endIcon={<DeleteIcon />}
                       id="clear-upload-file"
                     >
