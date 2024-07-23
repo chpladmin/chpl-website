@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 13.21.0
+_22 July 2024_
+
+### Features
+* Build "Unique products" report in PowerBI
+* Remove "Developer Status" during "split" activity
+
+---
+
 ## Version 13.20.0
 _8 July 2024_
 
