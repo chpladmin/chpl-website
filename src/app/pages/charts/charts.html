@@ -16,11 +16,9 @@
         </ul>
       </div>
     </div>
-    <div ng-if="$ctrl.chartState.tab === 'product' && $ctrl.criterionProduct">
-      <chpl-charts-product
-        criterion-product="$ctrl.criterionProduct"
-        ></chpl-charts-product>
-    </div>
+    <div ng-if="$ctrl.chartState.tab === 'product' && $ctrl.uniqueProductsReportUrl">
+      <chpl-charts-product unique-products-report-url="$ctrl.uniqueProductsReportUrl"></chpl-charts-product>
+    </div>  
     <div ng-if="$ctrl.chartState.tab === 'nonconformity' && $ctrl.nonconformityCriteriaCount">
       <chpl-charts-surveillance
         nonconformity-criteria-count="$ctrl.nonconformityCriteriaCount"
