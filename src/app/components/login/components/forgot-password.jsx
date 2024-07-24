@@ -58,10 +58,10 @@ function ChplForgotPassword({ dispatch }) {
     mutate({ userName: formik.values.email }, {
       onSuccess: () => {
         ReactGA.event({ action: 'Send Forgotten Password Email', category: 'Authentication', label: 'test' });
-        dispatch({ action: 'loggedOut' });
-        formik.resetForm();
         const body = `Forgotten password email sent to ${formik.values.email}; please check your email`;
         enqueueSnackbar(body, { variant: 'success' });
+        dispatch({ action: 'loggedOut' });
+        formik.resetForm();
       },
       onError: () => {
         const body = `Email could not be sent to ${formik.values.email}`;

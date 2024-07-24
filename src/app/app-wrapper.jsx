@@ -55,5 +55,5 @@ AppWrapper.propTypes = {
 };
 
 AppWrapper.defaultProps = {
-  showQueryTools: true,
+  showQueryTools: false,
 };

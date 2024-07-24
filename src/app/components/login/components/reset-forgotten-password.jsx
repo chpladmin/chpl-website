@@ -69,6 +69,8 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
       password: formik.values.newPassword,
     }, {
       onSuccess: () => {
+        const body = 'Password reset';
+        enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'loggedOut' });
       },
       onError: (error) => {

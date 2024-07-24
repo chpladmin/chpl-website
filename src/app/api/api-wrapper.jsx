@@ -32,5 +32,5 @@ ApiWrapper.propTypes = {
 };
 
 ApiWrapper.defaultProps = {
-  showQueryTools: true,
+  showQueryTools: false,
 };
