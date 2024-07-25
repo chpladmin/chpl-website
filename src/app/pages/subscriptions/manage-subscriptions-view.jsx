@@ -177,7 +177,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h3" component="h2">Subscriptions</Typography>
+        <Typography variant="h3" component="h1">Subscriptions</Typography>
         <Button
           color="primary"
           variant="outlined"
