@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import { NotificationsOutlined } from '@material-ui/icons';
 
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {
@@ -44,12 +45,14 @@ const useStyles = makeStyles({
     overflowWrap: 'anywhere',
   },
   pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
+    padding: '16px 32px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   pageBody: {
     display: 'grid',
-    gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
@@ -75,7 +78,7 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     overflowWrap: 'anywhere',
     [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
+      minWidth: '150px',
     },
   },
   tableContainer: {
@@ -174,16 +177,17 @@ function ChplManageSubscriptionsView({ analytics }) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">Subscriptions</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Typography variant="h3" component="h2">Subscriptions</Typography>
         <Button
           color="primary"
-          variant="contained"
+          variant="outlined"
           onClick={getDeliveredMessages}
+          endIcon={<NotificationsOutlined />}
         >
           Get Delivered Notifications
         </Button>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div className={classes.searchContainer}>
           <ChplFilterSearchTerm
             placeholder="Search by Subscriber Email or CHPL Product Number..."
