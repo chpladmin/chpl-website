@@ -20,9 +20,19 @@ function IndexWrapper() {
     const deregisterKeepalive = $rootScope.$on('Keepalive', () => {
       console.info('Keepalive');
       if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+        /*
         networkService.keepalive()
           .then((response) => {
             authService.saveToken(response.token);
+          });
+        */
+        console.log('Calling Cognito KeepAlive');
+        networkService.cognitoKeepalive()
+          .then((response) => {
+            console.log('Called Cognito KeepAlive');
+            console.log(response);
+            authService.saveToken(response.accessToken);
+            authService.saveRefreshToken(response.refreshToken);
           });
       } else {
         Idle.unwatch();

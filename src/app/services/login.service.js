@@ -19,6 +19,7 @@
       logout,
       parseJwt,
       saveCurrentUser,
+      saveRefreshToken,
       saveToken,
     };
     return service;
@@ -166,5 +167,10 @@
     function saveToken(token) {
       $localStorage.jwtToken = token;
     }
+
+    function saveRefreshToken(token) {
+      $localStorage.refreshToken = token;
+    }
+
   }
 }());

@@ -113,6 +113,7 @@ function ChplCognitoLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
+        authService.saveRefreshToken(response.refreshToken);
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         signinFormik.resetForm();
@@ -146,6 +147,7 @@ function ChplCognitoLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
+        authService.saveRefreshToken(response.refreshToken);
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         signinFormik.resetForm();

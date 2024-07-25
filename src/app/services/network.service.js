@@ -1,8 +1,9 @@
 export default class NetworkService {
-  constructor($http, $log, $q, $rootScope, API) {
+  constructor($http, $localStorage, $log, $q, $rootScope, API) {
     'ngInject';
 
     this.$http = $http;
+    this.$localStorage = $localStorage;
     this.$log = $log;
     this.$q = $q;
     this.$rootScope = $rootScope;
@@ -16,6 +17,10 @@ export default class NetworkService {
 
   authorizeUser(userAuthorization, userId) {
     return this.apiPOST(`/users/${userId}/authorize`, userAuthorization);
+  }
+
+  cognitoKeepalive() {
+    return this.apiGET(`/cognito/users/keep-alive?token=${this.$localStorage.refreshToken}`, { ignoreLoadingBar: true });
   }
 
   confirmApiKey(hash) {
