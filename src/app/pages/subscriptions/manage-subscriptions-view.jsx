@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   List,
   ListItem,
   Paper,
@@ -12,8 +13,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
-import { useFetchAllSubscriptions } from 'api/subscriptions';
+import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {
   ChplLink,
   ChplPagination,
@@ -108,6 +110,7 @@ const useStyles = makeStyles({
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const $analytics = getAngularService('$analytics');
+  const { enqueueSnackbar } = useSnackbar();
   const [headers] = useState(initialHeaders);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -115,6 +118,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const [subscriptions, setSubscriptions] = useState([]);
+  const { mutate } = usePostGetDeliveredNotifications();
   const classes = useStyles();
 
   const filterContext = useFilterContext();
@@ -150,6 +154,20 @@ function ChplManageSubscriptionsView({ analytics }) {
     setSortDescending(orderDirection === 'desc');
   };
 
+  const getDeliveredMessages = () => {
+    mutate({}, {
+      onSuccess: () => {
+        const body = 'Please check your email for the report';
+        enqueueSnackbar(body, { variant: 'success' });
+      },
+      onError: (error) => {
+        console.error(error);
+        const body = 'Error. Please check your credentials or contact the administrator';
+        enqueueSnackbar(body, { variant: 'error' });
+      },
+    });
+  };
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
@@ -159,6 +177,13 @@ function ChplManageSubscriptionsView({ analytics }) {
         <Typography variant="h1">Subscriptions</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={getDeliveredMessages}
+        >
+          Get Delivered Notifications
+        </Button>
         <div className={classes.searchContainer}>
           <ChplFilterSearchTerm
             placeholder="Search by Subscriber Email or CHPL Product Number..."
