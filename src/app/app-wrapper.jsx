@@ -1,3 +1,5 @@
+/* global DEVELOPER_MODE */
+
 import React from 'react';
 import { bool, node } from 'prop-types';
 import ReactGA from 'react-ga4';
@@ -55,5 +57,5 @@ AppWrapper.propTypes = {
 };
 
 AppWrapper.defaultProps = {
-  showQueryTools: true,
+  showQueryTools: DEVELOPER_MODE,
 };
