@@ -94,7 +94,7 @@ const ProductEditComponent = {
       if (this.product) {
         this.product.ownerHistory.forEach((o, idx, arr) => {
           if (idx > 0) {
-            if (arr[idx].developer.name === arr[idx - 1].developer.name) {
+            if (arr[idx].developer.id === arr[idx - 1].developer.id) {
               messages.push(`Product cannot transfer from Developer "${arr[idx].developer.name}" to the same Developer`);
             }
             if (arr[idx].transferDay === arr[idx - 1].transferDay) {
