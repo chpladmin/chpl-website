@@ -310,6 +310,47 @@ const ListingDetailsEditComponent = {
       this.update();
     }
 
+    upgradeB11() {
+      const a9 = this.listing.certificationResults.find((cr) => cr.criterion.id === 9);
+      const b11 = this.listing.certificationResults.find((cr) => cr.criterion.id === 210);
+      const newA9 = {
+        ...a9,
+        success: false,
+      };
+      const newB11 = {
+        ...b11,
+        additionalSoftware: a9.additionalSoftware,
+        conformanceMethods: a9.conformanceMethods,
+        sed: true,
+        success: true,
+      };
+      this.saveCert(newA9);
+      this.saveCert(newB11);
+      const newSed = {
+        ...this.listing.sed,
+        ucdProcesses: this.listing.sed.ucdProcesses.map((up) => ({
+          ...up,
+          criteria: up.criteria.map((cc) => {
+            if (cc.id === 9) {
+              return {...b11.criterion};
+            }
+            return cc;
+          }),
+        })),
+        testTasks: this.listing.sed.testTasks.map((tt) => ({
+          ...tt,
+          criteria: tt.criteria.map((cc) => {
+            if (cc.id === 9) {
+              return {...b11.criterion};
+            }
+            return cc;
+          }),
+        })),
+      }
+      this.listing.sed = newSed;
+      this.hasEdited();
+    }
+
     /// /////////////////////////////////////////////////////////////////
 
     checkC(cqm, num) {
