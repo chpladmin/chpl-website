@@ -184,7 +184,7 @@ module.exports = (env) => {
         maxInitialRequests: Infinity,
         minSize: 0,
         cacheGroups: {
-          vendor: {
+          defaultVendors: {
             test: /[\\/]node_modules[\\/]/,
             name(module) {
               // get the name. E.g. node_modules/packageName/not/this/part.js
@@ -199,7 +199,6 @@ module.exports = (env) => {
       },
     };
     config.plugins.push(new CleanWebpackPlugin(['dist']));
-    config.plugins.push(new webpack.HashedModuleIdsPlugin());
   }
   if (env.NODE_ENV === 'development') {
     config.devtool = 'inline-source-map';
