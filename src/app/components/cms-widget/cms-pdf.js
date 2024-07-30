@@ -103,12 +103,10 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
       head: [[`Listing ${idx + 1}`, '']],
       body: [
         ['Certifying Body', l.acb],
-        ['Practice Type', (l.practiceType ? l.practiceType : 'N/A')],
         ['Product Certification #', l.chplProductNumber],
         ['Developer', l.vendor],
         ['Product Name', l.name],
         ['Version', l.version],
-        ['Classification', (l.classification ? l.classification : 'N/A')],
       ],
     };
   });
