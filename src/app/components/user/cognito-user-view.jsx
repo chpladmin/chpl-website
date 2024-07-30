@@ -47,7 +47,7 @@ function ChplCognitoUserView({ user: initialUser, dispatch }) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Card
         className={classes.userCard}
         title={`${user.fullName} Information`}
@@ -115,7 +115,7 @@ function ChplCognitoUserView({ user: initialUser, dispatch }) {
           </ButtonGroup>
         </CardActions>
       </Card>
-    </ThemeProvider>
+    </>
   );
 }
 
