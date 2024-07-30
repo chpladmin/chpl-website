@@ -10,7 +10,7 @@
         <button class="btn btn-link" ng-click="$ctrl.toggleCriteria()" aria-expanded="{{ $ctrl.showDetails }}" ng-if="$ctrl.showViewDetailsLink()" id="criteria_{{ $ctrl.cert.criterion.number }}_details_link{{ $ctrl.cert.criterion.id }}">{{ $ctrl.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.cert.criterion.number }}</span></button>
         <span ng-if="$ctrl.canEdit()">
           <span ng-if="$ctrl.cert.criterion.number === '170.315 (b)(11)' && !$ctrl.cert.success">
-            <button class="btn btn-sm" ng-click="$ctrl.upgradeB11()">Upgrade from (a)(9)</button>
+            <button class="btn btn-sm" ng-click="$ctrl.upgradeB11()">Transfer data from (a)(9)</button>
           </span>
           <a href uib-tooltip="Criteria has phantom data" tooltip-trigger="'mouseenter focus click'"><span ng-if="!$ctrl.cert.success && ctrl.hasPhantomData()"><i class="fa fa-exclamation-triangle status-warning"></i></span></a>
           <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
