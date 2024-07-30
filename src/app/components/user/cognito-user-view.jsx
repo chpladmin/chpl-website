@@ -12,7 +12,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
