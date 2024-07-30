@@ -32,7 +32,13 @@ const interpretActivity = (activity, canSeeHistory) => {
   } else if (activity.description.startsWith('Surveillance was added')) {
     ret.change.push('Surveillance activity was added');
   } else if (activity.description.startsWith('Surveillance was updated')) {
-    ret.change.push('Surveillance activity was updated');
+    const listingChanges = canSeeHistory ? compareListing(prev, curr) : ['Surveillance activity was updated'];
+    if (listingChanges.length > 0) {
+      ret.change = [
+        ...ret.change,
+        ...listingChanges,
+      ];
+    }
   } else if (activity.description.startsWith('Surveillance was delete')) {
     ret.change.push('Surveillance activity was deleted');
   }
