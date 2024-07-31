@@ -40,21 +40,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
-  name: 'reports.listings',
-  url: '/listings/{listingId}?',
-  component: 'chplReportsListings',
-  params: {
-    listingId: { squash: true, value: null },
-  },
-  resolve: {
-    productId: ($transition$) => {
-      'ngInject';
-
-      return $transition$.params().productId;
-    },
-  },
-  data: { title: 'CHPL Activity - Listings' },
-}, {
   name: 'reports.developers',
   url: '/developers',
   component: 'chplReportsDevelopers',
