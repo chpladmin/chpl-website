@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core';
 
 import { ChplTooltip } from 'components/util';
-import theme from 'themes/theme';
 import {
   user as userPropType,
 } from 'shared/prop-types';
