@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   Container,
+  Divider,
+  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -13,17 +15,22 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useSnackbar } from 'notistack';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import SendIcon from '@material-ui/icons/Send';
+import SendOutlined from '@material-ui/icons/SendOutlined';
+import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
+import { func } from 'prop-types';
+import * as yup from 'yup';
 
-import { useFetchDevelopersBySearch, usePostMessage, usePostMessagePreview } from 'api/developer';
+import {
+  useFetchDevelopersBySearch,
+  usePostMessage,
+  usePostMessagePreview,
+} from 'api/developer';
 import { useFilterContext } from 'components/filter';
 import { ChplLink, ChplTextField } from 'components/util';
-import { utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -32,37 +39,82 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
   },
   pageBody: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
+    flexDirection: 'row',
     gap: '16px',
-    padding: '16px 32px',
+    padding: '16px',
     backgroundColor: '#f9f9f9',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
   },
   content: {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
   },
-  actionBarButton: {
-    minWidth: '15vw',
+  code: {
+    textWrap: 'pretty',
   },
-  actionBarButtons: {
+  cancelButton: {
+    color: palette.error,
+    border: `1px solid ${palette.error}`,
+  },
+  stickyBox: {
     display: 'flex',
-    justifyContent: 'center',
-    padding: '16px 0',
+    flexDirection: 'column',
+    position: 'sticky',
+    gap: '32px',
+    top: '110px',
+    height: 'min-content',
+    width: '100%',
+    [theme.breakpoints.down('md')]: {
+      position: 'relative',
+      top: 'auto',
+    },
+  },
+  rightColumn: {
+    width: '30%,',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+  rowHeader: {
+    paddingTop: '8px',
+    padddingBottom: '8px',
   },
 });
 
 const validationSchema = yup.object({
-  subject: yup.string()
+  subject: yup
+    .string()
     .required('Subject is required'),
-  body: yup.string()
+  body: yup
+    .string()
     .required('Message body is required'),
 });
 
+const templateOptions = [
+  { key: '<blank>', subject: '', body: '' },
+  {
+    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', body: `Hello |DEVELOPERNAME|,
+
+According to our records, the [Attestations Condition and Maintenance of Certification](https://www.healthit.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
+
+The following individuals have been identified by your ONC-Authorized Certification Body (ONC-ACB) as authorized contacts to submit Attestations for your developer organization: |DEVELOPERUSERS|.
+
+For questions related to authorized developer point of contacts, please reach out to your ONC-ACB for further assistance.
+
+Sincerely,  
+The Office of the National Coordinator for Health IT`,
+  },
+];
+
 function ChplMessaging({ dispatch }) {
   const { queryParams, queryString } = useFilterContext();
+  const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(templateOptions[0]);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
   const postMessagePreview = usePostMessagePreview();
@@ -80,12 +132,15 @@ function ChplMessaging({ dispatch }) {
 
   useEffect(() => {
     if (isLoading) { return; }
-    if (isError || !data.results) {
-      return;
-    }
+    if (isError || !data.results) { return; }
     if (isLoading || !data.results) { return; }
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
+
+  const applyTemplate = () => {
+    formik.setFieldValue('subject', selectedOption.subject);
+    formik.setFieldValue('body', selectedOption.body);
+  };
 
   const sendMessage = () => {
     postMessage.mutate({
@@ -105,6 +160,7 @@ function ChplMessaging({ dispatch }) {
   };
 
   const sendMessagePreview = () => {
+    setHasPreviewed(true);
     postMessagePreview.mutate({
       subject: formik.values.subject,
       body: formik.values.body,
@@ -114,8 +170,15 @@ function ChplMessaging({ dispatch }) {
         enqueueSnackbar('Message preview has been queued. Please check your email to verify formatting', { variant: 'success' });
       },
       onError: (error) => {
-        const body = `An error occurred: ${error.response?.data?.error}`;
-        enqueueSnackbar(body, { variant: 'error' });
+        let body = '';
+        if (error.response?.data?.error) {
+          body = `An error occurred: ${error.response.data.error}`;
+        } else if (error.response?.data?.errorMessages) {
+          body = error.response.data.errorMessages.join(', ');
+        }
+        if (body.length > 0) {
+          enqueueSnackbar(body, { variant: 'error' });
+        }
       },
     });
   };
@@ -131,26 +194,56 @@ function ChplMessaging({ dispatch }) {
     },
   });
 
+  const minRows = window.outerWidth >= 1200 ? 16 : 8;
+
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">
-          Messaging
-        </Typography>
+        <Typography variant="h1">Messaging</Typography>
       </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Container maxWidth="md">
+      <Container
+        maxWidth="xl"
+        className={classes.pageBody}
+        id="main-content"
+        tabIndex="-1"
+      >
+        <Box
+          className={classes.stickyBox}
+        >
           <Card>
-            <CardContent
-              className={classes.content}
-            >
-              <Typography variant="body1">
-                Messaging
-                {' '}
-                { recordCount }
-                {' '}
-                developers
+            <CardContent className={classes.content}>
+              <Typography variant="h3" component="h2">
+                <strong>
+                  Messaging
+                  {' '}
+                  {recordCount}
+                  {' '}
+                  developers
+                </strong>
               </Typography>
+              <Divider />
+              <Box display="flex" flexDirection="row" gridGap="16px">
+                <ChplTextField
+                  select
+                  id="template-select"
+                  name="templateSelect"
+                  label="Select a Message Template"
+                  value={selectedOption}
+                  onChange={(event) => setSelectedOption(event.target.value)}
+                >
+                  { templateOptions.map((item) => (
+                    <MenuItem value={item} key={item.key}>{item.key}</MenuItem>
+                  ))}
+                </ChplTextField>
+                <Button
+                  onClick={applyTemplate}
+                  variant="outlined"
+                  color="primary"
+                >
+                  Apply Template
+                </Button>
+              </Box>
+              <Divider />
               <ChplTextField
                 id="subject"
                 name="subject"
@@ -174,108 +267,208 @@ function ChplMessaging({ dispatch }) {
                 onBlur={formik.handleBlur}
                 error={formik.touched.body && !!formik.errors.body}
                 helperText={formik.touched.body && formik.errors.body}
-                minRows={4}
+                minRows={minRows}
               />
             </CardContent>
           </Card>
-        </Container>
-        <Container maxWidth="md">
-          <Card>
-            <CardContent
-              className={classes.content}
+          <Card bgcolor="white">
+            <Box
+              padding="16px"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
             >
-              <Typography variant="h2">
-                Markdown reference
+              <Box display="flex" flexDirection="row" gridGap="16px">
+                <Button
+                  onClick={dispatch}
+                  variant="outlined"
+                  className={classes.cancelButton}
+                  endIcon={<CloseOutlinedIcon />}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={sendMessagePreview}
+                  disabled={!formik.isValid}
+                  variant={hasPreviewed ? 'outlined' : 'contained'}
+                  color="primary"
+                  endIcon={<SendOutlined />}
+                >
+                  Send Message Preview
+                </Button>
+              </Box>
+              <Button
+                onClick={formik.handleSubmit}
+                disabled={!formik.isValid || !hasPreviewed}
+                variant="contained"
+                color="primary"
+                endIcon={<SendIcon />}
+              >
+                Send Message
+              </Button>
+            </Box>
+          </Card>
+        </Box>
+        <Box className={classes.rightColumn}>
+          <Card>
+            <CardContent className={classes.content}>
+              <Typography sx={{ mt: 0.5 }} variant="h4" component="h3">
+                <strong>Markdown reference</strong>
               </Typography>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Type ...</TableCell>
-                    <TableCell>... to get</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell><pre>_Italic_</pre></TableCell>
-                    <TableCell><i>Italic</i></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>**Bold**</pre></TableCell>
-                    <TableCell><b>Bold</b></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre># Heading 1</pre></TableCell>
-                    <TableCell><h1>Heading 1</h1></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>## Heading 2</pre></TableCell>
-                    <TableCell><h2>Heading 2</h2></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>[Link](http://www.example.com)</pre></TableCell>
-                    <TableCell><a href="http://www.example.com">Link</a></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>* List<br />* List<br />    * Put four spaces before the "*" to make a sub-bullet<br />* List</pre></TableCell>
-                    <TableCell><ul><li>List</li><li>List</li><ul><li>Put four spaces before the "*" to make a sub-bullet</li></ul><li>List</li></ul></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>1. One<br />2. Two<br />3. Three</pre></TableCell>
-                    <TableCell><ol><li>One</li><li>Two</li><li>Three</li></ol></TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>A paragraph of text<br /><br />Followed by a blank line<br/><br/>To get multiple paragraphs</pre></TableCell>
-                    <TableCell>A paragraph of text<br /><br />Followed by a blank line<br/><br/>To get multiple paragraphs</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><pre>From: (with two spaces at the end of the line)  <br />To put a newline in a paragraph</pre></TableCell>
-                    <TableCell>From:<br />To put a newline in a paragraph</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <Divider />
+              <Card>
+                <Table size="small">
+                  <TableHead sx={{ py: 4 }}>
+                    <TableRow className={classes.rowHeader}>
+                      <TableCell width="45%">Type ...</TableCell>
+                      <TableCell>... to get</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>_Italic_</pre>
+                      </TableCell>
+                      <TableCell>
+                        <i>Italic</i>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>**Bold**</pre>
+                      </TableCell>
+                      <TableCell>
+                        <b>Bold</b>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}># Heading 1</pre>
+                      </TableCell>
+                      <TableCell>
+                        <h1>Heading 1</h1>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>## Heading 2</pre>
+                      </TableCell>
+                      <TableCell>
+                        <h2>Heading 2</h2>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>
+                          [Link](http://www.example.com)
+                        </pre>
+                      </TableCell>
+                      <TableCell>
+                        <a href="http://www.example.com">Link</a>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>
+                          * List
+                          <br />
+                          * List
+                          <br />
+                          {'    '}
+                          * Put four spaces before the &quot;*&quot; to make a sub-bullet
+                          <br />
+                          * List
+                        </pre>
+                      </TableCell>
+                      <TableCell>
+                        <ul>
+                          <li>List</li>
+                          <li>List</li>
+                          <ul>
+                            <li>Put four spaces before the &quot;*&quot; to make a sub-bullet</li>
+                          </ul>
+                          <li>List</li>
+                        </ul>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>
+                          1. One
+                          <br />
+                          2. Two
+                          <br />
+                          3. Three
+                        </pre>
+                      </TableCell>
+                      <TableCell>
+                        <ol>
+                          <li>One</li>
+                          <li>Two</li>
+                          <li>Three</li>
+                        </ol>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre className={classes.code}>
+                          A paragraph of text
+                          <br />
+                          <br />
+                          Followed by a blank line
+                          <br />
+                          <br />
+                          To get multiple paragraphs
+                        </pre>
+                      </TableCell>
+                      <TableCell>
+                        A paragraph of text
+                        <br />
+                        <br />
+                        Followed by a blank line
+                        <br />
+                        <br />
+                        To get multiple paragraphs
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <pre>
+                          From:  (with two spaces at the end of the line)
+                          <br />
+                          To put a newline in a paragraph
+                        </pre>
+                      </TableCell>
+                      <TableCell>
+                        From:
+                        <br />
+                        To put a newline in a paragraph
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><pre className={classes.code}>Hello |DEVELOPERNAME|!</pre></TableCell>
+                      <TableCell>Hello AllScripts!</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><pre className={classes.code}>This message has been sent to |DEVELOPERUSERS|.</pre></TableCell>
+                      <TableCell>
+                        This message has been sent to:
+                        <br />
+                        Tejal Vakharia &lt;tejal.vakharia@allscripts.com&gt;, Joshua &lt;joshua.albert@allscripts.com&gt;, Katie Little &lt;katie.little@allscripts.com&gt;.
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Card>
               <Typography>
                 For more information about formatting, please see:
                 {' '}
-                <ChplLink
-                  href="https://commonmark.org/help/"
-                />
+                <ChplLink href="https://commonmark.org/help/" />
               </Typography>
             </CardContent>
           </Card>
-        </Container>
-        <div className={classes.actionBarButtons}>
-          <ButtonGroup
-            color="primary"
-          >
-            <Button
-              onClick={dispatch}
-              variant="outlined"
-              className={classes.actionBarButton}
-              endIcon={<CloseOutlinedIcon />}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={sendMessagePreview}
-              disabled={!formik.isValid}
-              variant="outlined"
-              className={classes.actionBarButton}
-              endIcon={<SendIcon />}
-            >
-              Send Message Preview
-            </Button>
-            <Button
-              onClick={formik.handleSubmit}
-              disabled={!formik.isValid}
-              variant="contained"
-              className={classes.actionBarButton}
-              endIcon={<SendIcon />}
-            >
-              Send Message
-            </Button>
-          </ButtonGroup>
-        </div>
-      </div>
+        </Box>
+      </Container>
     </>
   );
 }
