@@ -117,7 +117,7 @@ function ChplCmsDisplay() {
   const { listings, removeListing } = useContext(CmsContext);
   const { isOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
-  const [cmsA9GracePeriodIsOn, setCmsA9GracePeriodIsOn] = useState(false);
+  const [cmsA9GracePeriodEndIsOn, setCmsA9GracePeriodEndIsOn] = useState(false);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
@@ -132,12 +132,12 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
-    createPdf(pdfData, cmsA9GracePeriodIsOn);
+    createPdf(pdfData, cmsA9GracePeriodEndIsOn);
     setIsDownloading(false);
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
 
   useEffect(() => {
-    setCmsA9GracePeriodIsOn(isOn('cms-a9-grace-period'));
+    setCmsA9GracePeriodEndIsOn(isOn('cms-a9-grace-period-end'));
   }, [isOn]);
 
   useEffect(() => {

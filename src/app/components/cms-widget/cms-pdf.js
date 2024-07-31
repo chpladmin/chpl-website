@@ -37,16 +37,16 @@ const checkCriterionIsMet = (key, criteriaMet) => {
   return [(criteriaMet.findIndex((criterion) => criterion.number === keys[0]) > -1)];
 };
 
-const getPdfCriteria = (cmsA9GracePeriodIsOn) => {
+const getPdfCriteria = (cmsA9GracePeriodEndIsOn) => {
   /* eslint-disable object-curly-spacing */
-  if (cmsA9GracePeriodIsOn) {
+  if (cmsA9GracePeriodEndIsOn) {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
       {key: null, description: 'Implantable Device List'},
       {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
-      {key: null, description: 'Clinical Decision Support or Decision Support Interventions'},
-      {key: '|,170.315 (a)(9),170.315 (b)(11)', description: '#170.315(a)(9) or #170.315 (b)(11)'},
+      {key: null, description: 'Decision Support Interventions'},
+      {key: '170.315 (b)(11)', description: '#170.315 (b)(11)'},
       {key: null, description: 'Computerized Provider Order Entry'},
       {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
       {key: null, description: 'Clinical Quality Measures-Record and Export'},
@@ -68,8 +68,8 @@ const getPdfCriteria = (cmsA9GracePeriodIsOn) => {
     {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
     {key: null, description: 'Implantable Device List'},
     {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
-    {key: null, description: 'Decision Support Interventions'},
-    {key: '170.315 (b)(11)', description: '#170.315 (b)(11)'},
+    {key: null, description: 'Clinical Decision Support or Decision Support Interventions'},
+    {key: '|,170.315 (a)(9),170.315 (b)(11)', description: '#170.315(a)(9) or #170.315 (b)(11)'},
     {key: null, description: 'Computerized Provider Order Entry'},
     {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
     {key: null, description: 'Clinical Quality Measures-Record and Export'},
