@@ -30,6 +30,9 @@ const util = {
   linkWrap: {
     overflowWrap: 'anywhere',
   },
+  noWrap: {
+    whiteSpace: 'nowrap',
+  },
   removedText: {
     fontStyle: 'italic',
   },
