@@ -1,3 +1,5 @@
+/* global DEVELOPER_MODE */
+
 import React from 'react';
 import {
   QueryClient,
@@ -32,5 +34,5 @@ ApiWrapper.propTypes = {
 };
 
 ApiWrapper.defaultProps = {
-  showQueryTools: false,
+  showQueryTools: DEVELOPER_MODE,
 };
