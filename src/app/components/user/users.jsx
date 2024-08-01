@@ -14,8 +14,12 @@ import ChplUserInvite from './user-invite';
 import ChplCognitoUserInvite from './cognito-user-invite';
 import ChplUserView from './user-view';
 import ChplCognitoUserView from './cognito-user-view';
+import ChplCognitoUserEdit from './cognito-user-edit';
 
-import { usePutUser } from 'api/users';
+import {
+  usePutUser,
+  usePutCognitoUser,
+} from 'api/users';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
@@ -64,6 +68,7 @@ function ChplUsers({
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const { mutate } = usePutUser();
+  const cognitoMutate = usePutCognitoUser().mutate;
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState(undefined);
@@ -138,6 +143,21 @@ function ChplUsers({
           },
         });
         break;
+      case 'cognito-save':
+        cognitoMutate(data, {
+          onSuccess: () => {
+            setActiveUser(undefined);
+            dispatch('refresh');
+          },
+          onError: (error) => {
+            if (error.data.error) {
+              setErrors([error.data.error]);
+            } else if (error.data?.errorMessages?.length > 0) {
+              setErrors(error.data.errorMessages);
+            }
+          },
+        });
+        break;
         // no default
     }
   };
@@ -148,14 +168,37 @@ function ChplUsers({
         <ChplCognitoUserView
           key={userToDisplay.cognitoId}
           user={userToDisplay}
+          dispatch={handleDispatch}
         />
       );
-    }
+    } 
     if (userToDisplay.userId) {
       return (
         <ChplUserView
           key={userToDisplay.userId}
           user={userToDisplay}
+          dispatch={handleDispatch}
+        />
+      );
+    }
+    return null;
+  };
+
+  const displayUserEdit = (userToEdit) => {
+    if (userToEdit.cognitoId) {
+      return (
+        <ChplCognitoUserEdit
+          user={userToEdit}
+          errors={errors}
+          dispatch={handleDispatch}
+        />
+      );
+    } 
+    if (userToEdit.userId) {
+      return (
+        <ChplUserEdit
+          user={userToEdit}
+          errors={errors}
           dispatch={handleDispatch}
         />
       );
@@ -171,11 +214,7 @@ function ChplUsers({
     <Box>
       { activeUser
         && (
-          <ChplUserEdit
-            user={activeUser}
-            errors={errors}
-            dispatch={handleDispatch}
-          />
+          displayUserEdit(activeUser)
         )}
       { !activeUser
         && (

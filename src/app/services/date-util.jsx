@@ -2,6 +2,8 @@ import '@js-joda/timezone';
 import { Locale } from '@js-joda/locale_en-us';
 import * as jsJoda from '@js-joda/core';
 
+const ZONE_ID = jsJoda.ZoneId.of('America/New_York');
+
 const isLocalDate = (dateToTest) => {
   try {
     jsJoda.LocalDate.parse(dateToTest);
@@ -37,6 +39,20 @@ const getDisplayDateFormat = (date, fallback = 'N/A') => {
   return fallback;
 };
 
+const localDateToTimestamp = (localDateString) => {
+  const localDate = jsJoda.LocalDate.parse(localDateString);
+  const localTime = jsJoda.LocalTime.MIDNIGHT;
+  return jsJoda.ZonedDateTime.of3(localDate, localTime, ZONE_ID).toInstant().toEpochMilli();
+};
+
+const timestampToString = (timestamp, format = 'MMM d, y h:mm:ss a z') => {
+  const formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
+  return jsJoda
+    .ZonedDateTime
+    .ofInstant(jsJoda.Instant.ofEpochMilli(timestamp), ZONE_ID)
+    .format(formatter);
+};
+
 const toTimestamp = (date) => {
   if (typeof (date) === 'string' && isLocalDate(date)) {
     const localDate = jsJoda.LocalDate.parse(date).plusDays(1);
@@ -53,5 +69,7 @@ const toTimestamp = (date) => {
 export {
   getDisplayDateFormat,
   jsJoda,
+  localDateToTimestamp,
+  timestampToString,
   toTimestamp,
 };

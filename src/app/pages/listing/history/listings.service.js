@@ -423,6 +423,7 @@ const briefLookup = {
   'root.decertificationDate': { message: () => undefined },
   'root.decertificationDay': { message: () => undefined },
   'root.directReviews': { message: () => undefined },
+  'root.directReviewsAvailable': { message: () => undefined },
   'root.errorMessages': { message: () => undefined },
   'root.ics': { message: () => undefined },
   'root.ics.children': { message: () => undefined },
