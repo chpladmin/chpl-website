@@ -22,6 +22,7 @@ import { object } from 'prop-types';
 
 import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
+import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 import { palette, utilStyles, theme } from 'themes';
 
@@ -112,6 +113,13 @@ function ChplSedTaskView({ task: initialTask }) {
   }, [initialTask]);
 
   const handleAccordionChange = () => {
+    if (!expanded) {
+      eventTrack({
+        event: 'Open SED Task',
+        category: 'Listing Details',
+        label: task.description,
+      });
+    }
     setExpanded(!expanded);
   };
 
