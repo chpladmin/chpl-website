@@ -6,6 +6,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { bool, string } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -38,7 +39,6 @@ function ChplLink({
   const classes = useStyles();
   const [href, setHref] = useState('');
   const [text, setText] = useState('');
-  const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
 
   useEffect(() => {
@@ -60,9 +60,9 @@ function ChplLink({
           params.label = analytics.label;
         }
         if (analytics.category || analytics.label) {
-          $analytics.eventTrack(analytics.event, params);
+          eventTrack({ event: analytics.event, ...params });
         } else {
-          $analytics.eventTrack(analytics.event);
+          eventTrack({ event: analytics.event });
         }
       }
       if (router.sref) {
