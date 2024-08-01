@@ -23,6 +23,7 @@ module.exports = (env) => {
       charts: path.resolve(__dirname, './src/app/pages/charts/index.js'),
       collections: path.resolve(__dirname, './src/app/pages/collections/index.js'),
       compare: path.resolve(__dirname, './src/app/pages/compare/index.js'),
+      home: path.resolve(__dirname, './src/app/pages/home/index.js'),
       listing: path.resolve(__dirname, './src/app/pages/listing/index.js'),
       navigation: path.resolve(__dirname, './src/app/navigation/index.js'),
       organizations: path.resolve(__dirname, './src/app/pages/organizations/index.js'),

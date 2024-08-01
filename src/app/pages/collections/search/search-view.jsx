@@ -14,8 +14,6 @@ import {
 import FindReplaceIcon from '@material-ui/icons/FindReplace';
 import { shape, string } from 'prop-types';
 
-import ChplLandingPage from './landing-page';
-
 import { useFetchCollection } from 'api/collections';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
@@ -153,7 +151,7 @@ function ChplSearchView(props) {
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
-  const { dispatch, hasSearched, queryString } = useFilterContext();
+  const { dispatch, queryString } = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
     orderBy,
     pageNumber,
@@ -199,10 +197,6 @@ function ChplSearchView(props) {
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
-
-  if (!hasSearched) {
-    return <ChplLandingPage />;
-  }
 
   return (
     <>

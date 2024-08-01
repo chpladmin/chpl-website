@@ -80,17 +80,6 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', logout);
   };
 
-  function clear() {
-    $rootScope.$broadcast('ClearResults', {});
-    $localStorage.clearResults = true;
-    sessionStorage.removeItem('storageKey-searchPage-hasSearched');
-    if ($location.url() === '/search') {
-      $state.reload();
-    } else {
-      $state.go('search');
-    }
-  }
-
   function isActive(state) {
     return $state.$current.name.startsWith(state);
   }
@@ -122,7 +111,6 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $rootScope.bodyClass = 'navigation-shown';
   }
 
-  vm.clear = clear;
   vm.getDevelopers = getDevelopers;
   vm.getFullname = authService.getFullname;
   vm.hasAnyRole = authService.hasAnyRole;

@@ -29,18 +29,19 @@ import 'angular-ui-router';
 
 // import app modules
 import administration from './pages/administration/index';
-import /* chartsModule from */ './pages/charts/index';
-import /* collectionsModule from */ './pages/collections/index';
+import './pages/charts/index';
+import './pages/collections/index';
 import compare from './pages/compare/index';
-import /* componentsModule from */ './components/index';
+import './components/index';
+import './pages/home/index';
 import listing from './pages/listing/index';
-import /* navigationModule from */ './navigation/index';
+import './navigation/index';
 import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
 import resources from './pages/resources/index';
-import /* registrationModule from */ './pages/registration/index';
+import './pages/registration/index';
 import services from './services/index';
-import /* sharedModule from */ './shared/index';
+import './shared/index';
 import subscriptions from './pages/subscriptions/index';
 import surveillance from './pages/surveillance/index';
 import users from './pages/users/index';
@@ -86,6 +87,7 @@ const dependencies = [
   'chpl.collections',
   'chpl.components',
   'chpl.constants',
+  'chpl.home',
   'chpl.navigation',
   'chpl.registration',
   'chpl.shared',

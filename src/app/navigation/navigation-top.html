@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href ng-click="vm.clear()">
+        <a class="navbar-brand" ui-sref="home">
           <img src="../../assets/images/CHPL-White-Logo.png" alt="Certified Health IT Product List" class="img-responsive default-visible" chpl-add-class-on-scroll offset="50" scroll-class="toggle-visible"></img>
           <img src="../../assets/images/CHPL_Icon_Logo.png" alt="Certified Health IT Product List" class="img-responsive default-hidden" chpl-add-class-on-scroll offset="50" scroll-class="toggle-visible"></img>
         </a>
@@ -17,7 +17,6 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right nav-main">
-          <li><a href ng-click="vm.clear()">Home</a></li>
           <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>

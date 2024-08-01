@@ -2,6 +2,7 @@ import { administrationStatesConfig as administrationStates } from './pages/admi
 import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state';
 import collectionsStates from './pages/collections/collections.state';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state';
+import homeStates from './pages/home/home.state';
 import listingStates from './pages/listing/listing.state';
 import organizationsStates from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
@@ -22,8 +23,8 @@ function otherwise($injector, $location) {
 
 (() => {
   function routeConfig($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.when('', '/search');
-    $urlRouterProvider.when('/', '/search');
+    $urlRouterProvider.when('', '/home');
+    $urlRouterProvider.when('/', '/home');
     $urlRouterProvider.otherwise(otherwise);
   }
 
@@ -34,6 +35,7 @@ function otherwise($injector, $location) {
     .config(chartsStates)
     .config(collectionsStates)
     .config(compareStates)
+    .config(homeStates)
     .config(listingStates)
     .config(organizationsStates)
     .config(registrationStates)
