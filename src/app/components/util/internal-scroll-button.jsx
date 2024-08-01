@@ -5,9 +5,9 @@ import {
 } from '@material-ui/core';
 import { node, string } from 'prop-types';
 
-import { getAngularService } from '../../services/angular-react-helper';
-import { analyticsConfig } from '../../shared/prop-types';
-import palette from '../../themes/palette';
+import { eventTrack } from 'services/analytics.service';
+import { analyticsConfig } from 'shared/prop-types';
+import palette from 'themes/palette';
 
 const useStyles = makeStyles({
   noButtonWrap: {
@@ -31,8 +31,8 @@ const useStyles = makeStyles({
 });
 
 const InternalScrollButton = ({ analytics, children, id }) => {
-  const $analytics = getAngularService('$analytics');
   const [target, setTarget] = useState('');
+  const classes = useStyles();
 
   useEffect(() => {
     setTarget(document.getElementById(id));
@@ -41,15 +41,14 @@ const InternalScrollButton = ({ analytics, children, id }) => {
   const handleClick = (event) => {
     event.preventDefault();
     if (analytics.event) {
-      $analytics.eventTrack(analytics.event, {
+      eventTrack({
+        event: analytics.event,
         category: analytics.category || null,
         label: analytics.label || null,
       });
     }
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
-  const classes = useStyles();
 
   return (
     <Button
