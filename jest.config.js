@@ -2,6 +2,9 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'test_reports/unit/coverage/jsx',
   coverageReporters: ['html', 'lcov', 'text-summary'], // 'json'
+  globals: {
+    DEVELOPER_MODE: false,
+  },
   moduleDirectories: ['src/app', 'node_modules'],
   moduleNameMapper: {
     '\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/fileMock.js',
