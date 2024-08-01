@@ -17,6 +17,7 @@ import { Visibility } from '@material-ui/icons';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -41,6 +42,10 @@ function ChplSedTaskParticipantsView(props) {
   const classes = useStyles();
 
   const handleClickOpen = () => {
+    eventTrack({
+      event: 'View SED Participant Details',
+      category: 'Listing Details',
+    });
     setOpen(true);
   };
 
