@@ -6,7 +6,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 
 const headers = [
@@ -45,7 +45,6 @@ const csvOptions = {
 };
 
 function ChplSedDownload({ listing }) {
-  const $analytics = getAngularService('$analytics');
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
@@ -74,7 +73,7 @@ function ChplSedDownload({ listing }) {
   }, [listing]);
 
   const handleDownload = () => {
-    $analytics.eventTrack('Download SED Details', { category: 'Listing Details', lable: listing.chplProductNumber });
+    eventTrack({ event: 'Download SED Details', category: 'Listing Details', lable: listing.chplProductNumber });
     const csvExporter = new ExportToCsv({
       ...csvOptions,
       filename: `${listing.chplProductNumber}.sed`,
