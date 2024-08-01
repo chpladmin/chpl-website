@@ -1,15 +1,17 @@
 import * as jsJoda from '@js-joda/core';
 
-import { briefLookup, compareListing } from 'pages/reports/listings/listings.service';
+import { briefLookup, compareListing } from './listings.service';
 
-const interpretActivity = (activity) => {
+import { getDisplayDateFormat, localDateToTimestamp } from 'services/date-util';
+
+const interpretActivity = (activity, canSeeHistory) => {
   const ret = {
     ...activity,
     change: [],
   };
   const { originalData: prev, newData: curr } = activity;
   if (activity.description.startsWith('Updated certified product')) {
-    const listingChanges = compareListing(prev, curr, briefLookup);
+    const listingChanges = canSeeHistory ? compareListing(prev, curr) : compareListing(prev, curr, briefLookup);
     if (listingChanges.length > 0) {
       ret.change = [
         ...ret.change,
@@ -30,7 +32,13 @@ const interpretActivity = (activity) => {
   } else if (activity.description.startsWith('Surveillance was added')) {
     ret.change.push('Surveillance activity was added');
   } else if (activity.description.startsWith('Surveillance was updated')) {
-    ret.change.push('Surveillance activity was updated');
+    const listingChanges = canSeeHistory ? compareListing(prev, curr) : ['Surveillance activity was updated'];
+    if (listingChanges.length > 0) {
+      ret.change = [
+        ...ret.change,
+        ...listingChanges,
+      ];
+    }
   } else if (activity.description.startsWith('Surveillance was delete')) {
     ret.change.push('Surveillance activity was deleted');
   }
@@ -54,15 +62,15 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
     return e;
   });
 
-const interpretPIHistory = (listing, DateUtil) => listing.promotingInteroperabilityUserHistory
+const interpretPIHistory = (listing) => listing.promotingInteroperabilityUserHistory
   .sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1))
   .map((item, idx, arr) => {
     const title = 'Promoting Interoperability';
-    item.activityDate = DateUtil.localDateToTimestamp(item.userCountDate);
+    item.activityDate = localDateToTimestamp(item.userCountDate);
     if (idx > 0) {
-      item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
+      item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`];
     } else {
-      item.change = [`Estimated number of ${title} Users became ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
+      item.change = [`Estimated number of ${title} Users became ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`];
     }
     return item;
   });
