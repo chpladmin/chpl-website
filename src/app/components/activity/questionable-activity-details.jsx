@@ -17,7 +17,7 @@ import { object } from 'prop-types';
 import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareDeveloper } from 'pages/reports/developers/developers.service';
-import { compareListing } from 'pages/reports/listings/listings.service';
+import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
 import { compareVersion } from 'pages/reports/versions/versions.service';
 import { getDisplayDateFormat } from 'services/date-util';
