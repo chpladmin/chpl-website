@@ -26,14 +26,13 @@ function AxiosProvider({ children }) {
     const requestRefresh = (refreshToken) => {
       console.log('Starting refresh');
       const user = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
-      const { email } = user;
       const { cognitoId } = user;
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
-        return Axios.post('http://localhost:3000/rest/cognito/users/refresh-token', { refreshToken, cognitoId, email }, { headers })
+        return Axios.post('http://localhost:3000/rest/cognito/users/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => {
             ngLocalStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;

@@ -22,7 +22,7 @@ import {
   clearAuthTokens,
   getAccessToken, 
   getRefreshToken } 
-from 'axios-jwt'
+from 'axios-jwt';
 
 
 import PasswordStrengthMeter from './password-strength-meter';
