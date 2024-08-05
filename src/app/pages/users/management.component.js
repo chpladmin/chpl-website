@@ -80,7 +80,7 @@ const UserManagementComponent = {
           this.networkService.getUsers()
             .then((response) => {
               that.users = response.users
-                .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER'].includes(user.role));
+                .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER', 'chpl-onc-acb', 'chpl-developer'].includes(user.role));
             });
           break;
         case 'impersonate':
