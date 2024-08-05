@@ -10,23 +10,8 @@
     };
 
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
-      /*
       networkService.keepalive()
         .then(() => {
-          loadFlags();
-        }).catch((error) => {
-          $log.info('error', error);
-          authService.logout();
-          loadFlags();
-        });
-      */
-      $log.info('Calling Cognito KeepAlive');
-      networkService.cognitoKeepalive()
-        .then((response) => {
-          $log.info('Called Cognito KeepAlive');
-          $log.info(response);
-          authService.saveToken(response.accessToken);
-          authService.saveRefreshToken(response.refreshToken);
           loadFlags();
         }).catch((error) => {
           $log.info('error', error);

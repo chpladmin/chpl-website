@@ -12,32 +12,28 @@ function IndexWrapper() {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const ngLocalStorage = getAngularService('$localStorage');
+
+  const isCurrentUserChplAuthenticated = ngLocalStorage.currentUser && ngLocalStorage.currentUser.userId;
 
   useEffect(() => {
-    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
-      Idle.watch();
-    }
-    const deregisterKeepalive = $rootScope.$on('Keepalive', () => {
-      console.info('Keepalive');
+    let deregisterKeepalive;
+    if (isCurrentUserChplAuthenticated) {
       if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
-        /*
-        networkService.keepalive()
-          .then((response) => {
-            authService.saveToken(response.token);
-          });
-        */
-        console.log('Calling Cognito KeepAlive');
-        networkService.cognitoKeepalive()
-          .then((response) => {
-            console.log('Called Cognito KeepAlive');
-            console.log(response);
-            authService.saveToken(response.accessToken);
-            authService.saveRefreshToken(response.refreshToken);
-          });
-      } else {
-        Idle.unwatch();
+        Idle.watch();
       }
-    });
+      deregisterKeepalive = $rootScope.$on('Keepalive', () => {
+        console.info('Keepalive');
+        if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+          networkService.keepalive()
+            .then((response) => {
+              authService.saveToken(response.token);
+            });
+        } else {
+          Idle.unwatch();
+        }
+      });
+    }
     return deregisterKeepalive;
   }, [$rootScope, Idle, Keepalive, authService, networkService]);
 

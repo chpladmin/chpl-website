@@ -1,10 +1,20 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
+import { 
+  applyAuthTokenInterceptor, 
+  getAccessToken,
+  setAuthTokens, 
+  clearAuthTokens } 
+from 'axios-jwt';
 import { element } from 'prop-types';
+
+import { getAngularService } from 'services/angular-react-helper';
 
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
+  const ngLocalStorage = getAngularService('$localStorage');
+
   const axios = useMemo(() => {
     const ax = Axios.create({
       baseURL: '/rest/',
@@ -13,14 +23,38 @@ function AxiosProvider({ children }) {
       },
     });
 
-    ax.interceptors.request.use((config) => {
+    const requestRefresh = (refreshToken) => {
+      console.log('Starting refresh');
+      const user = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
+      const { email } = user;
+      const { cognitoId } = user;
+      const headers = {
+        'API-Key': '12909a978483dfb8ecd0596c98ae9094',
+      };
+      if (cognitoId) {
+        // Notice that this is the global axios instance, not the axiosInstance!  <-- important
+        return Axios.post('http://localhost:3000/rest/cognito/users/refresh-token', { refreshToken, cognitoId, email }, { headers })
+          .then((response) => {
+            ngLocalStorage.jwtToken = response.data.accessToken;
+            return response.data.accessToken;
+          });
+      }
+      return new Promise((resolve) => {
+        resolve('');
+      });
+    };
+
+    // Notice that this uses the axiosInstance instance.  <-- important
+    applyAuthTokenInterceptor(ax, { requestRefresh });
+
+    ax.interceptors.request.use(async (config) => {
       const updated = {
         ...config,
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
-      const token = localStorage.getItem('ngStorage-jwtToken')?.replace(/"/g, '');
-      if (token) {
-        updated.headers.Authorization = `Bearer ${token}`;
+      const accessToken = await getAccessToken();
+      if (accessToken) {
+        updated.headers.Authorization = `Bearer ${accessToken}`;
       }
       return updated;
     });

@@ -16,6 +16,14 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
+import { 
+  isLoggedIn, 
+  setAuthTokens, 
+  clearAuthTokens,
+  getAccessToken, 
+  getRefreshToken } 
+from 'axios-jwt'
+
 
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -148,11 +156,16 @@ function ChplCognitoLogin({ dispatch }) {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
+        setAuthTokens({
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+        });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
+
         signinFormik.resetForm();
         ReactGA.event({ action: 'Log In', category: 'Authentication' });
-        Idle.watch();
+        // Idle.watch();
         $rootScope.$broadcast('loggedIn');
         dispatch('loggedIn');
         setState('LOGGEDIN');
