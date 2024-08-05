@@ -1,3 +1,11 @@
+import { 
+  isLoggedIn, 
+  setAuthTokens, 
+  clearAuthTokens,
+  getAccessToken, 
+  getRefreshToken } 
+from 'axios-jwt';
+
 (function () {
   angular.module('chpl.services')
     .factory('authService', authService);
@@ -141,7 +149,9 @@
 
     function logout() {
       delete $localStorage.jwtToken;
+      delete $localStorage.refreshToken;
       delete $localStorage.currentUser;
+      clearAuthTokens();
       $rootScope.$broadcast('loggedOut');
     }
 
