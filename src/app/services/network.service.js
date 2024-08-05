@@ -19,10 +19,6 @@ export default class NetworkService {
     return this.apiPOST(`/users/${userId}/authorize`, userAuthorization);
   }
 
-  cognitoKeepalive() {
-    return this.apiGET(`/cognito/users/keep-alive?token=${this.$localStorage.refreshToken}`, { ignoreLoadingBar: true });
-  }
-
   confirmApiKey(hash) {
     return this.apiPOST('/key/confirm', hash);
   }

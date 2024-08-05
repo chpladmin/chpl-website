@@ -1,9 +1,11 @@
+import * as moment from 'moment';
+
 import ChplNavigationBottomWrapper from './navigation-bottom-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
 /** @ngInclude */
-function authInterceptor($log, API, authService, toaster) {
+function authInterceptor($injector, $localStorage, $log, $q, API, authService, toaster) {
   // Notify if a cache is being cleared
   function parseCacheCleared(value) {
     const caches = value.split(',');
@@ -58,21 +60,51 @@ function authInterceptor($log, API, authService, toaster) {
     }
     return response;
   }
+
+  function getAuthorizationHeader() {
+    const accessToken = $localStorage.jwtToken;
+    if (accessToken && authService.parseJwt(accessToken).exp > moment(new Date().getTime()).unix()) {
+      return $q.when(accessToken);
+    }
+    const { refreshToken } = $localStorage;
+
+    if ($localStorage.currentUser && $localStorage.refreshToken) {
+      const { email } = $localStorage.currentUser;
+      const { cognitoId } = $localStorage.currentUser;
+      const nghttp = $injector.get('$http');
+      const headers = {
+        'API-Key': '12909a978483dfb8ecd0596c98ae9094',
+      };
+      return nghttp.post('http://localhost:3000/rest/cognito/users/refresh-token', { refreshToken, cognitoId, email }, { headers }).then(
+        (response) => {
+          $localStorage.jwtToken = response.data.accessToken;
+          return $localStorage.jwtToken;
+        },
+        (err) => {
+          $log.info(err);
+        }
+      );
+    } 
+    return $q.when($localStorage.jwtToken);
+  }
+
   return {
     // automatically attach Authorization header
     request(config) {
-      const token = authService.getToken();
       const apiKey = authService.getApiKey();
       const updated = {
         ...config,
       };
       if (config.url.indexOf(API) === 0) {
         updated.headers['API-Key'] = apiKey;
-        if (token) {
-          updated.headers.Authorization = `Bearer ${token}`;
+        if (!config.url?.includes('refresh-token')) {
+          getAuthorizationHeader().then((token) => {
+            if (token) {
+              updated.headers.Authorization = `Bearer ${token}`;
+            }
+          });
         }
       }
-
       return updated;
     },
 
