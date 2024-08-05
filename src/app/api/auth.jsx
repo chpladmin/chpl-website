@@ -19,6 +19,12 @@ const usePostCognitoLogin = () => {
   });
 };
 
+const usePostCognitoLogout = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/logout', data)
+    .then((response) => response.data));
+};
+
 const usePostEmailResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/email-reset-password', data)
@@ -51,6 +57,7 @@ const usePostResetPassword = () => {
 export {
   usePostChangePassword,
   usePostCognitoLogin,
+  usePostCognitoLogout,
   usePostEmailResetPassword,
   usePostLogin,
   usePostNewPasswordRequired,

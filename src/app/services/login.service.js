@@ -12,7 +12,7 @@ from 'axios-jwt';
 
   /** @ngInclude */
   /** @ngInject */
-  function authService($localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
+  function authService($injector, $localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
     const service = {
       canImpersonate,
       canManageAcb,
@@ -148,6 +148,9 @@ from 'axios-jwt';
     }
 
     function logout() {
+      $injector.get('networkService').logout({
+        email: getCurrentUser().email,
+      });
       delete $localStorage.jwtToken;
       delete $localStorage.refreshToken;
       delete $localStorage.currentUser;

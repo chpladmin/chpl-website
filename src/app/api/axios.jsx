@@ -24,7 +24,6 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      console.log('Starting refresh');
       const user = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
       const { cognitoId } = user;
       const headers = {

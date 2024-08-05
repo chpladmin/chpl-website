@@ -30,6 +30,7 @@ import PasswordStrengthMeter from './password-strength-meter';
 import {
   usePostNewPasswordRequired,
   usePostCognitoLogin,
+  usePostCognitoLogout,
 } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
@@ -80,6 +81,7 @@ function ChplCognitoLogin({ dispatch }) {
   const { user, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const postLogin = usePostCognitoLogin();
+  const postLogout = usePostCognitoLogout();
   const postNewPasswordRequired = usePostNewPasswordRequired();
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [sessionId, setSessionId] = useState('');
@@ -162,10 +164,9 @@ function ChplCognitoLogin({ dispatch }) {
         });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
-
         signinFormik.resetForm();
         ReactGA.event({ action: 'Log In', category: 'Authentication' });
-        // Idle.watch();
+        Idle.watch();
         $rootScope.$broadcast('loggedIn');
         dispatch('loggedIn');
         setState('LOGGEDIN');
@@ -185,6 +186,11 @@ function ChplCognitoLogin({ dispatch }) {
 
   const logout = (e) => {
     e.stopPropagation();
+    if (user?.email) {
+      postLogout.mutate({
+        email: user.email,
+      });
+    }
     setUser({});
     setState('SIGNIN');
     authService.logout();
