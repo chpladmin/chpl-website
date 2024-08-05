@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 13.22.0
+_5 August 2024_
+
+### Features
+* Add ability to edit Cognito user information
+* Start tracking SED interactions
+* Remove Admin-only Power BI page
+* Add basic "Semi-Attestations" template
+* Require user to preview message before sending
+* Enable viewing of all Listing history on "eye" for specific users
+
+### User Interface Updates
+* Give users instructions about message tokens
+
+### Bug Fixes
+* Check Developer ID instead of Developer name in product owner history
+
+---
+
 ## Version 13.21.0
 _22 July 2024_
 
