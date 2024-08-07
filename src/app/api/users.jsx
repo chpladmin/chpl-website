@@ -22,8 +22,19 @@ const usePutUser = () => {
   });
 };
 
+const usePutCognitoUser = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`cognito/users/${data.cognitoId}`, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['acbs', 'users']);
+    },
+  });
+};
+
 export {
   usePostCreateCognitoInvitedUser,
   usePostCreateInvitedUser,
+  usePutCognitoUser,
   usePutUser,
 };

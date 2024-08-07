@@ -1,6 +1,7 @@
+/* global DEVELOPER_MODE */
+
 import React from 'react';
 import { bool, node } from 'prop-types';
-import ReactGA from 'react-ga4';
 
 import ApiWrapper from 'api/api-wrapper';
 import BrowserWrapper from 'components/browser/browser-wrapper';
@@ -10,25 +11,6 @@ import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 
 function AppWrapper({ children, showQueryTools }) {
-  ReactGA.initialize([
-    {
-      trackingId: 'G-7SZDMS75VC',
-      gaOptions: {
-        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
-      },
-      gtagOptions: {
-        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
-      },
-    }, {
-      trackingId: 'GTM-KC3FP96',
-      gaOptions: {
-        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
-      },
-      gtagOptions: {
-        debug_mode: window.location.origin !== 'https://chpl.healthit.gov',
-      },
-    },
-  ]);
 
   return (
     <UserWrapper>
@@ -55,5 +37,5 @@ AppWrapper.propTypes = {
 };
 
 AppWrapper.defaultProps = {
-  showQueryTools: true,
+  showQueryTools: DEVELOPER_MODE,
 };

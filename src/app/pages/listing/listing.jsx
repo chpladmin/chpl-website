@@ -143,7 +143,6 @@ function ChplListingPage({ id }) {
                   )}
                 <ChplListingHistory
                   listing={listing}
-                  canSeeHistory={canEdit()}
                 />
               </ChplActionButton>
             </Box>
