@@ -2,10 +2,8 @@ import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
 import { 
   applyAuthTokenInterceptor, 
-  getAccessToken,
-  setAuthTokens, 
-  clearAuthTokens } 
-from 'axios-jwt';
+  getAccessToken }
+  from 'axios-jwt';
 import { element } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
@@ -31,15 +29,13 @@ function AxiosProvider({ children }) {
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
-        return Axios.post('http://localhost:3000/rest/cognito/users/refresh-token', { refreshToken, cognitoId }, { headers })
+        return Axios.post('rest/cognito/users/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => {
             ngLocalStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;
           });
       }
-      return new Promise((resolve) => {
-        resolve('');
-      });
+      return new Promise((resolve) => resolve(''));
     };
 
     // Notice that this uses the axiosInstance instance.  <-- important

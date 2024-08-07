@@ -1,10 +1,4 @@
-import { 
-  isLoggedIn, 
-  setAuthTokens, 
-  clearAuthTokens,
-  getAccessToken, 
-  getRefreshToken } 
-from 'axios-jwt';
+import { clearAuthTokens } from 'axios-jwt';
 
 (function () {
   angular.module('chpl.services')

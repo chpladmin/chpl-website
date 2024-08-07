@@ -74,7 +74,7 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
-      return nghttp.post('http://localhost:3000/rest/cognito/users/refresh-token', { refreshToken, cognitoId }, { headers }).then(
+      return nghttp.post('cognito/users/refresh-token', { refreshToken, cognitoId }, { headers }).then(
         (response) => {
           $localStorage.jwtToken = response.data.accessToken;
           return $localStorage.jwtToken;

@@ -16,14 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
-import { 
-  isLoggedIn, 
-  setAuthTokens, 
-  clearAuthTokens,
-  getAccessToken, 
-  getRefreshToken } 
-from 'axios-jwt';
-
+import { setAuthTokens } from 'axios-jwt';
 
 import PasswordStrengthMeter from './password-strength-meter';
 

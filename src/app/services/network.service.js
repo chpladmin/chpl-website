@@ -1,9 +1,8 @@
 export default class NetworkService {
-  constructor($http, $localStorage, $log, $q, $rootScope, API) {
+  constructor($http, $log, $q, $rootScope, API) {
     'ngInject';
 
     this.$http = $http;
-    this.$localStorage = $localStorage;
     this.$log = $log;
     this.$q = $q;
     this.$rootScope = $rootScope;
