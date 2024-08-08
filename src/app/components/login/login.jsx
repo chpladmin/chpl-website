@@ -20,7 +20,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
 
-import PasswordStrengthMeter from './password-strength-meter';
+import PasswordStrengthMeter from './components/password-strength-meter';
 
 import {
   usePostChangePassword,
