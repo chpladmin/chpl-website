@@ -1,7 +1,8 @@
 import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 import ChplCmsLookupWrapper from './cms-lookup/cms-lookup-wrapper';
-import ChplNotFound from './not-found';
+import ChplForgotPassword from './forgot-password/forgot-password-wrapper';
+import ChplNotFound from './not-found/not-found';
 import ChplResourcesApi from './api';
 import ChplResourcesDownloadWrapper from './download/download-wrapper';
 import ChplResourcesOverview from './overview';
@@ -15,6 +16,7 @@ angular
     'ngStorage',
   ])
   .component('chplCmsLookupWrapperBridge', reactToAngularComponent(ChplCmsLookupWrapper))
+  .component('chplForgotPasswordBridge', reactToAngularComponent(ChplForgotPassword))
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
   .component('chplResourcesApiBridge', reactToAngularComponent(ChplResourcesApi))
   .component('chplResourcesDownloadWrapperBridge', reactToAngularComponent(ChplResourcesDownloadWrapper))
