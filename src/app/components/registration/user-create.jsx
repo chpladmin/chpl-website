@@ -10,7 +10,7 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { PasswordStrengthMeter } from 'components/login';
+import PasswordStrengthMeter from 'components/login/components/password-strength-meter';
 import { ChplTextField } from 'components/util';
 import theme from 'themes/theme';
 
