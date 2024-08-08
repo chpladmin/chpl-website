@@ -33,6 +33,21 @@ const states = [
     component: 'chplResourcesOverviewBridge',
     data: { title: 'CHPL Overview' },
   }, {
+    name: 'forgot-password',
+    url: '/forgot-password/{uuid}',
+    component: 'chplForgotPasswordBridge',
+    params: {
+      uuid: { squash: true, value: null },
+    },
+    resolve: {
+      uuid: ($transition$) => {
+        'ngInject';
+
+        return $transition$.params().uuid;
+      },
+    },
+    data: { title: 'Reset forgotten password' },
+  }, {
     name: 'not-found',
     url: '/not-found',
     params: {
