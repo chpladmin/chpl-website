@@ -6,7 +6,7 @@ const states = [{
 }, {
   name: 'subscriptions.confirm',
   url: '/confirm/{hash}',
-  component: 'chplSubscriptionsConfirmSubscription',
+  component: 'chplConfirmSubscriptionBridge',
   params: {
     hash: { squash: true, value: null },
   },
@@ -21,7 +21,7 @@ const states = [{
 }, {
   name: 'subscriptions.unsubscribe',
   url: '/unsubscribe/{hash}',
-  component: 'chplSubscriptionsUnsubscribeAll',
+  component: 'ChplUnsubscribeAllBridge',
   params: {
     hash: { squash: true, value: null },
   },
