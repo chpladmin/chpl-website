@@ -36,7 +36,7 @@ const states = [{
 }, {
   name: 'subscriptions.manage',
   url: '/manage/{hash}',
-  component: 'chplSubscriptionsManageSubscription',
+  component: 'chplManageSubscriptionBridge',
   params: {
     hash: { squash: true, value: null },
   },
