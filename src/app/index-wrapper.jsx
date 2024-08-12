@@ -18,12 +18,11 @@ function IndexWrapper() {
 
   useEffect(() => {
     let deregisterKeepalive;
+    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      Idle.watch();
+      console.log('Starting Idle in IndexWrapper');
+    }
     if (isCurrentUserChplAuthenticated) {
-      if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
-        Idle.watch();
-        console.log('Starting Idle in IndexWrapper');
-      }
-
       deregisterKeepalive = $rootScope.$on('Keepalive', () => {
         console.info('Keepalive');
         if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
