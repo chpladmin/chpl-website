@@ -29,7 +29,6 @@ const useStyles = makeStyles({
 });
 
 function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
-  console.log(`InitialState = ${state}`)
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
   const classes = useStyles();
