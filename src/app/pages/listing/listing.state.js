@@ -1,7 +1,7 @@
 const states = [{
   name: 'listing',
   url: '/listing/{id}',
-  component: 'chplListing',
+  component: 'chplListingPageBridge',
   data: { title: 'CHPL Listing Details' },
 }, {
   name: 'listing.flag-edit',
