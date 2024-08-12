@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   List,
   ListItem,
   Paper,
@@ -12,8 +13,10 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
+import { useSnackbar } from 'notistack';
+import { NotificationsOutlined } from '@material-ui/icons';
 
-import { useFetchAllSubscriptions } from 'api/subscriptions';
+import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {
   ChplLink,
   ChplPagination,
@@ -42,12 +45,14 @@ const useStyles = makeStyles({
     overflowWrap: 'anywhere',
   },
   pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
+    padding: '16px 32px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   pageBody: {
     display: 'grid',
-    gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
@@ -73,7 +78,7 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     overflowWrap: 'anywhere',
     [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
+      minWidth: '150px',
     },
   },
   tableContainer: {
@@ -108,6 +113,7 @@ const useStyles = makeStyles({
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const $analytics = getAngularService('$analytics');
+  const { enqueueSnackbar } = useSnackbar();
   const [headers] = useState(initialHeaders);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -115,6 +121,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const [subscriptions, setSubscriptions] = useState([]);
+  const { mutate } = usePostGetDeliveredNotifications();
   const classes = useStyles();
 
   const filterContext = useFilterContext();
@@ -150,13 +157,35 @@ function ChplManageSubscriptionsView({ analytics }) {
     setSortDescending(orderDirection === 'desc');
   };
 
+  const getDeliveredMessages = () => {
+    mutate({}, {
+      onSuccess: () => {
+        const body = 'Please check your email for the report';
+        enqueueSnackbar(body, { variant: 'success' });
+      },
+      onError: (error) => {
+        console.error(error);
+        const body = 'Error. Please check your credentials or contact the administrator';
+        enqueueSnackbar(body, { variant: 'error' });
+      },
+    });
+  };
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">Subscriptions</Typography>
+        <Typography variant="h3" component="h1">Subscriptions</Typography>
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={getDeliveredMessages}
+          endIcon={<NotificationsOutlined />}
+        >
+          Get Delivered Notifications
+        </Button>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div className={classes.searchContainer}>
