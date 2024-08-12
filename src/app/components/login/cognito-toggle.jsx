@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
+import { getAccessToken } from 'axios-jwt';
 
 import ChplCognitoLogin from './cognito-login';
 
@@ -31,6 +32,7 @@ function ChplCognitoToggle({ dispatch }) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
+  const [state, setState] = useState(getAccessToken() ? 'LOGGEDIN' : 'SIGNIN');
   const { user, impersonating } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
   const [ssoIsOn, setSsoIsOn] = useState(false);
@@ -101,6 +103,8 @@ function ChplCognitoToggle({ dispatch }) {
         <div className={classes.loginCard}>
           <ChplCognitoLogin
             dispatch={handleDispatch}
+            setState={setState}
+            state={state}
           />
         </div>
       </Popover>
