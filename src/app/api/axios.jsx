@@ -11,7 +11,7 @@ import { getAngularService } from 'services/angular-react-helper';
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
-  const ngLocalStorage = getAngularService('$localStorage');
+  const $localStorage = getAngularService('$localStorage');
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -31,7 +31,7 @@ function AxiosProvider({ children }) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
         return Axios.post('rest/cognito/users/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => {
-            ngLocalStorage.jwtToken = response.data.accessToken;
+            $localStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;
           });
       }

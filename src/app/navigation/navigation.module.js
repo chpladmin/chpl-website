@@ -65,16 +65,16 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
     const accessToken = $localStorage.jwtToken;
     if (accessToken && authService.parseJwt(accessToken).exp > moment(new Date().getTime()).unix()) {
       return $q.when(accessToken);
-    }
+    } 
     const { refreshToken } = $localStorage;
 
     if ($localStorage.currentUser && $localStorage.refreshToken) {
       const { cognitoId } = $localStorage.currentUser;
-      const nghttp = $injector.get('$http');
+      const $http = $injector.get('$http');
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
-      return nghttp.post('cognito/users/refresh-token', { refreshToken, cognitoId }, { headers }).then(
+      return $http.post('cognito/users/refresh-token', { refreshToken, cognitoId }, { headers }).then(
         (response) => {
           $localStorage.jwtToken = response.data.accessToken;
           return $localStorage.jwtToken;
