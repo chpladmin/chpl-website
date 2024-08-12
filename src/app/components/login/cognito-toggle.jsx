@@ -7,11 +7,13 @@ import {
 import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
 import { getAccessToken } from 'axios-jwt';
+import regeneratorRuntime from "regenerator-runtime";
 
 import ChplCognitoLogin from './cognito-login';
 
 import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
+import { getIn } from 'yup/lib/util/reach';
 
 const useStyles = makeStyles({
   loginSpacing: {
@@ -32,11 +34,15 @@ function ChplCognitoToggle({ dispatch }) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [state, setState] = useState(getAccessToken() ? 'LOGGEDIN' : 'SIGNIN');
+  const [state, setState] = useState('SIGNIN');
   const { user, impersonating } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
   const [ssoIsOn, setSsoIsOn] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    getAccessToken().then((token) => (token ? setState('LOGGEDIN') : setState('SIGNIN')));
+  }, []);
 
   useEffect(() => {
     setSsoIsOn(isOn('sso'));
