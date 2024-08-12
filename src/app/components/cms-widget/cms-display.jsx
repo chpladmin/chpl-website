@@ -25,7 +25,7 @@ import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api
 import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext } from 'shared/contexts';
+import { CmsContext, FlagContext } from 'shared/contexts';
 
 const ProgressBar = (props) => {
   const { value } = props;
@@ -115,7 +115,9 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
+  const { isOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
+  const [cmsA9GracePeriodEndIsOn, setCmsA9GracePeriodEndIsOn] = useState(false);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
@@ -130,9 +132,13 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
-    createPdf(pdfData);
+    createPdf(pdfData, cmsA9GracePeriodEndIsOn);
     setIsDownloading(false);
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
+
+  useEffect(() => {
+    setCmsA9GracePeriodEndIsOn(isOn('cms-a9-grace-period-end'));
+  }, [isOn]);
 
   useEffect(() => {
     setCertId(undefined);
