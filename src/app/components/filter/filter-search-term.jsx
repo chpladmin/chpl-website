@@ -17,7 +17,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
-  goButton: {
+  searchButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
   },
@@ -67,7 +67,7 @@ function ChplFilterSearchTerm(props) {
     setSearchTerm('');
   };
 
-  const handleGo = () => {
+  const handleSearch = () => {
     if (analytics) {
       $analytics.eventTrack('Enter Value Into Text Filter', { category: analytics.category, label: term });
     }
@@ -81,13 +81,12 @@ function ChplFilterSearchTerm(props) {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      handleGo();
+      handleSearch();
     }
   };
 
   return (
     <>
-      <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
       <div className={classes.searchBarContainer}>
         <div className={classes.searchBar}>
           <InputBase
@@ -112,14 +111,15 @@ function ChplFilterSearchTerm(props) {
             )}
           />
           <Button
-            className={classes.goButton}
+            className={classes.searchButton}
             size="medium"
             variant="contained"
             color="primary"
-            id="filter-search-term-go"
-            onClick={handleGo}
+            id="filter-search-term-search"
+            onClick={handleSearch}
           >
-            Go
+            Search
+            <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
           </Button>
         </div>
       </div>
