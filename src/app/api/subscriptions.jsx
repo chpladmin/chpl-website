@@ -71,6 +71,12 @@ const useFetchSubscriptions = (hash) => {
   });
 };
 
+const usePostGetDeliveredNotifications = () => {
+  const axios = useAxios();
+  return useMutation(async () => axios.post('subscriptions/notifications-report', {})
+    .then((response) => response.data));
+};
+
 const usePostSubscription = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('subscriptions', data));
@@ -89,6 +95,7 @@ export {
   useFetchRoles,
   useFetchSubscriber,
   useFetchSubscriptions,
+  usePostGetDeliveredNotifications,
   usePostSubscription,
   usePutSubscriber,
 };
