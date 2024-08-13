@@ -47,9 +47,9 @@ function AxiosProvider({ children }) {
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
       let accessToken = '';
-      if (JSON.parse(localStorage.getItem('ngStorage-currentUser')).cognitoId) {
+      if (JSON.parse(localStorage.getItem('ngStorage-currentUser'))?.cognitoId) {
         accessToken = await getAccessToken();
-      } else {
+      } else if (JSON.parse(localStorage.getItem('ngStorage-currentUser'))?.userId) {
         accessToken = $localStorage.jwtToken;
       }
       if (accessToken) {
