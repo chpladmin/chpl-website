@@ -142,9 +142,11 @@ import { clearAuthTokens } from 'axios-jwt';
     }
 
     function logout() {
-      $injector.get('networkService').logout({
-        email: getCurrentUser().email,
-      });
+      if (getCurrentUser().cognitoId) {
+        $injector.get('networkService').logout({
+          email: getCurrentUser().email,
+        });
+      }
       delete $localStorage.jwtToken;
       delete $localStorage.refreshToken;
       delete $localStorage.currentUser;
