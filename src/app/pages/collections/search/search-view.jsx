@@ -27,9 +27,7 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterQuickFilters,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
@@ -214,13 +212,7 @@ function ChplSearchView(props) {
           Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated listings.
         </Typography>
       </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm />
-        <Box className={classes.searchButtonContainer}>
-          <ChplFilterPanel />
-          <ChplFilterQuickFilters />
-        </Box>
-      </div>
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>
