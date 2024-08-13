@@ -31,8 +31,8 @@ angular
      * .interval is how frequently the system refreshes the token
      * values are defined in the webpack.config.js file
      */
-    IdleProvider.idle(60 * MINUTES_UNTIL_IDLE);
-    IdleProvider.timeout(60 * MINUTES_UNTIL_LOGOUT);
+    IdleProvider.idle(60 * 5);
+    IdleProvider.timeout(60 * 2);
     IdleProvider.autoResume(true);
     KeepaliveProvider.interval(60 * MINUTES_BETWEEN_KEEPALIVE);
   })

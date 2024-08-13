@@ -46,7 +46,12 @@ function AxiosProvider({ children }) {
         ...config,
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
-      const accessToken = await getAccessToken();
+      let accessToken = '';
+      if (JSON.parse(localStorage.getItem('ngStorage-currentUser')).cognitoId) {
+        accessToken = await getAccessToken();
+      } else {
+        accessToken = $localStorage.jwtToken;
+      }
       if (accessToken) {
         updated.headers.Authorization = `Bearer ${accessToken}`;
       }
