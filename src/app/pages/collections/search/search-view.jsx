@@ -82,17 +82,6 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
   },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
-  },
   searchButtonContainer: {
     display: 'flex',
     justifyContent: 'space-between',

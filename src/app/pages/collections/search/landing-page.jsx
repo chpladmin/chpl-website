@@ -19,9 +19,9 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
 import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
-import { ChplFilterQuickFilters, ChplFilterSearchTerm } from 'components/filter';
+import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
-import { palette, theme } from 'themes';
+import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
   collectionsCard: {
@@ -135,20 +135,6 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    position: 'relative',
-    top: '-32px',
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '10fr auto',
-    gap: '16px',
-    alignItems: 'center',
-    boxShadow: '#00000040 0px 24px 24px 2px',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
-  },
 }));
 
 function ChplLandingPage() {
@@ -169,10 +155,9 @@ function ChplLandingPage() {
       <Box className={classes.landingPageBackground} pb={16} height="fit-content">
         <Box className={classes.landingPageImageryBackground}>
           <Container maxWidth="md">
-            <Box className={classes.searchContainer}>
-              <ChplFilterSearchTerm />
-              <ChplFilterQuickFilters />
-            </Box>
+            <ChplFilterSearchBar
+              hideAdvancedSearch
+            />
             <Box pb={4}>
               <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
                 Feature Topic

@@ -3,6 +3,7 @@ import {
   Box,
   makeStyles,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import ChplFilterPanel from './filter-panel';
 import ChplFilterQuickFilters from './filter-quick-filters';
@@ -29,15 +30,21 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterSearchBar() {
+function ChplFilterSearchBar({ hideAdvancedSearch, hideQuickFilters }) {
   const classes = useStyles();
 
   return (
     <div className={classes.searchContainer}>
       <ChplFilterSearchTerm />
       <Box className={classes.searchButtonContainer}>
-        <ChplFilterPanel />
-        <ChplFilterQuickFilters />
+        { !hideAdvancedSearch
+          && (
+            <ChplFilterPanel />
+          )}
+        { !hideQuickFilters
+          && (
+            <ChplFilterQuickFilters />
+          )}
       </Box>
     </div>
   );
@@ -46,4 +53,11 @@ function ChplFilterSearchBar() {
 export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
+  hideAdvancedSearch: bool,
+  hideQuickFilters: bool,
+};
+
+ChplFilterSearchBar.defaultProps = {
+  hideAdvancedSearch: false,
+  hideQuickFilters: false, // replace this with "does quick filters" exist in context
 };
