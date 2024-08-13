@@ -24,14 +24,13 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { palette, theme } from 'themes';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
   linkWrap: {
@@ -54,17 +53,6 @@ const useStyles = makeStyles({
   pageContent: {
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
-  },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
   },
   stickyColumn: {
     position: 'sticky',
@@ -214,10 +202,9 @@ function ChplSedCollectionView(props) {
           />
         </div>
       </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-      </div>
+      <ChplFilterSearchBar
+        hideQuickFilters
+      />
       <div>
         <ChplFilterChips />
       </div>

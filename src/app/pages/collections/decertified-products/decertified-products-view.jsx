@@ -22,15 +22,14 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { palette, theme } from 'themes';
+import { theme } from 'themes';
 
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -59,17 +58,6 @@ const useStyles = makeStyles({
   pageContent: {
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
-  },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
   },
   stickyColumn: {
     position: 'sticky',
@@ -168,17 +156,16 @@ function ChplDecertifiedProductsCollectionView(props) {
         <Typography variant="body1" gutterBottom>
           This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
           {' '}
-          <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>
+          <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>
           . For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the
           {' '}
           <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>
           . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
       </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-      </div>
+      <ChplFilterSearchBar
+        hideQuickFilters
+      />
       <div>
         <ChplFilterChips />
       </div>

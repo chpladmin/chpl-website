@@ -23,8 +23,7 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
@@ -32,7 +31,7 @@ import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -53,17 +52,6 @@ const useStyles = makeStyles({
   pageContent: {
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
-  },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
   },
   stickyColumn: {
     position: 'sticky',
@@ -224,26 +212,26 @@ function ChplSvapCollectionView(props) {
           <Typography variant="body1" gutterBottom>
             This collection features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
             {' '}
-            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap" analytics-on="click" analytics-event="SVAP" analytics-properties="{ category: 'Collections' }">Standards Version Advancement Process (SVAP)</a>
+            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap">Standards Version Advancement Process (SVAP)</a>
             . The SVAP, introduced in the ONC&apos;s
             {' '}
-            <a href="https://www.healthit.gov/topic/information-blocking" analytics-on="click" analytics-event="Cures Act Final Rule" analytics-properties="{ category: 'Collections' }">Cures Act Final Rule</a>
+            <a href="https://www.healthit.gov/topic/information-blocking">Cures Act Final Rule</a>
             , aims to streamline the adoption of newer standards, improving communication and data exchange across healthcare systems.
           </Typography>
           <Typography variant="body1" gutterBottom>
             Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
             {' '}
-            <a href="https://www.healthit.gov/topic/information-blocking" analytics-on="click" analytics-event="Cures Act Final Rule" analytics-properties="{ category: 'Collections' }">Cures Act Final Rule</a>
+            <a href="https://www.healthit.gov/topic/information-blocking">Cures Act Final Rule</a>
             . The SVAP Collection serves as a valuable resource for healthcare providers seeking Health IT solutions that employ the latest interoperability standards.
           </Typography>
           <Typography variant="body1" gutterBottom>
             SVAP information and related data are available on the CHPL website and can also be accessed through the
             {' '}
-            <a href="#/resources/download" analytics-on="click" analytics-event="Download the CHPL" analytics-properties="{ category: 'Collections' }">Download the CHPL</a>
+            <a href="#/resources/download">Download the CHPL</a>
             {' '}
             page. For more details, please visit the
             {' '}
-            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap" analytics-on="click" analytics-event="SVAP Resources" analytics-properties="{ category: 'Collections' }">SVAP Resources</a>
+            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap">SVAP Resources</a>
             .
           </Typography>
           <Typography variant="body1">
@@ -263,10 +251,9 @@ function ChplSvapCollectionView(props) {
           />
         </div>
       </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-      </div>
+      <ChplFilterSearchBar
+        hideQuickFilters
+      />
       <div>
         <ChplFilterChips />
       </div>
