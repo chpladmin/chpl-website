@@ -7,12 +7,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import BlockIcon from '@material-ui/icons/Block';
 import CodeIcon from '@material-ui/icons/Code';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import GavelIcon from '@material-ui/icons/Gavel';
 import ImageIcon from '@material-ui/icons/Image';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
@@ -211,7 +211,7 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <GavelIcon style={{ color: theme.palette.primary.dark }} />
+                        <AssignmentTurnedInOutlinedIcon style={{ color: theme.palette.primary.dark }} />
                         <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
