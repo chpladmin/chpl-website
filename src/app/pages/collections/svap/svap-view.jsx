@@ -251,9 +251,7 @@ function ChplSvapCollectionView(props) {
           />
         </div>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>

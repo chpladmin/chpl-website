@@ -171,9 +171,7 @@ function ChplQuestionableActivityView(props) {
           </Typography>
         </div>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>

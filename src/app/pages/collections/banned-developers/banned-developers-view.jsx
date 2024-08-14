@@ -173,7 +173,6 @@ function ChplBannedDevelopersCollectionView(props) {
         </div>
       </div>
       <ChplFilterSearchBar
-        hideQuickFilters
         placeholder="Search by Developer Name or Code..."
       />
       <div>

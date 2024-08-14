@@ -181,9 +181,7 @@ function ChplCorrectiveActionCollectionView(props) {
       { directReviewsAvailable
         && (
           <>
-            <ChplFilterSearchBar
-              hideQuickFilters
-            />
+            <ChplFilterSearchBar />
             <div>
               <ChplFilterChips />
             </div>

@@ -264,9 +264,7 @@ function ChplApiDocumentationCollectionView(props) {
             )}
         </div>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>

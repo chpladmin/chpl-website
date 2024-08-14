@@ -163,9 +163,7 @@ function ChplInactiveCertificatesCollectionView(props) {
           . For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>

@@ -177,7 +177,6 @@ function ChplManageSubscriptionsView({ analytics }) {
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
-          hideQuickFilters
           placeholder="Search by Subscriber Email or CHPL Product Number..."
         />
         <div>

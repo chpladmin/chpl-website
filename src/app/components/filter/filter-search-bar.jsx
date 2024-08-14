@@ -14,6 +14,7 @@ import ChplFilterBrowse from './filter-browse';
 import ChplFilterPanel from './filter-panel';
 import ChplFilterQuickFilters from './filter-quick-filters';
 import ChplFilterSearchTerm from './filter-search-term';
+import { useFilterContext } from './filter-context';
 
 import { palette, theme } from 'themes';
 
@@ -38,10 +39,10 @@ const useStyles = makeStyles({
 
 function ChplFilterSearchBar({
   hideAdvancedSearch,
-  hideQuickFilters,
   placeholder,
   toggleMultipleFilters,
 }) {
+  const { filters } = useFilterContext();
   const classes = useStyles();
 
   return (
@@ -55,7 +56,7 @@ function ChplFilterSearchBar({
           && (
             <ChplFilterPanel />
           )}
-        { !hideQuickFilters
+        { filters.some((f) => f.key === 'quickFilters')
           && (
             <ChplFilterQuickFilters
               toggleMultipleFilters={toggleMultipleFilters}
@@ -70,14 +71,12 @@ export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
   hideAdvancedSearch: bool,
-  hideQuickFilters: bool,
   placeholder: string,
   toggleMultipleFilters: arrayOf(object),
 };
 
 ChplFilterSearchBar.defaultProps = {
   hideAdvancedSearch: false,
-  hideQuickFilters: false, // replace this with "does quick filters" exist in context
   placeholder: 'Search by Developer, Product, or CHPL ID...',
   toggleMultipleFilters: undefined,
 };

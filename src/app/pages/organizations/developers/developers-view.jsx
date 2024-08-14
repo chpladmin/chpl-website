@@ -193,7 +193,6 @@ function ChplDevelopersView(props) {
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
-          hideQuickFilters
           placeholder="Search by Developer Name or Code..."
           toggleMultipleFilters={bonusQuickFilters}
         />

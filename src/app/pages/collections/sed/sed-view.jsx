@@ -202,9 +202,7 @@ function ChplSedCollectionView(props) {
           />
         </div>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>

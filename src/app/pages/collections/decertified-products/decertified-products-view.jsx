@@ -163,9 +163,7 @@ function ChplDecertifiedProductsCollectionView(props) {
           . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>

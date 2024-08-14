@@ -185,9 +185,7 @@ function ChplRealWorldTestingCollectionView(props) {
           Please note that by default, only listings that are active or suspended are shown in the search results.
         </Typography>
       </div>
-      <ChplFilterSearchBar
-        hideQuickFilters
-      />
+      <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
       </div>
