@@ -10,6 +10,7 @@ import {
   string,
 } from 'prop-types';
 
+import ChplFilterBrowse from './filter-browse';
 import ChplFilterPanel from './filter-panel';
 import ChplFilterQuickFilters from './filter-quick-filters';
 import ChplFilterSearchTerm from './filter-search-term';
@@ -49,6 +50,7 @@ function ChplFilterSearchBar({
         placeholder={placeholder}
       />
       <Box className={classes.searchButtonContainer}>
+        <ChplFilterBrowse />
         { !hideAdvancedSearch
           && (
             <ChplFilterPanel />
