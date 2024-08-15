@@ -26,6 +26,7 @@ import ChplListingInformation from 'components/listing/details/listing-informati
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import { ChplLink, InternalScrollButton } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
@@ -135,6 +136,17 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
+  };
+
+  const toggleSeeAllCqms = () => {
+    eventTrack({
+      event: seeAllCqms ? 'See only attested CQMs' : 'See all CQMs',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    setSeeAllCqms(!seeAllCqms);
   };
 
   if (!listing) { return null; }
@@ -303,7 +315,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     name="seeAllCqms"
                     color="primary"
                     checked={seeAllCqms}
-                    onChange={() => setSeeAllCqms(!seeAllCqms)}
+                    onChange={toggleSeeAllCqms}
                   />
                 )}
                 label="See all CQMs"
