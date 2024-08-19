@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -12,10 +12,11 @@ import { bool } from 'prop-types';
 
 import ChplIcsFamily from 'components/listing/details/ics-family/ics-family';
 import { ChplLink } from 'components/util';
+import { UserContext } from 'shared/contexts';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
 
-const getRelatives = (listings) => listings.map((listing) => (
+const getRelatives = (source, user, listings) => listings.map((listing) => (
   <ListItem key={listing.chplProductNumber}>
     { listing.id
       && (
@@ -24,7 +25,13 @@ const getRelatives = (listings) => listings.map((listing) => (
           text={`${listing.chplProductNumber} (${getDisplayDateFormat(listing.certificationDay)})`}
           external={false}
           router={{ sref: 'listing', options: { id: listing?.id } }}
-          analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
+          analytics={{
+            event: `Navigate to ICS Relationship Listing - ${listing.chplProductNumber}`,
+            category: 'Listing Details',
+            label: source.chplProductNumber,
+            aggregationName: source.product.name,
+            group: user?.role,
+          }}
         />
       )}
     { !listing.id
@@ -37,6 +44,7 @@ const getRelatives = (listings) => listings.map((listing) => (
 function ChplAdditionalInformation(props) {
   const { isConfirming, listing } = props;
   const [currentPi, setCurrentPi] = useState(undefined);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (listing.promotingInteroperabilityUserHistory?.length > 0) {
@@ -57,7 +65,13 @@ function ChplAdditionalInformation(props) {
                     <ChplLink
                       href={listing.reportFileLocation}
                       text={listing.reportFileLocation}
-                      analytics={{ event: 'Test Results Summary', category: 'Download Details', label: listing.reportFileLocation }}
+                      analytics={{
+                        event: 'Navigate to Test Results Summary',
+                        category: 'Listing Details',
+                        label: listing.chplProductNumber,
+                        aggregationName: listing.product.name,
+                        group: user?.role,
+                      }}
                     />
                   )}
                 { !listing.reportFileLocation
@@ -90,7 +104,7 @@ function ChplAdditionalInformation(props) {
                     <>
                       <Typography variant="subtitle1">Inherits From:</Typography>
                       <List>
-                        { getRelatives(listing.ics.parents) }
+                        { getRelatives(listing, user, listing.ics.parents) }
                       </List>
                     </>
                   )}
@@ -99,7 +113,7 @@ function ChplAdditionalInformation(props) {
                     <>
                       <Typography variant="subtitle1">ICS Source for:</Typography>
                       <List>
-                        { getRelatives(listing.ics.children) }
+                        { getRelatives(listing, user, listing.ics.children) }
                       </List>
                     </>
                   )}
@@ -127,9 +141,9 @@ function ChplAdditionalInformation(props) {
               <CardHeader title="Developer Identified Targeted Users" />
               <CardContent>
                 <List>
-                  { listing.targetedUsers.map((user) => (
-                    <ListItem key={user.targetedUserName}>
-                      { user.targetedUserName }
+                  { listing.targetedUsers.map((tu) => (
+                    <ListItem key={tu.targetedUserName}>
+                      { tu.targetedUserName }
                     </ListItem>
                   ))}
                 </List>

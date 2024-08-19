@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -27,7 +28,8 @@ import CytoscapeComponent from 'react-cytoscapejs';
 
 import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { ListingContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -125,7 +127,6 @@ const generateElements = (listings, activeId, selectedId) => {
 };
 
 function ChplIcsFamily(props) {
-  const $analytics = getAngularService('$analytics');
   const { id } = props;
   const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
   const [compare, setCompare] = useState('');
@@ -135,7 +136,8 @@ function ChplIcsFamily(props) {
   const [listing, setListing] = useState(undefined);
   const [listingId, setListingId] = useState(undefined);
   const [listings, setListings] = useState([]);
-  const [pageChplProductNumber, setPageChplProductNumber] = useState(undefined);
+  const { listing: currentListing } = useContext(ListingContext);
+  const { user } = useContext(UserContext);
   const cy = useRef(null);
   const classes = useStyles();
 
@@ -160,7 +162,6 @@ function ChplIcsFamily(props) {
     setListings(data.sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
     setElements(generateElements(data, id, parseInt(listingId, 10)));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
-    setPageChplProductNumber(data.find((l) => l.id === id).chplProductNumber);
     setIsShowingDiagram(true);
   }, [data, isLoading, isSuccess, id, listingId]);
 
@@ -171,7 +172,13 @@ function ChplIcsFamily(props) {
   }, [listingId]);
 
   const closeDetails = () => {
-    $analytics.eventTrack('Hide ICS Relationship Detail', { category: 'Listing Details', label: listing.chplProductNumber });
+    eventTrack({
+      event: `Hide ICS Relationship Detail - ${listing.chplProductNumber}`,
+      category: 'Listing Details',
+      label: currentListing.chplProductNumber,
+      aggregationName: currentListing.product.name,
+      group: user?.role,
+    });
     setListingId(undefined);
   };
 
@@ -179,14 +186,32 @@ function ChplIcsFamily(props) {
     if (cy.current) return;
     cy.current = ref;
     cy.current.on('tap', 'node', (e) => {
-      $analytics.eventTrack('Show ICS Relationship Detail', { category: 'Listing Details', label: e.target.data().chplProductNumber });
+      eventTrack({
+        event: `Show ICS Relationship Detail - ${e.target.data().chplProductNumber}`,
+        category: 'Listing Details',
+        label: currentListing.chplProductNumber,
+        aggregationName: currentListing.product.name,
+        group: user?.role,
+      });
       setListingId(e.target.id());
     });
     cy.current.on('dragpan', () => {
-      $analytics.eventTrack('Pan ICS Relationship Diagram', { category: 'Listing Details', label: pageChplProductNumber });
+      eventTrack({
+        event: 'Pan ICS Relationship Diagram',
+        category: 'Listing Details',
+        label: currentListing.chplProductNumber,
+        aggregationName: currentListing.product.name,
+        group: user?.role,
+      });
     });
     cy.current.on('scrollzoom', () => {
-      $analytics.eventTrack('Zoom ICS Relationship Diagram', { category: 'Listing Details', label: pageChplProductNumber });
+      eventTrack({
+        event: 'Zoom ICS Relationship Diagram',
+        category: 'Listing Details',
+        label: currentListing.chplProductNumber,
+        aggregationName: currentListing.product.name,
+        group: user?.role,
+      });
     });
   }, [cy]);
 
@@ -215,7 +240,13 @@ function ChplIcsFamily(props) {
                 href={compare}
                 text="Compare all Certified Products"
                 external={false}
-                analytics={{ event: 'Compare All ICS Listings', category: 'Listing Details', label: pageChplProductNumber }}
+                analytics={{
+                  event: 'Compare All ICS Listings',
+                  category: 'Listing Details',
+                  label: currentListing.chplProductNumber,
+                  aggregationName: currentListing.product.name,
+                  group: user?.role,
+                }}
               />
             </div>
             { isShowingListingDetails
@@ -236,7 +267,13 @@ function ChplIcsFamily(props) {
                             text={listing?.chplProductNumber}
                             external={false}
                             router={{ sref: 'listing', options: { id: listing?.id } }}
-                            analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
+                            analytics={{
+                              event: `Navigate to ICS Relationship Listing - ${listing.chplProductNumber}`,
+                              category: 'Listing Details',
+                              label: currentListing.chplProductNumber,
+                              aggregationName: currentListing.product.name,
+                              group: user?.role,
+                            }}
                           />
                         )}
                       <Typography>
@@ -246,7 +283,13 @@ function ChplIcsFamily(props) {
                           text={listing?.developer.name}
                           external={false}
                           router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
-                          analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: listing.developer.name }}
+                          analytics={{
+                            event: `Navigate to ICS Relationship Developer - ${listing.developer.name}`,
+                            category: 'Listing Details',
+                            label: currentListing.chplProductNumber,
+                            aggregationName: currentListing.product.name,
+                            group: user?.role,
+                          }}
                         />
                       </Typography>
                       <Typography>
@@ -324,7 +367,13 @@ function ChplIcsFamily(props) {
                                 text={l.chplProductNumber}
                                 external={false}
                                 router={{ sref: 'listing', options: { id: l?.id } }}
-                                analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: l.chplProductNumber }}
+                                analytics={{
+                                  event: `Navigate to ICS Relationship Listing - ${l.chplProductNumber}`,
+                                  category: 'Listing Details',
+                                  label: currentListing.chplProductNumber,
+                                  aggregationName: currentListing.product.name,
+                                  group: user?.role,
+                                }}
                               />
                             )}
                         </TableCell>
@@ -334,7 +383,13 @@ function ChplIcsFamily(props) {
                             text={l?.developer.name}
                             external={false}
                             router={{ sref: 'organizations.developers.developer', options: { id: l?.developer.id } }}
-                            analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: l.developer.name }}
+                            analytics={{
+                              event: `Navigate to ICS Relationship Developer - ${l.developer.name}`,
+                              category: 'Listing Details',
+                              label: currentListing.chplProductNumber,
+                              aggregationName: currentListing.product.name,
+                              group: user?.role,
+                            }}
                           />
                         </TableCell>
                         <TableCell>{ l.product.name }</TableCell>
