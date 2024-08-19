@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -17,7 +17,10 @@ import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
+import { ChplLink } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -126,6 +129,8 @@ const sortNonconformities = (a, b) => {
 function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
+  const { listing } = useContext(ListingContext);
+  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -179,7 +184,24 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     ));
 
   const handleAccordionChange = () => {
+    eventTrack({
+      event: expanded ? 'Hide Direct Review Activities' : 'Show Direct Review Activities',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     setExpanded(!expanded);
+  };
+
+  const handleWithinChange = (obj, isExpanded) => {
+    eventTrack({
+      event: isExpanded ? 'Show Direct Review' : 'Hide Direct Review',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
   };
 
   return (
@@ -230,7 +252,11 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
             </Typography>
           )}
         { directReviews.map((dr) => (
-          <Accordion className={classes.directReviews} key={dr.created}>
+          <Accordion
+            className={classes.directReviews}
+            onChange={handleWithinChange}
+            key={dr.created}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               className={classes.directReviewSummary}
@@ -277,7 +303,19 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                               <List>
                                 { nc.developerAssociatedListings.map((dal) => (
                                   <ListItem key={dal.id}>
-                                    <a href={`#/listing/${dal.id}`}>{ dal.chplProductNumber }</a>
+                                    <ChplLink
+                                      href={`#/listing/${dal.id}`}
+                                      text={dal.chplProductNumber}
+                                      external={false}
+                                      router={{ sref: 'listing', options: { id: dal.id } }}
+                                      analytics={{
+                                        event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
+                                        category: 'Listing Details',
+                                        label: listing.chplProductNumber,
+                                        aggregationName: listing.product.name,
+                                        group: user?.role,
+                                      }}
+                                    />
                                   </ListItem>
                                 ))}
                               </List>

@@ -385,9 +385,16 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   && (
                     <ChplLink
                       href="#/surveillance/manage"
-                      text="Manage Surveillance Activity"
+                      text="Manage Surveillance Activities"
                       external={false}
                       router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                      analytics={{
+                        event: 'Manage Surveillance Activities',
+                        category: 'Listing Details',
+                        label: listing.chplProductNumber,
+                        aggregationName: listing.product.name,
+                        group: user?.role,
+                      }}
                     />
                   )}
               </CardContent>

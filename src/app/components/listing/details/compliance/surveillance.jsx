@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -14,7 +14,9 @@ import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
@@ -146,6 +148,8 @@ const getSurveillanceTitle = (surv) => {
 function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
+  const { listing } = useContext(ListingContext);
+  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -167,7 +171,37 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
     ));
 
   const handleAccordionChange = () => {
+    const title = ics ? 'Inherited Certified Status Surveillance Activities' : 'Surveillance Activities';
+    eventTrack({
+      event: expanded ? `Hide ${title}` : `Show ${title}`,
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     setExpanded(!expanded);
+  };
+
+  const handleWithinChange = (obj, isExpanded) => {
+    const title = ics ? 'Surveillance within Inherited Certified Status Surveillance Activities' : 'Surveillance within Surveillance Activities';
+    eventTrack({
+      event: isExpanded ? `Show ${title}` : `Hide ${title}`,
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+  };
+
+  const handleDetailsChange = (obj, isExpanded) => {
+    const title = ics ? 'Details within Inherited Certified Status Surveillance Activities' : 'Details within Surveillance Activities';
+    eventTrack({
+      event: isExpanded ? `Show ${title}` : `Hide ${title}`,
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
   };
 
   return (
@@ -202,7 +236,11 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
             </Typography>
           )}
         { surveillance.map((surv) => (
-          <Accordion className={classes.surveillance} key={surv.id}>
+          <Accordion
+            className={classes.surveillance}
+            onChange={handleWithinChange}
+            key={surv.id}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               className={classes.surveillanceDetailsSummary}
@@ -225,7 +263,12 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
                 { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
               { surv.requirements.map((req) => req.nonconformities.map((nc) => (
-                <Accordion variant="elevation" className={classes.surveillance} key={nc.id}>
+                <Accordion
+                  variant="elevation"
+                  className={classes.surveillance}
+                  onChange={handleDetailsChange}
+                  key={nc.id}
+                >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     className={classes.surveillanceDetailsHeaderWithBorder}
