@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 13.23.0
+_19 August 2024_
+
+### Features
+* Enable request to get subscription notification report
+* Create page for resetting forgotten passwords
+* Enable "send forgotten password" email for Cognito users
+* Enable transition from a(9) to b(11)
+
+### Flagged Features
+* Enable "grace period" for CMS ID generation related to a9/b11
+
+### User Interface Updates
+* Remove "Classification" and "Practice Type" from CMS PDF
+
+---
+
 ## Version 13.22.0
 _5 August 2024_
 
