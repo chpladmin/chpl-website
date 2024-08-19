@@ -215,7 +215,7 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography>
-            { ics ? 'Inherited Certified Status Surveillance Activity' : 'Surveillance Activities' }
+            { ics ? 'Inherited Certified Status Surveillance Activities' : 'Surveillance Activities' }
           </Typography>
           <Typography variant="body2">
             (
