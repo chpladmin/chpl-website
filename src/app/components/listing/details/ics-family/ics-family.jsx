@@ -268,7 +268,7 @@ function ChplIcsFamily(props) {
                             external={false}
                             router={{ sref: 'listing', options: { id: listing?.id } }}
                             analytics={{
-                              event: `Navigate to ICS Relationship Listing - ${listing.chplProductNumber}`,
+                              event: `Navigate to Listing from ICS Relationship Diagram - ${listing.chplProductNumber}`,
                               category: 'Listing Details',
                               label: currentListing.chplProductNumber,
                               aggregationName: currentListing.product.name,
@@ -284,7 +284,7 @@ function ChplIcsFamily(props) {
                           external={false}
                           router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
                           analytics={{
-                            event: `Navigate to ICS Relationship Developer - ${listing.developer.name}`,
+                            event: `Navigate to Developer from ICS Relationship Diagram - ${listing.developer.name}`,
                             category: 'Listing Details',
                             label: currentListing.chplProductNumber,
                             aggregationName: currentListing.product.name,

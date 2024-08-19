@@ -16,7 +16,7 @@ import { UserContext } from 'shared/contexts';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
 
-const getRelatives = (source, user, listings) => listings.map((listing) => (
+const getRelatives = (source, user, isParent, listings) => listings.map((listing) => (
   <ListItem key={listing.chplProductNumber}>
     { listing.id
       && (
@@ -26,7 +26,7 @@ const getRelatives = (source, user, listings) => listings.map((listing) => (
           external={false}
           router={{ sref: 'listing', options: { id: listing?.id } }}
           analytics={{
-            event: `Navigate to ICS Relationship Listing - ${listing.chplProductNumber}`,
+            event: `Navigate to Listing from ${isParent ? 'ICS Source for' : 'Inherits From'} - ${listing.chplProductNumber}`,
             category: 'Listing Details',
             label: source.chplProductNumber,
             aggregationName: source.product.name,
@@ -104,7 +104,7 @@ function ChplAdditionalInformation(props) {
                     <>
                       <Typography variant="subtitle1">Inherits From:</Typography>
                       <List>
-                        { getRelatives(listing, user, listing.ics.parents) }
+                        { getRelatives(listing, user, false, listing.ics.parents) }
                       </List>
                     </>
                   )}
@@ -113,7 +113,7 @@ function ChplAdditionalInformation(props) {
                     <>
                       <Typography variant="subtitle1">ICS Source for:</Typography>
                       <List>
-                        { getRelatives(listing, user, listing.ics.children) }
+                        { getRelatives(listing, user, true, listing.ics.children) }
                       </List>
                     </>
                   )}
