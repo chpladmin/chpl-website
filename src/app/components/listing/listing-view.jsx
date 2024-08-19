@@ -138,6 +138,17 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     return false;
   };
 
+  const toggleSeeAllCriteria = () => {
+    eventTrack({
+      event: seeAllCriteria ? 'See only attested Certification Criteria' : 'See all Certification Criteria',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    setSeeAllCriteria(!seeAllCriteria);
+  };
+
   const toggleSeeAllCqms = () => {
     eventTrack({
       event: seeAllCqms ? 'See only attested CQMs' : 'See all CQMs',
@@ -281,7 +292,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                         name="seeAllCriteria"
                         checked={seeAllCriteria}
                         color="primary"
-                        onChange={() => setSeeAllCriteria(!seeAllCriteria)}
+                        onChange={toggleSeeAllCriteria}
                       />
                     )}
                     label="See all Certification Criteria"
