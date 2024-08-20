@@ -44,7 +44,7 @@
     "angularjs-toaster": "^2.2.0",
     "angulartics": "^1.6.0",
     "angulartics-google-tag-manager": "^0.0.1",
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "bootstrap-sass": "3.4.3",
     "cytoscape": "^3.24.0",
     "export-to-csv": "https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac",

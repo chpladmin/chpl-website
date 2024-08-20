@@ -5036,17 +5036,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.0":
-  version: 1.6.2
-  resolution: "axios@npm:1.6.2"
-  dependencies:
-    follow-redirects: "npm:^1.15.0"
-    form-data: "npm:^4.0.0"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10/612bc93f8f738a518e7c5f9de9cc782bcd36aac6bae279160ef6a10260378e21c1786520eab3336898e3d66e0839ebdf739f327fb6d0431baa4d3235703a7652
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.6.7":
   version: 1.6.8
   resolution: "axios@npm:1.6.8"
@@ -5055,6 +5044,17 @@ __metadata:
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10/3f9a79eaf1d159544fca9576261ff867cbbff64ed30017848e4210e49f3b01e97cf416390150e6fdf6633f336cd43dc1151f890bbd09c3c01ad60bb0891eee63
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.7.4":
+  version: 1.7.4
+  resolution: "axios@npm:1.7.4"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10/7a1429be1e3d0c2e1b96d4bba4d113efbfabc7c724bed107beb535c782c7bea447ff634886b0c7c43395a264d085450d009eb1154b5f38a8bae49d469fdcbc61
   languageName: node
   linkType: hard
 
@@ -6483,7 +6483,7 @@ __metadata:
     angularjs-toaster: "npm:^2.2.0"
     angulartics: "npm:^1.6.0"
     angulartics-google-tag-manager: "npm:^0.0.1"
-    axios: "npm:^1.6.0"
+    axios: "npm:^1.7.4"
     babel-eslint: "npm:^8.2.6"
     babel-jest: "npm:^26.6.3"
     babel-loader: "npm:^8.3.0"
@@ -9929,16 +9929,6 @@ __metadata:
     debug:
       optional: true
   checksum: 10/2aaba60f6bc4c0267fd2a753b328d860835fa5ada0a2a93dca08f6517a8ad88b28768210831b055cb1771c746477ca96087083fd0a36bfc21625736efa35067b
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.15.0":
-  version: 1.15.2
-  resolution: "follow-redirects@npm:1.15.2"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: 10/8be0d39919770054812537d376850ccde0b4762b0501c440bd08724971a078123b55f57704f2984e0664fecc0c86adea85add63295804d9dce401cd9604c91d3
   languageName: node
   linkType: hard
 
