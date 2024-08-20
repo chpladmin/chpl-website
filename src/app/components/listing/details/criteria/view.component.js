@@ -10,6 +10,7 @@ const CertificationCriteriaViewComponent = {
     qmsStandards: '<',
     refreshSed: '&',
     resources: '<',
+    upgradeB11: '&',
     viewAll: '<',
   },
   controller: class CertificationCriteriaViewController {
