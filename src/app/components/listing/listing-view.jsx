@@ -174,7 +174,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="listingInformation"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
+                    analytics={{
+                      event: 'Navigate to Listing Information',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Listing Information
                     <NotesOutlinedIcon className={classes.iconSpacing} />
@@ -185,7 +191,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="certificationCriteria"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
+                    analytics={{
+                      event: 'Navigate to Certification Criteria',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Certification Criteria
                     <BookOutlinedIcon className={classes.iconSpacing} />
@@ -196,7 +208,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="clinicalQualityMeasures"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
+                    analytics={{
+                      event: 'Navigate to Clinical Quality Measures',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Clinical Quality Measures
                     <DoneAllOutlinedIcon className={classes.iconSpacing} />
@@ -209,7 +227,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                    >
                      <InternalScrollButton
                        id="sed"
-                       analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                       analytics={{
+                         event: 'Navigate to Safety Enhanced Design',
+                         category: 'Listing Details',
+                         label: listing.chplProductNumber,
+                         aggregationName: listing.product.name,
+                         group: user?.role,
+                       }}
                      >
                        Safety Enhanced Design (SED)
                        <TouchAppOutlinedIcon className={classes.iconSpacing} />
@@ -223,7 +247,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     >
                       <InternalScrollButton
                         id="g1g2Measures"
-                        analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
+                        analytics={{
+                          event: 'Navigate to G1/G2 Measures',
+                          category: 'Listing Details',
+                          label: listing.chplProductNumber,
+                          aggregationName: listing.product.name,
+                          group: user?.role,
+                        }}
                       >
                         G1/G2 Measures
                         <AssessmentOutlinedIcon className={classes.iconSpacing} />
@@ -235,7 +265,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="compliance"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+                    analytics={{
+                      event: 'Navigate to Compliance Activities',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Compliance Activities
                     <SecurityOutlinedIcon className={classes.iconSpacing} />
@@ -246,7 +282,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="additional"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+                    analytics={{
+                      event: 'Navigate to Additional Information',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Additional Information
                     <InfoOutlinedIcon className={classes.iconSpacing} />

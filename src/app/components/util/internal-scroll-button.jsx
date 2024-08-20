@@ -41,11 +41,7 @@ const InternalScrollButton = ({ analytics, children, id }) => {
   const handleClick = (event) => {
     event.preventDefault();
     if (analytics.event) {
-      eventTrack({
-        event: analytics.event,
-        category: analytics.category || null,
-        label: analytics.label || null,
-      });
+      eventTrack(analytics);
     }
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };

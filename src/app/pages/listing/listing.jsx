@@ -17,6 +17,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -81,10 +82,24 @@ function ChplListingPage({ id }) {
   };
 
   const edit = () => {
+    eventTrack({
+      event: 'Edit',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     $state.go('listing.edit');
   };
 
   const editFlagged = () => {
+    eventTrack({
+      event: 'Edit',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     $state.go('listing.flag-edit');
   };
 

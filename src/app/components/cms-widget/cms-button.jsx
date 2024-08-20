@@ -5,7 +5,8 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { CmsContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { CmsContext, UserContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 
 function ChplCmsButton(props) {
@@ -16,8 +17,22 @@ function ChplCmsButton(props) {
     isInWidget,
     removeListing,
   } = useContext(CmsContext);
+  const { user } = useContext(UserContext);
 
-  const handleClick = () => (isInWidget(listing) ? removeListing(listing) : addListing(listing));
+  const handleClick = () => {
+    eventTrack({
+      event: isInWidget(listing) ? 'Remove Listing from Certification ID Widget' : 'Add Listing to Certification ID Widget',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    if (isInWidget(listing)) {
+      removeListing(listing);
+    } else {
+      addListing(listing);
+    }
+  };
 
   if (!canDisplayButton(listing)) {
     return null;
