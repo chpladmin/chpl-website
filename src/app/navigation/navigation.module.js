@@ -117,7 +117,7 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
       if (response.config.url.indexOf(API) === 0) {
         response.data = parseToken(response.data);
       }
-      if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         authService.logout();
       }
       return response;

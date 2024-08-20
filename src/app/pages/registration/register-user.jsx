@@ -55,7 +55,7 @@ function ChplRegisterUser({ hash }) {
   }, [isOn]);
 
   useEffect(() => {
-    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       handleDispatch('authorize', {});
     }
   }, []);

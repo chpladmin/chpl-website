@@ -36,7 +36,7 @@
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="resource-toggle" id="resource-dropdown-menu">
               <li><a ui-sref="resources.overview" analytics-on="click" analytics-event="Go to Overview Page" analytics-properties="{ category: 'Navigation' }">Overview</a></li>
               <li><a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide <i class="fa fa-download text-right"></i></a></li>
-              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])"><a href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf" analytics-on="click" analytics-event="CHPL Developer User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Developer User Guide <i class="fa fa-download text-right"></i></a></li>
+              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><a href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf" analytics-on="click" analytics-event="CHPL Developer User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Developer User Guide <i class="fa fa-download text-right"></i></a></li>
               <li><a ui-sref="resources.cms-lookup" analytics-on="click" analytics-event="Go to CMS ID Reverse Lookup Page" analytics-properties="{ category: 'Navigation' }">CMS ID Reverse Lookup</a></li>
               <li><a ui-sref="resources.download" analytics-on="click" analytics-event="Go to Download the CHPL Page" analytics-properties="{ category: 'Navigation' }">Download the CHPL</a></li>
               <li><a ui-sref="resources.api" analytics-on="click" analytics-event="Go to CHPL API Page" analytics-properties="{ category: 'Navigation' }">CHPL API</a></li>
@@ -60,7 +60,7 @@
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])"><button class="btn btn-link" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
+    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><button class="btn btn-link" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
   <nav class="navbar navbar-default navbar-admin" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'">
     <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown">
@@ -79,13 +79,13 @@
       </div>
       <div class="collapse navbar-collapse" uib-collapse="vm.adminNavCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav"> <!-- admin-nav -->
-          <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
+          <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="administration-toggle" ng-class="{'admin-active' : vm.isActive('administration')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.administrationIsOpen">Administration</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="administration-toggle" id="administration-dropdown-menu">
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])"><a ui-sref="administration.upload"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.upload')"></i> Upload</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"><a ui-sref="administration.confirm.listings"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.confirm.listings')"></i> Confirm Listings</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])"><a ui-sref="administration.reports"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.reports')"></i> Reports</a></li>
-              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'ROLE_CMS_STAFF'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>
+              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-cms-staff'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="administration.api-keys"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.api-keys')"></i> API Keys</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])"><a ui-sref="administration.change-requests"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.change-requests')"></i> Change Requests</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="administration.system-maintenance"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.system-maintenance')"></i> System Maintenance</a></li>

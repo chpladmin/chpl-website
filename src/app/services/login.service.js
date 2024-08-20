@@ -68,7 +68,7 @@ import { clearAuthTokens } from 'axios-jwt';
     }
 
     function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -89,7 +89,7 @@ import { clearAuthTokens } from 'axios-jwt';
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         const token = getToken();
         if (parseJwt(token).Identity) {
           const identity = parseJwt(token).Identity;
@@ -120,7 +120,9 @@ import { clearAuthTokens } from 'axios-jwt';
       if (roles.includes('chpl-onc')) {
         roles.push('ROLE_ONC');
       }
-
+      if (roles.includes('chpl-cms-staff')) {
+        roles.push('ROLE_CMS_STAFF');
+      }
       const token = getToken();
       if (token) {
         const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'].filter((grp) => !grp.endsWith('-env'))[0];
