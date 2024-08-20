@@ -6,7 +6,7 @@ const eventTrack = ({
   if (typeof window.gtag === 'function') {
     if (ENABLE_LOGGING) {
       console.info({
-        action: 'tracking event', event, category, label, aggregationName, group,
+        event, category, label, aggregationName, group,
       });
     } else {
       window.gtag('event', event, {
