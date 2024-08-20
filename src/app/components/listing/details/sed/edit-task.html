@@ -10,6 +10,14 @@
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
+      <label class="control-label col-sm-4" for="data-friendly-id">Friendly ID <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control input-sm" id="data-friendly-id" name="data_friendly_id" ng-model="vm.task.friendlyId" required ng-maxlength="20"></input>
+        <div class="text-danger" ng-if="vm.editForm.data_friendly_id.$touched && vm.editForm.data_friendly_id.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="vm.editForm.data_friendly_id.$touched && vm.editForm.data_friendly_id.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-4" for="data-description">Task Description <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="text" class="form-control input-sm" id="data-description" name="data_description" ng-model="vm.task.description" required>

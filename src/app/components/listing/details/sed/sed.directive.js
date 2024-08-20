@@ -135,7 +135,7 @@
       });
       vm.modalInstance.result.then((result) => {
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          if (vm.listing.sed.testTasks[i].id === task.id) {
+          if (vm.listing.sed.testTasks[i].friendlyId === task.friendlyId) {
             vm.listing.sed.testTasks[i].testParticipants = result.participants;
           }
         }
@@ -162,7 +162,7 @@
       });
       vm.modalInstance.result.then((result) => {
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          if (vm.listing.sed.testTasks[i].id === task.id) {
+          if (vm.listing.sed.testTasks[i].friendlyId === task.friendlyId) {
             if (result.deleted) {
               vm.listing.sed.testTasks.splice(i, 1);
               vm.taskCount = vm.listing.sed.testTasks.length;
@@ -220,9 +220,6 @@
 
         for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
           task = vm.listing.sed.testTasks[i];
-          if (!task.id) {
-            task.id = i * -1 - 1;
-          }
           task.criteria = $filter('orderBy')(task.criteria.filter((cert) => vm.sedCriteria.map((cert) => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
           csvRow[4] = task.criteria.map((item) => (item.removed ? 'Removed | ' : '') + item.number).join(';');
@@ -242,15 +239,11 @@
           csvRow[TASK_START + 13] = task.taskPathDeviationOptimal;
           for (j = 0; j < task.testParticipants.length; j++) {
             participant = task.testParticipants[j];
-            if (!participant.id) {
-              participant.id = participant.uniqueId;
+            if (angular.isUndefined(object.participants[participant.friendlyId])) {
+              object.participants[participant.friendlyId] = participant;
+              object.participants[participant.friendlyId].tasks = [];
             }
-
-            if (angular.isUndefined(object.participants[participant.id])) {
-              object.participants[participant.id] = participant;
-              object.participants[participant.id].tasks = [];
-            }
-            object.participants[participant.id].tasks.push(task.id);
+            object.participants[participant.friendlyId].tasks.push(task.friendlyId);
             csvRow[PART_START + 0] = participant.occupation;
             csvRow[PART_START + 1] = participant.educationTypeName;
             csvRow[PART_START + 2] = participant.productExperienceMonths;
@@ -270,19 +263,12 @@
         vm.allParticipants = [];
         angular.forEach(object.participants, (participant) => {
           const val = angular.copy(participant);
-          if (val.uniqueId) {
-            val.id = vm.allParticipants.length * -1 - 1;
-            partMap[val.uniqueId] = val.id;
-          }
           vm.allParticipants.push(val);
         });
         for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
           task = vm.listing.sed.testTasks[i];
           for (j = 0; j < task.testParticipants.length; j++) {
             participant = task.testParticipants[j];
-            if (participant.uniqueId) {
-              participant.id = partMap[participant.uniqueId];
-            }
           }
         }
 

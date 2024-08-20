@@ -10,6 +10,14 @@
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
+      <label class="control-label col-sm-6" for="data-participant-friendly-id">Friendly ID <span class="text-danger">*</span></label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control input-sm" id="data-participant-friendly-id" name="data_participant_friendly_id" ng-model="vm.participant.friendlyId" required ng-maxlength="20"></input>
+        <div class="text-danger" ng-if="vm.editForm.data_participant_friendly_id.$touched && vm.editForm.data_participant_friendly_id.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="vm.editForm.data_participant_friendly_id.$touched && vm.editForm.data_participant_friendly_id.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-6" for="data-participant-occupation">Occupation <span class="text-danger">*</span></label>
       <div class="col-sm-6">
         <input type="text" class="form-control input-sm" id="data-participant-occupation" name="data_participant_occupation" ng-model="vm.participant.occupation" required ng-maxlength="250"></input>
@@ -50,7 +58,7 @@
       <label class="control-label col-sm-6" for="data-participant-age">Age (Years) <span class="text-danger">*</span></label>
       <div class="col-sm-6">
         <select class="form-control input-sm" id="data-participant-age" name="data_participant_ageRange" ng-model="vm.participant.ageRangeObj" required
-                ng-options="item as item.name for item in vm.ageRanges.data | orderBy : vm.orderAges track by item.id"></select>
+                ng-options="item as item.name for item in vm.ageRanges.data | orderBy : vm.orderAges track by item.friendlyId"></select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_ageRange.$touched && vm.editForm.data_participant_ageRange.$error.required">Field is required</div>
       </div>
     </div>

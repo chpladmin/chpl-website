@@ -129,12 +129,12 @@ function ChplSedTaskView({ task: initialTask }) {
     <Accordion
       className={classes.accordion}
       onChange={handleAccordionChange}
-      id={`task-id-${task.id}`}
+      id={`task-id-${task.friendlyId}`}
     >
       <AccordionSummary
         className={classes.accordionSummary}
         expandIcon={getIcon()}
-        id={`task-id-${task.id}-header`}
+        id={`task-id-${task.friendlyId}-header`}
       >
         <Typography variant="subtitle1" className={classes.summaryText}>
           {task.description}
@@ -142,7 +142,7 @@ function ChplSedTaskView({ task: initialTask }) {
       </AccordionSummary>
       <AccordionDetails
         className={classes.accordionDetails}
-        id={`task-id-${task.id}-details`}
+        id={`task-id-${task.friendlyId}-details`}
       >
         <CardContent>
           <Box className={classes.taskData}>

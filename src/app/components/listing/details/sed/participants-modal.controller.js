@@ -63,12 +63,12 @@
         var i, participant;
         participant = result.participant;
         for (i = 0; i < vm.participants.length; i++) {
-          if (participant.id === vm.participants[i].id) {
+          if (participant.friendlyId === vm.participants[i].friendlyId) {
             vm.participants[i] = participant;
           }
         }
         for (i = 0; i < vm.allParticipants.length; i++) {
-          if (participant.id === vm.allParticipants[i].id) {
+          if (participant.friendlyId === vm.allParticipants[i].friendlyId) {
             vm.allParticipants[i] = participant;
           }
         }
@@ -77,7 +77,7 @@
 
     function isAssigned (participant) {
       return vm.participants.reduce(function (isIn, item) {
-        return isIn || participant.id === item.id;
+        return isIn || participant.friendlyId === item.friendlyId;
       }, false);
     }
 
@@ -91,7 +91,7 @@
     function toggleParticipant (participant) {
       var adding = true;
       for (var i = 0; i < vm.participants.length; i++) {
-        if (participant.id === vm.participants[i].id) {
+        if (participant.friendlyId === vm.participants[i].friendlyId) {
           vm.participants.splice(i, 1);
           adding = false;
         }
