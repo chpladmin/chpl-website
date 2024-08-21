@@ -8,12 +8,12 @@ import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
 import { getAccessToken } from 'axios-jwt';
 import regeneratorRuntime from "regenerator-runtime";
+import { getIn } from 'yup/lib/util/reach';
 
 import ChplCognitoLogin from './cognito-login';
 
 import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
-import { getIn } from 'yup/lib/util/reach';
 
 const useStyles = makeStyles({
   loginSpacing: {

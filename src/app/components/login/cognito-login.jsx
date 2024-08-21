@@ -32,11 +32,6 @@ function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
   const classes = useStyles();
-
-  console.log('state');
-  console.log(state);
-  console.log('setState');
-  console.log(setState);
   
   const cancel = (e) => {
     e.stopPropagation();
