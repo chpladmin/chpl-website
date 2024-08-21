@@ -74,7 +74,7 @@
           </tr>
         </tfoot>
         <tbody>
-          <tr ng-repeat="task in vm.listing.sed.testTasks | orderBy: 'description'">
+          <tr ng-repeat="task in vm.listing.sed.testTasks | orderBy: 'description' track by $index">
             <td>{{ task.description }}</td>
             <td>{{ task.taskRating }} ({{ task.taskRatingScale }})</td>
             <td>

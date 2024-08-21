@@ -170,7 +170,7 @@ function ChplSed({ listing }) {
                 .sort(sortTestTasks)
                 .map((task) => (
                   <ChplSedTaskView
-                    key={task.friendlyId}
+                    key={task.friendlyId ?? task.id}
                     task={task}
                   />
                 ))}

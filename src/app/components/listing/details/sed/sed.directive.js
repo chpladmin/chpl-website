@@ -145,6 +145,7 @@
     }
 
     function viewTask(task) {
+      task.active = true;
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/task-modal.html',
         controller: 'ViewSedTaskController',
@@ -162,12 +163,13 @@
       });
       vm.modalInstance.result.then((result) => {
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          if (vm.listing.sed.testTasks[i].friendlyId === task.friendlyId) {
+          if (vm.listing.sed.testTasks[i].active) {
             if (result.deleted) {
               vm.listing.sed.testTasks.splice(i, 1);
               vm.taskCount = vm.listing.sed.testTasks.length;
             } else {
               vm.listing.sed.testTasks[i] = result.task;
+              vm.listing.sed.testTasks[i].active = false;
             }
           }
         }

@@ -95,7 +95,7 @@ function ChplSedTaskParticipantsView(props) {
                 </TableHead>
                 <TableBody>
                   { participants.map((participant) => (
-                    <TableRow key={participant.friendlyId}>
+                    <TableRow key={participant.friendlyId ?? participant.id}>
                       <TableCell size="small">{ participant.occupation }</TableCell>
                       <TableCell size="small">{ participant.educationType.name }</TableCell>
                       <TableCell size="small">{ participant.productExperienceMonths }</TableCell>
