@@ -1,8 +1,19 @@
 import React from 'react';
 
+import { useFetchReportUrl } from 'api/reports';
+
 function PowerBI() {
+  const developerStatisticsReportUrl = useFetchReportUrl('DeveloperStatistics');
+  
   return (
-    <iframe title="DeveloperStatistics" width="100%" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiMzkzNmEwODMtMDAyZC00ZDMwLWI4MjYtZDZkY2M3NDM1N2RiIiwidCI6IjMwN2QyMTJhLWZiODYtNDgwNy04NGRkLTg2Nzc2OWI4MDQyYSIsImMiOjF9&pageName=b0a55bff2fe744b9463f&navContentPaneEnabled=false&filterPaneEnabled=false" frameborder="0" allowFullScreen="true" />
+    <iframe 
+      title="DeveloperStatistics" 
+      width="100%" 
+      height="600" 
+      src={developerStatisticsReportUrl.data.reportUrl} 
+      frameBorder="0" 
+      allowFullScreen
+    />
   );
 }
 

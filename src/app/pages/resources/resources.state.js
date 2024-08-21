@@ -66,7 +66,7 @@ const states = [
   }, {
     name: 'power-bi',
     url: '/power-bi',
-    component: 'powerBIBridge',
+    component: 'powerBiWrapperBridge',
     data: {
       title: 'Power BI Report',
       roles: ['chpl-admin'],
