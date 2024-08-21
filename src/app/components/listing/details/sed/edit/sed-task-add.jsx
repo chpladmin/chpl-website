@@ -62,6 +62,9 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
+  friendlyId: yup.string()
+    .max(20, 'Field is too long')
+    .required('Field is required'),
   description: yup.string()
     .required('Field is required'),
   taskRatingScale: yup.string()
@@ -121,7 +124,7 @@ function ChplSedTaskAdd({ dispatch }) {
 
   const add = () => {
     const task = {
-      uniqueId: Date.now(),
+      friendlyId: formik.values.friendlyId,
       description: formik.values.description,
       taskRatingScale: formik.values.taskRatingScale,
       taskRating: formik.values.taskRating,
@@ -151,7 +154,8 @@ function ChplSedTaskAdd({ dispatch }) {
     close();
   };
 
-  const isEnabled = () => !!formik.values.description
+  const isEnabled = () => !!formik.values.friendlyId
+        && !!formik.values.description
         && !!formik.values.taskRatingScale
         && formik.values.taskRating !== ''
         && formik.values.taskRatingStddev !== ''
@@ -181,6 +185,7 @@ function ChplSedTaskAdd({ dispatch }) {
 
   formik = useFormik({
     initialValues: {
+      friendlyId: '',
       description: '',
       taskRatingScale: '',
       taskRating: '',
@@ -212,6 +217,17 @@ function ChplSedTaskAdd({ dispatch }) {
         <Card className={classes.fullWidthGridRow} id="summary">
           <CardHeader title="Summary" />
           <CardContent className={classes.formContainer}>
+            <ChplTextField
+              id="friendly-id"
+              name="friendlyId"
+              label="Friendly ID"
+              required
+              value={formik.values.friendlyId}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.friendlyId && !!formik.errors.friendlyId}
+              helperText={formik.touched.friendlyId && formik.errors.friendlyId}
+            />
             <ChplTextField
               id="description"
               name="description"
