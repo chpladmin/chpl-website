@@ -23,7 +23,7 @@
         .then(function (result) {
           vm.education = result;
         });
-      vm.participant.education = {
+      vm.participant.educationType = {
         name: vm.participant.educationTypeName,
         id: vm.participant.educationTypeId,
       };
@@ -31,7 +31,7 @@
         .then(function (result) {
           vm.ageRanges = result;
         });
-      vm.participant.ageRangeObj = {
+      vm.participant.age = {
         name: vm.participant.ageRange,
         id: vm.participant.ageRangeId,
       };
@@ -47,15 +47,15 @@
       } else if (ageRange.name.length === 4) {
         return 10;
       } else {
-        return parseInt(ageRange.name.charAt(0));
+        return parseInt(ageRange.name.charAt(0), 10);
       }
     }
 
     function save () {
-      vm.participant.educationTypeName = vm.participant.education.name;
-      vm.participant.educationTypeId = vm.participant.education.id;
-      vm.participant.ageRange = vm.participant.ageRangeObj.name;
-      vm.participant.ageRangeId = vm.participant.ageRangeObj.id;
+      vm.participant.educationTypeName = vm.participant.educationType.name;
+      vm.participant.educationTypeId = vm.participant.educationType.id;
+      vm.participant.ageRange = vm.participant.age.name;
+      vm.participant.ageRangeId = vm.participant.age.id;
       $uibModalInstance.close({
         participant: vm.participant,
       });
