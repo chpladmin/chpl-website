@@ -245,11 +245,11 @@
             }
             object.participants[participant.friendlyId].tasks.push(task.friendlyId);
             csvRow[PART_START + 0] = participant.occupation;
-            csvRow[PART_START + 1] = participant.educationTypeName;
+            csvRow[PART_START + 1] = participant.educationType.name;
             csvRow[PART_START + 2] = participant.productExperienceMonths;
             csvRow[PART_START + 3] = participant.professionalExperienceMonths;
             csvRow[PART_START + 4] = participant.computerExperienceMonths;
-            csvRow[PART_START + 5] = participant.ageRange;
+            csvRow[PART_START + 5] = participant.age.name;
             csvRow[PART_START + 6] = participant.gender;
             csvRow[PART_START + 7] = participant.assistiveTechnologyNeeds;
 

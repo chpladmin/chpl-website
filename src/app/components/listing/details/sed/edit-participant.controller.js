@@ -23,18 +23,10 @@
         .then(function (result) {
           vm.education = result;
         });
-      vm.participant.educationType = {
-        name: vm.participant.educationTypeName,
-        id: vm.participant.educationTypeId,
-      };
       networkService.getAgeRanges()
         .then(function (result) {
           vm.ageRanges = result;
         });
-      vm.participant.age = {
-        name: vm.participant.ageRange,
-        id: vm.participant.ageRangeId,
-      };
     }
 
     function cancel () {
@@ -52,10 +44,6 @@
     }
 
     function save () {
-      vm.participant.educationTypeName = vm.participant.educationType.name;
-      vm.participant.educationTypeId = vm.participant.educationType.id;
-      vm.participant.ageRange = vm.participant.age.name;
-      vm.participant.ageRangeId = vm.participant.age.id;
       $uibModalInstance.close({
         participant: vm.participant,
       });
