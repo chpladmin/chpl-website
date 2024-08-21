@@ -9,8 +9,8 @@ function PowerBI() {
     <iframe 
       title="DeveloperStatistics" 
       width="100%" 
-      height="600" 
-      src={developerStatisticsReportUrl.data.reportUrl} 
+      height="800" 
+      src={developerStatisticsReportUrl?.data?.reportUrl} 
       frameBorder="0" 
       allowFullScreen
     />
