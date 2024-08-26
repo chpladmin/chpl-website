@@ -10,6 +10,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareButton from 'components/compare-widget/compare-button';
 import CmsButton from 'components/cms-widget/cms-button';
 import { UserContext } from 'shared/contexts';
+import { isListingActive } from 'services/listing.service';
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 
@@ -40,8 +41,13 @@ function ChplActionButton(props) {
   } = getAngularService('authService');
   const classes = useStyles();
 
-  const handleClick = () => {
+  const downloadOriginalCsv = () => {
     const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    window.open(downloadLink);
+  };
+
+  const downloadCurrentCsv = () => {
+    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
 
@@ -57,11 +63,24 @@ function ChplActionButton(props) {
               color="secondary"
               variant="contained"
               size="small"
-              id={`download-csv-${listing.id}`}
-              onClick={handleClick}
+              id={`download-original-csv-${listing.id}`}
+              onClick={downloadOriginalCsv}
               endIcon={<CloudDownloadIcon />}
             >
-              Download CSV
+              Original CSV
+            </Button>
+          )}
+        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (isListingActive(listing))
+          && (
+            <Button
+              color="secondary"
+              variant="contained"
+              size="small"
+              id={`download-current-csv-${listing.id}`}
+              onClick={downloadCurrentCsv}
+              endIcon={<CloudDownloadIcon />}
+            >
+              Current CSV
             </Button>
           )}
       </Box>
