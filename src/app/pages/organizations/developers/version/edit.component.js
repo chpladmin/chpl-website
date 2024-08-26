@@ -3,14 +3,14 @@ const VersionsEditComponent = {
   bindings: {
   },
   controller: class VersionsEditComponent {
-    constructor($log, $scope, $state, $stateParams, networkService) {
+    constructor($log, $state, $stateParams, networkService, toaster) {
       'ngInject';
 
       this.$log = $log;
-      this.$scope = $scope;
       this.$state = $state;
       this.$stateParams = $stateParams;
       this.networkService = networkService;
+      this.toaster = toaster;
       this.backup = {};
     }
 
@@ -47,24 +47,40 @@ const VersionsEditComponent = {
       this.errorMessages = [];
       this.networkService.updateVersion(request)
         .then((response) => {
+          let messages = [];
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             this.$state.go('organizations.developers.developer', {
               id: that.id,
             }, { reload: true });
           } else if (response.data.errorMessages) {
-            that.errorMessages = response.data.errorMessages;
+            messages = response.data.errorMessages;
           } else if (response.data.error) {
-            that.errorMessages.push(response.data.error);
+            messages.push(response.data.error);
           } else {
-            that.errorMessages = ['An error has occurred.'];
+            messages = ['An error has occurred.'];
+          }
+          if (messages.length > 0) {
+            that.toaster.pop({
+              type: 'error',
+              title: 'Save error',
+              body: messages.join('<br />'),
+            });
           }
         }, (error) => {
+          let messages = [];
           if (error.data.errorMessages) {
-            that.errorMessages = error.data.errorMessages;
+            messages = error.data.errorMessages;
           } else if (error.data.error) {
-            that.errorMessages.push(error.data.error);
+            messages.push(error.data.error);
           } else {
-            that.errorMessages = ['An error has occurred.'];
+            messages = ['An error has occurred.'];
+          }
+          if (messages.length > 0) {
+            that.toaster.pop({
+              type: 'error',
+              title: 'Save error',
+              body: messages.join('<br />'),
+            });
           }
         });
     }
