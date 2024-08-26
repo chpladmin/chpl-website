@@ -14,8 +14,8 @@ import { shape, string } from 'prop-types';
 
 import {
   useFetchApiDocumentationData,
-  useFetchSearch,
-} from 'api/searchs';
+  useFetchListings,
+} from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -168,7 +168,7 @@ function ChplApiDocumentationSearchView(props) {
   const toggledCsvDefaults = ['apiDocumentation'];
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchSearch({
+  const { data, isError, isLoading } = useFetchListings({
     orderBy,
     pageNumber,
     pageSize,

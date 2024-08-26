@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import ChplSearchView from './search-view';
+import ChplListingsView from './listings-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCqms } from 'api/data';
@@ -44,7 +44,7 @@ const staticFilters = [
     ],
   }];
 
-function ChplSearchPage() {
+function ChplListingsPage() {
   const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
@@ -143,16 +143,16 @@ function ChplSearchPage() {
     <FilterProvider
       analytics={analytics}
       filters={filters}
-      storageKey="storageKey-searchPage"
+      storageKey="storageKey-listingsPage"
     >
-      <ChplSearchView
+      <ChplListingsView
         analytics={analytics}
       />
     </FilterProvider>
   );
 }
 
-export default ChplSearchPage;
+export default ChplListingsPage;
 
-ChplSearchPage.propTypes = {
+ChplListingsPage.propTypes = {
 };

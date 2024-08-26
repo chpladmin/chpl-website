@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
 
-import { useFetchSearch } from 'api/searchs';
+import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -116,7 +116,7 @@ function ChplCorrectiveActionSearchView(props) {
   const toggledCsvDefaults = ['compliance'];
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchSearch({
+  const { data, isError, isLoading } = useFetchListings({
     orderBy,
     pageNumber,
     pageSize,

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('chpl.collections')
+  angular.module('chpl.search')
     .controller('ViewSedModalController', ViewSedModalController);
 
   /** @ngInject */

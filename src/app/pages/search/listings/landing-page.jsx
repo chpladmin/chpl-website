@@ -357,10 +357,10 @@ function ChplLandingPage() {
                         <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
-                              href="#/developers"
+                              href="#/banned-developers"
                               text="Banned Developers"
                               external={false}
-                              router={{ sref: 'shortcut.developers' }}
+                              router={{ sref: 'shortcut.banned-developers' }}
                               analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Banned Developers' }}
                             />
                           </Typography>

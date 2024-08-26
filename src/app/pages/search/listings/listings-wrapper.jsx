@@ -1,18 +1,18 @@
 import React from 'react';
 
-import ChplSearchPage from './search';
+import ChplListingsPage from './listings';
 
 import AppWrapper from 'app-wrapper';
 
-function ChplSearchWrapper() {
+function ChplListingsWrapper() {
   return (
     <AppWrapper>
-      <ChplSearchPage />
+      <ChplListingsPage />
     </AppWrapper>
   );
 }
 
-export default ChplSearchWrapper;
+export default ChplListingsWrapper;
 
-ChplSearchWrapper.propTypes = {
+ChplListingsWrapper.propTypes = {
 };

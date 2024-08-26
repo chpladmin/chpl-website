@@ -5,7 +5,7 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import ChplSearchView from './search-view';
+import ChplListingsView from './listings-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
@@ -40,20 +40,20 @@ jest.mock('components/filter', () => ({
 }));
 /* eslint-enable react/display-name */
 
-jest.mock('api/searchs', () => ({
+jest.mock('api/search', () => ({
   __esModule: true,
   useFetchSearchData: () => mockApi,
-  useFetchSearch: () => mockApi,
+  useFetchListings: () => mockApi,
 }));
 
-describe('the ChplSearchView component', () => {
+describe('the ChplListingsView component', () => {
   afterEach(() => {
     cleanup();
   });
 
   it('has a title', async () => {
     render(
-      <ChplSearchView analytics={{ category: 'test' }} />,
+      <ChplListingsView analytics={{ category: 'test' }} />,
     );
 
     await waitFor(() => {

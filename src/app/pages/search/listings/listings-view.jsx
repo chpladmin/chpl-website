@@ -16,7 +16,7 @@ import { shape, string } from 'prop-types';
 
 import ChplLandingPage from './landing-page';
 
-import { useFetchSearch } from 'api/searchs';
+import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -126,8 +126,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSearchView(props) {
-  const storageKey = 'storageKey-searchView';
+function ChplListingsView(props) {
+  const storageKey = 'storageKey-listingsView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
@@ -141,7 +141,7 @@ function ChplSearchView(props) {
   const classes = useStyles();
 
   const { dispatch, hasSearched, queryString } = useFilterContext();
-  const { data, isError, isLoading } = useFetchSearch({
+  const { data, isError, isLoading } = useFetchListings({
     orderBy,
     pageNumber,
     pageSize,
@@ -323,9 +323,9 @@ function ChplSearchView(props) {
   );
 }
 
-export default ChplSearchView;
+export default ChplListingsView;
 
-ChplSearchView.propTypes = {
+ChplListingsView.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }).isRequired,

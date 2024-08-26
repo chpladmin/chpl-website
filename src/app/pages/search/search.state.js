@@ -2,7 +2,7 @@ const states = [
   {
     name: 'search',
     url: '/search',
-    component: 'chplSearchWrapperBridge',
+    component: 'chplListingsSearchWrapperBridge',
     data: {
       title: 'CHPL Search',
     },
@@ -21,8 +21,8 @@ const states = [
     component: 'chplCorrectiveActionSearchWrapperBridge',
     data: { title: 'Products: Corrective Action Status' },
   }, {
-    name: 'shortcut.developers',
-    url: '/developers',
+    name: 'shortcut.banned-developers',
+    url: '/banned-developers',
     component: 'chplBannedDevelopersSearchPageBridge',
     data: { title: 'Banned Developers' },
   }, {

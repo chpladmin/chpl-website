@@ -13,8 +13,8 @@ import { shape, string } from 'prop-types';
 
 import { theme, utilStyles } from 'themes';
 import {
-  useFetchBannedDevelopersSearch,
-} from 'api/searchs';
+  useFetchBannedDevelopers,
+} from 'api/search';
 import {
   ChplLink,
   ChplPagination,
@@ -97,7 +97,7 @@ function ChplBannedDevelopersSearchView(props) {
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchBannedDevelopersSearch({
+  const { data, isError, isLoading } = useFetchBannedDevelopers({
     orderBy,
     pageNumber,
     pageSize,
