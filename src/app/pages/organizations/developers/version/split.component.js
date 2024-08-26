@@ -93,7 +93,21 @@ const VersionsSplitComponent = {
             reload: true,
           });
         }, (error) => {
-          that.errors = [error.data.error];
+          let messages = [];
+          if (error.data.errorMessages) {
+            messages = error.data.errorMessages;
+          } else if (error.data.error) {
+            messages.push(error.data.error);
+          } else {
+            messages = ['An error has occurred.'];
+          }
+          if (messages.length > 0) {
+            that.toaster.pop({
+              type: 'error',
+              title: 'Split error',
+              body: messages.join('<br />'),
+            });
+          }
         });
     }
   },
