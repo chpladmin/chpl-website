@@ -37,7 +37,7 @@
           participant: function () { return {}; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
+      vm.modalInstance.result.then((result) => {
         vm.participants.push(result.participant);
         vm.allParticipants.push(result.participant);
       });
@@ -59,29 +59,34 @@
           participant: function () { return participant; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
+      vm.modalInstance.result.then((result) => {
         var i, participant;
-        participant = result.participant;
+        participant = {...result.participant};
         for (i = 0; i < vm.participants.length; i++) {
-          if (participant.friendlyId === vm.participants[i].friendlyId) {
-            vm.participants[i] = participant;
+          if (vm.participants[i].id = participant.id) {
+            console.log('found');
+            vm.participants[i] = {...participant};
+            vm.participants[i].active = false;
           }
         }
         for (i = 0; i < vm.allParticipants.length; i++) {
-          if (participant.friendlyId === vm.allParticipants[i].friendlyId) {
-            vm.allParticipants[i] = participant;
+          if (participant.id === vm.allParticipants[i].id) {
+            vm.allParticipants[i] = {...participant};
+            vm.allParticipants[i].active = false;
           }
         }
+        console.log('par-mod', participant, vm.participants, vm.allParticipants);
       });
     }
 
     function isAssigned (participant) {
-      return vm.participants.reduce(function (isIn, item) {
+      return vm.participants.reduce((isIn, item) => {
         return isIn || participant.friendlyId === item.friendlyId;
       }, false);
     }
 
     function save () {
+      console.log('par-mod - sazve', vm.allParticipants, vm.participants);
       $uibModalInstance.close({
         allParticipants: vm.allParticipants,
         participants: vm.participants,
