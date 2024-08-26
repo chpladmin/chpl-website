@@ -23,8 +23,8 @@ import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
 import { theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
-  collectionsCard: {
+const useStyles = makeStyles({
+  shortcutCard: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
@@ -38,13 +38,13 @@ const useStyles = makeStyles(() => ({
       width: '25%',
     },
   },
-  collectionsCards: {
+  shortcutCards: {
     width: '-webkit-fill-available',
     '& a': {
       fontSize: 'large',
     },
   },
-  collectionsCardContainer: {
+  shortcutCardContainer: {
     display: 'flex',
     flexDirection: 'column',
     gridGap: '16px',
@@ -65,7 +65,7 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
-  collectionsCardText: {
+  shortcutCardText: {
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
@@ -135,7 +135,7 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
-}));
+});
 
 function ChplLandingPage() {
   const classes = useStyles();
@@ -163,10 +163,10 @@ function ChplLandingPage() {
                 Feature Topic
               </Typography>
             </Box>
-            <Card className={classes.collectionsCards}>
+            <Card className={classes.shortcutCards}>
               <CardContent>
                 <Box display="flex" flexDirection="row" gridGap={8}>
-                  <Box className={classes.collectionsCardText}>
+                  <Box className={classes.shortcutCardText}>
                     <Typography align="left" component="h3" variant="h4" color="primary">
                       <strong>Discontinuing Year-Themed Editions for Health IT Certification Criteria</strong>
                     </Typography>
@@ -179,17 +179,17 @@ function ChplLandingPage() {
             </Card>
             <Box pt={6} pb={4}>
               <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
-                Use our collections pages to help find a particular category of listings
+                Use our shortcuts to help find a particular category of listings
               </Typography>
             </Box>
             <Box display="flex" flexDirection="column" gridGap={16}>
-              <Box className={classes.collectionsCardContainer}>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
+              <Box className={classes.shortcutCardContainer}>
+                <Box className={classes.shortcutCard}>
+                  <Card className={classes.shortcutCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <CodeIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.collectionsCardText}>
+                        <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/api-documentation"
@@ -207,12 +207,12 @@ function ChplLandingPage() {
                     </CardContent>
                   </Card>
                 </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
+                <Box className={classes.shortcutCard}>
+                  <Card className={classes.shortcutCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <AssignmentTurnedInOutlinedIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.collectionsCardText}>
+                        <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/real-world-testing"
@@ -230,12 +230,12 @@ function ChplLandingPage() {
                     </CardContent>
                   </Card>
                 </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
+                <Box className={classes.shortcutCard}>
+                  <Card className={classes.shortcutCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <ImageIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.collectionsCardText}>
+                        <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
                               href="#/charts"
@@ -253,12 +253,12 @@ function ChplLandingPage() {
                     </CardContent>
                   </Card>
                 </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
+                <Box className={classes.shortcutCard}>
+                  <Card className={classes.shortcutCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <TrendingUpIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.collectionsCardText}>
+                        <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/svap"
@@ -354,7 +354,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <BlockIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.collectionsCardText}>
+                        <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/developers"
@@ -377,7 +377,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <ErrorOutlineOutlinedIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.collectionsCardText}>
+                        <Box className={classes.shortcutCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/corrective-action"
