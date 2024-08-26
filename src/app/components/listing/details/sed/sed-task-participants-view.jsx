@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,6 +18,7 @@ import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { ListingContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -39,17 +40,30 @@ function ChplSedTaskParticipantsView(props) {
     if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }
     return 0;
   });
+  const { task } = props;
+  const { listing } = useContext(ListingContext);
+  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   const handleClickOpen = () => {
     eventTrack({
-      event: 'View SED Participant Details',
+      event: `Show SED Participant Details - ${task.description}`,
       category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
     });
     setOpen(true);
   };
 
   const handleClose = () => {
+    eventTrack({
+      event: `Hide SED Participant Details - ${task.description}`,
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     setOpen(false);
   };
 
@@ -120,4 +134,5 @@ export default ChplSedTaskParticipantsView;
 
 ChplSedTaskParticipantsView.propTypes = {
   participants: arrayOf(object).isRequired, // eslint-disable-line react/forbid-prop-types
+  task: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };

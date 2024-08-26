@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -21,6 +21,7 @@ import ChplSedTaskView from './sed-task-view';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -54,11 +55,13 @@ const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 function ChplSed({ listing }) {
   const {
     certificationResults,
+    product,
     sed,
     sedIntendedUserDescription,
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
+  const { user } = useContext(UserContext);
   const [hasSed, setHasSed] = useState(false);
   const classes = useStyles();
 
@@ -89,7 +92,13 @@ function ChplSed({ listing }) {
                   && (
                     <ChplLink
                       href={sedReportFileLocation}
-                      analytics={{ event: 'Usability Report', category: 'Download Details', label: sedReportFileLocation }}
+                      analytics={{
+                        event: 'Go to Full Usability Report',
+                        category: 'Listing Details',
+                        label: listing.chplProductNumber,
+                        aggregationName: product.name,
+                        group: user?.role,
+                      }}
                     />
                   )}
                 {!sedReportFileLocation && 'No report on file'}

@@ -26,6 +26,7 @@ import ChplListingInformation from 'components/listing/details/listing-informati
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import { ChplLink, InternalScrollButton } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
@@ -137,6 +138,28 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     return false;
   };
 
+  const toggleSeeAllCriteria = () => {
+    eventTrack({
+      event: seeAllCriteria ? 'See only attested Certification Criteria' : 'See all Certification Criteria',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    setSeeAllCriteria(!seeAllCriteria);
+  };
+
+  const toggleSeeAllCqms = () => {
+    eventTrack({
+      event: seeAllCqms ? 'See only attested CQMs' : 'See all CQMs',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    setSeeAllCqms(!seeAllCqms);
+  };
+
   if (!listing) { return null; }
 
   return (
@@ -151,7 +174,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="listingInformation"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
+                    analytics={{
+                      event: 'Navigate to Listing Information',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Listing Information
                     <NotesOutlinedIcon className={classes.iconSpacing} />
@@ -162,7 +191,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="certificationCriteria"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
+                    analytics={{
+                      event: 'Navigate to Certification Criteria',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Certification Criteria
                     <BookOutlinedIcon className={classes.iconSpacing} />
@@ -173,7 +208,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="clinicalQualityMeasures"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
+                    analytics={{
+                      event: 'Navigate to Clinical Quality Measures',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Clinical Quality Measures
                     <DoneAllOutlinedIcon className={classes.iconSpacing} />
@@ -186,7 +227,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                    >
                      <InternalScrollButton
                        id="sed"
-                       analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                       analytics={{
+                         event: 'Navigate to Safety Enhanced Design',
+                         category: 'Listing Details',
+                         label: listing.chplProductNumber,
+                         aggregationName: listing.product.name,
+                         group: user?.role,
+                       }}
                      >
                        Safety Enhanced Design (SED)
                        <TouchAppOutlinedIcon className={classes.iconSpacing} />
@@ -200,7 +247,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     >
                       <InternalScrollButton
                         id="g1g2Measures"
-                        analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
+                        analytics={{
+                          event: 'Navigate to G1/G2 Measures',
+                          category: 'Listing Details',
+                          label: listing.chplProductNumber,
+                          aggregationName: listing.product.name,
+                          group: user?.role,
+                        }}
                       >
                         G1/G2 Measures
                         <AssessmentOutlinedIcon className={classes.iconSpacing} />
@@ -212,7 +265,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="compliance"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+                    analytics={{
+                      event: 'Navigate to Compliance Activities',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Compliance Activities
                     <SecurityOutlinedIcon className={classes.iconSpacing} />
@@ -223,7 +282,13 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                 >
                   <InternalScrollButton
                     id="additional"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+                    analytics={{
+                      event: 'Navigate to Additional Information',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
                   >
                     Additional Information
                     <InfoOutlinedIcon className={classes.iconSpacing} />
@@ -269,7 +334,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                         name="seeAllCriteria"
                         checked={seeAllCriteria}
                         color="primary"
-                        onChange={() => setSeeAllCriteria(!seeAllCriteria)}
+                        onChange={toggleSeeAllCriteria}
                       />
                     )}
                     label="See all Certification Criteria"
@@ -303,7 +368,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     name="seeAllCqms"
                     color="primary"
                     checked={seeAllCqms}
-                    onChange={() => setSeeAllCqms(!seeAllCqms)}
+                    onChange={toggleSeeAllCqms}
                   />
                 )}
                 label="See all CQMs"
@@ -373,9 +438,16 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   && (
                     <ChplLink
                       href="#/surveillance/manage"
-                      text="Manage Surveillance Activity"
+                      text="Manage Surveillance Activities"
                       external={false}
                       router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                      analytics={{
+                        event: 'Manage Surveillance Activities',
+                        category: 'Listing Details',
+                        label: listing.chplProductNumber,
+                        aggregationName: listing.product.name,
+                        group: user?.role,
+                      }}
                     />
                   )}
               </CardContent>

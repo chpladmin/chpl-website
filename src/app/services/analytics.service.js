@@ -1,17 +1,18 @@
 /* global ENABLE_LOGGING */
 
 const eventTrack = ({
-  event, category, label, group,
+  event, category, label, aggregationName, group,
 }) => {
   if (typeof window.gtag === 'function') {
     if (ENABLE_LOGGING) {
       console.info({
-        action: 'tracking event', event, category, label, group,
+        event, category, label, aggregationName, group,
       });
     } else {
       window.gtag('event', event, {
         event_category: category,
         event_label: label,
+        aggregationName,
         group,
       });
     }
