@@ -26,7 +26,7 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
   certificationResult,
@@ -56,7 +56,8 @@ function ChplCriterionDetailsView(props) {
     qmsStandards,
     accessibilityStandards,
   } = props;
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, user } = useContext(UserContext);
+  const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -83,6 +84,13 @@ function ChplCriterionDetailsView(props) {
                 text="Certification Companion Guide (CCG)"
                 external={false}
                 inline
+                analytics={{
+                  event: `Go to Companion Guide - ${criterion.criterion.number}`,
+                  category: 'Listing Details',
+                  label: listing.chplProductNumber,
+                  aggregationName: listing.product.name,
+                  group: user?.role,
+                }}
               />
               .
             </Typography>
@@ -568,7 +576,18 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                     <TableCell>
                       { criterion.apiDocumentation
-                        && <ChplLink href={criterion.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criterion.apiDocumentation }} />}
+                        && (
+                        <ChplLink
+                          href={criterion.apiDocumentation}
+                          analytics={{
+                            event: `Go to API Documentation - ${criterion.criterion.number}`,
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: listing.product.name,
+                            group: user?.role,
+                          }}
+                        />
+                        )}
                       { !criterion.apiDocumentation && 'None' }
                     </TableCell>
                   </TableRow>
@@ -588,7 +607,18 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                     <TableCell>
                       { criterion.exportDocumentation
-                        && <ChplLink href={criterion.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criterion.exportDocumentation }} />}
+                        && (
+                        <ChplLink
+                          href={criterion.exportDocumentation}
+                          analytics={{
+                            event: `Go to Export Documentation - ${criterion.criterion.number}`,
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: listing.product.name,
+                            group: user?.role,
+                          }}
+                        />
+                        )}
                       { !criterion.exportDocumentation && 'None' }
                     </TableCell>
                   </TableRow>
@@ -624,7 +654,18 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                     <TableCell>
                       { criterion.documentationUrl
-                        && <ChplLink href={criterion.documentationUrl} analytics={{ event: 'Documentation', category: 'Download Details', label: criterion.documentationUrl }} />}
+                        && (
+                        <ChplLink
+                          href={criterion.documentationUrl}
+                          analytics={{
+                            event: `Go to Documentation URL - ${criterion.criterion.number}`,
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: listing.product.name,
+                            group: user?.role,
+                          }}
+                        />
+                        )}
                       { !criterion.documentationUrl && 'None' }
                     </TableCell>
                   </TableRow>
@@ -644,7 +685,18 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                     <TableCell>
                       { criterion.useCases
-                        && <ChplLink href={criterion.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criterion.useCases }} />}
+                        && (
+                        <ChplLink
+                          href={criterion.useCases}
+                          analytics={{
+                            event: `Go to Use Cases - ${criterion.criterion.number}`,
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: listing.product.name,
+                            group: user?.role,
+                          }}
+                        />
+                        )}
                       { !criterion.useCases && 'None' }
                     </TableCell>
                   </TableRow>
@@ -664,7 +716,18 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                     <TableCell>
                       { criterion.serviceBaseUrlList
-                        && <ChplLink href={criterion.serviceBaseUrlList} analytics={{ event: 'Service Base URL List', category: 'Download Details', label: criterion.serviceBaseUrlList }} />}
+                        && (
+                        <ChplLink
+                          href={criterion.serviceBaseUrlList}
+                          analytics={{
+                            event: `Go to Service Base URL List - ${criterion.criterion.number}`,
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: listing.product.name,
+                            group: user?.role,
+                          }}
+                        />
+                        )}
                       { !criterion.serviceBaseUrlList && 'None' }
                     </TableCell>
                   </TableRow>
@@ -684,7 +747,18 @@ function ChplCriterionDetailsView(props) {
                     </TableCell>
                     <TableCell>
                       { criterion.riskManagementSummaryInformation
-                        && <ChplLink href={criterion.riskManagementSummaryInformation} analytics={{ event: 'Risk Management Summary Information', category: 'Download Details', label: criterion.riskManagementSummaryInformation }} />}
+                        && (
+                        <ChplLink
+                          href={criterion.riskManagementSummaryInformation}
+                          analytics={{
+                            event: `Go to Risk Management Summary Information - ${criterion.criterion.number}`,
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: listing.product.name,
+                            group: user?.role,
+                          }}
+                        />
+                        )}
                       { !criterion.riskManagementSummaryInformation && 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module' }
                     </TableCell>
                   </TableRow>

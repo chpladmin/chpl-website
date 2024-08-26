@@ -5,6 +5,8 @@ const analyticsConfig = shape({
   category: string,
   event: string,
   label: string,
+  aggregationName: string,
+  group: string,
 });
 
 export default analyticsConfig;
