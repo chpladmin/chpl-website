@@ -21,7 +21,7 @@ function ChplCmsButton(props) {
 
   const handleClick = () => {
     eventTrack({
-      event: isInWidget(listing) ? 'Remove Listing from Certification ID Widget' : 'Add Listing to Certification ID Widget',
+      event: isInWidget(listing) ? 'Remove Listing from CMS ID Widget' : 'Add Listing to CMS ID Widget',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
