@@ -4,15 +4,22 @@ import { bool } from 'prop-types';
 import ChplListingView from './listing-view';
 
 import AppWrapper from 'app-wrapper';
+import { ListingContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 
 function ChplListingViewWrapper({ isConfirming, listing }) {
+  const listingState = {
+    listing,
+  };
+
   return (
     <AppWrapper>
-      <ChplListingView
-        isConfirming={isConfirming}
-        listing={listing}
-      />
+      <ListingContext.Provider value={listingState}>
+        <ChplListingView
+          isConfirming={isConfirming}
+          listing={listing}
+        />
+      </ListingContext.Provider>
     </AppWrapper>
   );
 }
