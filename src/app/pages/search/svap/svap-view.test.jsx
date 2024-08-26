@@ -31,15 +31,14 @@ const mockApi = {
 jest.mock('components/filter', () => ({
   __esModule: true,
   ChplFilterChips: () => <div>Chips</div>,
-  ChplFilterPanel: () => <div>Panel</div>,
-  ChplFilterSearchTerm: () => <div>Search Term</div>,
+  ChplFilterSearchBar: () => <div>Search Bar</div>,
   useFilterContext: () => mockContext,
 }));
 /* eslint-enable react/display-name */
 
-jest.mock('api/searchs', () => ({
+jest.mock('api/search', () => ({
   __esModule: true,
-  useFetchSearch: () => mockApi,
+  useFetchListings: () => mockApi,
 }));
 
 jest.mock('api/standards', () => ({
