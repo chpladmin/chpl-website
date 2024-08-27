@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -11,12 +10,12 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
+import ChplSedPopup from 'components/listing/details/sed/sed-popup';
 import {
   ChplLink,
   ChplPagination,
@@ -106,7 +105,6 @@ const headers = [
 function ChplSedSearchView(props) {
   const storageKey = 'storageKey-sedView';
   const $analytics = getAngularService('$analytics');
-  const $uibModal = getAngularService('$uibModal');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
@@ -155,21 +153,6 @@ function ChplSedSearchView(props) {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
-  };
-
-  const viewDetails = (id) => {
-    $uibModal.open({
-      templateUrl: 'chpl.searchs/sed/sed-modal.html',
-      controller: 'ViewSedModalController',
-      controllerAs: 'vm',
-      animation: false,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
-      resolve: {
-        id() { return id; },
-      },
-    });
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
@@ -283,16 +266,9 @@ function ChplSedSearchView(props) {
                                 <ChplActionButton
                                   listing={item}
                                 >
-                                  <Button
-                                    color="primary"
-                                    variant="contained"
-                                    size="small"
-                                    id={`view-details-${item.id}`}
-                                    onClick={() => viewDetails(item.id)}
-                                    endIcon={<InfoIcon />}
-                                  >
-                                    View
-                                  </Button>
+                                  <ChplSedPopup
+                                    id={item.id}
+                                  />
                                 </ChplActionButton>
                               </TableCell>
                             </TableRow>
