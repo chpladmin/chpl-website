@@ -5,10 +5,12 @@ import {
 } from '@material-ui/core';
 
 import { useFilterContext } from './filter-context';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   browseButton: {
     borderRadius: '8px',
+    padding: '9px 16px',
   },
 });
 
@@ -30,8 +32,8 @@ function ChplFilterBrowse() {
     <Button
       className={classes.browseButton}
       size="medium"
-      variant="contained"
-      color="secondary"
+      variant="outlined"
+      color={palette.black}
       id="filter-browse"
       onClick={handleBrowse}
     >
