@@ -14,16 +14,17 @@ import { useFilterContext } from './filter-context';
 
 import { ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import theme from 'themes/theme';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
   searchButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
+    color: palette.white,
   },
   searchBar: {
     display: 'grid',
-    gridTemplateColumns: '10fr auto',
+    gridTemplateColumns: '8fr auto',
   },
   searchIcon: {
     display: 'none',
@@ -117,9 +118,9 @@ function ChplFilterSearchTerm(props) {
             color="primary"
             id="filter-search-term-search"
             onClick={handleSearch}
+            endIcon={<SearchIcon className={classes.searchIcon} color="inherit" fontSize="large" />}
           >
             Search
-            <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
           </Button>
         </div>
       </div>
