@@ -142,7 +142,7 @@ function ChplLandingPage() {
 
   return (
     <>
-      <Box pt={16} pb={24}>
+      <Box width="100%" pt="16" pb="24">
         <Container maxWidth="md">
           <Typography align="center" variant="h1" gutterBottom>
             Welcome to the Certified Health IT Product List
@@ -155,9 +155,11 @@ function ChplLandingPage() {
       <Box className={classes.landingPageBackground} pb={16} height="fit-content">
         <Box className={classes.landingPageImageryBackground}>
           <Container maxWidth="md">
-            <ChplFilterSearchBar
-              hideAdvancedSearch
-            />
+            <Box position="relative" top="-32px">
+              <ChplFilterSearchBar
+                hideAdvancedSearch
+              />
+            </Box>
             <Box pb={4}>
               <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
                 Feature Topic
