@@ -66,7 +66,6 @@
         participant = {...result.participant};
         for (i = 0; i < vm.participants.length; i++) {
           if ((participant.id && vm.participants[i].id === participant.id) || (participant.cuid && vm.participants[i].cuid === participant.cuid)) {
-            console.log('found');
             vm.participants[i] = {...participant};
             vm.participants[i].active = false;
           }
@@ -77,7 +76,6 @@
             vm.allParticipants[i].active = false;
           }
         }
-        console.log('par-mod', participant, vm.participants, vm.allParticipants);
       });
     }
 
@@ -88,7 +86,6 @@
     }
 
     function save () {
-      console.log('par-mod - sazve', vm.allParticipants, vm.participants);
       $uibModalInstance.close({
         allParticipants: vm.allParticipants,
         participants: vm.participants,

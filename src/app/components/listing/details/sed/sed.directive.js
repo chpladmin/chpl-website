@@ -135,7 +135,6 @@
         },
       });
       vm.modalInstance.result.then((result) => {
-        console.log('sed.dir', result);
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
           if (vm.listing.sed.testTasks[i].active) {
             vm.listing.sed.testTasks[i].testParticipants = result.participants;
@@ -143,7 +142,6 @@
           }
         }
         vm.allParticipants = result.allParticipants;
-        console.log('sed.dir', result, vm.allParticipants);
         vm.onChange({ listing: vm.listing });
       });
     }
@@ -166,7 +164,6 @@
         },
       });
       vm.modalInstance.result.then((result) => {
-        console.log('sed.dir - task', result);
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
           if (vm.listing.sed.testTasks[i].active) {
             if (result.deleted) {
