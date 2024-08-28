@@ -202,7 +202,7 @@ function ChplListingPage({ id }) {
                       Original CSV
                     </Button>
                   )}
-                { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+                { canEdit()
                   && (
                     <Button
                       color="secondary"
