@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';
@@ -102,7 +102,7 @@ function ChplSedDownload({ listing }) {
         variant="contained"
         size="small"
         id="download-task-details"
-        endIcon={<ArrowDownwardIcon />}
+        endIcon={<CloudDownloadIcon />}
       >
         Download Task Details
       </Button>
