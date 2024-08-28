@@ -196,8 +196,12 @@
                 || !vm.listing.sed) {
         $timeout(_analyzeSed, 500);
       } else {
-        let csvRow; let i; let j; let object; let participant; let
-          task;
+        let csvRow;
+        let i;
+        let j;
+        let object;
+        let participant;
+        let task;
         const TASK_START = 5;
         const PART_START = TASK_START + 14;
         const ROW_BASE = [
@@ -226,7 +230,8 @@
         csvRow = angular.copy(ROW_BASE);
 
         for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          task = vm.listing.sed.testTasks[i];
+          task = {...vm.listing.sed.testTasks[i]};
+          task.cuid = task.id ?? Date.now();
           task.criteria = $filter('orderBy')(task.criteria.filter((cert) => vm.sedCriteria.map((cert) => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
           csvRow[4] = task.criteria.map((item) => (item.removed ? 'Removed | ' : '') + item.number).join(';');
@@ -245,12 +250,13 @@
           csvRow[TASK_START + 12] = task.taskPathDeviationObserved;
           csvRow[TASK_START + 13] = task.taskPathDeviationOptimal;
           for (j = 0; j < task.testParticipants.length; j++) {
-            participant = task.testParticipants[j];
-            if (angular.isUndefined(object.participants[participant.friendlyId])) {
-              object.participants[participant.friendlyId] = participant;
-              object.participants[participant.friendlyId].tasks = [];
+            participant = {...task.testParticipants[j]};
+            participant.cuid = participant.id ?? Date.now();
+            if (angular.isUndefined(object.participants[participant.cuid])) {
+              object.participants[participant.cuid] = participant;
+              object.participants[participant.cuid].tasks = [];
             }
-            object.participants[participant.friendlyId].tasks.push(task.friendlyId);
+            object.participants[participant.cuid].tasks.push(task.cuid);
             csvRow[PART_START + 0] = participant.occupation;
             csvRow[PART_START + 1] = participant.educationType.name;
             csvRow[PART_START + 2] = participant.productExperienceMonths;

@@ -23,6 +23,7 @@
       vm.criteria = criteria;
       vm.editMode = editMode;
       vm.participants = participants;
+      console.log('task-mod.init', participants);
       vm.task = task;
       parseParticipants();
     }
@@ -71,6 +72,7 @@
     }
 
     function viewParticipants () {
+      console.log('task-mod.start', vm.participants, vm.task.testParticipants);
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
         controller: 'ViewSedParticipantsController',
