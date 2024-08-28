@@ -53,7 +53,7 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
     <>
       <ChplTooltip title="Quick Filters">
         <IconButton aria-controls="quick-filter-menu" aria-haspopup="true" onClick={handleClick}>
-          <MoreVertIcon color='inherit' style={{ color: palette.black }} />
+          <MoreVertIcon color="inherit" style={{ color: palette.black }} />
         </IconButton>
       </ChplTooltip>
       <Menu
@@ -88,16 +88,16 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
         >
           Reset All Filters
         </MenuItem>
-          { toggleMultipleFilters?.length > 0
+        { toggleMultipleFilters?.length > 0
           && toggleMultipleFilters.map((f) => (
             <MenuItem
               key={f.display}
               onClick={() => f.toggle()}
             >
-              { f.display}
+              { f.display }
             </MenuItem>
           ))}
-        {quickFilter.values
+        { quickFilter.values
           .filter((v) => toggleMultipleFilters?.display !== v.value)
           .map((v) => (
             <MenuItem
@@ -105,7 +105,7 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
               onClick={() => loadQuickFilter(v)}
               disabled={quickFilter.getValueDisplay(v).includes('(0)')}
             >
-              {quickFilter.getValueDisplay(v)}
+              { quickFilter.getValueDisplay(v) }
             </MenuItem>
           ))}
       </Menu>

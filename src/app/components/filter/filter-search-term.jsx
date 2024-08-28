@@ -16,7 +16,7 @@ import { ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   searchButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
     padding: '8px',
     borderRadius: '8px',
   },
-}));
+});
 
 function ChplFilterSearchTerm(props) {
   const $analytics = getAngularService('$analytics');
