@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -15,6 +15,8 @@ import { useSnackbar } from 'notistack';
 
 import { usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { ListingContext, UserContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -26,10 +28,19 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   const { enqueueSnackbar } = useSnackbar();
   const postSubscription = usePostSubscription();
   const [isSubscribing, setIsSubscribing] = useState(false);
+  const { listing } = useContext(ListingContext);
+  const { user } = useContext(UserContext);
   let formik;
 
   const subscribe = () => {
     setIsSubscribing(true);
+    eventTrack({
+      event: 'Subscribe to Listing',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     postSubscription.mutate({
       email: formik.values.email,
       subscribedObjectTypeId,
