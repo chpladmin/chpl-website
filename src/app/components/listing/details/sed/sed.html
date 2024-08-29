@@ -59,6 +59,7 @@
             <th scope="col">Description</th>
             <th scope="col">Task Rating and Scale Type</th>
             <th scope="col">Certification Criteria</th>
+            <th scope="col" ng-if="vm.editMode">Friendly ID</th>
             <th scope="col"><span class="sr-only">View details</span></th>
           </tr>
         </thead>
@@ -82,6 +83,7 @@
                 <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in task.criteria | orderBy: vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: {{ crit.title }}<button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
               </ul>
             </td>
+            <td ng-if="vm.editMode">{{ participant.friendlyId }}</td>
             <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
           </tr>
         </tbody>

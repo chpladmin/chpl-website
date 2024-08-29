@@ -21,7 +21,7 @@
       </thead>
       <tbody>
         <tr>
-          <th scope="rowgroup" rowspan="2">Summary</th>
+          <th scope="rowgroup" rowspan="3">Summary</th>
           <th scope="row">Task Description</th>
           <td>{{ vm.task.description }}</td>
         </tr>
@@ -32,6 +32,10 @@
               <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in vm.task.criteria | orderBy: vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: {{ crit.title }}<button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
             </ul>
           </td>
+        </tr>
+        <tr>
+          <th scope="row">Friendly ID</th>
+          <td>{{ vm.task.friendlyId }}</td>
         </tr>
         <tr>
           <th scope="rowgroup" rowspan="3">Rating</th>

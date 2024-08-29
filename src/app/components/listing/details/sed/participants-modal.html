@@ -22,6 +22,7 @@
           <th scope="col">Age (Years)</th>
           <th scope="col">Gender</th>
           <th scope="col">Assistive Technology Needs</th>
+          <th scope="col" ng-if="vm.editMode">Friendly ID</th>
           <th scope="col" ng-if="vm.editMode">Assigned</th>
           <th scope="col" ng-if="vm.editMode">Edit</th>
         </tr>
@@ -41,6 +42,7 @@
           <td>{{ participant.age.name }}</td>
           <td>{{ participant.gender }}</td>
           <td>{{ participant.assistiveTechnologyNeeds }}</td>
+          <td ng-if="vm.editMode">{{ participant.friendlyId }}</td>
           <td ng-if="vm.editMode">
             <button class="btn" ng-class="vm.isAssigned(participant) ? 'btn-ai-success' : 'btn-warning'" ng-click="vm.toggleParticipant(participant)">
               <span class="sr-only">Toggle {{ vm.isAssigned(participant) ? 'off' : 'on' }}</span>
