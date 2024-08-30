@@ -64,11 +64,11 @@ const states = [
       roles: ['chpl-admin'],
     },
   }, {
-    name: 'power-bi',
-    url: '/power-bi',
-    component: 'powerBiWrapperBridge',
+    name: 'dashboard',
+    url: '/dashboard',
+    component: 'dashboardWrapperBridge',
     data: {
-      title: 'Power BI Report',
+      title: 'Dashboard',
       roles: ['chpl-admin'],
     },
   },

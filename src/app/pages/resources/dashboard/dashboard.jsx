@@ -58,7 +58,7 @@ const iconMapping = {
   'More to Come': <HighlightOutlinedIcon fontSize="large" color="primary" />,
 };
 
-function PowerBI() {
+function Dashboard() {
   const classes = useStyles();
   const developerStatisticsReportUrl = useFetchReportUrl('DeveloperStatistics');
   const [activeCard, setActiveCard] = useState('home');
@@ -152,4 +152,4 @@ function PowerBI() {
   );
 }
 
-export default PowerBI;
+export default Dashboard;

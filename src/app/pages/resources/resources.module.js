@@ -7,7 +7,7 @@ import ChplResourcesApi from './api';
 import ChplResourcesDownloadWrapper from './download/download-wrapper';
 import ChplResourcesOverview from './overview';
 import ChplStyleGuide from './style-guide';
-import PowerBiWrapper from './power-bi/power-bi-wrapper';
+import DashboardWrapper from './dashboard/dashboard-wrapper';
 
 angular
   .module('chpl.resources', [
@@ -23,4 +23,4 @@ angular
   .component('chplResourcesDownloadWrapperBridge', reactToAngularComponent(ChplResourcesDownloadWrapper))
   .component('chplResourcesOverviewBridge', reactToAngularComponent(ChplResourcesOverview))
   .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide))
-  .component('powerBiWrapperBridge', reactToAngularComponent(PowerBiWrapper));
+  .component('dashboardWrapperBridge', reactToAngularComponent(DashboardWrapper));
