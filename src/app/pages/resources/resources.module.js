@@ -1,13 +1,14 @@
 import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 import ChplCmsLookupWrapper from './cms-lookup/cms-lookup-wrapper';
+import ChplDashboardWrapper from './dashboard/dashboard-wrapper';
 import ChplForgotPassword from './forgot-password/forgot-password-wrapper';
 import ChplNotFound from './not-found/not-found';
 import ChplResourcesApi from './api';
 import ChplResourcesDownloadWrapper from './download/download-wrapper';
 import ChplResourcesOverview from './overview';
 import ChplStyleGuide from './style-guide';
-import DashboardWrapper from './dashboard/dashboard-wrapper';
+
 
 angular
   .module('chpl.resources', [
@@ -23,4 +24,4 @@ angular
   .component('chplResourcesDownloadWrapperBridge', reactToAngularComponent(ChplResourcesDownloadWrapper))
   .component('chplResourcesOverviewBridge', reactToAngularComponent(ChplResourcesOverview))
   .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide))
-  .component('dashboardWrapperBridge', reactToAngularComponent(DashboardWrapper));
+  .component('chplDashboardWrapperBridge', reactToAngularComponent(ChplDashboardWrapper));

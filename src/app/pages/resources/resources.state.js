@@ -66,7 +66,7 @@ const states = [
   }, {
     name: 'dashboard',
     url: '/dashboard',
-    component: 'dashboardWrapperBridge',
+    component: 'chplDashboardWrapperBridge',
     data: {
       title: 'Dashboard',
       roles: ['chpl-admin'],
