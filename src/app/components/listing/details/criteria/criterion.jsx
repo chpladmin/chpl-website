@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -21,8 +21,8 @@ import { bool, func } from 'prop-types';
 import ChplCriterionDetailsEdit from './criterion-details-edit';
 import ChplCriterionDetailsView from './criterion-details-view';
 
-import { getAngularService } from 'services/angular-react-helper';
-import { CriterionContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { CriterionContext, UserContext } from 'shared/contexts';
 import {
   certificationResult,
   listing as listingPropType,
@@ -108,7 +108,7 @@ function ChplCriterion(props) {
   const [qmsStandards, setQmsStandards] = useState([]);
   const [pending, setPending] = useState(false);
   const [staged, setStaged] = useState(false);
-  const $analytics = getAngularService('$analytics');
+  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -143,12 +143,15 @@ function ChplCriterion(props) {
       ));
   };
 
-  const handleAccordionChange = (event, isExpanded) => {
+  const handleAccordionChange = () => {
+    eventTrack({
+      event: `${expanded ? 'Hide' : 'Show'} Details - ${criterion.criterion.number}`,
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     setExpanded(!expanded);
-    if (isExpanded) {
-      const label = criterion.criterion.number;
-      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
-    }
   };
 
   const handleCancel = () => {

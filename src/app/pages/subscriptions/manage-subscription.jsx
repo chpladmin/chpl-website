@@ -147,8 +147,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplManageSubscription(props) {
-  const { hash } = props;
+function ChplManageSubscription({ hash }) {
   const { enqueueSnackbar } = useSnackbar();
   const [subscriber, setSubscriber] = useState(undefined);
   const [subscriptions, setSubscriptions] = useState([]);

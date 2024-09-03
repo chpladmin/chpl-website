@@ -9,6 +9,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 import CompareButton from 'components/compare-widget/compare-button';
 import CmsButton from 'components/cms-widget/cms-button';
+import { eventTrack } from 'services/analytics.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
@@ -32,15 +33,22 @@ const useStyles = makeStyles({
 
 function ChplActionButton(props) {
   const { children, horizontal, listing } = props;
-  const { hasAnyRole } = useContext(UserContext);
   const API = getAngularService('API');
   const {
     getApiKey,
     getToken,
   } = getAngularService('authService');
+  const { hasAnyRole, user } = useContext(UserContext);
   const classes = useStyles();
 
   const handleClick = () => {
+    eventTrack({
+      event: 'Download CSV',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
