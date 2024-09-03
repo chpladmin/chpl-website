@@ -1,18 +1,18 @@
 import React from 'react';
 
-import Dashboard from './dashboard';
+import ChplDashboard from './dashboard';
 
 import AppWrapper from 'app-wrapper';
 
-function DashboardWrapper() {
+function ChplDashboardWrapper() {
   return (
     <AppWrapper>
-      <Dashboard />
+      <ChplDashboard />
     </AppWrapper>
   );
 }
 
-export default DashboardWrapper;
+export default ChplDashboardWrapper;
 
-DashboardWrapper.propTypes = {
+ChplDashboardWrapper.propTypes = {
 };

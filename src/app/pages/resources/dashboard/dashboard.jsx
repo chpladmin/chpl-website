@@ -8,15 +8,15 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import { useFetchReportUrl } from 'api/reports';
-import { palette } from 'themes';
-
 import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import GroupOutlinedIcon from '@material-ui/icons/GroupOutlined';
 import HighlightOutlinedIcon from '@material-ui/icons/HighlightOutlined';
 
-const useStyles = makeStyles((theme) => ({
+import { useFetchReportUrl } from 'api/reports';
+import { palette, theme } from 'themes';
+
+const useStyles = makeStyles({
   container: {
     height: '1200px',
     padding: theme.spacing(8),
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-}));
+});
 
 const iconMapping = {
   'Developer Reporting': <AssessmentOutlinedIcon fontSize="large" color="primary" />,
@@ -58,7 +58,7 @@ const iconMapping = {
   'More to Come': <HighlightOutlinedIcon fontSize="large" color="primary" />,
 };
 
-function Dashboard() {
+function ChplDashboard() {
   const classes = useStyles();
   const developerStatisticsReportUrl = useFetchReportUrl('DeveloperStatistics');
   const [activeCard, setActiveCard] = useState('home');
@@ -152,4 +152,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default ChplDashboard;
