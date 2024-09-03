@@ -228,7 +228,7 @@
 
         for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
           task = {...vm.listing.sed.testTasks[i]};
-          task.cuid = task.id ?? Date.now();
+          task.cuid = task.id ?? Math.random();
           task.criteria = $filter('orderBy')(task.criteria.filter((cert) => vm.sedCriteria.map((cert) => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
           csvRow[4] = task.criteria.map((item) => (item.removed ? 'Removed | ' : '') + item.number).join(';');
@@ -247,8 +247,8 @@
           csvRow[TASK_START + 12] = task.taskPathDeviationObserved;
           csvRow[TASK_START + 13] = task.taskPathDeviationOptimal;
           for (j = 0; j < task.testParticipants.length; j++) {
-            participant = {...task.testParticipants[j]};
-            participant.cuid = participant.id ?? Date.now();
+            participant = task.testParticipants[j];
+            participant.cuid = participant.id ?? participant.friendlyId;
             if (angular.isUndefined(object.participants[participant.cuid])) {
               object.participants[participant.cuid] = participant;
               object.participants[participant.cuid].tasks = [];

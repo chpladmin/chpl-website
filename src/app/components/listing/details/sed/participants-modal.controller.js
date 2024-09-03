@@ -80,9 +80,7 @@
     }
 
     function isAssigned (participant) {
-      return vm.participants.reduce((isIn, item) => {
-        return isIn || (participant.id === item.id || participant.cuid === item.cuid);
-      }, false);
+      return vm.participants.some((item) => item.cuid === participant.cuid);
     }
 
     function save () {
