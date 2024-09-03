@@ -152,7 +152,7 @@ function ChplSedParticipantAdd({ dispatch }) {
         <ChplTextField
           id="friendly-id"
           name="friendlyId"
-          label="Friendly ID"
+          label="Participant ID"
           required
           value={formik.values.friendlyId}
           onChange={formik.handleChange}

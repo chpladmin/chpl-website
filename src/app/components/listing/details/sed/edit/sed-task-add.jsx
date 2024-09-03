@@ -220,7 +220,7 @@ function ChplSedTaskAdd({ dispatch }) {
             <ChplTextField
               id="friendly-id"
               name="friendlyId"
-              label="Friendly ID"
+              label="Task ID"
               required
               value={formik.values.friendlyId}
               onChange={formik.handleChange}
