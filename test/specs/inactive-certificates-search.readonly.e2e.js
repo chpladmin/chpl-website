@@ -1,17 +1,17 @@
-import ApiDocumentationSearchPage from '../pageobjects/api-documentation-search.page';
+import InactiveCertificatesSearchPage from '../pageobjects/inactive-certificates-search.page';
 
 const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 let page;
 
-describe('the API Documentation Search page', () => {
+describe('the Inactive Certificates Search page', () => {
   beforeEach(async () => {
-    page = new ApiDocumentationSearchPage();
+    page = new InactiveCertificatesSearchPage();
     await page.open();
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', 'API Documentation', 'Service Base URL List', 'Mandatory Disclosures URL', 'Actions'];
+    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', 'Decertification Date', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
@@ -22,7 +22,7 @@ describe('the API Documentation Search page', () => {
   });
 
   it('should be able to Browse', async () => {
-    await page.searchForText('e');
+    await page.searchForText('s');
     const initialResultCount = await page.getTotalResultCount();
     await page.browse();
     await expect(await page.getTotalResultCount()).not.toBe(initialResultCount);

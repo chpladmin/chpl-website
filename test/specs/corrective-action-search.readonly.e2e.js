@@ -1,17 +1,17 @@
-import ApiDocumentationSearchPage from '../pageobjects/api-documentation-search.page';
+import CorrectiveActionSearchPage from '../pageobjects/corrective-action-search.page';
 
 const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 let page;
 
-describe('the API Documentation Search page', () => {
+describe('the Corrective Action Search page', () => {
   beforeEach(async () => {
-    page = new ApiDocumentationSearchPage();
+    page = new CorrectiveActionSearchPage();
     await page.open();
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', 'API Documentation', 'Service Base URL List', 'Mandatory Disclosures URL', 'Actions'];
+    const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', '# Open Surveillance NCs', '# Closed Surveillance NCs', '# Open Direct Review NCs', '# Closed Direct Review NCs', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));

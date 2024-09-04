@@ -2,19 +2,19 @@ import SearchPage from './search.page';
 
 const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
-class ApiDocumentationSearchPage extends SearchPage {
+class SvapSearchPage extends SearchPage {
   constructor() {
     super();
-    this.name = 'ApiDocumentationSearchPage';
+    this.name = 'SvapSearchPage';
     this.elements = {
       ...this.elements,
-      header: 'h1=Listings',
+      header: 'h1=SVAP Information',
       downloadListingsButton: '#download-listings',
     };
   }
 
   async open() {
-    await super.open('api-documentation');
+    await super.open('svap');
     await (browser.waitUntil(async () => !(await this.isLoading())));
   }
 
@@ -23,4 +23,4 @@ class ApiDocumentationSearchPage extends SearchPage {
   }
 }
 
-export default ApiDocumentationSearchPage;
+export default SvapSearchPage;

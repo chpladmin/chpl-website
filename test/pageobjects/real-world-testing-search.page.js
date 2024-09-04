@@ -2,19 +2,19 @@ import SearchPage from './search.page';
 
 const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
-class ApiDocumentationSearchPage extends SearchPage {
+class RealWorldTestingSearchPage extends SearchPage {
   constructor() {
     super();
-    this.name = 'ApiDocumentationSearchPage';
+    this.name = 'RealWorldTestingSearchPage';
     this.elements = {
       ...this.elements,
-      header: 'h1=Listings',
+      header: 'h1=Real World Testing',
       downloadListingsButton: '#download-listings',
     };
   }
 
   async open() {
-    await super.open('api-documentation');
+    await super.open('real-world-testing');
     await (browser.waitUntil(async () => !(await this.isLoading())));
   }
 
@@ -23,4 +23,4 @@ class ApiDocumentationSearchPage extends SearchPage {
   }
 }
 
-export default ApiDocumentationSearchPage;
+export default RealWorldTestingSearchPage;
