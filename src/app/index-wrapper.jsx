@@ -12,9 +12,9 @@ function IndexWrapper() {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const ngLocalStorage = getAngularService('$localStorage');
+  const $localStorage = getAngularService('$localStorage');
 
-  const isCurrentUserChplAuthenticated = ngLocalStorage.currentUser && ngLocalStorage.currentUser.userId;
+  const isCurrentUserChplAuthenticated = $localStorage.currentUser && $localStorage.currentUser.userId;
 
   useEffect(() => {
     let deregisterKeepalive;
