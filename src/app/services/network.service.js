@@ -482,6 +482,10 @@ export default class NetworkService {
     return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
   }
 
+  logout(logoutRequest) {
+    return this.apiPOST('/cognito/users/logout', logoutRequest);
+  }
+
   mergeDevelopers(mergeDeveloperObject) {
     return this.apiPOST('/developers/merge', mergeDeveloperObject);
   }

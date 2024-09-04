@@ -28,19 +28,17 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoLogin({ dispatch, initialState, uuid }) {
+function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
   const [sessionId, setSessionId] = useState('');
-  const [state, setState] = useState(initialState);
   const [userName, setUserName] = useState('');
   const classes = useStyles();
-
+  
   const cancel = (e) => {
     e.stopPropagation();
     setState('SIGNIN');
   };
 
   const handleDispatch = ({ action, payload }) => {
-    console.log({ action, payload });
     switch (action) {
       case 'forceChangePassword':
         setUserName(payload.userName);
@@ -55,8 +53,8 @@ function ChplCognitoLogin({ dispatch, initialState, uuid }) {
         setState('LOGGEDIN');
         break;
       case 'loggedIn':
-        dispatch('loggedIn');
         setState('LOGGEDIN');
+        dispatch('loggedIn');
         break;
       case 'loggedOut':
         setState('SIGNIN');
@@ -121,7 +119,8 @@ export default ChplCognitoLogin;
 
 ChplCognitoLogin.propTypes = {
   dispatch: func,
-  initialState: string,
+  setState: func,
+  state: string,
   uuid: string,
 };
 
