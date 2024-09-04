@@ -11,6 +11,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { func } from 'prop-types';
 import ReactGA from 'react-ga4';
 
+import { usePostCognitoLogout } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 
@@ -31,10 +32,16 @@ function ChplLoggedIn({ dispatch }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
+  const postLogout = usePostCognitoLogout();
   const classes = useStyles();
 
   const logout = (e) => {
     e.stopPropagation();
+    if (user?.email) {
+      postLogout.mutate({
+        email: user.email,
+      });
+    }
     setUser({});
     dispatch({ action: 'loggedOut' });
     authService.logout();
