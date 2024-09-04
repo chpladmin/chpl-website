@@ -43,6 +43,7 @@ function ChplRegisterUser({ hash }) {
   const [message, setMessage] = useState('');
   const [ssoIsOn, setSsoIsOn] = useState(false);
   const [state, setState] = useState('signin');
+  const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
   const { mutate: createInvited } = usePostCreateInvitedUser();
   const { setUser } = useContext(UserContext);
@@ -160,7 +161,11 @@ function ChplRegisterUser({ hash }) {
         return (
           <>
             <Typography>{ message }</Typography>
-            <ChplCognitoLogin dispatch={handleDispatch} />
+            <ChplCognitoLogin 
+              dispatch={handleDispatch} 
+              state={cognitoLoginComponentState}
+              setState={setCognitoLoginComponentState}
+            />
           </>
         );
       case 'create':

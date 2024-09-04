@@ -39,7 +39,6 @@ function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
   };
 
   const handleDispatch = ({ action, payload }) => {
-    console.log({ action, payload });
     switch (action) {
       case 'forceChangePassword':
         setUserName(payload.userName);
