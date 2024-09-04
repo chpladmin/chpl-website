@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.23.1
+_3 September 2024_
+
+### Bug Fixes
+* Show error messages on Version editing
+
+---
+
 ## Version 13.23.0
 _19 August 2024_
 
