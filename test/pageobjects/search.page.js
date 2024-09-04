@@ -1,5 +1,6 @@
-const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 import Page from './page.es6';
+
+const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
 class SearchPage extends Page {
   constructor() {
@@ -21,32 +22,32 @@ class SearchPage extends Page {
     };
   }
 
-  open (path) {
+  open(path) {
     return super.open(path);
   }
 
   async getBodyText() {
     return (await
-            (await
-             (await
-              $(this.elements.header)
-             ).parentElement()
-            ).nextElement()
-           ).getText();
+    (await
+    (await
+    $(this.elements.header)
+    ).parentElement()
+    ).nextElement()
+    ).getText();
   }
 
   async isLoading() {
     return (await
-            $(this.elements.loading)
-           ).isDisplayed();
+    $(this.elements.loading)
+    ).isDisplayed();
   }
 
   async getTableHeaders() {
     return (await
-            (await
-             $(this.elements.table)
-            ).$('thead')
-           ).$$('th');
+    (await
+    $(this.elements.table)
+    ).$('thead')
+    ).$$('th');
   }
 
   async hasNoResults() {
@@ -56,14 +57,14 @@ class SearchPage extends Page {
 
   async getTotalResultCount() {
     const results = (await
-                     (await
-                      (await
-                       (await
-                        $(this.elements.searchResultsHeader)
-                       ).parentElement()
-                      ).$('p')
-                     ).getText()
-                    );
+    (await
+    (await
+    (await
+    $(this.elements.searchResultsHeader)
+    ).parentElement()
+    ).$('p')
+    ).getText()
+    );
     return results === 'No results found' ? 0 : parseInt(results.split(' ')[2], 10);
   }
 
@@ -71,11 +72,11 @@ class SearchPage extends Page {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
-     $(this.elements.filterPanelToggle)
+    $(this.elements.filterPanelToggle)
     ).click();
     await
     (await
-     $(this.elements.resetAllFiltersButton)
+    $(this.elements.resetAllFiltersButton)
     ).click();
     await browser.keys('Escape');
     await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
@@ -85,19 +86,19 @@ class SearchPage extends Page {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
-     (await
-      (await
-       (await
-        (await
-         (await
-          (await
-           $(this.elements.filterChipsSection)
-          ).$(`p=${category}`)
-         ).parentElement()
-        ).$(`span=${value}`)
-       ).parentElement()
-      ).$('svg')
-     ).click()
+    (await
+    (await
+    (await
+    (await
+    (await
+    (await
+    $(this.elements.filterChipsSection)
+    ).$(`p=${category}`)
+    ).parentElement()
+    ).$(`span=${value}`)
+    ).parentElement()
+    ).$('svg')
+    ).click()
     );
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
@@ -110,9 +111,9 @@ class SearchPage extends Page {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
-     (await
-      $(`#${category}-operator-chips-toggle`)
-     ).click()
+    (await
+    $(`#${category}-operator-chips-toggle`)
+    ).click()
     );
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
@@ -125,21 +126,21 @@ class SearchPage extends Page {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
-     (await
-      $(this.elements.filterPanelToggle)
-     ).click()
+    (await
+    $(this.elements.filterPanelToggle)
+    ).click()
     );
     await
     (await
-     (await
-      $(`#filter-panel-primary-items-${category}`)
-     ).click()
+    (await
+    $(`#filter-panel-primary-items-${category}`)
+    ).click()
     );
     await
     (await
-     (await
-      $(`#filter-panel-secondary-items-${isBefore ? 'Before' : 'After'}`)
-     ).addValue(value)
+    (await
+    $(`#filter-panel-secondary-items-${isBefore ? 'Before' : 'After'}`)
+    ).addValue(value)
     );
     await browser.keys('Escape');
     try {
@@ -153,21 +154,21 @@ class SearchPage extends Page {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
-     (await
-      $(this.elements.filterPanelToggle)
-     ).click()
+    (await
+    $(this.elements.filterPanelToggle)
+    ).click()
     );
     await
     (await
-     (await
-      $(`#filter-panel-primary-items-${category}`)
-     ).click()
+    (await
+    $(`#filter-panel-primary-items-${category}`)
+    ).click()
     );
     await
     (await
-     (await
-      $(`#filter-panel-secondary-items-${value}`)
-     ).click()
+    (await
+    $(`#filter-panel-secondary-items-${value}`)
+    ).click()
     );
     await browser.keys('Escape');
     try {
@@ -179,10 +180,10 @@ class SearchPage extends Page {
 
   async getResults() {
     return (await
-            (await
-             $(this.elements.table)
-            ).$('tbody')
-           ).$$('tr');
+    (await
+    $(this.elements.table)
+    ).$('tbody')
+    ).$$('tr');
   }
 
   async getCellInRow(rowIdx, colIdx) {
@@ -229,19 +230,19 @@ class SearchPage extends Page {
   async clearFilter(category, value) {
     await
     (await
-     (await
-      (await
-       (await
-        (await
-         (await
-          (await
-           $(this.elements.filterChipsSection)
-          ).$(`p=${category}`)
-         ).parentElement()
-        ).$(`span=${value}`)
-       ).parentElement()
-      ).$('svg')
-     ).click()
+    (await
+    (await
+    (await
+    (await
+    (await
+    (await
+    $(this.elements.filterChipsSection)
+    ).$(`p=${category}`)
+    ).parentElement()
+    ).$(`span=${value}`)
+    ).parentElement()
+    ).$('svg')
+    ).click()
     );
   }
 }
