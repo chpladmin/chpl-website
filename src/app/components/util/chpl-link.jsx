@@ -52,18 +52,7 @@ function ChplLink({
       e.preventDefault();
       clicked = true;
       if (analytics.event) {
-        const params = {};
-        if (analytics.category) {
-          params.category = analytics.category;
-        }
-        if (analytics.label) {
-          params.label = analytics.label;
-        }
-        if (analytics.category || analytics.label) {
-          eventTrack({ event: analytics.event, ...params });
-        } else {
-          eventTrack({ event: analytics.event });
-        }
+        eventTrack(analytics);
       }
       if (router.sref) {
         $state.go(router.sref, router.options);

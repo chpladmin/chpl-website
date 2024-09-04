@@ -1,7 +1,6 @@
 import IndexWrapper from '../index-wrapper';
 
 import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
-import ChplActionButtonWrapper from './action-widget/action-button-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
 import {
   ChplAttestationCreateWrapper,
@@ -53,7 +52,6 @@ angular
     'ui.router',
   ])
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
-  .component('chplActionButtonWrapperBridge', reactToAngularComponent(ChplActionButtonWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))

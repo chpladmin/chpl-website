@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -24,6 +24,7 @@ import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -70,6 +71,8 @@ function ChplSedTaskView({ task: initialTask }) {
   const [meanExperience, setMeanExperience] = useState(0);
   const [task, setTask] = useState(undefined);
   const [occupations, setOccupations] = useState([]);
+  const { listing } = useContext(ListingContext);
+  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   const getIcon = () => (expanded
@@ -113,13 +116,13 @@ function ChplSedTaskView({ task: initialTask }) {
   }, [initialTask]);
 
   const handleAccordionChange = () => {
-    if (!expanded) {
-      eventTrack({
-        event: 'Open SED Task',
-        category: 'Listing Details',
-        label: task.description,
-      });
-    }
+    eventTrack({
+      event: expanded ? `Hide Details - ${task.description}` : `Show Details - ${task.description}`,
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     setExpanded(!expanded);
   };
 
@@ -291,6 +294,7 @@ function ChplSedTaskView({ task: initialTask }) {
               <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4}>
                 <ChplSedTaskParticipantsView
                   participants={task.testParticipants}
+                  task={task}
                 />
               </Box>
               <Table size="small">

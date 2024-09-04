@@ -32,11 +32,12 @@ import {
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, timestampToString, toTimestamp } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 
 function ChplListingHistory(props) {
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, user } = useContext(UserContext);
   const [activity, setActivity] = useState([]);
   const [evaluated, setEvaluated] = useState([]);
   const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
@@ -238,6 +239,13 @@ function ChplListingHistory(props) {
   }, [listing]);
 
   const handleClickOpen = () => {
+    eventTrack({
+      event: 'Open Listing History',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
     setOpen(true);
   };
 

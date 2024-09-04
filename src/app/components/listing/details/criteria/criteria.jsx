@@ -14,6 +14,7 @@ import ChplCriterion from './criterion';
 
 import { useFetchCriteria } from 'api/standards';
 import { ChplTooltip } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 import { jsJoda } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -52,7 +53,7 @@ function ChplCriteria(props) {
     onSave,
     viewAll,
   } = props;
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, user } = useContext(UserContext);
   const [criteria, setCriteria] = useState([]);
   const { data, isLoading, isSuccess } = useFetchCriteria({
     activeStartDay: listing.certificationDay,
@@ -90,6 +91,16 @@ function ChplCriteria(props) {
     onSave(updated);
   };
 
+  const handleRemovedChange = (obj, expanded) => {
+    eventTrack({
+      event: expanded ? 'Show Removed Criteria' : 'Hide Removed Criteria',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+  };
+
   const prepareResources = (criterion) => {
     const updated = {
       ...resources,
@@ -122,6 +133,7 @@ function ChplCriteria(props) {
           <div>
             <Accordion
               className={classes.NestedAccordionLevelOne}
+              onChange={handleRemovedChange}
             >
               <AccordionSummary
                 className={classes.NestedAccordionLevelOneSummary}

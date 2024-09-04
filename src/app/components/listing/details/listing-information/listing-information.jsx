@@ -169,7 +169,13 @@ function ChplListingInformation({ listing: initialListing }) {
                  <Typography variant="subtitle1">Standards Version Advancement Process Notice:</Typography>
                  <ChplLink
                    href={listing.svapNoticeUrl}
-                   analytics={{ event: 'SVAP Notice', category: 'Listing Details', label: listing.svapNoticeUrl }}
+                   analytics={{
+                     event: 'Go to SVAP Notice',
+                     category: 'Listing Details',
+                     label: listing.chplProductNumber,
+                     aggregationName: listing.product.name,
+                     group: user?.role,
+                   }}
                  />
                </>
              )}
@@ -180,7 +186,13 @@ function ChplListingInformation({ listing: initialListing }) {
               ? (
                 <ChplLink
                   href={listing.mandatoryDisclosures}
-                  analytics={{ event: 'Mandatory Disclosures', category: 'Listing Details', label: listing.mandatoryDisclosures }}
+                  analytics={{
+                    event: 'Go to Mandatory Disclosures',
+                    category: 'Listing Details',
+                    label: listing.chplProductNumber,
+                    aggregationName: listing.product.name,
+                    group: user?.role,
+                  }}
                 />
               ) : (
                 <Typography gutterBottom>No report on File</Typography>
@@ -196,7 +208,13 @@ function ChplListingInformation({ listing: initialListing }) {
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
                   text={listing.developer.name}
-                  analytics={{ event: 'Go to Developer Page', category: 'Listing Details', label: listing.developer.name }}
+                  analytics={{
+                    event: 'Navigate to Developer',
+                    category: 'Listing Details',
+                    label: listing.chplProductNumber,
+                    aggregationName: listing.product.name,
+                    group: user?.role,
+                  }}
                   external={false}
                   router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
                 />
@@ -214,7 +232,13 @@ function ChplListingInformation({ listing: initialListing }) {
                     <Typography variant="subtitle1">Developer Website:</Typography>
                     <ChplLink
                       href={listing.developer.website}
-                      analytics={{ event: 'Go to Developer Website', category: 'Listing Details', label: listing.developer.name }}
+                      analytics={{
+                        event: 'Go to Developer Website',
+                        category: 'Listing Details',
+                        label: listing.chplProductNumber,
+                        aggregationName: listing.product.name,
+                        group: user?.role,
+                      }}
                     />
                   </Box>
                 )}
@@ -317,7 +341,13 @@ function ChplListingInformation({ listing: initialListing }) {
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
                   text={listing.developer.name}
-                  analytics={{ event: 'Go to Developer Page', category: 'Listing Details', label: listing.developer.name }}
+                  analytics={{
+                    event: 'Navigate to Attestations',
+                    category: 'Listing Details',
+                    label: listing.chplProductNumber,
+                    aggregationName: listing.product.name,
+                    group: user?.role,
+                  }}
                   external={false}
                   router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
                 />
@@ -332,7 +362,13 @@ function ChplListingInformation({ listing: initialListing }) {
                          <Typography variant="subtitle2">Plans:</Typography>
                          <ChplLink
                            href={listing.rwtPlansUrl}
-                           analytics={{ event: 'Go to RWT Plans URL', category: 'Listing Details', label: listing.rwtPlansUrl }}
+                           analytics={{
+                             event: 'Go to Real World Testing Plans',
+                             category: 'Listing Details',
+                             label: listing.chplProductNumber,
+                             aggregationName: listing.product.name,
+                             group: user?.role,
+                           }}
                          />
                        </>
                      )}
@@ -349,7 +385,13 @@ function ChplListingInformation({ listing: initialListing }) {
                          <Typography variant="subtitle2">Results:</Typography>
                          <ChplLink
                            href={listing.rwtResultsUrl}
-                           analytics={{ event: 'Go to RWT Results URL', category: 'Listing Details', label: listing.rwtResultsUrl }}
+                           analytics={{
+                             event: 'Go to Real World Testing Results',
+                             category: 'Listing Details',
+                             label: listing.chplProductNumber,
+                             aggregationName: listing.product.name,
+                             group: user?.role,
+                           }}
                          />
                        </>
                      )}
