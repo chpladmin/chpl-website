@@ -16,25 +16,25 @@ const states = [
     component: 'chplApiDocumentationSearchWrapperBridge',
     data: { title: 'API Information' },
   }, {
-    name: 'shortcut.corrective-action',
-    url: '/corrective-action',
-    component: 'chplCorrectiveActionSearchWrapperBridge',
-    data: { title: 'Products: Corrective Action Status' },
-  }, {
     name: 'shortcut.banned-developers',
     url: '/banned-developers',
     component: 'chplBannedDevelopersSearchPageBridge',
     data: { title: 'Banned Developers' },
   }, {
-    name: 'shortcut.inactive-certificates',
-    url: '/inactive',
-    component: 'chplInactiveCertificatesSearchWrapperBridge',
-    data: { title: 'Inactive Certificates' },
+    name: 'shortcut.corrective-action',
+    url: '/corrective-action',
+    component: 'chplCorrectiveActionSearchWrapperBridge',
+    data: { title: 'Products: Corrective Action Status' },
   }, {
     name: 'shortcut.decertified-products',
-    url: '/products',
+    url: '/decertified-products',
     component: 'chplDecertifiedProductsSearchWrapperBridge',
     data: { title: 'Decertified Products' },
+  }, {
+    name: 'shortcut.inactive-certificates',
+    url: '/inactive-certificates',
+    component: 'chplInactiveCertificatesSearchWrapperBridge',
+    data: { title: 'Inactive Certificates' },
   }, {
     name: 'shortcut.real-world-testing',
     url: '/real-world-testing',
