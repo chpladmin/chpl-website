@@ -8,7 +8,7 @@ class ListingSearchPage extends SearchPage {
     this.name = 'ListingSearchPage';
     this.elements = {
       ...this.elements,
-      header: 'h1=Listings',
+      header: 'h1=CHPL Listings',
       composeMessageButton: '#compose-message',
       downloadListingsButton: '#download-listings',
     };
@@ -25,6 +25,17 @@ class ListingSearchPage extends SearchPage {
 
   get downloadListingsButton() {
     return $(this.elements.downloadListingsButton);
+  }
+
+  async browse() {
+    await (
+      await $(this.elements.filterBrowse)
+    ).click();
+    try {
+      await browser.waitUntil(async () => (await this.getTableHeaders()).length > 0);
+    } catch (err) {
+      console.log(`browse: ${err}`);
+    }
   }
 }
 
