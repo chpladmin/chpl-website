@@ -124,8 +124,7 @@ const states = [{
   component: 'chplLoginPageBridge',
   resolve: { returnTo },
   data: { title: 'CHPL Login' },
-},
-];
+}];
 
 function administrationStatesConfig($stateProvider) {
   'ngInject';
