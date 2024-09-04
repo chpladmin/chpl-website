@@ -32,5 +32,11 @@ describe('the Listing Search page', () => {
       await page.browse();
       await expect(await page.getTotalResultCount()).not.toBe(initialResultCount);
     });
+
+    it('should be able to search for text', async () => {
+      const initialResultCount = await page.getTotalResultCount();
+      await page.searchForText('Epic');
+      await expect(await page.getTotalResultCount()).toBeLessThan(initialResultCount);
+    });
   });
 });
