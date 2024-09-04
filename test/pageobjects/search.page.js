@@ -14,7 +14,8 @@ class SearchPage extends Page {
       filterPanelToggle: '#filter-panel-toggle',
       resetAllFiltersButton: 'button=Reset All Filters',
       filterSearchTermInput: '#filter-search-term-input',
-      filterSearchTermGo: '#filter-search-term-go',
+      filterSearchTermSearch: '#filter-search-term-search',
+      filterBrowse: '#filter-browse',
       filterChipsSection: '#filter-chips',
       clearSearchTermButton: 'button[aria-label="Clear search"]',
     };
@@ -194,6 +195,19 @@ class SearchPage extends Page {
     await this.searchForText('');
   }
 
+  async browse() {
+    await this.searchForText('a');
+    const initialResultCount = await this.getTotalResultCount();
+    await (
+      await $(this.elements.filterBrowse)
+    ).click();
+    try {
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
+    } catch (err) {
+      console.log(`searchForText: ${err}`);
+    }
+  }
+
   async searchForText(text) {
     const initialResultCount = await this.getTotalResultCount();
     await (
@@ -203,7 +217,7 @@ class SearchPage extends Page {
       await $(this.elements.filterSearchTermInput)
     ).setValue(text);
     await (
-      await $(this.elements.filterSearchTermGo)
+      await $(this.elements.filterSearchTermSearch)
     ).click();
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);

@@ -20,4 +20,11 @@ describe('the Api Documentation Search page', () => {
   it('should have the Download Listings button for anonymous users', async () => {
     await expect(await page.downloadListingsButton).toBeExisting();
   });
+
+  it('should be able to Browse', async () => {
+    await page.searchForText('e');
+    const initialResultCount = await page.getTotalResultCount();
+    await page.browse();
+    await expect(await page.getTotalResultCount()).not.toBe(initialResultCount);
+  });
 });
