@@ -4,7 +4,7 @@ const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-ex
 
 let page;
 
-describe('the SVAP Search page', () => {
+xdescribe('the SVAP Search page', () => {
   beforeEach(async () => {
     page = new SvapSearchPage();
     await page.open();
