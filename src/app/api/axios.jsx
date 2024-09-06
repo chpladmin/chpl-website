@@ -12,6 +12,7 @@ const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
   const $localStorage = getAngularService('$localStorage');
+  const authService = getAngularService('authService');
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -33,6 +34,10 @@ function AxiosProvider({ children }) {
           .then((response) => {
             $localStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;
+          })
+          .catch(() => {
+            console.log('Logging out via method 1');
+            authService.logout();
           });
       }
       return new Promise((resolve) => resolve(''));
