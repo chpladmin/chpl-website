@@ -78,6 +78,7 @@ function ChplSignin({ dispatch }) {
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
+        console.log(error);
         if (error?.response?.status === 470) {
           dispatch({
             action: 'forceChangePassword',
@@ -86,6 +87,9 @@ function ChplSignin({ dispatch }) {
               sessionId: error?.response?.data?.sessionId,
             },
           });
+        } else if (error?.response?.status === 471) {
+          const body = 'A password change is required for your account. A temporary password has been sent to your email address.';
+          enqueueSnackbar(body, { variant: 'error' });
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
