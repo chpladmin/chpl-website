@@ -4,7 +4,7 @@ const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-ex
 
 let page;
 
-xdescribe('the SED Search page', () => {
+describe('the SED Search page', () => {
   beforeEach(async () => {
     page = new SedSearchPage();
     await page.open();

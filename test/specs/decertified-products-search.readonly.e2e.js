@@ -4,7 +4,7 @@ const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-ex
 
 let page;
 
-xdescribe('the Decertified Products Search page', () => {
+describe('the Decertified Products Search page', () => {
   beforeEach(async () => {
     page = new DecertifiedProductsSearchPage();
     await page.open();

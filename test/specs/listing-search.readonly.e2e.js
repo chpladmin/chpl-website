@@ -4,7 +4,7 @@ const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-ex
 
 let page;
 
-xdescribe('the Listing Search page', () => {
+describe('the Listing Search page', () => {
   beforeEach(async () => {
     page = new ListingSearchPage();
     await page.open();

@@ -4,7 +4,7 @@ const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-ex
 
 let page;
 
-xdescribe('the Corrective Action Search page', () => {
+describe('the Corrective Action Search page', () => {
   beforeEach(async () => {
     page = new CorrectiveActionSearchPage();
     await page.open();

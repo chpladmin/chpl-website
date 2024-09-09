@@ -4,7 +4,7 @@ const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-ex
 
 let page;
 
-xdescribe('the Banned Developers Search page', () => {
+describe('the Banned Developers Search page', () => {
   beforeEach(async () => {
     page = new BannedDevelopersSearchPage();
     await page.open();
