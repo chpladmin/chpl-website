@@ -118,7 +118,6 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
         response.data = parseToken(response.data);
       }
       if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-        $log.info('Logging out via method 2');
         authService.logout();
       }
       return response;
