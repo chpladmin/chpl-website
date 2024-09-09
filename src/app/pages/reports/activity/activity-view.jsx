@@ -12,8 +12,9 @@ import {
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
 
+import ChplListingActivityDetails from './components/listing-activity-details';
+
 import { useFetchActivity } from 'api/questionable-activity';
-//import ChplActivityDetails from 'components/activity/activity-details';
 import {
   ChplLink,
   ChplPagination,
@@ -223,9 +224,7 @@ function ChplActivityView(props) {
                               <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
                               <TableCell>{ item.reason }</TableCell>
                               <TableCell>
-                            { /*
-                                <ChplActivityDetails activity={item} />
-                              */ }
+                                <ChplListingActivityDetails activity={item} />
                               </TableCell>
                             </TableRow>
                           ))}

@@ -417,6 +417,7 @@ const briefLookup = {
   'root.countCqms': { message: () => undefined },
   'root.countOpenNonconformities': { message: () => undefined },
   'root.countOpenSurveillance': { message: () => undefined },
+  'root.countSurveillance': { message: () => undefined },
   'root.cqmResults': { message: (before, after) => compare(before, after, 'cqmResults', 'CQM Changes') },
   'root.curesUpdate': { message: (before, after) => comparePrimitive(before, after, 'curesUpdate', '2015 Edition Cures Update status') },
   'root.dataErrorMessages': { message: () => undefined },
