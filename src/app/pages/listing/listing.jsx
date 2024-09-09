@@ -87,6 +87,13 @@ function ChplListingPage({ id }) {
     return false;
   };
 
+  const canGetCurrentCsv = () => {
+    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
+    if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; }
+    if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
+    return false;
+  };
+
   const downloadOriginalCsv = () => {
     eventTrack({
       event: 'Download Original CSV',
@@ -202,7 +209,7 @@ function ChplListingPage({ id }) {
                       Original CSV
                     </Button>
                   )}
-                { canEdit()
+                { canGetCurrentCsv()
                   && (
                     <Button
                       color="secondary"
