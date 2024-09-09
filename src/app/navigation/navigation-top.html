@@ -119,6 +119,7 @@
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.user-actions')"></i> User Actions</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.api-keys()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-keys')"></i> API Keys</a></li>
+              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.activity()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.activity')"></i> Activity</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.questionable-activity()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.questionable-activity')"></i> Questionable Activity</a></li>
             </ul>
           </li>
