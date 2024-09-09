@@ -36,6 +36,7 @@ function AxiosProvider({ children }) {
             return response.data.accessToken;
           })
           .catch(() => {
+            authService.logout();
           });
       }
       return new Promise((resolve) => resolve(''));
