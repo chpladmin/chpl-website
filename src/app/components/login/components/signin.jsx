@@ -88,8 +88,15 @@ function ChplSignin({ dispatch }) {
             },
           });
         } else if (error?.response?.status === 471) {
-          const body = 'A password change is required for your account. A temporary password has been sent to your email address.';
+          const body = 'Need some good text here explaining why the user needs to reset the password and that they are to use the Forgot Password workflow';
           enqueueSnackbar(body, { variant: 'error' });
+          dispatch({
+            action: 'forceChangePassword',
+            payload: {
+              userName: formik.values.userName,
+              sessionId: error?.response?.data?.sessionId,
+            },
+          });
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
