@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -12,13 +11,10 @@ import {
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
 
-import ChplListingActivityDetails from './components/listing-activity-details';
+import ChplActivityDetails from './activity-details';
 
 import { useFetchActivity } from 'api/questionable-activity';
-import {
-  ChplLink,
-  ChplPagination,
-} from 'components/util';
+import { ChplPagination } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
@@ -164,9 +160,7 @@ function ChplActivityView(props) {
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
-          <Typography variant="body1">
-
-          </Typography>
+          <Typography variant="body1" />
         </div>
       </div>
       <div className={classes.searchContainer}>
@@ -224,7 +218,7 @@ function ChplActivityView(props) {
                               <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
                               <TableCell>{ item.reason }</TableCell>
                               <TableCell>
-                                <ChplListingActivityDetails activity={item} />
+                                <ChplActivityDetails activity={item} />
                               </TableCell>
                             </TableRow>
                           ))}
