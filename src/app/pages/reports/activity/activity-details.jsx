@@ -10,6 +10,7 @@ import { object } from 'prop-types';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareAcb } from 'pages/reports/acbs/acbs.service';
+import { compareAtl } from 'pages/reports/atls/atls.service';
 import { compareDeveloper } from 'pages/reports/developers/developers.service';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
@@ -29,6 +30,7 @@ const getDetails = (activity) => {
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
     case 'DEVELOPER': compare = compareDeveloper; break;
     case 'PRODUCT': compare = compareProduct; break;
+    case 'TESTING_LAB': compare = compareAtl; break;
     case 'VERSION': compare = compareVersion; break;
       // no default
   }
@@ -75,6 +77,7 @@ function ChplActivityDetails({ activity }) {
     'CERTIFIED_PRODUCT',
     'DEVELOPER',
     'PRODUCT',
+    'TESTING_LAB',
     'VERSION',
   ].includes(activity.concept)) {
     return (
