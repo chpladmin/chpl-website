@@ -19,7 +19,6 @@ import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
-  ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
@@ -159,85 +158,81 @@ function ChplActivityView(props) {
         <Typography variant="h1">Activity</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1" />
+        <div className={classes.searchContainer}>
+          <ChplFilterPanel />
         </div>
-      </div>
-      <div className={classes.searchContainer}>
-        <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-      </div>
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <>Loading</>
-        )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { activities.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { activities.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <>Loading</>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.tableResultsHeaderContainer}>
+                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  { activities.length === 0
+                    && (
+                      <Typography>
+                        No results found
+                      </Typography>
+                    )}
+                  { activities.length > 0
+                    && (
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                      </Typography>
+                    )}
+                </div>
               </div>
-            </div>
-            { activities.length > 0
-              && (
-                <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Activity table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
+              { activities.length > 0
+                && (
+                  <>
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                      <Table
                         stickyHeader
-                      />
-                      <TableBody>
-                        { activities
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell>{ item.username }</TableCell>
-                              <TableCell>{ item.concept }</TableCell>
-                              <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
-                              <TableCell>{ item.reason }</TableCell>
-                              <TableCell>
-                                <ChplActivityDetails activity={item} />
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                    analytics={analytics}
-                  />
-                </>
-              )}
-          </>
-        )}
+                        aria-label="Activity table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          onTableSort={handleTableSort}
+                          orderBy={orderBy}
+                          order={sortDescending ? 'desc' : 'asc'}
+                          stickyHeader
+                        />
+                        <TableBody>
+                          { activities
+                            .map((item) => (
+                              <TableRow key={item.id}>
+                                <TableCell>{ item.username }</TableCell>
+                                <TableCell>{ item.concept }</TableCell>
+                                <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
+                                <TableCell>{ item.reason }</TableCell>
+                                <TableCell>
+                                  <ChplActivityDetails activity={item} />
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                      analytics={analytics}
+                    />
+                  </>
+                )}
+            </>
+          )}
+      </div>
     </>
   );
 }
