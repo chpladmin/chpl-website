@@ -70,6 +70,20 @@ function ChplActivityDetails({ activity }) {
     );
   }
 
+  if (![
+    'CERTIFICATION_BODY',
+    'CERTIFIED_PRODUCT',
+    'DEVELOPER',
+    'PRODUCT',
+    'VERSION',
+  ].includes(activity.concept)) {
+    return (
+      <>
+        Edited
+      </>
+    );
+  }
+
   return (
     <>
       <ChplTooltip title="Activity Details">
