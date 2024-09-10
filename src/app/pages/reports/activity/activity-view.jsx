@@ -156,7 +156,7 @@ function ChplActivityView(props) {
         return (
           <ChplLink
             href={`#/listing/${activity.objectId}`}
-            text={`Listing ID: ${activity.objectId}`}
+            text="Listing Details"
             external={false}
             router={{ sref: 'listing', options: { id: activity.objectId } }}
             analytics={{
@@ -169,7 +169,7 @@ function ChplActivityView(props) {
         return (
           <ChplLink
             href={`#/organizations/developers/${activity.objectId}`}
-            text={`Developer ID: ${activity.objectId}`}
+            text="Developer Details"
             analytics={{
               event: 'Navigate to Developer',
               category: 'Activity Search',
