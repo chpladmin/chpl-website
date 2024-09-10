@@ -14,7 +14,7 @@ import { shape, string } from 'prop-types';
 import ChplActivityDetails from './activity-details';
 
 import { useFetchActivity } from 'api/questionable-activity';
-import { ChplPagination } from 'components/util';
+import { ChplLink, ChplPagination } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
@@ -140,8 +140,48 @@ function ChplActivityView(props) {
     { property: 'concept', text: 'Concept' },
     { property: 'activity_date', text: 'Activity Date', sortable: true },
     { text: 'Reason' },
+    { text: 'CHPL Link' },
     { text: 'Actions', invisible: true },
   ];
+
+  const getLink = (activity) => {
+    if (![
+      'CERTIFIED_PRODUCT',
+      'DEVELOPER',
+    ].includes(activity.concept)) {
+      return null;
+    }
+    switch (activity.concept) {
+      case 'CERTIFIED_PRODUCT':
+        return (
+          <ChplLink
+            href={`#/listing/${activity.objectId}`}
+            text={`Listing ID: ${activity.objectId}`}
+            external={false}
+            router={{ sref: 'listing', options: { id: activity.objectId } }}
+            analytics={{
+              event: 'Navigate to Listing',
+              category: 'Activity Search',
+            }}
+          />
+        );
+      case 'DEVELOPER':
+        return (
+          <ChplLink
+            href={`#/organizations/developers/${activity.objectId}`}
+            text={`Developer ID: ${activity.objectId}`}
+            analytics={{
+              event: 'Navigate to Developer',
+              category: 'Activity Search',
+            }}
+            external={false}
+            router={{ sref: 'organizations.developers.developer', options: { id: activity.objectId } }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -211,6 +251,7 @@ function ChplActivityView(props) {
                                 <TableCell>{ item.concept }</TableCell>
                                 <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
                                 <TableCell>{ item.reason }</TableCell>
+                                <TableCell>{ getLink(item) }</TableCell>
                                 <TableCell>
                                   <ChplActivityDetails activity={item} />
                                 </TableCell>
