@@ -9,6 +9,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { compareAcb } from 'pages/reports/acbs/acbs.service';
 import { compareDeveloper } from 'pages/reports/developers/developers.service';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
@@ -24,6 +25,7 @@ const getDetails = (activity) => {
   let compare;
   let details;
   switch (activity.concept) {
+    case 'CERTIFICATION_BODY': compare = compareAcb; break;
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
     case 'DEVELOPER': compare = compareDeveloper; break;
     case 'PRODUCT': compare = compareProduct; break;
