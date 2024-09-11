@@ -152,12 +152,14 @@ function ChplActivityView(props) {
     ].includes(activity.concept)) {
       return null;
     }
+    const before = JSON.parse(activity.before);
+    const after = JSON.parse(activity.after);
     switch (activity.concept) {
       case 'CERTIFIED_PRODUCT':
         return (
           <ChplLink
             href={`#/listing/${activity.objectId}`}
-            text="Listing Details"
+            text={after.chplProductNumber}
             external={false}
             router={{ sref: 'listing', options: { id: activity.objectId } }}
             analytics={{
@@ -173,7 +175,7 @@ function ChplActivityView(props) {
         return (
           <ChplLink
             href={`#/organizations/developers/${activity.objectId}`}
-            text="Developer Details"
+            text={after.name}
             analytics={{
               event: 'Navigate to Developer',
               category: 'Activity Search',
