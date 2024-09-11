@@ -169,7 +169,7 @@ function ChplActivityView(props) {
           />
         );
       case 'DEVELOPER':
-        if (before.id !== after.id) {
+        if (before && after && before.id !== after.id) {
           return null;
         }
         return (
