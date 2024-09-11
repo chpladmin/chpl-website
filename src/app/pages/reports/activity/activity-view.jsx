@@ -166,6 +166,9 @@ function ChplActivityView(props) {
           />
         );
       case 'DEVELOPER':
+        if (before.id !== after.id) {
+          return null;
+        }
         return (
           <ChplLink
             href={`#/organizations/developers/${activity.objectId}`}

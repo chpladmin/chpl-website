@@ -35,11 +35,11 @@ const getDetails = (activity) => {
       // no default
   }
   if (compare) {
-    details = (compare(JSON.parse(activity?.before), JSON.parse(activity?.after))
+    const before = JSON.parse(activity.before);
+    const after = JSON.parse(activity.after);
+    details = (compare(before, after)
       .map((item) => `<li>${item}</li>`)
       .join(''));
-  } else {
-    details = 'TBD';
   }
   return <ul dangerouslySetInnerHTML={{ __html: details }} />;
 };
@@ -70,6 +70,18 @@ function ChplActivityDetails({ activity }) {
         Deleted
       </>
     );
+  }
+
+  if (activity.before && activity.after) {
+    const before = JSON.parse(activity.before);
+    const after = JSON.parse(activity.after);
+    if (before.id !== after.id) {
+      return (
+        <>
+          ID has changed; can not compare
+        </>
+      );
+    }
   }
 
   if (![
