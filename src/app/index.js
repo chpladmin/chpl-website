@@ -30,7 +30,6 @@ import 'angular-ui-router';
 // import app modules
 import administration from './pages/administration/index';
 import /* chartsModule from */ './pages/charts/index';
-import /* collectionsModule from */ './pages/collections/index';
 import compare from './pages/compare/index';
 import /* componentsModule from */ './components/index';
 import listing from './pages/listing/index';
@@ -39,6 +38,7 @@ import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
 import resources from './pages/resources/index';
 import /* registrationModule from */ './pages/registration/index';
+import './pages/search/index';
 import services from './services/index';
 import /* sharedModule from */ './shared/index';
 import subscriptions from './pages/subscriptions/index';
@@ -83,7 +83,7 @@ const dependencies = [
   surveillance.name,
   users.name,
   'chpl.charts',
-  'chpl.collections',
+  'chpl.search',
   'chpl.components',
   'chpl.constants',
   'chpl.navigation',

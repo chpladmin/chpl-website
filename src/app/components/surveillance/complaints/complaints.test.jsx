@@ -62,9 +62,9 @@ jest.mock('api/acbs', () => ({
   useFetchAcbs: () => mockAcbs,
 }));
 
-jest.mock('api/collections', () => ({
+jest.mock('api/search', () => ({
   __esModule: true,
-  useFetchCollection: () => mockApi,
+  useFetchListings: () => mockApi,
 }));
 
 const mockComplaints = {

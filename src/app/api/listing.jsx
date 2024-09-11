@@ -16,7 +16,7 @@ const useFetchIcsFamilyData = ({ id }) => {
   });
 };
 
-const useFetchListing = ({ id, fetched = false }) => {
+const useFetchListing = ({ id, fetched = false, enabled = true }) => {
   const axios = useAxios();
   return useQuery(['listing', id], async () => {
     if (id) {
@@ -24,7 +24,9 @@ const useFetchListing = ({ id, fetched = false }) => {
       return response.data;
     }
     return {};
-  }, fetched ? options.daily : {});
+  }, fetched ? options.daily : {
+    enabled: !!id && enabled,
+  });
 };
 
 const useFetchRelatedListings = ({ id }) => {
