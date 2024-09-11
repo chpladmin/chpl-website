@@ -139,6 +139,7 @@ function ChplActivityView(props) {
     { property: 'username', text: 'User' },
     { property: 'concept', text: 'Concept' },
     { property: 'activity_date', text: 'Activity Date', sortable: true },
+    { text: 'Description' },
     { text: 'Reason' },
     { text: 'CHPL Link' },
     { text: 'Actions', invisible: true },
@@ -253,6 +254,7 @@ function ChplActivityView(props) {
                                 <TableCell>{ item.username }</TableCell>
                                 <TableCell>{ item.concept }</TableCell>
                                 <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
+                                <TableCell>{ item.description }</TableCell>
                                 <TableCell>{ item.reason }</TableCell>
                                 <TableCell>{ getLink(item) }</TableCell>
                                 <TableCell>
