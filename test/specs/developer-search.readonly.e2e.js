@@ -50,6 +50,7 @@ describe('the Developer Search page', () => {
       login = new LoginComponent();
       await login.logIn('drummond');
     });
+
     afterEach(async () => {
       await login.logOut();
     });
