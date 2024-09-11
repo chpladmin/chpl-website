@@ -53,7 +53,7 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
     <>
       <ChplTooltip title="Quick Filters">
         <IconButton aria-controls="quick-filter-menu" aria-haspopup="true" onClick={handleClick}>
-          <MoreVertIcon htmlColor="#000" />
+          <MoreVertIcon color="inherit" style={{ color: palette.black }} />
         </IconButton>
       </ChplTooltip>
       <Menu
