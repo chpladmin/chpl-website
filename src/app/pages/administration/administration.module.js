@@ -1,4 +1,4 @@
-/* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
+/* global MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
 import 'ng-file-upload';
 import ChplCmsWrapper from './cms/cms-wrapper';
 import ChplLoginPage from './login';
@@ -23,7 +23,7 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
-  .config((IdleProvider, KeepaliveProvider) => {
+  .config((IdleProvider) => {
     /*
      * All are measured in seconds, though the constants are in minutes
      * .idle is how long until the user is marked as "idle"
@@ -34,7 +34,6 @@ angular
     IdleProvider.idle(60 * MINUTES_UNTIL_IDLE);
     IdleProvider.timeout(60 * MINUTES_UNTIL_LOGOUT);
     IdleProvider.autoResume(true);
-    KeepaliveProvider.interval(60 * MINUTES_BETWEEN_KEEPALIVE);
   })
   .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
   .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))

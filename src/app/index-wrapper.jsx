@@ -9,7 +9,6 @@ import { getAngularService } from 'services/angular-react-helper';
 function IndexWrapper() {
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
-  const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
 
@@ -18,7 +17,7 @@ function IndexWrapper() {
       Idle.watch();
       console.log('Starting Idle in IndexWrapper');
     }
-  }, [$rootScope, Idle, Keepalive, authService, networkService]);
+  }, [$rootScope, Idle, authService, networkService]);
 
   return (
     <AppWrapper showQueryTools={false}>
