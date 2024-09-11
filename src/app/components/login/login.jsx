@@ -220,31 +220,29 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.token);
-        if (authService.parseJwt(response.token).iss === 'ONCCHPL') {
-          networkService.getUserById(authService.getUserId())
-            .then((data) => {
-              setUser(data);
-              signinFormik.resetForm();
-              ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
-              authService.saveCurrentUser(data);
-              Idle.watch();
-              Keepalive.ping();
-              $rootScope.$broadcast('loggedIn');
-              dispatch('loggedIn');
-              toastWhenUsernameUsed(signinFormik.values.userName, data);
+        networkService.getUserById(authService.getUserId())
+          .then((data) => {
+            setUser(data);
+            signinFormik.resetForm();
+            ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
+            authService.saveCurrentUser(data);
+            $rootScope.$on('Keepalive', () => {
+              console.log('Keepalive');
+              if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+                networkService.keepalive()
+                  .then((resp) => {
+                    authService.saveToken(resp.token);
+                  });
+              } else {
+                Idle.unwatch();
+              }
             });
-        } else {
-          networkService.getCognitoUser(authService.getUserId())
-            .then((data) => {
-              setUser(data);
-              signinFormik.resetForm();
-              ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
-              authService.saveCurrentUser(data);
-              Idle.watch();
-              $rootScope.$broadcast('loggedIn');
-              dispatch('loggedIn');
-            });
-        }
+            Idle.watch();
+            Keepalive.ping();
+            $rootScope.$broadcast('loggedIn');
+            dispatch('loggedIn');
+            toastWhenUsernameUsed(signinFormik.values.userName, data);
+          });
       },
       onError: (error) => {
         if (error?.status === 461) {
