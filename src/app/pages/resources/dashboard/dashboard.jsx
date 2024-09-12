@@ -69,7 +69,7 @@ function ChplDashboard() {
     <>
       <Box bgcolor={palette.white} p={8}>
         <Container maxWidth="lg">
-          <Typography variant="h1">CHPL By The Numbers</Typography>
+          <Typography variant="h1">Dashboard</Typography>
         </Container>
       </Box>
       <Box className={classes.container}>
@@ -84,7 +84,7 @@ function ChplDashboard() {
                       color="primary"
                       onClick={() => handleCardChange('home')}
                     >
-                      Home - CHPL By The Numbers
+                      Dashboard
                     </Button>
                     <Button
                       style={{ justifyContent: 'flex-start' }}
@@ -102,7 +102,7 @@ function ChplDashboard() {
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="h6">
-                      <b>Welcome to CHPL By The Numbers Dashboard</b>
+                      <b>Welcome to the CHPL Dashboard</b>
                     </Typography>
                     <Typography gutterBottom>
                       A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
@@ -135,7 +135,7 @@ function ChplDashboard() {
                     <iframe
                       title="DeveloperStatistics"
                       width="100%"
-                      height="900px"
+                      height="1300px"
                       src={developerStatisticsReportUrl?.data?.reportUrl}
                       frameBorder="0"
                       allowFullScreen
