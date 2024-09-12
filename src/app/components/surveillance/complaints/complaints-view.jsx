@@ -26,8 +26,7 @@ import ChplComplaint from './complaint';
 import { useFetchComplaints, usePostReportRequest } from 'api/complaints';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { ChplEllipsis, ChplPagination } from 'components/util';
@@ -35,26 +34,12 @@ import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
   container: {
     maxHeight: '64vh',
-  },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-end',
-    },
   },
   tableResultsHeaderContainer: {
     display: 'grid',
@@ -319,12 +304,9 @@ function ChplComplaintsView(props) {
           <CardHeader title="Complaints" />
         )}
       <CardContent>
-        <div className={classes.searchContainer}>
-          <ChplFilterSearchTerm
-            placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
-          />
-          <ChplFilterPanel />
-        </div>
+        <ChplFilterSearchBar
+          placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
+        />
         <div>
           <ChplFilterChips />
         </div>
@@ -373,9 +355,9 @@ function ChplComplaintsView(props) {
                             .map((complaint) => (
                               <TableRow key={complaint.id}>
                                 { !hasAnyRole(['chpl-onc-acb']) && !bonusQuery
-                                  && (
-                                    <TableCell>{complaint.certificationBody.name}</TableCell>
-                                  )}
+                                 && (
+                                   <TableCell>{complaint.certificationBody.name}</TableCell>
+                                 )}
                                 <TableCell>
                                   <Typography
                                     variant="subtitle1"

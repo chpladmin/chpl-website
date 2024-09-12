@@ -77,6 +77,10 @@ To specify the environment to run the tests against, pass ENV variable with 'dev
 
 When debugging, taking screenshots can be useful. The command `await browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
 
+##### Running specific tests
+
+To run just a single test, a command like `yarn wdio --spec api-documentation` would run tests against all `*.test.js` files that have `api-documentation` somewhere in the `*`. See https://webdriver.io/docs/organizingsuites/ for more examples of targeting files
+
 ##### Old notes
 
 Some of these items will need to be recreated, but at this time this is all OBE
