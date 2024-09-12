@@ -19,6 +19,7 @@ import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
@@ -207,6 +208,9 @@ function ChplActivityView(props) {
         <div className={classes.searchContainer}>
           <ChplFilterPanel />
         </div>
+        <ChplFilterSearchBar
+          placeholder="Search by Description or Reason..."
+        />
         <div>
           <ChplFilterChips />
         </div>
