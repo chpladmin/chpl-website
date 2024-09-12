@@ -90,13 +90,7 @@ function ChplSignin({ dispatch }) {
         } else if (error?.response?.status === 471) {
           const body = 'Need some good text here explaining why the user needs to reset the password and that they are to use the Forgot Password workflow';
           enqueueSnackbar(body, { variant: 'error' });
-          dispatch({
-            action: 'forceChangePassword',
-            payload: {
-              userName: formik.values.userName,
-              sessionId: error?.response?.data?.sessionId,
-            },
-          });
+          dispatch({ action: 'forgotPassword' });
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
