@@ -425,6 +425,10 @@ const briefLookup = {
   'root.decertificationDay': { message: () => undefined },
   'root.directReviews': { message: () => undefined },
   'root.directReviewsAvailable': { message: () => undefined },
+  'root.edition': { message: () => undefined },
+  'root.edition.id': { message: () => undefined },
+  'root.edition.name': { message: () => undefined },
+  'root.edition.retired': { message: () => undefined },
   'root.errorMessages': { message: () => undefined },
   'root.ics': { message: () => undefined },
   'root.ics.children': { message: () => undefined },
@@ -602,7 +606,8 @@ const lookup = {
   'root.classificationType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.decertificationDay': { message: (before, after) => comparePrimitive(before, after, 'decertificationDay', 'Decertification Date', getDisplayDateFormat) },
   'root.decertificationDate': { message: (before, after) => comparePrimitive(before, after, 'decertificationDate', 'Decertification Date', getDisplayDateFormat) },
-  'root.': { message: () => undefined },
+  'root.edition': { message: () => 'Edition' },
+  'root.edition.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Edition') },
   'root.ics': {
     message: (before) => {
       if (typeof before !== 'object') { console.debug({ before, key: 'root.ics' }); }
