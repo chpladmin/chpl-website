@@ -247,12 +247,10 @@ function ChplLogin({ dispatch }) {
         }
       },
       onError: (error) => {
-        console.log(error?.data?.error);
-        console.log(error?.response?.data?.error);
         if (error?.status === 461) {
           const body = 'Your account has not been confirmed, please check your email to confirm your account.';
           enqueueSnackbar(body, { variant: 'info' });
-        } else if (error?.response?.data?.error === 'The user is required to change their password on next login.') {
+        } else if (error?.data?.error === 'The user is required to change their password on next login.') {
           const body = 'Password change is required';
           enqueueSnackbar(body, { variant: 'info' });
           sendResetFormik.values.email = signinFormik.values.userName;

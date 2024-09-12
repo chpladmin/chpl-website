@@ -78,7 +78,6 @@ function ChplSignin({ dispatch }) {
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
-        console.log(error);
         if (error?.response?.status === 470) {
           dispatch({
             action: 'forceChangePassword',
@@ -88,7 +87,7 @@ function ChplSignin({ dispatch }) {
             },
           });
         } else if (error?.response?.status === 471) {
-          const body = 'Need some good text here explaining why the user needs to reset the password and that they are to use the Forgot Password workflow';
+          const body = 'Due to unforeseen circumstances you need to change you password. Please use the Forgot Password functionality to change your password.';
           enqueueSnackbar(body, { variant: 'error' });
           dispatch({ action: 'forgotPassword' });
         } else {
