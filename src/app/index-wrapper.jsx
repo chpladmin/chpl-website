@@ -7,17 +7,15 @@ import ChplCognitoToggle from 'components/login/cognito-toggle';
 import { getAngularService } from 'services/angular-react-helper';
 
 function IndexWrapper() {
-  const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
-  const networkService = getAngularService('networkService');
 
   useEffect(() => {
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       Idle.watch();
       console.log('Starting Idle in IndexWrapper');
     }
-  }, [$rootScope, Idle, authService, networkService]);
+  }, [Idle, authService]);
 
   return (
     <AppWrapper showQueryTools={false}>
