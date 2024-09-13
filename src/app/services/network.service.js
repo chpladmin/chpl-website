@@ -472,10 +472,6 @@ export default class NetworkService {
     return this.apiPOST('/cognito/users/invite', invitationObject);
   }
 
-  keepalive() {
-    return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
-  }
-
   logout(logoutRequest) {
     return this.apiPOST('/cognito/users/logout', logoutRequest);
   }

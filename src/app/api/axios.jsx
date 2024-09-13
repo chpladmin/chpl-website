@@ -62,6 +62,14 @@ function AxiosProvider({ children }) {
       return updated;
     });
 
+    ax.interceptors.response.use((response) => response,
+      (error) => {
+        if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+          authService.logout();
+        }
+        return Promise.reject(error);
+      });
+
     return ax;
   }, []);
 

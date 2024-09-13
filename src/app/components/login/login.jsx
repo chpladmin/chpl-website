@@ -99,7 +99,6 @@ function ChplLogin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const $stateParams = getAngularService('$stateParams');
   const Idle = getAngularService('Idle');
-  const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const {
@@ -220,31 +219,17 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.token);
-        if (authService.parseJwt(response.token).iss === 'ONCCHPL') {
-          networkService.getUserById(authService.getUserId())
-            .then((data) => {
-              setUser(data);
-              signinFormik.resetForm();
-              ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
-              authService.saveCurrentUser(data);
-              Idle.watch();
-              Keepalive.ping();
-              $rootScope.$broadcast('loggedIn');
-              dispatch('loggedIn');
-              toastWhenUsernameUsed(signinFormik.values.userName, data);
-            });
-        } else {
-          networkService.getCognitoUser(authService.getUserId())
-            .then((data) => {
-              setUser(data);
-              signinFormik.resetForm();
-              ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
-              authService.saveCurrentUser(data);
-              Idle.watch();
-              $rootScope.$broadcast('loggedIn');
-              dispatch('loggedIn');
-            });
-        }
+        networkService.getUserById(authService.getUserId())
+          .then((data) => {
+            setUser(data);
+            signinFormik.resetForm();
+            ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
+            authService.saveCurrentUser(data);
+            Idle.watch();
+            $rootScope.$broadcast('loggedIn');
+            dispatch('loggedIn');
+            toastWhenUsernameUsed(signinFormik.values.userName, data);
+          });
       },
       onError: (error) => {
         if (error?.status === 461) {

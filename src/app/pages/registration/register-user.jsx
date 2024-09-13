@@ -35,7 +35,6 @@ function ChplRegisterUser({ hash }) {
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
   const Idle = getAngularService('Idle');
-  const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const { enqueueSnackbar } = useSnackbar();
@@ -93,7 +92,6 @@ function ChplRegisterUser({ hash }) {
                 setUser(user);
                 authService.saveCurrentUser(user);
                 Idle.watch();
-                Keepalive.ping();
                 $rootScope.$broadcast('loggedIn');
               });
           }, (error) => {
