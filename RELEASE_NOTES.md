@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 13.24.0
+_16 September 2024_
+
+### Features
+* Implement token refresh for Cognito users
+* Include button to download current CSV of active listings
+
+### User Interface Updates
+* Replace "Collections" with "Shortcuts"
+* Add "Browse" button to search pages
+* Use "Search" instead of "Go" on search
+
+---
+
 ## Version 13.23.1
 _3 September 2024_
 
