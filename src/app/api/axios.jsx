@@ -12,6 +12,7 @@ const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
   const $localStorage = getAngularService('$localStorage');
+  const authService = getAngularService('authService');
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -33,6 +34,9 @@ function AxiosProvider({ children }) {
           .then((response) => {
             $localStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;
+          })
+          .catch(() => {
+            authService.logout();
           });
       }
       return new Promise((resolve) => resolve(''));
@@ -57,6 +61,14 @@ function AxiosProvider({ children }) {
       }
       return updated;
     });
+
+    ax.interceptors.response.use((response) => response,
+      (error) => {
+        if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+          authService.logout();
+        }
+        return Promise.reject(error);
+      });
 
     return ax;
   }, []);

@@ -14,16 +14,17 @@ import { useFilterContext } from './filter-context';
 
 import { ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import theme from 'themes/theme';
+import { palette, theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
-  goButton: {
+const useStyles = makeStyles({
+  searchButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
+    color: palette.white,
   },
   searchBar: {
     display: 'grid',
-    gridTemplateColumns: '10fr auto',
+    gridTemplateColumns: '8fr auto',
   },
   searchIcon: {
     display: 'none',
@@ -40,7 +41,7 @@ const useStyles = makeStyles(() => ({
     padding: '8px',
     borderRadius: '8px',
   },
-}));
+});
 
 function ChplFilterSearchTerm(props) {
   const $analytics = getAngularService('$analytics');
@@ -67,7 +68,7 @@ function ChplFilterSearchTerm(props) {
     setSearchTerm('');
   };
 
-  const handleGo = () => {
+  const handleSearch = () => {
     if (analytics) {
       $analytics.eventTrack('Enter Value Into Text Filter', { category: analytics.category, label: term });
     }
@@ -81,13 +82,12 @@ function ChplFilterSearchTerm(props) {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      handleGo();
+      handleSearch();
     }
   };
 
   return (
     <>
-      <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
       <div className={classes.searchBarContainer}>
         <div className={classes.searchBar}>
           <InputBase
@@ -112,14 +112,15 @@ function ChplFilterSearchTerm(props) {
             )}
           />
           <Button
-            className={classes.goButton}
+            className={classes.searchButton}
             size="medium"
             variant="contained"
             color="primary"
-            id="filter-search-term-go"
-            onClick={handleGo}
+            id="filter-search-term-search"
+            onClick={handleSearch}
+            endIcon={<SearchIcon className={classes.searchIcon} color="inherit" fontSize="large" />}
           >
-            Go
+            Search
           </Button>
         </div>
       </div>

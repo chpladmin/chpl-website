@@ -60,7 +60,7 @@ describe('the ChplFilterSearchTerm component', () => {
     );
 
     userEvent.type(screen.getByRole('textbox'), 'test');
-    userEvent.click(screen.getByText('Go'));
+    userEvent.click(screen.getByText('Search'));
 
     await waitFor(() => {
       expect(mockValue.setSearchTerm).toHaveBeenCalledWith('test');
