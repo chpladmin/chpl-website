@@ -78,6 +78,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
+        authService.saveRefreshToken(response.refreshToken);
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         ReactGA.event({ action: 'Log In', category: 'Authentication' });

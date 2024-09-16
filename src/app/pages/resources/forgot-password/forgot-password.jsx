@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -17,6 +17,7 @@ const useStyles = makeStyles({
 });
 
 function ChplForgotPassword({ uuid }) {
+  const [state, setState] = useState('RESETFORGOTTENPASSWORD');
   const classes = useStyles();
 
   return (
@@ -25,7 +26,8 @@ function ChplForgotPassword({ uuid }) {
         Forgot Password
       </Typography>
       <ChplCognitoLogin
-        initialState="RESETFORGOTTENPASSWORD"
+        state={state}
+        setState={setState}
         uuid={uuid}
       />
     </Container>
