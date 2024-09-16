@@ -11,14 +11,9 @@ import * as angularReactHelper from 'services/angular-react-helper';
 
 const angularMock = {
   eventTrack: jest.fn(),
-  getApiKey: () => 'fake api key',
-  getToken: () => 'fake token',
 };
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock);
-when(angularReactHelper.getAngularService).calledWith('$uibRouter').mockReturnValue(angularMock);
-when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue('fakeMock');
-when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),
@@ -33,8 +28,7 @@ const mockApi = {
 jest.mock('components/filter', () => ({
   __esModule: true,
   ChplFilterChips: () => <div>Chips</div>,
-  ChplFilterPanel: () => <div>Panel</div>,
-  ChplFilterSearchTerm: () => <div>Search Term</div>,
+  ChplFilterSearchBar: () => <div>Search Bar</div>,
   useFilterContext: () => mockContext,
 }));
 /* eslint-enable react/display-name */
