@@ -51,12 +51,12 @@ const useStyles = makeStyles({
   },
 });
 
-const iconMapping = {
-  'Developer Reporting': <AssessmentOutlinedIcon fontSize="large" color="primary" />,
-  'Listing Reporting': <DashboardOutlinedIcon fontSize="large" color="primary" />,
-  'User Reporting': <GroupOutlinedIcon fontSize="large" color="primary" />,
-  'More to Come': <HighlightOutlinedIcon fontSize="large" color="primary" />,
-};
+const reports = [
+  { text: 'Developer Reporting', page: 'developerReport', icon: <AssessmentOutlinedIcon fontSize="large" color="primary" />},
+  { text: 'Listing Reporting', page: 'listingReport', icon: <DashboardOutlinedIcon fontSize="large" color="primary" />},
+  { text: 'User Reporting', page: 'userReport', icon: <GroupOutlinedIcon fontSize="large" color="primary" />},
+  { text: 'More to Come', page: '', icon: <HighlightOutlinedIcon fontSize="large" color="primary" />},
+];
 
 function ChplDashboard() {
   const classes = useStyles();
@@ -108,19 +108,14 @@ function ChplDashboard() {
                       A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
                     </Typography>
                     <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
-                      {[
-                        { text: 'Developer Reporting', page: 'developerReport' },
-                        { text: 'Listing Reporting', page: 'listingReport' },
-                        { text: 'User Reporting', page: 'userReport' },
-                        { text: 'More to Come', page: '' },
-                      ].map((item) => (
+                      {reports.map((item) => (
                         <Card
                           key={item.text}
                           className={classes.card}
                           onClick={() => handleCardChange(item.page)}
                         >
                           <CardContent className={classes.cardContent}>
-                            {iconMapping[item.text]}
+                            {item.icon}
                             <Typography>{item.text}</Typography>
                           </CardContent>
                         </Card>
