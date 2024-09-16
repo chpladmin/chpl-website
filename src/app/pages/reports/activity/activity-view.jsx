@@ -18,7 +18,6 @@ import { ChplLink, ChplPagination } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -205,9 +204,6 @@ function ChplActivityView(props) {
         <Typography variant="h1">Activity</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div className={classes.searchContainer}>
-          <ChplFilterPanel />
-        </div>
         <ChplFilterSearchBar
           placeholder="Search by Description or Reason..."
         />
