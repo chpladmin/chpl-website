@@ -1,45 +1,27 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
 import { func, string } from 'prop-types';
 
+import ChplChangePassword from './components/change-password';
 import ChplForceChangePassword from './components/force-change-password';
 import ChplForgotPassword from './components/forgot-password';
 import ChplLoggedIn from './components/logged-in';
 import ChplResetForgottenPassword from './components/reset-forgotten-password';
 import ChplSignin from './components/signin';
 
-const useStyles = makeStyles({
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridRowGap: '16px',
-  },
-  loginHeader: {
-    backgroundColor: '#ffffff',
-    padding: '16px 0px 0px 16px',
-  },
-});
-
-function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
+function ChplCognitoLogin({
+  dispatch,
+  setState,
+  state,
+  uuid,
+}) {
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
-  const classes = useStyles();
-  
-  const cancel = (e) => {
-    e.stopPropagation();
-    setState('SIGNIN');
-  };
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
+      case 'changePassword':
+        setState('CHANGEPASSWORD');
+        break;
       case 'forceChangePassword':
         setUserName(payload.userName);
         setSessionId(payload.sessionId);
@@ -65,6 +47,10 @@ function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
   };
 
   switch (state) {
+    case 'CHANGEPASSWORD':
+      return (
+        <ChplChangePassword dispatch={handleDispatch} />
+      );
     case 'FORCECHANGEPASSWORD':
       return (
         <ChplForceChangePassword
@@ -86,32 +72,7 @@ function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
       );
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
-    default:
-      return (
-        <Card>
-          <CardHeader className={classes.loginHeader} title="Change Password" />
-          <CardContent className={classes.grid}>
-            {state === 'CHANGEPASSWORD'
-             && (
-               <>
-                 <Typography>To implement later</Typography>
-               </>
-             )}
-            {state === 'CHANGEPASSWORD'
-             && (
-               <Button
-                 fullWidth
-                 color="default"
-                 variant="contained"
-                 onClick={cancel}
-                 endIcon={<ClearIcon />}
-               >
-                 Cancel
-               </Button>
-             )}
-          </CardContent>
-        </Card>
-      );
+      // no default
   }
 }
 
@@ -126,6 +87,7 @@ ChplCognitoLogin.propTypes = {
 
 ChplCognitoLogin.defaultProps = {
   dispatch: () => {},
-  initialState: 'SIGNIN',
+  setState: () => {},
+  state: 'SIGNIN',
   uuid: '',
 };
