@@ -19,6 +19,9 @@ function ChplCognitoLogin({
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
+      case 'cancel':
+        setState('LOGGEDIN');
+        break;
       case 'changePassword':
         setState('CHANGEPASSWORD');
         break;
