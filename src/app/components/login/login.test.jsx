@@ -24,10 +24,6 @@ const IdleMock = {
   watch: jest.fn(() => {}),
 };
 
-const KeepaliveMock = {
-  ping: jest.fn(() => {}),
-};
-
 const authServiceMock = {
   getUserId: jest.fn(() => 'id'),
   saveCurrentUser: jest.fn(() => {}),
@@ -71,7 +67,6 @@ when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnVa
 when(angularReactHelper.getAngularService).calledWith('$rootScope').mockReturnValue($rootScopeMock);
 when(angularReactHelper.getAngularService).calledWith('$stateParams').mockReturnValue($stateParamsMock);
 when(angularReactHelper.getAngularService).calledWith('Idle').mockReturnValue(IdleMock);
-when(angularReactHelper.getAngularService).calledWith('Keepalive').mockReturnValue(KeepaliveMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
 
@@ -114,7 +109,6 @@ describe('the ChplLogin component', () => {
         expect($analyticsMock.eventTrack).toHaveBeenCalledWith('Log In', { category: 'Authentication' });
         expect(authServiceMock.saveCurrentUser).toHaveBeenCalledWith({ user: 'id' });
         expect(IdleMock.watch).toHaveBeenCalled();
-        expect(KeepaliveMock.ping).toHaveBeenCalled();
         expect($rootScopeMock.$broadcast).toHaveBeenCalledWith('loggedIn');
         expect(hocMock.handleDispatch).toHaveBeenCalledWith('loggedIn');
       });
