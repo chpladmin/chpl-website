@@ -1,12 +1,12 @@
 import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state';
 import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state';
-import collectionsStates from './pages/collections/collections.state';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state';
 import listingStates from './pages/listing/listing.state';
 import organizationsStates from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
 import reportsStates from './pages/reports/reports.state';
 import resourcesStates from './pages/resources/resources.state';
+import searchStates from './pages/search/search.state';
 import subscriptionsStates from './pages/subscriptions/subscriptions.state';
 import surveillanceStates from './pages/surveillance/surveillance.state';
 import usersStates from './pages/users/users.state';
@@ -32,13 +32,13 @@ function otherwise($injector, $location) {
     .config(routeConfig)
     .config(administrationStates)
     .config(chartsStates)
-    .config(collectionsStates)
     .config(compareStates)
     .config(listingStates)
     .config(organizationsStates)
     .config(registrationStates)
     .config(reportsStates)
     .config(resourcesStates)
+    .config(searchStates)
     .config(subscriptionsStates)
     .config(surveillanceStates)
     .config(usersStates);

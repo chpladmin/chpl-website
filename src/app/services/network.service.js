@@ -122,10 +122,6 @@ export default class NetworkService {
     return this.apiGET('/data/age_ranges');
   }
 
-  getAll() {
-    return this.apiGET('/collections/certified-products');
-  }
-
   getAllCriteria(props) {
     const params = Object
       .entries(props)
@@ -196,8 +192,6 @@ export default class NetworkService {
 
   getCollection(type) {
     switch (type) {
-      case 'complaintListings':
-        return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
       case 'surveillanceManagement':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
       // no default
@@ -478,8 +472,8 @@ export default class NetworkService {
     return this.apiPOST('/cognito/users/invite', invitationObject);
   }
 
-  keepalive() {
-    return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
+  logout(logoutRequest) {
+    return this.apiPOST('/cognito/users/logout', logoutRequest);
   }
 
   mergeDevelopers(mergeDeveloperObject) {

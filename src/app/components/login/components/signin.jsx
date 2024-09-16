@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
+import { setAuthTokens } from 'axios-jwt';
 
 import { usePostCognitoLogin } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
@@ -63,6 +64,11 @@ function ChplSignin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
+        authService.saveRefreshToken(response.refreshToken);
+        setAuthTokens({
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+        });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();

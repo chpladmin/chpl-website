@@ -9,19 +9,8 @@
         });
     };
 
-    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
-      networkService.keepalive()
-        .then(() => {
-          loadFlags();
-        }).catch((error) => {
-          $log.info('error', error);
-          authService.logout();
-          loadFlags();
-        });
-    } else {
-      loadFlags();
-    }
-
+    loadFlags();
+    
     // Update page title on state change
     $transitions.onSuccess({}, (transition) => {
       let { title } = transition.to().data;

@@ -1,10 +1,12 @@
+import { clearAuthTokens } from 'axios-jwt';
+
 (function () {
   angular.module('chpl.services')
     .factory('authService', authService);
 
   /** @ngInclude */
   /** @ngInject */
-  function authService($localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
+  function authService($injector, $localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
     const service = {
       canImpersonate,
       canManageAcb,
@@ -19,6 +21,7 @@
       logout,
       parseJwt,
       saveCurrentUser,
+      saveRefreshToken,
       saveToken,
     };
     return service;
@@ -65,7 +68,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -86,7 +89,7 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         const token = getToken();
         if (parseJwt(token).Identity) {
           const identity = parseJwt(token).Identity;
@@ -117,7 +120,9 @@
       if (roles.includes('chpl-onc')) {
         roles.push('ROLE_ONC');
       }
-
+      if (roles.includes('chpl-cms-staff')) {
+        roles.push('ROLE_CMS_STAFF');
+      }
       const token = getToken();
       if (token) {
         const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'].filter((grp) => !grp.endsWith('-env'))[0];
@@ -139,8 +144,15 @@
     }
 
     function logout() {
+      if (getCurrentUser().cognitoId) {
+        $injector.get('networkService').logout({
+          email: getCurrentUser().email,
+        });
+      }
       delete $localStorage.jwtToken;
+      delete $localStorage.refreshToken;
       delete $localStorage.currentUser;
+      clearAuthTokens();
       $rootScope.$broadcast('loggedOut');
     }
 
@@ -166,5 +178,10 @@
     function saveToken(token) {
       $localStorage.jwtToken = token;
     }
+
+    function saveRefreshToken(token) {
+      $localStorage.refreshToken = token;
+    }
+
   }
 }());

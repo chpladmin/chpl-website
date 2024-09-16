@@ -21,13 +21,13 @@ module.exports = (env) => {
       app: path.resolve(__dirname, './src/app/index.js'),
       administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
       charts: path.resolve(__dirname, './src/app/pages/charts/index.js'),
-      collections: path.resolve(__dirname, './src/app/pages/collections/index.js'),
       compare: path.resolve(__dirname, './src/app/pages/compare/index.js'),
       listing: path.resolve(__dirname, './src/app/pages/listing/index.js'),
       navigation: path.resolve(__dirname, './src/app/navigation/index.js'),
       organizations: path.resolve(__dirname, './src/app/pages/organizations/index.js'),
       registration: path.resolve(__dirname, './src/app/pages/registration/index.js'),
       reports: path.resolve(__dirname, './src/app/pages/reports/index.js'),
+      search: path.resolve(__dirname, './src/app/pages/search/index.js'),
       subscriptions: path.resolve(__dirname, './src/app/pages/subscriptions/index.js'),
       templates: path.resolve(__dirname, './src/app/templates.js'),
     },
@@ -172,7 +172,6 @@ module.exports = (env) => {
       ENABLE_LOGGING: JSON.stringify(env.NODE_ENV === 'development'),
       MINUTES_UNTIL_IDLE: env.NODE_ENV === 'development' ? 150 : 50,
       MINUTES_UNTIL_LOGOUT: env.NODE_ENV === 'development' ? 150 : 5,
-      MINUTES_BETWEEN_KEEPALIVE: 1,
     }),
   );
 

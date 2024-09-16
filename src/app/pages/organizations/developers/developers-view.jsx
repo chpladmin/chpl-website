@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
   Button,
   Paper,
   Table,
@@ -18,9 +17,7 @@ import ChplMessaging from './messaging/messaging';
 import { useFetchDevelopersBySearch } from 'api/developer';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterQuickFilters,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { ChplLink, ChplPagination, ChplSortableHeaders } from 'components/util';
@@ -45,22 +42,6 @@ const useStyles = makeStyles({
   pageContent: {
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
-  },
-  searchContainer: {
-    backgroundColor: '#c6d5e5',
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
-  },
-  searchButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gridGap: '8px',
   },
   stickyColumn: {
     position: 'sticky',
@@ -211,17 +192,10 @@ function ChplDevelopersView(props) {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div className={classes.searchContainer}>
-          <ChplFilterSearchTerm
-            placeholder="Search by Developer Name or Code..."
-          />
-          <Box className={classes.searchButtonContainer}>
-            <ChplFilterPanel />
-            <ChplFilterQuickFilters
-              toggleMultipleFilters={bonusQuickFilters}
-            />
-          </Box>
-        </div>
+        <ChplFilterSearchBar
+          placeholder="Search by Developer Name or Code..."
+          toggleMultipleFilters={bonusQuickFilters}
+        />
         <div>
           <ChplFilterChips />
         </div>

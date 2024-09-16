@@ -7,6 +7,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import EditIcon from '@material-ui/icons/Edit';
 import { number, oneOfType, string } from 'prop-types';
 
@@ -56,6 +57,11 @@ const useStyles = makeStyles({
 
 function ChplListingPage({ id }) {
   const $state = getAngularService('$state');
+  const API = getAngularService('API');
+  const {
+    getApiKey,
+    getToken,
+  } = getAngularService('authService');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
@@ -79,6 +85,37 @@ function ChplListingPage({ id }) {
     if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
+  };
+
+  const canGetCurrentCsv = () => {
+    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
+    if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; }
+    if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
+    return false;
+  };
+
+  const downloadOriginalCsv = () => {
+    eventTrack({
+      event: 'Download Original CSV',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    window.open(downloadLink);
+  };
+
+  const downloadCurrentCsv = () => {
+    eventTrack({
+      event: 'Download Current CSV',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    window.open(downloadLink);
   };
 
   const edit = () => {
@@ -159,6 +196,32 @@ function ChplListingPage({ id }) {
                 <ChplListingHistory
                   listing={listing}
                 />
+                { hasAnyRole(['chpl-admin']) && listing.id >= 10912
+                  && (
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      size="small"
+                      id={`download-original-csv-${listing.id}`}
+                      onClick={downloadOriginalCsv}
+                      endIcon={<CloudDownloadIcon />}
+                    >
+                      Original CSV
+                    </Button>
+                  )}
+                { canGetCurrentCsv()
+                  && (
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      size="small"
+                      id={`download-current-csv-${listing.id}`}
+                      onClick={downloadCurrentCsv}
+                      endIcon={<CloudDownloadIcon />}
+                    >
+                      Current CSV
+                    </Button>
+                  )}
               </ChplActionButton>
             </Box>
           </Box>

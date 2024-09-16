@@ -21,7 +21,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   this.$onInit = () => {
     $rootScope.bodyClass = 'navigation-shown';
 
-    if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+    if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       vm.toggleNavClosed();
     } else {
       vm.toggleNavOpen();
@@ -29,7 +29,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
     const showCmsWidgetHook = $rootScope.$on('ShowCmsWidget', () => {
       vm.showCmsWidget(true);
-      if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         vm.toggleNavOpen();
       }
     });
@@ -42,7 +42,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
     const showCompareWidgetHook = $rootScope.$on('ShowCompareWidget', () => {
       vm.showCompareWidget(true);
-      if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         vm.toggleNavOpen();
       }
     });
@@ -68,7 +68,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', loggedOut);
 
     const flags = $rootScope.$on('flags loaded', () => {
-      if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'ROLE_CMS_STAFF', 'chpl-developer'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         vm.toggleNavClosed();
       }
     });
@@ -83,7 +83,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   function clear() {
     $rootScope.$broadcast('ClearResults', {});
     $localStorage.clearResults = true;
-    sessionStorage.removeItem('storageKey-searchPage-hasSearched');
+    sessionStorage.removeItem('storageKey-listingsPage-hasSearched');
     if ($location.url() === '/search') {
       $state.reload();
     } else {

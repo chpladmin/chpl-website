@@ -20,8 +20,8 @@ import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
-import { useFetchCollection } from 'api/collections';
 import { useFetchComplainantTypes } from 'api/data';
+import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTextField } from 'components/util';
 import { ChplActionBar } from 'components/action-bar';
@@ -107,7 +107,7 @@ function ChplComplaintEdit(props) {
   const { data: certificationBodiesData, isLoading: certificationBodiesIsLoading, isSuccess: certificationBodiesIsSuccess } = useFetchAcbs(true);
   const { data: complainantTypesData, isLoading: complainantTypesIsLoading, isSuccess: complainantTypesIsSuccess } = useFetchComplainantTypes();
   const { data: criteriaData, isLoading: criteriaIsLoading, isSuccess: criteriaIsSuccess } = useFetchCriteria();
-  const { data: listingsData, isLoading: listingsIsLoading, isSuccess: listingsIsSuccess } = useFetchCollection({
+  const { data: listingsData, isLoading: listingsIsLoading, isSuccess: listingsIsSuccess } = useFetchListings({
     orderBy: 'chpl_id',
     pageNumber: 0,
     pageSize: 25,

@@ -25,8 +25,7 @@ import ChplChangeRequestsDownload from './change-requests-download';
 import { useFetchChangeRequests } from 'api/change-requests';
 import {
   ChplFilterChips,
-  ChplFilterPanel,
-  ChplFilterSearchTerm,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import {
@@ -37,26 +36,12 @@ import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
   container: {
     maxHeight: '64vh',
-  },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-end',
-    },
   },
   tableResultsHeaderContainer: {
     display: 'grid',
@@ -224,15 +209,13 @@ function ChplChangeRequestsView(props) {
           <CardHeader title="Change Requests" />
         )}
       <CardContent>
-        <div className={classes.searchContainer} component={Paper}>
-          { !disallowedFilters.includes('searchTerm')
-            && (
-              <ChplFilterSearchTerm
-                placeholder="Search by Developer..."
-              />
-            )}
-          <ChplFilterPanel />
-        </div>
+        { !disallowedFilters.includes('searchTerm')
+          && (
+            <ChplFilterSearchBar
+              placeholder="Search by Developer..."
+
+            />
+          )}
         <div>
           <ChplFilterChips />
         </div>
