@@ -7,6 +7,7 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
+import { number } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { getAngularService } from 'services/angular-react-helper';
@@ -51,7 +52,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadListing() {
+function ChplUploadListing({ id }) {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -73,7 +74,7 @@ function ChplUploadListing() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/listings/upload`,
+      url: `${API}/listings/upload/${id}`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
@@ -87,6 +88,9 @@ function ChplUploadListing() {
         console.log(response);
       })
       .catch((error) => {
+        enqueueSnackbar(error.data.error, {
+          variant: 'error',
+        });
         console.error(error);
       })
       .finally(() => {
@@ -162,4 +166,5 @@ function ChplUploadListing() {
 export default ChplUploadListing;
 
 ChplUploadListing.propTypes = {
+  id: number.isRequired,
 };

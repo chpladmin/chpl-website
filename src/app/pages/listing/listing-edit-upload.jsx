@@ -82,10 +82,16 @@ function ChplListingEditUploadPage({ id }) {
         <div className={classes.container}>
           <div>
             <ListingContext.Provider value={newListingState}>
-              <ChplUploadListing />
+              <ChplUploadListing
+                id={listing.id}
+              />
             </ListingContext.Provider>
           </div>
-          <Button>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled
+          >
             Confirm
           </Button>
           <div>
