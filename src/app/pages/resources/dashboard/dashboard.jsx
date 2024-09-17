@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 
 const reports = [
   { text: 'Developer Reporting', page: 'developerReport', icon: <AssessmentOutlinedIcon fontSize="large" color="primary" />},
-  { text: 'Listing Reporting', page: 'listingReport', icon: <DashboardOutlinedIcon fontSize="large" color="primary" />},
+  { text: 'Surveillance Reporting', page: 'surveillanceReport', icon: <DashboardOutlinedIcon fontSize="large" color="primary" />},
   { text: 'User Reporting', page: 'userReport', icon: <GroupOutlinedIcon fontSize="large" color="primary" />},
   { text: 'More to Come', page: '', icon: <HighlightOutlinedIcon fontSize="large" color="primary" />},
 ];
@@ -61,6 +61,7 @@ const reports = [
 function ChplDashboard() {
   const classes = useStyles();
   const developerStatisticsReportUrl = useFetchReportUrl('DeveloperStatistics');
+  const surveillanceStatisticsReportUrl = useFetchReportUrl('SurveillanceStatistics');
   const [activeCard, setActiveCard] = useState('home');
 
   const handleCardChange = (card) => setActiveCard(card);
@@ -92,6 +93,13 @@ function ChplDashboard() {
                       onClick={() => handleCardChange('developerReport')}
                     >
                       Developer Report
+                    </Button>
+                    <Button
+                      style={{ justifyContent: 'flex-start' }}
+                      color="primary"
+                      onClick={() => handleCardChange('surveillanceReport')}
+                    >
+                      Surveillance Report
                     </Button>
                   </Box>
                 </CardContent>
@@ -132,6 +140,20 @@ function ChplDashboard() {
                       width="100%"
                       height="1300px"
                       src={developerStatisticsReportUrl?.data?.reportUrl}
+                      frameBorder="0"
+                      allowFullScreen
+                    />
+                  </CardContent>
+                </Card>
+              )}
+              {activeCard === 'surveillanceReport' && (
+                <Card style={{ width: '100%' }}>
+                  <CardContent>
+                    <iframe
+                      title="SurveillanceStatistics"
+                      width="100%"
+                      height="2200px"
+                      src={surveillanceStatisticsReportUrl?.data?.reportUrl}
                       frameBorder="0"
                       allowFullScreen
                     />
