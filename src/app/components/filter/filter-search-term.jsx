@@ -13,7 +13,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useFilterContext } from './filter-context';
 
 import { ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -44,7 +44,6 @@ const useStyles = makeStyles({
 });
 
 function ChplFilterSearchTerm(props) {
-  const $analytics = getAngularService('$analytics');
   const { placeholder } = props;
   const [term, setTerm] = useState('');
   const classes = useStyles();
@@ -62,7 +61,11 @@ function ChplFilterSearchTerm(props) {
 
   const handleClear = () => {
     if (analytics) {
-      $analytics.eventTrack('Clear Text Filter', { category: analytics.category });
+      eventTrack({
+        event: 'Clear Free Text Filter',
+        category: analytics.category,
+        group: analytics.group,
+      });
     }
     setTerm('');
     setSearchTerm('');
@@ -70,7 +73,12 @@ function ChplFilterSearchTerm(props) {
 
   const handleSearch = () => {
     if (analytics) {
-      $analytics.eventTrack('Enter Value Into Text Filter', { category: analytics.category, label: term });
+      eventTrack({
+        event: 'Search for Free Text',
+        category: analytics.category,
+        label: term,
+        group: analytics.group,
+      });
     }
     setSearchTerm(encodeURI(term));
     dispatch('hasSearched');

@@ -15,7 +15,7 @@ import {
   quickFilters,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BrowserContext } from 'shared/contexts';
+import { BrowserContext, UserContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -46,6 +46,7 @@ const staticFilters = [
 
 function ChplListingsPage() {
   const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
+  const { user } = useContext(UserContext);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
@@ -123,7 +124,8 @@ function ChplListingsPage() {
   }, [cqmQuery.data, cqmQuery.isLoading, cqmQuery.isSuccess]);
 
   const analytics = {
-    category: 'Search',
+    category: 'CHPL Search - Search',
+    group: user?.role,
   };
 
   getValueDisplay = (value) => `${value.value} (${value.value.includes('Compared') ? getPreviouslyCompared().length : getPreviouslyViewed().length})`;

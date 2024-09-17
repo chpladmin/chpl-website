@@ -14,7 +14,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useFilterContext } from './filter-context';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -96,7 +96,6 @@ const useStyles = makeStyles({
 });
 
 function ChplFilterPanel() {
-  const $analytics = getAngularService('$analytics');
   const classes = useStyles();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -121,13 +120,24 @@ function ChplFilterPanel() {
 
   const handleClick = (e) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Open Advanced Search', { category: filterContext.analytics.category });
+      eventTrack({
+        event: 'Open Advanced Search',
+        category: filterContext.analytics.category,
+        group: filterContext.analytics.group,
+      });
     }
     setAnchor(e.currentTarget);
     setOpen(true);
   };
 
   const handleClose = () => {
+    if (filterContext.analytics) {
+      eventTrack({
+        event: 'Close Advanced Search',
+        category: filterContext.analytics.category,
+        group: filterContext.analytics.group,
+      });
+    }
     setAnchor(null);
     setOpen(false);
     setActiveCategoryKey('');
@@ -142,7 +152,12 @@ function ChplFilterPanel() {
       setActiveCategoryKey('');
     } else {
       if (filterContext.analytics) {
-        $analytics.eventTrack('Select Filter Category', { category: filterContext.analytics.category, label: `${filter.getFilterDisplay(filter)}` });
+        eventTrack({
+          event: 'Open Filter Category',
+          category: filterContext.analytics.category,
+          label: filter.getFilterDisplay(filter),
+          group: filterContext.analytics.group,
+        });
       }
       setActiveCategoryKey(filter.key);
     }
@@ -150,7 +165,13 @@ function ChplFilterPanel() {
 
   const handleFilterToggle = (value) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${activeCategory.display}: ${activeCategory.getValueDisplay(value)}` });
+      eventTrack({
+        event: 'Toggle Filter',
+        category: filterContext.analytics.category,
+        label: activeCategory.getValueDisplay(value),
+        aggregationName: activeCategory.display,
+        group: filterContext.analytics.group,
+      });
     }
     filterContext.dispatch('toggle', activeCategory, value);
     filterContext.dispatch('hasSearched');
@@ -166,7 +187,12 @@ function ChplFilterPanel() {
 
   const toggleOperator = (f) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
+      eventTrack({
+        event: `Set Any/All Filter to ${f.operator === 'and' ? 'Any' : 'All'}`,
+        category: filterContext.analytics.category,
+        label: f.getFilterDisplay(f),
+        group: filterContext.analytics.group,
+      });
     }
     filterContext.dispatch('toggleOperator', f);
   };

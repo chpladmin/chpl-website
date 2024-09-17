@@ -12,7 +12,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import FindReplaceIcon from '@material-ui/icons/FindReplace';
-import { shape, string } from 'prop-types';
 
 import ChplLandingPage from './landing-page';
 
@@ -34,6 +33,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { analyticsConfig } from 'shared/prop-types';
 import { palette, theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -161,7 +161,7 @@ function ChplListingsView(props) {
     })));
     setRecordCount(data.recordCount);
     setSearchTermRecordCount(data.searchTermRecordCount);
-  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading, analytics]);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -326,7 +326,5 @@ function ChplListingsView(props) {
 export default ChplListingsView;
 
 ChplListingsView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
+  analytics: analyticsConfig.isRequired,
 };
