@@ -89,7 +89,12 @@ function ChplSignin({ dispatch }) {
         } else if (error?.response?.status === 471) {
           const body = 'Due to unforeseen circumstances, you need to change your password. Please use the Forgot Password functionality to change your password.';
           enqueueSnackbar(body, { variant: 'error' });
-          dispatch({ action: 'forgotPassword' });
+          dispatch({ 
+            action: 'forgotPassword',
+            payload: {
+              userName: formik.values.userName,
+            },
+          });
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
