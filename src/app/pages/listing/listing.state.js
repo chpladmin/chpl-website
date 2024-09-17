@@ -9,7 +9,15 @@ const states = [{
   component: 'chplListingEditFlagged',
   data: {
     title: 'CHPL Listing Details - new edit',
-    roles: ['ROLE_ADMIN', 'chpl-onc', 'chpl-onc-acb'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+  },
+}, {
+  name: 'listing.edit-upload',
+  url: '/edit-upload',
+  component: 'chplListingEditUpload',
+  data: {
+    title: 'CHPL Listing Details - upload',
+    roles: ['chpl-admin'],
   },
 }, {
   name: 'listing.edit',
