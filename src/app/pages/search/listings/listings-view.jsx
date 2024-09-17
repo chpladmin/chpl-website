@@ -29,7 +29,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
@@ -126,10 +126,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingsView(props) {
+function ChplListingsView({ analytics }) {
   const storageKey = 'storageKey-listingsView';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
@@ -175,7 +173,12 @@ function ChplListingsView(props) {
   }, [directReviewsAvailable]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -279,7 +282,13 @@ function ChplListingsView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -289,7 +298,12 @@ function ChplListingsView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
