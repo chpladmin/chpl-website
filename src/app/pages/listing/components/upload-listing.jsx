@@ -7,8 +7,7 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import { number } from 'prop-types';
-import { useSnackbar } from 'notistack';
+import { func, number } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
@@ -52,11 +51,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadListing({ id }) {
+function ChplUploadListing({ id, setErrors }) {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
-  const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const { setListing } = useContext(ListingContext);
@@ -73,6 +71,7 @@ function ChplUploadListing({ id }) {
   };
 
   const uploadFile = () => {
+    setErrors([]);
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
@@ -89,13 +88,9 @@ function ChplUploadListing({ id }) {
         console.log(response);
       })
       .catch((error) => {
-        let message = `Error: File "${file.name}" was not uploaded successfully.`;
         if (error?.data?.errorMessages) {
-          message += ` ${error.data.errorMessages.join(', ')}`;
+          setErrors(error.data.errorMessages);
         }
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
         console.error(error);
       })
       .finally(() => {
@@ -172,4 +167,5 @@ export default ChplUploadListing;
 
 ChplUploadListing.propTypes = {
   id: number.isRequired,
+  setErrors: func.isRequired,
 };

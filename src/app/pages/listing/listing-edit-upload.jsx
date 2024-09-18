@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   CircularProgress,
   Container,
   Typography,
@@ -69,8 +68,11 @@ function ChplListingEditUploadPage({ id }) {
       case 'cancel':
         $state.go('^');
         break;
+      case 'save':
+        setIsProcessing(true);
+        break;
       default:
-        console.log({props});
+        console.log({ action });
         break;
     }
   };
@@ -107,14 +109,15 @@ function ChplListingEditUploadPage({ id }) {
             <ListingContext.Provider value={newListingState}>
               <ChplUploadListing
                 id={listing.id}
+                setErrors={setErrors}
               />
             </ListingContext.Provider>
           </div>
           <div>
             Difference(s)
             <ul className="list-unstyled">
-              { diff.map((change, idx) => (
-                <li key={idx} dangerouslySetInnerHTML={{ __html: `${change}` }} />
+              { diff.map((change) => (
+                <li key={change} dangerouslySetInnerHTML={{ __html: `${change}` }} />
               ))}
             </ul>
           </div>
