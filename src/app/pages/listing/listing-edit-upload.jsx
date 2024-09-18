@@ -15,6 +15,7 @@ import { useFetchListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
+import { compareListing } from 'pages/listing/history/listings.service';
 import { ListingContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -58,9 +59,10 @@ function ChplListingEditUploadPage({ id }) {
     setListing(data);
   }, [data, isLoading, isSuccess]);
 
-  if (isLoading || !isSuccess || !listing) {
-    return <CircularProgress />;
-  }
+  useEffect(() => {
+    if (!newListing) { return; }
+    setDiff(compareListing(listing, newListing));
+  }, [listing, newListing]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -81,6 +83,10 @@ function ChplListingEditUploadPage({ id }) {
     listing: newListing,
     setListing: setNewListing,
   };
+
+  if (isLoading || !isSuccess || !listing) {
+    return <CircularProgress />;
+  }
 
   return (
     <Box bgcolor={palette.background}>
@@ -105,20 +111,12 @@ function ChplListingEditUploadPage({ id }) {
             </ListingContext.Provider>
           </div>
           <div>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled
-            >
-              Confirm
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={cancel}
-            >
-              Cancel
-            </Button>
+            Difference(s)
+            <ul className="list-unstyled">
+              { diff.map((change, idx) => (
+                <li key={idx} dangerouslySetInnerHTML={{ __html: `${change}` }} />
+              ))}
+            </ul>
           </div>
           <div>
             Current Listing
