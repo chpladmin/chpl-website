@@ -12,6 +12,7 @@ import { number, oneOfType, string } from 'prop-types';
 import ChplUploadListing from './components/upload-listing';
 
 import { useFetchListing } from 'api/listing';
+import { ChplActionBar } from 'components/action-bar';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
@@ -40,7 +41,10 @@ const useStyles = makeStyles({
 
 function ChplListingEditUploadPage({ id }) {
   const $state = getAngularService('$state');
+  const [diff, setDiff] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [fetched, setFetched] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [newListing, setNewListing] = useState(undefined);
   const { data, isLoading, isSuccess } = useFetchListing({ id, fetched });
@@ -58,8 +62,15 @@ function ChplListingEditUploadPage({ id }) {
     return <CircularProgress />;
   }
 
-  const cancel = () => {
-    $state.go('^');
+  const handleDispatch = (action) => {
+    switch (action) {
+      case 'cancel':
+        $state.go('^');
+        break;
+      default:
+        console.log({props});
+        break;
+    }
   };
 
   const listingState = {
@@ -130,6 +141,12 @@ function ChplListingEditUploadPage({ id }) {
           </div>
         </div>
       </Container>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        errors={errors}
+        isDisabled
+        isProcessing={isProcessing}
+      />
     </Box>
   );
 }
