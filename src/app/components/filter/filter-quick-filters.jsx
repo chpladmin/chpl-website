@@ -36,6 +36,13 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
   };
 
   const handleClose = () => {
+    if (analytics) {
+      eventTrack({
+        event: 'Close Quick Filter',
+        category: analytics.category,
+        group: analytics.group,
+      });
+    }
     setAnchor(null);
     setOpen(false);
   };

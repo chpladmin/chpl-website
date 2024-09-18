@@ -153,7 +153,7 @@ function ChplFilterPanel() {
     } else {
       if (filterContext.analytics) {
         eventTrack({
-          event: 'Open Filter Category',
+          event: 'Open Filter',
           category: filterContext.analytics.category,
           label: filter.getFilterDisplay(filter),
           group: filterContext.analytics.group,
