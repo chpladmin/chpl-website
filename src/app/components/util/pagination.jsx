@@ -2,34 +2,40 @@ import React from 'react';
 import {
   TablePagination,
 } from '@material-ui/core';
-import {
-  arrayOf, bool, func, oneOfType, number, shape, string,
-} from 'prop-types';
+import { arrayOf, func, number } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { analyticsConfig } from 'shared/prop-types';
 
-function ChplPagination(props) {
-  const $analytics = getAngularService('$analytics');
-  const {
-    count,
-    page,
-    rowsPerPage,
-    rowsPerPageOptions,
-    setPage,
-    setRowsPerPage,
-    analytics,
-  } = props;
-
+function ChplPagination({
+  count,
+  page,
+  rowsPerPage,
+  rowsPerPageOptions,
+  setPage,
+  setRowsPerPage,
+  analytics,
+}) {
   const handlePageChange = (event, newPage) => {
     if (analytics) {
-      $analytics.eventTrack('Change Page', { category: analytics.category, label: newPage });
+      eventTrack({
+        event: 'Change Page',
+        category: analytics.category,
+        label: newPage,
+        group: analytics.group,
+      });
     }
     setPage(newPage);
   };
 
   const handleRowsPerPageChange = (event) => {
     if (analytics) {
-      $analytics.eventTrack('Change Rows Per Page', { category: analytics.category, label: event.target.value });
+      eventTrack({
+        event: 'Change Rows Per Page',
+        category: analytics.category,
+        label: event.target.value,
+        group: analytics.group,
+      });
     }
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -57,11 +63,9 @@ ChplPagination.propTypes = {
   rowsPerPageOptions: arrayOf(number).isRequired,
   setPage: func.isRequired,
   setRowsPerPage: func.isRequired,
-  analytics: oneOfType([bool, shape({
-    category: string.isRequired,
-  })]),
+  analytics: analyticsConfig,
 };
 
 ChplPagination.defaultProps = {
-  analytics: false,
+  analytics: undefined,
 };
