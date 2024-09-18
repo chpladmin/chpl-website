@@ -89,7 +89,11 @@ function ChplUploadListing({ id }) {
         console.log(response);
       })
       .catch((error) => {
-        enqueueSnackbar(error.data.error, {
+        let message = `Error: File "${file.name}" was not uploaded successfully.`;
+        if (error?.data?.errorMessages) {
+          message += ` ${error.data.errorMessages.join(', ')}`;
+        }
+        enqueueSnackbar(message, {
           variant: 'error',
         });
         console.error(error);
