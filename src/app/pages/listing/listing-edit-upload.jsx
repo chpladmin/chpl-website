@@ -13,6 +13,7 @@ import ChplUploadListing from './components/upload-listing';
 
 import { useFetchListing } from 'api/listing';
 import ChplListingView from 'components/listing/listing-view';
+import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
 });
 
 function ChplListingEditUploadPage({ id }) {
+  const $state = getAngularService('$state');
   const [fetched, setFetched] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [newListing, setNewListing] = useState(undefined);
@@ -55,6 +57,10 @@ function ChplListingEditUploadPage({ id }) {
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
+
+  const cancel = () => {
+    $state.go('^');
+  };
 
   const listingState = {
     listing,
@@ -87,13 +93,22 @@ function ChplListingEditUploadPage({ id }) {
               />
             </ListingContext.Provider>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled
-          >
-            Confirm
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled
+            >
+              Confirm
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={cancel}
+            >
+              Cancel
+            </Button>
+          </div>
           <div>
             Current Listing
             <ListingContext.Provider value={listingState}>
