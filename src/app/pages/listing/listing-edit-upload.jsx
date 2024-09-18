@@ -61,8 +61,8 @@ function ChplListingEditUploadPage({ id }) {
   };
 
   const newListingState = {
-    newListing,
-    setNewListing,
+    listing: newListing,
+    setListing: setNewListing,
   };
 
   return (

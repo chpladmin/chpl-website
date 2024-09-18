@@ -85,6 +85,7 @@ function ChplUploadListing({ id }) {
     };
     Upload.upload(item)
       .then((response) => {
+        setListing(response.data);
         console.log(response);
       })
       .catch((error) => {
