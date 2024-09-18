@@ -51,20 +51,39 @@ const useStyles = makeStyles({
   },
 });
 
-const reports = [
-  { text: 'Developer Reporting', page: 'developerReport', icon: <AssessmentOutlinedIcon fontSize="large" color="primary" />},
-  { text: 'Surveillance Reporting', page: 'surveillanceReport', icon: <DashboardOutlinedIcon fontSize="large" color="primary" />},
-  { text: 'User Reporting', page: 'userReport', icon: <GroupOutlinedIcon fontSize="large" color="primary" />},
-  { text: 'More to Come', page: '', icon: <HighlightOutlinedIcon fontSize="large" color="primary" />},
-];
-
 function ChplDashboard() {
   const classes = useStyles();
-  const developerStatisticsReportUrl = useFetchReportUrl('DeveloperStatistics');
-  const surveillanceStatisticsReportUrl = useFetchReportUrl('SurveillanceStatistics');
-  const [activeCard, setActiveCard] = useState('home');
+  const [activeReport, setActiveReport] = useState();
 
-  const handleCardChange = (card) => setActiveCard(card);
+  const reports = [
+    {
+      text: 'Developer Reporting',
+      reportId: 'DeveloperStatistics',
+      icon: <AssessmentOutlinedIcon fontSize="large" color="primary" />,
+      frameHeight: '1300px',
+      url: useFetchReportUrl('DeveloperStatistics'),
+    }, {
+      text: 'Surveillance Reporting',
+      reportId: 'SurveillanceStatistics',
+      icon: <DashboardOutlinedIcon fontSize="large" color="primary" />,
+      frameHeight: '2500px',
+      url: useFetchReportUrl('SurveillanceStatistics'),
+    }, {
+      text: 'User Reporting',
+      page: '',
+      icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
+      frameHeight: '',
+    }, {
+      text: 'More to Come',
+      reportId: '',
+      icon: <HighlightOutlinedIcon fontSize="large" color="primary" />,
+      frameHeight: '',
+    },
+  ];
+
+  const handleReportChange = (reportId) => {
+    setActiveReport(reports.find((report) => report.reportId === reportId));
+  };
 
   return (
     <>
@@ -83,30 +102,26 @@ function ChplDashboard() {
                     <Button
                       style={{ justifyContent: 'flex-start' }}
                       color="primary"
-                      onClick={() => handleCardChange('home')}
+                      onClick={() => handleReportChange('home')}
                     >
                       Dashboard
                     </Button>
-                    <Button
-                      style={{ justifyContent: 'flex-start' }}
-                      color="primary"
-                      onClick={() => handleCardChange('developerReport')}
-                    >
-                      Developer Report
-                    </Button>
-                    <Button
-                      style={{ justifyContent: 'flex-start' }}
-                      color="primary"
-                      onClick={() => handleCardChange('surveillanceReport')}
-                    >
-                      Surveillance Report
-                    </Button>
+                    { reports.map((report) => (
+                      <Button
+                        key={`${report.reportId}-button`}
+                        style={{ justifyContent: 'flex-start' }}
+                        color="primary"
+                        onClick={() => handleReportChange(report.reportId)}
+                      >
+                        { report.text }
+                      </Button>
+                    ))}
                   </Box>
                 </CardContent>
               </Card>
             </Box>
             <Box width="100%">
-              {activeCard === 'home' && (
+              {!activeReport && (
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="h6">
@@ -116,15 +131,15 @@ function ChplDashboard() {
                       A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
                     </Typography>
                     <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
-                      {reports.map((item) => (
+                      {reports.map((report) => (
                         <Card
-                          key={item.text}
+                          key={report.text}
                           className={classes.card}
-                          onClick={() => handleCardChange(item.page)}
+                          onClick={() => handleReportChange(report.reportId)}
                         >
                           <CardContent className={classes.cardContent}>
-                            {item.icon}
-                            <Typography>{item.text}</Typography>
+                            {report.icon}
+                            <Typography>{report.text}</Typography>
                           </CardContent>
                         </Card>
                       ))}
@@ -132,35 +147,23 @@ function ChplDashboard() {
                   </CardContent>
                 </Card>
               )}
-              {activeCard === 'developerReport' && (
-                <Card style={{ width: '100%' }}>
+              {activeReport && (
+                <Card 
+                  style={{ width: '100%' }}
+                  key={activeReport.text}
+                >
                   <CardContent>
                     <iframe
-                      title="DeveloperStatistics"
+                      title={activeReport.text}
                       width="100%"
-                      height="1300px"
-                      src={developerStatisticsReportUrl?.data?.reportUrl}
+                      height={activeReport.frameHeight}
+                      src={activeReport.url?.data?.reportUrl}
                       frameBorder="0"
                       allowFullScreen
                     />
                   </CardContent>
                 </Card>
               )}
-              {activeCard === 'surveillanceReport' && (
-                <Card style={{ width: '100%' }}>
-                  <CardContent>
-                    <iframe
-                      title="SurveillanceStatistics"
-                      width="100%"
-                      height="2200px"
-                      src={surveillanceStatisticsReportUrl?.data?.reportUrl}
-                      frameBorder="0"
-                      allowFullScreen
-                    />
-                  </CardContent>
-                </Card>
-              )}
-              {/* Add more conditionally rendered cards here based on `activeCard` value */}
             </Box>
           </Box>
         </Container>
