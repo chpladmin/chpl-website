@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ChplSedSearchView from './sed-view';
 
@@ -9,6 +9,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
+import { UserContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -17,6 +18,7 @@ const staticFilters = [
 
 function ChplSedSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { user } = useContext(UserContext);
   const acbQuery = useFetchAcbs();
 
   useEffect(() => {
@@ -39,7 +41,8 @@ function ChplSedSearchPage() {
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   const analytics = {
-    category: 'SED Information for 2015 Edition Products',
+    category: 'CHPL Search - SED Information',
+    group: user?.role,
   };
 
   return (

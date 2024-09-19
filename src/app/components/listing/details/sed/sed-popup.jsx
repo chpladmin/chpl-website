@@ -12,7 +12,9 @@ import { number } from 'prop-types';
 import { useFetchListing } from 'api/listing';
 import { ChplDialogTitle } from 'components/util';
 import ChplSed from 'components/listing/details/sed/sed';
+import { eventTrack } from 'services/analytics.service';
 import { ListingContext } from 'shared/contexts';
+import { analyticsConfig } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   title: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSedPopup({ id }) {
+function ChplSedPopup({ id, analytics }) {
   const [listing, setListing] = useState(undefined);
   const [open, setOpen] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id, enabled: open });
@@ -32,6 +34,18 @@ function ChplSedPopup({ id }) {
     }
     setListing(data);
   }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    if (open && listing) {
+      eventTrack({
+        event: 'View SED Information',
+        category: analytics.category,
+        label: listing.chplProductNumber,
+        aggregationName: listing.product.name,
+        group: analytics.group,
+      });
+    }
+  }, [listing, open]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -93,4 +107,5 @@ export default ChplSedPopup;
 
 ChplSedPopup.propTypes = {
   id: number.isRequired,
+  analytics: analyticsConfig.isRequired,
 };
