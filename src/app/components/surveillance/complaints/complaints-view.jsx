@@ -31,9 +31,10 @@ import {
 } from 'components/filter';
 import { ChplEllipsis, ChplPagination } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -73,6 +74,7 @@ const useStyles = makeStyles({
 function ChplComplaintsView(props) {
   const storageKey = 'storageKey-complaintsView';
   const { canAdd, bonusQuery } = props;
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
   const { append, display, hide } = useContext(BreadcrumbContext);
@@ -164,6 +166,11 @@ function ChplComplaintsView(props) {
   ];
 
   const downloadFile = () => {
+    eventTrack({
+      event: 'Download All Complaints',
+      category: analytics.category,
+      group: analytics.group,
+    });
     mutate({}, {
       onSuccess: (response) => {
         enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.email} when it's done`, {
@@ -182,6 +189,11 @@ function ChplComplaintsView(props) {
   handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'add':
+        eventTrack({
+          event: 'Add New Complaint',
+          category: analytics.category,
+          group: analytics.group,
+        });
         setActiveComplaint({});
         display('viewall');
         hide('viewall.disabled');
@@ -196,6 +208,12 @@ function ChplComplaintsView(props) {
         hide('view.disabled');
         break;
       case 'view':
+        eventTrack({
+          event: 'View Complaint',
+          category: analytics.category,
+          label: payload.complainantType.name,
+          group: analytics.group,
+        });
         setActiveComplaint(payload);
         display('viewall');
         hide('viewall.disabled');
@@ -205,6 +223,12 @@ function ChplComplaintsView(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setOrder(orderDirection);
   };
