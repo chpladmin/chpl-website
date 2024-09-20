@@ -29,7 +29,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { analyticsConfig } from 'shared/prop-types';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -103,10 +103,11 @@ const headers = [
   { text: 'Actions', invisible: true },
 ];
 
-function ChplSedSearchView({ analytics }) {
+function ChplSedSearchView() {
   const storageKey = 'storageKey-sedView';
   const API = getAngularService('API');
   const authService = getAngularService('authService');
+  const { analytics } = useAnalyticsContext();
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -316,5 +317,4 @@ function ChplSedSearchView({ analytics }) {
 export default ChplSedSearchView;
 
 ChplSedSearchView.propTypes = {
-  analytics: analyticsConfig.isRequired,
 };

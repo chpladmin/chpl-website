@@ -1,3 +1,4 @@
+import { AnalyticsContext, AnalyticsProvider, useAnalyticsContext } from './analytics-context';
 import BreadcrumbContext from './breadcrumb-context';
 import BrowserContext from './browser-context';
 import CmsContext from './cms-context';
@@ -8,6 +9,8 @@ import ListingContext from './listing-context';
 import UserContext from './user-context';
 
 export {
+  AnalyticsContext,
+  AnalyticsProvider,
   BreadcrumbContext,
   BrowserContext,
   CmsContext,
@@ -16,4 +19,5 @@ export {
   FlagContext,
   ListingContext,
   UserContext,
+  useAnalyticsContext,
 };

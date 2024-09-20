@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplSedSearchView from './sed-view';
 
@@ -9,7 +9,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
-import { UserContext } from 'shared/contexts';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -18,7 +18,7 @@ const staticFilters = [
 
 function ChplSedSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
-  const { user } = useContext(UserContext);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
 
   useEffect(() => {
@@ -40,21 +40,23 @@ function ChplSedSearchPage() {
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
-  const analytics = {
-    category: 'CHPL Search - SED Information',
-    group: user?.role,
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - SED Information',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-sedPage"
-    >
-      <ChplSedSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-sedPage"
+      >
+        <ChplSedSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 
