@@ -76,10 +76,11 @@ function ChplChangePassword({ dispatch }) {
       confirmPassword: formik.values.confirmPassword,
     }, {
       onSuccess: () => {
+        const body = 'Password successfully changed';
+        enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'cancel' });
       },
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';
         enqueueSnackbar(body, { variant: 'error' });
       },
