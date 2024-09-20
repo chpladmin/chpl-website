@@ -33,7 +33,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { analyticsConfig } from 'shared/prop-types';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -126,8 +126,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingsView({ analytics }) {
+function ChplListingsView() {
   const storageKey = 'storageKey-listingsView';
+  const { analytics } = useAnalyticsContext();
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
@@ -340,5 +341,4 @@ function ChplListingsView({ analytics }) {
 export default ChplListingsView;
 
 ChplListingsView.propTypes = {
-  analytics: analyticsConfig.isRequired,
 };
