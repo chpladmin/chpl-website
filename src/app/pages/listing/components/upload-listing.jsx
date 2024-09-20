@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadListing({ id, setErrors }) {
+function ChplUploadListing({ id, setErrors, setWarnings }) {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -72,6 +72,7 @@ function ChplUploadListing({ id, setErrors }) {
 
   const uploadFile = () => {
     setErrors([]);
+    setWarnings([]);
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
@@ -168,4 +169,5 @@ export default ChplUploadListing;
 ChplUploadListing.propTypes = {
   id: number.isRequired,
   setErrors: func.isRequired,
+  setWarnings: func.isRequired,
 };

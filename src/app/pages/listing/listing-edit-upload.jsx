@@ -47,6 +47,7 @@ function ChplListingEditUploadPage({ id }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [newListing, setNewListing] = useState(undefined);
+  const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchListing({ id, fetched });
   const classes = useStyles();
 
@@ -62,6 +63,16 @@ function ChplListingEditUploadPage({ id }) {
     if (!newListing) { return; }
     setDiff(compareListing(listing, newListing));
   }, [listing, newListing]);
+
+  useEffect(() => {
+    if (!newListing) { return; }
+    setErrors((prev) => [
+      ...prev,
+      ...newListing.businessErrorMessages,
+      ...newListing.dataErrorMessages,
+    ]);
+    setWarnings(newListing.warningMessages);
+  }, [newListing]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -110,6 +121,7 @@ function ChplListingEditUploadPage({ id }) {
               <ChplUploadListing
                 id={listing.id}
                 setErrors={setErrors}
+                setWarnings={setWarnings}
               />
             </ListingContext.Provider>
           </div>
@@ -145,6 +157,7 @@ function ChplListingEditUploadPage({ id }) {
       <ChplActionBar
         dispatch={handleDispatch}
         errors={errors}
+        warnings={warnings}
         isDisabled
         isProcessing={isProcessing}
       />
