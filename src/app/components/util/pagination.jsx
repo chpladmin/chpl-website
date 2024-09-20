@@ -5,7 +5,7 @@ import {
 import { arrayOf, func, number } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
-import { analyticsConfig } from 'shared/prop-types';
+import { useAnalyticsContext } from 'shared/contexts';
 
 function ChplPagination({
   count,
@@ -14,8 +14,9 @@ function ChplPagination({
   rowsPerPageOptions,
   setPage,
   setRowsPerPage,
-  analytics,
 }) {
+  const { analytics } = useAnalyticsContext();
+
   const handlePageChange = (event, newPage) => {
     if (analytics) {
       eventTrack({
@@ -63,9 +64,4 @@ ChplPagination.propTypes = {
   rowsPerPageOptions: arrayOf(number).isRequired,
   setPage: func.isRequired,
   setRowsPerPage: func.isRequired,
-  analytics: analyticsConfig,
-};
-
-ChplPagination.defaultProps = {
-  analytics: undefined,
 };

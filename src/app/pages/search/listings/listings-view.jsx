@@ -235,7 +235,6 @@ function ChplListingsView() {
               { listings.length > 0
                 && (
                   <ChplDownloadListings
-                    analytics={analytics}
                     listings={listings}
                   />
                 )}
@@ -328,7 +327,6 @@ function ChplListingsView() {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}

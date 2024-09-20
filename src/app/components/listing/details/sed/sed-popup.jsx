@@ -13,8 +13,7 @@ import { useFetchListing } from 'api/listing';
 import { ChplDialogTitle } from 'components/util';
 import ChplSed from 'components/listing/details/sed/sed';
 import { eventTrack } from 'services/analytics.service';
-import { ListingContext } from 'shared/contexts';
-import { analyticsConfig } from 'shared/prop-types';
+import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   title: {
@@ -22,7 +21,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSedPopup({ id, analytics }) {
+function ChplSedPopup({ id }) {
+  const { analytics } = useAnalyticsContext();
   const [listing, setListing] = useState(undefined);
   const [open, setOpen] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id, enabled: open });
@@ -107,5 +107,4 @@ export default ChplSedPopup;
 
 ChplSedPopup.propTypes = {
   id: number.isRequired,
-  analytics: analyticsConfig.isRequired,
 };

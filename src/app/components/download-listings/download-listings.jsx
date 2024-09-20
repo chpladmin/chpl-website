@@ -18,8 +18,8 @@ import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
-import { UserContext } from 'shared/contexts';
-import { analyticsConfig, listing as listingPropType } from 'shared/prop-types';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { listing as listingPropType } from 'shared/prop-types';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -95,7 +95,8 @@ const parseSvapCsv = ({ svaps }, data) => {
 };
 
 function ChplDownloadListings(props) {
-  const { analytics, toggled } = props;
+  const { toggled } = props;
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [categories, setCategories] = useState(allCategories.map((h) => ({
@@ -271,12 +272,10 @@ export default ChplDownloadListings;
 
 ChplDownloadListings.propTypes = {
   listings: arrayOf(listingPropType),
-  analytics: analyticsConfig,
   toggled: arrayOf(string),
 };
 
 ChplDownloadListings.defaultProps = {
   listings: [],
-  analytics: undefined,
   toggled: [],
 };

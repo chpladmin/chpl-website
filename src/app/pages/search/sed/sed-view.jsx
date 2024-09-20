@@ -224,7 +224,6 @@ function ChplSedSearchView() {
               { listings.length > 0
                 && (
                   <ChplDownloadListings
-                    analytics={analytics}
                     listings={listings}
                   />
                 )}
@@ -304,7 +303,6 @@ function ChplSedSearchView() {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}
