@@ -86,13 +86,11 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
     Upload.upload(item)
       .then((response) => {
         setListing(response.data);
-        console.log(response);
       })
       .catch((error) => {
         if (error?.data?.errorMessages) {
           setErrors(error.data.errorMessages);
         }
-        console.error(error);
       })
       .finally(() => {
         clearFile();
