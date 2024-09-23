@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -25,9 +24,10 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -95,10 +95,9 @@ const headers = [
   { text: 'Actions', invisible: true },
 ];
 
-function ChplRealWorldTestingSearchView(props) {
+function ChplRealWorldTestingSearchView() {
   const storageKey = 'storageKey-realWorldTestingView';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -136,7 +135,12 @@ function ChplRealWorldTestingSearchView(props) {
   }, [data?.results, data?.recordCount, isError, isLoading]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -155,11 +159,31 @@ function ChplRealWorldTestingSearchView(props) {
         >
           This list includes Health IT Module(s) eligible for Real World Testing, which is an annual
           {' '}
-          <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Condition and Maintenance of Certification requirement</a>
+          <ChplLink
+            href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
+            text="Condition and Maintenance of Certification requirement"
+            analytics={{
+              event: 'Go to Condition and Maintenance of Certification requirement',
+              category: analytics.category,
+              group: analytics.group,
+            }}
+            external={false}
+            inline
+          />
           {' '}
           for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
           {' '}
-          <a href="https://www.healthit.gov/curesrule/">ONC&apos;s Cures Act Final Rule</a>
+          <ChplLink
+            href="https://www.healthit.gov/curesrule/"
+            text="ONC&apos;s Cures Act Final Rule"
+            analytics={{
+              event: 'Go to ONC&apos;s Cures Act Final Rule',
+              category: analytics.category,
+              group: analytics.group,
+            }}
+            external={false}
+            inline
+          />
           {' '}
           must successfully test their real world use.
         </Typography>
@@ -173,10 +197,31 @@ function ChplRealWorldTestingSearchView(props) {
         >
           For more information, please visit the
           {' '}
-          <a href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing">Real World Testing resources</a>
+          <ChplLink
+            href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing"
+            text="Real World Testing resources"
+            analytics={{
+              event: 'Go to Real World Testing resources',
+              category: analytics.category,
+              group: analytics.group,
+            }}
+            external={false}
+            inline
+          />
           . Real World Testing summary data is also available through
           {' '}
-          <a href="#/resources/download">Download the CHPL</a>
+          <ChplLink
+            href="#/resources/download"
+            text="Download the CHPL"
+            analytics={{
+              event: 'Navigate to Download the CHPL',
+              category: analytics.category,
+              group: analytics.group,
+            }}
+            external={false}
+            router={{ sref: 'resources.download' }}
+            inline
+          />
           .
         </Typography>
         <Typography
@@ -245,7 +290,13 @@ function ChplRealWorldTestingSearchView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -255,7 +306,12 @@ function ChplRealWorldTestingSearchView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
@@ -268,7 +324,11 @@ function ChplRealWorldTestingSearchView(props) {
                                 && (
                                   <ChplLink
                                     href={item.rwtPlansUrl}
-                                    analytics={{ event: 'Go to Real World Testing Plans URL', category: analytics.category, label: item.rwtPlansUrl }}
+                                    analytics={{
+                                      event: 'Go to Real World Testing Plans URL',
+                                      category: analytics.category,
+                                      group: analytics.group,
+                                    }}
                                   />
                                 )}
                               </TableCell>
@@ -277,7 +337,11 @@ function ChplRealWorldTestingSearchView(props) {
                                   ? (
                                     <ChplLink
                                       href={item.rwtResultsUrl}
-                                      analytics={{ event: 'Go to Real World Testing Results URL', category: analytics.category, label: item.rwtResultsUrl }}
+                                      analytics={{
+                                        event: 'Go to Real World Testing ResultsURL',
+                                        category: analytics.category,
+                                        group: analytics.group,
+                                      }}
                                     />
                                   ) : (
                                     <>N/A</>
@@ -311,7 +375,4 @@ function ChplRealWorldTestingSearchView(props) {
 export default ChplRealWorldTestingSearchView;
 
 ChplRealWorldTestingSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };
