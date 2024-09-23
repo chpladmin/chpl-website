@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
 import { useFetchSvaps } from 'api/standards';
@@ -26,11 +25,12 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -135,12 +135,11 @@ const headers = [
   { text: 'Actions', invisible: true },
 ];
 
-function ChplSvapSearchView(props) {
+function ChplSvapSearchView() {
   const storageKey = 'storageKey-svapView';
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
@@ -194,7 +193,12 @@ function ChplSvapSearchView(props) {
   }, [API, authService]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -212,26 +216,77 @@ function ChplSvapSearchView(props) {
           <Typography variant="body1" gutterBottom>
             This search features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
             {' '}
-            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap">Standards Version Advancement Process (SVAP)</a>
+            <ChplLink
+              href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
+              text="Standards Version Advancement Process (SVAP)"
+              analytics={{
+                event: 'Go to Standards Version Advancement Process (SVAP)',
+                category: analytics.category,
+                group: analytics.group,
+              }}
+              external={false}
+              inline
+            />
             . The SVAP, introduced in the ONC&apos;s
             {' '}
-            <a href="https://www.healthit.gov/topic/information-blocking">Cures Act Final Rule</a>
+            <ChplLink
+              href="https://www.healthit.gov/topic/information-blocking"
+              text="Cures Act Final Rule"
+              analytics={{
+                event: 'Go to Cures Act Final Rule',
+                category: analytics.category,
+                group: analytics.group,
+              }}
+              external={false}
+              inline
+            />
             , aims to streamline the adoption of newer standards, improving communication and data exchange across healthcare systems.
           </Typography>
           <Typography variant="body1" gutterBottom>
             Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
             {' '}
-            <a href="https://www.healthit.gov/topic/information-blocking">Cures Act Final Rule</a>
+            <ChplLink
+              href="https://www.healthit.gov/topic/information-blocking"
+              text="Cures Act Final Rule"
+              analytics={{
+                event: 'Go to Cures Act Final Rule',
+                category: analytics.category,
+                group: analytics.group,
+              }}
+              external={false}
+              inline
+            />
             . The SVAP Search serves as a valuable resource for healthcare providers seeking Health IT solutions that employ the latest interoperability standards.
           </Typography>
           <Typography variant="body1" gutterBottom>
             SVAP information and related data are available on the CHPL website and can also be accessed through the
             {' '}
-            <a href="#/resources/download">Download the CHPL</a>
+            <ChplLink
+              href="#/resources/download"
+              text="Download the CHPL"
+              analytics={{
+                event: 'Navigate to Download the CHPL',
+                category: analytics.category,
+                group: analytics.group,
+              }}
+              external={false}
+              router={{ sref: 'resources.download' }}
+              inline
+            />
             {' '}
             page. For more details, please visit the
             {' '}
-            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap">SVAP Resources</a>
+            <ChplLink
+              href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
+              text="SVAP Resources"
+              analytics={{
+                event: 'Go to SVAP Resources',
+                category: analytics.category,
+                group: analytics.group,
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Typography variant="body1">
@@ -246,7 +301,11 @@ function ChplSvapSearchView(props) {
           <ChplLink
             href={downloadLink}
             text="Download SVAP Summary"
-            analytics={{ event: 'Download SVAP data', category: analytics.category }}
+            analytics={{
+              event: 'Download SVAP Summary',
+              category: analytics.category,
+              group: analytics.group,
+            }}
             external={false}
           />
         </div>
@@ -311,7 +370,13 @@ function ChplSvapSearchView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -321,7 +386,12 @@ function ChplSvapSearchView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
@@ -337,7 +407,11 @@ function ChplSvapSearchView(props) {
                                   ? (
                                     <ChplLink
                                       href={item.svapNoticeUrl}
-                                      analytics={{ event: 'Go to SVAP Notice URL', category: analytics.category, label: item.svapNoticeUrl }}
+                                      analytics={{
+                                        event: 'Go to SVAP Notice',
+                                        category: analytics.category,
+                                        group: analytics.group,
+                                      }}
                                     />
                                   ) : (
                                     <>N/A</>
@@ -371,7 +445,4 @@ function ChplSvapSearchView(props) {
 export default ChplSvapSearchView;
 
 ChplSvapSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };
