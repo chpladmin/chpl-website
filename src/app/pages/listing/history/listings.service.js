@@ -184,6 +184,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => `Functionality Tested "${f.name}"`,
       };
       break;
+    case 'testParticipants':
+      options = {
+        sort: (p, c) => (p.friendlyId < c.friendlyId ? -1 : p.friendlyId > c.friendlyId ? 1 : 0),
+        write: (f) => `Test Participant "${f.friendlyId ?? 'Unknown ID'}"`,
+      };
+      break;
     case 'testProcedures':
       options = {
         sort: (p, c) => {
@@ -214,8 +220,13 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'testTasks':
       options = {
-        sort: (p, c) => (p.description < c.description ? -1 : p.description > c.description ? 1 : 0),
-        write: (f) => `Test Task "${f.description}"`,
+        sort: (p, c) => {
+          if (p.friendlyId && c.friendlyId) {
+            return (p.friendlyId < c.friendlyId ? -1 : p.friendlyId > c.friendlyId ? 1 : 0);
+          }
+          return (p.description < c.description ? -1 : p.description > c.description ? 1 : 0);
+        },
+        write: (f) => `Test Task "${f.friendlyId ?? f.description}"`,
       };
       break;
     case 'testToolsUsed':
@@ -496,6 +507,19 @@ const briefLookup = {
   'testDataUsed.id': { message: () => undefined },
   'testDataUsed.alteration': { message: () => undefined },
   'testDataUsed.version': { message: () => undefined },
+  'testParticipants.age': { message: () => undefined },
+  'testParticipants.age.id': { message: () => undefined },
+  'testParticipants.age.name': { message: () => undefined },
+  'testParticipants.computerExperienceMonths': { message: () => undefined },
+  'testParticipants.educationType': { message: () => undefined },
+  'testParticipants.educationType.id': { message: () => undefined },
+  'testParticipants.educationType.name': { message: () => undefined },
+  'testParticipants.friendlyId': { message: () => undefined },
+  'testParticipants.id': { message: () => undefined },
+  'testParticipants.occupation': { message: () => undefined },
+  'testParticipants.productExperienceMonths': { message: () => undefined },
+  'testParticipants.professionalExperienceMonths': { message: () => undefined },
+  'testParticipants.uniqueId': { message: () => undefined },
   'testProcedures.id': { message: () => undefined },
   'testProcedures.testProcedureVersion': { message: () => undefined },
   'testStandards.id': { message: () => undefined },
@@ -503,6 +527,7 @@ const briefLookup = {
   'testTasks.criteria.id': { message: () => undefined },
   'testTasks.criteria.removed': { message: () => undefined },
   'testTasks.criteria.title': { message: () => undefined },
+  'testTasks.description': { message: () => undefined },
   'testTasks.id': { message: () => undefined },
   'testTasks.taskErrors': { message: () => undefined },
   'testTasks.taskErrorsStddev': { message: () => undefined },
@@ -519,6 +544,7 @@ const briefLookup = {
   'testTasks.taskTimeStddev': { message: () => undefined },
   'testTasks.testParticipants': { message: () => undefined },
   'testTasks.testTaskId': { message: () => undefined },
+  'testTasks.uniqueId': { message: () => undefined },
   'testToolsUsed.id': { message: () => undefined },
   'testToolsUsed.testTool.criteria': { message: () => undefined },
   'testToolsUsed.testToolVersion': { message: () => undefined },
@@ -664,8 +690,18 @@ const lookup = {
   'surveillance.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Day', getDisplayDateFormat) },
   'testDataUsed.alteration': { message: (before, after) => comparePrimitive(before, after, 'alteration', 'Alteration') },
   'testDataUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
+  'testParticipants.age': { message: () => 'Age' },
+  'testParticipants.age.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Age') },
+  'testParticipants.computerExperienceMonths': { message: (before, after) => comparePrimitive(before, after, 'computerExperienceMonths', 'Computer Experience (Months)') },
+  'testParticipants.educationType': { message: () => 'Education' },
+  'testParticipants.educationType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Education Type') },
+  'testParticipants.friendlyId': { message: (before, after) => comparePrimitive(before, after, 'friendlyId', 'Participant ID') },
+  'testParticipants.occupation': { message: (before, after) => comparePrimitive(before, after, 'occupation', 'Occupation') },
+  'testParticipants.productExperienceMonths': { message: (before, after) => comparePrimitive(before, after, 'productExperienceMonths', 'Product Experience (Months)') },
+  'testParticipants.professionalExperienceMonths': { message: (before, after) => comparePrimitive(before, after, 'professionalExperienceMonths', 'Professional Experience (Months)') },
   'testProcedures.testProcedureVersion': { message: (before, after) => comparePrimitive(before, after, 'testProcedureVersion', 'Version') },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
+  'testTasks.description': { message: (before, after) => comparePrimitive(before, after, 'description', 'Description') },
   'testTasks.taskErrors': { message: (before, after) => comparePrimitive(before, after, 'taskErrors', 'Task Errors') },
   'testTasks.taskErrorsStddev': { message: (before, after) => comparePrimitive(before, after, 'taskErrorsStddev', 'Task Errors Standard Deviation') },
   'testTasks.taskPathDeviationObserved': { message: (before, after) => comparePrimitive(before, after, 'taskPathDeviationObserved', 'Task Path Deviation Observed') },
@@ -679,7 +715,12 @@ const lookup = {
   'testTasks.taskTimeDeviationObservedAvg': { message: (before, after) => comparePrimitive(before, after, 'taskTimeDeviationObservedAvg', 'Task Time Deviation Observed Average') },
   'testTasks.taskTimeDeviationOptimalAvg': { message: (before, after) => comparePrimitive(before, after, 'taskTimeDeviationOptimalAvg', 'Task Time Deviation Optimal Average') },
   'testTasks.taskTimeStddev': { message: (before, after) => comparePrimitive(before, after, 'taskTimeStddev', 'Task Time Standard Deviation') },
-  'testTasks.testParticipants': { message: compareTestParticipants },
+  'testTasks.testParticipants': {
+    message: (before, after) => {
+      if (before.some((tp) => tp.friendlyId)) { return compare(before, after, 'testParticipants', 'Test Participants'); }
+      return compareTestParticipants(before, after);
+    },
+  },
   'testToolsUsed.testToolVersion': { message: (before, after) => comparePrimitive(before, after, 'testToolVersion', 'Version') },
   'testToolsUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
