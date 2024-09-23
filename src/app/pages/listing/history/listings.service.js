@@ -121,7 +121,18 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'qmsStandards':
       options = {
-        sort: (p, c) => (p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : 0),
+        sort: (p, c) => {
+          if (p.qmsStandardName !== c.qmsStandardName) {
+            return p.qmsStandardName < c.qmsStandardName ? -1 : 1;
+          }
+          if (p.qmsModification !== c.qmsModification) {
+            return p.qmsModification < c.qmsModification ? -1 : 1;
+          }
+          if (p.applicableCriteria !== c.applicableCriteria) {
+            return p.qmsModification < c.qmsModification ? -1 : 1;
+          }
+          return 0;
+        },
         write: (f) => `QMS Standard "${f.qmsStandardName}"`,
       };
       break;
