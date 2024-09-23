@@ -10,7 +10,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import Moment from 'react-moment';
-import { shape, string } from 'prop-types';
 
 import {
   useFetchApiDocumentationData,
@@ -29,9 +28,11 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -141,7 +142,11 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
             <ChplLink
               key={url}
               href={url}
-              analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
+              analytics={{
+                event: 'Go to API Documentation',
+                category: analytics.category,
+                group: analytics.group,
+              }}
             />
           </dd>
         </React.Fragment>
@@ -150,12 +155,11 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
   );
 };
 
-function ChplApiDocumentationSearchView(props) {
+function ChplApiDocumentationSearchView() {
   const storageKey = 'storageKey-apiDocumentationView';
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
@@ -207,7 +211,12 @@ function ChplApiDocumentationSearchView(props) {
   }, [documentation?.associatedDate]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -245,7 +254,11 @@ function ChplApiDocumentationSearchView(props) {
           <ChplLink
             href={downloadLink}
             text="Download API Documentation Dataset"
-            analytics={{ event: 'Download API Documentation data', category: analytics.category }}
+            analytics={{
+              event: 'Download API Documentation Dataset',
+              category: analytics.category,
+              group: analytics.group,
+            }}
             external={false}
           />
           { documentationDate
@@ -324,7 +337,13 @@ function ChplApiDocumentationSearchView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -334,7 +353,12 @@ function ChplApiDocumentationSearchView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
@@ -353,7 +377,11 @@ function ChplApiDocumentationSearchView(props) {
                                       <dd>
                                         <ChplLink
                                           href={item.serviceBaseUrlListValue}
-                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlListValue }}
+                                          analytics={{
+                                            event: 'Go to Service Base URL List',
+                                            category: analytics.category,
+                                            group: analytics.group,
+                                          }}
                                         />
                                       </dd>
                                     </dl>
@@ -366,7 +394,11 @@ function ChplApiDocumentationSearchView(props) {
                                   ? (
                                     <ChplLink
                                       href={item.mandatoryDisclosures}
-                                      analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
+                                      analytics={{
+                                        event: 'Go to Mandatory Disclosures',
+                                        category: analytics.category,
+                                        group: analytics.group,
+                                      }}
                                     />
                                   ) : (
                                     <>N/A</>
@@ -400,7 +432,4 @@ function ChplApiDocumentationSearchView(props) {
 export default ChplApiDocumentationSearchView;
 
 ChplApiDocumentationSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };
