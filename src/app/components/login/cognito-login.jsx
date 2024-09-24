@@ -47,7 +47,7 @@ function ChplCognitoLogin({ dispatch, setState, state, uuid }) {
         setState('FORCECHANGEPASSWORD');
         break;
       case 'forgotPassword':
-        setUserName(payload.userName);
+        setUserName(payload?.userName ?? '');
         setState('FORGOTPASSWORD');
         break;
       case 'isLoggedIn':
