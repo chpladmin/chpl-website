@@ -19,7 +19,7 @@ import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
-import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -63,15 +63,9 @@ function ChplListingPage({ id }) {
     getToken,
   } = getAngularService('authService');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
-  const [uiUpgradeEdit, setUiUpgradeEdit] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    setUiUpgradeEdit(isOn('ui-upgrade-edit'));
-  }, [isOn]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -129,17 +123,6 @@ function ChplListingPage({ id }) {
     $state.go('listing.edit');
   };
 
-  const editFlagged = () => {
-    eventTrack({
-      event: 'Edit',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
-      group: user?.role,
-    });
-    $state.go('listing.flag-edit');
-  };
-
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
@@ -169,7 +152,7 @@ function ChplListingPage({ id }) {
                 listing={listing}
                 horizontal
               >
-                { canEdit() && !uiUpgradeEdit
+                { canEdit()
                   && (
                     <Button
                       endIcon={<EditIcon />}
@@ -177,18 +160,6 @@ function ChplListingPage({ id }) {
                       variant="contained"
                       color="primary"
                       onClick={edit}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                { canEdit() && uiUpgradeEdit
-                  && (
-                    <Button
-                      endIcon={<EditIcon />}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={editFlagged}
                     >
                       Edit
                     </Button>

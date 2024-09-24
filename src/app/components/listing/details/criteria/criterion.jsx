@@ -3,22 +3,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Avatar,
   Box,
-  Button,
-  Chip,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import CheckIcon from '@material-ui/icons/Check';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SyncIcon from '@material-ui/icons/Sync';
-import { bool, func } from 'prop-types';
 
-import ChplCriterionDetailsEdit from './criterion-details-edit';
 import ChplCriterionDetailsView from './criterion-details-view';
 
 import { eventTrack } from 'services/analytics.service';
@@ -26,7 +18,6 @@ import { CriterionContext, UserContext } from 'shared/contexts';
 import {
   certificationResult,
   listing as listingPropType,
-  resources as resourceDefinition,
 } from 'shared/prop-types';
 import { palette } from 'themes';
 
@@ -90,24 +81,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCriterion(props) {
-  const {
-    certificationResult: initialCriterion,
-    canEdit,
-    hasIcs,
-    isConfirming,
-    listing,
-    onSave,
-    resources,
-  } = props;
+function ChplCriterion({
+  certificationResult: initialCriterion,
+  listing,
+}) {
   const [accessibilityStandards, setAccessibilityStandards] = useState([]);
   const [criterion, setCriterion] = useState(undefined);
-  const [editing, setEditing] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [qmsStandards, setQmsStandards] = useState([]);
-  const [pending, setPending] = useState(false);
-  const [staged, setStaged] = useState(false);
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
@@ -116,14 +98,14 @@ function ChplCriterion(props) {
   }, [initialCriterion]);
 
   useEffect(() => {
-    if (!criterion) { return; }
-    setIsDisabled(!criterion.success && !((criterion.g1Success !== null && criterion.g1Success !== undefined) || (criterion.g2Success !== null && criterion.g2Success !== undefined)) && !canEdit);
-  }, [criterion, canEdit]);
-
-  useEffect(() => {
     setAccessibilityStandards(listing.accessibilityStandards);
     setQmsStandards(listing.qmsStandards);
   }, [listing]);
+
+  useEffect(() => {
+    if (!criterion) { return; }
+    setIsDisabled(!criterion.success && !((criterion.g1Success !== null && criterion.g1Success !== undefined) || (criterion.g2Success !== null && criterion.g2Success !== undefined)));
+  }, [criterion]);
 
   const getIcon = () => {
     if (listing.edition !== null && listing.edition.name === '2011') { return null; }
@@ -154,30 +136,10 @@ function ChplCriterion(props) {
     setExpanded(!expanded);
   };
 
-  const handleCancel = () => {
-    setEditing(false);
-    setPending(false);
-  };
-
-  const handleChange = () => {
-    setPending(true);
-  };
-
-  const handleSave = (updatedCriterion) => {
-    if (pending) {
-      setPending(false);
-      setStaged(true);
-    }
-    setEditing(false);
-    setCriterion(updatedCriterion);
-    onSave(updatedCriterion);
-  };
-
   if (!criterion) { return null; }
 
   const criterionState = {
     criterion,
-    setCriterion,
   };
 
   return (
@@ -197,54 +159,28 @@ function ChplCriterion(props) {
             <Box className={classes.criterionAccordionSummarySubBox}>
               <Box className={classes.criterionAccordionSummaryData}>
                 { criterion.success
-                && (
-                  <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
-                )}
+                  && (
+                    <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
+                  )}
               </Box>
               <Box className={classes.criterionAccordionSummaryData}>
                 <Typography variant="h6" className={classes.criterionNumber}>
                   { criterion.criterion.status === 'REMOVED'
-                  && (
-                    <>
-                      Removed |
-                      {' '}
-                    </>
-                  )}
+                    && (
+                      <>
+                        Removed |
+                        {' '}
+                      </>
+                    )}
                   { criterion.criterion.status === 'RETIRED'
-                  && (
-                    <>
-                      Retired |
-                      {' '}
-                    </>
-                  )}
+                    && (
+                      <>
+                        Retired |
+                        {' '}
+                      </>
+                    )}
                   {criterion.criterion.number}
                 </Typography>
-                { pending
-                && (
-                  <Chip
-                    overlap="circle"
-                    label="Pending Changes"
-                    className={classes.pendingChip}
-                    avatar={(
-                      <Avatar className={classes.pendingChip}>
-                        <SyncIcon color="secondary" />
-                      </Avatar>
-                    )}
-                  />
-                )}
-                { staged && !pending
-                && (
-                  <Chip
-                    overlap="circle"
-                    label="Staged Changes"
-                    className={classes.stagedChip}
-                    avatar={(
-                      <Avatar className={classes.stagedChip}>
-                        <CloudDoneIcon color="secondary" />
-                      </Avatar>
-                    )}
-                  />
-                )}
               </Box>
             </Box>
             <Box className={classes.criterionAccordionSummaryData}>
@@ -261,49 +197,13 @@ function ChplCriterion(props) {
               id={`criterion-id-${criterion.criterion.id}-details`}
             >
               <Container>
-                { editing
-                  ? (
-                    <ChplCriterionDetailsEdit
-                      criterion={criterion}
-                      hasIcs={hasIcs}
-                      isConfirming={isConfirming}
-                      onCancel={handleCancel}
-                      onChange={handleChange}
-                      onSave={handleSave}
-                      resources={resources}
-                    />
-                  ) : (
-                    <>
-                      { canEdit
-                        && (
-                          <div>
-                            <Button
-                              fullWidth
-                              color="secondary"
-                              variant="contained"
-                              className={classes.editCriterion}
-                              onClick={() => setEditing(true)}
-                              id={`criterion-id-${criterion.criterion.id}-edit`}
-                            >
-                              Edit Criteria
-                              <EditOutlinedIcon
-                                className={classes.iconSpacing}
-                                fontSize="large"
-                              />
-                            </Button>
-                          </div>
-                        )}
-                      <div>
-                        <CriterionContext.Provider value={criterionState}>
-                          <ChplCriterionDetailsView
-                            criterion={criterion}
-                            accessibilityStandards={accessibilityStandards}
-                            qmsStandards={qmsStandards}
-                          />
-                        </CriterionContext.Provider>
-                      </div>
-                    </>
-                  )}
+                <CriterionContext.Provider value={criterionState}>
+                  <ChplCriterionDetailsView
+                    criterion={criterion}
+                    accessibilityStandards={accessibilityStandards}
+                    qmsStandards={qmsStandards}
+                  />
+                </CriterionContext.Provider>
               </Container>
             </AccordionDetails>
           )}
@@ -315,19 +215,6 @@ function ChplCriterion(props) {
 export default ChplCriterion;
 
 ChplCriterion.propTypes = {
-  canEdit: bool,
   certificationResult: certificationResult.isRequired,
-  hasIcs: bool,
-  isConfirming: bool,
   listing: listingPropType.isRequired,
-  onSave: func,
-  resources: resourceDefinition,
-};
-
-ChplCriterion.defaultProps = {
-  canEdit: false,
-  hasIcs: false,
-  isConfirming: false,
-  onSave: () => {},
-  resources: {},
 };

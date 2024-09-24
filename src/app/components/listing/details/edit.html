@@ -16,41 +16,23 @@
         <div>({{ $ctrl.countCerts }} met)</div>
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
-      <span feature-flag="ui-upgrade-edit" feature-flag-hide>
-        <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
-          <div ng-repeat="n in $ctrl.listing.certificationResults track by n.criterion.id">
-            <chpl-certification-criteria ng-if="$ctrl.viewAllCerts || n.success"
-                                         accessibility-standards="$ctrl.listing.accessibilityStandards"
-                                         cert="n"
-                                         has-ics="$ctrl.listing.ics.inherits"
-                                         is-confirming="$ctrl.isConfirming"
-                                         is-editing="true"
-                                         on-change="$ctrl.saveCert(cert)"
-                                         qms-standards="$ctrl.listing.qmsStandards"
-                                         refresh-sed="$ctrl.hasEdited()"
-                                         resources="$ctrl.resources"
-                                         upgrade-b11="$ctrl.upgradeB11()"
-                                         view-all="$ctrl.viewAllCerts">
-            </chpl-certification-criteria>
-          </div>
+      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
+        <div ng-repeat="n in $ctrl.listing.certificationResults track by n.criterion.id">
+          <chpl-certification-criteria ng-if="$ctrl.viewAllCerts || n.success"
+                                       accessibility-standards="$ctrl.listing.accessibilityStandards"
+                                       cert="n"
+                                       has-ics="$ctrl.listing.ics.inherits"
+                                       is-confirming="$ctrl.isConfirming"
+                                       is-editing="true"
+                                       on-change="$ctrl.saveCert(cert)"
+                                       qms-standards="$ctrl.listing.qmsStandards"
+                                       refresh-sed="$ctrl.hasEdited()"
+                                       resources="$ctrl.resources"
+                                       upgrade-b11="$ctrl.upgradeB11()"
+                                       view-all="$ctrl.viewAllCerts">
+          </chpl-certification-criteria>
         </div>
-      </span>
-      <span feature-flag="ui-upgrade-edit">
-        <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
-          <chpl-criteria-bridge
-            accessibility-standards="$ctrl.listing.accessibilityStandards"
-            can-edit="true"
-            certification-results="$ctrl.listing.certificationResults"
-            has-ics="$ctrl.listing.ics.inherits"
-            is-confirming="$ctrl.isConfirming"
-            on-save="::$ctrl.handleCriteriaSave"
-            qms-standards="$ctrl.listing.qmsStandards"
-            resources="$ctrl.resources"
-            view-all="$ctrl.viewAllCerts"
-            >
-          </chpl-criteria-bridge>
-        </div>
-      </span>
+      </div>
     </div>
 
     <!-- CQMs -->
