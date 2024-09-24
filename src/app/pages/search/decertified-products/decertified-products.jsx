@@ -89,9 +89,7 @@ function ChplDecertifiedProductsSearchPage() {
         filters={filters}
         storageKey="storageKey-decertifiedProductsPage"
       >
-        <ChplDecertifiedProductsSearchView
-          analytics={analytics}
-        />
+        <ChplDecertifiedProductsSearchView />
       </FilterProvider>
     </AnalyticsContext.Provider>
   );

@@ -100,7 +100,6 @@ function ChplChangeRequests(props) {
         storageKey="storageKey-changeRequestsComponent"
       >
         <ChplChangeRequestsView
-          analytics={analytics}
           disallowedFilters={disallowedFilters}
           bonusQuery={bonusQuery}
         />

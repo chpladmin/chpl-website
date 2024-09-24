@@ -87,9 +87,7 @@ function ChplRealWorldTestingSearchPage() {
         filters={filters}
         storageKey="storageKey-realWorldTestingPage"
       >
-        <ChplRealWorldTestingSearchView
-          analytics={analytics}
-        />
+        <ChplRealWorldTestingSearchView />
       </FilterProvider>
     </AnalyticsContext.Provider>
   );

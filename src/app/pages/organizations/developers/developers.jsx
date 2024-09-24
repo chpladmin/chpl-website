@@ -94,9 +94,7 @@ function ChplDevelopersPage() {
         filters={filters}
         storageKey="storageKey-developersPage"
       >
-        <ChplDevelopersView
-          analytics={analytics}
-        />
+        <ChplDevelopersView />
       </FilterProvider>
     </AnalyticsContext.Provider>
   );
