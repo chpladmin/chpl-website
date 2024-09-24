@@ -410,6 +410,8 @@ function ChplSvapSearchView() {
                                       analytics={{
                                         event: 'Go to SVAP Notice',
                                         category: analytics.category,
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
                                         group: analytics.group,
                                       }}
                                     />

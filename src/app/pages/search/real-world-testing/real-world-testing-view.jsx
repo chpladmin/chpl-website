@@ -327,6 +327,8 @@ function ChplRealWorldTestingSearchView() {
                                     analytics={{
                                       event: 'Go to Real World Testing Plans URL',
                                       category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
                                       group: analytics.group,
                                     }}
                                   />
@@ -340,6 +342,8 @@ function ChplRealWorldTestingSearchView() {
                                       analytics={{
                                         event: 'Go to Real World Testing ResultsURL',
                                         category: analytics.category,
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
                                         group: analytics.group,
                                       }}
                                     />

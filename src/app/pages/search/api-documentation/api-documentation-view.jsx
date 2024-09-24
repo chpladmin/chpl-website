@@ -113,7 +113,7 @@ const headers = [
   { text: 'Actions', invisible: true },
 ];
 
-const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
+const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
   const items = Object.entries(apiDocumentation
     .filter((item) => (item.criterion.id !== 57 && item.criterion.id !== 58))
@@ -145,6 +145,8 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
               analytics={{
                 event: 'Go to API Documentation',
                 category: analytics.category,
+                label: chplProductNumber,
+                aggregationName: product.name,
                 group: analytics.group,
               }}
             />
@@ -380,6 +382,8 @@ function ChplApiDocumentationSearchView() {
                                           analytics={{
                                             event: 'Go to Service Base URL List',
                                             category: analytics.category,
+                                            label: item.chplProductNumber,
+                                            aggregationName: item.product.name,
                                             group: analytics.group,
                                           }}
                                         />
@@ -397,6 +401,8 @@ function ChplApiDocumentationSearchView() {
                                       analytics={{
                                         event: 'Go to Mandatory Disclosures',
                                         category: analytics.category,
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
                                         group: analytics.group,
                                       }}
                                     />
