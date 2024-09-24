@@ -174,9 +174,9 @@ function ChplBannedDevelopersSearchView() {
             {' '}
             <ChplLink
               href="#/search"
-              text="Searching for the product"
+              text="searching for the product"
               analytics={{
-                event: 'Navigate to Searching for the product',
+                event: 'Navigate to searching for the product',
                 category: analytics.category,
                 group: analytics.group,
               }}
