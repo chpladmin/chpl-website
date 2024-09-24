@@ -121,7 +121,7 @@ function ChplDashboard() {
               </Card>
             </Box>
             <Box width="100%">
-              {activeReport == null && (
+              {!activeReport && (
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="h6">
