@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 
 function ChplDashboard() {
   const classes = useStyles();
-  const [activeReport, setActiveReport] = useState();
+  const [activeReport, setActiveReport] = useState(undefined);
 
   const reports = [
     {
@@ -70,12 +70,12 @@ function ChplDashboard() {
       url: useFetchReportUrl('SurveillanceStatistics'),
     }, {
       text: 'User Reporting',
-      page: '',
+      reportId: 'UserReporting',
       icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
       frameHeight: '',
     }, {
       text: 'More to Come',
-      reportId: '',
+      reportId: 'MoreToCome',
       icon: <HighlightOutlinedIcon fontSize="large" color="primary" />,
       frameHeight: '',
     },
@@ -102,7 +102,7 @@ function ChplDashboard() {
                     <Button
                       style={{ justifyContent: 'flex-start' }}
                       color="primary"
-                      onClick={() => handleReportChange('home')}
+                      onClick={() => handleReportChange(undefined)}
                     >
                       Dashboard
                     </Button>
@@ -121,7 +121,7 @@ function ChplDashboard() {
               </Card>
             </Box>
             <Box width="100%">
-              {!activeReport && (
+              {activeReport == null && (
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="h6">
