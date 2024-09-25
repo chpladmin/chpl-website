@@ -13,8 +13,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
@@ -365,7 +365,7 @@ function ChplCmsDisplay() {
               variant="contained"
               id="download-cert-id"
               onClick={downloadPdf}
-              endIcon={<ArrowDownwardIcon />}
+              endIcon={<CloudDownloadIcon />}
             >
               Download PDF
             </Button>

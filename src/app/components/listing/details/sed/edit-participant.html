@@ -10,6 +10,13 @@
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
+      <label class="control-label col-sm-6" for="data-participant-friendly-id">Participant ID <span class="text-danger">*</span></label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control input-sm" id="data-participant-friendly-id" name="data_participant_friendly_id" ng-model="vm.participant.friendlyId" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_participant_friendly_id.$touched && vm.editForm.data_participant_friendly_id.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-6" for="data-participant-occupation">Occupation <span class="text-danger">*</span></label>
       <div class="col-sm-6">
         <input type="text" class="form-control input-sm" id="data-participant-occupation" name="data_participant_occupation" ng-model="vm.participant.occupation" required ng-maxlength="250"></input>
@@ -18,11 +25,11 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data-participant-education-type-name">Education Type <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-education-type">Education Type <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <select class="form-control input-sm" id="data-participant-education-type-name" name="data_participant_educationTypeName" ng-model="vm.participant.education" required
+        <select class="form-control input-sm" id="data-participant-education-type" name="data_participant_educationType" ng-model="vm.participant.educationType" required
                 ng-options="item as item.name for item in vm.education.data track by item.id"></select>
-        <div class="text-danger" ng-if="vm.editForm.data_participant_educationTypeName.$touched && vm.editForm.data_participant_educationTypeName.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="vm.editForm.data_participant_educationType.$touched && vm.editForm.data_participant_educationType.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -49,9 +56,9 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="data-participant-age">Age (Years) <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <select class="form-control input-sm" id="data-participant-age" name="data_participant_ageRange" ng-model="vm.participant.ageRangeObj" required
+        <select class="form-control input-sm" id="data-participant-age" name="data_participant_age" ng-model="vm.participant.age" required
                 ng-options="item as item.name for item in vm.ageRanges.data | orderBy : vm.orderAges track by item.id"></select>
-        <div class="text-danger" ng-if="vm.editForm.data_participant_ageRange.$touched && vm.editForm.data_participant_ageRange.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="vm.editForm.data_participant_age.$touched && vm.editForm.data_participant_age.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
