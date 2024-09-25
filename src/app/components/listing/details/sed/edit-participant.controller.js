@@ -18,26 +18,15 @@
 
     function activate () {
       vm.participant = angular.copy(participant);
-      if (!vm.participant.id) {
-        vm.participant.id = (new Date()).getTime() * -1;
-      }
 
       networkService.getEducation()
         .then(function (result) {
           vm.education = result;
         });
-      vm.participant.education = {
-        name: vm.participant.educationTypeName,
-        id: vm.participant.educationTypeId,
-      };
       networkService.getAgeRanges()
         .then(function (result) {
           vm.ageRanges = result;
         });
-      vm.participant.ageRangeObj = {
-        name: vm.participant.ageRange,
-        id: vm.participant.ageRangeId,
-      };
     }
 
     function cancel () {
@@ -50,15 +39,11 @@
       } else if (ageRange.name.length === 4) {
         return 10;
       } else {
-        return parseInt(ageRange.name.charAt(0));
+        return parseInt(ageRange.name.charAt(0), 10);
       }
     }
 
     function save () {
-      vm.participant.educationTypeName = vm.participant.education.name;
-      vm.participant.educationTypeId = vm.participant.education.id;
-      vm.participant.ageRange = vm.participant.ageRangeObj.name;
-      vm.participant.ageRangeId = vm.participant.ageRangeObj.id;
       $uibModalInstance.close({
         participant: vm.participant,
       });

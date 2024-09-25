@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';
@@ -31,11 +31,11 @@ const headers = [
   { headerName: 'Task Path Deviation - Observed (# of Steps)', objectKey: 'taskPathDeviationObserved' },
   { headerName: 'Task Path Deviation - Optimal (# of Steps)', objectKey: 'taskPathDeviationOptimal' },
   { headerName: 'Occupation', objectKey: 'occupation' },
-  { headerName: 'Education Type', objectKey: 'educationTypeName' },
+  { headerName: 'Education Type', objectKey: 'educationType' },
   { headerName: 'Product Experience (Months)', objectKey: 'productExperienceMonths' },
   { headerName: 'Professional Experience (Months)', objectKey: 'professionalExperienceMonths' },
   { headerName: 'Computer Experience (Months)', objectKey: 'computerExperienceMonths' },
-  { headerName: 'Age (Years)', objectKey: 'ageRange' },
+  { headerName: 'Age (Years)', objectKey: 'age' },
   { headerName: 'Gender', objectKey: 'gender' },
   { headerName: 'Assistive Technology Needs', objectKey: 'assistiveTechnologyNeeds' },
 ];
@@ -57,16 +57,21 @@ function ChplSedDownload({ listing }) {
       version: listing.version.version,
     };
     setRows(listing.sed.testTasks
-      .flatMap((task) => task.testParticipants.map((participant) => ({
-        ...base,
-        ...task,
-        criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
-        ...participant,
-      })))
+      .flatMap((task) => task.testParticipants
+        .map((participant) => ({
+          ...base,
+          ...task,
+          criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
+          ...{
+            ...participant,
+            age: participant.age.name,
+            educationType: participant.educationType.name,
+          },
+        })))
       .sort((a, b) => {
         if (a.description !== b.description) { return a.description < b.description ? -1 : 1; }
         if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
-        if (a.educationTypeName !== b.educationTypeName) { return a.educationTypeName < b.educationTypeName ? -1 : 1; }
+        if (a.educationType.name !== b.educationType.name) { return a.educationType.name < b.educationType.name ? -1 : 1; }
         if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }
         if (a.professionalExperienceMonths !== b.professionalExperienceMonths) { return a.professionalExperienceMonths - b.professionalExperienceMonths; }
         if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }
@@ -97,7 +102,7 @@ function ChplSedDownload({ listing }) {
         variant="contained"
         size="small"
         id="download-task-details"
-        endIcon={<ArrowDownwardIcon />}
+        endIcon={<CloudDownloadIcon />}
       >
         Download Task Details
       </Button>
