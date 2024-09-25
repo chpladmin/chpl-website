@@ -5052,7 +5052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.7":
+"axios@npm:^1.6.7, axios@npm:^1.7.7":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:
@@ -6488,6 +6488,7 @@ __metadata:
     angularjs-toaster: "npm:^2.2.0"
     angulartics: "npm:^1.6.0"
     angulartics-google-tag-manager: "npm:^0.0.1"
+    axios: "npm:^1.7.7"
     axios-jwt: "npm:^4.0.3"
     babel-eslint: "npm:^8.2.6"
     babel-jest: "npm:^26.6.3"
