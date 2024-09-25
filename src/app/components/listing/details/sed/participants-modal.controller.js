@@ -34,10 +34,12 @@
         backdrop: 'static',
         keyboard: false,
         resolve: {
-          participant: function () { return {}; },
+          participant: function () { return {
+            cuid: Date.now(),
+          }; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
+      vm.modalInstance.result.then((result) => {
         vm.participants.push(result.participant);
         vm.allParticipants.push(result.participant);
       });
@@ -59,26 +61,26 @@
           participant: function () { return participant; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
+      vm.modalInstance.result.then((result) => {
         var i, participant;
-        participant = result.participant;
+        participant = {...result.participant};
         for (i = 0; i < vm.participants.length; i++) {
-          if (participant.id === vm.participants[i].id) {
-            vm.participants[i] = participant;
+          if ((participant.id && vm.participants[i].id === participant.id) || (participant.cuid && vm.participants[i].cuid === participant.cuid)) {
+            vm.participants[i] = {...participant};
+            vm.participants[i].active = false;
           }
         }
         for (i = 0; i < vm.allParticipants.length; i++) {
-          if (participant.id === vm.allParticipants[i].id) {
-            vm.allParticipants[i] = participant;
+          if ((participant.id && vm.allParticipants[i].id === participant.id) || (participant.cuid && vm.allParticipants[i].cuid === participant.cuid)) {
+            vm.allParticipants[i] = {...participant};
+            vm.allParticipants[i].active = false;
           }
         }
       });
     }
 
     function isAssigned (participant) {
-      return vm.participants.reduce(function (isIn, item) {
-        return isIn || participant.id === item.id;
-      }, false);
+      return vm.participants.some((item) => item.cuid === participant.cuid);
     }
 
     function save () {
@@ -91,7 +93,7 @@
     function toggleParticipant (participant) {
       var adding = true;
       for (var i = 0; i < vm.participants.length; i++) {
-        if (participant.id === vm.participants[i].id) {
+        if ((participant.id && vm.participants[i].id === participant.id) || (participant.cuid && vm.participants[i].cuid === participant.cuid)) {
           vm.participants.splice(i, 1);
           adding = false;
         }
