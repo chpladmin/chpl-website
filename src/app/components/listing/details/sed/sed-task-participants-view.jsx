@@ -34,7 +34,7 @@ function ChplSedTaskParticipantsView(props) {
   const [open, setOpen] = useState(false);
   const participants = props.participants.sort((a, b) => { // eslint-disable-line react/destructuring-assignment
     if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
-    if (a.educationTypeName !== b.educationTypeName) { return a.educationTypeName < b.educationTypeName ? -1 : 1; }
+    if (a.educationType.name !== b.educationType.name) { return a.educationType.name < b.educationType.name ? -1 : 1; }
     if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }
     if (a.professionalExperienceMonths !== b.professionalExperienceMonths) { return a.professionalExperienceMonths - b.professionalExperienceMonths; }
     if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }
@@ -109,13 +109,13 @@ function ChplSedTaskParticipantsView(props) {
                 </TableHead>
                 <TableBody>
                   { participants.map((participant) => (
-                    <TableRow key={participant.id}>
+                    <TableRow key={participant.friendlyId ?? participant.id}>
                       <TableCell size="small">{ participant.occupation }</TableCell>
-                      <TableCell size="small">{ participant.educationTypeName }</TableCell>
+                      <TableCell size="small">{ participant.educationType.name }</TableCell>
                       <TableCell size="small">{ participant.productExperienceMonths }</TableCell>
                       <TableCell size="small">{ participant.professionalExperienceMonths }</TableCell>
                       <TableCell size="small">{ participant.computerExperienceMonths }</TableCell>
-                      <TableCell size="small">{ participant.ageRange }</TableCell>
+                      <TableCell size="small">{ participant.age.name }</TableCell>
                       <TableCell size="small">{ participant.gender }</TableCell>
                       <TableCell size="small">{ participant.assistiveTechnologyNeeds }</TableCell>
                     </TableRow>

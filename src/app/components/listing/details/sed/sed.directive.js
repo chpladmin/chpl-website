@@ -119,6 +119,7 @@
     }
 
     function viewParticipants(task) {
+      task.active = true;
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
         controller: 'ViewSedParticipantsController',
@@ -135,8 +136,9 @@
       });
       vm.modalInstance.result.then((result) => {
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          if (vm.listing.sed.testTasks[i].id === task.id) {
+          if (vm.listing.sed.testTasks[i].active) {
             vm.listing.sed.testTasks[i].testParticipants = result.participants;
+            vm.listing.sed.testTasks[i].active = false;
           }
         }
         vm.allParticipants = result.allParticipants;
@@ -145,6 +147,7 @@
     }
 
     function viewTask(task) {
+      task.active = true;
       vm.modalInstance = $uibModal.open({
         templateUrl: 'chpl.components/listing/details/sed/task-modal.html',
         controller: 'ViewSedTaskController',
@@ -162,12 +165,13 @@
       });
       vm.modalInstance.result.then((result) => {
         for (let i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          if (vm.listing.sed.testTasks[i].id === task.id) {
+          if (vm.listing.sed.testTasks[i].active) {
             if (result.deleted) {
               vm.listing.sed.testTasks.splice(i, 1);
               vm.taskCount = vm.listing.sed.testTasks.length;
             } else {
               vm.listing.sed.testTasks[i] = result.task;
+              vm.listing.sed.testTasks[i].active = false;
             }
           }
         }
@@ -189,8 +193,12 @@
                 || !vm.listing.sed) {
         $timeout(_analyzeSed, 500);
       } else {
-        let csvRow; let i; let j; let object; let participant; let
-          task;
+        let csvRow;
+        let i;
+        let j;
+        let object;
+        let participant;
+        let task;
         const TASK_START = 5;
         const PART_START = TASK_START + 14;
         const ROW_BASE = [
@@ -219,10 +227,8 @@
         csvRow = angular.copy(ROW_BASE);
 
         for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
-          task = vm.listing.sed.testTasks[i];
-          if (!task.id) {
-            task.id = i * -1 - 1;
-          }
+          task = {...vm.listing.sed.testTasks[i]};
+          task.cuid = task.id ?? Math.random();
           task.criteria = $filter('orderBy')(task.criteria.filter((cert) => vm.sedCriteria.map((cert) => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
           csvRow[4] = task.criteria.map((item) => (item.removed ? 'Removed | ' : '') + item.number).join(';');
@@ -242,21 +248,18 @@
           csvRow[TASK_START + 13] = task.taskPathDeviationOptimal;
           for (j = 0; j < task.testParticipants.length; j++) {
             participant = task.testParticipants[j];
-            if (!participant.id) {
-              participant.id = participant.uniqueId;
+            participant.cuid = participant.id ?? participant.friendlyId;
+            if (angular.isUndefined(object.participants[participant.cuid])) {
+              object.participants[participant.cuid] = participant;
+              object.participants[participant.cuid].tasks = [];
             }
-
-            if (angular.isUndefined(object.participants[participant.id])) {
-              object.participants[participant.id] = participant;
-              object.participants[participant.id].tasks = [];
-            }
-            object.participants[participant.id].tasks.push(task.id);
+            object.participants[participant.cuid].tasks.push(task.cuid);
             csvRow[PART_START + 0] = participant.occupation;
-            csvRow[PART_START + 1] = participant.educationTypeName;
+            csvRow[PART_START + 1] = participant.educationType.name;
             csvRow[PART_START + 2] = participant.productExperienceMonths;
             csvRow[PART_START + 3] = participant.professionalExperienceMonths;
             csvRow[PART_START + 4] = participant.computerExperienceMonths;
-            csvRow[PART_START + 5] = participant.ageRange;
+            csvRow[PART_START + 5] = participant.age.name;
             csvRow[PART_START + 6] = participant.gender;
             csvRow[PART_START + 7] = participant.assistiveTechnologyNeeds;
 
@@ -270,19 +273,12 @@
         vm.allParticipants = [];
         angular.forEach(object.participants, (participant) => {
           const val = angular.copy(participant);
-          if (val.uniqueId) {
-            val.id = vm.allParticipants.length * -1 - 1;
-            partMap[val.uniqueId] = val.id;
-          }
           vm.allParticipants.push(val);
         });
         for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
           task = vm.listing.sed.testTasks[i];
           for (j = 0; j < task.testParticipants.length; j++) {
             participant = task.testParticipants[j];
-            if (participant.uniqueId) {
-              participant.id = partMap[participant.uniqueId];
-            }
           }
         }
 
