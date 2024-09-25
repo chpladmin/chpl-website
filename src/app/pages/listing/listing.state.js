@@ -1,7 +1,17 @@
 const states = [{
   name: 'listing',
   url: '/listing/{id}',
-  component: 'chplListing',
+  component: 'chplListingPageBridge',
+  params: {
+    id: { squash: true, value: null },
+  },
+  resolve: {
+    id: ($transition$) => {
+      'ngInject';
+
+      return $transition$.params().id;
+    },
+  },
   data: { title: 'CHPL Listing Details' },
 }, {
   name: 'listing.edit',
