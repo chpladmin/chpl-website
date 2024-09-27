@@ -510,9 +510,9 @@ function ChplListingEditUploadPage({ id }) {
             </Box>
             <Box>
             { diff.length === 0 ? (
-                <Box className={classes.placeholderContainer}>
-                  <Typography>Waiting for upload to show results...</Typography>
-                </Box>
+              <Box className={classes.placeholderContainer}>
+                <Typography>Waiting for upload to show results...</Typography>
+              </Box>
             ) : (
               <Fade style={{ transitionDelay: newListing ? '1.5s' : '0ms' }} in={!!diff.length > 0}>
                 <Box className={classes.differenceCallout}>
