@@ -70,8 +70,8 @@ const useStyles = makeStyles({
     maxHeight: '65vh',
     overflowWrap: 'break-word',
     '&::-webkit-scrollbar': {
-        width: '2px', // Width of the scrollbar
-      },
+      width: '2px', // Width of the scrollbar
+    },
     '&::-webkit-scrollbar-track': {
       background: '#f1f1f1', // Background of the scrollbar track
       borderRadius: '8px', // Optional: matching border radius
@@ -508,7 +508,6 @@ function ChplListingEditUploadPage({ id }) {
             <Box className={classes.headerContainer}>
               <Typography gutterBottom component="h3" style={{ fontWeight: '600' }} variant="h4">Difference(s)</Typography>
             </Box>
-            <Box>
             { diff.length === 0 ? (
               <Box className={classes.placeholderContainer}>
                 <Typography>Waiting for upload to show results...</Typography>
@@ -524,7 +523,6 @@ function ChplListingEditUploadPage({ id }) {
                 </Box>
               </Fade>
             )}
-            </Box>
           </Box>
         </div>
       </Container>
