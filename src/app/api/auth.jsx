@@ -8,6 +8,12 @@ const usePostChangePassword = () => {
     .then((response) => response.data));
 };
 
+const usePostCognitoChangePassword = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('cognito/users/password', data)
+    .then((response) => response.data));
+};
+
 const usePostCognitoLogin = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -68,6 +74,7 @@ const usePostSetForgottenPassword = () => {
 
 export {
   usePostChangePassword,
+  usePostCognitoChangePassword,
   usePostCognitoLogin,
   usePostCognitoLogout,
   usePostEmailResetPassword,

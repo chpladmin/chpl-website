@@ -63,6 +63,14 @@ const states = [
       title: 'CHPL Style Guide',
       roles: ['chpl-admin'],
     },
+  }, {
+    name: 'dashboard',
+    url: '/dashboard',
+    component: 'chplDashboardWrapperBridge',
+    data: {
+      title: 'Dashboard',
+      roles: ['chpl-admin'],
+    },
   },
 ];
 

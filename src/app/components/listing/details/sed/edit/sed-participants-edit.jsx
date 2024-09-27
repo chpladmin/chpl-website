@@ -170,7 +170,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
             <TableBody>
               {allParticipants
                 .map((participant) => (
-                  <TableRow key={participant.id ?? participant.uniqueId}>
+                  <TableRow key={participant.friendlyId}>
                     <TableCell>{ participant.occupation }</TableCell>
                     <TableCell style={{ minWidth: 150 }}>{ participant.educationType.name }</TableCell>
                     <TableCell>{ participant.productExperienceMonths }</TableCell>
@@ -180,7 +180,7 @@ function ChplSedParticipantsEdit({ task: initialTask }) {
                     <TableCell>{ participant.gender }</TableCell>
                     <TableCell>{ participant.assistiveTechnologyNeeds }</TableCell>
                     <TableCell>
-                      { task.testParticipants.some((p) => ((p.id ?? p.uniqueId) === (participant.id ?? participant.uniqueId)))
+                      { task.testParticipants.some((p) => (p.friendlyId === participant.friendlyId))
                         ? (
                           <IconButton
                             onClick={() => remove(participant)}

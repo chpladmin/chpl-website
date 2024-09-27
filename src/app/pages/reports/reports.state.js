@@ -16,6 +16,14 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
+  name: 'reports.activity',
+  url: '/activity',
+  component: 'chplActivityWrapperBridge',
+  data: {
+    title: 'CHPL Activity',
+    roles: ['chpl-admin', 'chpl-onc'],
+  },
+}, {
   name: 'reports.announcements',
   url: '/announcements',
   component: 'chplReportsAnnouncements',
