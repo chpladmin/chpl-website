@@ -87,7 +87,7 @@ function ChplSignin({ dispatch }) {
             },
           });
         } else if (error?.response?.status === 471) {
-          const body = 'Due to unforeseen circumstances, you need to change your password. Please use the Forgot Password functionality to change your password.';
+          const body = 'For security reasons, all users are being asked to reset their password. Please use the Forgot Password functionality to complete this process.';
           enqueueSnackbar(body, { variant: 'error' });
           dispatch({ 
             action: 'forgotPassword',
