@@ -67,6 +67,15 @@ const useStyles = makeStyles({
     borderRadius: '8px',
     padding: '16px 8px',
   },
+  headerContainer: {
+    position: 'sticky',
+    top: '116px',
+    display: 'flex',
+    gap: '32px',
+    flexDirection: 'column',
+    width: '30%',
+    backgroundColor: palette.white,
+  },
   pageHeader: {
     padding: '32px 0',
     backgroundColor: palette.white,
@@ -198,8 +207,7 @@ function ChplListingEditUploadPage({ id }) {
         </div>
         <div className={classes.pageContainer}>
           <div className={classes.container}>
-
-            <div>
+            <div className={classes.headerContainer}>
               <Typography
                 gutterBottom
                 component="h3"
@@ -209,7 +217,7 @@ function ChplListingEditUploadPage({ id }) {
                 Current Listing
               </Typography>
             </div>
-            <div>
+            <div className={classes.headerContainer}>
               <Typography
                 gutterBottom
                 component="h3"
