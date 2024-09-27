@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
   differenceContainer: {
     position: 'sticky',
-    top: '116px',
+    top: '100px',
     display: 'flex',
     gap: '32px',
     flexDirection: 'column',
@@ -66,15 +66,37 @@ const useStyles = makeStyles({
     border: `.5px solid ${palette.primary}`,
     borderRadius: '8px',
     padding: '16px 8px',
+    overflowY: 'auto',
+    maxHeight: '65vh',
+    overflowWrap: 'break-word',
+    '&::-webkit-scrollbar': {
+        width: '2px', // Width of the scrollbar
+      },
+    '&::-webkit-scrollbar-track': {
+      background: '#f1f1f1', // Background of the scrollbar track
+      borderRadius: '8px', // Optional: matching border radius
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: theme.palette.primary.main, // Color of the scrollbar thumb
+      borderRadius: '8px', // Optional: matching border radius
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: theme.palette.primary.dark, // Color on hover
+    },
   },
   headerContainer: {
     position: 'sticky',
-    top: '116px',
+    top: '100px',
     display: 'flex',
     gap: '32px',
     flexDirection: 'column',
-    width: '30%',
+    width: '100%',
+    border: `.5px solid ${palette.divider}`,
+    borderRadius: '8px',
+    zIndex: '800',
+    padding: '16px',
     backgroundColor: palette.white,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
   },
   pageHeader: {
     padding: '32px 0',
@@ -483,7 +505,10 @@ function ChplListingEditUploadPage({ id }) {
             </div>
           </div>
           <Box className={classes.differenceContainer}>
-            <Typography gutterBottom component="h3" style={{ fontWeight: '600' }} variant="h4">Difference(s)</Typography>
+            <Box className={classes.headerContainer}>
+              <Typography gutterBottom component="h3" style={{ fontWeight: '600' }} variant="h4">Difference(s)</Typography>
+            </Box>
+            <Box>
             { diff.length === 0 ? (
               <Box className={classes.placeholderContainer}>
                 <Typography>Waiting for upload to show results...</Typography>
@@ -499,6 +524,7 @@ function ChplListingEditUploadPage({ id }) {
                 </Box>
               </Fade>
             )}
+            </Box>
           </Box>
         </div>
       </Container>
