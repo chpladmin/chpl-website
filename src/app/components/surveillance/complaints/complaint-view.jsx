@@ -104,6 +104,12 @@ function ChplComplaintView(props) {
               {complaint.oncComplaintId}
             </Typography>
             <Typography variant="subtitle2">
+              Complaint Types:
+            </Typography>
+            <Typography>
+              {complaint.complaintTypes?.map((t) => t.name).join(', ')}
+            </Typography>
+            <Typography variant="subtitle2">
               Complainant Type:
             </Typography>
             <Typography>

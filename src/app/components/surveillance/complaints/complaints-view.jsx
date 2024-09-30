@@ -373,7 +373,7 @@ function ChplComplaintsView(props) {
                                 <TableCell>
                                   { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
                                 </TableCell>
-                                <TableCell>{complaint.complaintType?.map((t) => t.name).join(', ')}</TableCell>
+                                <TableCell>{complaint.complaintTypes?.map((t) => t.name).join(', ')}</TableCell>
                                 <TableCell>{complaint.complainantType.name}</TableCell>
                                 <TableCell align="right">
                                   <Button

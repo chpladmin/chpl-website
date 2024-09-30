@@ -75,12 +75,12 @@ const validationSchema = yup.object({
     .test('conditionallyRequiredComplainant',
       'Complainant Type - Other Description is required',
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
-  complaintType: yup.array()
-    .required('Complaint Type is required'),
-  complaintTypeOther: yup.string()
+  complaintTypes: yup.array()
+    .required('Complaint Types is required'),
+  complaintTypesOther: yup.string()
     .test('conditionallyRequiredComplaint',
-      'Complaint Type - Other Description is required',
-      (value, context) => (!!value || context.parent.complaintType?.some((t) => t.name === 'Other'))),
+      'Complaint Types - Other Description is required',
+      (value, context) => (!!value && context.parent.complaintTypes?.some((t) => t.name === 'Other'))),
   summary: yup.string()
     .required('Complaint Summary is required'),
   actions: yup.string()
@@ -149,7 +149,7 @@ function ChplComplaintEdit(props) {
   useEffect(() => {
     if (complaintTypesIsLoading || !complaintTypesIsSuccess) { return; }
     setComplaintTypes(complaintTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('complaintType', complaintTypesData.data.find((type) => type.id === initialComplaint?.complaintType?.id) || '');
+    formik.setFieldValue('complaintTypes', complaintTypesData.data.filter((type) => initialComplaint?.complaintTypes?.some((t) => t.id === type.id)) || []);
   }, [complaintTypesData, complaintTypesIsLoading, complaintTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
@@ -285,6 +285,7 @@ function ChplComplaintEdit(props) {
   };
 
   const handleDispatch = (action) => {
+    console.log({action});
     switch (action) {
       case 'cancel':
         if (complaint.id) {
@@ -307,13 +308,13 @@ function ChplComplaintEdit(props) {
     setCriterionParagraph(event.target.value);
   };
 
-  const isComplaintTypeOtherRequired = () => {
-    return true; //TODO
-    //formik.values.complaintType.some((t) => t.name === 'Other')
+  const isComplaintTypesOtherRequired = () => {
+    return formik.values.complaintTypes.some((t) => t.name === 'Other')
   };
 
   const save = () => {
     const mutate = complaint.id ? put : post;
+    console.log('saving');
     mutate({
       ...complaint,
       certificationBody: formik.values.certificationBody,
@@ -323,8 +324,8 @@ function ChplComplaintEdit(props) {
       oncComplaintId: formik.values.oncComplaintId,
       complainantType: formik.values.complainantType,
       complainantTypeOther: formik.values.complainantTypeOther,
-      complaintType: formik.values.complaintType,
-      complaintTypeOther: formik.values.complaintTypeOther,
+      complaintTypes: formik.values.complaintTypes,
+      complaintTypesOther: formik.values.complaintTypesOther,
       summary: formik.values.summary,
       actions: formik.values.actions,
       complainantContacted: formik.values.complainantContacted,
@@ -354,8 +355,8 @@ function ChplComplaintEdit(props) {
       oncComplaintId: initialComplaint.oncComplaintId || '',
       complainantType: '',
       complainantTypeOther: initialComplaint.complainantTypeOther || '',
-      complaintType: '',
-      complaintTypeOther: initialComplaint.complaintTypeOther || '',
+      complaintTypes: [],
+      complaintTypeOther: initialComplaint.complaintTypesOther || '',
       summary: initialComplaint.summary || '',
       actions: initialComplaint.actions || '',
       complainantContacted: !!initialComplaint.complainantContacted,
@@ -458,36 +459,34 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
-              <ChplTextField
-                select
+              <Select
                 multiple
-                id="complaint-type"
-                name="complaintType"
-                label="Complaint Type"
+                id="complaint-types"
+                name="complaintTypes"
+                label="Complaint Types"
                 required
-                value={formik.values.complaintType}
+                value={formik.values.complaintTypes}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.complaintType && !!formik.errors.complaintType}
-                helperText={formik.touched.complaintType && formik.errors.complaintType}
+                error={formik.touched.complaintTypes && !!formik.errors.complaintTypes}
               >
                 { complaintTypes.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
-              </ChplTextField>
-              { isComplaintTypeOtherRequired()
+              </Select>
+              { isComplaintTypesOtherRequired()
                 && (
                   <ChplTextField
-                    id="complaint-type-other"
-                    name="complaintTypeOther"
-                    label="Complaint Type - Other Description"
+                    id="complaint-types-other"
+                    name="complaintTypesOther"
+                    label="Complaint Types - Other Description"
                     required
                     multiline
-                    value={formik.values.complaintTypeOther}
+                    value={formik.values.complaintTypesOther}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.complaintTypeOther && !!formik.errors.complaintTypeOther}
-                    helperText={formik.touched.complaintTypeOther && formik.errors.complaintTypeOther}
+                    error={formik.touched.complaintTypesOther && !!formik.errors.complaintTypesOther}
+                    helperText={formik.touched.complaintTypesOther && formik.errors.complaintTypesOther}
                   />
                 )}
               <ChplTextField
@@ -506,7 +505,7 @@ function ChplComplaintEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-              { (formik.values.complainantType?.name === 'Other' || true)
+              { formik.values.complainantType?.name === 'Other'
                 && (
                   <ChplTextField
                     id="complainant-type-other"
