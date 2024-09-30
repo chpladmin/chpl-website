@@ -20,7 +20,7 @@ import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
-import { useFetchComplainantTypes } from 'api/data';
+import { useFetchComplaintTypes, useFetchComplainantTypes } from 'api/data';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTextField } from 'components/util';
@@ -96,6 +96,7 @@ function ChplComplaintEdit(props) {
   const { complaint: initialComplaint, dispatch } = props;
   const [certificationBodies, setCertificationBodies] = useState([]);
   const [complainantTypes, setComplainantTypes] = useState([]);
+  const [complaintTypes, setComplaintTypes] = useState([]);
   const [complaint, setComplaint] = useState({});
   const [criteria, setCriteria] = useState([]);
   const [criterionParagraph, setCriterionParagraph] = useState('170.315');
@@ -112,6 +113,7 @@ function ChplComplaintEdit(props) {
   const { mutate: remove } = useDeleteComplaint();
   const { data: certificationBodiesData, isLoading: certificationBodiesIsLoading, isSuccess: certificationBodiesIsSuccess } = useFetchAcbs(true);
   const { data: complainantTypesData, isLoading: complainantTypesIsLoading, isSuccess: complainantTypesIsSuccess } = useFetchComplainantTypes();
+  const { data: complaintTypesData, isLoading: complaintTypesIsLoading, isSuccess: complaintTypesIsSuccess } = useFetchComplaintTypes();
   const { data: criteriaData, isLoading: criteriaIsLoading, isSuccess: criteriaIsSuccess } = useFetchCriteria();
   const { data: listingsData, isLoading: listingsIsLoading, isSuccess: listingsIsSuccess } = useFetchListings({
     orderBy: 'chpl_id',
@@ -143,6 +145,12 @@ function ChplComplaintEdit(props) {
     setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
     formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
   }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
+
+  useEffect(() => {
+    if (complaintTypesIsLoading || !complaintTypesIsSuccess) { return; }
+    setComplaintTypes(complaintTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    formik.setFieldValue('complaintType', complaintTypesData.data.find((type) => type.id === initialComplaint?.complaintType?.id) || '');
+  }, [complaintTypesData, complaintTypesIsLoading, complaintTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
@@ -358,7 +366,7 @@ function ChplComplaintEdit(props) {
     validateOnMount: true,
   });
 
-  if (certificationBodiesIsLoading || complainantTypesIsLoading) {
+  if (certificationBodiesIsLoading || complainantTypesIsLoading || complaintTypesIsLoading) {
     return (
       <CircularProgress />
     );
@@ -457,8 +465,8 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.complaintType && !!formik.errors.complaintType}
                 helperText={formik.touched.complaintType && formik.errors.complaintType}
               >
-                {['Criteria', 'Condition', 'Not Related to Certification Program Requirements', 'Other'].map((item) => (
-                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                { complaintTypes.map((item) => (
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
               { formik.values.complaintType === 'Other'
