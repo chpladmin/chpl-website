@@ -69,18 +69,18 @@ const validationSchema = yup.object({
     .max(new Date(), 'Closed Date must not be in the future'),
   acbComplaintId: yup.string()
     .required('ONC-ACB Complaint ID is required'),
-  complaintType: yup.string()
-    .required('Complaint Type is required'),
-  complaintTypeOther: yup.string()
-    .test('conditionallyRequiredComplaint',
-      'Complaint Type - Other Description is required',
-      (value, context) => (!!value || context.parent.complaintType !== 'Other')),
   complainantType: yup.object()
     .required('Complainant Type is required'),
   complainantTypeOther: yup.string()
     .test('conditionallyRequiredComplainant',
       'Complainant Type - Other Description is required',
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
+  complaintType: yup.array()
+    .required('Complaint Type is required'),
+  complaintTypeOther: yup.string()
+    .test('conditionallyRequiredComplaint',
+      'Complaint Type - Other Description is required',
+      (value, context) => (!!value || context.parent.complaintType?.some((t) => t.name === 'Other'))),
   summary: yup.string()
     .required('Complaint Summary is required'),
   actions: yup.string()
@@ -307,6 +307,11 @@ function ChplComplaintEdit(props) {
     setCriterionParagraph(event.target.value);
   };
 
+  const isComplaintTypeOtherRequired = () => {
+    return true; //TODO
+    //formik.values.complaintType.some((t) => t.name === 'Other')
+  };
+
   const save = () => {
     const mutate = complaint.id ? put : post;
     mutate({
@@ -316,10 +321,10 @@ function ChplComplaintEdit(props) {
       closedDate: formik.values.closedDate,
       acbComplaintId: formik.values.acbComplaintId,
       oncComplaintId: formik.values.oncComplaintId,
-      complaintType: formik.values.complaintType,
-      complaintTypeOther: formik.values.complaintTypeOther,
       complainantType: formik.values.complainantType,
       complainantTypeOther: formik.values.complainantTypeOther,
+      complaintType: formik.values.complaintType,
+      complaintTypeOther: formik.values.complaintTypeOther,
       summary: formik.values.summary,
       actions: formik.values.actions,
       complainantContacted: formik.values.complainantContacted,
@@ -347,10 +352,10 @@ function ChplComplaintEdit(props) {
       closedDate: initialComplaint.closedDate || '',
       acbComplaintId: initialComplaint.acbComplaintId || '',
       oncComplaintId: initialComplaint.oncComplaintId || '',
-      complaintType: '',
-      complaintTypeOther: initialComplaint.complaintTypeOther || '',
       complainantType: '',
       complainantTypeOther: initialComplaint.complainantTypeOther || '',
+      complaintType: '',
+      complaintTypeOther: initialComplaint.complaintTypeOther || '',
       summary: initialComplaint.summary || '',
       actions: initialComplaint.actions || '',
       complainantContacted: !!initialComplaint.complainantContacted,
@@ -455,6 +460,7 @@ function ChplComplaintEdit(props) {
               />
               <ChplTextField
                 select
+                multiple
                 id="complaint-type"
                 name="complaintType"
                 label="Complaint Type"
@@ -469,7 +475,7 @@ function ChplComplaintEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-              { formik.values.complaintType === 'Other'
+              { isComplaintTypeOtherRequired()
                 && (
                   <ChplTextField
                     id="complaint-type-other"
@@ -500,7 +506,7 @@ function ChplComplaintEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-              { formik.values.complainantType?.name === 'Other'
+              { (formik.values.complainantType?.name === 'Other' || true)
                 && (
                   <ChplTextField
                     id="complainant-type-other"
