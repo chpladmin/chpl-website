@@ -55,7 +55,7 @@ function ChplSedEdit() {
                 .sort(sortTestTasks)
                 .map((task) => (
                   <ChplSedTaskEdit
-                    key={task.id ?? task.uniqueId}
+                    key={task.friendlyId}
                     task={task}
                   />
                 ))}

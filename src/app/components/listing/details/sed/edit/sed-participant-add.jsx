@@ -36,6 +36,9 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
+  friendlyId: yup.string()
+    .max(20, 'Field is too long')
+    .required('Field is required'),
   occupation: yup.string()
     .max(250, 'Field is too long')
     .required('Field is required'),
@@ -90,6 +93,7 @@ function ChplSedParticipantAdd({ dispatch }) {
   }, [educationQuery.data, educationQuery.isLoading, educationQuery.isSuccess]);
 
   const close = () => {
+    formik.setFieldValue('friendlyId', '');
     formik.setFieldValue('occupation', '');
     formik.setFieldValue('educationType', '');
     formik.setFieldValue('productExperienceMonths', '');
@@ -103,7 +107,7 @@ function ChplSedParticipantAdd({ dispatch }) {
 
   const add = () => {
     const participant = {
-      uniqueId: Date.now(),
+      friendlyId: formik.values.friendlyId,
       occupation: formik.values.occupation,
       educationType: formik.values.educationType,
       productExperienceMonths: formik.values.productExperienceMonths,
@@ -116,7 +120,8 @@ function ChplSedParticipantAdd({ dispatch }) {
     dispatch({ action: 'add', payload: participant });
   };
 
-  const isEnabled = () => !!formik.values.occupation
+  const isEnabled = () => !!formik.values.friendlyId
+        && !!formik.values.occupation
         && !!formik.values.educationType
         && formik.values.productExperienceMonths !== ''
         && formik.values.professionalExperienceMonths !== ''
@@ -127,6 +132,7 @@ function ChplSedParticipantAdd({ dispatch }) {
 
   formik = useFormik({
     initialValues: {
+      friendlyId: '',
       occupation: '',
       educationType: '',
       productExperienceMonths: '',
@@ -143,6 +149,17 @@ function ChplSedParticipantAdd({ dispatch }) {
     <>
       <Typography gutterBottom variant="subtitle1">Adding Test Participant</Typography>
       <Box className={classes.participantData}>
+        <ChplTextField
+          id="friendly-id"
+          name="friendlyId"
+          label="Participant ID"
+          required
+          value={formik.values.friendlyId}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.friendlyId && !!formik.errors.friendlyId}
+          helperText={formik.touched.friendlyId && formik.errors.friendlyId}
+        />
         <ChplTextField
           id="occupation"
           name="occupation"

@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "13.24.0",
+  "version": "13.25.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -44,7 +44,7 @@
     "angularjs-toaster": "^2.2.0",
     "angulartics": "^1.6.0",
     "angulartics-google-tag-manager": "^0.0.1",
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "axios-jwt": "^4.0.3",
     "bootstrap-sass": "3.4.3",
     "cytoscape": "^3.24.0",
