@@ -69,10 +69,16 @@ const validationSchema = yup.object({
     .max(new Date(), 'Closed Date must not be in the future'),
   acbComplaintId: yup.string()
     .required('ONC-ACB Complaint ID is required'),
+  complaintType: yup.string()
+    .required('Complaint Type is required'),
+  complaintTypeOther: yup.string()
+    .test('conditionallyRequiredComplaint',
+      'Complaint Type - Other Description is required',
+      (value, context) => (!!value || context.parent.complaintType !== 'Other')),
   complainantType: yup.object()
     .required('Complainant Type is required'),
   complainantTypeOther: yup.string()
-    .test('conditionallyRequired',
+    .test('conditionallyRequiredComplainant',
       'Complainant Type - Other Description is required',
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
   summary: yup.string()
@@ -302,6 +308,8 @@ function ChplComplaintEdit(props) {
       closedDate: formik.values.closedDate,
       acbComplaintId: formik.values.acbComplaintId,
       oncComplaintId: formik.values.oncComplaintId,
+      complaintType: formik.values.complaintType,
+      complaintTypeOther: formik.values.complaintTypeOther,
       complainantType: formik.values.complainantType,
       complainantTypeOther: formik.values.complainantTypeOther,
       summary: formik.values.summary,
@@ -331,6 +339,8 @@ function ChplComplaintEdit(props) {
       closedDate: initialComplaint.closedDate || '',
       acbComplaintId: initialComplaint.acbComplaintId || '',
       oncComplaintId: initialComplaint.oncComplaintId || '',
+      complaintType: '',
+      complaintTypeOther: initialComplaint.complaintTypeOther || '',
       complainantType: '',
       complainantTypeOther: initialComplaint.complainantTypeOther || '',
       summary: initialComplaint.summary || '',
@@ -435,6 +445,37 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
+              <ChplTextField
+                select
+                id="complaint-type"
+                name="complaintType"
+                label="Complaint Type"
+                required
+                value={formik.values.complaintType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.complaintType && !!formik.errors.complaintType}
+                helperText={formik.touched.complaintType && formik.errors.complaintType}
+              >
+                {['Criteria', 'Condition', 'Not Related to Certification Program Requirements', 'Other'].map((item) => (
+                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                ))}
+              </ChplTextField>
+              { formik.values.complaintType === 'Other'
+                && (
+                  <ChplTextField
+                    id="complaint-type-other"
+                    name="complaintTypeOther"
+                    label="Complaint Type - Other Description"
+                    required
+                    multiline
+                    value={formik.values.complaintTypeOther}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.complaintTypeOther && !!formik.errors.complaintTypeOther}
+                    helperText={formik.touched.complaintTypeOther && formik.errors.complaintTypeOther}
+                  />
+                )}
               <ChplTextField
                 select
                 id="complainant-type"

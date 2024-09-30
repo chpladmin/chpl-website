@@ -43,6 +43,16 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
+  key: 'complaintTypes',
+  display: 'Complaint Type',
+  values: [
+    { value: 'Criteria' },
+    { value: 'Condition' },
+    { value: 'Other' },
+    { value: 'Not Related to Certification Program Requirements' },
+  ],
+}, {
+  ...defaultFilter,
   key: 'complainantTypes',
   display: 'Complainant Type',
   values: [

@@ -151,6 +151,7 @@ function ChplComplaintsView(props) {
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
+    { property: 'complaint_type', text: 'Complaint Type', sortable: true },
     { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ] : [
@@ -159,6 +160,7 @@ function ChplComplaintsView(props) {
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
+    { property: 'complaint_type', text: 'Complaint Type', sortable: true },
     { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ];
@@ -371,6 +373,7 @@ function ChplComplaintsView(props) {
                                 <TableCell>
                                   { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
                                 </TableCell>
+                                <TableCell>{complaint.complaintType}</TableCell>
                                 <TableCell>{complaint.complainantType.name}</TableCell>
                                 <TableCell align="right">
                                   <Button
