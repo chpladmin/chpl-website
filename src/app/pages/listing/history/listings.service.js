@@ -54,7 +54,6 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'certificationResults':
     case 'cqmResults.criteria':
-    case 'measures.associatedCriteria':
     case 'testTasks.criteria':
     case 'ucdProcesses.criteria':
       options = {
@@ -94,6 +93,12 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => (p.measure.id < c.measure.id ? -1 : p.measure.id > c.measure.id ? 1 : 0),
         write: (f) => `Measure "${f.measure.removed ? '<span class="removed">Removed | ' : ''}${f.measure.abbreviation}: ${f.measure.requiredTest}${f.measure.removed ? '</span>' : ''}"`,
+      };
+      break;
+    case 'measures.associatedCriteria':
+      options = {
+        sort: (p, c) => (p.id < c.id ? -1 : p.id > c.id ? 1 : 0), // special sort because these can have both cures update and original in the same array
+        write: (f) => f.number,
       };
       break;
     case 'nonconformities':
