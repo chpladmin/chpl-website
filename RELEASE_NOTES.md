@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.25.0
+_30 September 2024_
+
+### Features
+* Create dashboard with Developer Statistics report
+* Enable "change password" workflow for Cognito users
+* Enable "Activity" search for certain users
+* Support "friendlyId" for Test Tasks and Participants
+
+---
+
 ## Version 13.24.0
 _16 September 2024_
 
