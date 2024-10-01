@@ -13,6 +13,7 @@ const VersionsSplitComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
       this.request = {
         newVersionCode: undefined,
         newVersionVersion: undefined,

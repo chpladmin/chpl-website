@@ -21,7 +21,6 @@ import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import {
   AnalyticsContext,
-  FlagContext,
   ListingContext,
   UserContext,
   useAnalyticsContext,
@@ -65,21 +64,12 @@ function ChplListingPage({ id }) {
   const $state = getAngularService('$state');
   const API = getAngularService('API');
   const { analytics } = useAnalyticsContext();
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
-  const {
-    getApiKey,
-    getToken,
-  } = getAngularService('authService');
+  const { getApiKey, getToken } = getAngularService('authService');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [listing, setListing] = useState(undefined);
-  const [uiUpgradeEdit, setUiUpgradeEdit] = useState(false);
   const classes = useStyles();
   let analyticsData;
-
-  useEffect(() => {
-    setUiUpgradeEdit(isOn('ui-upgrade-edit'));
-  }, [isOn]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -135,17 +125,6 @@ function ChplListingPage({ id }) {
       group: analyticsData.analytics.group,
     });
     $state.go('listing.edit');
-  };
-
-  const editFlagged = () => {
-    eventTrack({
-      event: 'Edit',
-      category: analyticsData.analytics.category,
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
-      group: analyticsData.analytics.group,
-    });
-    $state.go('listing.flag-edit');
   };
 
   if (isLoading || !isSuccess || !listing) {

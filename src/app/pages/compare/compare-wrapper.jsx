@@ -1,5 +1,5 @@
 import React from 'react';
-import { arrayOf, number, oneOfType, string } from 'prop-types';
+import { string } from 'prop-types';
 
 import ChplComparePage from './compare';
 
@@ -18,5 +18,5 @@ function ChplCompareWrapper({ ids }) {
 export default ChplCompareWrapper;
 
 ChplCompareWrapper.propTypes = {
-  ids: arrayOf(oneOfType([number, string])).isRequired,
+  ids: string.isRequired,
 };
