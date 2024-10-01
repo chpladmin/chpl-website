@@ -80,7 +80,7 @@ const validationSchema = yup.object({
   complaintTypesOther: yup.string()
     .test('conditionallyRequiredComplaint',
       'Complaint Types - Other Description is required',
-      (value, context) => (!!value && context.parent.complaintTypes?.some((t) => t.name === 'Other'))),
+      (value, context) => (!!value || context.parent.complaintTypes?.every((t) => t.name !== 'Other'))),
   summary: yup.string()
     .required('Complaint Summary is required'),
   actions: yup.string()
@@ -285,7 +285,6 @@ function ChplComplaintEdit(props) {
   };
 
   const handleDispatch = (action) => {
-    console.log({action});
     switch (action) {
       case 'cancel':
         if (complaint.id) {
@@ -308,13 +307,10 @@ function ChplComplaintEdit(props) {
     setCriterionParagraph(event.target.value);
   };
 
-  const isComplaintTypesOtherRequired = () => {
-    return formik.values.complaintTypes.some((t) => t.name === 'Other')
-  };
+  const isComplaintTypesOtherRequired = () => formik.values.complaintTypes.some((t) => t.name === 'Other');
 
   const save = () => {
     const mutate = complaint.id ? put : post;
-    console.log('saving');
     mutate({
       ...complaint,
       certificationBody: formik.values.certificationBody,
@@ -356,7 +352,7 @@ function ChplComplaintEdit(props) {
       complainantType: '',
       complainantTypeOther: initialComplaint.complainantTypeOther || '',
       complaintTypes: [],
-      complaintTypeOther: initialComplaint.complaintTypesOther || '',
+      complaintTypesOther: initialComplaint.complaintTypesOther || '',
       summary: initialComplaint.summary || '',
       actions: initialComplaint.actions || '',
       complainantContacted: !!initialComplaint.complainantContacted,
