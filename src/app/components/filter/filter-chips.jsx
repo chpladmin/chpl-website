@@ -10,7 +10,7 @@ import {
 
 import { useFilterContext } from './filter-context';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -44,7 +44,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplFilterChips() {
-  const $analytics = getAngularService('$analytics');
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
@@ -64,21 +63,37 @@ function ChplFilterChips() {
 
   const removeChip = (f, v) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Remove Chip', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.getValueDisplay(v)}` });
+      eventTrack({
+        event: 'Remove Filter Chip',
+        category: filterContext.analytics.category,
+        label: f.getValueDisplay(v),
+        aggregationName: f.getFilterDisplay(f),
+        group: filterContext.analytics.group,
+      });
     }
     filterContext.dispatch('toggle', f, v);
   };
 
   const toggleOperator = (f) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
+      eventTrack({
+        event: `Set Any/All Filter to ${f.operator === 'and' ? 'Any' : 'All'}`,
+        category: filterContext.analytics.category,
+        label: f.getFilterDisplay(f),
+        group: filterContext.analytics.group,
+      });
     }
     filterContext.dispatch('toggleOperator', f);
   };
 
   const toggleShowAll = (f) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Show All', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.showAll ? 'All' : 'Some'}` });
+      eventTrack({
+        event: `Toggle Show All to ${f.showAll ? 'Some' : 'All'}`,
+        category: filterContext.analytics.category,
+        label: f.getFilterDisplay(f),
+        group: filterContext.analytics.group,
+      });
     }
     filterContext.dispatch('toggleShowAll', f);
   };

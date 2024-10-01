@@ -6,21 +6,20 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 import { eventTrack } from 'services/analytics.service';
-import { CompareContext, UserContext } from 'shared/contexts';
+import { CompareContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 
-function ChplCompareButton(props) {
-  const { listing } = props;
+function ChplCompareButton({ listing }) {
+  const { analytics } = useAnalyticsContext();
   const { addListing, isInWidget, removeListing } = useContext(CompareContext);
-  const { user } = useContext(UserContext);
 
   const handleClick = () => {
     eventTrack({
       event: isInWidget(listing) ? 'Remove Listing from Compare Widget' : 'Add Listing to Compare Widget',
-      category: 'Listing Details',
+      category: analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
+      group: analytics.group,
     });
     if (isInWidget(listing)) {
       removeListing(listing);

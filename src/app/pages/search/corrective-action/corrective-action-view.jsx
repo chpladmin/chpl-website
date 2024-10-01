@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -25,9 +24,10 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -101,10 +101,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCorrectiveActionSearchView(props) {
+function ChplCorrectiveActionSearchView() {
   const storageKey = 'storageKey-correctiveActionView';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'open_surveillance_nc_count');
@@ -135,7 +134,7 @@ function ChplCorrectiveActionSearchView(props) {
       ...listing,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -144,7 +143,12 @@ function ChplCorrectiveActionSearchView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -173,7 +177,18 @@ function ChplCorrectiveActionSearchView(props) {
               <Typography variant="body1">
                 Surveillance and Direct Review information can be downloaded from the
                 {' '}
-                <a href="#/resources/download">Download the CHPL page</a>
+                <ChplLink
+                  href="#/resources/download"
+                  text="Download the CHPL"
+                  analytics={{
+                    event: 'Navigate to Download the CHPL',
+                    category: analytics.category,
+                    group: analytics.group,
+                  }}
+                  external={false}
+                  router={{ sref: 'resources.download' }}
+                  inline
+                />
               </Typography>
             </>
           )}
@@ -241,7 +256,13 @@ function ChplCorrectiveActionSearchView(props) {
                                         <ChplLink
                                           href={`#/listing/${item.id}`}
                                           text={item.chplProductNumber}
-                                          analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                          analytics={{
+                                            event: 'Navigate to Listing Details Page',
+                                            category: analytics.category,
+                                            label: item.chplProductNumber,
+                                            aggregationName: item.product.name,
+                                            group: analytics.group,
+                                          }}
                                           external={false}
                                           router={{ sref: 'listing', options: { id: item.id } }}
                                         />
@@ -251,7 +272,12 @@ function ChplCorrectiveActionSearchView(props) {
                                       <ChplLink
                                         href={`#/organizations/developers/${item.developer.id}`}
                                         text={item.developer.name}
-                                        analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                        analytics={{
+                                          event: 'Navigate to Developer Page',
+                                          category: analytics.category,
+                                          label: item.developer.name,
+                                          group: analytics.group,
+                                        }}
                                         external={false}
                                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                       />
@@ -293,7 +319,4 @@ function ChplCorrectiveActionSearchView(props) {
 export default ChplCorrectiveActionSearchView;
 
 ChplCorrectiveActionSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

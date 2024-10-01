@@ -4,14 +4,14 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { arrayOf, shape, string } from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
 import { getDefaultValueEntry, getDateEntry, getDateTimeEntry } from './filters/value-entries';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { filter as filterPropType } from 'shared/prop-types';
+import { filter as filterPropType, analyticsConfig } from 'shared/prop-types';
 
 const FilterContext = createContext();
 
@@ -165,7 +165,6 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
 };
 
 function FilterProvider(props) {
-  const $analytics = getAngularService('$analytics');
   const {
     analytics, storageKey,
   } = props;
@@ -217,7 +216,12 @@ function FilterProvider(props) {
     switch (action) {
       case 'clearFilter':
         if (analytics) {
-          $analytics.eventTrack('Clear Filter', { category: analytics.category, label: category.display });
+          eventTrack({
+            event: 'Clear Filter',
+            category: analytics.category,
+            label: category.display,
+            group: analytics.group,
+          });
         }
         clearFilter(filters.find((f) => f.key === category.key), category, setFilters);
         break;
@@ -226,13 +230,22 @@ function FilterProvider(props) {
         break;
       case 'resetFilter':
         if (analytics) {
-          $analytics.eventTrack('Reset Filter', { category: analytics.category, label: category.display });
+          eventTrack({
+            event: 'Reset Filter',
+            category: analytics.category,
+            label: category.display,
+            group: analytics.group,
+          });
         }
         resetFilter(filters.find((f) => f.key === category.key), category, setFilters);
         break;
       case 'resetAll':
         if (analytics) {
-          $analytics.eventTrack('Reset All Filters', { category: analytics.category });
+          eventTrack({
+            event: 'Reset All Filters',
+            category: analytics.category,
+            group: analytics.group,
+          });
         }
         setFilters((prev) => prev.map((f) => ({
           ...f,
@@ -314,9 +327,7 @@ function FilterProvider(props) {
 
 FilterProvider.propTypes = {
   filters: arrayOf(filterPropType).isRequired,
-  analytics: shape({
-    category: string.isRequired,
-  }),
+  analytics: analyticsConfig,
   storageKey: string,
 };
 
