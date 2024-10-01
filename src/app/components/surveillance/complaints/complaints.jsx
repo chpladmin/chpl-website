@@ -13,11 +13,7 @@ import {
 import {
   certificationBodies,
 } from 'components/filter/filters';
-import { UserContext } from 'shared/contexts';
-
-const analytics = {
-  category: 'Complaints',
-};
+import { AnalyticsContext, useAnalyticsContext, UserContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -114,6 +110,7 @@ const staticFilters = [{
 
 function ChplComplaints(props) {
   const { bonusQuery: initialBonusQuery, canAdd, disallowedFilters: initialDisallowedFilters } = props;
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole, user } = useContext(UserContext);
   const [bonusQuery, setBonusQuery] = useState('');
   const [disallowedFilters, setDisallowedFilters] = useState([]);
@@ -162,17 +159,26 @@ function ChplComplaints(props) {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
   }, [disallowedFilters]);
 
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Complaints',
+    },
+  };
+
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-complaintsComponent"
-    >
-      <ChplComplaintsView
-        bonusQuery={bonusQuery}
-        canAdd={canAdd}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-complaintsComponent"
+      >
+        <ChplComplaintsView
+          bonusQuery={bonusQuery}
+          canAdd={canAdd}
+        />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

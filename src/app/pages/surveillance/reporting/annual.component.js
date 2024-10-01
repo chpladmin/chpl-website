@@ -14,6 +14,7 @@ export const SurveillanceReportAnnualComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
     }
 
     $onChanges (changes) {
@@ -25,10 +26,6 @@ export const SurveillanceReportAnnualComponent = {
 
     save () {
       this.onSave({report: this.report});
-    }
-
-    can (action) {
-      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'chpl-onc-acb']);
     }
 
     cancel () {

@@ -86,6 +86,15 @@ function ChplSignin({ dispatch }) {
               sessionId: error?.response?.data?.sessionId,
             },
           });
+        } else if (error?.response?.status === 471) {
+          const body = 'For security reasons, all users are being asked to reset their password. Please use the Forgot Password functionality to complete this process.';
+          enqueueSnackbar(body, { variant: 'error' });
+          dispatch({ 
+            action: 'forgotPassword',
+            payload: {
+              userName: formik.values.userName,
+            },
+          });
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });

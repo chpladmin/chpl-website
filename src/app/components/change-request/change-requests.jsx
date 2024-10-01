@@ -10,10 +10,7 @@ import {
   getDateDisplay,
   getDateTimeEntry,
 } from 'components/filter';
-
-const analytics = {
-  category: 'Change Requests',
-};
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -58,6 +55,7 @@ const staticFilters = [{
 
 function ChplChangeRequests(props) {
   const { disallowedFilters, bonusQuery } = props;
+  const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
@@ -87,18 +85,26 @@ function ChplChangeRequests(props) {
       }));
   }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess]);
 
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Change Requests',
+    },
+  };
+
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-changeRequestsComponent"
-    >
-      <ChplChangeRequestsView
-        analytics={analytics}
-        disallowedFilters={disallowedFilters}
-        bonusQuery={bonusQuery}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-changeRequestsComponent"
+      >
+        <ChplChangeRequestsView
+          disallowedFilters={disallowedFilters}
+          bonusQuery={bonusQuery}
+        />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

@@ -36,7 +36,7 @@ const states = [{
 }, {
   name: 'registration.api-key',
   url: '/api-key/{hash}',
-  component: 'chplConfirmApiKeyPage',
+  component: 'chplApiKeyConfirmBridge',
   params: {
     hash: { squash: true, value: null },
   },
