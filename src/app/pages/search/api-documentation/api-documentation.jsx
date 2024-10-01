@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplApiDocumentationSearchView from './api-documentation-view';
 
@@ -11,6 +11,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -19,6 +20,7 @@ const staticFilters = [
 
 function ChplApiDocumentationSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
 
@@ -62,20 +64,23 @@ function ChplApiDocumentationSearchPage() {
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
-  const analytics = {
-    category: 'API Information for 2015 Edition Products',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - API Information',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-apiDocumentationPage"
-    >
-      <ChplApiDocumentationSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-apiDocumentationPage"
+      >
+        <ChplApiDocumentationSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

@@ -11,6 +11,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -29,6 +30,7 @@ const staticFilters = [
 
 function ChplRealWorldTestingSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
 
@@ -71,20 +73,23 @@ function ChplRealWorldTestingSearchPage() {
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Real World Testing',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Real World Testing',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-realWorldTestingPage"
-    >
-      <ChplRealWorldTestingSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-realWorldTestingPage"
+      >
+        <ChplRealWorldTestingSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 
