@@ -8,6 +8,8 @@ import { useSnackbar } from 'notistack';
 import { object, number, string } from 'prop-types';
 
 import { usePostReportRequest } from 'api/change-requests';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -16,6 +18,7 @@ const useStyles = makeStyles({
 
 function ChplChangeRequestsDownload(props) {
   const { bonusQuery, queryParams, recordCount } = props;
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
   const [query, setQuery] = useState({});
@@ -32,6 +35,12 @@ function ChplChangeRequestsDownload(props) {
   }, [bonusQuery, queryParams]);
 
   const download = () => {
+    eventTrack({
+      event: 'DownloadChangeRequests',
+      category: analytics.category,
+      label: recordCount,
+      group: analytics.group,
+    });
     mutate(query, {
       onSuccess: (response) => {
         enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {

@@ -10,7 +10,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import ChplMessaging from './messaging/messaging';
 
@@ -21,9 +20,10 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { ChplLink, ChplPagination, ChplSortableHeaders } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -82,12 +82,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplDevelopersView(props) {
+function ChplDevelopersView() {
   const storageKey = 'storageKey-developersView';
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const { getApiKey, getToken } = getAngularService('authService');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
   const [developers, setDevelopers] = useState([]);
@@ -134,6 +133,12 @@ function ChplDevelopersView(props) {
   ];
 
   const downloadDevelopers = () => {
+    eventTrack({
+      event: 'Download Developers',
+      category: analytics.category,
+      label: recordCount,
+      group: analytics.group,
+    });
     let url = `${API}/developers/search/download?api_key=${getApiKey()}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
       url += `&authorization=Bearer%20${getToken()}`;
@@ -146,7 +151,12 @@ function ChplDevelopersView(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -279,7 +289,12 @@ function ChplDevelopersView(props) {
                                     <ChplLink
                                       href={`#/organizations/developers/${item.id}`}
                                       text={item.name}
-                                      analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
+                                      analytics={{
+                                        event: 'Navigate to Developer Page',
+                                        category: analytics.category,
+                                        label: item.name,
+                                        group: analytics.group,
+                                      }}
                                       external={false}
                                       router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
                                     />
@@ -303,7 +318,6 @@ function ChplDevelopersView(props) {
                       rowsPerPageOptions={[25, 50, 100]}
                       setPage={setPageNumber}
                       setRowsPerPage={setPageSize}
-                      analytics={analytics}
                     />
                   </>
                 )}
@@ -317,7 +331,4 @@ function ChplDevelopersView(props) {
 export default ChplDevelopersView;
 
 ChplDevelopersView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

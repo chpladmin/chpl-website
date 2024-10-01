@@ -9,6 +9,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -17,6 +18,7 @@ const staticFilters = [
 
 function ChplSedSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
 
   useEffect(() => {
@@ -38,20 +40,23 @@ function ChplSedSearchPage() {
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
-  const analytics = {
-    category: 'SED Information for 2015 Edition Products',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - SED Information',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-sedPage"
-    >
-      <ChplSedSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-sedPage"
+      >
+        <ChplSedSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

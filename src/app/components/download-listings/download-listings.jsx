@@ -7,7 +7,7 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, shape, string } from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckIcon from '@material-ui/icons/Check';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -15,11 +15,11 @@ import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchSvaps } from 'api/standards';
 import { ChplTooltip } from 'components/util';
-import { listing as listingPropType } from 'shared/prop-types';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { listing as listingPropType } from 'shared/prop-types';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -95,8 +95,8 @@ const parseSvapCsv = ({ svaps }, data) => {
 };
 
 function ChplDownloadListings(props) {
-  const { analytics, toggled } = props;
-  const $analytics = getAngularService('$analytics');
+  const { toggled } = props;
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [categories, setCategories] = useState(allCategories.map((h) => ({
@@ -144,7 +144,11 @@ function ChplDownloadListings(props) {
 
   const handleClick = (e) => {
     if (analytics) {
-      $analytics.eventTrack('Open Download Filter', { category: analytics.category });
+      eventTrack({
+        event: 'Open Download File Column Selector',
+        category: analytics.category,
+        group: analytics.group,
+      });
     }
     setAnchor(e.currentTarget);
     setOpen(true);
@@ -162,24 +166,25 @@ function ChplDownloadListings(props) {
       headers: allHeaders.filter((h) => activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)),
     });
     if (analytics) {
-      const defaulted = allCategories.filter((cat) => cat.selected || toggled.includes(cat.key));
-      const added = categories.filter((cat) => cat.selected && !defaulted.some((def) => def.key === cat.key));
-      const removed = defaulted.filter((def) => !categories.find((cat) => cat.selected && cat.key === def.key));
-      if (added.length === 0 && removed.length === 0) {
-        $analytics.eventTrack('Download Results With Default Data', { category: analytics.category });
-      } else {
-        added.forEach((cat) => {
-          $analytics.eventTrack('Download Results With Additional Data', { category: analytics.category, label: cat.name });
-        });
-        removed.forEach((cat) => {
-          $analytics.eventTrack('Download Results With Less Data', { category: analytics.category, label: cat.name });
-        });
-      }
+      eventTrack({
+        event: 'Download Results',
+        category: analytics.category,
+        label: listings.length,
+        group: analytics.group,
+      });
     }
     csvExporter.generateCsv(listings);
   };
 
   const toggle = (header) => {
+    if (analytics) {
+      eventTrack({
+        event: `${header.selected ? 'Deselect' : 'Select'} Download File Column`,
+        category: analytics.category,
+        label: header.name,
+        group: analytics.group,
+      });
+    }
     setCategories((previous) => previous.map((p) => ({
       ...p,
       selected: header.key === p.key ? !p.selected : p.selected,
@@ -267,14 +272,10 @@ export default ChplDownloadListings;
 
 ChplDownloadListings.propTypes = {
   listings: arrayOf(listingPropType),
-  analytics: shape({
-    category: string.isRequired,
-  }),
   toggled: arrayOf(string),
 };
 
 ChplDownloadListings.defaultProps = {
   listings: [],
-  analytics: undefined,
   toggled: [],
 };

@@ -19,7 +19,12 @@ import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
-import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
+import {
+  AnalyticsContext,
+  ListingContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -58,20 +63,13 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const $state = getAngularService('$state');
   const API = getAngularService('API');
-  const {
-    getApiKey,
-    getToken,
-  } = getAngularService('authService');
-  const { data, isLoading, isSuccess } = useFetchListing({ id });
-  const { isOn } = useContext(FlagContext);
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole, user } = useContext(UserContext);
+  const { getApiKey, getToken } = getAngularService('authService');
+  const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [listing, setListing] = useState(undefined);
-  const [uiUpgradeEdit, setUiUpgradeEdit] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    setUiUpgradeEdit(isOn('ui-upgrade-edit'));
-  }, [isOn]);
+  let analyticsData;
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -97,10 +95,10 @@ function ChplListingPage({ id }) {
   const downloadOriginalCsv = () => {
     eventTrack({
       event: 'Download Original CSV',
-      category: 'Listing Details',
+      category: analyticsData.analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
+      group: analyticsData.analytics.group,
     });
     const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
@@ -109,10 +107,10 @@ function ChplListingPage({ id }) {
   const downloadCurrentCsv = () => {
     eventTrack({
       event: 'Download Current CSV',
-      category: 'Listing Details',
+      category: analyticsData.analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
+      group: analyticsData.analytics.group,
     });
     const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
@@ -121,23 +119,12 @@ function ChplListingPage({ id }) {
   const edit = () => {
     eventTrack({
       event: 'Edit',
-      category: 'Listing Details',
+      category: analyticsData.analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
+      group: analyticsData.analytics.group,
     });
     $state.go('listing.edit');
-  };
-
-  const editFlagged = () => {
-    eventTrack({
-      event: 'Edit',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
-      group: user?.role,
-    });
-    $state.go('listing.flag-edit');
   };
 
   if (isLoading || !isSuccess || !listing) {
@@ -149,94 +136,103 @@ function ChplListingPage({ id }) {
     setListing,
   };
 
+  analyticsData = {
+    analytics: {
+      ...analytics,
+      category: 'Listing Details',
+    },
+  };
+
   return (
-    <Box bgcolor={palette.background}>
-      <ChplBrowserViewedWidget
-        listing={listing}
-      />
-      <div className={classes.pageHeader}>
-        <Container maxWidth="lg">
-          <Box className={classes.listingHeaderBox}>
-            <Box>
-              <Typography
-                variant="h1"
-              >
-                {listing.product.name}
-              </Typography>
-            </Box>
-            <Box>
-              <ChplActionButton
-                listing={listing}
-                horizontal
-              >
-                { canEdit() && !uiUpgradeEdit
-                  && (
-                    <Button
-                      endIcon={<EditIcon />}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={edit}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                { canEdit() && uiUpgradeEdit
-                  && (
-                    <Button
-                      endIcon={<EditIcon />}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={editFlagged}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                <ChplListingHistory
+    <AnalyticsContext.Provider value={analyticsData}>
+      <Box bgcolor={palette.background}>
+        <ChplBrowserViewedWidget
+          listing={listing}
+        />
+        <div className={classes.pageHeader}>
+          <Container maxWidth="lg">
+            <Box className={classes.listingHeaderBox}>
+              <Box>
+                <Typography
+                  variant="h1"
+                >
+                  {listing.product.name}
+                </Typography>
+              </Box>
+              <Box>
+                <ChplActionButton
                   listing={listing}
-                />
-                { hasAnyRole(['chpl-admin']) && listing.id >= 10912
-                  && (
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      size="small"
-                      id={`download-original-csv-${listing.id}`}
-                      onClick={downloadOriginalCsv}
-                      endIcon={<CloudDownloadIcon />}
-                    >
-                      Original CSV
-                    </Button>
-                  )}
-                { canGetCurrentCsv()
-                  && (
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      size="small"
-                      id={`download-current-csv-${listing.id}`}
-                      onClick={downloadCurrentCsv}
-                      endIcon={<CloudDownloadIcon />}
-                    >
-                      Current CSV
-                    </Button>
-                  )}
-              </ChplActionButton>
+                  horizontal
+                >
+                  { canEdit() && !uiUpgradeEdit
+                    && (
+                      <Button
+                        endIcon={<EditIcon />}
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={edit}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  { canEdit() && uiUpgradeEdit
+                    && (
+                      <Button
+                        endIcon={<EditIcon />}
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={editFlagged}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  <ChplListingHistory
+                    listing={listing}
+                  />
+                  { hasAnyRole(['chpl-admin']) && listing.id >= 10912
+                    && (
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        size="small"
+                        id={`download-original-csv-${listing.id}`}
+                        onClick={downloadOriginalCsv}
+                        endIcon={<CloudDownloadIcon />}
+                      >
+                        Original CSV
+                      </Button>
+                    )}
+                  { canGetCurrentCsv()
+                    && (
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        size="small"
+                        id={`download-current-csv-${listing.id}`}
+                        onClick={downloadCurrentCsv}
+                        endIcon={<CloudDownloadIcon />}
+                      >
+                        Current CSV
+                      </Button>
+                    )}
+                </ChplActionButton>
+              </Box>
             </Box>
-          </Box>
-        </Container>
-      </div>
-      <Container maxWidth="lg">
-        <div className={classes.container} id="main-content" tabIndex="-1">
-          <ListingContext.Provider value={listingState}>
-            <ChplListingView
-              listing={listing}
-            />
-          </ListingContext.Provider>
+          </Container>
         </div>
-      </Container>
-    </Box>
+        <Container maxWidth="lg">
+          <div className={classes.container} id="main-content" tabIndex="-1">
+            <ListingContext.Provider value={listingState}>
+              <ChplListingView
+                listing={listing}
+              />
+            </ListingContext.Provider>
+          </div>
+        </Container>
+      </Box>
+    </AnalyticsContext.Provider>
   );
 }
 

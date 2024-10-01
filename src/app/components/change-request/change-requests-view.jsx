@@ -30,12 +30,14 @@ import {
 } from 'components/filter';
 import {
   ChplAvatar,
+  ChplLink,
   ChplPagination,
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -86,6 +88,7 @@ const useStyles = makeStyles({
 function ChplChangeRequestsView(props) {
   const storageKey = 'storageKey-changeRequestsView';
   const { disallowedFilters, bonusQuery } = props;
+  const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
@@ -177,6 +180,12 @@ function ChplChangeRequestsView(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setOrder(orderDirection);
   };
@@ -184,6 +193,13 @@ function ChplChangeRequestsView(props) {
   const showBreadcrumbs = () => !bonusQuery;
 
   const viewChangeRequest = (cr) => {
+    eventTrack({
+      event: 'View Change Request',
+      category: analytics.category,
+      label: cr.changeRequestType.name,
+      aggregationGroup: cr.developer.name,
+      group: analytics.group,
+    });
     setChangeRequest(cr);
     display('viewall');
     hide('viewall.disabled');
@@ -300,9 +316,18 @@ function ChplChangeRequestsView(props) {
                                                />
                                              </div>
                                              <div className={classes.developerName}>
-                                               <a href={`#/organizations/developers/${item.developer.id}`}>
-                                                 {item.developer.name}
-                                               </a>
+                                               <ChplLink
+                                                 href={`#/organizations/developers/${item.developer.id}`}
+                                                 text={item.developer.name}
+                                                 analytics={{
+                                                   event: 'Navigate to Developer Page',
+                                                   category: analytics.category,
+                                                   label: item.developer.name,
+                                                   group: analytics.group,
+                                                 }}
+                                                 external={false}
+                                                 router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                               />
                                              </div>
                                            </div>
                                          </TableCell>
