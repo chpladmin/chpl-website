@@ -508,21 +508,30 @@ function ChplListingEditUploadPage({ id }) {
             <Box className={classes.headerContainer}>
               <Typography gutterBottom component="h3" style={{ fontWeight: '600' }} variant="h4">Difference(s)</Typography>
             </Box>
-            { diff.length === 0 ? (
-              <Box className={classes.placeholderContainer}>
-                <Typography>Waiting for upload to show results...</Typography>
-              </Box>
-            ) : (
-              <Fade style={{ transitionDelay: newListing ? '1.5s' : '0ms' }} in={!!diff.length > 0}>
-                <Box className={classes.differenceCallout}>
-                  <List className="list-unstyled">
-                    {diff.map((change) => (
-                      <li key={change} dangerouslySetInnerHTML={{ __html: change }} />
-                    ))}
-                  </List>
+            { diff.length === 0 && !newListing
+              && (
+                <Box className={classes.placeholderContainer}>
+                  <Typography>Waiting for upload to show results...</Typography>
                 </Box>
-              </Fade>
-            )}
+              )}
+            { diff.length === 0 && newListing
+              && (
+                <Box className={classes.placeholderContainer}>
+                  <Typography>No differences found</Typography>
+                </Box>
+              )}
+            { diff.length > 0
+              && (
+                <Fade style={{ transitionDelay: newListing ? '1.5s' : '0ms' }} in={!!diff.length > 0}>
+                  <Box className={classes.differenceCallout}>
+                    <List className="list-unstyled">
+                      {diff.map((change) => (
+                        <li key={change} dangerouslySetInnerHTML={{ __html: change }} />
+                      ))}
+                    </List>
+                  </Box>
+                </Fade>
+              )}
           </Box>
         </div>
       </Container>
