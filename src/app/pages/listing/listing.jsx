@@ -164,7 +164,7 @@ function ChplListingPage({ id }) {
                   listing={listing}
                   horizontal
                 >
-                  { canEdit() && !uiUpgradeEdit
+                  { canEdit()
                     && (
                       <Button
                         endIcon={<EditIcon />}
@@ -172,18 +172,6 @@ function ChplListingPage({ id }) {
                         variant="contained"
                         color="primary"
                         onClick={edit}
-                      >
-                        Edit
-                      </Button>
-                    )}
-                  { canEdit() && uiUpgradeEdit
-                    && (
-                      <Button
-                        endIcon={<EditIcon />}
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={editFlagged}
                       >
                         Edit
                       </Button>
