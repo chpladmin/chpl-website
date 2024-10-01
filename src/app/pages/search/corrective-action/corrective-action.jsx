@@ -11,6 +11,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -28,6 +29,7 @@ const staticFilters = [
 
 function ChplCorrectiveActionSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
 
@@ -70,20 +72,23 @@ function ChplCorrectiveActionSearchPage() {
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Products: Corrective Action Status',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Products: Corrective Action Status',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-correctiveActionPage"
-    >
-      <ChplCorrectiveActionSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-correctiveActionPage"
+      >
+        <ChplCorrectiveActionSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

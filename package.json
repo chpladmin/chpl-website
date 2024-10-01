@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "13.24.0",
+  "version": "13.25.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -44,7 +44,7 @@
     "angularjs-toaster": "^2.2.0",
     "angulartics": "^1.6.0",
     "angulartics-google-tag-manager": "^0.0.1",
-    "axios": "^1.6.0",
+    "axios": "^1.7.7",
     "axios-jwt": "^4.0.3",
     "bootstrap-sass": "3.4.3",
     "cytoscape": "^3.24.0",
@@ -134,7 +134,7 @@
     "url-loader": "^1.1.2",
     "wdio-chromedriver-service": "^7.3.2",
     "wdio-wait-for": "^3.0.11",
-    "webpack": "5.91.0",
+    "webpack": "5.94.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.3",
     "webpack-merge": "^4.2.2",
@@ -144,5 +144,5 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.5.0"
 }

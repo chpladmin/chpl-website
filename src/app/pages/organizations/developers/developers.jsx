@@ -9,6 +9,7 @@ import {
   decertificationDate,
   quickFilters,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   decertificationDate, {
@@ -48,6 +49,7 @@ const staticFilters = [
 
 function ChplDevelopersPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
 
   useEffect(() => {
@@ -78,20 +80,23 @@ function ChplDevelopersPage() {
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Developers',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Developers',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-developersPage"
-    >
-      <ChplDevelopersView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-developersPage"
+      >
+        <ChplDevelopersView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

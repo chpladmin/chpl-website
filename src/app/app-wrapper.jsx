@@ -3,6 +3,7 @@
 import React from 'react';
 import { bool, node } from 'prop-types';
 
+import { AnalyticsProvider } from 'shared/contexts';
 import ApiWrapper from 'api/api-wrapper';
 import BrowserWrapper from 'components/browser/browser-wrapper';
 import CmsWrapper from 'components/cms-widget/cms-wrapper';
@@ -11,7 +12,6 @@ import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 
 function AppWrapper({ children, showQueryTools }) {
-
   return (
     <UserWrapper>
       <ApiWrapper showQueryTools={showQueryTools}>
@@ -19,7 +19,9 @@ function AppWrapper({ children, showQueryTools }) {
           <CompareWrapper>
             <CmsWrapper>
               <BrowserWrapper>
-                {children}
+                <AnalyticsProvider>
+                  {children}
+                </AnalyticsProvider>
               </BrowserWrapper>
             </CmsWrapper>
           </CompareWrapper>

@@ -85,7 +85,7 @@
           participants: function () { return vm.task.testParticipants; },
         },
       });
-      vm.modalInstance.result.then(function (result) {
+      vm.modalInstance.result.then((result) => {
         vm.task.testParticipants = result.participants;
         vm.participants = result.allParticipants;
       });

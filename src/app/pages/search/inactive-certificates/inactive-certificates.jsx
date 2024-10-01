@@ -12,6 +12,7 @@ import {
   certificationStatuses,
   decertificationDate,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -31,6 +32,7 @@ const staticFilters = [
 
 function ChplInactiveCertificatesSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
 
@@ -73,20 +75,23 @@ function ChplInactiveCertificatesSearchPage() {
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Inactive Certificates',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Inactive Certificates',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-inactiveCertificatesPage"
-    >
-      <ChplInactiveCertificatesSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-inactiveCertificatesPage"
+      >
+        <ChplInactiveCertificatesSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

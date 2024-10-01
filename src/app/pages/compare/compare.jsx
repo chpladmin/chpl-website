@@ -19,12 +19,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import CheckIcon from '@material-ui/icons/Check';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
-import {
-  arrayOf,
-  number,
-  oneOfType,
-  string,
-} from 'prop-types';
+import { string } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
@@ -117,7 +112,7 @@ function ChplComparePage({ ids }) {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    setListingsToProcess(ids);
+    setListingsToProcess(ids.split('&'));
   }, [ids]);
 
   useEffect(() => {
@@ -336,5 +331,5 @@ function ChplComparePage({ ids }) {
 export default ChplComparePage;
 
 ChplComparePage.propTypes = {
-  ids: arrayOf(oneOfType([number, string])).isRequired,
+  ids: string.isRequired,
 };

@@ -88,8 +88,9 @@
       </span>
     </div>
   </div>
-  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
-                   error-messages="$ctrl.errorMessages"
-                   take-action="$ctrl.takeActionBarAction(action)">
-  </chpl-action-bar>
+  <chpl-action-bar-wrapper-bridge
+    is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+    errors="$ctrl.errorMessages"
+    dispatch="::$ctrl.takeActionBarAction">
+  </chpl-action-bar-wrapper-bridge>
 </div>

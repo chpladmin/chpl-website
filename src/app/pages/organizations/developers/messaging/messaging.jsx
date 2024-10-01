@@ -30,6 +30,8 @@ import {
 } from 'api/developer';
 import { useFilterContext } from 'components/filter';
 import { ChplLink, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -112,6 +114,7 @@ The Office of the National Coordinator for Health IT`,
 
 function ChplMessaging({ dispatch }) {
   const { queryParams, queryString } = useFilterContext();
+  const { analytics } = useAnalyticsContext();
   const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(templateOptions[0]);
@@ -143,6 +146,12 @@ function ChplMessaging({ dispatch }) {
   };
 
   const sendMessage = () => {
+    eventTrack({
+      event: 'Send Message to Developers',
+      category: analytics.category,
+      label: recordCount,
+      group: analytics.group,
+    });
     postMessage.mutate({
       subject: formik.values.subject,
       body: formik.values.body,
