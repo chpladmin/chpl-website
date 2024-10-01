@@ -76,7 +76,7 @@ const validationSchema = yup.object({
       'Complainant Type - Other Description is required',
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
   complaintTypes: yup.array()
-    .required('Complaint Types is required'),
+    .min(1, 'Complaint Types is required'),
   complaintTypesOther: yup.string()
     .test('conditionallyRequiredComplaint',
       'Complaint Types - Other Description is required',
