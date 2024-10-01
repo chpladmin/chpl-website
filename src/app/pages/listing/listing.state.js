@@ -4,14 +4,6 @@ const states = [{
   component: 'chplListing',
   data: { title: 'CHPL Listing Details' },
 }, {
-  name: 'listing.flag-edit',
-  url: '/flag-edit',
-  component: 'chplListingEditFlagged',
-  data: {
-    title: 'CHPL Listing Details - new edit',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-  },
-}, {
   name: 'listing.edit-upload',
   url: '/edit-upload',
   component: 'chplListingEditUpload',

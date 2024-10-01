@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -26,9 +25,11 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -102,12 +103,11 @@ const headers = [
   { text: 'Actions', invisible: true },
 ];
 
-function ChplSedSearchView(props) {
+function ChplSedSearchView() {
   const storageKey = 'storageKey-sedView';
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -137,7 +137,7 @@ function ChplSedSearchView(props) {
       fullEdition: listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.results, data?.recordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -150,7 +150,12 @@ function ChplSedSearchView(props) {
   }, [API, authService]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -180,7 +185,11 @@ function ChplSedSearchView(props) {
           <ChplLink
             href={downloadLink}
             text="Download All SED Details"
-            analytics={{ event: 'Download All SED Details', category: analytics.category }}
+            analytics={{
+              event: 'Download All SED Details',
+              category: analytics.category,
+              group: analytics.group,
+            }}
             external={false}
           />
         </div>
@@ -215,7 +224,6 @@ function ChplSedSearchView(props) {
               { listings.length > 0
                 && (
                   <ChplDownloadListings
-                    analytics={analytics}
                     listings={listings}
                   />
                 )}
@@ -244,7 +252,13 @@ function ChplSedSearchView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -254,7 +268,12 @@ function ChplSedSearchView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
@@ -268,6 +287,7 @@ function ChplSedSearchView(props) {
                                 >
                                   <ChplSedPopup
                                     id={item.id}
+                                    analytics={analytics}
                                   />
                                 </ChplActionButton>
                               </TableCell>
@@ -283,7 +303,6 @@ function ChplSedSearchView(props) {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}
@@ -296,7 +315,4 @@ function ChplSedSearchView(props) {
 export default ChplSedSearchView;
 
 ChplSedSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

@@ -12,6 +12,7 @@ export const VersionEditComponent = {
     constructor ($log) {
       'ngInject';
       this.$log = $log;
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
     }
 
     $onChanges (changes) {

@@ -32,6 +32,7 @@ function ChplCognitoLogin({
         setState('FORCECHANGEPASSWORD');
         break;
       case 'forgotPassword':
+        setUserName(payload?.userName ?? '');
         setState('FORGOTPASSWORD');
         break;
       case 'isLoggedIn':
@@ -63,7 +64,12 @@ function ChplCognitoLogin({
         />
       );
     case 'FORGOTPASSWORD':
-      return <ChplForgotPassword dispatch={handleDispatch} />;
+      return (
+        <ChplForgotPassword 
+          dispatch={handleDispatch} 
+          userName={userName}
+        />
+      );
     case 'LOGGEDIN':
       return <ChplLoggedIn dispatch={handleDispatch} />;
     case 'RESETFORGOTTENPASSWORD':

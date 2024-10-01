@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -25,10 +24,11 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const headers = [
@@ -98,10 +98,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplInactiveCertificatesSearchView(props) {
+function ChplInactiveCertificatesSearchView() {
   const storageKey = 'storageKey-inactiveCertificatesView';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -139,7 +138,12 @@ function ChplInactiveCertificatesSearchView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -156,10 +160,30 @@ function ChplInactiveCertificatesSearchView(props) {
         <Typography variant="body1" gutterBottom>
           This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the
           {' '}
-          <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>
+          <ChplLink
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            text="CHPL Public User Guide"
+            analytics={{
+              event: 'Go to CHPL Public User Guide',
+              category: analytics.category,
+              group: analytics.group,
+            }}
+            external={false}
+            inline
+          />
           . For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the
           {' '}
-          <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>
+          <ChplLink
+            href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html"
+            text="CMS FAQ"
+            analytics={{
+              event: 'Go to CMS FAQ',
+              category: analytics.category,
+              group: analytics.group,
+            }}
+            external={false}
+            inline
+          />
           . For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
       </div>
@@ -223,7 +247,13 @@ function ChplInactiveCertificatesSearchView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -233,7 +263,12 @@ function ChplInactiveCertificatesSearchView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
@@ -270,7 +305,4 @@ function ChplInactiveCertificatesSearchView(props) {
 export default ChplInactiveCertificatesSearchView;
 
 ChplInactiveCertificatesSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

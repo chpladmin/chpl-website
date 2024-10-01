@@ -30,8 +30,11 @@
       </div>
     </div>
   </div>
-  <chpl-action-bar can-act="$ctrl.can(action)"
-                   is-notification="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
-                   take-action="$ctrl.takeActionBarAction(action)">
-  </chpl-action-bar>
+  <chpl-action-bar-wrapper-bridge
+    can-delete="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
+    can-save="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
+    can-cancel="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
+    can-close="$ctrl.hasAnyRole(['chpl-onc'])"
+    dispatch="::$ctrl.takeActionBarAction">
+  </chpl-action-bar-wrapper-bridge>
 </div>

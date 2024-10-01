@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import SendIcon from '@material-ui/icons/Send';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -35,7 +35,7 @@ const validationSchema = yup.object({
     .email('Email format is invalid'),
 });
 
-function ChplForgotPassword({ dispatch }) {
+function ChplForgotPassword({ dispatch, userName }) {
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostForgotPassword();
 
@@ -78,7 +78,7 @@ function ChplForgotPassword({ dispatch }) {
   formik = useFormik({
     validationSchema,
     initialValues: {
-      email: '',
+      email: userName,
     },
     onSubmit: () => {
       sendForgottenPasswordEmail();
@@ -128,4 +128,5 @@ export default ChplForgotPassword;
 
 ChplForgotPassword.propTypes = {
   dispatch: func.isRequired,
+  userName: string.isRequired,
 };
