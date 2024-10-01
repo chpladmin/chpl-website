@@ -10,11 +10,10 @@ import { arrayOf, object } from 'prop-types';
 import { useFilterContext } from './filter-context';
 
 import { ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { palette } from 'themes';
 
 function ChplFilterQuickFilters({ toggleMultipleFilters }) {
-  const $analytics = getAngularService('$analytics');
   const { analytics, dispatch, filters } = useFilterContext();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -26,18 +25,37 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
 
   const handleClick = (e) => {
     if (analytics) {
-      $analytics.eventTrack('Open Quick Filter', { category: analytics.category });
+      eventTrack({
+        event: 'Open Quick Filter',
+        category: analytics.category,
+        group: analytics.group,
+      });
     }
     setAnchor(e.currentTarget);
     setOpen(true);
   };
 
   const handleClose = () => {
+    if (analytics) {
+      eventTrack({
+        event: 'Close Quick Filter',
+        category: analytics.category,
+        group: analytics.group,
+      });
+    }
     setAnchor(null);
     setOpen(false);
   };
 
   const loadQuickFilter = (value) => {
+    if (analytics) {
+      eventTrack({
+        event: 'Open Quick Filter',
+        category: analytics.category,
+        label: value.display,
+        group: analytics.group,
+      });
+    }
     dispatch('update', quickFilter, {
       ...value,
       selected: true,

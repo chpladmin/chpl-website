@@ -6,6 +6,8 @@ import {
 
 import { useFilterContext } from './filter-context';
 
+import { eventTrack } from 'services/analytics.service';
+
 const useStyles = makeStyles({
   browseButton: {
     borderRadius: '8px',
@@ -17,11 +19,19 @@ function ChplFilterBrowse() {
   const classes = useStyles();
 
   const {
+    analytics,
     dispatch,
     setSearchTerm,
   } = useFilterContext();
 
   const handleBrowse = () => {
+    if (analytics) {
+      eventTrack({
+        event: 'Browse',
+        category: analytics.category,
+        group: analytics.group,
+      });
+    }
     setSearchTerm('');
     dispatch('resetAll');
     dispatch('hasSearched');

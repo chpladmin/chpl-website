@@ -8,6 +8,7 @@ import {
   certificationBodies,
   decertificationDate,
 } from 'components/filter/filters';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   decertificationDate,
@@ -15,6 +16,7 @@ const staticFilters = [
 
 function ChplBannedDevelopersSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
 
   useEffect(() => {
@@ -37,20 +39,23 @@ function ChplBannedDevelopersSearchPage() {
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Banned Developers',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Banned Developers',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-bannedDevelopersPage"
-    >
-      <ChplBannedDevelopersSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-bannedDevelopersPage"
+      >
+        <ChplBannedDevelopersSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

@@ -12,7 +12,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import FindReplaceIcon from '@material-ui/icons/FindReplace';
-import { shape, string } from 'prop-types';
 
 import ChplLandingPage from './landing-page';
 
@@ -30,10 +29,11 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -126,10 +126,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingsView(props) {
+function ChplListingsView() {
   const storageKey = 'storageKey-listingsView';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
@@ -161,7 +160,7 @@ function ChplListingsView(props) {
     })));
     setRecordCount(data.recordCount);
     setSearchTermRecordCount(data.searchTermRecordCount);
-  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading, analytics]);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -175,7 +174,12 @@ function ChplListingsView(props) {
   }, [directReviewsAvailable]);
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -231,7 +235,6 @@ function ChplListingsView(props) {
               { listings.length > 0
                 && (
                   <ChplDownloadListings
-                    analytics={analytics}
                     listings={listings}
                   />
                 )}
@@ -279,7 +282,13 @@ function ChplListingsView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      event: 'Navigate to Listing Details Page',
+                                      category: analytics.category,
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
                                   />
@@ -289,7 +298,12 @@ function ChplListingsView(props) {
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  analytics={{
+                                    event: 'Navigate to Developer Page',
+                                    category: analytics.category,
+                                    label: item.developer.name,
+                                    group: analytics.group,
+                                  }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
@@ -313,7 +327,6 @@ function ChplListingsView(props) {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}
@@ -326,7 +339,4 @@ function ChplListingsView(props) {
 export default ChplListingsView;
 
 ChplListingsView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };
