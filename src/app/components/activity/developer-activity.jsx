@@ -12,10 +12,10 @@ import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
 import { object } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
+import { compareDeveloper } from './services/developers.service';
 
 import { useFetchDeveloperActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
-import { compareDeveloper } from 'pages/reports/developers/developers.service';
 
 const useStyles = makeStyles({
   legendTitle: {
