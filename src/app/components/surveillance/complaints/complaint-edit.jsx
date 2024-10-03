@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '2fr 2fr',
     },
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '1fr 1fr 1fr .5fr',
+      gridTemplateColumns: '2fr 2fr 2fr 1fr',
     },
   },
   dataEntry: {
@@ -460,7 +460,7 @@ function ChplComplaintEdit(props) {
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
               <FormControl variant="outlined">
-                <InputLabel id="complaint-types">Compliant Types</InputLabel>
+                <InputLabel htmlFor="complaint-types">Compliant Types</InputLabel>
                 <Select
                   multiple
                   id="complaint-types"

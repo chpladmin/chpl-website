@@ -30,7 +30,7 @@ const useStyles = makeStyles({
       gridTemplateColumns: '2fr 2fr',
     },
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '1fr 1fr 1fr .5fr',
+      gridTemplateColumns: '2fr 2fr 2fr 1fr',
     },
   },
   dataContent: {
