@@ -26,6 +26,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import ChplDeveloperActivity from 'components/activity/developer-activity';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -237,6 +238,9 @@ function ChplDeveloperView(props) {
         className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
+        <ChplDeveloperActivity
+          developer={developer}
+        />
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Developer code</strong>
