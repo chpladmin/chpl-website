@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '2fr 2fr',
     },
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '3fr 4fr 4fr 2fr',
+      gridTemplateColumns: '1fr 1fr 1fr .5fr',
     },
   },
   dataEntry: {
