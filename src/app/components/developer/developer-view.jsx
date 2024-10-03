@@ -46,6 +46,14 @@ const useStyles = makeStyles({
     margin: '0',
     fontSize: '1.25em',
   },
+  headerContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerTitle: {
+    margin: 0,
+  },
   statusHistorySummary: {
     backgroundColor: '#fff',
     boxShadow: 'none',
@@ -233,17 +241,21 @@ function ChplDeveloperView(props) {
       title={`${developer.name} Information`}
     >
       <CardHeader
-        title={isSplitting ? 'Original Developer' : developer.name}
-        component="h2"
+        title={
+          <div className={classes.headerContainer}>
+              {isSplitting ? 'Original Developer' : developer.name}
+            {can('edit') && (
+              <ChplDeveloperActivity
+                developer={developer}
+                className={classes.activityButton}
+              />
+            )}
+          </div>
+        }
+        component="div"
         className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
-        { can('edit')
-          && (
-            <ChplDeveloperActivity
-              developer={developer}
-            />
-          )}
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Developer code</strong>
