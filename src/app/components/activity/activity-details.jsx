@@ -60,9 +60,15 @@ function ChplActivityDetails({ activity, interpret, last }) {
       return;
     }
     if (data.originalData && data.newData) {
-      setDetails(interpret(data?.originalData, data?.newData)
-        .map((item) => `<li>${item}</li>`)
-        .join(''));
+      if (data.description.startsWith('Merged ')) {
+        setDetails(`<li>Developers ${data.originalData.map((p) => p.name).join(' and ')} merged to form ${data.newData.name}`);
+      } else if (activity.description.startsWith('Split ')) {
+        setDetails(`<li>Developers ${data.originalData.name} split to become Developers ${data.newData[0].name} and ${data.newData[1].name}`);
+      } else {
+        setDetails(interpret(data?.originalData, data?.newData)
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
+      }
     }
   }, [data, isError, isLoading]);
 
