@@ -459,11 +459,6 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
-
-              {/* { complaintTypes.map((item) => (
-                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-              ))} */}
-
               <FormControl variant="outlined">
                 <InputLabel id="complaint-types">Compliant Types</InputLabel>
                 <Select
