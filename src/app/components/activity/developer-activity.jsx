@@ -40,7 +40,7 @@ function ChplDeveloperActivity({ developer }) {
       return;
     }
     setActivities(data
-      .sort((a, b) => (a.activityDate < b.activityDate ? 1 : -1))
+      .sort((a, b) => (a.date < b.date ? 1 : -1))
       .map((activity, idx, arr) => (
         <ChplActivityDetails
           key={activity.id}
