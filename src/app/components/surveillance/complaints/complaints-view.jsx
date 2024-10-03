@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
@@ -250,46 +250,45 @@ function ChplComplaintsView(props) {
   const getButtons = () => {
     if (hasAnyRole(['chpl-onc'])) {
       return (
-        <ButtonGroup className={classes.wrap}>
-          <Button
-            onClick={downloadFile}
-            color="primary"
-            variant="contained"
-            id="download-results"
-            endIcon={<GetAppIcon />}
-          >
-            Download all complaints
-          </Button>
-        </ButtonGroup>
+        <Button
+          onClick={downloadFile}
+          color="primary"
+          variant="contained"
+          id="download-results"
+          endIcon={<GetAppIcon />}
+          size="small"
+        >
+          Download all complaints
+        </Button>
       );
     }
     if (hasAnyRole(['chpl-onc-acb'])) {
       if (canAdd) {
         return (
-          <ButtonGroup className={classes.wrap}>
-            <Button
-              onClick={() => handleDispatch({ action: 'add' })}
-              color="primary"
-              variant="outlined"
-              id="add-complaint"
-              endIcon={<AddIcon />}
-            >
-              Add New Complaint
-            </Button>
-          </ButtonGroup>
+          <Button
+            onClick={() => handleDispatch({ action: 'add' })}
+            color="secondary"
+            variant="contained"
+            id="add-complaint"
+            endIcon={<AddIcon />}
+            size="small"
+          >
+            Add New Complaint
+          </Button>
         );
       }
       return null;
     }
     if (canAdd) {
       return (
-        <ButtonGroup className={classes.wrap}>
+        <Box display="flex" gridGap="8px">
           <Button
             onClick={() => handleDispatch({ action: 'add' })}
-            color="primary"
-            variant="outlined"
+            color="secondary"
+            variant="contained"
             id="add-complaint"
             endIcon={<AddIcon />}
+            size="small"
           >
             Add New Complaint
           </Button>
@@ -299,24 +298,24 @@ function ChplComplaintsView(props) {
             variant="contained"
             id="download-results"
             endIcon={<GetAppIcon />}
+            size="small"
           >
             Download all complaints
           </Button>
-        </ButtonGroup>
+        </Box>
       );
     }
     return (
-      <ButtonGroup className={classes.wrap}>
-        <Button
-          onClick={downloadFile}
-          color="primary"
-          variant="contained"
-          id="download-results"
-          endIcon={<GetAppIcon />}
-        >
-          Download all complaints
-        </Button>
-      </ButtonGroup>
+      <Button
+        onClick={downloadFile}
+        color="primary"
+        variant="contained"
+        id="download-results"
+        endIcon={<GetAppIcon />}
+        size="small"
+      >
+        Download all complaints
+      </Button>
     );
   };
 
