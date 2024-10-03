@@ -238,9 +238,12 @@ function ChplDeveloperView(props) {
         className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
-        <ChplDeveloperActivity
-          developer={developer}
-        />
+        { can('edit')
+          && (
+            <ChplDeveloperActivity
+              developer={developer}
+            />
+          )}
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Developer code</strong>
