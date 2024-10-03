@@ -5,8 +5,12 @@ import {
   CardHeader,
   Chip,
   CircularProgress,
+  Checkbox,
   FormControlLabel,
+  FormControl,
   InputAdornment,
+  InputLabel,
+  ListItemText,
   MenuItem,
   Select,
   Switch,
@@ -32,13 +36,13 @@ import { theme } from 'themes';
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
-    gap: '16px',
+    gap: '32px',
     gridTemplateColumns: '1fr',
     alignItems: 'start',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '2fr 2fr',
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       gridTemplateColumns: '3fr 4fr 4fr 2fr',
     },
   },
@@ -384,7 +388,7 @@ function ChplComplaintEdit(props) {
         <CardContent>
           { complaint.id
             ? (
-              <Typography variant="h5">
+              <Typography style={{ fontWeight: '600' }} variant="h5">
                 ONC-ACB:
                 {' '}
                 {complaint.certificationBody.name}
@@ -455,21 +459,38 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
-              <Select
-                multiple
-                id="complaint-types"
-                name="complaintTypes"
-                label="Complaint Types"
-                required
-                value={formik.values.complaintTypes}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.complaintTypes && !!formik.errors.complaintTypes}
-              >
-                { complaintTypes.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                ))}
-              </Select>
+
+              {/* { complaintTypes.map((item) => (
+                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+              ))} */}
+
+              <FormControl variant="outlined">
+                <InputLabel id="complaint-types">Compliant Types</InputLabel>
+                <Select
+                  multiple
+                  id="complaint-types"
+                  name="complaintTypes"
+                  label="Complaint Types"
+                  required
+                  value={formik.values.complaintTypes}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.complaintTypes && !!formik.errors.complaintTypes}
+                  renderValue={(selected) => selected.map((value) => complaintTypes.find((item) => item.id === value.id)?.name).join(', ')}
+                >
+                  { complaintTypes.map((item) => (
+                    <MenuItem key={item.id} value={item}>
+                      <Checkbox
+                        size="small"
+                        variant="outlined"
+                        color="primary"
+                        checked={formik.values.complaintTypes.some((type) => type.id === item.id)}
+                      />
+                      <ListItemText primary={item.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               { isComplaintTypesOtherRequired()
                 && (
                   <ChplTextField
