@@ -65,7 +65,7 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
           endIcon={<TrackChangesOutlined />}
           style={{ marginRight: '8px' }}
         >
-          Details
+          History
         </Button>
       </ChplTooltip>
       <Dialog

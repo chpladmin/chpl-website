@@ -72,7 +72,7 @@ function ChplDeveloperActivity({ developer }) {
           size="small"
           style={{ fontSize: 'small' }}
         >
-          Details
+          History
         </Button>
       </ChplTooltip>
       <Dialog
