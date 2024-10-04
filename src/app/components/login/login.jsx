@@ -18,7 +18,6 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import ReactGA from 'react-ga4';
 
 import PasswordStrengthMeter from './components/password-strength-meter';
 
@@ -29,7 +28,8 @@ import {
   usePostResetPassword,
 } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
 
 const zxcvbn = require('zxcvbn');
@@ -101,6 +101,7 @@ function ChplLogin({ dispatch }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const { analytics } = useAnalyticsContext();
   const {
     user, setUser, impersonating, setImpersonating,
   } = useContext(UserContext);
@@ -172,7 +173,7 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         if (response.passwordUpdated) {
-          ReactGA.event({ action: 'Change Password', category: 'Authentication', label: 'test' });
+          //ReactGA.event({ action: 'Change Password', category: 'Authentication', label: 'test' });
           setState('LOGGEDIN');
           changeFormik.resetForm();
           const body = 'Password successfully changed';
@@ -223,7 +224,11 @@ function ChplLogin({ dispatch }) {
           .then((data) => {
             setUser(data);
             signinFormik.resetForm();
-            ReactGA.event({ action: 'Log In', category: 'Authentication', label: 'test' });
+            eventTrack({
+              event: 'Log In',
+              category: 'Authentication',
+              group: data.role,
+            });
             authService.saveCurrentUser(data);
             Idle.watch();
             $rootScope.$broadcast('loggedIn');
@@ -253,7 +258,11 @@ function ChplLogin({ dispatch }) {
     setUser({});
     setState('SIGNIN');
     authService.logout();
-    ReactGA.event({ action: 'Log Out', category: 'Authentication', label: 'test' });
+    eventTrack({
+      event: 'Log Out',
+      category: 'Authentication',
+      group: analytics.group,
+    });
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
   };
@@ -293,7 +302,7 @@ function ChplLogin({ dispatch }) {
   sendReset = () => {
     postEmailResetPassword.mutate({ email: sendResetFormik.values.email }, {
       onSuccess: () => {
-        ReactGA.event({ action: 'Send Reset Email', category: 'Authentication', label: 'test' });
+        //ReactGA.event({ action: 'Send Reset Email', category: 'Authentication', label: 'test' });
         setState('SIGNIN');
         sendResetFormik.resetForm();
         const body = `Password email reset sent to ${sendResetFormik.values.email}; please check your email`;
