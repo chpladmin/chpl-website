@@ -23,14 +23,14 @@ import { complaint as complaintPropType } from 'shared/prop-types';
 const useStyles = makeStyles({
   content: {
     display: 'grid',
-    gap: '16px',
+    gap: '32px',
     gridTemplateColumns: '1fr',
     alignItems: 'start',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '2fr 2fr',
     },
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '2fr 2fr 2fr 1fr',
     },
   },
   dataContent: {
@@ -71,7 +71,7 @@ function ChplComplaintView(props) {
         subheader={complaint.acbComplaintId}
       />
       <CardContent>
-        <Typography variant="h5">
+        <Typography style={{ fontWeight: '600' }} variant="h5">
           ONC-ACB:
           {' '}
           { complaint.certificationBody?.name }
