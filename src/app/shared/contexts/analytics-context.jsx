@@ -13,6 +13,7 @@ function AnalyticsProvider(props) {
   const data = {
     analytics: {
       group: user?.role,
+      organization: user?.organizations?.map((org) => org.name).join(';'),
     },
   };
 

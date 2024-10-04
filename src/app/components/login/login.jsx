@@ -225,6 +225,7 @@ function ChplLogin({ dispatch }) {
             setUser(data);
             signinFormik.resetForm();
             eventTrack({
+              ...analytics,
               event: 'Log In',
               category: 'Authentication',
               group: data.role,
@@ -259,9 +260,9 @@ function ChplLogin({ dispatch }) {
     setState('SIGNIN');
     authService.logout();
     eventTrack({
+      ...analytics,
       event: 'Log Out',
       category: 'Authentication',
-      group: analytics.group,
     });
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
