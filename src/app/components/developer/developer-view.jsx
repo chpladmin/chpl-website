@@ -238,12 +238,6 @@ function ChplDeveloperView(props) {
         className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
-        { can('edit')
-          && (
-            <ChplDeveloperActivity
-              developer={developer}
-            />
-          )}
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Developer code</strong>
@@ -331,12 +325,13 @@ function ChplDeveloperView(props) {
         {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
       </CardContent>
       {(can('edit') || can('split') || can('join'))
-        && (
-          <CardActions className={classes.cardActions}>
-            <ButtonGroup
-              color="primary"
-            >
-              {can('edit')
+       && (
+         <CardActions className={classes.cardActions}>
+           <>
+             <ButtonGroup
+               color="primary"
+             >
+               {can('edit')
                 && (
                   <ChplTooltip title={`Edit ${developer.name} Information`}>
                     <Button
@@ -349,7 +344,7 @@ function ChplDeveloperView(props) {
                     </Button>
                   </ChplTooltip>
                 )}
-              {can('split')
+               {can('split')
                 && (
                   <ChplTooltip title={`Split ${developer.name}`}>
                     <Button
@@ -362,7 +357,7 @@ function ChplDeveloperView(props) {
                     </Button>
                   </ChplTooltip>
                 )}
-              {can('join')
+               {can('join')
                 && (
                   <ChplTooltip title={`Join ${developer.name}`}>
                     <Button
@@ -375,9 +370,16 @@ function ChplDeveloperView(props) {
                     </Button>
                   </ChplTooltip>
                 )}
-            </ButtonGroup>
-          </CardActions>
-        )}
+             </ButtonGroup>
+             { can('edit')
+               && (
+                 <ChplDeveloperActivity
+                   developer={developer}
+                 />
+               )}
+           </>
+         </CardActions>
+       )}
     </Card>
   );
 }
