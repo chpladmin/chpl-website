@@ -69,7 +69,8 @@ function ChplDeveloperActivity({ developer }) {
           variant="contained"
           onClick={handleClickOpen}
           endIcon={<TrackChangesOutlined />}
-          style={{ marginRight: '8px' }}
+          size="small"
+          style={{ fontSize: 'small' }}
         >
           Details
         </Button>

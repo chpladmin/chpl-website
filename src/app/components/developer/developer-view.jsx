@@ -46,6 +46,14 @@ const useStyles = makeStyles({
     margin: '0',
     fontSize: '1.25em',
   },
+  headerContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerTitle: {
+    margin: 0,
+  },
   statusHistorySummary: {
     backgroundColor: '#fff',
     boxShadow: 'none',
@@ -233,8 +241,18 @@ function ChplDeveloperView(props) {
       title={`${developer.name} Information`}
     >
       <CardHeader
-        title={isSplitting ? 'Original Developer' : developer.name}
-        component="h2"
+        title={
+          <div className={classes.headerContainer}>
+            {isSplitting ? 'Original Developer' : developer.name}
+            { can('edit')
+              && (
+                <ChplDeveloperActivity
+                  developer={developer}
+                />
+              )}
+          </div>
+        }
+        component="div"
         className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
@@ -324,62 +342,54 @@ function ChplDeveloperView(props) {
         </div>
         {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
       </CardContent>
-      {(can('edit') || can('split') || can('join'))
-       && (
-         <CardActions className={classes.cardActions}>
-           <>
-             <ButtonGroup
-               color="primary"
-             >
-               {can('edit')
-                && (
-                  <ChplTooltip title={`Edit ${developer.name} Information`}>
-                    <Button
-                      variant="contained"
-                      aria-label={`Edit ${developer.name} Information`}
-                      id="developer-component-edit"
-                      onClick={edit}
-                    >
-                      <EditOutlinedIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
-               {can('split')
-                && (
-                  <ChplTooltip title={`Split ${developer.name}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Split ${developer.name}`}
-                      id="developer-component-split"
-                      onClick={split}
-                    >
-                      <CallSplitIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
-               {can('join')
-                && (
-                  <ChplTooltip title={`Join ${developer.name}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Join ${developer.name}`}
-                      id="developer-component-join"
-                      onClick={join}
-                    >
-                      <CallMergeIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
-             </ButtonGroup>
-             { can('edit')
+      { (can('edit') || can('split') || can('join'))
+        && (
+          <CardActions className={classes.cardActions}>
+            <ButtonGroup
+              color="primary"
+            >
+              {can('edit')
                && (
-                 <ChplDeveloperActivity
-                   developer={developer}
-                 />
+                 <ChplTooltip title={`Edit ${developer.name} Information`}>
+                   <Button
+                     variant="contained"
+                     aria-label={`Edit ${developer.name} Information`}
+                     id="developer-component-edit"
+                     onClick={edit}
+                   >
+                     <EditOutlinedIcon />
+                   </Button>
+                 </ChplTooltip>
                )}
-           </>
-         </CardActions>
-       )}
+              {can('split')
+               && (
+                 <ChplTooltip title={`Split ${developer.name}`}>
+                   <Button
+                     variant="outlined"
+                     aria-label={`Split ${developer.name}`}
+                     id="developer-component-split"
+                     onClick={split}
+                   >
+                     <CallSplitIcon />
+                   </Button>
+                 </ChplTooltip>
+               )}
+              {can('join')
+               && (
+                 <ChplTooltip title={`Join ${developer.name}`}>
+                   <Button
+                     variant="outlined"
+                     aria-label={`Join ${developer.name}`}
+                     id="developer-component-join"
+                     onClick={join}
+                   >
+                     <CallMergeIcon />
+                   </Button>
+                 </ChplTooltip>
+               )}
+            </ButtonGroup>
+          </CardActions>
+        )}
     </Card>
   );
 }
