@@ -27,10 +27,10 @@ import {
   usePostLogin,
   usePostResetPassword,
 } from 'api/auth';
+import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { ChplTextField } from 'components/util';
 
 const zxcvbn = require('zxcvbn');
 
@@ -222,6 +222,7 @@ function ChplLogin({ dispatch }) {
     });
     e.stopPropagation();
   };
+
   const getTitle = () => {
     switch (state) {
       case 'CHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
@@ -278,12 +279,12 @@ function ChplLogin({ dispatch }) {
   };
 
   const logout = (e) => {
+    e.stopPropagation();
     eventTrack({
       ...analytics,
       event: 'Log Out',
       category: 'Authentication',
     });
-    e.stopPropagation();
     setUser({});
     setState('SIGNIN');
     authService.logout();
