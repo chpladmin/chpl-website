@@ -142,10 +142,20 @@ function ChplLogin({ dispatch }) {
     e.stopPropagation();
     switch (state) {
       case 'CHANGEPASSWORD':
+        eventTrack({
+          ...analytics,
+          event: 'Cancel Password Change',
+          category: 'Authentication',
+        });
         setState('LOGGEDIN');
         break;
       case 'FORGOTPASSWORD':
       case 'RESETTING':
+        eventTrack({
+          ...analytics,
+          event: 'Cancel Forgot Password',
+          category: 'Authentication',
+        });
         setState('SIGNIN');
         break;
       default:
@@ -173,7 +183,11 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         if (response.passwordUpdated) {
-          //ReactGA.event({ action: 'Change Password', category: 'Authentication', label: 'test' });
+          eventTrack({
+            ...analytics,
+            event: 'Confirm New Password',
+            category: 'Authentication',
+          });
           setState('LOGGEDIN');
           changeFormik.resetForm();
           const body = 'Password successfully changed';
@@ -199,6 +213,15 @@ function ChplLogin({ dispatch }) {
     });
   };
 
+  const forgotPassword = (e) => {
+    setState('FORGOTPASSWORD');
+    eventTrack({
+      ...analytics,
+      event: 'Forgot Password',
+      category: 'Authentication',
+    });
+    e.stopPropagation();
+  };
   const getTitle = () => {
     switch (state) {
       case 'CHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
@@ -255,15 +278,15 @@ function ChplLogin({ dispatch }) {
   };
 
   const logout = (e) => {
-    e.stopPropagation();
-    setUser({});
-    setState('SIGNIN');
-    authService.logout();
     eventTrack({
       ...analytics,
       event: 'Log Out',
       category: 'Authentication',
     });
+    e.stopPropagation();
+    setUser({});
+    setState('SIGNIN');
+    authService.logout();
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
   };
@@ -276,6 +299,11 @@ function ChplLogin({ dispatch }) {
       onSuccess: (response) => {
         if (response.passwordUpdated) {
           setState('SIGNIN');
+          eventTrack({
+            ...analytics,
+            event: 'Confirm New Password',
+            category: 'Authentication',
+          });
           resetFormik.resetForm();
           const body = 'Password successfully changed';
           enqueueSnackbar(body, { variant: 'success' });
@@ -303,7 +331,11 @@ function ChplLogin({ dispatch }) {
   sendReset = () => {
     postEmailResetPassword.mutate({ email: sendResetFormik.values.email }, {
       onSuccess: () => {
-        //ReactGA.event({ action: 'Send Reset Email', category: 'Authentication', label: 'test' });
+        eventTrack({
+          ...analytics,
+          event: 'Send Reset Email',
+          category: 'Authentication',
+        });
         setState('SIGNIN');
         sendResetFormik.resetForm();
         const body = `Password email reset sent to ${sendResetFormik.values.email}; please check your email`;
@@ -647,7 +679,7 @@ function ChplLogin({ dispatch }) {
              fullWidth
              color="secondary"
              variant="contained"
-             onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
+             onClick={forgotPassword}
              endIcon={<HelpOutlineIcon />}
            >
              Forgot Password
