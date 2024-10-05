@@ -78,7 +78,7 @@ function ChplUsers({
   const classes = useStyles();
 
   useEffect(() => {
-    setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+    setUsers(initialUsers);
   }, [initialUsers]);
 
   useEffect(() => {
@@ -90,8 +90,7 @@ function ChplUsers({
     setUsers(initialUsers
       .filter((u) => regex.test(u.fullName)
                      || regex.test(u.email)
-                     || regex.test(u.subjectName))
-      .sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+              || regex.test(u.subjectName)));
   };
 
   const handleDispatch = (action, data) => {
@@ -171,7 +170,7 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } 
+    }
     if (userToDisplay.userId) {
       return (
         <ChplUserView
@@ -193,7 +192,7 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } 
+    }
     if (userToEdit.userId) {
       return (
         <ChplUserEdit
