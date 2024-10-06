@@ -349,6 +349,16 @@ function ChplLogin({ dispatch }) {
     });
   };
 
+  const startChangePassword = (e) => {
+    e.stopPropagation();
+    eventTrack({
+      ...analytics,
+      event: 'Change Password',
+      category: 'Authentication',
+    });
+    setState('CHANGEPASSWORD');
+  };
+
   const stopImpersonating = (e) => {
     e.stopPropagation();
     networkService.unimpersonateUser()
@@ -644,7 +654,7 @@ function ChplLogin({ dispatch }) {
              fullWidth
              color="secondary"
              variant="contained"
-             onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
+             onClick={startChangePassword}
              endIcon={<CreateIcon />}
            >
              Change Password
