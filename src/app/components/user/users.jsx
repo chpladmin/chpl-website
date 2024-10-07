@@ -1,35 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import React from 'react';
 import { arrayOf, func, string } from 'prop-types';
 
 import ChplUsersView from './users-view';
-import ChplUserEdit from './user-edit';
-import ChplUserInvite from './user-invite';
-import ChplCognitoUserInvite from './cognito-user-invite';
-import ChplUserView from './user-view';
-import ChplCognitoUserView from './cognito-user-view';
-import ChplCognitoUserEdit from './cognito-user-edit';
 
-import {
-  usePutUser,
-  usePutCognitoUser,
-} from 'api/users';
-import { ChplTextField } from 'components/util';
-import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
-import { theme } from 'themes';
-import { AnalyticsContext, FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-
-const useStyles = makeStyles({
-});
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 function ChplUsers({
   dispatch, roles, groupNames, users,
