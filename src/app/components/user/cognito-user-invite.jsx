@@ -31,12 +31,13 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Enter a valid Email'),
+  groupName: yup.string()
+    .required('A ROLE must be selected'),
 });
 
 function ChplCognitoUserInvite({ dispatch, groupNames }) {
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
-
   const classes = useStyles();
   let formik;
 
