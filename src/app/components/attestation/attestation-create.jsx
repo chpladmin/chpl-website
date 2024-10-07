@@ -13,7 +13,7 @@ import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-req
 import { useFetchAttestations } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 function ChplAttestationCreate(props) {
   const $state = getAngularService('$state');
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { developer } = props;
   const { enqueueSnackbar } = useSnackbar();
@@ -98,8 +99,15 @@ function ChplAttestationCreate(props) {
     }
   };
 
+  const analyticsData = {
+    analytics: {
+      ...analytics,
+      category: 'Developer',
+    },
+  };
+
   return (
-    <>
+    <AnalyticsContext.Provider value={analyticsData}>
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
           Submit Attestations
@@ -125,7 +133,7 @@ function ChplAttestationCreate(props) {
         period={period}
         stage={stage}
       />
-    </>
+    </AnalyticsContext.Provider>
   );
 }
 
