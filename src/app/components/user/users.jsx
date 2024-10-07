@@ -22,10 +22,11 @@ import {
   usePutCognitoUser,
 } from 'api/users';
 import { ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { AnalyticsContext, FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
 });
@@ -33,14 +34,24 @@ const useStyles = makeStyles({
 function ChplUsers({
   dispatch, roles, groupNames, users,
 }) {
+  const { analytics } = useAnalyticsContext();
+
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'User Management',
+    },
+  };
 
   return (
-    <ChplUsersView
-      users={users}
-      dispatch={dispatch}
-      roles={roles}
-      groupNames={groupNames}
-    />
+    <AnalyticsContext.Provider value={data}>
+      <ChplUsersView
+        users={users}
+        dispatch={dispatch}
+        roles={roles}
+        groupNames={groupNames}
+      />
+    </AnalyticsContext.Provider>
   );
 }
 

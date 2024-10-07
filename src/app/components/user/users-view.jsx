@@ -21,10 +21,11 @@ import {
   usePutCognitoUser,
 } from 'api/users';
 import { ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -63,14 +64,14 @@ const useStyles = makeStyles({
 function ChplUsersView({
   dispatch, roles, groupNames, users: initialUsers,
 }) {
-  const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const { mutate } = usePutUser();
-  const cognitoMutate = usePutCognitoUser().mutate;
+  const { analytics } = useAnalyticsContext();
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
+  const { mutate } = usePutUser();
+  const cognitoMutate = usePutCognitoUser().mutate;
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [ssoIsOn, setSsoIsOn] = useState(false);
@@ -111,7 +112,10 @@ function ChplUsersView({
       case 'impersonate':
         networkService.impersonateUser(data)
           .then((token) => {
-            $analytics.eventTrack('Impersonate User', { category: 'Authentication' });
+            eventTrack({
+              ...analytics,
+              event: 'Impersonate User',
+            });
             authService.saveToken(token.token);
             networkService.getUserById(authService.getUserId())
               .then((u) => {
@@ -261,8 +265,7 @@ function ChplUsersView({
                 <div className={classes.users}>
                   { users
                     .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
-                    .map((u) => displayUser(u))
-                  }
+                    .map((u) => displayUser(u))}
                 </div>
               </CardContent>
             </Card>
