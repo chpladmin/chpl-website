@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogContent,
   MenuItem,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -18,7 +17,7 @@ import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '8px',
@@ -26,7 +25,7 @@ const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
-}));
+});
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -64,7 +63,7 @@ function ChplUserInvite({ dispatch, roles }) {
       email: formik.values.email,
       role: formik.values.role,
     };
-    props.dispatch('invite', invitation);
+    dispatch('invite', invitation);
     handleClose();
   };
 
@@ -77,12 +76,10 @@ function ChplUserInvite({ dispatch, roles }) {
       invite();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <ChplTooltip title="Invite a User">
         <Button
           id="invite-user-button"
@@ -124,22 +121,24 @@ function ChplUserInvite({ dispatch, roles }) {
           />
           { roles.length > 1
             && (
-            <ChplTextField
-              select
-              id="role"
-              name="role"
-              label="ROLE"
-              required
-              value={formik.values.role}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.role && !!formik.errors.role}
-              helperText={formik.touched.role && formik.errors.role}
-            >
-              { roles.map((item) => (
-                <MenuItem value={item} key={item}>{item}</MenuItem>
-              ))}
-            </ChplTextField>
+              <ChplTextField
+                select
+                id="role"
+                name="role"
+                label="ROLE"
+                required
+                value={formik.values.role}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.role && !!formik.errors.role}
+                helperText={formik.touched.role && formik.errors.role}
+              >
+                { roles
+                  .sort((a, b) => (a < b ? -1 : 1))
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                  ))}
+              </ChplTextField>
             )}
         </DialogContent>
         <DialogActions>
@@ -154,7 +153,7 @@ function ChplUserInvite({ dispatch, roles }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </ThemeProvider>
+    </>
   );
 }
 
