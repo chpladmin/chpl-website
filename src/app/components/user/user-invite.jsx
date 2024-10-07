@@ -14,8 +14,9 @@ import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplDialogTitle, ChplTooltip, ChplTextField } from '../util';
+import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -35,22 +36,26 @@ const validationSchema = yup.object({
     .required('A ROLE must be selected'),
 });
 
-function ChplUserInvite(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [roles] = useState(props.roles.sort((a, b) => (a < b ? -1 : 1)));
-  /* eslint-enable react/destructuring-assignment */
-
-  const [open, setOpen] = React.useState(false);
-
+function ChplUserInvite({ dispatch, roles }) {
+  const { analytics } = useAnalyticsContext();
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
   let formik;
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Invite User',
+    });
     setOpen(true);
   };
 
   const handleClose = () => {
     formik.resetForm();
+    eventTrack({
+      ...analytics,
+      event: 'Close Invite User',
+    });
     setOpen(false);
   };
 

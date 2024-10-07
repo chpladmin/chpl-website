@@ -88,6 +88,13 @@ function ChplUsersView({
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
+    if (event.target.value.length > 0) {
+      eventTrack({
+        ...analytics,
+        event: 'Search User',
+        label: event.target.value,
+      });
+    }
     setUsers(initialUsers
       .filter((u) => regex.test(u.fullName)
                      || regex.test(u.email)
@@ -99,14 +106,26 @@ function ChplUsersView({
       case 'cancel':
         setActiveUser(undefined);
         handleFilter({ target: { value: '' } });
+        eventTrack({
+          ...analytics,
+          event: 'Cancel User Edit',
+        });
         dispatch('cancel');
         break;
       case 'delete':
         setActiveUser(undefined);
+        eventTrack({
+          ...analytics,
+          event: 'Delete User',
+        });
         dispatch('delete', data);
         break;
       case 'edit':
         setActiveUser(data);
+        eventTrack({
+          ...analytics,
+          event: 'Edit User',
+        });
         dispatch('edit', 'user');
         break;
       case 'impersonate':
@@ -126,15 +145,27 @@ function ChplUsersView({
           });
         break;
       case 'invite':
+        eventTrack({
+          ...analytics,
+          event: 'Send Invite',
+        });
         dispatch('invite', data);
         break;
       case 'cognito-invite':
+        eventTrack({
+          ...analytics,
+          event: 'Send Invite',
+        });
         dispatch('cognito-invite', data);
         break;
       case 'save':
         mutate(data, {
           onSuccess: () => {
             setActiveUser(undefined);
+            eventTrack({
+              ...analytics,
+              event: 'Save User',
+            });
             dispatch('refresh');
           },
           onError: (error) => {
@@ -150,6 +181,10 @@ function ChplUsersView({
         cognitoMutate(data, {
           onSuccess: () => {
             setActiveUser(undefined);
+            eventTrack({
+              ...analytics,
+              event: 'Save User',
+            });
             dispatch('refresh');
           },
           onError: (error) => {

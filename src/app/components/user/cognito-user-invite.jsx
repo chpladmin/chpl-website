@@ -14,6 +14,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -31,19 +33,27 @@ const validationSchema = yup.object({
     .email('Enter a valid Email'),
 });
 
-function ChplCognitoUserInvite(props) {
-  const groupNames = props.groupNames.sort((a, b) => (a < b ? -1 : 1));
+function ChplCognitoUserInvite({ dispatch, groupNames }) {
+  const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
 
   const classes = useStyles();
   let formik;
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Invite User',
+    });
     setOpen(true);
   };
 
   const handleClose = () => {
     formik.resetForm();
+    eventTrack({
+      ...analytics,
+      event: 'Close Invite User',
+    });
     setOpen(false);
   };
 
