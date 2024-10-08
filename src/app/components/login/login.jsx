@@ -330,13 +330,13 @@ function ChplLogin({ dispatch }) {
   };
 
   sendReset = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Send Reset Email',
+      category: 'Authentication',
+    });
     postEmailResetPassword.mutate({ email: sendResetFormik.values.email }, {
       onSuccess: () => {
-        eventTrack({
-          ...analytics,
-          event: 'Send Reset Email',
-          category: 'Authentication',
-        });
         setState('SIGNIN');
         sendResetFormik.resetForm();
         const body = `Password email reset sent to ${sendResetFormik.values.email}; please check your email`;

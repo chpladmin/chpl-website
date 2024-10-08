@@ -62,13 +62,13 @@ function ChplForgotPassword({ dispatch, userName }) {
   };
 
   const sendForgottenPasswordEmail = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Send Reset Email',
+      category: 'Authentication',
+    });
     mutate({ userName: formik.values.email }, {
       onSuccess: () => {
-        eventTrack({
-          ...analytics,
-          event: 'Send Reset Email',
-          category: 'Authentication',
-        });
         const body = `Forgotten password email sent to ${formik.values.email}; please check your email`;
         enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'loggedOut' });
