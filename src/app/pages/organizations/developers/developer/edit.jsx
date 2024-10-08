@@ -67,6 +67,7 @@ function ChplEditDeveloper({ developer }) {
   const classes = useStyles();
 
   const handleError = (error) => {
+    setIsProcessing(false);
     let messages;
     let type = 'error';
     // todo: check on API to figure out how to trigger this
@@ -94,6 +95,7 @@ function ChplEditDeveloper({ developer }) {
       },
     }, {
       onSuccess: () => {
+        setIsProcessing(false);
         eventTrack({
           ...analytics,
           category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
