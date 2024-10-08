@@ -103,6 +103,7 @@ function ChplAttestationCreate(props) {
     analytics: {
       ...analytics,
       category: 'Developer',
+      label: developer.name,
     },
   };
 

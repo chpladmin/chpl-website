@@ -35,6 +35,7 @@ function ChplDeveloper({
     analytics: {
       ...analytics,
       category: 'Developer',
+      label: developer.name,
     },
   };
 

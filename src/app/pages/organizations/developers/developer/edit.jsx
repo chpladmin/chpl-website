@@ -97,6 +97,7 @@ function ChplEditDeveloper({ developer }) {
         eventTrack({
           ...analytics,
           category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
+          label: developer.name, // todo: when the higher component is React, remove this and use the component from above
           event: 'Save Demographics',
         });
         setConfirmationText('The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.');

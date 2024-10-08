@@ -60,8 +60,9 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const createAttestationChangeRequest = () => {
     eventTrack({
       ...analytics,
-      event: 'Submit Attestations',
       category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
+      label: developer.name, // todo: when the higher component is React, remove this and use the component from above
+      event: 'Submit Attestations',
     });
     dispatch('createAttestation');
   };
