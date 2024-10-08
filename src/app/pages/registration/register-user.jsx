@@ -172,8 +172,8 @@ function ChplRegisterUser({ hash }) {
         return (
           <>
             <Typography>{ message }</Typography>
-            <ChplCognitoLogin 
-              dispatch={handleDispatch} 
+            <ChplCognitoLogin
+              dispatch={handleDispatch}
               state={cognitoLoginComponentState}
               setState={setCognitoLoginComponentState}
             />
