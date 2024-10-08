@@ -223,13 +223,10 @@ function ChplChangeRequestsView(props) {
           <CardHeader title="Change Requests" />
         )}
       <CardContent>
-        { !disallowedFilters.includes('searchTerm')
-          && (
-            <ChplFilterSearchBar
-              placeholder="Search by Developer..."
-
-            />
-          )}
+        <ChplFilterSearchBar
+          placeholder="Search by Developer..."
+          hideSearchTerm={disallowedFilters.includes('searchTerm')}
+        />
         <div>
           <ChplFilterChips />
         </div>
