@@ -482,6 +482,7 @@ function ChplListingEditUploadPage({ id }) {
                 <CardContent>
                   <ChplAdditionalInformation
                     listing={listing}
+                    isConfirming
                   />
                 </CardContent>
               </Card>
@@ -497,6 +498,7 @@ function ChplListingEditUploadPage({ id }) {
                       <CardContent>
                         <ChplAdditionalInformation
                           listing={newListing}
+                          isConfirming
                         />
                       </CardContent>
                     </Card>
