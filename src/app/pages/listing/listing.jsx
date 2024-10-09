@@ -187,7 +187,7 @@ function ChplListingPage({ id }) {
                         Edit
                       </Button>
                     )}
-                  { hasAnyRole(['chpl-admin'])
+                  { hasAnyRole(['chpl-admin']) && (listing.edition === null || listing.edition.name === '2015')
                     && (
                       <Button
                         endIcon={<EditIcon />}
