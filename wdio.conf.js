@@ -1,3 +1,6 @@
+import { setValue, getValue } from '@wdio/shared-store-service';
+
+const fs = require('fs');
 const urls = require('./e2e/config/urls');
 let baseUrl = 'http://localhost:3000/';
 if (process.env.ENV) {
@@ -122,7 +125,7 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  // services: [],
+  services: ['shared-store'],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -131,7 +134,6 @@ exports.config = {
   // Make sure you have the wdio adapter package for the specific framework installed
   // before running any tests.
   framework: 'jasmine',
-
   //
   // The number of times to retry the entire specfile when it fails as a whole
   // specFileRetries: 1,
@@ -185,8 +187,9 @@ exports.config = {
    * @param {object} config wdio configuration object
    * @param {Array.<Object>} capabilities list of capabilities details
    */
-  // onPrepare: function (config, capabilities) {
-  // },
+  onPrepare: function (config, capabilities) {
+    setValue('chromeProfiles', []);
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialize specific service
    * for that worker as well as modify runtime environments in an async fashion.
@@ -224,8 +227,10 @@ exports.config = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {object}         browser      instance of created browser/device session
    */
-  // before: function (capabilities, specs) {
-  // },
+  before: async function (capabilities, specs) {
+    const chromeProfiles = await getValue('chromeProfiles');
+    setValue('chromeProfiles', [...chromeProfiles, browser.capabilities.chrome.userDataDir]);
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name
@@ -268,8 +273,6 @@ exports.config = {
    */
   // afterTest: function(test, context, { error, result, duration, passed, retries }) {
   // },
-
-
   /**
    * Hook that gets executed after the suite has ended
    * @param {object} suite suite details
@@ -310,8 +313,10 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  // onComplete: function(exitCode, config, capabilities, results) {
-  // },
+  onComplete: async function (exitCode, config, capabilities, results) {
+    const profiles = await getValue('chromeProfiles');
+    await Promise.all(profiles.map(async (profile) => fs.rm(profile, { recursive: true }, (err) => console.error(err))));
+  },
   /**
    * Gets executed when a refresh happens.
    * @param {string} oldSessionId session ID of the old session
