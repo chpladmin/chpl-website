@@ -6,7 +6,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,11 +14,11 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAnnouncements } from 'api/announcements';
 import { useFetchAtls } from 'api/atls';
-import ApiWrapper from 'api/api-wrapper';
 import {
   ChplLink,
   InternalScrollButton,
 } from 'components/util';
+import { useAnalyticsContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -71,6 +70,7 @@ const getOrgs = (query, key) => {
 };
 
 function ChplResourcesOverview() {
+  const { analytics } = useAnalyticsContext();
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
@@ -85,7 +85,7 @@ function ChplResourcesOverview() {
   }, [data, isLoading, isSuccess]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <div className={classes.pageHeader}>
         <Typography
           variant="h1"
@@ -99,7 +99,11 @@ function ChplResourcesOverview() {
            && (
              <InternalScrollButton
                id="announcements"
-               analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Announcements' }}
+               analytics={{
+                 ...analytics,
+                 category: 'Overview',
+                 event: 'Navigate to Announcements',
+               }}
              >
                Announcements
                <ArrowForwardIcon className={classes.iconSpacing} />
@@ -107,42 +111,66 @@ function ChplResourcesOverview() {
            )}
           <InternalScrollButton
             id="whatIsTheChpl"
-            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
+            analytics={{
+              ...analytics,
+              category: 'Overview',
+              event: 'Navigate to What is the CHPL',
+            }}
           >
             What is the CHPL
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
           <InternalScrollButton
             id="recommendedWebBrowsers"
-            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Recommended Web Browsers' }}
+            analytics={{
+              ...analytics,
+              category: 'Overview',
+              event: 'Navigate to Recommended Web Browsers',
+            }}
           >
             Recommended Web Browsers
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
           <InternalScrollButton
             id="usingTheChplWebsite"
-            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Using the CHPL Website' }}
+            analytics={{
+              ...analytics,
+              category: 'Overview',
+              event: 'Navigate to Using the CHPL Website',
+            }}
           >
             Using the Chpl Website
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
           <InternalScrollButton
             id="oncCertificationProgram"
-            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC Certification Program' }}
+            analytics={{
+              ...analytics,
+              category: 'Overview',
+              event: 'Navigate to ONC Certification Program',
+            }}
           >
             ONC Certification Program
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
           <InternalScrollButton
             id="forEhrDevelopers"
-            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'For EHR Developers' }}
+            analytics={{
+              ...analytics,
+              category: 'Overview',
+              event: 'Navigate to For EHR Developers',
+            }}
           >
             For EHR Developers
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
           <InternalScrollButton
             id="oncacbAndAtlInformation"
-            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
+            analytics={{
+              ...analytics,
+              category: 'Overview',
+              event: 'Navigate to ONC-ACB and ONC-ATL Information',
+            }}
           >
             ONC-ACB and ONC-ATL Information
             <ArrowForwardIcon className={classes.iconSpacing} />
@@ -191,14 +219,30 @@ function ChplResourcesOverview() {
             <ChplLink
               href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
               text="CHPL Public User Guide"
-              analytics={{ event: 'CHPL Public User Guide', category: 'Resources' }}
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to CHPL Public User Guide',
+              }}
               external={false}
+              inline
             />
+            .
           </Typography>
           <Typography gutterBottom>
             For more information on attesting for Promoting Interoperability under the Centers for Medicare &amp; Medicaid Services (CMS), please see the
             {' '}
-            <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration &amp; Attestation Page</a>
+            <ChplLink
+              href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html"
+              text="CMS Promoting Interoperability Programs Registration &amp; Attestation Page"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to CMS Promoting Interoperability Programs Registration &amp; Attestation Page',
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Divider />
@@ -271,11 +315,31 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on ONC&apos;s
             {' '}
-            <a href="https://www.healthit.gov/topic/certification-ehrs/certification-process">Certification Bodies</a>
+            <ChplLink
+              href="https://www.healthit.gov/topic/certification-ehrs/certification-process"
+              text="Certification Bodies"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to Certification Bodies',
+              }}
+              external={false}
+              inline
+            />
             {' '}
             and
             {' '}
-            <a href="https://www.healthit.gov/topic/certification-ehrs/testing-process-test-methods">Testing Laboratories</a>
+            <ChplLink
+              href="https://www.healthit.gov/topic/certification-ehrs/testing-process-test-methods"
+              text="Testing Laboratories"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to Testing Laboratories',
+              }}
+              external={false}
+              inline
+            />
             {' '}
             pages.
           </Typography>
@@ -292,7 +356,17 @@ function ChplResourcesOverview() {
                 <TableCell>
                   Please refer to the ONC Health IT Certification Program&apos;s
                   {' '}
-                  <a href="https://www.healthit.gov/topic/certified-health-it-complaint-process">Provider Complaint Process</a>
+                  <ChplLink
+                    href="https://www.healthit.gov/topic/certified-health-it-complaint-process"
+                    text="Provider Complaint Process"
+                    analytics={{
+                      ...analytics,
+                      category: 'Overview',
+                      event: 'Go to Provider Complaint Process',
+                    }}
+                    external={false}
+                    inline
+                  />
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -308,7 +382,17 @@ function ChplResourcesOverview() {
                 <TableCell>
                   Please use
                   {' '}
-                  <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC&apos;s Health IT Feedback Form</a>
+                  <ChplLink
+                    href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
+                    text="ONC&apos;s Health IT Feedback Form"
+                    analytics={{
+                      ...analytics,
+                      category: 'Overview',
+                      event: 'Go to ONC&apos;s Health IT Feedback Form',
+                    }}
+                    external={false}
+                    inline
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -317,7 +401,17 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             If the ONC-ACB cannot or does not address your issue, please use
             {' '}
-            <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC&apos;s Health IT Feedback Form</a>
+            <ChplLink
+              href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
+              text="ONC&apos;s Health IT Feedback Form"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to ONC&apos;s Health IT Feedback Form',
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Divider />
@@ -333,7 +427,17 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             The ONC Certification Program was established to ensure that certified health information technology adheres to the security, functionality, and technology requirements adopted by HHS. ONC-Authorized Certification Bodies (ONC-ACBs) certify health IT products that were successfully tested by an ONC-Authorized Testing Laboratory (ONC-ATL) against the certification criteria adopted by HHS. Products listed on the CHPL have been successfully certified through the
             {' '}
-            <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program</a>
+            <ChplLink
+              href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program"
+              text="ONC Health IT Certification Program"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to ONC Health IT Certification Program',
+              }}
+              external={false}
+              inline
+            />
             {' '}
             by an ONC-ACB.
           </Typography>
@@ -346,7 +450,17 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             For more information on attesting to Promoting Interoperability, please refer to the
             {' '}
-            <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration and Attestation Page</a>
+            <ChplLink
+              href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html"
+              text="CMS Promoting Interoperability Programs Registration and Attestation Page"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to CMS Promoting Interoperability Programs Registration and Attestation Page',
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Typography gutterBottom variant="h3">
@@ -358,7 +472,17 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             For more information, please see the
             {' '}
-            <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">CMS Clinical Quality Measures Basics page</a>
+            <ChplLink
+              href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html"
+              text="CMS Clinical Quality Measures Basics page"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to CMS Clinical Quality Measures Basics page',
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Typography gutterBottom variant="h3">
@@ -367,7 +491,17 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             eCQMs use data from electronic health records (EHR) and/or health information technology systems to measure health care quality. CMS, along with other HHS agencies, use eCQMs in a variety of quality reporting and incentive programs. For more information on eCQMs, please visit the
             {' '}
-            <a href="https://ecqi.healthit.gov/">eCQI Resource Center</a>
+            <ChplLink
+              href="https://ecqi.healthit.gov/"
+              text="eCQI Resource Center"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to eCQI Resource Center',
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Divider />
@@ -383,10 +517,30 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             To be listed on the CHPL, health information technology must first be successfully tested by an ONC-ATL and then certified by an ONC-ACB against at least one
             {' '}
-            <a href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations">certification criterion adopted by HHS</a>
+            <ChplLink
+              href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations"
+              text="certification criterion adopted by HHS"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to certification criterion adopted by HHS',
+              }}
+              external={false}
+              inline
+            />
             . For more information on the ONC Certification Program, ONC-ATLs, and ONC-ACBs, please see the
             {' '}
-            <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program page</a>
+            <ChplLink
+              href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program"
+              text="ONC Health IT Certification Program page"
+              analytics={{
+                ...analytics,
+                category: 'Overview',
+                event: 'Go to ONC Health IT Certification Program page',
+              }}
+              external={false}
+              inline
+            />
             .
           </Typography>
           <Divider />
@@ -409,25 +563,43 @@ function ChplResourcesOverview() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {getOrgs(acbQuery, 'acbs').map((acb) => (
+              { getOrgs(acbQuery, 'acbs').map((acb) => (
                 <TableRow key={acb.id}>
                   <TableCell>ONC-ACB</TableCell>
                   <TableCell>{acb.name}</TableCell>
                   <TableCell>{acb.acbCode}</TableCell>
                   <TableCell>
-                    {acb.website
-                      && <ChplLink href={acb.website} />}
+                    { acb.website
+                     && (
+                     <ChplLink
+                       href={acb.website}
+                       analytics={{
+                         ...analytics,
+                         category: 'Overview',
+                         event: `Go to ${acb.website}`,
+                       }}
+                     />
+                     )}
                   </TableCell>
                 </TableRow>
               ))}
-              {getOrgs(atlQuery, 'atls').map((atl) => (
+              { getOrgs(atlQuery, 'atls').map((atl) => (
                 <TableRow key={atl.id}>
                   <TableCell>ONC-ATL</TableCell>
                   <TableCell>{atl.name}</TableCell>
                   <TableCell>{atl.atlCode}</TableCell>
                   <TableCell>
-                    {atl.website
-                      && <ChplLink href={atl.website} />}
+                    { atl.website
+                     && (
+                     <ChplLink
+                       href={atl.website}
+                       analytics={{
+                         ...analytics,
+                         category: 'Overview',
+                         event: `Go to ${atl.website}`,
+                       }}
+                     />
+                     )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -435,14 +607,8 @@ function ChplResourcesOverview() {
           </Table>
         </div>
       </div>
-    </ThemeProvider>
+    </>
   );
 }
 
-export default function OverviewWrapper() {
-  return (
-    <ApiWrapper>
-      <ChplResourcesOverview />
-    </ApiWrapper>
-  );
-}
+export default ChplResourcesOverview;

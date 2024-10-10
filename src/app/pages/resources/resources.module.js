@@ -6,9 +6,8 @@ import ChplForgotPassword from './forgot-password/forgot-password-wrapper';
 import ChplNotFound from './not-found/not-found';
 import ChplResourcesApi from './api';
 import ChplResourcesDownloadWrapper from './download/download-wrapper';
-import ChplResourcesOverview from './overview';
+import ChplResourcesOverview from './overview/overview-wrapper';
 import ChplStyleGuide from './style-guide';
-
 
 angular
   .module('chpl.resources', [
