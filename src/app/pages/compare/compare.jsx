@@ -82,7 +82,10 @@ const useStyles = makeStyles({
 });
 
 function ChplComparePage({ ids }) {
-  const { analytics } = useAnalyticsContext();
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'Compare',
+  };
   const [activeListing, setActiveListing] = useState(undefined);
   const [cqms, setCqms] = useState([]);
   const [criteria, setCriteria] = useState([]);
@@ -245,7 +248,6 @@ function ChplComparePage({ ids }) {
   const dropListing = (listing) => {
     eventTrack({
       ...analytics,
-      category: 'Compare',
       event: 'Remove Listing from Compare',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
@@ -325,7 +327,6 @@ function ChplComparePage({ ids }) {
                       text="details"
                       analytics={{
                         ...analytics,
-                        category: 'Compare',
                         event: 'Navigate to Listing Details Page',
                         label: listing.chplProductNumber,
                         aggregationName: listing.product.name,

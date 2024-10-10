@@ -99,7 +99,10 @@ function ChplResourcesDownload() {
     getApiKey,
     getToken,
   } = getAngularService('authService');
-  const { analytics } = useAnalyticsContext();
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'Download the CHPL',
+  };
   const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
@@ -131,7 +134,6 @@ function ChplResourcesDownload() {
     if (selectedOption) {
       eventTrack({
         ...analytics,
-        category: 'Download the CHPL',
         event: `Download CHPL ${type === 'definition' ? 'Definition' : 'Data'} File`,
         label: files[selectedOption].label,
       });
@@ -201,7 +203,6 @@ function ChplResourcesDownload() {
                           router={{ sref: 'resources.api' }}
                           analytics={{
                             ...analytics,
-                            category: 'Download the CHPL',
                             event: 'Navigate to CHPL API page',
                           }}
                         />
@@ -280,7 +281,6 @@ function ChplResourcesDownload() {
                       text="API Service Base URL Availability"
                       analytics={{
                         ...analytics,
-                        category: 'Download the CHPL',
                         event: 'Go to API Service Base URL Availability',
                       }}
                       external={false}

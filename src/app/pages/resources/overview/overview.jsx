@@ -70,7 +70,10 @@ const getOrgs = (query, key) => {
 };
 
 function ChplResourcesOverview() {
-  const { analytics } = useAnalyticsContext();
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'Overview',
+  };
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
@@ -101,7 +104,6 @@ function ChplResourcesOverview() {
                id="announcements"
                analytics={{
                  ...analytics,
-                 category: 'Overview',
                  event: 'Navigate to Announcements',
                }}
              >
@@ -113,7 +115,6 @@ function ChplResourcesOverview() {
             id="whatIsTheChpl"
             analytics={{
               ...analytics,
-              category: 'Overview',
               event: 'Navigate to What is the CHPL',
             }}
           >
@@ -124,7 +125,6 @@ function ChplResourcesOverview() {
             id="recommendedWebBrowsers"
             analytics={{
               ...analytics,
-              category: 'Overview',
               event: 'Navigate to Recommended Web Browsers',
             }}
           >
@@ -135,7 +135,6 @@ function ChplResourcesOverview() {
             id="usingTheChplWebsite"
             analytics={{
               ...analytics,
-              category: 'Overview',
               event: 'Navigate to Using the CHPL Website',
             }}
           >
@@ -146,7 +145,6 @@ function ChplResourcesOverview() {
             id="oncCertificationProgram"
             analytics={{
               ...analytics,
-              category: 'Overview',
               event: 'Navigate to ONC Certification Program',
             }}
           >
@@ -157,7 +155,6 @@ function ChplResourcesOverview() {
             id="forEhrDevelopers"
             analytics={{
               ...analytics,
-              category: 'Overview',
               event: 'Navigate to For EHR Developers',
             }}
           >
@@ -168,7 +165,6 @@ function ChplResourcesOverview() {
             id="oncacbAndAtlInformation"
             analytics={{
               ...analytics,
-              category: 'Overview',
               event: 'Navigate to ONC-ACB and ONC-ATL Information',
             }}
           >
@@ -221,7 +217,6 @@ function ChplResourcesOverview() {
               text="CHPL Public User Guide"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to CHPL Public User Guide',
               }}
               external={false}
@@ -237,7 +232,6 @@ function ChplResourcesOverview() {
               text="CMS Promoting Interoperability Programs Registration &amp; Attestation Page"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to CMS Promoting Interoperability Programs Registration &amp; Attestation Page',
               }}
               external={false}
@@ -320,7 +314,6 @@ function ChplResourcesOverview() {
               text="Certification Bodies"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to Certification Bodies',
               }}
               external={false}
@@ -334,7 +327,6 @@ function ChplResourcesOverview() {
               text="Testing Laboratories"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to Testing Laboratories',
               }}
               external={false}
@@ -361,7 +353,6 @@ function ChplResourcesOverview() {
                     text="Provider Complaint Process"
                     analytics={{
                       ...analytics,
-                      category: 'Overview',
                       event: 'Go to Provider Complaint Process',
                     }}
                     external={false}
@@ -387,7 +378,6 @@ function ChplResourcesOverview() {
                     text="ONC&apos;s Health IT Feedback Form"
                     analytics={{
                       ...analytics,
-                      category: 'Overview',
                       event: 'Go to ONC&apos;s Health IT Feedback Form',
                     }}
                     external={false}
@@ -406,7 +396,6 @@ function ChplResourcesOverview() {
               text="ONC&apos;s Health IT Feedback Form"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to ONC&apos;s Health IT Feedback Form',
               }}
               external={false}
@@ -432,7 +421,6 @@ function ChplResourcesOverview() {
               text="ONC Health IT Certification Program"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to ONC Health IT Certification Program',
               }}
               external={false}
@@ -455,7 +443,6 @@ function ChplResourcesOverview() {
               text="CMS Promoting Interoperability Programs Registration and Attestation Page"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to CMS Promoting Interoperability Programs Registration and Attestation Page',
               }}
               external={false}
@@ -477,7 +464,6 @@ function ChplResourcesOverview() {
               text="CMS Clinical Quality Measures Basics page"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to CMS Clinical Quality Measures Basics page',
               }}
               external={false}
@@ -496,7 +482,6 @@ function ChplResourcesOverview() {
               text="eCQI Resource Center"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to eCQI Resource Center',
               }}
               external={false}
@@ -522,7 +507,6 @@ function ChplResourcesOverview() {
               text="certification criterion adopted by HHS"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to certification criterion adopted by HHS',
               }}
               external={false}
@@ -535,7 +519,6 @@ function ChplResourcesOverview() {
               text="ONC Health IT Certification Program page"
               analytics={{
                 ...analytics,
-                category: 'Overview',
                 event: 'Go to ONC Health IT Certification Program page',
               }}
               external={false}
@@ -575,7 +558,6 @@ function ChplResourcesOverview() {
                        href={acb.website}
                        analytics={{
                          ...analytics,
-                         category: 'Overview',
                          event: `Go to ${acb.website}`,
                        }}
                      />
@@ -595,7 +577,6 @@ function ChplResourcesOverview() {
                        href={atl.website}
                        analytics={{
                          ...analytics,
-                         category: 'Overview',
                          event: `Go to ${atl.website}`,
                        }}
                      />
