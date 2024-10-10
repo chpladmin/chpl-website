@@ -44,13 +44,11 @@ function ChplApiKeyRegistration() {
   const classes = useStyles();
   let formik = {};
 
-  const writeAnalytics = (values) => {
-    const label = `...@${values.email.split('@')[1]}`;
+  const writeAnalytics = () => {
     eventTrack({
       ...analytics,
       event: 'Register for API Key',
     });
-    analytics.eventTrack('Register For API Key', { category: 'CHPL API', label });
   };
 
   const createRequest = (values) => {
@@ -82,7 +80,7 @@ function ChplApiKeyRegistration() {
     initialValues: { email: '', nameOrganization: '' },
     validationSchema,
     onSubmit: (values) => {
-      writeAnalytics(values);
+      writeAnalytics();
       createRequest(values);
     },
     validateOnChange: false,
