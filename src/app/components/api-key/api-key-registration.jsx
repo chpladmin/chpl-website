@@ -13,9 +13,11 @@ import SendIcon from '@material-ui/icons/Send';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { getAngularService } from '../../services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { getAngularService } from 'services/angular-react-helper';
+import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -25,7 +27,7 @@ const useStyles = makeStyles(() => ({
     paddingRight: '4px',
     backgroundColor: '#ffffff',
   },
-}));
+});
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -36,14 +38,18 @@ const validationSchema = yup.object({
 });
 
 function ChplApiKeyRegistration() {
-  const analytics = getAngularService('$analytics');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
+  const { analytics } = useAnalyticsContext();
   const classes = useStyles();
   let formik = {};
 
   const writeAnalytics = (values) => {
     const label = `...@${values.email.split('@')[1]}`;
+    eventTrack({
+      ...analytics,
+      event: 'Register for API Key',
+    });
     analytics.eventTrack('Register For API Key', { category: 'CHPL API', label });
   };
 
@@ -129,7 +135,7 @@ function ChplApiKeyRegistration() {
           name="registerButton"
           variant="contained"
           onClick={formik.handleSubmit}
-          endIcon={<SendIcon/>}
+          endIcon={<SendIcon />}
         >
           Register
         </Button>
