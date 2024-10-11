@@ -20,11 +20,11 @@ describe('the Developer Search page', () => {
   });
 
   it('should not have the compose message button for anonymous users', async () => {
-    await expect(await page.composeMessageButton).not.toBeExisting();
+    await expect(page.composeMessageButton).not.toBeExisting();
   });
 
   it('should have the Download Developers button for anonymous users', async () => {
-    await expect(await page.downloadDevelopersButton).toBeExisting();
+    await expect(page.downloadDevelopersButton).toBeExisting();
   });
 
   describe('when logged in as ONC', () => {
@@ -37,11 +37,11 @@ describe('the Developer Search page', () => {
     });
 
     it('should have the compose message button for ONC users', async () => {
-      await expect(await page.composeMessageButton).toBeExisting();
+      await expect(page.composeMessageButton).toBeExisting();
     });
 
     it('should have the Download Developers button for ONC users', async () => {
-      await expect(await page.downloadDevelopersButton).toBeExisting();
+      await expect(page.downloadDevelopersButton).toBeExisting();
     });
   });
 
@@ -56,11 +56,11 @@ describe('the Developer Search page', () => {
     });
 
     it('should NOT have the compose message button for ACB users', async () => {
-      await expect(await page.composeMessageButton).not.toBeExisting();
+      await expect(page.composeMessageButton).not.toBeExisting();
     });
 
     it('should have the Download Developers button for ACB users', async () => {
-      await expect(await page.downloadDevelopersButton).toBeExisting();
+      await expect(page.downloadDevelopersButton).toBeExisting();
     });
   });
 });
