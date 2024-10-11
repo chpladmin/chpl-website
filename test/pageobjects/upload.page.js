@@ -28,10 +28,6 @@ class UploadPage extends Page {
   get uploadResults() {
     return $(this.elements.snackbar);
   }
-
-  async clearResults() {
-    this.uploadResults.parentElement().$('button').click();
-  }
 }
 
 export default UploadPage;

@@ -6,12 +6,18 @@ class ConfirmPage extends Page {
     this.name = 'ConfirmPage';
     this.elements = {
       ...this.elements,
+      listingsTable: 'table',
       processButton: (id) => `//button[@id="process-pending-listing-${id}"]`,
     };
   }
 
-  open() {
-    return super.open('administration/confirm/listings');
+  async open() {
+    await super.open('administration/confirm/listings');
+    await browser.waitUntil(() => this.listingsTable.isDisplayed());
+  }
+
+  get listingsTable() {
+    return $(this.elements.listingsTable);
   }
 
   async waitForPendingListingToBecomeClickable(pendingListingId) {
