@@ -16,14 +16,15 @@ describe('the Upload/Confirm Listing workflow', () => {
   });
 
   afterEach(async () => {
+    await confirm.actionBarMessagesCloseButton.click();
     await login.logOut();
   });
 
   it('should have a warning message', async () => {
     await upload.uploadListing('test/resources/HTI-1-criteria.csv');
     await confirm.open();
-    // open the drawer with warnings
-    // expect the warning message to be displayed
-    expect(true).toBe(true);
+    await confirm.waitForPendingListingToBecomeClickable('15.02.04.2701.MVL1.12.00.1.231020');
+    await confirm.openDrawer('15.02.04.2701.MVL1.12.00.1.231020');
+    await expect(confirm.actionBarWarnings).toHaveText(expect.stringContaining('This listing has a product name of \'Compulink Healthcare Solutions\', but the developer Compulink Healthcare Solutions has a similarly named product \'Compulink Advantage\'. Should the listing belong to that product instead?'));
   });
 });
