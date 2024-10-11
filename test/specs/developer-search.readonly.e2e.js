@@ -32,6 +32,7 @@ describe('the Developer Search page', () => {
       login = new LoginComponent();
       await login.logIn('onc');
     });
+
     afterEach(async () => {
       await login.logOut();
     });

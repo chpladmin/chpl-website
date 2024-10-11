@@ -1,18 +1,36 @@
 import Page from './page.es6';
 
-const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 class UploadPage extends Page {
   constructor() {
     super();
     this.name = 'UploadPage';
     this.elements = {
       ...this.elements,
+      root: undefined,
+      chooseUploadFile: '#upload-file-selector',
+      uploadButton: '#submit-upload-file',
+      snackbar: '#notistack-snackbar',
     };
   }
 
-  open(path) {
-    return super.open('administration/upload');
+  get title() {
+    return $(this.elements.root).$$('div')[0];
+  }
+
+  get chooseUploadFileButton() {
+    return $(this.elements.root).$(this.elements.chooseUploadFile);
+  }
+
+  get uploadButton() {
+    return $(this.elements.root).$(this.elements.uploadButton);
+  }
+
+  get uploadResults() {
+    return $(this.elements.snackbar);
+  }
+
+  async clearResults() {
+    this.uploadResults.parentElement().$('button').click();
   }
 }
 

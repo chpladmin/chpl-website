@@ -1,18 +1,21 @@
 import Page from './page.es6';
 
-const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 class ConfirmPage extends Page {
   constructor() {
     super();
     this.name = 'ConfirmPage';
     this.elements = {
       ...this.elements,
+      processButton: (id) => `//button[@id="process-pending-listing-${id}"]`,
     };
   }
 
-  open(path) {
+  open() {
     return super.open('administration/confirm/listings');
+  }
+
+  async waitForPendingListingToBecomeClickable(pendingListingId) {
+    await (await (this.processButton(pendingListingId)).waitForClickable());
   }
 }
 
