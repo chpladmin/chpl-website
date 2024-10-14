@@ -9,6 +9,7 @@ class ConfirmPage extends Page {
       listingsTable: 'table',
       processButton: (id) => `//button[@id="process-pending-listing-${id}"]`,
       actionBarMessagesCloseButton: '#action-bar-messages-close',
+      actionBarErrors: '#action-bar-errors',
       actionBarWarnings: '#action-bar-warnings',
     };
   }
@@ -21,6 +22,8 @@ class ConfirmPage extends Page {
   get listingsTable() { return $(this.elements.listingsTable); }
 
   get actionBarMessagesCloseButton() { return $(this.elements.actionBarMessagesCloseButton); }
+
+  get actionBarErrors() { return $(this.elements.actionBarErrors); }
 
   get actionBarWarnings() { return $(this.elements.actionBarWarnings); }
 

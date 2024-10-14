@@ -2,6 +2,8 @@ import UploadListingPage from '../pageobjects/upload-listing.page';
 import ConfirmPage from '../pageobjects/confirm.page';
 import LoginComponent from '../pageobjects/login-component.page';
 
+import listings from './data/listing-upload.data';
+
 let upload;
 let confirm;
 let login;
@@ -16,15 +18,35 @@ describe('the Upload/Confirm Listing workflow', () => {
   });
 
   afterEach(async () => {
-    await confirm.actionBarMessagesCloseButton.click();
+    if (await confirm.actionBarMessagesCloseButton.isDisplayed()) {
+      await confirm.actionBarMessagesCloseButton.click();
+    }
     await login.logOut();
   });
 
-  it('should have a warning message', async () => {
-    await upload.uploadListing('test/resources/HTI-1-criteria.csv');
-    await confirm.open();
-    await confirm.waitForPendingListingToBecomeClickable('15.02.04.2701.MVL1.12.00.1.231020');
-    await confirm.openDrawer('15.02.04.2701.MVL1.12.00.1.231020');
-    await expect(confirm.actionBarWarnings).toHaveText(expect.stringContaining('This listing has a product name of \'Compulink Healthcare Solutions\', but the developer Compulink Healthcare Solutions has a similarly named product \'Compulink Advantage\'. Should the listing belong to that product instead?'));
+  listings.forEach(({
+    chplProductNumber,
+    fileName,
+    expectedErrors,
+    expectedWarnings,
+  }) => {
+    it(`should have ${expectedErrors.length} specific errors and ${expectedWarnings.length} specific warnings for ${chplProductNumber}`, async () => {
+      await upload.uploadListing(fileName);
+      await confirm.open();
+      await confirm.waitForPendingListingToBecomeClickable(chplProductNumber);
+      if (expectedErrors.length > 0 || expectedWarnings.length > 0) {
+        await confirm.openDrawer(chplProductNumber);
+        if (expectedErrors.length > 0) {
+          await expectedErrors.forEach(async (error) => {
+            await expect(confirm.actionBarErrors).toHaveTextContaining(error);
+          });
+        }
+        if (expectedWarnings.length > 0) {
+          await expectedWarnings.forEach(async (warning) => {
+            await expect(confirm.actionBarWarnings).toHaveTextContaining(warning);
+          });
+        }
+      }
+    });
   });
 });
