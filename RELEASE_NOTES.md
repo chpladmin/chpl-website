@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.26.0
+_14 October 2024_
+
+### Features
+* Add Surveillance Summary Statistics to the Dashboard
+
+---
+
 ## Version 13.25.0
 _30 September 2024_
 
