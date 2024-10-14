@@ -72,7 +72,8 @@
       </div>
     </div>
   </div>
-  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
-                   take-action="$ctrl.takeActionBarAction(action)">
-  </chpl-action-bar>
+  <chpl-action-bar-wrapper-bridge
+    is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+    dispatch="::$ctrl.takeActionBarAction">
+  </chpl-action-bar-wrapper-bridge>
 </span>

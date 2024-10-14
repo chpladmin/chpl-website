@@ -15,6 +15,7 @@ const ProductEditComponent = {
       this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.mergeOptions = {};
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
     }
 
     $onInit() {

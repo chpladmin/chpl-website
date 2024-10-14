@@ -6,26 +6,25 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 import { eventTrack } from 'services/analytics.service';
-import { CmsContext, UserContext } from 'shared/contexts';
+import { CmsContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 
-function ChplCmsButton(props) {
-  const { listing } = props;
+function ChplCmsButton({ listing }) {
+  const { analytics } = useAnalyticsContext();
   const {
     addListing,
     canDisplayButton,
     isInWidget,
     removeListing,
   } = useContext(CmsContext);
-  const { user } = useContext(UserContext);
 
   const handleClick = () => {
     eventTrack({
       event: isInWidget(listing) ? 'Remove Listing from CMS ID Widget' : 'Add Listing to CMS ID Widget',
-      category: 'Listing Details',
+      category: analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
+      group: analytics.group,
     });
     if (isInWidget(listing)) {
       removeListing(listing);

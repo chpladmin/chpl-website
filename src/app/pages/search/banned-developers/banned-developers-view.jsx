@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { theme, utilStyles } from 'themes';
 import {
@@ -25,8 +24,9 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -84,10 +84,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplBannedDevelopersSearchView(props) {
+function ChplBannedDevelopersSearchView() {
   const storageKey = 'storageKey-bannedDevelopersView';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [developers, setDevelopers] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -133,7 +132,12 @@ function ChplBannedDevelopersSearchView(props) {
   ];
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort Column',
+      category: analytics.category,
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+      group: analytics.group,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -168,7 +172,18 @@ function ChplBannedDevelopersSearchView(props) {
           <Typography variant="body1">
             Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product’s details page to confirm its certification status by
             {' '}
-            <a href="https://chpl.healthit.gov/#/search">searching for the product</a>
+            <ChplLink
+              href="#/search"
+              text="searching for the product"
+              analytics={{
+                event: 'Navigate to searching for the product',
+                category: analytics.category,
+                group: analytics.group,
+              }}
+              external={false}
+              router={{ sref: 'search' }}
+              inline
+            />
           </Typography>
         </div>
       </div>
@@ -226,7 +241,12 @@ function ChplBannedDevelopersSearchView(props) {
                                   <ChplLink
                                     href={`#/organizations/developers/${item.id}`}
                                     text={item.name}
-                                    analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
+                                    analytics={{
+                                      event: 'Navigate to Developer Page',
+                                      category: analytics.category,
+                                      label: item.name,
+                                      group: analytics.group,
+                                    }}
                                     external={false}
                                     router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
                                   />
@@ -263,7 +283,4 @@ function ChplBannedDevelopersSearchView(props) {
 export default ChplBannedDevelopersSearchView;
 
 ChplBannedDevelopersSearchView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

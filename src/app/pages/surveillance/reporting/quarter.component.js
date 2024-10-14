@@ -18,6 +18,7 @@ export const SurveillanceReportQuarterComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
       this.disallowedFilters = ['certificationBodies', 'receivedDate', 'closedDate'];
     }
 
@@ -51,10 +52,6 @@ export const SurveillanceReportQuarterComponent = {
 
     save () {
       this.onSave({report: this.report});
-    }
-
-    can (action) {
-      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'chpl-onc-acb']);
     }
 
     cancel () {

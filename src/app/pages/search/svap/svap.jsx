@@ -13,6 +13,7 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import ChplTabbedValueEntry from 'components/filter/filters/tabbed-value-entry';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -48,6 +49,7 @@ const getSvapValueEntry = (props) => (
 
 function ChplSvapSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const svapQuery = useFetchSvaps();
@@ -115,20 +117,23 @@ function ChplSvapSearchPage() {
       }));
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
-  const analytics = {
-    category: 'SVAP Information',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - SVAP Information',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-svapPage"
-    >
-      <ChplSvapSearchView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-svapPage"
+      >
+        <ChplSvapSearchView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 
