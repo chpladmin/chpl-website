@@ -9,10 +9,9 @@ import {
   Timeline,
 } from '@material-ui/lab';
 import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
-import { object } from 'prop-types';
+import { func, object, string } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
-import { compareOrganization } from './services/organizations.service';
 
 import { useFetchOrganizationActivityMetadata } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
@@ -23,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplOrganizationActivity({ organization }) {
+function ChplOrganizationActivity({ organization, type, interpret }) {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -31,7 +30,7 @@ function ChplOrganizationActivity({ organization }) {
   const { data, isError, isLoading } = useFetchOrganizationActivityMetadata({
     organization,
     isEnabled: open,
-    type: organization.acbCode ? 'acbs' : 'atls',
+    type,
   });
 
   useEffect(() => {
@@ -46,7 +45,7 @@ function ChplOrganizationActivity({ organization }) {
         <ChplActivityDetails
           key={activity.id}
           activity={activity}
-          interpret={compareOrganization}
+          interpret={interpret}
           last={idx === arr.length - 1}
         />
       )));
@@ -103,4 +102,6 @@ export default ChplOrganizationActivity;
 
 ChplOrganizationActivity.propTypes = {
   organization: object.isRequired,
+  type: string.isRequired,
+  interpret: func.isRequired,
 };

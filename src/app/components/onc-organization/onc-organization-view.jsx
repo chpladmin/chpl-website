@@ -14,6 +14,7 @@ import { func } from 'prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
+import { compareOrganization } from 'components/activity/services/organizations.service';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
@@ -66,6 +67,8 @@ function ChplOncOrganizationView({
             { organization.name }
             <ChplOrganizationActivity
               organization={organization}
+              type={organization.acbCode ? 'acbs' : 'atls'}
+              interpret={compareOrganization}
             />
           </div>
         )}
