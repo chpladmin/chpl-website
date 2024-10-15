@@ -9,10 +9,12 @@ import {
   Timeline,
 } from '@material-ui/lab';
 import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
-import { func, string } from 'prop-types';
+import { object } from 'prop-types';
 
-import ChplSystemMaintenanceActivityDetails from './system-maintenance-activity-details';
+import ChplActivityDetails from './activity-details';
+import { compareDeveloper } from './services/developers.service';
 
+import { useFetchDeveloperActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
 const useStyles = makeStyles({
@@ -21,12 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSystemMaintenanceActivity({ fetch, title }) {
+function ChplDeveloperActivity({ developer }) {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const { data, isError, isLoading } = fetch({
+  const { data, isError, isLoading } = useFetchDeveloperActivity({
+    developer,
     isEnabled: open,
   });
 
@@ -36,13 +39,16 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
       setActivities([]);
       return;
     }
-    setActivities(data.activities.map((activity, idx, arr) => (
-      <ChplSystemMaintenanceActivityDetails
-        key={activity.id}
-        activity={activity}
-        last={idx === arr.length - 1}
-      />
-    )));
+    setActivities(data
+      .sort((a, b) => (a.date < b.date ? 1 : -1))
+      .map((activity, idx, arr) => (
+        <ChplActivityDetails
+          key={activity.id}
+          activity={activity}
+          interpret={compareDeveloper}
+          last={idx === arr.length - 1}
+        />
+      )));
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
@@ -55,33 +61,32 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
 
   return (
     <>
-      <ChplTooltip title={`${title} Activity`}>
+      <ChplTooltip title="Developer Activity">
         <Button
-          id="view-system-maintenance-activity"
-          aria-label={`Open ${title} Activity dialog`}
+          id="view-developer-activity"
+          aria-label="Open Developer Activity dialog"
           color="secondary"
           variant="contained"
           onClick={handleClickOpen}
           endIcon={<TrackChangesOutlined />}
-          style={{ marginRight: '8px' }}
+          size="small"
+          style={{ fontSize: 'small' }}
         >
           History
         </Button>
       </ChplTooltip>
       <Dialog
         onClose={handleClose}
-        aria-labelledby="view-system-maintenance-activity"
+        aria-labelledby="view-developer-activity"
         open={open}
         maxWidth="sm"
       >
         <ChplDialogTitle
-          id="system-maintenance-activity-title"
+          id="developer-title"
           onClose={handleClose}
           className={classes.legendTitle}
         >
-          { title }
-          {' '}
-          Activity
+          Developer Activity
         </ChplDialogTitle>
         <DialogContent dividers>
           <Timeline>
@@ -93,9 +98,8 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
   );
 }
 
-export default ChplSystemMaintenanceActivity;
+export default ChplDeveloperActivity;
 
-ChplSystemMaintenanceActivity.propTypes = {
-  fetch: func.isRequired,
-  title: string.isRequired,
+ChplDeveloperActivity.propTypes = {
+  developer: object.isRequired,
 };

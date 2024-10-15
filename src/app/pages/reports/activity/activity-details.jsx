@@ -14,7 +14,7 @@ import compareSystemMaintenance from 'components/activity/services/system-mainte
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareAcb } from 'pages/reports/acbs/acbs.service';
 import { compareAtl } from 'pages/reports/atls/atls.service';
-import { compareDeveloper } from 'pages/reports/developers/developers.service';
+import { compareDeveloper } from 'components/activity/services/developers.service';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
 import { compareVersion } from 'pages/reports/versions/versions.service';
