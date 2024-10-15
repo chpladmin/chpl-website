@@ -75,6 +75,12 @@ function ChplDashboard() {
       frameHeight: '500px',
       url: useFetchReportUrl('TestTool'),
     }, {
+      text: 'Criteria Migration - (a)(9) to (b)(11)',
+      reportId: '',
+      icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
+      frameHeight: '825px',
+      url: useFetchReportUrl('CriteriaMigration-a9tob11'),
+    }, {
       text: 'More to Come',
       reportId: 'MoreToCome',
       icon: <HighlightOutlinedIcon fontSize="large" color="primary" />,
