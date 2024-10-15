@@ -361,6 +361,7 @@ const briefLookup = {
   'cqmResults.criteria.certificationId': { message: () => undefined },
   'cqmResults.criteria.id': { message: () => undefined },
   'cqmResults.description': { message: () => undefined },
+  'cqmResults.domain': { message: () => undefined },
   'cqmResults.id': { message: () => undefined },
   'cqmResults.nqfNumber': { message: () => undefined },
   'cqmResults.number': { message: () => undefined },
