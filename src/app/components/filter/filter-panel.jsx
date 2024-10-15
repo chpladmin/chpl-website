@@ -121,9 +121,8 @@ function ChplFilterPanel() {
   const handleClick = (e) => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: 'Open Advanced Search',
-        category: filterContext.analytics.category,
-        group: filterContext.analytics.group,
       });
     }
     setAnchor(e.currentTarget);
@@ -133,9 +132,8 @@ function ChplFilterPanel() {
   const handleClose = () => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: 'Close Advanced Search',
-        category: filterContext.analytics.category,
-        group: filterContext.analytics.group,
       });
     }
     setAnchor(null);
@@ -153,10 +151,9 @@ function ChplFilterPanel() {
     } else {
       if (filterContext.analytics) {
         eventTrack({
+          ...filterContext.analytics,
           event: 'Open Filter',
-          category: filterContext.analytics.category,
           label: filter.getFilterDisplay(filter),
-          group: filterContext.analytics.group,
         });
       }
       setActiveCategoryKey(filter.key);
@@ -166,11 +163,10 @@ function ChplFilterPanel() {
   const handleFilterToggle = (value) => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: 'Toggle Filter',
-        category: filterContext.analytics.category,
         label: activeCategory.getValueDisplay(value),
         aggregationName: activeCategory.display,
-        group: filterContext.analytics.group,
       });
     }
     filterContext.dispatch('toggle', activeCategory, value);
@@ -188,10 +184,9 @@ function ChplFilterPanel() {
   const toggleOperator = (f) => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: `Set Any/All Filter to ${f.operator === 'and' ? 'Any' : 'All'}`,
-        category: filterContext.analytics.category,
         label: f.getFilterDisplay(f),
-        group: filterContext.analytics.group,
       });
     }
     filterContext.dispatch('toggleOperator', f);
