@@ -31,7 +31,7 @@ function ChplOrganizationActivity({ organization }) {
   const { data, isError, isLoading } = useFetchOrganizationActivityMetadata({
     organization,
     isEnabled: open,
-    type: 'acbs',
+    type: organization.acbCode ? 'acbs' : 'atls',
   });
 
   useEffect(() => {
