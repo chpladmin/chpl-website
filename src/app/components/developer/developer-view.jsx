@@ -26,7 +26,6 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import ChplDeveloperActivity from 'components/activity/developer-activity';
 import ChplOrganizationActivity from 'components/activity/organization-activity';
 import { compareDeveloper } from 'components/activity/services/developers.service';
 import { ChplLink, ChplTooltip } from 'components/util';
@@ -248,16 +247,11 @@ function ChplDeveloperView(props) {
             {isSplitting ? 'Original Developer' : developer.name}
             { can('edit') && !hasAnyRole(['chpl-developer'])
               && (
-                <>
-                  <ChplDeveloperActivity
-                    developer={developer}
-                  />
-                  <ChplOrganizationActivity
-                    organization={developer}
-                    type="developers"
-                    interpret={compareDeveloper}
-                  />
-                </>
+                <ChplOrganizationActivity
+                  organization={developer}
+                  type="developers"
+                  interpret={compareDeveloper}
+                />
               )}
           </div>
         )}
