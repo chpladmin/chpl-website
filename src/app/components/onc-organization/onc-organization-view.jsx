@@ -14,6 +14,7 @@ import { func } from 'prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ReactGA from 'react-ga4';
 
+import ChplOrganizationActivity from 'components/activity/organization-activity';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
@@ -25,6 +26,11 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  headerContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   header: {
     margin: '0',
     fontSize: '1.25em',
@@ -34,11 +40,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplOncOrganizationView(props) {
-  const {
-    organization: initialOrg,
-    dispatch,
-  } = props;
+function ChplOncOrganizationView({
+  organization: initialOrg,
+  dispatch,
+}) {
   const [organization, setOrganization] = useState(undefined);
   const classes = useStyles();
 
@@ -57,7 +62,14 @@ function ChplOncOrganizationView(props) {
       title={`${organization.name} Information`}
     >
       <CardHeader
-        title={organization.name}
+        title={(
+          <div className={classes.headerContainer}>
+            { organization.name }
+            <ChplOrganizationActivity
+              organization={organization}
+            />
+          </div>
+        )}
         component="h2"
         className={classes.header}
       />
