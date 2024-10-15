@@ -98,12 +98,12 @@ function ChplCqms(props) {
                     { cqm.successVersions?.length > 0 && cqm.successVersions.join(', ') }
                   </TableCell>
                   <TableCell>
-                    <ChplTooltip title={cqm.description}>
+                    <ChplTooltip title={cqm.description ?? 'unknown'}>
                       <Typography>
-                        { cqm.cmsId ? cqm.cmsId : `NQF-${cqm.nqfNumber}` }
+                        { cqm.cmsId ?? cqm.nqfNumber ? `NQF-${cqm.nqfNumber}` : 'unknown' }
                         :
                         {' '}
-                        { cqm.title}
+                        { cqm.title ?? 'unknown' }
                       </Typography>
                     </ChplTooltip>
                   </TableCell>
