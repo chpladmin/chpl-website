@@ -33,16 +33,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCqms(props) {
-  const { cqms } = props;
+function ChplCqms({ cqms, edition: initialEdition, viewAll: initialViewAll }) {
   const [viewAll, setViewAll] = useState(false);
   const [edition, setEdition] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
-    setEdition(props.edition);
-    setViewAll(props.viewAll);
-  }, [props.viewAll, props.edition]); // eslint-disable-line react/destructuring-assignment
+    setEdition(initialEdition);
+    setViewAll(initialViewAll);
+  }, [initialEdition, initialViewAll]);
 
   const getCriteriaCells = (cqm) => [1, 2, 3, 4].map((num) => {
     const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
@@ -100,7 +99,7 @@ function ChplCqms(props) {
                   <TableCell>
                     <ChplTooltip title={cqm.description ?? 'unknown'}>
                       <Typography>
-                        { cqm.cmsId ?? cqm.nqfNumber ? `NQF-${cqm.nqfNumber}` : 'unknown' }
+                        { cqm.cmsId ? cqm.cmsId : (cqm.nqfNumber ? `NQF-${cqm.nqfNumber}` : 'unknown') }
                         :
                         {' '}
                         { cqm.title ?? 'unknown' }
