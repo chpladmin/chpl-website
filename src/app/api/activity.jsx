@@ -42,7 +42,7 @@ const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
   })));
 };
 
-const useFetchDeveloperActivity = ({ developer, isEnabled }) => {
+const useFetchDeveloperActivityMetadata = ({ developer, isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/developers', developer.id], async () => {
     const response = await axios.get(`activity/metadata/developers/${developer.id}`);
@@ -130,7 +130,7 @@ export {
   useFetchActivities,
   useFetchActivity,
   useFetchDeveloperActivitiesMetadata,
-  useFetchDeveloperActivity,
+  useFetchDeveloperActivityMetadata,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,
   useFetchProductActivitiesMetadata,

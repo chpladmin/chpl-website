@@ -14,7 +14,7 @@ import { object } from 'prop-types';
 import ChplActivityDetails from './activity-details';
 import { compareDeveloper } from './services/developers.service';
 
-import { useFetchDeveloperActivity } from 'api/activity';
+import { useFetchDeveloperActivityMetadata } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
 const useStyles = makeStyles({
@@ -28,7 +28,7 @@ function ChplDeveloperActivity({ developer }) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchDeveloperActivity({
+  const { data, isError, isLoading } = useFetchDeveloperActivityMetadata({
     developer,
     isEnabled: open,
   });
