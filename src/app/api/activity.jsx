@@ -42,6 +42,16 @@ const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
   })));
 };
 
+const useFetchDeveloperActivity = ({ developer, isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/developers', developer.id], async () => {
+    const response = await axios.get(`activity/metadata/developers/${developer.id}`);
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 const useFetchFunctionalitiesTestedActivity = ({ isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/functionalities-tested'], async () => {
@@ -120,6 +130,7 @@ export {
   useFetchActivities,
   useFetchActivity,
   useFetchDeveloperActivitiesMetadata,
+  useFetchDeveloperActivity,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,
   useFetchProductActivitiesMetadata,
