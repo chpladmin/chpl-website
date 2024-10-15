@@ -12,8 +12,6 @@ import {
 } from '@material-ui/lab';
 import { bool, func, object } from 'prop-types';
 
-import compareSystemMaintenance from './services/system-maintenance.service';
-
 import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette } from 'themes';
@@ -26,17 +24,14 @@ const useStyles = makeStyles({
 
 const getDescription = (activity) => {
   let verb;
-  switch (activity.categories[0]) {
-    case 'CREATE':
-      verb = 'created';
-      break;
-    case 'DELETE':
-      verb = 'deleted';
-      break;
-    case 'UPDATE':
-      verb = 'updated';
-      break;
-      // no default
+  if (activity.categories.includes('CREATE')) {
+    verb = 'created';
+  } else if (activity.categories.includes('DELETE')) {
+    verb = 'deleted';
+  } else if (activity.categories.includes('UPDATE')) {
+    verb = 'updated';
+  } else {
+    verb = 'unknown';
   }
   const action = (
     <>
@@ -49,7 +44,7 @@ const getDescription = (activity) => {
   return action;
 };
 
-function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
+function ChplActivityDetails({ activity, interpret, last }) {
   const [details, setDetails] = useState([]);
   const classes = useStyles();
 
@@ -64,9 +59,17 @@ function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
       setDetails([]);
       return;
     }
-    setDetails(interpret(data?.originalData, data?.newData)
-      .map((item) => `<li>${item}</li>`)
-      .join(''));
+    if (data.originalData && data.newData) {
+      if (data.description.startsWith('Merged ')) {
+        setDetails(`<li>Developers ${data.originalData.map((p) => p.name).join(' and ')} merged to form ${data.newData.name}`);
+      } else if (activity.description.startsWith('Split ')) {
+        setDetails(`<li>Developers ${data.originalData.name} split to become Developers ${data.newData[0].name} and ${data.newData[1].name}`);
+      } else {
+        setDetails(interpret(data?.originalData, data?.newData)
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
+      }
+    }
   }, [data, isError, isLoading]);
 
   if (!activity || !activity.id) {
@@ -94,14 +97,10 @@ function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
   );
 }
 
-export default ChplSystemMaintenanceActivityDetails;
+export default ChplActivityDetails;
 
-ChplSystemMaintenanceActivityDetails.propTypes = {
+ChplActivityDetails.propTypes = {
   activity: object.isRequired,
-  interpret: func,
+  interpret: func.isRequired,
   last: bool.isRequired,
-};
-
-ChplSystemMaintenanceActivityDetails.defaultProps = {
-  interpret: compareSystemMaintenance,
 };
