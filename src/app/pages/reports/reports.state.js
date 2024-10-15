@@ -48,11 +48,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
-  name: 'reports.developers',
-  url: '/developers',
-  component: 'chplReportsDevelopers',
-  data: { title: 'CHPL Activity - Developers' },
-}, {
   name: 'reports.products',
   url: '/products',
   component: 'chplReportsProducts',
