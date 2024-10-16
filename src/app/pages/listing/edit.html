@@ -1,4 +1,10 @@
-<div ng-form="$ctrl.form">
+<div feature-flag="upload-to-update">
+  <chpl-listing-edit-bridge
+    listing="$ctrl.listing"
+    >
+  </chpl-listing-edit-bridge>
+</div>
+<div ng-form="$ctrl.form" feature-flag="upload-to-update" feature-flag-hide>
   <div class="listing-edit__details">
     <div class="panel panel-default">
       <div class="panel-heading">
