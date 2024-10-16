@@ -101,6 +101,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
