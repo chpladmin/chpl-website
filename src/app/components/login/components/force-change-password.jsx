@@ -89,6 +89,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         ReactGA.event({ action: 'Log In', category: 'Authentication' });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
