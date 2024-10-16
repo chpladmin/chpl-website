@@ -17,7 +17,7 @@ import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 import { jsJoda } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import {
   listing as listingPropType,
   resources as resourceDefinition,
@@ -53,7 +53,8 @@ function ChplCriteria(props) {
     onSave,
     viewAll,
   } = props;
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
+  const { analytics } = useAnalyticsContext();
   const [criteria, setCriteria] = useState([]);
   const { data, isLoading, isSuccess } = useFetchCriteria({
     activeStartDay: listing.certificationDay,
@@ -93,11 +94,11 @@ function ChplCriteria(props) {
 
   const handleRemovedChange = (obj, expanded) => {
     eventTrack({
+      ...analytics,
       event: expanded ? 'Show Removed Criteria' : 'Hide Removed Criteria',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
   };
 
