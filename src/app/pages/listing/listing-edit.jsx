@@ -9,7 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import ChplListingInformation from 'components/listing/details/listing-information/listing-information';
+import ChplListingEdit from 'components/listing/listing-edit';
 import { eventTrack } from 'services/analytics.service';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingEdit({ listing: initialListing }) {
+function ChplListingEditPage({ listing: initialListing }) {
   const { analytics } = useAnalyticsContext();
   const [listing, setListing] = useState(undefined);
   const [isEditing, setIsEditing] = useState(true);
@@ -37,9 +37,9 @@ function ChplListingEdit({ listing: initialListing }) {
     setListing(initialListing);
   }, [initialListing]);
 
-  if (!listing) {
-    return <CircularProgress />;
-  }
+  const handleDispatch = ({ action, payload }) => {
+    console.log({ action, payload });
+  };
 
   const toggleIsEditing = () => {
     setIsEditing((prev) => !prev);
@@ -48,6 +48,10 @@ function ChplListingEdit({ listing: initialListing }) {
       event: 'Toggle Edit Mode',
     });
   };
+
+  if (!listing) {
+    return <CircularProgress />;
+  }
 
   analyticsData = {
     analytics: {
@@ -82,12 +86,10 @@ function ChplListingEdit({ listing: initialListing }) {
             label={isEditing ? 'Edit basic Listing information' : 'Upload detailed Listing information'}
           />
           { isEditing ? (
-            <>
-              <Typography>Insert edit component here</Typography>
-              <ChplListingInformation
-                listing={listing}
-              />
-            </>
+            <ChplListingEdit
+              listing={listing}
+              dispatch={handleDispatch}
+            />
           ) : (
             <Typography>Insert upload component here</Typography>
           )}
@@ -97,8 +99,8 @@ function ChplListingEdit({ listing: initialListing }) {
   );
 }
 
-export default ChplListingEdit;
+export default ChplListingEditPage;
 
-ChplListingEdit.propTypes = {
+ChplListingEditPage.propTypes = {
   listing: listingPropType.isRequired,
 };
