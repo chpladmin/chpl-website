@@ -202,7 +202,6 @@ function ChplTestToolEdit(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.startDay && !!formik.errors.startDay}
           helperText={formik.touched.startDay && formik.errors.startDay}
-          className={classes.date}
         />
         <ChplTextField
           id="end-day"
@@ -214,7 +213,6 @@ function ChplTestToolEdit(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.endDay && !!formik.errors.endDay}
           helperText={formik.touched.endDay && formik.errors.endDay}
-          className={classes.date}
         />
       </Box>
       <Divider />
