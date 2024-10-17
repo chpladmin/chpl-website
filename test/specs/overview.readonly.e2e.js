@@ -1,10 +1,16 @@
+import OverviewPage from '../pageobjects/overview.page';
+
 const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
 
-const OverviewPage = require('../pageobjects/overview.page');
+let page;
 
 describe('the Overview page', () => {
+  beforeEach(async () => {
+    page = new OverviewPage();
+    await page.open();
+  });
+
   it('should have an ONC-ACB & ONC-ATL table', async () => {
-    await OverviewPage.open();
-    await expect(await OverviewPage.acbatlTable).toBeExisting();
+    await expect(page.acbatlTable).toBeExisting();
   });
 });
