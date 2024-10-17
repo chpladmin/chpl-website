@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -11,8 +11,7 @@ import {
 
 import ChplListingEdit from 'components/listing/listing-edit';
 import { eventTrack } from 'services/analytics.service';
-import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
-import { listing as listingPropType } from 'shared/prop-types';
+import { AnalyticsContext, ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -25,17 +24,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingEditPage({ listing: initialListing }) {
+function ChplListingEditPage() {
   const { analytics } = useAnalyticsContext();
-  const [listing, setListing] = useState(undefined);
+  const { listing } = useContext(ListingContext);
   const [isEditing, setIsEditing] = useState(true);
   const classes = useStyles();
   let analyticsData;
-
-  useEffect(() => {
-    if (!initialListing) { return; }
-    setListing(initialListing);
-  }, [initialListing]);
 
   const handleDispatch = ({ action, payload }) => {
     console.log({ action, payload });
@@ -87,7 +81,6 @@ function ChplListingEditPage({ listing: initialListing }) {
           />
           { isEditing ? (
             <ChplListingEdit
-              listing={listing}
               dispatch={handleDispatch}
             />
           ) : (
@@ -102,5 +95,4 @@ function ChplListingEditPage({ listing: initialListing }) {
 export default ChplListingEditPage;
 
 ChplListingEditPage.propTypes = {
-  listing: listingPropType.isRequired,
 };

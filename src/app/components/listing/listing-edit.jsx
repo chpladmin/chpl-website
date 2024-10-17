@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import { useFetchAcbs } from 'api/acbs';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { listing as listingPropType } from 'shared/prop-types';
+import { ListingContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -68,7 +68,8 @@ const validationSchema = yup.object({
     */
 });
 
-function ChplListingEdit({ listing: initialListing, dispatch, errors }) {
+function ChplListingEdit({ dispatch, errors }) {
+  const { listing } = useContext(ListingContext);
   const [acbs, setAcbs] = useState([]);
   const [listing, setListing] = useState({});
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs(true);
@@ -115,12 +116,13 @@ function ChplListingEdit({ listing: initialListing, dispatch, errors }) {
   formik = useFormik({
     initialValues: {
       certifyingBody: '',
-      productCode: initialListing.chplProductNumber.split('.')[5],
-      versionCode: initialListing.chplProductNumber.split('.')[6],
-      rwtPlansCheckDate: initialListing.rwtPlansCheckDate || '',
-      rwtPlansUrl: initialListing.rwtPlansUrl || '',
-      rwtResultsCheckDate: initialListing.rwtResultsCheckDate || '',
-      rwtResultsUrl: initialListing.rwtResultsUrl || '',
+      productCode: listing.chplProductNumber.split('.')[4],
+      versionCode: listing.chplProductNumber.split('.')[5],
+      icsCode: listing.chplProductNumber.split('.')[6],
+      rwtPlansCheckDate: listing.rwtPlansCheckDate || '',
+      rwtPlansUrl: listing.rwtPlansUrl || '',
+      rwtResultsCheckDate: listing.rwtResultsCheckDate || '',
+      rwtResultsUrl: listing.rwtResultsUrl || '',
     },
     onSubmit: () => {
       save();
@@ -236,7 +238,6 @@ function ChplListingEdit({ listing: initialListing, dispatch, errors }) {
 export default ChplListingEdit;
 
 ChplListingEdit.propTypes = {
-  listing: listingPropType.isRequired,
   dispatch: func.isRequired,
   errors: arrayOf(string),
 };
