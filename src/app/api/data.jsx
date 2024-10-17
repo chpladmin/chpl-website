@@ -27,6 +27,14 @@ const useFetchComplainantTypes = () => {
   }, options.daily);
 };
 
+const useFetchComplaintTypes = () => {
+  const axios = useAxios();
+  return useQuery(['data/complaint-types'], async () => {
+    const response = await axios.get('data/complaint-types');
+    return response.data;
+  }, options.daily);
+};
+
 const useFetchCqms = () => {
   const axios = useAxios();
   return useQuery(['data/search-options'], async () => {
@@ -71,6 +79,7 @@ export {
   useFetchCertificationStatuses,
   useFetchClassificationTypes,
   useFetchComplainantTypes,
+  useFetchComplaintTypes,
   useFetchCqms,
   useFetchMeasures,
   useFetchMeasureTypes,
