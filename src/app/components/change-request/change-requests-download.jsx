@@ -36,10 +36,9 @@ function ChplChangeRequestsDownload(props) {
 
   const download = () => {
     eventTrack({
-      event: 'DownloadChangeRequests',
-      category: analytics.category,
+      ...analytics,
+      event: 'Download Results',
       label: recordCount,
-      group: analytics.group,
     });
     mutate(query, {
       onSuccess: (response) => {

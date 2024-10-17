@@ -16,7 +16,8 @@ import { useSnackbar } from 'notistack';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostCognitoChangePassword } from 'api/auth';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
 
 const zxcvbn = require('zxcvbn');
@@ -52,6 +53,7 @@ const validationSchema = yup.object({
 
 function ChplChangePassword({ dispatch }) {
   const { user } = useContext(UserContext);
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoChangePassword();
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -67,6 +69,11 @@ function ChplChangePassword({ dispatch }) {
   };
 
   const cancel = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Cancel Password Change',
+      category: 'Authentication',
+    });
     dispatch({ action: 'cancel' });
   };
 
@@ -76,6 +83,11 @@ function ChplChangePassword({ dispatch }) {
       confirmPassword: formik.values.confirmPassword,
     }, {
       onSuccess: () => {
+        eventTrack({
+          ...analytics,
+          event: 'Confirm New Password',
+          category: 'Authentication',
+        });
         const body = 'Password successfully changed';
         enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'cancel' });

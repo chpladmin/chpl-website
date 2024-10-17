@@ -134,10 +134,9 @@ function ChplDevelopersView() {
 
   const downloadDevelopers = () => {
     eventTrack({
+      ...analytics,
       event: 'Download Developers',
-      category: analytics.category,
       label: recordCount,
-      group: analytics.group,
     });
     let url = `${API}/developers/search/download?api_key=${getApiKey()}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
@@ -152,10 +151,9 @@ function ChplDevelopersView() {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -290,10 +288,9 @@ function ChplDevelopersView() {
                                       href={`#/organizations/developers/${item.id}`}
                                       text={item.name}
                                       analytics={{
+                                        ...analytics,
                                         event: 'Navigate to Developer Page',
-                                        category: analytics.category,
                                         label: item.name,
-                                        group: analytics.group,
                                       }}
                                       external={false}
                                       router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}

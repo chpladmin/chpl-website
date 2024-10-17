@@ -20,10 +20,9 @@ function ChplPagination({
   const handlePageChange = (event, newPage) => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Change Page',
-        category: analytics.category,
         label: newPage,
-        group: analytics.group,
       });
     }
     setPage(newPage);
@@ -32,10 +31,9 @@ function ChplPagination({
   const handleRowsPerPageChange = (event) => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Change Rows Per Page',
-        category: analytics.category,
         label: event.target.value,
-        group: analytics.group,
       });
     }
     setRowsPerPage(parseInt(event.target.value, 10));

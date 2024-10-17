@@ -29,9 +29,10 @@ import {
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -165,12 +166,12 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
   }
 };
 
-function ChplChangeRequest(props) {
+function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch }) {
   const $state = getAngularService('$state');
+  const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { changeRequest: { id }, showBreadcrumbs } = props;
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
@@ -281,10 +282,14 @@ function ChplChangeRequest(props) {
   const canWithdraw = () => hasAnyRole(['chpl-developer'])
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
-        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
-        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester';
 
   const editCr = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Edit Change Request',
+      label: changeRequest.developer.name,
+    });
     if (hasAnyRole(['chpl-developer'])
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
       $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
@@ -301,7 +306,7 @@ function ChplChangeRequest(props) {
         }
         break;
       case 'no':
-        props.dispatch('close');
+        dispatch('close');
         break;
         // no default
     }
@@ -318,6 +323,11 @@ function ChplChangeRequest(props) {
           comment: '',
         },
       };
+      eventTrack({
+        ...analytics,
+        event: 'Withdraw Change Request',
+        label: changeRequest.developer.name,
+      });
       save(payload);
     } else {
       formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
@@ -361,7 +371,12 @@ function ChplChangeRequest(props) {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
-        props.dispatch('close');
+        eventTrack({
+          ...analytics,
+          event: 'Close Change Request',
+          label: changeRequest.developer.name,
+        });
+        dispatch('close');
         break;
       case 'edit':
         editCr();
@@ -399,7 +414,7 @@ function ChplChangeRequest(props) {
       changeRequest: request,
     }, {
       onSuccess: () => {
-        props.dispatch('close');
+        dispatch('close');
         setIsSaving(false);
         setWarnings([]);
       },
@@ -408,7 +423,7 @@ function ChplChangeRequest(props) {
           enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
             variant: 'info',
           });
-          props.dispatch('close');
+          dispatch('close');
           setIsSaving(false);
           setWarnings([]);
         } else if (error.response.data.warningMessages?.length > 0) {
@@ -443,6 +458,11 @@ function ChplChangeRequest(props) {
           changeRequestStatusType: formik.values.changeRequestStatusType,
         },
       };
+      eventTrack({
+        ...analytics,
+        event: 'Save Change Request',
+        label: changeRequest.developer.name,
+      });
       save(updated);
     },
     validationSchema,

@@ -62,9 +62,8 @@ function ChplFilterSearchTerm(props) {
   const handleClear = () => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Clear Free Text Filter',
-        category: analytics.category,
-        group: analytics.group,
       });
     }
     setTerm('');
@@ -74,10 +73,9 @@ function ChplFilterSearchTerm(props) {
   const handleSearch = () => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Search for Free Text',
-        category: analytics.category,
         label: term,
-        group: analytics.group,
       });
     }
     setSearchTerm(encodeURI(term));

@@ -147,10 +147,9 @@ function ChplMessaging({ dispatch }) {
 
   const sendMessage = () => {
     eventTrack({
+      ...analytics,
       event: 'Send Message to Developers',
-      category: analytics.category,
       label: recordCount,
-      group: analytics.group,
     });
     postMessage.mutate({
       subject: formik.values.subject,

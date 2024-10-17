@@ -9,30 +9,38 @@ import {
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
-import AppWrapper from 'app-wrapper';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-function ChplDeveloper(props) {
-  const {
-    canEdit,
-    canJoin,
-    canSplit,
-    developer,
-    dispatch,
-    errorMessages,
-    isEditing,
-    isInvalid: initialIsInvalid,
-    isProcessing,
-    isSplitting,
-  } = props;
+function ChplDeveloper({
+  canEdit,
+  canJoin,
+  canSplit,
+  developer,
+  dispatch,
+  errorMessages,
+  isEditing,
+  isInvalid: initialIsInvalid,
+  isProcessing,
+  isSplitting,
+}) {
+  const { analytics } = useAnalyticsContext();
   const [isInvalid, setIsInvalid] = useState(false);
 
   useEffect(() => {
     setIsInvalid(initialIsInvalid);
   }, [initialIsInvalid]);
 
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'Developer',
+      label: developer.name,
+    },
+  };
+
   return (
-    <AppWrapper>
+    <AnalyticsContext.Provider value={data}>
       { isEditing
         && (
           <ChplDeveloperEdit
@@ -55,7 +63,7 @@ function ChplDeveloper(props) {
             isSplitting={isSplitting}
           />
         )}
-    </AppWrapper>
+    </AnalyticsContext.Provider>
   );
 }
 

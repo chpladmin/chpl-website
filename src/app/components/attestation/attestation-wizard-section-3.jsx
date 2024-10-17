@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
@@ -15,7 +15,8 @@ import {
 } from 'prop-types';
 
 import { ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -51,16 +52,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection3(props) {
-  const { developer } = props;
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [signature, setSignature] = useState('');
+function ChplAttestationWizardSection3({ developer, isSubmitting, dispatch }) {
+  const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
+  const [signature, setSignature] = useState('');
   const classes = useStyles();
-
-  useEffect(() => {
-    setIsSubmitting(props.isSubmitting);
-  }, [props.isSubmitting]); // eslint-disable-line react/destructuring-assignment
 
   const isSubmitDisabled = () => (signature !== user.fullName) || isSubmitting;
 
@@ -69,7 +65,11 @@ function ChplAttestationWizardSection3(props) {
   };
 
   const handleSubmit = () => {
-    props.dispatch(signature);
+    eventTrack({
+      ...analytics,
+      event: 'Sign Electronically',
+    });
+    dispatch(signature);
   };
 
   return (

@@ -27,8 +27,9 @@ import ChplAttestationView from './attestation-view';
 
 import { useFetchAttestations } from 'api/developer';
 import { ChplDialogTitle } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -38,7 +39,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationsView(props) {
+function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsOpen, setAttestationsOpen] = useState(false);
@@ -49,14 +51,20 @@ function ChplAttestationsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (props?.developer) {
-      setAttestations(props.developer.attestations.sort((a, b) => (b.attestationPeriod.periodStart < a.attestationPeriod.periodStart ? -1 : 1)));
-      setDeveloper(props.developer);
+    if (initialDeveloper) {
+      setAttestations(initialDeveloper.attestations.sort((a, b) => (b.attestationPeriod.periodStart < a.attestationPeriod.periodStart ? -1 : 1)));
+      setDeveloper(initialDeveloper);
     }
-  }, [props?.developer]);
+  }, [initialDeveloper]);
 
   const createAttestationChangeRequest = () => {
-    props.dispatch('createAttestation');
+    eventTrack({
+      ...analytics,
+      category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
+      label: developer.name, // todo: when the higher component is React, remove this and use the component from above
+      event: 'Submit Attestations',
+    });
+    dispatch('createAttestation');
   };
 
   const canSeeAttestationData = () => hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])

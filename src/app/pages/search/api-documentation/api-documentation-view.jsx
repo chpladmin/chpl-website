@@ -143,11 +143,10 @@ const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product },
               key={url}
               href={url}
               analytics={{
+                ...analytics,
                 event: 'Go to API Documentation',
-                category: analytics.category,
                 label: chplProductNumber,
                 aggregationName: product.name,
-                group: analytics.group,
               }}
             />
           </dd>
@@ -214,10 +213,9 @@ function ChplApiDocumentationSearchView() {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -257,9 +255,8 @@ function ChplApiDocumentationSearchView() {
             href={downloadLink}
             text="Download API Documentation Dataset"
             analytics={{
+              ...analytics,
               event: 'Download API Documentation Dataset',
-              category: analytics.category,
-              group: analytics.group,
             }}
             external={false}
           />
@@ -309,7 +306,6 @@ function ChplApiDocumentationSearchView() {
               { listings.length > 0
                 && (
                   <ChplDownloadListings
-                    analytics={analytics}
                     listings={listings}
                     toggled={toggledCsvDefaults}
                   />
@@ -340,11 +336,10 @@ function ChplApiDocumentationSearchView() {
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
                                     analytics={{
+                                      ...analytics,
                                       event: 'Navigate to Listing Details Page',
-                                      category: analytics.category,
                                       label: item.chplProductNumber,
                                       aggregationName: item.product.name,
-                                      group: analytics.group,
                                     }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
@@ -356,10 +351,9 @@ function ChplApiDocumentationSearchView() {
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
                                   analytics={{
+                                    ...analytics,
                                     event: 'Navigate to Developer Page',
-                                    category: analytics.category,
                                     label: item.developer.name,
-                                    group: analytics.group,
                                   }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
@@ -380,11 +374,10 @@ function ChplApiDocumentationSearchView() {
                                         <ChplLink
                                           href={item.serviceBaseUrlListValue}
                                           analytics={{
+                                            ...analytics,
                                             event: 'Go to Service Base URL List',
-                                            category: analytics.category,
                                             label: item.chplProductNumber,
                                             aggregationName: item.product.name,
-                                            group: analytics.group,
                                           }}
                                         />
                                       </dd>
@@ -399,11 +392,10 @@ function ChplApiDocumentationSearchView() {
                                     <ChplLink
                                       href={item.mandatoryDisclosures}
                                       analytics={{
+                                        ...analytics,
                                         event: 'Go to Mandatory Disclosures',
-                                        category: analytics.category,
                                         label: item.chplProductNumber,
                                         aggregationName: item.product.name,
-                                        group: analytics.group,
                                       }}
                                     />
                                   ) : (
@@ -425,7 +417,6 @@ function ChplApiDocumentationSearchView() {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}
