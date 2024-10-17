@@ -17,8 +17,10 @@ import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
+import { useFetchCertificationStatuses } from 'api/data';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext } from 'shared/contexts';
 import { theme } from 'themes';
 
@@ -77,19 +79,32 @@ const validationSchema = yup.object({
 
 function ChplListingEdit({ dispatch, errors }) {
   const { listing } = useContext(ListingContext);
+  const [statuses, setStatuses] = useState([]);
+  const [addingStatus, setAddingStatus] = useState(false);
+  const [statusToAdd, setStatusToAdd] = useState('');
+  const [eventDayToAdd, setEventDayToAdd] = useState('');
+  const [reasonToAdd, setReasonToAdd] = useState('');
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [acbs, setAcbs] = useState([]);
   const [atls, setAtls] = useState([]);
   const [addingAtl, setAddingAtl] = useState(false);
   const [atlToAdd, setAtlToAdd] = useState('');
   const [selectedAtls, setSelectedAtls] = useState([]);
-  const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs(true);
-  const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls(true);
+  const { data: statusesData, isLoading: statusesIsLoading, isSuccess: statusesIsSuccess } = useFetchCertificationStatuses();
+  const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
+  const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
     setSelectedAtls(listing.testingLabs.map((atl) => atl.testingLab));
+    setSelectedStatuses(listing.certificationEvents);
   }, [listing]);
+
+  useEffect(() => {
+    if (statusesIsLoading || !statusesIsSuccess) { return; }
+    setStatuses(statusesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [statusesData, statusesIsLoading, statusesIsSuccess]);
 
   useEffect(() => {
     if (acbsIsLoading || !acbsIsSuccess) { return; }
@@ -114,6 +129,22 @@ function ChplListingEdit({ dispatch, errors }) {
     }
   };
 
+  const addStatus = () => {
+    setSelectedStatuses((prev) => prev.concat({
+      status: statusToAdd,
+      eventDay: eventDayToAdd,
+      reason: reasonToAdd,
+    }));
+    setStatusToAdd('');
+    setEventDayToAdd('');
+    setReasonToAdd('');
+    setAddingStatus(false);
+  };
+
+  const removeStatus = ({ status, eventDay, reason }) => {
+    setSelectedStatuses((prev) => prev.filter((s) => (s.status !== status && s.eventDay !== eventDay && s.reason !== reason)));
+  };
+
   const addAtl = () => {
     setSelectedAtls((prev) => prev.concat(atlToAdd));
     setAtlToAdd('');
@@ -129,6 +160,7 @@ function ChplListingEdit({ dispatch, errors }) {
       action: 'save',
       payload: {
         ...listing,
+        certificationEvents: selectedStatuses,
         certifyingBody: formik.values.certifyingBody,
         testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
         chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(8).join('.')}`,
@@ -157,7 +189,7 @@ function ChplListingEdit({ dispatch, errors }) {
     validationSchema,
   });
 
-  if (acbsIsLoading || atlsIsLoading) {
+  if (statusesIsLoading || acbsIsLoading || atlsIsLoading) {
     return (
       <CircularProgress />
     );
@@ -170,6 +202,8 @@ function ChplListingEdit({ dispatch, errors }) {
           title="Edit Listing"
         />
         <CardContent>
+
+          { /* CHPL Product Number */ }
           <ChplTextField
             id="product-code"
             name="productCode"
@@ -203,6 +237,83 @@ function ChplListingEdit({ dispatch, errors }) {
             error={formik.touched.icsCode && !!formik.errors.icsCode}
             helperText={formik.touched.icsCode && formik.errors.icsCode}
           />
+
+          { /* Certification Events */ }
+          <Typography>
+            Certification Status
+          </Typography>
+          <List>
+            { selectedStatuses
+              .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
+              .map((status) => (
+                <ListItem key={status.eventDay}>
+                  { status.status.name }
+                  { ` on ${getDisplayDateFormat(status.eventDay)}` }
+                  { status.reason && ` for ${status.reason}` }
+                  <Button
+                    onClick={() => removeStatus(status)}
+                  >
+                    Remove Certification Status
+                  </Button>
+                </ListItem>
+              ))}
+          </List>
+          { !addingStatus
+            && (
+              <Button
+                onClick={() => setAddingStatus(true)}
+              >
+                Add Certification Status
+              </Button>
+            )}
+          { addingStatus
+            && (
+              <>
+                <ChplTextField
+                  select
+                  id="status"
+                  name="status"
+                  label="Certification Status"
+                  required
+                  value={statusToAdd}
+                  onChange={(event) => setStatusToAdd(event.target.value)}
+                >
+                  { statuses
+                    .map((item) => (
+                      <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                    ))}
+                </ChplTextField>
+                <ChplTextField
+                  id="event-day-to-add"
+                  name="eventDayToAdd"
+                  label="Effective Date"
+                  type="date"
+                  required
+                  value={eventDayToAdd}
+                  onChange={(event) => setEventDayToAdd(event.target.value)}
+                />
+                <ChplTextField
+                  id="reson-to-add"
+                  name="reasonToAdd"
+                  label="Reason"
+                  value={reasonToAdd}
+                  onChange={(event) => setReasonToAdd(event.target.value)}
+                />
+                <Button
+                  onClick={() => addStatus()}
+                  disabled={statusToAdd === '' || eventDayToAdd === ''}
+                >
+                  Add Certification Status
+                </Button>
+                <Button
+                  onClick={() => setAddingStatus(false)}
+                >
+                  Cancel adding Certification Status
+                </Button>
+              </>
+            )}
+
+          { /* ACB & ATL */ }
           <ChplTextField
             select
             id="acb"
@@ -274,6 +385,8 @@ function ChplListingEdit({ dispatch, errors }) {
                 </Button>
               </>
             )}
+
+          { /* Real-World Testing Plans */ }
           <ChplTextField
             id="rwt-plans-check-date"
             name="rwtPlansCheckDate"
