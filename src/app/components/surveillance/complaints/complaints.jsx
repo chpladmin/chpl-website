@@ -40,7 +40,7 @@ const staticFilters = [{
 }, {
   ...defaultFilter,
   key: 'complaintTypes',
-  display: 'Complaint Type',
+  display: 'Complaint Type(s)',
   values: [
     { value: 'Criteria' },
     { value: 'Condition' },

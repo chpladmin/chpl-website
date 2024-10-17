@@ -461,7 +461,7 @@ function ChplComplaintEdit(props) {
                 select
                 id="complaint-types"
                 name="complaintTypes"
-                label="Complaint Types"
+                label="Complaint Type(s)"
                 required
                 value={formik.values.complaintTypes}
                 onChange={formik.handleChange}
@@ -490,7 +490,7 @@ function ChplComplaintEdit(props) {
                   <ChplTextField
                     id="complaint-types-other"
                     name="complaintTypesOther"
-                    label="Complaint Types - Other Description"
+                    label="Complaint Type(s) - Other Description"
                     required
                     multiline
                     value={formik.values.complaintTypesOther}

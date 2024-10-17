@@ -153,7 +153,7 @@ function ChplComplaintsView(props) {
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
-    { property: 'complaint_type', text: 'Complaint Types' },
+    { property: 'complaint_type', text: 'Complaint Type(s)' },
     { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ] : [
@@ -162,7 +162,7 @@ function ChplComplaintsView(props) {
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
-    { property: 'complaint_type', text: 'Complaint Types' },
+    { property: 'complaint_type', text: 'Complaint Type(s)' },
     { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ];
