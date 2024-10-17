@@ -4,12 +4,15 @@ import {
   CircularProgress,
   Container,
   FormControlLabel,
+  List,
+  ListItem,
   Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
 import ChplListingEdit from 'components/listing/listing-edit';
+import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { AnalyticsContext, ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -28,6 +31,7 @@ function ChplListingEditPage() {
   const { analytics } = useAnalyticsContext();
   const { listing } = useContext(ListingContext);
   const [isEditing, setIsEditing] = useState(true);
+  const [reasonForChange, setReasonForChange] = useState('');
   const classes = useStyles();
   let analyticsData;
 
@@ -79,6 +83,21 @@ function ChplListingEditPage() {
             )}
             label={isEditing ? 'Edit basic Listing information' : 'Upload detailed Listing information'}
           />
+          <ChplTextField
+            id="reson-for-change"
+            name="reasonForChange"
+            label="Reason For Change"
+            multiline
+            value={reasonForChange}
+            onChange={(event) => setReasonForChange(event.target.value)}
+          />
+          <Typography>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
+          <List>
+            <ListItem>Clinical Quality Measure Removed</ListItem>
+            <ListItem>Certification Criteria Removed</ListItem>
+            <ListItem>Editing of a non-active Certified Product</ListItem>
+            <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+          </List>
           { isEditing ? (
             <ChplListingEdit
               dispatch={handleDispatch}
