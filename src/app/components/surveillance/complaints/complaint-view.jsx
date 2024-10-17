@@ -104,7 +104,7 @@ function ChplComplaintView(props) {
               { complaint.oncComplaintId }
             </Typography>
             <Typography variant="subtitle2">
-              Complaint Types:
+              Complaint Type(s):
             </Typography>
             <Typography>
               { complaint.complaintTypes?.map((t) => t.name).join(', ') }
@@ -113,7 +113,7 @@ function ChplComplaintView(props) {
              && (
                <>
                  <Typography variant="subtitle2">
-                   Complaint Types (Other):
+                   Complaint Type(s) - Other:
                  </Typography>
                  <Typography>
                    { complaint.complaintTypesOther }
@@ -130,7 +130,7 @@ function ChplComplaintView(props) {
               && (
                 <>
                   <Typography variant="subtitle2">
-                    Complainant Type (Other):
+                    Complainant Type - Other:
                   </Typography>
                   <Typography>
                     { complaint.complainantTypeOther }
