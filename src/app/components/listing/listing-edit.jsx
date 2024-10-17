@@ -21,7 +21,7 @@ import { useFetchCertificationStatuses } from 'api/data';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -79,6 +79,7 @@ const validationSchema = yup.object({
 
 function ChplListingEdit({ dispatch, errors }) {
   const { listing } = useContext(ListingContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [statuses, setStatuses] = useState([]);
   const [addingStatus, setAddingStatus] = useState(false);
   const [statusToAdd, setStatusToAdd] = useState('');
@@ -314,22 +315,32 @@ function ChplListingEdit({ dispatch, errors }) {
             )}
 
           { /* ACB & ATL */ }
-          <ChplTextField
-            select
-            id="acb"
-            name="acb"
-            label="ONC-ACB"
-            required
-            value={formik.values.certifyingBody}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
-            helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
-          >
-            { acbs.map((item) => (
-              <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
-            ))}
-          </ChplTextField>
+          <Typography>
+            ONC-ACB
+          </Typography>
+          { hasAnyRole(['chpl-admin', 'chpl-onc'])
+            && (
+              <ChplTextField
+                select
+                id="acb"
+                name="acb"
+                label="ONC-ACB"
+                required
+                value={formik.values.certifyingBody}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+                helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+              >
+                { acbs.map((item) => (
+                  <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+                ))}
+              </ChplTextField>
+            )}
+          { hasAnyRole(['chpl-onc-acb'])
+            && (
+              <Typography>{ listing.certifyingBody.name }</Typography>
+            )}
           <Typography>
             ONC-ATL
             { selectedAtls.length !== 1 ? 's' : '' }
