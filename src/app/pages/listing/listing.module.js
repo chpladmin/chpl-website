@@ -1,3 +1,4 @@
+import ChplListingEditUploadPage from './listing-edit-upload-wrapper';
 import ChplListingPage from './listing-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
@@ -11,4 +12,5 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
+  .component('chplListingEditUploadBridge', reactToAngularComponent(ChplListingEditUploadPage))
   .component('chplListingPageBridge', reactToAngularComponent(ChplListingPage));

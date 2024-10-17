@@ -4,6 +4,14 @@ const states = [{
   component: 'chplListing',
   data: { title: 'CHPL Listing Details' },
 }, {
+  name: 'listing.edit-upload',
+  url: '/edit-upload',
+  component: 'chplListingEditUpload',
+  data: {
+    title: 'CHPL Listing Details - upload',
+    roles: ['chpl-admin'],
+  },
+}, {
   name: 'listing.edit',
   url: '/edit',
   component: 'chplListingEditPage',
