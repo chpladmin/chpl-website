@@ -220,7 +220,7 @@ function ChplListingEdit({ dispatch, errors }) {
           <List>
             { selectedStatuses
               .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
-              .map((status) => (
+              .map((status, idx, arr) => (
                 <ListItem key={status.eventDay}>
                   { status.status.name }
                   { ` on ${getDisplayDateFormat(status.eventDay)}` }
@@ -230,6 +230,11 @@ function ChplListingEdit({ dispatch, errors }) {
                   >
                     Remove Certification Status
                   </Button>
+                  { idx !== arr.length - 1 && status.status.name === arr[idx + 1].status.name && <Typography>Certification Status must differ from previous Status</Typography> }
+                  { idx === 0 && (status.status.name === 'Withdrawn by ONC-ACB' || status.status.name === 'Withdrawn by Developer Under Surveillance/Review') && <Typography>Setting this product to this status may trigger a ban by ONC</Typography> }
+                  { idx === 0 && status.status.name === 'Terminated by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography> }
+                  { idx === 0 && status.status.name === 'Suspended by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography> }
+                  { idx === 0 && status.status.name === 'Withdrawn by Developer' && <Typography>Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography> }
                 </ListItem>
               ))}
           </List>
