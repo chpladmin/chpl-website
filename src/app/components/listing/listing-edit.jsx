@@ -116,8 +116,8 @@ function ChplListingEdit({ dispatch, errors }) {
     setAddingStatus(false);
   };
 
-  const removeStatus = ({ status, eventDay, reason }) => {
-    setSelectedStatuses((prev) => prev.filter((s) => (s.status !== status && s.eventDay !== eventDay && s.reason !== reason)));
+  const removeStatus = ({ status, eventDay }) => {
+    setSelectedStatuses((prev) => prev.filter((s) => !(s.status.name === status.name && s.eventDay === eventDay)));
   };
 
   const addAtl = () => {
