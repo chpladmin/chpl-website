@@ -26,11 +26,14 @@ const validationSchema = yup.object({
   certifyingBody: yup.object()
     .required('ONC-ACB is required'),
   productCode: yup.string()
-    .required('Product Code is required'), // add regex
+    .required('Product Code is required')
+    .matches(/^[A-Za-z0-9_]{4}$/, 'Product Code must consist of letters, numbers and/or "_", and be 4 characters long'),
   versionCode: yup.string()
-    .required('Version Code is required'), // add regex
+    .required('Version Code is required')
+    .matches(/^[A-Za-z0-9_]{2}$/, 'Version Code must consist of letters, numbers and/or "_", and be 2 characters long'),
   icsCode: yup.string()
-    .required('Ics Code is required'), // add regex
+    .required('Ics Code is required')
+    .matches(/^[0-9]{2}$/, 'ICS Code must be a two digit single number from 00 to 99'),
   rwtPlansCheckDate: yup.date()
     .when('rwtPlansUrl', {
       is: (rwtPlansUrl) => !!rwtPlansUrl,
