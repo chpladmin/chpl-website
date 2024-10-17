@@ -8,11 +8,10 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
+import { compareDeveloper } from 'components/activity/services/developers.service';
+import { compareOrganization } from 'components/activity/services/organizations.service';
 import compareSystemMaintenance from 'components/activity/services/system-maintenance.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
-import { compareAcb } from 'pages/reports/acbs/acbs.service';
-import { compareAtl } from 'pages/reports/atls/atls.service';
-import { compareDeveloper } from 'components/activity/services/developers.service';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
 import { compareVersion } from 'pages/reports/versions/versions.service';
@@ -27,13 +26,13 @@ const getDetails = (activity) => {
   let compare;
   let details;
   switch (activity.concept) {
-    case 'CERTIFICATION_BODY': compare = compareAcb; break;
+    case 'CERTIFICATION_BODY': compare = compareOrganization; break;
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
     case 'DEVELOPER': compare = compareDeveloper; break;
     case 'PRODUCT': compare = compareProduct; break;
     case 'STANDARD': compare = compareSystemMaintenance; break;
     case 'SVAP': compare = compareSystemMaintenance; break;
-    case 'TESTING_LAB': compare = compareAtl; break;
+    case 'TESTING_LAB': compare = compareOrganization; break;
     case 'VERSION': compare = compareVersion; break;
       // no default
   }
