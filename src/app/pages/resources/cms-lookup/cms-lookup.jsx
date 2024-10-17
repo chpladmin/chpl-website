@@ -25,8 +25,9 @@ import ChplChips from 'components/cms/chips';
 import ChplSearchTerm from 'components/cms/search-term';
 import { ChplLink } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const csvOptions = {
@@ -78,7 +79,10 @@ const useStyles = makeStyles({
 
 function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
-  const $analytics = getAngularService('$analytics');
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'CMS ID Reverse Lookup',
+  };
   const [errors, setErrors] = useState([]);
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
@@ -102,7 +106,10 @@ function ChplCmsLookup() {
   }, [cmsIds, finishedLoading]);
 
   const downloadListingData = () => {
-    $analytics.eventTrack('Download Results', { category: 'CMS ID Reverse Lookup' });
+    eventTrack({
+      ...analytics,
+      event: 'Download Results',
+    });
     const csvExporter = new ExportToCsv({
       ...csvOptions,
       filename: `CMS_ID.${cmsIds.join('.')}`,
@@ -113,11 +120,20 @@ function ChplCmsLookup() {
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'remove':
+        eventTrack({
+          ...analytics,
+          event: 'Remove CMS ID Chip',
+          label: payload.trim(),
+        });
         setCmsIds((previous) => previous.filter((id) => id !== payload));
         setListings((previous) => previous.filter((listing) => listing.certificationId !== payload));
         break;
       case 'search':
-        $analytics.eventTrack('Lookup CMS EHR Certification IDs', { category: 'CMS ID Reverse Lookup' });
+        eventTrack({
+          ...analytics,
+          event: 'Lookup CMS ID',
+          label: payload.trim(),
+        });
         setCmsIds((previous) => [...new Set(previous.concat(payload.trim()))]);
         break;
         // no default
@@ -198,7 +214,12 @@ function ChplCmsLookup() {
                           <ChplLink
                             href={`#/listing/${item.id}`}
                             text={item.chplProductNumber}
-                            analytics={{ event: 'Go to Listing Details Page', category: 'CMS ID Reverse Lookup', label: item.chplProductNumber }}
+                            analytics={{
+                              ...analytics,
+                              event: 'Go to Listing Details Page',
+                              label: item.chplProductNumber,
+                              aggregationName: item.name,
+                            }}
                             external={false}
                             router={{ sref: 'listing', options: { id: item.id } }}
                           />

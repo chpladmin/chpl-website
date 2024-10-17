@@ -9,7 +9,6 @@ import {
   Container,
   Divider,
   MenuItem,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -18,7 +17,9 @@ import SwaggerUI from 'swagger-ui-react';
 
 import { ChplLink, ChplTextField } from 'components/util';
 import { ChplApiKeyRegistration } from 'components/api-key';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -86,13 +87,16 @@ const allOptions = [
 ];
 
 function ChplResourcesApi() {
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const {
     getApiKey,
     getToken,
     hasAnyRole,
   } = getAngularService('authService');
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'CHPL API',
+  };
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('Active products');
@@ -101,10 +105,10 @@ function ChplResourcesApi() {
 
   useEffect(() => {
     const data = {
-      'Active products': { data: `${API}/listings/download?listingType=active&api_key=${getApiKey()}&format=json`, label: 'Active' },
-      'Inactive products': { data: `${API}/listings/download?listingType=inactive&api_key=${getApiKey()}&format=json`, label: 'Inactive' },
-      '2014 edition products': { data: `${API}/listings/download?listingType=2014&api_key=${getApiKey()}&format=json`, label: '2014' },
-      '2011 edition products': { data: `${API}/listings/download?listingType=2011&api_key=${getApiKey()}&format=json`, label: '2011' },
+      'Active products': { data: `${API}/listings/download?listingType=active&api_key=${getApiKey()}&format=json`, label: 'Active products' },
+      'Inactive products': { data: `${API}/listings/download?listingType=inactive&api_key=${getApiKey()}&format=json`, label: 'Inactive products' },
+      '2014 edition products': { data: `${API}/listings/download?listingType=2014&api_key=${getApiKey()}&format=json`, label: '2014 edition products' },
+      '2011 edition products': { data: `${API}/listings/download?listingType=2011&api_key=${getApiKey()}&format=json`, label: '2011 edition products' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
@@ -112,13 +116,17 @@ function ChplResourcesApi() {
 
   const downloadFile = (type) => {
     if (selectedOption) {
-      $analytics.eventTrack('Download CHPL', { category: 'Download CHPL', label: files[selectedOption].label });
+      eventTrack({
+        ...analytics,
+        event: 'Download CHPL Data File',
+        label: files[selectedOption].label,
+      });
       window.open(files[selectedOption][type]);
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Box bgcolor={palette.background}>
         <div className={classes.pageHeader}>
           <Container maxWidth="lg">
@@ -229,7 +237,15 @@ function ChplResourcesApi() {
                 >
                   A sample Java application using the CHPL API can be found at
                   {' '}
-                  <ChplLink href="https://github.com/chpladmin/sample-application" text="Sample Application" analytics={{ event: 'Go to Sample Application Page', category: 'CHPL API' }} />
+                  <ChplLink
+                    href="https://github.com/chpladmin/sample-application"
+                    text="Sample Application"
+                    analytics={{
+                      ...analytics,
+                      event: 'Go to Sample Aplication',
+                    }}
+                    inline
+                  />
                 </Typography>
                 <br />
                 <Typography
@@ -237,11 +253,21 @@ function ChplResourcesApi() {
                 >
                   Release notes for the CHPL API can be found in the
                   {' '}
-                  <ChplLink href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md" text="release notes on GitHub" analytics={{ event: 'Go to Release Notes on GitHub', category: 'CHPL API' }} />
+                  <ChplLink
+                    href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md"
+                    text="release notes on GitHub"
+                    analytics={{
+                      ...analytics,
+                      event: 'Go to release notes on GitHub',
+                    }}
+                    inline
+                  />
                 </Typography>
               </Box>
               <div className={classes.downloadCard}>
-                <ChplApiKeyRegistration />
+                <AnalyticsContext.Provider value={{ analytics }}>
+                  <ChplApiKeyRegistration />
+                </AnalyticsContext.Provider>
               </div>
             </div>
             <div
@@ -265,7 +291,7 @@ function ChplResourcesApi() {
           </div>
         </Container>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
 
