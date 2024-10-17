@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
+  List,
+  ListItem,
   MenuItem,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, string } from 'prop-types';
@@ -12,6 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
+import { useFetchAtls } from 'api/atls';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { ListingContext } from 'shared/contexts';
@@ -27,6 +32,8 @@ const validationSchema = yup.object({
     .required('Product Code is required'), // add regex
   versionCode: yup.string()
     .required('Version Code is required'), // add regex
+  icsCode: yup.string()
+    .required('Ics Code is required'), // add regex
   rwtPlansCheckDate: yup.date()
     .when('rwtPlansUrl', {
       is: (rwtPlansUrl) => !!rwtPlansUrl,
@@ -71,20 +78,29 @@ const validationSchema = yup.object({
 function ChplListingEdit({ dispatch, errors }) {
   const { listing } = useContext(ListingContext);
   const [acbs, setAcbs] = useState([]);
-  const [listing, setListing] = useState({});
+  const [atls, setAtls] = useState([]);
+  const [addingAtl, setAddingAtl] = useState(false);
+  const [atlToAdd, setAtlToAdd] = useState('');
+  const [selectedAtls, setSelectedAtls] = useState([]);
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs(true);
+  const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls(true);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setListing(initialListing);
-  }, [initialListing]);
+    setSelectedAtls(listing.testingLabs.map((atl) => atl.testingLab));
+  }, [listing]);
 
   useEffect(() => {
     if (acbsIsLoading || !acbsIsSuccess) { return; }
     setAcbs(acbsData.acbs.sort((a, b) => (a.name < b.name ? -1 : 1)));
     formik.setFieldValue('certifyingBody', acbsData.acbs.find((acb) => acb.id === listing?.certifyingBody?.id));
   }, [acbsData, acbsIsLoading, acbsIsSuccess, listing]);
+
+  useEffect(() => {
+    if (atlsIsLoading || !atlsIsSuccess) { return; }
+    setAtls(atlsData.atls.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [atlsData, atlsIsLoading, atlsIsSuccess]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -98,13 +114,24 @@ function ChplListingEdit({ dispatch, errors }) {
     }
   };
 
+  const addAtl = () => {
+    setSelectedAtls((prev) => prev.concat(atlToAdd));
+    setAtlToAdd('');
+    setAddingAtl(false);
+  };
+
+  const removeAtl = (atl) => {
+    setSelectedAtls((prev) => prev.filter((a) => a.id !== atl.id));
+  };
+
   const save = () => {
     dispatch({
       action: 'save',
       payload: {
         ...listing,
         certifyingBody: formik.values.certifyingBody,
-        chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${listing.chplProductNumber.split('.').slice(7).join('.')}`,
+        testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
+        chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(8).join('.')}`,
         rwtPlansCheckDate: formik.values.rwtPlansCheckDate,
         rwtPlansUrl: formik.values.rwtPlansUrl,
         rwtResultsCheckDate: formik.values.rwtResultsCheckDate,
@@ -130,7 +157,7 @@ function ChplListingEdit({ dispatch, errors }) {
     validationSchema,
   });
 
-  if (acbsIsLoading) {
+  if (acbsIsLoading || atlsIsLoading) {
     return (
       <CircularProgress />
     );
@@ -143,22 +170,6 @@ function ChplListingEdit({ dispatch, errors }) {
           title="Edit Listing"
         />
         <CardContent>
-          <ChplTextField
-            select
-            id="acb"
-            name="acb"
-            label="ONC-ACB"
-            required
-            value={formik.values.certifyingBody}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
-            helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
-          >
-            { acbs.map((item) => (
-              <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
-            ))}
-          </ChplTextField>
           <ChplTextField
             id="product-code"
             name="productCode"
@@ -181,6 +192,88 @@ function ChplListingEdit({ dispatch, errors }) {
             error={formik.touched.versionCode && !!formik.errors.versionCode}
             helperText={formik.touched.versionCode && formik.errors.versionCode}
           />
+          <ChplTextField
+            id="ics-code"
+            name="icsCode"
+            label="ICS Code"
+            required
+            value={formik.values.icsCode}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.icsCode && !!formik.errors.icsCode}
+            helperText={formik.touched.icsCode && formik.errors.icsCode}
+          />
+          <ChplTextField
+            select
+            id="acb"
+            name="acb"
+            label="ONC-ACB"
+            required
+            value={formik.values.certifyingBody}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+            helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+          >
+            { acbs.map((item) => (
+              <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+            ))}
+          </ChplTextField>
+          <Typography>
+            ONC-ATL
+            { selectedAtls.length !== 1 ? 's' : '' }
+          </Typography>
+          <List>
+            { selectedAtls.map((atl) => (
+              <ListItem key={atl.id}>
+                { atl.name }
+                <Button
+                  onClick={() => removeAtl(atl)}
+                >
+                  Remove ONC-ATL
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+          { !addingAtl
+            && (
+              <Button
+                onClick={() => setAddingAtl(true)}
+              >
+                Add ONC-ATL
+              </Button>
+            )}
+          { addingAtl
+            && (
+              <>
+                <ChplTextField
+                  select
+                  id="atl"
+                  name="atl"
+                  label="ONC-ATL"
+                  required
+                  value={atlToAdd}
+                  onChange={(event) => setAtlToAdd(event.target.value)}
+                >
+                  { atls
+                    .filter((atl) => !selectedAtls.find((a) => a.id === atl.id))
+                    .map((item) => (
+                      <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+                    ))}
+                </ChplTextField>
+                <Button
+                  onClick={() => addAtl()}
+                  disabled={atlToAdd === ''}
+                >
+                  Add ONC-ATL
+                </Button>
+                <Button
+                  onClick={() => setAddingAtl(false)}
+                >
+                  Cancel adding ONC-ATL
+                </Button>
+              </>
+            )}
           <ChplTextField
             id="rwt-plans-check-date"
             name="rwtPlansCheckDate"
