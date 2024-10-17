@@ -9,7 +9,6 @@ import {
   ListItem,
   MenuItem,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
@@ -22,10 +21,6 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext, UserContext } from 'shared/contexts';
-import { theme } from 'themes';
-
-const useStyles = makeStyles({
-});
 
 const validationSchema = yup.object({
   certifyingBody: yup.object()
@@ -52,29 +47,6 @@ const validationSchema = yup.object({
     }),
   rwtResultsUrl: yup.string()
     .url('Improper format (http://www.example.com)'),
-  /*
-  receivedDate: yup.date()
-    .required('Received Date is required'),
-  closedDate: yup.date()
-    .min(yup.ref('receivedDate'), 'Closed Date must be after Received Date')
-    .max(new Date(), 'Closed Date must not be in the future'),
-  acbComplaintId: yup.string()
-    .required('ONC-ACB Complaint ID is required'),
-  complainantType: yup.object()
-    .required('Complainant Type is required'),
-  complainantTypeOther: yup.string()
-    .test('conditionallyRequired',
-      'Complainant Type - Other Description is required',
-      (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
-  summary: yup.string()
-    .required('Complaint Summary is required'),
-  actions: yup.string()
-    .when('closedDate', {
-      is: (closedDate) => closedDate,
-      then: yup.string().required('Actions/Response is required.'),
-      otherwise: yup.string(),
-    }),
-    */
 });
 
 function ChplListingEdit({ dispatch, errors }) {
@@ -94,7 +66,6 @@ function ChplListingEdit({ dispatch, errors }) {
   const { data: statusesData, isLoading: statusesIsLoading, isSuccess: statusesIsSuccess } = useFetchCertificationStatuses();
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
   const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
