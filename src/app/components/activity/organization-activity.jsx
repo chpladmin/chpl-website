@@ -9,12 +9,11 @@ import {
   Timeline,
 } from '@material-ui/lab';
 import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
-import { object } from 'prop-types';
+import { func, object, string } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
-import { compareDeveloper } from './services/developers.service';
 
-import { useFetchDeveloperActivity } from 'api/activity';
+import { useFetchOrganizationActivityMetadata } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
 const useStyles = makeStyles({
@@ -23,14 +22,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplDeveloperActivity({ developer }) {
+function ChplOrganizationActivity({ organization, type, interpret }) {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchDeveloperActivity({
-    developer,
+  const { data, isError, isLoading } = useFetchOrganizationActivityMetadata({
+    organization,
     isEnabled: open,
+    type,
   });
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function ChplDeveloperActivity({ developer }) {
         <ChplActivityDetails
           key={activity.id}
           activity={activity}
-          interpret={compareDeveloper}
+          interpret={interpret}
           last={idx === arr.length - 1}
         />
       )));
@@ -61,10 +61,10 @@ function ChplDeveloperActivity({ developer }) {
 
   return (
     <>
-      <ChplTooltip title="Developer Activity">
+      <ChplTooltip title="Organization History">
         <Button
-          id="view-developer-activity"
-          aria-label="Open Developer Activity dialog"
+          id="view-history"
+          aria-label="Open History"
           color="secondary"
           variant="contained"
           onClick={handleClickOpen}
@@ -77,16 +77,16 @@ function ChplDeveloperActivity({ developer }) {
       </ChplTooltip>
       <Dialog
         onClose={handleClose}
-        aria-labelledby="view-developer-activity"
+        aria-labelledby="view-history"
         open={open}
         maxWidth="sm"
       >
         <ChplDialogTitle
-          id="developer-title"
+          id="history-title"
           onClose={handleClose}
           className={classes.legendTitle}
         >
-          Developer Activity
+          Organization History
         </ChplDialogTitle>
         <DialogContent dividers>
           <Timeline>
@@ -98,8 +98,10 @@ function ChplDeveloperActivity({ developer }) {
   );
 }
 
-export default ChplDeveloperActivity;
+export default ChplOrganizationActivity;
 
-ChplDeveloperActivity.propTypes = {
-  developer: object.isRequired,
+ChplOrganizationActivity.propTypes = {
+  organization: object.isRequired,
+  type: string.isRequired,
+  interpret: func.isRequired,
 };
