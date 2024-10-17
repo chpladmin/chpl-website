@@ -10,7 +10,7 @@ import {
   MenuItem,
   Typography,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -52,7 +52,7 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplListingEdit({ dispatch, errors }) {
+function ChplListingEdit({ dispatch, errors, warnings, isProcessing }) {
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
   const [statuses, setStatuses] = useState([]);
@@ -426,6 +426,10 @@ function ChplListingEdit({ dispatch, errors }) {
       <ChplActionBar
         dispatch={handleDispatch}
         errors={errors}
+        warnings={warnings}
+        isProcessing={isProcessing}
+        showErrorAcknowledgement={errors.length > 0}
+        showWarningAcknowledgement={warnings.length > 0}
       />
     </>
   );
@@ -436,8 +440,12 @@ export default ChplListingEdit;
 ChplListingEdit.propTypes = {
   dispatch: func.isRequired,
   errors: arrayOf(string),
+  warnings: arrayOf(string),
+  isProcessing: bool,
 };
 
 ChplListingEdit.defaultProps = {
   errors: [],
+  warnings: [],
+  isProcessing: false,
 };

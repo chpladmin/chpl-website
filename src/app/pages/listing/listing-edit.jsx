@@ -11,9 +11,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { usePutListing } from 'api/listing';
 import ChplListingEdit from 'components/listing/listing-edit';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -28,15 +30,59 @@ const useStyles = makeStyles({
 });
 
 function ChplListingEditPage() {
+  const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { listing } = useContext(ListingContext);
+  const { mutate } = usePutListing();
+  const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const [isEditing, setIsEditing] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [reasonForChange, setReasonForChange] = useState('');
   const classes = useStyles();
   let analyticsData;
 
   const handleDispatch = ({ action, payload }) => {
-    console.log({ action, payload });
+    switch (action) {
+      case 'cancel':
+        eventTrack({
+          ...analyticsData.analytics,
+          event: 'Cancel editing',
+        });
+        $state.go('^');
+        break;
+      case 'save':
+        eventTrack({
+          ...analyticsData.analytics,
+          event: 'Save changes',
+        });
+        setIsProcessing(true);
+        setErrors([]);
+        setWarnings([]);
+        const request = {
+          listing: payload,
+          reason: reasonForChange,
+          acknowledgeWarnings: false,
+          acknowledgeBusinessErrors: false,
+        };
+        mutate(request, {
+          onSuccess: (response) => {
+            if (!response.status || response.status === 200) {
+              $state.go('^');
+            } else {
+              setIsProcessing(false);
+              setErrors([response.error]);
+            }
+          },
+          onError: (error) => {
+            setIsProcessing(false);
+            setErrors(error.response.data.errorMessages);
+            setWarnings(error.response.data.warningMessages);
+          },
+        });
+        break;
+        // no default
+    }
   };
 
   const toggleIsEditing = () => {
@@ -101,6 +147,9 @@ function ChplListingEditPage() {
           { isEditing ? (
             <ChplListingEdit
               dispatch={handleDispatch}
+              errors={errors}
+              warnings={warnings}
+              isProcessing={isProcessing}
             />
           ) : (
             <Typography>Insert upload component here</Typography>
