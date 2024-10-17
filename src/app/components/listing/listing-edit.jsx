@@ -138,7 +138,7 @@ function ChplListingEdit({ dispatch, errors, warnings, isProcessing }) {
         certificationEvents: selectedStatuses,
         certifyingBody: formik.values.certifyingBody,
         testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
-        chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(8).join('.')}`,
+        chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(7).join('.')}`,
         rwtPlansCheckDate: formik.values.rwtPlansCheckDate,
         rwtPlansUrl: formik.values.rwtPlansUrl,
         rwtResultsCheckDate: formik.values.rwtResultsCheckDate,
