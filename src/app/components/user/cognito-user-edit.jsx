@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   arrayOf,
   func,
@@ -35,36 +35,26 @@ const useStyles = makeStyles({
   },
 });
 
-const phoneRegExp = /^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}$/;
-
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
-  phoneNumber: yup.string()
-    .required('Phone Number is required')
-    .matches(phoneRegExp, 'Phone number is not valid'),
 });
 
-function ChplCognitoUserEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [user] = useState(props.user);
+function ChplCognitoUserEdit({ user, dispatch, errors }) {
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
   let formik;
 
   const cancel = () => {
-    props.dispatch('cancel', {});
+    dispatch('cancel', {});
   };
 
   const save = () => {
     const updatedUser = {
       ...user,
       fullName: formik.values.fullName,
-      phoneNumber: formik.values.phoneNumber,
       accountEnabled: formik.values.accountEnabled,
     };
-    props.dispatch('cognito-save', updatedUser);
+    dispatch('cognito-save', updatedUser);
   };
 
   const handleDispatch = (action) => {
@@ -114,16 +104,6 @@ function ChplCognitoUserEdit(props) {
               error={formik.touched.fullName && !!formik.errors.fullName}
               helperText={formik.touched.fullName && formik.errors.fullName}
             />
-            <ChplTextField
-              id="phone-number"
-              name="phoneNumber"
-              label="Phone Number"
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-              helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-            />
           </div>
           <div className={classes.dataEntry}>
             <Typography variant="body1">Settings</Typography>
@@ -137,7 +117,7 @@ function ChplCognitoUserEdit(props) {
                     checked={formik.values.accountEnabled}
                     onChange={formik.handleChange}
                   />
-                  )}
+                )}
                 label="Account Enabled"
               />
             </div>
@@ -146,7 +126,7 @@ function ChplCognitoUserEdit(props) {
       </Card>
       <ChplActionBar
         dispatch={handleDispatch}
-        errors={props.errors}
+        errors={errors}
         isDisabled={!formik.isValid}
       />
     </>

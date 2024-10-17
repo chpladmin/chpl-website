@@ -75,6 +75,7 @@ function ChplSignin({ dispatch }) {
         ReactGA.event({ action: 'Log In', category: 'Authentication' });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {

@@ -12,6 +12,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
+import { setAuthTokens } from 'axios-jwt';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -79,11 +80,16 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
+        setAuthTokens({
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+        });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         ReactGA.event({ action: 'Log In', category: 'Authentication' });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
