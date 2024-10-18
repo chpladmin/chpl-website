@@ -12,6 +12,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import ReactGA from 'react-ga4';
+import { useCookies } from 'react-cookie';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -56,6 +57,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
+  const [, setCookie] = useCookies(['refresh_token']);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostNewPasswordRequired();
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -79,6 +81,9 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
       onSuccess: (response) => {
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
+        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         ReactGA.event({ action: 'Log In', category: 'Authentication' });
