@@ -43,6 +43,7 @@ function ChplListingEditPage() {
   let analyticsData;
 
   const handleDispatch = ({ action, payload }) => {
+    let request;
     switch (action) {
       case 'cancel':
         eventTrack({
@@ -59,11 +60,9 @@ function ChplListingEditPage() {
         setIsProcessing(true);
         setErrors([]);
         setWarnings([]);
-        const request = {
-          listing: payload,
+        request = {
+          ...payload,
           reason: reasonForChange,
-          acknowledgeWarnings: false,
-          acknowledgeBusinessErrors: false,
         };
         mutate(request, {
           onSuccess: (response) => {
@@ -76,8 +75,8 @@ function ChplListingEditPage() {
           },
           onError: (error) => {
             setIsProcessing(false);
-            setErrors(error.response.data.errorMessages);
-            setWarnings(error.response.data.warningMessages);
+            setErrors(error.response.data.errorMessages ?? []);
+            setWarnings(error.response.data.warningMessages ?? []);
           },
         });
         break;

@@ -10,7 +10,12 @@ import {
   MenuItem,
   Typography,
 } from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -52,7 +57,12 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplListingEdit({ dispatch, errors, warnings, isProcessing }) {
+function ChplListingEdit({
+  dispatch,
+  errors,
+  warnings,
+  isProcessing,
+}) {
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
   const [statuses, setStatuses] = useState([]);
@@ -66,6 +76,8 @@ function ChplListingEdit({ dispatch, errors, warnings, isProcessing }) {
   const [addingAtl, setAddingAtl] = useState(false);
   const [atlToAdd, setAtlToAdd] = useState('');
   const [selectedAtls, setSelectedAtls] = useState([]);
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+  const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
   const { data: statusesData, isLoading: statusesIsLoading, isSuccess: statusesIsSuccess } = useFetchCertificationStatuses();
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
   const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
@@ -94,6 +106,12 @@ function ChplListingEdit({ dispatch, errors, warnings, isProcessing }) {
 
   const handleDispatch = (action) => {
     switch (action) {
+      case 'toggleErrorAcknowledgement':
+        setAcknowledgeBusinessErrors((prev) => !prev);
+        break;
+      case 'toggleWarningAcknowledgement':
+        setAcknowledgeWarnings((prev) => !prev);
+        break;
       case 'cancel':
         dispatch({ action: 'cancel' });
         break;
@@ -134,15 +152,19 @@ function ChplListingEdit({ dispatch, errors, warnings, isProcessing }) {
     dispatch({
       action: 'save',
       payload: {
-        ...listing,
-        certificationEvents: selectedStatuses,
-        certifyingBody: formik.values.certifyingBody,
-        testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
-        chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(7).join('.')}`,
-        rwtPlansCheckDate: formik.values.rwtPlansCheckDate,
-        rwtPlansUrl: formik.values.rwtPlansUrl,
-        rwtResultsCheckDate: formik.values.rwtResultsCheckDate,
-        rwtResultsUrl: formik.values.rwtResultsUrl,
+        listing: {
+          ...listing,
+          certificationEvents: selectedStatuses,
+          certifyingBody: formik.values.certifyingBody,
+          testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
+          chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(7).join('.')}`,
+          rwtPlansCheckDate: formik.values.rwtPlansCheckDate,
+          rwtPlansUrl: formik.values.rwtPlansUrl,
+          rwtResultsCheckDate: formik.values.rwtResultsCheckDate,
+          rwtResultsUrl: formik.values.rwtResultsUrl,
+        },
+        acknowledgeWarnings,
+        acknowledgeBusinessErrors,
       },
     });
   };
