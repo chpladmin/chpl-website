@@ -70,7 +70,7 @@ function ChplUsers({
   const { mutate } = usePutUser();
   const cognitoMutate = usePutCognitoUser().mutate;
   const { ssoIsOn } = useContext(FlagContext);
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [users, setUsers] = useState([]);
@@ -233,14 +233,14 @@ function ChplUsers({
                     label="Search by Name or Email"
                     onChange={handleFilter}
                   />
-                  { user.userId
+                  { !ssoIsOn
                     && (
                       <ChplUserInvite
                         roles={roles}
                         dispatch={handleDispatch}
                       />
                     )}
-                  { ssoIsOn && user.cognitoId
+                  { ssoIsOn
                     && (
                       <ChplCognitoUserInvite
                         groupNames={groupNames}
