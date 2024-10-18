@@ -10,7 +10,7 @@ const interpretActivity = (activity, canSeeHistory) => {
     change: [],
   };
   const { originalData: prev, newData: curr } = activity;
-  if (activity.description.startsWith('Updated certified product')) {
+  if (activity.description.startsWith('Updated certified product') || activity.description.startsWith('Changed ACB ownership')) {
     const listingChanges = canSeeHistory ? compareListing(prev, curr) : compareListing(prev, curr, briefLookup);
     if (listingChanges.length > 0) {
       ret.change = [
@@ -18,15 +18,6 @@ const interpretActivity = (activity, canSeeHistory) => {
         ...listingChanges,
       ];
     }
-  } else if (activity.description.startsWith('Changed ACB ownership')) {
-    const changes = [];
-    if (prev.chplProductNumber !== curr.chplProductNumber) {
-      changes.push(`CHPL Product Number changed from ${prev.chplProductNumber} to ${curr.chplProductNumber}`);
-    }
-    ret.change = [
-      ...ret.change,
-      ...changes,
-    ];
   } else if (activity.description === 'Created a certified product') {
     ret.change.push('Certified product was uploaded to the CHPL');
   } else if (activity.description.startsWith('Surveillance was added')) {
