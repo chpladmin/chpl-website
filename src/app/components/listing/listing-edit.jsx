@@ -28,7 +28,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext, UserContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
-  certifyingBody: yup.object()
+  certifyingBody: yup.string()
     .required('ONC-ACB is required'),
   productCode: yup.string()
     .required('Product Code is required')
@@ -96,8 +96,7 @@ function ChplListingEdit({
   useEffect(() => {
     if (acbsIsLoading || !acbsIsSuccess) { return; }
     setAcbs(acbsData.acbs.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('certifyingBody', acbsData.acbs.find((acb) => acb.id === listing?.certifyingBody?.id));
-  }, [acbsData, acbsIsLoading, acbsIsSuccess, listing]);
+  }, [acbsData, acbsIsLoading, acbsIsSuccess]);
 
   useEffect(() => {
     if (atlsIsLoading || !atlsIsSuccess) { return; }
@@ -155,7 +154,7 @@ function ChplListingEdit({
         listing: {
           ...listing,
           certificationEvents: selectedStatuses,
-          certifyingBody: formik.values.certifyingBody,
+          certifyingBody: acbs.find((acb) => acb.name === formik.values.certifyingBody),
           testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
           chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(7).join('.')}`,
           rwtPlansCheckDate: formik.values.rwtPlansCheckDate,
@@ -171,14 +170,14 @@ function ChplListingEdit({
 
   formik = useFormik({
     initialValues: {
-      certifyingBody: '',
+      certifyingBody: listing.certifyingBody.name ?? '',
       productCode: listing.chplProductNumber.split('.')[4],
       versionCode: listing.chplProductNumber.split('.')[5],
       icsCode: listing.chplProductNumber.split('.')[6],
-      rwtPlansCheckDate: listing.rwtPlansCheckDate || '',
-      rwtPlansUrl: listing.rwtPlansUrl || '',
-      rwtResultsCheckDate: listing.rwtResultsCheckDate || '',
-      rwtResultsUrl: listing.rwtResultsUrl || '',
+      rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
+      rwtPlansUrl: listing.rwtPlansUrl ?? '',
+      rwtResultsCheckDate: listing.rwtResultsCheckDate ?? '',
+      rwtResultsUrl: listing.rwtResultsUrl ?? '',
     },
     onSubmit: () => {
       save();
@@ -323,8 +322,8 @@ function ChplListingEdit({
             && (
               <ChplTextField
                 select
-                id="acb"
-                name="acb"
+                id="certifying-body"
+                name="certifyingBody"
                 label="ONC-ACB"
                 required
                 value={formik.values.certifyingBody}
@@ -334,7 +333,12 @@ function ChplListingEdit({
                 helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
               >
                 { acbs.map((item) => (
-                  <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+                  <MenuItem
+                    value={item.name}
+                    key={item.id}
+                  >
+                    {`${item.name}${item.retired ? ' (Retired)' : ''}`}
+                  </MenuItem>
                 ))}
               </ChplTextField>
             )}
