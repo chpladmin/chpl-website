@@ -89,7 +89,7 @@ function ChplSignin({ dispatch }) {
         } else if (error?.response?.status === 471) {
           const body = 'For security reasons, all users are being asked to reset their password. Please use the Forgot Password functionality to complete this process.';
           enqueueSnackbar(body, { variant: 'error' });
-          dispatch({ 
+          dispatch({
             action: 'forgotPassword',
             payload: {
               userName: formik.values.userName,
@@ -121,7 +121,7 @@ function ChplSignin({ dispatch }) {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Cognito login required" />
+      <CardHeader className={classes.loginHeader} title="Login required" />
       <CardContent className={classes.grid}>
         <ChplTextField
           id="user-name"
@@ -155,7 +155,7 @@ function ChplSignin({ dispatch }) {
           onClick={submitSignin}
           endIcon={<VpnKeyIcon />}
         >
-          Log In (Cognito)
+          Log In
         </Button>
         <Button
           fullWidth
