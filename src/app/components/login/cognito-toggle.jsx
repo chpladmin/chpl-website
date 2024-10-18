@@ -7,8 +7,6 @@ import {
 import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
 import { getAccessToken } from 'axios-jwt';
-import regeneratorRuntime from "regenerator-runtime";
-import { getIn } from 'yup/lib/util/reach';
 
 import ChplCognitoLogin from './cognito-login';
 
@@ -36,17 +34,12 @@ function ChplCognitoToggle({ dispatch }) {
   const [title, setTitle] = useState('');
   const [state, setState] = useState('SIGNIN');
   const { user, impersonating } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
-  const [ssoIsOn, setSsoIsOn] = useState(false);
+  const { ssoIsOn } = useContext(FlagContext);
   const classes = useStyles();
 
   useEffect(() => {
     getAccessToken().then((token) => (token ? setState('LOGGEDIN') : setState('SIGNIN')));
   }, []);
-
-  useEffect(() => {
-    setSsoIsOn(isOn('sso'));
-  }, [isOn]);
 
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
@@ -54,7 +47,6 @@ function ChplCognitoToggle({ dispatch }) {
   };
 
   const handleClose = () => {
-    setAnchor(null);
     setOpen(false);
   };
 

@@ -69,21 +69,16 @@ function ChplUsers({
   const networkService = getAngularService('networkService');
   const { mutate } = usePutUser();
   const cognitoMutate = usePutCognitoUser().mutate;
-  const { isOn } = useContext(FlagContext);
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { ssoIsOn } = useContext(FlagContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
-  const [ssoIsOn, setSsoIsOn] = useState(false);
   const [users, setUsers] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
     setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
   }, [initialUsers]);
-
-  useEffect(() => {
-    setSsoIsOn(isOn('sso'));
-  }, [isOn]);
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
@@ -163,7 +158,7 @@ function ChplUsers({
   };
 
   const displayUser = (userToDisplay) => {
-    if (userToDisplay.cognitoId) {
+    if (ssoIsOn) {
       return (
         <ChplCognitoUserView
           key={userToDisplay.cognitoId}
@@ -171,21 +166,18 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } 
-    if (userToDisplay.userId) {
-      return (
-        <ChplUserView
-          key={userToDisplay.userId}
-          user={userToDisplay}
-          dispatch={handleDispatch}
-        />
-      );
     }
-    return null;
+    return (
+      <ChplUserView
+        key={userToDisplay.userId}
+        user={userToDisplay}
+        dispatch={handleDispatch}
+      />
+    );
   };
 
   const displayUserEdit = (userToEdit) => {
-    if (userToEdit.cognitoId) {
+    if (ssoIsOn) {
       return (
         <ChplCognitoUserEdit
           user={userToEdit}
@@ -193,17 +185,14 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } 
-    if (userToEdit.userId) {
-      return (
-        <ChplUserEdit
-          user={userToEdit}
-          errors={errors}
-          dispatch={handleDispatch}
-        />
-      );
     }
-    return null;
+    return (
+      <ChplUserEdit
+        user={userToEdit}
+        errors={errors}
+        dispatch={handleDispatch}
+      />
+    );
   };
 
   if (!hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
@@ -244,14 +233,14 @@ function ChplUsers({
                     label="Search by Name or Email"
                     onChange={handleFilter}
                   />
-                  { user.userId
+                  { !ssoIsOn
                     && (
                       <ChplUserInvite
                         roles={roles}
                         dispatch={handleDispatch}
                       />
                     )}
-                  { ssoIsOn && user.cognitoId
+                  { ssoIsOn
                     && (
                       <ChplCognitoUserInvite
                         groupNames={groupNames}

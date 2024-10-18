@@ -40,19 +40,14 @@ function ChplRegisterUser({ hash }) {
   const { enqueueSnackbar } = useSnackbar();
   const [invitationType, setInvitationType] = useState('');
   const [message, setMessage] = useState('');
-  const [ssoIsOn, setSsoIsOn] = useState(false);
   const [state, setState] = useState('signin');
   const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
   const { mutate: createInvited } = usePostCreateInvitedUser();
   const { setUser } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
+  const { ssoIsOn } = useContext(FlagContext);
   const classes = useStyles();
   let handleDispatch;
-
-  useEffect(() => {
-    setSsoIsOn(isOn('sso'));
-  }, [isOn]);
 
   useEffect(() => {
     if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
@@ -159,8 +154,8 @@ function ChplRegisterUser({ hash }) {
         return (
           <>
             <Typography>{ message }</Typography>
-            <ChplCognitoLogin 
-              dispatch={handleDispatch} 
+            <ChplCognitoLogin
+              dispatch={handleDispatch}
               state={cognitoLoginComponentState}
               setState={setCognitoLoginComponentState}
             />
