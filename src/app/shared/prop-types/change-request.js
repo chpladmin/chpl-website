@@ -1,5 +1,10 @@
 import {
-  arrayOf, object, number, shape, string,
+  arrayOf,
+  object,
+  oneOfType,
+  number,
+  shape,
+  string,
 } from 'prop-types';
 
 import acb from './acb';
@@ -32,7 +37,7 @@ const changeRequest = shape({
   developer,
   id: number,
   statuses: arrayOf(changeRequestStatus),
-  submittedDateTime: number,
+  submittedDateTime: oneOfType([number, string]),
 });
 
 export { changeRequest, changeRequestStatusType };

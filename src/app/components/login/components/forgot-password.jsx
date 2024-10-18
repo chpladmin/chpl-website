@@ -12,9 +12,10 @@ import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import ReactGA from 'react-ga4';
 
 import { usePostForgotPassword } from 'api/auth';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
 
 const useStyles = makeStyles({
@@ -36,6 +37,7 @@ const validationSchema = yup.object({
 });
 
 function ChplForgotPassword({ dispatch, userName }) {
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostForgotPassword();
 
@@ -44,6 +46,11 @@ function ChplForgotPassword({ dispatch, userName }) {
   let formik;
 
   const cancel = (e) => {
+    eventTrack({
+      ...analytics,
+      event: 'Cancel Forgot Password',
+      category: 'Authentication',
+    });
     e.stopPropagation();
     dispatch({ action: 'loggedOut' });
   };
@@ -55,9 +62,13 @@ function ChplForgotPassword({ dispatch, userName }) {
   };
 
   const sendForgottenPasswordEmail = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Send Reset Email',
+      category: 'Authentication',
+    });
     mutate({ userName: formik.values.email }, {
       onSuccess: () => {
-        ReactGA.event({ action: 'Send Forgotten Password Email', category: 'Authentication', label: 'test' });
         const body = `Forgotten password email sent to ${formik.values.email}; please check your email`;
         enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'loggedOut' });

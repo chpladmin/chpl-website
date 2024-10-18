@@ -11,13 +11,13 @@ import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '8px',
     gridTemplateColumns: '1fr',
   },
-}));
+});
 
 const phoneRegExp = /^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}$/;
 

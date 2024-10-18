@@ -24,7 +24,7 @@ import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -67,12 +67,12 @@ const makeRounded = (val) => Math.round(val * 1000) / 1000;
 const makePercentage = (val) => `${makeRounded(val * 100)}%`;
 
 function ChplSedTaskView({ task: initialTask }) {
+  const { analytics } = useAnalyticsContext();
+  const { listing } = useContext(ListingContext);
   const [expanded, setExpanded] = useState(false);
   const [meanExperience, setMeanExperience] = useState(0);
   const [task, setTask] = useState(undefined);
   const [occupations, setOccupations] = useState([]);
-  const { listing } = useContext(ListingContext);
-  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   const getIcon = () => (expanded
@@ -117,11 +117,11 @@ function ChplSedTaskView({ task: initialTask }) {
 
   const handleAccordionChange = () => {
     eventTrack({
+      ...analytics,
       event: expanded ? `Hide Details - ${task.description}` : `Show Details - ${task.description}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setExpanded(!expanded);
   };

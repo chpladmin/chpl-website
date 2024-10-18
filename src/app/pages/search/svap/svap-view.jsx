@@ -194,10 +194,9 @@ function ChplSvapSearchView() {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -220,9 +219,8 @@ function ChplSvapSearchView() {
               href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
               text="Standards Version Advancement Process (SVAP)"
               analytics={{
+                ...analytics,
                 event: 'Go to Standards Version Advancement Process (SVAP)',
-                category: analytics.category,
-                group: analytics.group,
               }}
               external={false}
               inline
@@ -233,9 +231,8 @@ function ChplSvapSearchView() {
               href="https://www.healthit.gov/topic/information-blocking"
               text="Cures Act Final Rule"
               analytics={{
+                ...analytics,
                 event: 'Go to Cures Act Final Rule',
-                category: analytics.category,
-                group: analytics.group,
               }}
               external={false}
               inline
@@ -249,9 +246,8 @@ function ChplSvapSearchView() {
               href="https://www.healthit.gov/topic/information-blocking"
               text="Cures Act Final Rule"
               analytics={{
+                ...analytics,
                 event: 'Go to Cures Act Final Rule',
-                category: analytics.category,
-                group: analytics.group,
               }}
               external={false}
               inline
@@ -265,9 +261,8 @@ function ChplSvapSearchView() {
               href="#/resources/download"
               text="Download the CHPL"
               analytics={{
+                ...analytics,
                 event: 'Navigate to Download the CHPL',
-                category: analytics.category,
-                group: analytics.group,
               }}
               external={false}
               router={{ sref: 'resources.download' }}
@@ -280,9 +275,8 @@ function ChplSvapSearchView() {
               href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
               text="SVAP Resources"
               analytics={{
+                ...analytics,
                 event: 'Go to SVAP Resources',
-                category: analytics.category,
-                group: analytics.group,
               }}
               external={false}
               inline
@@ -302,9 +296,8 @@ function ChplSvapSearchView() {
             href={downloadLink}
             text="Download SVAP Summary"
             analytics={{
+              ...analytics,
               event: 'Download SVAP Summary',
-              category: analytics.category,
-              group: analytics.group,
             }}
             external={false}
           />
@@ -340,7 +333,6 @@ function ChplSvapSearchView() {
               { listings.length > 0 && hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <ChplDownloadListings
-                    analytics={analytics}
                     listings={listings}
                     toggled={toggledCsvDefaults}
                   />
@@ -371,11 +363,10 @@ function ChplSvapSearchView() {
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
                                     analytics={{
+                                      ...analytics,
                                       event: 'Navigate to Listing Details Page',
-                                      category: analytics.category,
                                       label: item.chplProductNumber,
                                       aggregationName: item.product.name,
-                                      group: analytics.group,
                                     }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
@@ -387,10 +378,9 @@ function ChplSvapSearchView() {
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
                                   analytics={{
+                                    ...analytics,
                                     event: 'Navigate to Developer Page',
-                                    category: analytics.category,
                                     label: item.developer.name,
-                                    group: analytics.group,
                                   }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
@@ -408,11 +398,10 @@ function ChplSvapSearchView() {
                                     <ChplLink
                                       href={item.svapNoticeUrl}
                                       analytics={{
+                                        ...analytics,
                                         event: 'Go to SVAP Notice',
-                                        category: analytics.category,
                                         label: item.chplProductNumber,
                                         aggregationName: item.product.name,
-                                        group: analytics.group,
                                       }}
                                     />
                                   ) : (
@@ -434,7 +423,6 @@ function ChplSvapSearchView() {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}

@@ -9,6 +9,7 @@ import {
   getDateDisplay,
   getDateEntry,
 } from 'components/filter';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -27,6 +28,7 @@ const staticFilters = [{
 }];
 
 function ChplQuestionableActivityPage() {
+  const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const qaTypeQuery = useFetchQuestionableActivityData();
 
@@ -50,20 +52,23 @@ function ChplQuestionableActivityPage() {
       }));
   }, [qaTypeQuery.data, qaTypeQuery.isLoading, qaTypeQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Questionable Activity',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Questionable Activity',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-questionableActivity"
-    >
-      <ChplQuestionableActivityView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-questionableActivity"
+      >
+        <ChplQuestionableActivityView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

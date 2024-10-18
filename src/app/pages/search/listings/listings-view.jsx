@@ -175,10 +175,9 @@ function ChplListingsView() {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -283,11 +282,10 @@ function ChplListingsView() {
                                     href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
                                     analytics={{
+                                      ...analytics,
                                       event: 'Navigate to Listing Details Page',
-                                      category: analytics.category,
                                       label: item.chplProductNumber,
                                       aggregationName: item.product.name,
-                                      group: analytics.group,
                                     }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.id } }}
@@ -299,10 +297,9 @@ function ChplListingsView() {
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
                                   analytics={{
+                                    ...analytics,
                                     event: 'Navigate to Developer Page',
-                                    category: analytics.category,
                                     label: item.developer.name,
-                                    group: analytics.group,
                                   }}
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
