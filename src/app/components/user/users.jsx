@@ -158,7 +158,7 @@ function ChplUsers({
   };
 
   const displayUser = (userToDisplay) => {
-    if (userToDisplay.cognitoId) {
+    if (ssoIsOn) {
       return (
         <ChplCognitoUserView
           key={userToDisplay.cognitoId}
@@ -167,20 +167,17 @@ function ChplUsers({
         />
       );
     }
-    if (userToDisplay.userId) {
-      return (
-        <ChplUserView
-          key={userToDisplay.userId}
-          user={userToDisplay}
-          dispatch={handleDispatch}
-        />
-      );
-    }
-    return null;
+    return (
+      <ChplUserView
+        key={userToDisplay.userId}
+        user={userToDisplay}
+        dispatch={handleDispatch}
+      />
+    );
   };
 
   const displayUserEdit = (userToEdit) => {
-    if (userToEdit.cognitoId) {
+    if (ssoIsOn) {
       return (
         <ChplCognitoUserEdit
           user={userToEdit}
@@ -189,16 +186,13 @@ function ChplUsers({
         />
       );
     }
-    if (userToEdit.userId) {
-      return (
-        <ChplUserEdit
-          user={userToEdit}
-          errors={errors}
-          dispatch={handleDispatch}
-        />
-      );
-    }
-    return null;
+    return (
+      <ChplUserEdit
+        user={userToEdit}
+        errors={errors}
+        dispatch={handleDispatch}
+      />
+    );
   };
 
   if (!hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
