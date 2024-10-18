@@ -1,11 +1,10 @@
 import { createContext } from 'react';
 
 const FlagContext = createContext({
-  cmsA9GracePeriodEndIsOn: () => {},
-  demographicChangeRequestIsOn: () => {},
-  isOn: () => {},
-  ssoIsOn: () => {},
-  uploadToUpdateIsOn: () => {},
+  cmsA9GracePeriodEndIsOn: false,
+  demographicChangeRequestIsOn: false,
+  ssoIsOn: false,
+  uploadToUpdateIsOn: false,
 });
 FlagContext.displayName = 'ff4j-flags';
 

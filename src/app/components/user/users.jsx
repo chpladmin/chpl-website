@@ -69,21 +69,16 @@ function ChplUsers({
   const networkService = getAngularService('networkService');
   const { mutate } = usePutUser();
   const cognitoMutate = usePutCognitoUser().mutate;
-  const { isOn } = useContext(FlagContext);
+  const { ssoIsOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
-  const [ssoIsOn, setSsoIsOn] = useState(false);
   const [users, setUsers] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
     setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
   }, [initialUsers]);
-
-  useEffect(() => {
-    setSsoIsOn(isOn('sso'));
-  }, [isOn]);
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
@@ -171,7 +166,7 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } 
+    }
     if (userToDisplay.userId) {
       return (
         <ChplUserView
@@ -193,7 +188,7 @@ function ChplUsers({
           dispatch={handleDispatch}
         />
       );
-    } 
+    }
     if (userToEdit.userId) {
       return (
         <ChplUserEdit

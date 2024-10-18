@@ -34,17 +34,12 @@ function ChplCognitoToggle({ dispatch }) {
   const [title, setTitle] = useState('');
   const [state, setState] = useState('SIGNIN');
   const { user, impersonating } = useContext(UserContext);
-  const { isOn } = useContext(FlagContext);
-  const [ssoIsOn, setSsoIsOn] = useState(false);
+  const { ssoIsOn } = useContext(FlagContext);
   const classes = useStyles();
 
   useEffect(() => {
     getAccessToken().then((token) => (token ? setState('LOGGEDIN') : setState('SIGNIN')));
   }, []);
-
-  useEffect(() => {
-    setSsoIsOn(isOn('sso'));
-  }, [isOn]);
 
   const handleClick = (e) => {
     setAnchor(e.currentTarget);

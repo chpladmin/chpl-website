@@ -20,7 +20,6 @@ function FlagWrapper({ children }) {
   const uploadToUpdateIsOn = isOn('upload-to-update');
 
   const flagState = {
-    isOn,
     cmsA9GracePeriodEndIsOn,
     demographicChangeRequestIsOn,
     ssoIsOn,

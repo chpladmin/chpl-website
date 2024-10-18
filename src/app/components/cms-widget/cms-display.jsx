@@ -115,9 +115,8 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
-  const { isOn } = useContext(FlagContext);
+  const { cmsA9GracePeriodEndIsOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
-  const [cmsA9GracePeriodEndIsOn, setCmsA9GracePeriodEndIsOn] = useState(false);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
@@ -135,10 +134,6 @@ function ChplCmsDisplay() {
     createPdf(pdfData, cmsA9GracePeriodEndIsOn);
     setIsDownloading(false);
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
-
-  useEffect(() => {
-    setCmsA9GracePeriodEndIsOn(isOn('cms-a9-grace-period-end'));
-  }, [isOn]);
 
   useEffect(() => {
     setCertId(undefined);

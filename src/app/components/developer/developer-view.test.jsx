@@ -26,7 +26,7 @@ const developerMock = {
 };
 
 const flagContextMock = {
-  isOn: () => false,
+  ssoIsOn: false,
 };
 
 const userContextMock = {
