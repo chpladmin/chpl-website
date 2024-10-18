@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { setAuthTokens } from 'axios-jwt';
+import { useCookies } from 'react-cookie';
 
 import { usePostCognitoLogin } from 'api/auth';
 import { ChplTextField } from 'components/util';
@@ -46,6 +47,7 @@ function ChplSignin({ dispatch }) {
   const authService = getAngularService('authService');
   const { setUser } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
+  const [, setCookie] = useCookies(['refresh_token']);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
   const classes = useStyles();
@@ -86,6 +88,9 @@ function ChplSignin({ dispatch }) {
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         });
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
+        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();
