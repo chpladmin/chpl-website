@@ -7,8 +7,6 @@ import {
 import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
 import { getAccessToken } from 'axios-jwt';
-import regeneratorRuntime from "regenerator-runtime";
-import { getIn } from 'yup/lib/util/reach';
 
 import ChplCognitoLogin from './cognito-login';
 
@@ -54,7 +52,6 @@ function ChplCognitoToggle({ dispatch }) {
   };
 
   const handleClose = () => {
-    setAnchor(null);
     setOpen(false);
   };
 
