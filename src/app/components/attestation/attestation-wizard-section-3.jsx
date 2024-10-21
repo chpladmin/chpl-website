@@ -68,6 +68,8 @@ function ChplAttestationWizardSection3({ developer, isSubmitting, dispatch }) {
     eventTrack({
       ...analytics,
       event: 'Sign Electronically',
+      category: 'Change Requests',
+      label: developer.name,
     });
     dispatch(signature);
   };
