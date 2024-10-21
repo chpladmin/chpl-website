@@ -8,6 +8,8 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
+import compareComplaint from './services/complaints.service';
+
 import { compareDeveloper } from 'components/activity/services/developers.service';
 import { compareOrganization } from 'components/activity/services/organizations.service';
 import compareSystemMaintenance from 'components/activity/services/system-maintenance.service';
@@ -28,6 +30,7 @@ const getDetails = (activity) => {
   switch (activity.concept) {
     case 'CERTIFICATION_BODY': compare = compareOrganization; break;
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
+    case 'COMPLAINT': compare = compareComplaint; break;
     case 'DEVELOPER': compare = compareDeveloper; break;
     case 'PRODUCT': compare = compareProduct; break;
     case 'STANDARD': compare = compareSystemMaintenance; break;
@@ -89,6 +92,7 @@ function ChplActivityDetails({ activity }) {
   if (![
     'CERTIFICATION_BODY',
     'CERTIFIED_PRODUCT',
+    'COMPLAINT',
     'DEVELOPER',
     'PRODUCT',
     'STANDARD',
