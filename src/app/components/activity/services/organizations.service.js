@@ -3,7 +3,6 @@ import { getDisplayDateFormat } from 'services/date-util';
 
 const lookup = {
   'root.address': { message: () => 'Address changes:' },
-  'root.address.addressId': { message: () => undefined },
   'root.address.city': { message: (before, after) => comparePrimitive(before, after, 'city', 'City') },
   'root.address.country': { message: (before, after) => comparePrimitive(before, after, 'country', 'Country') },
   'root.address.creationDate': { message: () => undefined },
@@ -22,11 +21,11 @@ const lookup = {
   'root.lastModifiedUser': { message: () => undefined },
   'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
   'root.retired': { message: (before, after) => comparePrimitive(before, after, 'retired', 'Retired') },
-  'root.retirementDate': { message: (before, after) => ((!!before.retirementDay || !!after.retirementDay) ? undefined : comparePrimitive(before, after, 'retirementDate', 'Retirement Date', getDisplayDateFormat)) },
+  'root.retirementDate': { message: (before, after) => comparePrimitive(before, after, 'retirementDate', 'Retirement Date', getDisplayDateFormat) },
   'root.retirementDay': { message: (before, after) => comparePrimitive(before, after, 'retirementDay', 'Retirement Day', getDisplayDateFormat) },
   'root.website': { message: (before, after) => comparePrimitive(before, after, 'website', 'Website') },
 };
 
-const compareAcb = (prev, curr) => compareObject(prev, curr, lookup);
+const compareOrganization = (prev, curr) => compareObject(prev, curr, lookup);
 
-export { compareAcb }; // eslint-disable-line import/prefer-default-export
+export { compareOrganization }; // eslint-disable-line import/prefer-default-export
