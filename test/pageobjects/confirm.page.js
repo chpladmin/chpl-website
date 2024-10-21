@@ -28,7 +28,7 @@ class ConfirmPage extends Page {
   get actionBarWarnings() { return $(this.elements.actionBarWarnings); }
 
   async waitForPendingListingToBecomeClickable(chplProductNumber) {
-    await (await $(this.elements.processButton(chplProductNumber)).waitForClickable());
+    await (await $(this.elements.processButton(chplProductNumber)).waitForClickable({ timeout: 30000 }));
   }
 
   async getDrawerButton(chplProductNumber) {
