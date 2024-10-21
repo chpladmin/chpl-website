@@ -76,7 +76,7 @@ function ChplDashboard() {
       url: useFetchReportUrl('TestTool'),
     }, {
       text: 'Criteria Migration - (a)(9) to (b)(11)',
-      reportId: '',
+      reportId: 'CriteriaMigration-a9tob11',
       icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
       frameHeight: '825px',
       url: useFetchReportUrl('CriteriaMigration-a9tob11'),
