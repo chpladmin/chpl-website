@@ -64,11 +64,10 @@ function ChplFilterChips() {
   const removeChip = (f, v) => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: 'Remove Filter Chip',
-        category: filterContext.analytics.category,
         label: f.getValueDisplay(v),
         aggregationName: f.getFilterDisplay(f),
-        group: filterContext.analytics.group,
       });
     }
     filterContext.dispatch('toggle', f, v);
@@ -77,10 +76,9 @@ function ChplFilterChips() {
   const toggleOperator = (f) => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: `Set Any/All Filter to ${f.operator === 'and' ? 'Any' : 'All'}`,
-        category: filterContext.analytics.category,
         label: f.getFilterDisplay(f),
-        group: filterContext.analytics.group,
       });
     }
     filterContext.dispatch('toggleOperator', f);
@@ -89,10 +87,9 @@ function ChplFilterChips() {
   const toggleShowAll = (f) => {
     if (filterContext.analytics) {
       eventTrack({
+        ...filterContext.analytics,
         event: `Toggle Show All to ${f.showAll ? 'Some' : 'All'}`,
-        category: filterContext.analytics.category,
         label: f.getFilterDisplay(f),
-        group: filterContext.analytics.group,
       });
     }
     filterContext.dispatch('toggleShowAll', f);

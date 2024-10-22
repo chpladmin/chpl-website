@@ -16,6 +16,8 @@ import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostSetForgottenPassword } from 'api/auth';
 import { ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const zxcvbn = require('zxcvbn');
 
@@ -49,6 +51,7 @@ const validationSchema = yup.object({
 });
 
 function ChplResetForgottenPassword({ dispatch, uuid }) {
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostSetForgottenPassword();
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -70,6 +73,11 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
     }, {
       onSuccess: () => {
         const body = 'Password reset';
+        eventTrack({
+          ...analytics,
+          event: 'Confirm New Password',
+          category: 'Authentication',
+        });
         enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'loggedOut' });
       },
