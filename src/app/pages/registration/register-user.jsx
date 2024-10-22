@@ -19,8 +19,9 @@ import {
   ChplUserCreate,
   ChplCognitoUserCreate,
 } from 'components/registration';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -31,12 +32,14 @@ const useStyles = makeStyles({
 });
 
 function ChplRegisterUser({ hash }) {
-  const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const { analytics } = useAnalyticsContext();
+  const { setUser } = useContext(UserContext);
+  const { ssoIsOn } = useContext(FlagContext);
   const { enqueueSnackbar } = useSnackbar();
   const [invitationType, setInvitationType] = useState('');
   const [message, setMessage] = useState('');
@@ -44,8 +47,6 @@ function ChplRegisterUser({ hash }) {
   const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
   const { mutate: createInvited } = usePostCreateInvitedUser();
-  const { setUser } = useContext(UserContext);
-  const { ssoIsOn } = useContext(FlagContext);
   const classes = useStyles();
   let handleDispatch;
 
@@ -77,7 +78,11 @@ function ChplRegisterUser({ hash }) {
         userId = payload.email || authService.getUserId();
         networkService.authorizeUser(packet, userId)
           .then(() => {
-            $analytics.eventTrack('Log In To Your Account', { category: 'Authentication' });
+            eventTrack({
+              ...analytics,
+              category: 'Authentication',
+              event: 'Log In To Your Account',
+            });
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
@@ -104,7 +109,11 @@ function ChplRegisterUser({ hash }) {
         };
         createCognitoInvited(packet, {
           onSuccess: () => {
-            $analytics.eventTrack('Create Account', { category: 'Authentication' });
+            eventTrack({
+              ...analytics,
+              category: 'Authentication',
+              event: 'Create New Account',
+            });
             setMessage('Your account has been created. Please check your email for your temporary password');
             setState('cognito-login');
           },
@@ -124,7 +133,11 @@ function ChplRegisterUser({ hash }) {
         };
         createInvited(packet, {
           onSuccess: () => {
-            $analytics.eventTrack('Create Account', { category: 'Authentication' });
+            eventTrack({
+              ...analytics,
+              category: 'Authentication',
+              event: 'Create New Account',
+            });
             setMessage('Your account has been created. Please check your email to confirm your account');
             setState('success');
           },

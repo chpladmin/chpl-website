@@ -28,7 +28,7 @@ import ChplSubscribe from 'components/subscriptions/subscribe';
 import { ChplLink, InternalScrollButton } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -119,6 +119,7 @@ const useStyles = makeStyles({
 
 function ChplListingView({ isConfirming, listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
+  const { analytics } = useAnalyticsContext();
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
@@ -140,22 +141,22 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
 
   const toggleSeeAllCriteria = () => {
     eventTrack({
+      ...analytics,
       event: seeAllCriteria ? 'See only attested Certification Criteria' : 'See all Certification Criteria',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setSeeAllCriteria(!seeAllCriteria);
   };
 
   const toggleSeeAllCqms = () => {
     eventTrack({
+      ...analytics,
       event: seeAllCqms ? 'See only attested CQMs' : 'See all CQMs',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setSeeAllCqms(!seeAllCqms);
   };
@@ -175,11 +176,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   <InternalScrollButton
                     id="listingInformation"
                     analytics={{
+                      ...analytics,
                       event: 'Navigate to Listing Information',
                       category: 'Listing Details',
                       label: listing.chplProductNumber,
                       aggregationName: listing.product.name,
-                      group: user?.role,
                     }}
                   >
                     Listing Information
@@ -192,11 +193,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   <InternalScrollButton
                     id="certificationCriteria"
                     analytics={{
+                      ...analytics,
                       event: 'Navigate to Certification Criteria',
                       category: 'Listing Details',
                       label: listing.chplProductNumber,
                       aggregationName: listing.product.name,
-                      group: user?.role,
                     }}
                   >
                     Certification Criteria
@@ -209,11 +210,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   <InternalScrollButton
                     id="clinicalQualityMeasures"
                     analytics={{
+                      ...analytics,
                       event: 'Navigate to Clinical Quality Measures',
                       category: 'Listing Details',
                       label: listing.chplProductNumber,
                       aggregationName: listing.product.name,
-                      group: user?.role,
                     }}
                   >
                     Clinical Quality Measures
@@ -228,11 +229,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                      <InternalScrollButton
                        id="sed"
                        analytics={{
+                         ...analytics,
                          event: 'Navigate to Safety Enhanced Design',
                          category: 'Listing Details',
                          label: listing.chplProductNumber,
                          aggregationName: listing.product.name,
-                         group: user?.role,
                        }}
                      >
                        Safety Enhanced Design (SED)
@@ -248,11 +249,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                       <InternalScrollButton
                         id="g1g2Measures"
                         analytics={{
+                          ...analytics,
                           event: 'Navigate to G1/G2 Measures',
                           category: 'Listing Details',
                           label: listing.chplProductNumber,
                           aggregationName: listing.product.name,
-                          group: user?.role,
                         }}
                       >
                         G1/G2 Measures
@@ -266,11 +267,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   <InternalScrollButton
                     id="compliance"
                     analytics={{
+                      ...analytics,
                       event: 'Navigate to Compliance Activities',
                       category: 'Listing Details',
                       label: listing.chplProductNumber,
                       aggregationName: listing.product.name,
-                      group: user?.role,
                     }}
                   >
                     Compliance Activities
@@ -283,11 +284,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   <InternalScrollButton
                     id="additional"
                     analytics={{
+                      ...analytics,
                       event: 'Navigate to Additional Information',
                       category: 'Listing Details',
                       label: listing.chplProductNumber,
                       aggregationName: listing.product.name,
-                      group: user?.role,
                     }}
                   >
                     Additional Information
@@ -442,11 +443,11 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                       external={false}
                       router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
                       analytics={{
+                        ...analytics,
                         event: 'Manage Surveillance Activities',
                         category: 'Listing Details',
                         label: listing.chplProductNumber,
                         aggregationName: listing.product.name,
-                        group: user?.role,
                       }}
                     />
                   )}
