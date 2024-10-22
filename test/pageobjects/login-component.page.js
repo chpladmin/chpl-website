@@ -1,7 +1,5 @@
 import credentials from '../config/credentials';
 
-const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 class LoginComponent {
   constructor() {
     this.elements = {

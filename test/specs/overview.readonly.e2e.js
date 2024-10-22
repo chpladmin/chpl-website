@@ -1,7 +1,5 @@
 import OverviewPage from '../pageobjects/overview.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the Overview page', () => {

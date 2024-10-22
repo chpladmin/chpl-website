@@ -1,8 +1,6 @@
 import DeveloperSearchPage from '../pageobjects/developer-search.page';
 import LoginComponent from '../pageobjects/login-component.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let login;
 let page;
 

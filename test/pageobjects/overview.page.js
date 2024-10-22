@@ -1,7 +1,5 @@
 import Page from './page.es6';
 
-const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 class OverviewPage extends Page {
   constructor() {
     super();
