@@ -3268,6 +3268,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 10/b883348d5bf88695fbc2c2276b1c49859267a55cae3cf11ea1dccc1b3be15b466e637ce3242109ba27d616c77c6aa4efe521e3d557110b4fdd9bc332a12445c2
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:^1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
@@ -3319,6 +3326,16 @@ __metadata:
     "@types/react": "npm:*"
     hoist-non-react-statics: "npm:^3.3.0"
   checksum: 10/071e6d75a0ed9aa0e9ca2cc529a8c15bf7ac3e4a37aac279772ea6036fd0bf969b67fb627b65cfce65adeab31fec1e9e95b4dcdefeab075b580c0c7174206f63
+  languageName: node
+  linkType: hard
+
+"@types/hoist-non-react-statics@npm:^3.3.5":
+  version: 3.3.5
+  resolution: "@types/hoist-non-react-statics@npm:3.3.5"
+  dependencies:
+    "@types/react": "npm:*"
+    hoist-non-react-statics: "npm:^3.3.0"
+  checksum: 10/b645b062a20cce6ab1245ada8274051d8e2e0b2ee5c6bd58215281d0ec6dae2f26631af4e2e7c8abe238cdcee73fcaededc429eef569e70908f82d0cc0ea31d7
   languageName: node
   linkType: hard
 
@@ -6527,6 +6544,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     puppeteer: "npm:^1.20.0"
     react: "npm:^17.0.2"
+    react-cookie: "npm:^7.2.1"
     react-cytoscapejs: "npm:^2.0.0"
     react-dom: "npm:^17.0.2"
     react-ga4: "npm:^2.1.0"
@@ -7156,6 +7174,13 @@ __metadata:
   version: 0.4.0
   resolution: "cookie@npm:0.4.0"
   checksum: 10/494314fb0edfc3262e7809ba184829f3dea798800bf81c3e6ca5185083f75ba10fe37ee32a2aa5a4cd79ea1abcc1452ec47d331a4e6beaceaa30b8e6b3ec7636
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^0.7.2":
+  version: 0.7.2
+  resolution: "cookie@npm:0.7.2"
+  checksum: 10/24b286c556420d4ba4e9bc09120c9d3db7d28ace2bd0f8ccee82422ce42322f73c8312441271e5eefafbead725980e5996cc02766dbb89a90ac7f5636ede608f
   languageName: node
   linkType: hard
 
@@ -17992,6 +18017,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-cookie@npm:^7.2.1":
+  version: 7.2.1
+  resolution: "react-cookie@npm:7.2.1"
+  dependencies:
+    "@types/hoist-non-react-statics": "npm:^3.3.5"
+    hoist-non-react-statics: "npm:^3.3.2"
+    universal-cookie: "npm:^7.0.0"
+  peerDependencies:
+    react: ">= 16.3.0"
+  checksum: 10/b41544afa9799d256444f2749f9f06389b71aec03e85627cbfcc04a0c389220f5761c707ee669874981b81973e9e36140abd703d9e6a6525f400befeb4340ce0
+  languageName: node
+  linkType: hard
+
 "react-copy-to-clipboard@npm:5.0.4":
   version: 5.0.4
   resolution: "react-copy-to-clipboard@npm:5.0.4"
@@ -21200,6 +21238,16 @@ __metadata:
   dependencies:
     imurmurhash: "npm:^0.1.4"
   checksum: 10/6cfaf91976acc9c125fd0686c561ee9ca0784bb4b2b408972e6cd30e747b4ff0ca50264c01bcf5e711b463535ea611ffb84199e9f73088cd79ac9ddee8154042
+  languageName: node
+  linkType: hard
+
+"universal-cookie@npm:^7.0.0":
+  version: 7.2.1
+  resolution: "universal-cookie@npm:7.2.1"
+  dependencies:
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^0.7.2"
+  checksum: 10/82c208a5d4983a6c5d0fac59fe6d1ea2c0d6ce95652c8b61ed7118350b33f692b801003da898a9cdf2094280cee92b31bb02fa1536d7d446948b050389c39eb3
   languageName: node
   linkType: hard
 
