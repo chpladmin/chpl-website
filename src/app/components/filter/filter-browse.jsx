@@ -27,9 +27,8 @@ function ChplFilterBrowse() {
   const handleBrowse = () => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Browse',
-        category: analytics.category,
-        group: analytics.group,
       });
     }
     setSearchTerm('');

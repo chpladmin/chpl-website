@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogContent,
   MenuItem,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -14,10 +13,11 @@ import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { ChplDialogTitle, ChplTooltip, ChplTextField } from '../util';
+import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '8px',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
-}));
+});
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -35,22 +35,26 @@ const validationSchema = yup.object({
     .required('A ROLE must be selected'),
 });
 
-function ChplUserInvite(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [roles] = useState(props.roles.sort((a, b) => (a < b ? -1 : 1)));
-  /* eslint-enable react/destructuring-assignment */
-
-  const [open, setOpen] = React.useState(false);
-
+function ChplUserInvite({ dispatch, roles }) {
+  const { analytics } = useAnalyticsContext();
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
   let formik;
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Invite User',
+    });
     setOpen(true);
   };
 
   const handleClose = () => {
     formik.resetForm();
+    eventTrack({
+      ...analytics,
+      event: 'Close Invite User',
+    });
     setOpen(false);
   };
 
@@ -59,7 +63,7 @@ function ChplUserInvite(props) {
       email: formik.values.email,
       role: formik.values.role,
     };
-    props.dispatch('invite', invitation);
+    dispatch('invite', invitation);
     handleClose();
   };
 
@@ -72,12 +76,10 @@ function ChplUserInvite(props) {
       invite();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <ChplTooltip title="Invite a User">
         <Button
           id="invite-user-button"
@@ -119,22 +121,24 @@ function ChplUserInvite(props) {
           />
           { roles.length > 1
             && (
-            <ChplTextField
-              select
-              id="role"
-              name="role"
-              label="ROLE"
-              required
-              value={formik.values.role}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.role && !!formik.errors.role}
-              helperText={formik.touched.role && formik.errors.role}
-            >
-              { roles.map((item) => (
-                <MenuItem value={item} key={item}>{item}</MenuItem>
-              ))}
-            </ChplTextField>
+              <ChplTextField
+                select
+                id="role"
+                name="role"
+                label="ROLE"
+                required
+                value={formik.values.role}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.role && !!formik.errors.role}
+                helperText={formik.touched.role && formik.errors.role}
+              >
+                { roles
+                  .sort((a, b) => (a < b ? -1 : 1))
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                  ))}
+              </ChplTextField>
             )}
         </DialogContent>
         <DialogActions>
@@ -149,7 +153,7 @@ function ChplUserInvite(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </ThemeProvider>
+    </>
   );
 }
 

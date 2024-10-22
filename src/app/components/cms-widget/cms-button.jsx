@@ -20,11 +20,10 @@ function ChplCmsButton({ listing }) {
 
   const handleClick = () => {
     eventTrack({
+      ...analytics,
       event: isInWidget(listing) ? 'Remove Listing from CMS ID Widget' : 'Add Listing to CMS ID Widget',
-      category: analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: analytics.group,
     });
     if (isInWidget(listing)) {
       removeListing(listing);

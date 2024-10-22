@@ -145,9 +145,8 @@ function ChplDownloadListings(props) {
   const handleClick = (e) => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Open Download File Column Selector',
-        category: analytics.category,
-        group: analytics.group,
       });
     }
     setAnchor(e.currentTarget);
@@ -167,10 +166,9 @@ function ChplDownloadListings(props) {
     });
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Download Results',
-        category: analytics.category,
         label: listings.length,
-        group: analytics.group,
       });
     }
     csvExporter.generateCsv(listings);
@@ -179,10 +177,9 @@ function ChplDownloadListings(props) {
   const toggle = (header) => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: `${header.selected ? 'Deselect' : 'Select'} Download File Column`,
-        category: analytics.category,
         label: header.name,
-        group: analytics.group,
       });
     }
     setCategories((previous) => previous.map((p) => ({

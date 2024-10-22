@@ -29,7 +29,7 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -128,6 +128,8 @@ const generateElements = (listings, activeId, selectedId) => {
 
 function ChplIcsFamily(props) {
   const { id } = props;
+  const { analytics } = useAnalyticsContext();
+  const { listing: currentListing } = useContext(ListingContext);
   const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
   const [compare, setCompare] = useState('');
   const [elements, setElements] = useState([]);
@@ -136,8 +138,6 @@ function ChplIcsFamily(props) {
   const [listing, setListing] = useState(undefined);
   const [listingId, setListingId] = useState(undefined);
   const [listings, setListings] = useState([]);
-  const { listing: currentListing } = useContext(ListingContext);
-  const { user } = useContext(UserContext);
   const cy = useRef(null);
   const classes = useStyles();
 
@@ -173,11 +173,11 @@ function ChplIcsFamily(props) {
 
   const closeDetails = () => {
     eventTrack({
+      ...analytics,
       event: `Hide ICS Relationship Detail - ${listing.chplProductNumber}`,
       category: 'Listing Details',
       label: currentListing.chplProductNumber,
       aggregationName: currentListing.product.name,
-      group: user?.role,
     });
     setListingId(undefined);
   };
@@ -187,30 +187,30 @@ function ChplIcsFamily(props) {
     cy.current = ref;
     cy.current.on('tap', 'node', (e) => {
       eventTrack({
+        ...analytics,
         event: `Show ICS Relationship Detail - ${e.target.data().chplProductNumber}`,
         category: 'Listing Details',
         label: currentListing.chplProductNumber,
         aggregationName: currentListing.product.name,
-        group: user?.role,
       });
       setListingId(e.target.id());
     });
     cy.current.on('dragpan', () => {
       eventTrack({
+        ...analytics,
         event: 'Pan ICS Relationship Diagram',
         category: 'Listing Details',
         label: currentListing.chplProductNumber,
         aggregationName: currentListing.product.name,
-        group: user?.role,
       });
     });
     cy.current.on('scrollzoom', () => {
       eventTrack({
+        ...analytics,
         event: 'Zoom ICS Relationship Diagram',
         category: 'Listing Details',
         label: currentListing.chplProductNumber,
         aggregationName: currentListing.product.name,
-        group: user?.role,
       });
     });
   }, [cy]);
@@ -241,11 +241,11 @@ function ChplIcsFamily(props) {
                 text="Compare all Certified Products"
                 external={false}
                 analytics={{
+                  ...analytics,
                   event: 'Compare All ICS Listings',
                   category: 'Listing Details',
                   label: currentListing.chplProductNumber,
                   aggregationName: currentListing.product.name,
-                  group: user?.role,
                 }}
               />
             </div>
@@ -268,11 +268,11 @@ function ChplIcsFamily(props) {
                             external={false}
                             router={{ sref: 'listing', options: { id: listing?.id } }}
                             analytics={{
+                              ...analytics,
                               event: `Navigate to Listing from ICS Relationship Diagram - ${listing.chplProductNumber}`,
                               category: 'Listing Details',
                               label: currentListing.chplProductNumber,
                               aggregationName: currentListing.product.name,
-                              group: user?.role,
                             }}
                           />
                         )}
@@ -284,11 +284,11 @@ function ChplIcsFamily(props) {
                           external={false}
                           router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
                           analytics={{
+                            ...analytics,
                             event: `Navigate to Developer from ICS Relationship Diagram - ${listing.developer.name}`,
                             category: 'Listing Details',
                             label: currentListing.chplProductNumber,
                             aggregationName: currentListing.product.name,
-                            group: user?.role,
                           }}
                         />
                       </Typography>
@@ -368,11 +368,11 @@ function ChplIcsFamily(props) {
                                 external={false}
                                 router={{ sref: 'listing', options: { id: l?.id } }}
                                 analytics={{
+                                  ...analytics,
                                   event: `Navigate to ICS Relationship Listing - ${l.chplProductNumber}`,
                                   category: 'Listing Details',
                                   label: currentListing.chplProductNumber,
                                   aggregationName: currentListing.product.name,
-                                  group: user?.role,
                                 }}
                               />
                             )}
@@ -384,11 +384,11 @@ function ChplIcsFamily(props) {
                             external={false}
                             router={{ sref: 'organizations.developers.developer', options: { id: l?.developer.id } }}
                             analytics={{
+                              ...analytics,
                               event: `Navigate to ICS Relationship Developer - ${l.developer.name}`,
                               category: 'Listing Details',
                               label: currentListing.chplProductNumber,
                               aggregationName: currentListing.product.name,
-                              group: user?.role,
                             }}
                           />
                         </TableCell>

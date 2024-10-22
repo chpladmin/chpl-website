@@ -16,7 +16,7 @@ import { getDataDisplay } from './compliance.services';
 
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
@@ -146,10 +146,10 @@ const getSurveillanceTitle = (surv) => {
 };
 
 function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
+  const { analytics } = useAnalyticsContext();
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const { listing } = useContext(ListingContext);
-  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -173,11 +173,11 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const handleAccordionChange = () => {
     const title = ics ? 'Inherited Certified Status Surveillance Activities' : 'Surveillance Activities';
     eventTrack({
+      ...analytics,
       event: expanded ? `Hide ${title}` : `Show ${title}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setExpanded(!expanded);
   };
@@ -185,22 +185,22 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const handleWithinChange = (obj, isExpanded) => {
     const title = ics ? 'Surveillance within Inherited Certified Status Surveillance Activities' : 'Surveillance within Surveillance Activities';
     eventTrack({
+      ...analytics,
       event: isExpanded ? `Show ${title}` : `Hide ${title}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
   };
 
   const handleDetailsChange = (obj, isExpanded) => {
     const title = ics ? 'Details within Inherited Certified Status Surveillance Activities' : 'Details within Surveillance Activities';
     eventTrack({
+      ...analytics,
       event: isExpanded ? `Show ${title}` : `Hide ${title}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
   };
 
