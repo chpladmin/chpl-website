@@ -133,10 +133,9 @@ function ChplBannedDevelopersSearchView() {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -176,9 +175,8 @@ function ChplBannedDevelopersSearchView() {
               href="#/search"
               text="searching for the product"
               analytics={{
+                ...analytics,
                 event: 'Navigate to searching for the product',
-                category: analytics.category,
-                group: analytics.group,
               }}
               external={false}
               router={{ sref: 'search' }}
@@ -242,10 +240,9 @@ function ChplBannedDevelopersSearchView() {
                                     href={`#/organizations/developers/${item.id}`}
                                     text={item.name}
                                     analytics={{
+                                      ...analytics,
                                       event: 'Navigate to Developer Page',
-                                      category: analytics.category,
                                       label: item.name,
-                                      group: analytics.group,
                                     }}
                                     external={false}
                                     router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
@@ -270,7 +267,6 @@ function ChplBannedDevelopersSearchView() {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}

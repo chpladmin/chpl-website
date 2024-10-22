@@ -181,10 +181,9 @@ function ChplChangeRequestsView(props) {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setOrder(orderDirection);
@@ -194,11 +193,10 @@ function ChplChangeRequestsView(props) {
 
   const viewChangeRequest = (cr) => {
     eventTrack({
+      ...analytics,
       event: 'View Change Request',
-      category: analytics.category,
       label: cr.changeRequestType.name,
       aggregationGroup: cr.developer.name,
-      group: analytics.group,
     });
     setChangeRequest(cr);
     display('viewall');
@@ -225,13 +223,10 @@ function ChplChangeRequestsView(props) {
           <CardHeader title="Change Requests" />
         )}
       <CardContent>
-        { !disallowedFilters.includes('searchTerm')
-          && (
-            <ChplFilterSearchBar
-              placeholder="Search by Developer..."
-
-            />
-          )}
+        <ChplFilterSearchBar
+          placeholder="Search by Developer..."
+          hideSearchTerm={disallowedFilters.includes('searchTerm')}
+        />
         <div>
           <ChplFilterChips />
         </div>
@@ -320,10 +315,8 @@ function ChplChangeRequestsView(props) {
                                                  href={`#/organizations/developers/${item.developer.id}`}
                                                  text={item.developer.name}
                                                  analytics={{
+                                                   ...analytics,
                                                    event: 'Navigate to Developer Page',
-                                                   category: analytics.category,
-                                                   label: item.developer.name,
-                                                   group: analytics.group,
                                                  }}
                                                  external={false}
                                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}

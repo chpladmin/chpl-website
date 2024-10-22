@@ -169,9 +169,8 @@ function ChplComplaintsView(props) {
 
   const downloadFile = () => {
     eventTrack({
+      ...analytics,
       event: 'Download All Complaints',
-      category: analytics.category,
-      group: analytics.group,
     });
     mutate({}, {
       onSuccess: (response) => {
@@ -192,9 +191,8 @@ function ChplComplaintsView(props) {
     switch (action) {
       case 'add':
         eventTrack({
+          ...analytics,
           event: 'Add New Complaint',
-          category: analytics.category,
-          group: analytics.group,
         });
         setActiveComplaint({});
         display('viewall');
@@ -211,10 +209,9 @@ function ChplComplaintsView(props) {
         break;
       case 'view':
         eventTrack({
+          ...analytics,
           event: 'View Complaint',
-          category: analytics.category,
           label: payload.complainantType.name,
-          group: analytics.group,
         });
         setActiveComplaint(payload);
         display('viewall');
@@ -226,10 +223,9 @@ function ChplComplaintsView(props) {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setOrder(orderDirection);
