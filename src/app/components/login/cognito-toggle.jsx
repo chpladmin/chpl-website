@@ -75,8 +75,8 @@ function ChplCognitoToggle({ dispatch }) {
       <Button
         color="secondary"
         variant="contained"
-        id="login-cognito-toggle"
-        aria-describedby="admin-login-form-cognito"
+        id="login-toggle"
+        aria-describedby="admin-login-form"
         onClick={handleClick}
         className={classes.loginSpacing}
         endIcon={<PersonIcon />}
@@ -84,7 +84,7 @@ function ChplCognitoToggle({ dispatch }) {
         { title }
       </Button>
       <Popover
-        id="admin-login-form-cognito"
+        id="admin-login-form"
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
