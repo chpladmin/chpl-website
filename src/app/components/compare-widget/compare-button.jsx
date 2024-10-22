@@ -15,11 +15,10 @@ function ChplCompareButton({ listing }) {
 
   const handleClick = () => {
     eventTrack({
+      ...analytics,
       event: isInWidget(listing) ? 'Remove Listing from Compare Widget' : 'Add Listing to Compare Widget',
-      category: analytics.category,
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: analytics.group,
     });
     if (isInWidget(listing)) {
       removeListing(listing);
