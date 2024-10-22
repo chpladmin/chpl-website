@@ -143,7 +143,7 @@ function ChplSignin({ dispatch }) {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Cognito login required" />
+      <CardHeader className={classes.loginHeader} title="Login required" />
       <CardContent className={classes.grid}>
         <ChplTextField
           id="user-name"
@@ -177,7 +177,7 @@ function ChplSignin({ dispatch }) {
           onClick={submitSignin}
           endIcon={<VpnKeyIcon />}
         >
-          Log In (Cognito)
+          Log In
         </Button>
         <Button
           fullWidth
