@@ -1,7 +1,5 @@
 import CorrectiveActionSearchPage from '../pageobjects/corrective-action-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the Corrective Action Search page', () => {
