@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -14,7 +14,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChplCriterionDetailsView from './criterion-details-view';
 
 import { eventTrack } from 'services/analytics.service';
-import { CriterionContext, UserContext } from 'shared/contexts';
+import { CriterionContext, useAnalyticsContext } from 'shared/contexts';
 import {
   certificationResult,
   listing as listingPropType,
@@ -85,12 +85,12 @@ function ChplCriterion({
   certificationResult: initialCriterion,
   listing,
 }) {
+  const { analytics } = useAnalyticsContext();
   const [accessibilityStandards, setAccessibilityStandards] = useState([]);
   const [criterion, setCriterion] = useState(undefined);
   const [expanded, setExpanded] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [qmsStandards, setQmsStandards] = useState([]);
-  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -127,11 +127,11 @@ function ChplCriterion({
 
   const handleAccordionChange = () => {
     eventTrack({
+      ...analytics,
       event: `${expanded ? 'Hide' : 'Show'} Details - ${criterion.criterion.number}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setExpanded(!expanded);
   };

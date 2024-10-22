@@ -39,6 +39,7 @@ const useStyles = makeStyles({
 
 function ChplFilterSearchBar({
   hideAdvancedSearch,
+  hideSearchTerm,
   placeholder,
   toggleMultipleFilters,
 }) {
@@ -47,9 +48,12 @@ function ChplFilterSearchBar({
 
   return (
     <div className={classes.searchContainer}>
-      <ChplFilterSearchTerm
-        placeholder={placeholder}
-      />
+      { !hideSearchTerm
+        && (
+          <ChplFilterSearchTerm
+            placeholder={placeholder}
+          />
+        )}
       <Box className={classes.searchButtonContainer}>
         <ChplFilterBrowse />
         { !hideAdvancedSearch
@@ -71,12 +75,14 @@ export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
   hideAdvancedSearch: bool,
+  hideSearchTerm: bool,
   placeholder: string,
   toggleMultipleFilters: arrayOf(object),
 };
 
 ChplFilterSearchBar.defaultProps = {
   hideAdvancedSearch: false,
+  hideSearchTerm: false,
   placeholder: 'Search by Developer, Product, or CHPL ID...',
   toggleMultipleFilters: undefined,
 };

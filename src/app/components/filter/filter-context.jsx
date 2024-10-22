@@ -217,10 +217,9 @@ function FilterProvider(props) {
       case 'clearFilter':
         if (analytics) {
           eventTrack({
+            ...analytics,
             event: 'Clear Filter',
-            category: analytics.category,
             label: category.display,
-            group: analytics.group,
           });
         }
         clearFilter(filters.find((f) => f.key === category.key), category, setFilters);
@@ -231,10 +230,9 @@ function FilterProvider(props) {
       case 'resetFilter':
         if (analytics) {
           eventTrack({
+            ...analytics,
             event: 'Reset Filter',
-            category: analytics.category,
             label: category.display,
-            group: analytics.group,
           });
         }
         resetFilter(filters.find((f) => f.key === category.key), category, setFilters);
@@ -242,9 +240,8 @@ function FilterProvider(props) {
       case 'resetAll':
         if (analytics) {
           eventTrack({
+            ...analytics,
             event: 'Reset All Filters',
-            category: analytics.category,
-            group: analytics.group,
           });
         }
         setFilters((prev) => prev.map((f) => ({

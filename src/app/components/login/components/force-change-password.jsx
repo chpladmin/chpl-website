@@ -11,14 +11,14 @@ import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import ReactGA from 'react-ga4';
 import { useCookies } from 'react-cookie';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostNewPasswordRequired } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
 
 const zxcvbn = require('zxcvbn');
@@ -58,6 +58,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const [, setCookie] = useCookies(['refresh_token']);
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostNewPasswordRequired();
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -79,6 +80,12 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
       sessionId,
     }, {
       onSuccess: (response) => {
+        eventTrack({
+          ...analytics,
+          event: 'Confirm New Password',
+          category: 'Authentication',
+          group: response.user.role,
+        });
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
         const expires = new Date();
@@ -86,7 +93,12 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
-        ReactGA.event({ action: 'Log In', category: 'Authentication' });
+        eventTrack({
+          ...analytics,
+          event: 'Log In',
+          category: 'Authentication',
+          group: response.user.role,
+        });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
         dispatch({ action: 'loggedIn' });
