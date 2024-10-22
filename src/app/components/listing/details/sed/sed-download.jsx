@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
 } from '@material-ui/core';
@@ -8,7 +8,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { listing as listingPropType } from 'shared/prop-types';
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
-import { UserContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const headers = [
   { headerName: 'Unique CHPL ID', objectKey: 'chplProductNumber' },
@@ -46,8 +46,8 @@ const csvOptions = {
 };
 
 function ChplSedDownload({ listing }) {
+  const { analytics } = useAnalyticsContext();
   const [rows, setRows] = useState([]);
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const base = {
@@ -81,11 +81,11 @@ function ChplSedDownload({ listing }) {
 
   const handleDownload = () => {
     eventTrack({
+      ...analytics,
       event: 'Download Task Details',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     const csvExporter = new ExportToCsv({
       ...csvOptions,

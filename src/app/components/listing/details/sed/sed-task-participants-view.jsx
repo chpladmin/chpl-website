@@ -18,7 +18,7 @@ import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -31,6 +31,9 @@ const useStyles = makeStyles({
 });
 
 function ChplSedTaskParticipantsView(props) {
+  const { task } = props;
+  const { analytics } = useAnalyticsContext();
+  const { listing } = useContext(ListingContext);
   const [open, setOpen] = useState(false);
   const participants = props.participants.sort((a, b) => { // eslint-disable-line react/destructuring-assignment
     if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
@@ -40,29 +43,26 @@ function ChplSedTaskParticipantsView(props) {
     if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }
     return 0;
   });
-  const { task } = props;
-  const { listing } = useContext(ListingContext);
-  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   const handleClickOpen = () => {
     eventTrack({
+      ...analytics,
       event: `Show SED Participant Details - ${task.description}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setOpen(true);
   };
 
   const handleClose = () => {
     eventTrack({
+      ...analytics,
       event: `Hide SED Participant Details - ${task.description}`,
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setOpen(false);
   };
