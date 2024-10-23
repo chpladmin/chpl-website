@@ -12,6 +12,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useCookies } from 'react-cookie';
+import { setAuthTokens } from 'axios-jwt';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
@@ -91,6 +92,10 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         const expires = new Date();
         expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
         setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        setAuthTokens({
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+        });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         eventTrack({
@@ -101,6 +106,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {

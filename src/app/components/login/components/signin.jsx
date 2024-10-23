@@ -96,6 +96,7 @@ function ChplSignin({ dispatch }) {
         formik.resetForm();
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
