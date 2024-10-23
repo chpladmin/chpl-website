@@ -4,7 +4,7 @@ import { useAxios } from './axios';
 
 const usePostCreateCognitoInvitedUser = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/create', data));
+  return useMutation(async (data) => axios.post('users', data));
 };
 
 const usePostCreateInvitedUser = () => {
@@ -25,7 +25,7 @@ const usePutUser = () => {
 const usePutCognitoUser = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put(`cognito/users/${data.cognitoId}`, data), {
+  return useMutation(async (data) => axios.put(`users/${data.cognitoId}`, data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['acbs', 'users']);
     },

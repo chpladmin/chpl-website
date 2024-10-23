@@ -187,7 +187,7 @@ export default class NetworkService {
   }
 
   getCognitoUser(ssoUserId) {
-    return this.apiGET(`/cognito/users/${ssoUserId}`);
+    return this.apiGET(`/users/${ssoUserId}`);
   }
 
   getCollection(type) {
@@ -469,11 +469,11 @@ export default class NetworkService {
   }
 
   inviteCognitoUser(invitationObject) {
-    return this.apiPOST('/cognito/users/invite', invitationObject);
+    return this.apiPOST('/users/invitation', invitationObject);
   }
 
   logout(logoutRequest) {
-    return this.apiPOST('/cognito/users/logout', logoutRequest);
+    return this.apiPOST('/auth/logout', logoutRequest);
   }
 
   mergeDevelopers(mergeDeveloperObject) {
