@@ -44,7 +44,7 @@ const usePostAcb = () => {
 
 const usePostCognitoUserInvitation = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/invite', data));
+  return useMutation(async (data) => axios.post('users/invitation', data));
 };
 
 const usePostUserInvitation = () => {

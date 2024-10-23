@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
-import { 
-  applyAuthTokenInterceptor, 
-  getAccessToken }
+import {
+  applyAuthTokenInterceptor,
+  getAccessToken,
+}
   from 'axios-jwt';
 import { element } from 'prop-types';
 
@@ -30,7 +31,7 @@ function AxiosProvider({ children }) {
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
-        return Axios.post('rest/cognito/users/refresh-token', { refreshToken, cognitoId }, { headers })
+        return Axios.post('auth/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => {
             $localStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;

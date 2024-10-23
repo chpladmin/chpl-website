@@ -65,7 +65,7 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
     const accessToken = $localStorage.jwtToken;
     if (accessToken && authService.parseJwt(accessToken).exp > moment(new Date().getTime()).unix()) {
       return $q.when(accessToken);
-    } 
+    }
     const { refreshToken } = $localStorage;
 
     if ($localStorage.currentUser && $localStorage.refreshToken) {
@@ -74,7 +74,7 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
-      return $http.post('cognito/users/refresh-token', { refreshToken, cognitoId }, { headers }).then(
+      return $http.post('auth/refresh-token', { refreshToken, cognitoId }, { headers }).then(
         (response) => {
           $localStorage.jwtToken = response.data.accessToken;
           return $localStorage.jwtToken;
@@ -83,7 +83,7 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
           $log.info(err);
         }
       );
-    } 
+    }
     return $q.when($localStorage.jwtToken);
   }
 

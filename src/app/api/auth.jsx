@@ -10,14 +10,14 @@ const usePostChangePassword = () => {
 
 const usePostCognitoChangePassword = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/password', data)
+  return useMutation(async (data) => axios.post('auth/password', data)
     .then((response) => response.data));
 };
 
 const usePostCognitoLogin = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('cognito/users/authenticate', data)
+  return useMutation(async (data) => axios.post('auth', data)
     .then((response) => response.data), {
     onSuccess: () => {
       queryClient.invalidateQueries('listing');
@@ -27,7 +27,7 @@ const usePostCognitoLogin = () => {
 
 const usePostCognitoLogout = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/logout', data)
+  return useMutation(async (data) => axios.post('auth/logout', data)
     .then((response) => response.data));
 };
 
@@ -39,7 +39,7 @@ const usePostEmailResetPassword = () => {
 
 const usePostForgotPassword = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/forgot-password/send-email', data)
+  return useMutation(async (data) => axios.post('auth/forgot-password/send-email', data)
     .then((response) => response?.data));
 };
 
@@ -56,7 +56,7 @@ const usePostLogin = () => {
 
 const usePostNewPasswordRequired = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/authenticate/challenge/new-password-required', data)
+  return useMutation(async (data) => axios.post('auth/challenge/new-password-required', data)
     .then((response) => response.data));
 };
 
@@ -68,7 +68,7 @@ const usePostResetPassword = () => {
 
 const usePostSetForgottenPassword = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('cognito/users/forgot-password/set-password', data)
+  return useMutation(async (data) => axios.post('auth/forgot-password/set-password', data)
     .then((response) => response?.data));
 };
 
