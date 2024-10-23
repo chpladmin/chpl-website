@@ -72,7 +72,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
       password: formik.values.newPassword,
     }, {
       onSuccess: () => {
-        const body = 'Password reset';
+        const body = 'Your password has been successfully reset';
         eventTrack({
           ...analytics,
           event: 'Confirm New Password',
