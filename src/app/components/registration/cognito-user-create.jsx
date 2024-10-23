@@ -19,17 +19,12 @@ const useStyles = makeStyles({
   },
 });
 
-const phoneRegExp = /^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}$/;
-
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
   email: yup.string()
     .required('Email is required')
     .email('Enter a valid Email'),
-  phoneNumber: yup.string()
-    .required('Phone Number is required')
-    .matches(phoneRegExp, 'Phone number is not valid'),
 });
 
 function ChplCognitoUserCreate({ dispatch }) {
@@ -40,7 +35,6 @@ function ChplCognitoUserCreate({ dispatch }) {
     const user = {
       email: formik.values.email,
       fullName: formik.values.fullName,
-      phoneNumber: formik.values.phoneNumber,
     };
     dispatch('cognito-create', user);
   };
@@ -48,7 +42,6 @@ function ChplCognitoUserCreate({ dispatch }) {
   formik = useFormik({
     initialValues: {
       fullName: '',
-      phoneNumber: '',
       email: '',
     },
     onSubmit: () => {
@@ -75,18 +68,6 @@ function ChplCognitoUserCreate({ dispatch }) {
         onBlur={formik.handleBlur}
         error={formik.touched.fullName && !!formik.errors.fullName}
         helperText={formik.touched.fullName && formik.errors.fullName}
-      />
-      <ChplTextField
-        id="phone-number"
-        name="phoneNumber"
-        label="Phone Number"
-        type="tel"
-        required
-        value={formik.values.phoneNumber}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
       />
       <ChplTextField
         id="email"
