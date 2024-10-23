@@ -80,10 +80,10 @@ function ChplCognitoUserInvite({ dispatch, groupNames }) {
 
   return (
     <>
-      <ChplTooltip title="Invite a Cognito User">
+      <ChplTooltip title="Invite a User">
         <Button
           id="invite-user-button"
-          aria-label="Open Cognito User Invitation dialog"
+          aria-label="Open User Invitation dialog"
           color="primary"
           variant="outlined"
           onClick={handleClickOpen}
