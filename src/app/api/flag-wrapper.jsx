@@ -14,8 +14,16 @@ function FlagWrapper({ children }) {
 
   const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag).active;
 
+  const cmsA9GracePeriodEndIsOn = isOn('cms-a9-grace-period-end');
+  const demographicChangeRequestIsOn = isOn('demographic-change-request');
+  const ssoIsOn = isOn('sso');
+  const uploadToUpdateIsOn = isOn('upload-to-update');
+
   const flagState = {
-    isOn,
+    cmsA9GracePeriodEndIsOn,
+    demographicChangeRequestIsOn,
+    ssoIsOn,
+    uploadToUpdateIsOn,
   };
 
   return (

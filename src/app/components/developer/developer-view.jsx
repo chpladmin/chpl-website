@@ -193,20 +193,15 @@ function ChplDeveloperView(props) {
     dispatch,
     isSplitting,
   } = props;
+  const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
-  const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [developer, setDeveloper] = useState({});
   const classes = useStyles();
 
   useEffect(() => {
     setDeveloper(initialDeveloper);
   }, [initialDeveloper]);
-
-  useEffect(() => {
-    setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
-  }, [isOn]);
 
   const can = (action) => {
     if (action === 'edit') {
