@@ -13,6 +13,7 @@ import {
 
 import { usePutListing } from 'api/listing';
 import ChplListingEdit from 'components/listing/listing-edit';
+import ChplListingEditUpload from './listing-edit-upload';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
@@ -151,7 +152,12 @@ function ChplListingEditPage() {
               isProcessing={isProcessing}
             />
           ) : (
-            <Typography>Insert upload component here</Typography>
+            <ChplListingEditUpload
+              dispatch={handleDispatch}
+              errors={errors}
+              warnings={warnings}
+              isProcessing={isProcessing}
+            />
           )}
         </Box>
       </Container>
