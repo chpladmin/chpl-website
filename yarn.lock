@@ -3353,6 +3353,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/http-proxy@npm:^1.17.8":
+  version: 1.17.15
+  resolution: "@types/http-proxy@npm:1.17.15"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/fa86d5397c021f6c824d1143a206009bfb64ff703da32fb30f6176c603daf6c24ce3a28daf26b3945c94dd10f9d76f07ea7a6a2c3e9b710e00ff42da32e08dea
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.3
   resolution: "@types/istanbul-lib-coverage@npm:2.0.3"
@@ -6516,7 +6525,7 @@ __metadata:
     formik: "npm:^2.2.9"
     html-loader: "npm:^0.5.5"
     html-webpack-plugin: "npm:^5.6.0"
-    http-proxy-middleware: "npm:~0.9.1"
+    http-proxy-middleware: "npm:~2.0.7"
     istanbul: "npm:^0.4.5"
     istanbul-instrumenter-loader: "npm:^3.0.1"
     jasmine-core: "npm:^3.99.1"
@@ -11276,19 +11285,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:~0.9.1":
-  version: 0.9.1
-  resolution: "http-proxy-middleware@npm:0.9.1"
+"http-proxy-middleware@npm:~2.0.7":
+  version: 2.0.7
+  resolution: "http-proxy-middleware@npm:2.0.7"
   dependencies:
-    http-proxy: "npm:^1.12.0"
-    is-glob: "npm:^2.0.1"
-    lodash: "npm:^3.10.1"
-    micromatch: "npm:^2.3.7"
-  checksum: 10/51525a43db35a9b359ea1888e8e47b3def78034233c29fb86f25c03658a072c425502a1d1786a2162f9330ec6fcb741bf99db753c7f7af61811437a0a7d8d350
+    "@types/http-proxy": "npm:^1.17.8"
+    http-proxy: "npm:^1.18.1"
+    is-glob: "npm:^4.0.1"
+    is-plain-obj: "npm:^3.0.0"
+    micromatch: "npm:^4.0.2"
+  peerDependencies:
+    "@types/express": ^4.17.13
+  peerDependenciesMeta:
+    "@types/express":
+      optional: true
+  checksum: 10/4a51bf612b752ad945701995c1c029e9501c97e7224c0cf3f8bf6d48d172d6a8f2b57c20fec469534fdcac3aa8a6f332224a33c6b0d7f387aa2cfff9b67216fd
   languageName: node
   linkType: hard
 
-"http-proxy@npm:^1.12.0, http-proxy@npm:^1.17.0, http-proxy@npm:^1.9.0":
+"http-proxy@npm:^1.17.0, http-proxy@npm:^1.18.1, http-proxy@npm:^1.9.0":
   version: 1.18.1
   resolution: "http-proxy@npm:1.18.1"
   dependencies:
@@ -12253,6 +12268,13 @@ __metadata:
   version: 1.1.0
   resolution: "is-plain-obj@npm:1.1.0"
   checksum: 10/0ee04807797aad50859652a7467481816cbb57e5cc97d813a7dcd8915da8195dc68c436010bf39d195226cde6a2d352f4b815f16f26b7bf486a5754290629931
+  languageName: node
+  linkType: hard
+
+"is-plain-obj@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "is-plain-obj@npm:3.0.0"
+  checksum: 10/a6ebdf8e12ab73f33530641972a72a4b8aed6df04f762070d823808303e4f76d87d5ea5bd76f96a7bbe83d93f04ac7764429c29413bd9049853a69cb630fb21c
   languageName: node
   linkType: hard
 
@@ -14825,7 +14847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^2.1.5, micromatch@npm:^2.3.7":
+"micromatch@npm:^2.1.5":
   version: 2.3.11
   resolution: "micromatch@npm:2.3.11"
   dependencies:
