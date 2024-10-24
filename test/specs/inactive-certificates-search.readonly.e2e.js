@@ -1,7 +1,5 @@
 import InactiveCertificatesSearchPage from '../pageobjects/inactive-certificates-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the Inactive Certificates Search page', () => {

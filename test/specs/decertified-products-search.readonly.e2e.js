@@ -1,7 +1,5 @@
 import DecertifiedProductsSearchPage from '../pageobjects/decertified-products-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the Decertified Products Search page', () => {
