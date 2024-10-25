@@ -107,7 +107,7 @@ The following individuals have been identified by your ONC-Authorized Certificat
 
 For questions related to authorized developer point of contacts, please reach out to your ONC-ACB for further assistance.
 
-Sincerely,  
+Sincerely,
 The Office of the National Coordinator for Health IT`,
   },
 ];
