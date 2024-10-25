@@ -135,7 +135,7 @@ function ChplListingEditUpload({
   errors: initialErrors,
   warnings: initialWarnings,
   isProcessing,
- }) {
+}) {
   const { listing } = useContext(ListingContext);
   const [diff, setDiff] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -156,11 +156,16 @@ function ChplListingEditUpload({
     if (!newListing) { return; }
     setErrors((prev) => [
       ...prev,
+      ...initialErrors,
       ...newListing.businessErrorMessages,
       ...newListing.dataErrorMessages,
     ]);
-    setWarnings(newListing.warningMessages);
-  }, [newListing]);
+    setWarnings((prev) => [
+      ...prev,
+      ...initialWarnings,
+      ...newListing.warningMessages,
+    ]);
+  }, [newListing, initialErrors, initialWarnings]);
 
   const handleDispatch = (action) => {
     switch (action) {
