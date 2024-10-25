@@ -11,6 +11,7 @@ import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
+import { useCookies } from 'react-cookie';
 import { setAuthTokens } from 'axios-jwt';
 
 import PasswordStrengthMeter from './password-strength-meter';
@@ -57,6 +58,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
+  const [, setCookie] = useCookies(['refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostNewPasswordRequired();
@@ -87,6 +89,9 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         });
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
+        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
