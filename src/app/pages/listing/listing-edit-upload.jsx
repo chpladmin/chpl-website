@@ -12,7 +12,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 import ChplUploadListing from './components/upload-listing';
@@ -524,6 +526,7 @@ function ChplListingEditUpload({
         errors={errors}
         warnings={warnings}
         isProcessing={isProcessing}
+        isDisabled={!newListing}
         showErrorAcknowledgement={errors.length > 0}
         showWarningAcknowledgement={warnings.length > 0}
       />
