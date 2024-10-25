@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
@@ -153,6 +153,7 @@ function ChplComplaintsView(props) {
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
+    { property: 'complaint_type', text: 'Complaint Type(s)' },
     { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ] : [
@@ -161,15 +162,15 @@ function ChplComplaintsView(props) {
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
+    { property: 'complaint_type', text: 'Complaint Type(s)' },
     { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ];
 
   const downloadFile = () => {
     eventTrack({
+      ...analytics,
       event: 'Download All Complaints',
-      category: analytics.category,
-      group: analytics.group,
     });
     mutate({}, {
       onSuccess: (response) => {
@@ -190,9 +191,8 @@ function ChplComplaintsView(props) {
     switch (action) {
       case 'add':
         eventTrack({
+          ...analytics,
           event: 'Add New Complaint',
-          category: analytics.category,
-          group: analytics.group,
         });
         setActiveComplaint({});
         display('viewall');
@@ -209,10 +209,9 @@ function ChplComplaintsView(props) {
         break;
       case 'view':
         eventTrack({
+          ...analytics,
           event: 'View Complaint',
-          category: analytics.category,
           label: payload.complainantType.name,
-          group: analytics.group,
         });
         setActiveComplaint(payload);
         display('viewall');
@@ -224,10 +223,9 @@ function ChplComplaintsView(props) {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setOrder(orderDirection);
@@ -248,46 +246,45 @@ function ChplComplaintsView(props) {
   const getButtons = () => {
     if (hasAnyRole(['chpl-onc'])) {
       return (
-        <ButtonGroup className={classes.wrap}>
-          <Button
-            onClick={downloadFile}
-            color="primary"
-            variant="contained"
-            id="download-results"
-            endIcon={<GetAppIcon />}
-          >
-            Download all complaints
-          </Button>
-        </ButtonGroup>
+        <Button
+          onClick={downloadFile}
+          color="primary"
+          variant="contained"
+          id="download-results"
+          endIcon={<GetAppIcon />}
+          size="small"
+        >
+          Download all complaints
+        </Button>
       );
     }
     if (hasAnyRole(['chpl-onc-acb'])) {
       if (canAdd) {
         return (
-          <ButtonGroup className={classes.wrap}>
-            <Button
-              onClick={() => handleDispatch({ action: 'add' })}
-              color="primary"
-              variant="outlined"
-              id="add-complaint"
-              endIcon={<AddIcon />}
-            >
-              Add New Complaint
-            </Button>
-          </ButtonGroup>
+          <Button
+            onClick={() => handleDispatch({ action: 'add' })}
+            color="secondary"
+            variant="contained"
+            id="add-complaint"
+            endIcon={<AddIcon />}
+            size="small"
+          >
+            Add New Complaint
+          </Button>
         );
       }
       return null;
     }
     if (canAdd) {
       return (
-        <ButtonGroup className={classes.wrap}>
+        <Box display="flex" gridGap="8px">
           <Button
             onClick={() => handleDispatch({ action: 'add' })}
-            color="primary"
-            variant="outlined"
+            color="secondary"
+            variant="contained"
             id="add-complaint"
             endIcon={<AddIcon />}
+            size="small"
           >
             Add New Complaint
           </Button>
@@ -297,24 +294,24 @@ function ChplComplaintsView(props) {
             variant="contained"
             id="download-results"
             endIcon={<GetAppIcon />}
+            size="small"
           >
             Download all complaints
           </Button>
-        </ButtonGroup>
+        </Box>
       );
     }
     return (
-      <ButtonGroup className={classes.wrap}>
-        <Button
-          onClick={downloadFile}
-          color="primary"
-          variant="contained"
-          id="download-results"
-          endIcon={<GetAppIcon />}
-        >
-          Download all complaints
-        </Button>
-      </ButtonGroup>
+      <Button
+        onClick={downloadFile}
+        color="primary"
+        variant="contained"
+        id="download-results"
+        endIcon={<GetAppIcon />}
+        size="small"
+      >
+        Download all complaints
+      </Button>
     );
   };
 
@@ -395,6 +392,7 @@ function ChplComplaintsView(props) {
                                 <TableCell>
                                   { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
                                 </TableCell>
+                                <TableCell>{complaint.complaintTypes?.map((t) => t.name).join(', ')}</TableCell>
                                 <TableCell>{complaint.complainantType.name}</TableCell>
                                 <TableCell align="right">
                                   <Button

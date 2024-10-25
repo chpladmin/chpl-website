@@ -10,7 +10,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
@@ -26,7 +25,9 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
+import { eventTrack } from 'services/analytics.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -87,12 +88,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQuestionableActivityView(props) {
+function ChplQuestionableActivityView() {
   const storageKey = 'storageKey-questionableActivity';
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
   const [downloadLink, setDownloadLink] = useState('');
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'activity_date');
@@ -121,7 +121,7 @@ function ChplQuestionableActivityView(props) {
       ...activity,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.results, data?.recordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -146,12 +146,19 @@ function ChplQuestionableActivityView(props) {
   ];
 
   const handleClick = () => {
-    $analytics.eventTrack('Download Filtered results', { category: analytics.category });
+    eventTrack({
+      ...analytics,
+      event: 'Download Filtered results',
+    });
     window.open(`${downloadLink}&${filterContext.queryString()}`);
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      ...analytics,
+      event: 'Sort Column',
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -236,7 +243,11 @@ function ChplQuestionableActivityView(props) {
                                     <ChplLink
                                       href={`#/organizations/developers/${item.developerId}`}
                                       text={item.developerName}
-                                      analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developerName }}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Go to Developer Page',
+                                        label: item.developerName,
+                                      }}
                                       external={false}
                                       router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
                                     />
@@ -250,7 +261,11 @@ function ChplQuestionableActivityView(props) {
                                   <ChplLink
                                     href={`#/listing/${item.listingId}`}
                                     text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Go to Listing Details Page',
+                                      label: item.chplProductNumber,
+                                    }}
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.listingId } }}
                                   />
@@ -287,7 +302,6 @@ function ChplQuestionableActivityView(props) {
                     rowsPerPageOptions={[25, 50, 100]}
                     setPage={setPageNumber}
                     setRowsPerPage={setPageSize}
-                    analytics={analytics}
                   />
                 </>
               )}
@@ -300,7 +314,4 @@ function ChplQuestionableActivityView(props) {
 export default ChplQuestionableActivityView;
 
 ChplQuestionableActivityView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

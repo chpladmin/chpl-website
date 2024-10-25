@@ -113,8 +113,6 @@
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
               <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
               <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>
-              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])"><a ui-sref="reports.acbs()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.acbs')"></i> ONC-ACBs</a></li>
-              <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.atls()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i> ONC-ATLs</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.announcements()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i> Announcements</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.user-actions')"></i> User Actions</a></li>

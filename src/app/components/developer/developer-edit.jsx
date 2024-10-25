@@ -35,8 +35,9 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -172,6 +173,7 @@ function ChplDeveloperEdit(props) {
     isProcessing,
     isSplitting,
   } = props;
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
@@ -208,6 +210,10 @@ function ChplDeveloperEdit(props) {
   }, [statuses]);
 
   const cancel = () => {
+    eventTrack({
+      ...analytics,
+      event: hasAnyRole(['chpl-developer']) ? 'Cancel Demographics' : 'Cancel Developer Edit',
+    });
     dispatch('cancel');
   };
 

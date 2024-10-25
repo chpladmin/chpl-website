@@ -65,8 +65,8 @@ function ChplCognitoLogin({
       );
     case 'FORGOTPASSWORD':
       return (
-        <ChplForgotPassword 
-          dispatch={handleDispatch} 
+        <ChplForgotPassword
+          dispatch={handleDispatch}
           userName={userName}
         />
       );

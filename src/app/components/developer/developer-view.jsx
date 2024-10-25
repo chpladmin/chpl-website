@@ -26,11 +26,13 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import ChplDeveloperActivity from 'components/activity/developer-activity';
+import ChplOrganizationActivity from 'components/activity/organization-activity';
+import { compareDeveloper } from 'components/activity/services/developers.service';
 import { ChplLink, ChplTooltip } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -191,6 +193,7 @@ function ChplDeveloperView(props) {
     dispatch,
     isSplitting,
   } = props;
+  const { analytics } = useAnalyticsContext();
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
@@ -225,14 +228,26 @@ function ChplDeveloperView(props) {
   };
 
   const edit = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Edit Demographics',
+    });
     dispatch('edit');
   };
 
   const join = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Join Developers',
+    });
     dispatch('join');
   };
 
   const split = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Split Developer',
+    });
     dispatch('split');
   };
 
@@ -246,8 +261,10 @@ function ChplDeveloperView(props) {
             {isSplitting ? 'Original Developer' : developer.name}
             { can('edit') && !hasAnyRole(['chpl-developer'])
               && (
-                <ChplDeveloperActivity
-                  developer={developer}
+                <ChplOrganizationActivity
+                  organization={developer}
+                  type="developers"
+                  interpret={compareDeveloper}
                 />
               )}
           </div>

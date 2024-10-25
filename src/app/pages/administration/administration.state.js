@@ -59,7 +59,7 @@ const states = [{
   component: 'chplCmsWrapperBridge',
   data: {
     title: 'CHPL Administration - CMS',
-    roles: ['chpl-admin', 'chpl-onc', 'ROLE_CMS_STAFF'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-cms-staff'],
   },
 }, {
   name: 'administration.confirm',

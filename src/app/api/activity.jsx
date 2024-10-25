@@ -42,16 +42,6 @@ const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
   })));
 };
 
-const useFetchDeveloperActivity = ({ developer, isEnabled }) => {
-  const axios = useAxios();
-  return useQuery(['activity/metadata/developers', developer.id], async () => {
-    const response = await axios.get(`activity/metadata/developers/${developer.id}`);
-    return response.data;
-  }, {
-    enabled: isEnabled,
-  });
-};
-
 const useFetchFunctionalitiesTestedActivity = ({ isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/functionalities-tested'], async () => {
@@ -71,6 +61,16 @@ const useFetchListingActivityMetadata = ({ id, enabled }) => {
       return response.data;
     },
     enabled: enabled && !!id,
+  });
+};
+
+const useFetchOrganizationActivityMetadata = ({ organization, isEnabled, type }) => {
+  const axios = useAxios();
+  return useQuery([`activity/metadata/${type}`, organization.id], async () => {
+    const response = await axios.get(`activity/metadata/${type}/${organization.id}`);
+    return response.data;
+  }, {
+    enabled: isEnabled,
   });
 };
 
@@ -130,9 +130,9 @@ export {
   useFetchActivities,
   useFetchActivity,
   useFetchDeveloperActivitiesMetadata,
-  useFetchDeveloperActivity,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,
+  useFetchOrganizationActivityMetadata,
   useFetchProductActivitiesMetadata,
   useFetchStandardsActivity,
   useFetchSvapsActivity,

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { arrayOf, func, string } from 'prop-types';
 import {
   Button,
   Dialog,
@@ -10,10 +9,13 @@ import {
 } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import EmailIcon from '@material-ui/icons/Email';
+import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -29,21 +31,30 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Enter a valid Email'),
+  groupName: yup.string()
+    .required('A ROLE must be selected'),
 });
 
-function ChplCognitoUserInvite(props) {
-  const groupNames = props.groupNames.sort((a, b) => (a < b ? -1 : 1));
+function ChplCognitoUserInvite({ dispatch, groupNames }) {
+  const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
-
   const classes = useStyles();
   let formik;
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Invite User',
+    });
     setOpen(true);
   };
 
   const handleClose = () => {
     formik.resetForm();
+    eventTrack({
+      ...analytics,
+      event: 'Close Invite User',
+    });
     setOpen(false);
   };
 
@@ -52,7 +63,7 @@ function ChplCognitoUserInvite(props) {
       email: formik.values.email,
       groupName: formik.values.groupName,
     };
-    props.dispatch('cognito-invite', invitation);
+    dispatch('cognito-invite', invitation);
     handleClose();
   };
 
@@ -71,11 +82,11 @@ function ChplCognitoUserInvite(props) {
     <>
       <ChplTooltip title="Invite a Cognito User">
         <Button
-            id="invite-user-button"
-            aria-label="Open Cognito User Invitation dialog"
-            color="primary"
-            variant="outlined"
-            onClick={handleClickOpen}
+          id="invite-user-button"
+          aria-label="Open Cognito User Invitation dialog"
+          color="primary"
+          variant="outlined"
+          onClick={handleClickOpen}
         >
           <PersonAddIcon />
         </Button>
@@ -86,16 +97,16 @@ function ChplCognitoUserInvite(props) {
         onClose={handleClose}
         aria-labelledby="user-invitation-title"
         open={open}
-        >
+      >
         <ChplDialogTitle
-            id="user-invitation-title"
-            onClose={handleClose}
+          id="user-invitation-title"
+          onClose={handleClose}
         >
-            Invite a User
+          Invite a User
         </ChplDialogTitle>
         <DialogContent
-            dividers
-            className={classes.content}
+          dividers
+          className={classes.content}
         >
           <ChplTextField
             id="email"
@@ -110,33 +121,35 @@ function ChplCognitoUserInvite(props) {
           />
           { groupNames.length > 1
             && (
-            <ChplTextField
-              select
-              id="group-name"
-              name="groupName"
-              label="Group Name"
-              required
-              value={formik.values.groupName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.groupName && !!formik.errors.groupName}
-              helperText={formik.touched.groupName && formik.errors.groupName}
-            >
-              { groupNames.map((item) => (
-                <MenuItem value={item} key={item}>{item}</MenuItem>
-              ))}
-            </ChplTextField>
+              <ChplTextField
+                select
+                id="group-name"
+                name="groupName"
+                label="Group Name"
+                required
+                value={formik.values.groupName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.groupName && !!formik.errors.groupName}
+                helperText={formik.touched.groupName && formik.errors.groupName}
+              >
+                { groupNames
+                  .sort((a, b) => (a < b ? -1 : 1))
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                  ))}
+              </ChplTextField>
             )}
         </DialogContent>
         <DialogActions>
           <Button
-          id="invite-user-button"
-          color="primary"
-          variant="contained"
-          onClick={formik.handleSubmit}
+            id="invite-user-button"
+            color="primary"
+            variant="contained"
+            onClick={formik.handleSubmit}
           >
-          Send Invite
-          <EmailIcon className={classes.iconSpacing} />
+            Send Invite
+            <EmailIcon className={classes.iconSpacing} />
           </Button>
         </DialogActions>
       </Dialog>

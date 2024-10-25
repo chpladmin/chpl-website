@@ -35,7 +35,7 @@ const userContextMock = {
 };
 
 /* eslint-disable react/display-name */
-jest.mock('components/activity/developer-activity', () => () => <div>Activity</div>);
+jest.mock('components/activity/organization-activity', () => () => <div>Activity</div>);
 /* eslint-enable react/display-name */
 
 describe('the ChplDeveloperView component', () => {

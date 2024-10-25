@@ -6,15 +6,12 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
 
-import * as angularReactHelper from '../../../services/angular-react-helper';
-
 import ChplResourcesDownload from './download';
 
-const ApiMock = 'API';
+import { eventTrack } from 'services/analytics.service';
+import * as angularReactHelper from 'services/angular-react-helper';
 
-const analyticsMock = {
-  eventTrack: jest.fn(() => {}),
-};
+const ApiMock = 'API';
 
 const authServiceMock = {
   getApiKey: jest.fn(() => 'key'),
@@ -24,8 +21,11 @@ const authServiceMock = {
 
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue(ApiMock);
-when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(analyticsMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
+
+jest.mock('services/analytics.service', () => ({
+  eventTrack: jest.fn(() => {}),
+}));
 
 let jsDomOpen;
 
@@ -62,31 +62,45 @@ describe('the ChplResourcesDownload page', () => {
 
   describe('when selecting a file', () => {
     it('should track analytics on the download file', async () => {
+      eventTrack.mockClear();
       userEvent.click(screen.getByRole('button', { name: /Select a collection to download/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('Inactive products summary'));
       userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: 'Inactive products' });
+        expect(eventTrack).toHaveBeenCalledWith({
+          event: 'Download CHPL Data File',
+          category: 'Download the CHPL',
+          label: 'Inactive products',
+        });
       });
     });
 
     it('should track analytics on the definition file', async () => {
+      eventTrack.mockClear();
       userEvent.click(screen.getByRole('button', { name: /Select a collection to download/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('Inactive products summary'));
       userEvent.click(screen.getByRole('button', { name: /Definition File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL Definition', { category: 'Download CHPL', label: 'Inactive products' });
+        expect(eventTrack).toHaveBeenCalledWith({
+          event: 'Download CHPL Definition File',
+          category: 'Download the CHPL',
+          label: 'Inactive products',
+        });
       });
     });
 
     it('should track the default file analytics if nothing was selected', async () => {
-      analyticsMock.eventTrack.mockClear();
+      eventTrack.mockClear();
       userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: 'Active products' });
+        expect(eventTrack).toHaveBeenCalledWith({
+          event: 'Download CHPL Data File',
+          category: 'Download the CHPL',
+          label: 'Active products',
+        });
       });
     });
   });

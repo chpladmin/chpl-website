@@ -17,8 +17,9 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 import { ChplLink, ChplTextField } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -93,12 +94,15 @@ const allOptions = [
 ];
 
 function ChplResourcesDownload() {
-  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const {
     getApiKey,
     getToken,
   } = getAngularService('authService');
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'Download the CHPL',
+  };
   const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
@@ -128,7 +132,11 @@ function ChplResourcesDownload() {
 
   const downloadFile = (type) => {
     if (selectedOption) {
-      $analytics.eventTrack(`Download CHPL${type === 'definition' ? ' Definition' : ''}`, { category: 'Download CHPL', label: files[selectedOption].label });
+      eventTrack({
+        ...analytics,
+        event: `Download CHPL ${type === 'definition' ? 'Definition' : 'Data'} File`,
+        label: files[selectedOption].label,
+      });
       window.open(files[selectedOption][type]);
     }
   };
@@ -193,6 +201,10 @@ function ChplResourcesDownload() {
                           inline
                           href="#/resources/api"
                           router={{ sref: 'resources.api' }}
+                          analytics={{
+                            ...analytics,
+                            event: 'Navigate to CHPL API page',
+                          }}
                         />
                         .
                       </Typography>
@@ -267,7 +279,10 @@ function ChplResourcesDownload() {
                     <ChplLink
                       href="https://www.healthit.gov/topic/certification-ehrs/program-resources/api-service-base-url-availability"
                       text="API Service Base URL Availability"
-                      analytics={{ event: 'Service Base URL List', category: 'Download CHPL' }}
+                      analytics={{
+                        ...analytics,
+                        event: 'Go to API Service Base URL Availability',
+                      }}
                       external={false}
                       inline
                     />

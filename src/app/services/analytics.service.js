@@ -1,19 +1,30 @@
 /* global ENABLE_LOGGING */
 
 const eventTrack = ({
-  event, category, label, aggregationName, group,
+  aggregationName,
+  category,
+  event,
+  group,
+  label,
+  organization,
 }) => {
   if (typeof window.gtag === 'function') {
     if (ENABLE_LOGGING) {
       console.info({
-        event, category, label, aggregationName, group,
+        aggregationName,
+        category,
+        event,
+        group,
+        label,
+        organization,
       });
     } else {
       window.gtag('event', event, {
-        event_category: category,
-        event_label: label,
         aggregationName,
+        event_category: category,
         group,
+        event_label: label,
+        organization,
       });
     }
   }
