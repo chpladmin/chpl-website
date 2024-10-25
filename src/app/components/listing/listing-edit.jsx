@@ -76,6 +76,9 @@ const useStyles = makeStyles({
       color: '#853544',
     },
   },
+  tooltipText: {
+    fontSize: '1.5em,',
+  },
 });
 
 function ChplListingEdit({
@@ -267,8 +270,8 @@ function ChplListingEdit({
                 { selectedStatuses
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((status, idx, arr) => (
-                    <ListItem selected key={status.eventDay}>
-                      <Box flexGrow={1}>
+                    <ListItem style={{ border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px' }} key={status.eventDay}>
+                      <Box pb={2} flexGrow={1}>
                         {status.status.name}
                         {` on ${getDisplayDateFormat(status.eventDay)}`}
                         {status.reason && ` for ${status.reason}`}
@@ -276,7 +279,7 @@ function ChplListingEdit({
                       <IconButton
                         onClick={() => removeStatus(status)}
                       >
-                        <Tooltip title="delete">
+                        <Tooltip className={classes.tooltipText} title="delete">
                           <DeleteIcon color="error" />
                         </Tooltip>
                       </IconButton>
@@ -402,8 +405,8 @@ function ChplListingEdit({
               <Divider />
               <List>
                 { selectedAtls.map((atl) => (
-                  <ListItem selected key={atl.id}>
-                    <Box flexGrow={1}>
+                  <ListItem style={{ border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px' }} key={atl.id}>
+                    <Box pb={2} flexGrow={1}>
                       {atl.name}
                     </Box>
                     <IconButton
@@ -474,7 +477,29 @@ function ChplListingEdit({
                 Real World Testing
               </Typography>
               <Divider />
-              <Box display="flex" justifyContent="space-around" gridGap={32} flexDirection="row">
+              <Box display="flex" pt={2} justifyContent="space-around" gridGap={32} flexDirection="row">
+                <ChplTextField
+                  id="rwt-plans-url"
+                  name="rwtPlansUrl"
+                  label="Real-World Testing Plans URL"
+                  value={formik.values.rwtPlansUrl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                  helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                />
+                <ChplTextField
+                  id="rwt-results-url"
+                  name="rwtResultsUrl"
+                  label="Real-World Testing Results URL"
+                  value={formik.values.rwtResultsUrl}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
+                  helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
+                />
+              </Box>
+              <Box display="flex" pt={4} justifyContent="space-around" gridGap={32} flexDirection="row">
                 <ChplTextField
                   id="rwt-plans-check-date"
                   name="rwtPlansCheckDate"
@@ -498,28 +523,6 @@ function ChplListingEdit({
                   onBlur={formik.handleBlur}
                   error={formik.touched.rwtResultsCheckDate && !!formik.errors.rwtResultsCheckDate}
                   helperText={formik.touched.rwtResultsCheckDate && formik.errors.rwtResultsCheckDate}
-                />
-              </Box>
-              <Box display="flex" pt={8} justifyContent="space-around" gridGap={32} flexDirection="row">
-                <ChplTextField
-                  id="rwt-plans-url"
-                  name="rwtPlansUrl"
-                  label="Real-World Testing Plans URL"
-                  value={formik.values.rwtPlansUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-                  helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-                />
-                <ChplTextField
-                  id="rwt-results-url"
-                  name="rwtResultsUrl"
-                  label="Real-World Testing Results URL"
-                  value={formik.values.rwtResultsUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
-                  helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
                 />
               </Box>
             </Box>

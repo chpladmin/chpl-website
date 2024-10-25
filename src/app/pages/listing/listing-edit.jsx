@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   reasonForChangeText: {
     paddingTop: '16px',
     fontWeight: 'bold',
-  }
+  },
 });
 
 function ChplListingEditPage() {
@@ -135,19 +135,9 @@ function ChplListingEditPage() {
           </Box>
         </Container>
       </Box>
-      <Box sx={{ height: '100vh', backgroundColor: palette.background }}>
+      <Box sx={{ backgroundColor: palette.background }}>
         <Container maxWidth="lg">
           <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
-            {isEditing ? (
-              <ChplListingEdit
-                dispatch={handleDispatch}
-                errors={errors}
-                warnings={warnings}
-                isProcessing={isProcessing}
-              />
-            ) : (
-              <Typography>Insert upload component here</Typography>
-            )}
             <Card>
               <CardContent>
                 <ChplTextField
@@ -167,6 +157,16 @@ function ChplListingEditPage() {
                 </List>
               </CardContent>
             </Card>
+            {isEditing ? (
+              <ChplListingEdit
+                dispatch={handleDispatch}
+                errors={errors}
+                warnings={warnings}
+                isProcessing={isProcessing}
+              />
+            ) : (
+              <Typography>Insert upload component here</Typography>
+            )}
           </Box>
         </Container>
       </Box>
