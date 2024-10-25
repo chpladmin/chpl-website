@@ -34,6 +34,7 @@ function UserWrapper({ children }) {
     if (!user || !roles || roles.length === 0 || !user.role) {
       return false;
     }
+    // TODO: remove these "if" when ssoIsOn is set to true
     if (roles.includes('chpl-admin')) {
       roles.push('ROLE_ADMIN');
     }
