@@ -143,9 +143,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     eventTrack({
       ...analytics,
       event: seeAllCriteria ? 'See only attested Certification Criteria' : 'See all Certification Criteria',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setSeeAllCriteria(!seeAllCriteria);
   };
@@ -154,9 +151,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     eventTrack({
       ...analytics,
       event: seeAllCqms ? 'See only attested CQMs' : 'See all CQMs',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setSeeAllCqms(!seeAllCqms);
   };
@@ -178,9 +172,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     analytics={{
                       ...analytics,
                       event: 'Navigate to Listing Information',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
                     }}
                   >
                     Listing Information
@@ -195,9 +186,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     analytics={{
                       ...analytics,
                       event: 'Navigate to Certification Criteria',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
                     }}
                   >
                     Certification Criteria
@@ -212,9 +200,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     analytics={{
                       ...analytics,
                       event: 'Navigate to Clinical Quality Measures',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
                     }}
                   >
                     Clinical Quality Measures
@@ -231,9 +216,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                        analytics={{
                          ...analytics,
                          event: 'Navigate to Safety Enhanced Design',
-                         category: 'Listing Details',
-                         label: listing.chplProductNumber,
-                         aggregationName: listing.product.name,
                        }}
                      >
                        Safety Enhanced Design (SED)
@@ -251,9 +233,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                         analytics={{
                           ...analytics,
                           event: 'Navigate to G1/G2 Measures',
-                          category: 'Listing Details',
-                          label: listing.chplProductNumber,
-                          aggregationName: listing.product.name,
                         }}
                       >
                         G1/G2 Measures
@@ -269,9 +248,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     analytics={{
                       ...analytics,
                       event: 'Navigate to Compliance Activities',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
                     }}
                   >
                     Compliance Activities
@@ -286,9 +262,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                     analytics={{
                       ...analytics,
                       event: 'Navigate to Additional Information',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
                     }}
                   >
                     Additional Information
@@ -445,9 +418,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                       analytics={{
                         ...analytics,
                         event: 'Manage Surveillance Activities',
-                        category: 'Listing Details',
-                        label: listing.chplProductNumber,
-                        aggregationName: listing.product.name,
                       }}
                     />
                   )}

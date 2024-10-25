@@ -148,6 +148,8 @@ function ChplListingPage({ id }) {
     analytics: {
       ...analytics,
       category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
     },
   };
 
