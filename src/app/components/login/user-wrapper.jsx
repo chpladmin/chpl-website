@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ThemeProvider,
-} from '@material-ui/core';
 import { node } from 'prop-types';
 
 import ChplLogin from './login';
 
-import { SnackbarWrapper } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-import theme from 'themes/theme';
 
-function UserWrapper(props) {
+function UserWrapper({ children }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const { children } = props;
   const [user, setUser] = useState({});
   const [impersonating, setImpersonating] = useState(false);
 
@@ -70,13 +64,9 @@ function UserWrapper(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <SnackbarWrapper>
-        <UserContext.Provider value={userState}>
-          { children }
-        </UserContext.Provider>
-      </SnackbarWrapper>
-    </ThemeProvider>
+    <UserContext.Provider value={userState}>
+      { children }
+    </UserContext.Provider>
   );
 }
 
