@@ -93,6 +93,22 @@ const useStyles = makeStyles({
     border: `.5px solid ${palette.primary}`,
     borderRadius: '8px',
     padding: '16px 8px',
+    overflowY: 'auto',
+    maxHeight: '35vh',
+    '&::-webkit-scrollbar': {
+      width: '2px', // Width of the scrollbar
+    },
+    '&::-webkit-scrollbar-track': {
+      background: '#f1f1f1', // Background of the scrollbar track
+      borderRadius: '8px', // Optional: matching border radius
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: theme.palette.primary.main, // Color of the scrollbar thumb
+      borderRadius: '8px', // Optional: matching border radius
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: theme.palette.primary.dark, // Color on hover
+    },
   },
 });
 
@@ -128,6 +144,7 @@ function ChplMessaging({ dispatch }) {
   const [recordCount, setRecordCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(templateOptions[0]);
   const [undeliverable, setUndeliverable] = useState([]);
+  const [undeliverableTotalCount, setUndeliverableTotalCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
   const postMessagePreview = usePostMessagePreview();
@@ -151,7 +168,8 @@ function ChplMessaging({ dispatch }) {
 
   useEffect(() => {
     if (undeliverableIsLoading || undeliverableIsError || !undeliverableData.results) { return; }
-    setUndeliverable(undeliverableData.results.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setUndeliverable(undeliverableData.results.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })));
+    setUndeliverableTotalCount(undeliverableData.recordCount);
   }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 
   const applyTemplate = () => {
@@ -299,20 +317,20 @@ function ChplMessaging({ dispatch }) {
               && (
                 <CircularProgress />
               )}
-            { undeliverable.length === 0 && !undeliverableIsLoading
+            { undeliverableTotalCount === 0 && !undeliverableIsLoading
               && (
                 <Typography>
                   All Developers have at least one active user
                 </Typography>
               )}
-            { undeliverable.length > 0
+            { undeliverableTotalCount > 0
               && (
                 <>
                   <Typography>
-                    { undeliverable.length !== 1 ? `These ${undeliverable.length} ` : 'This ' }
+                    { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
                     Developer
-                    { undeliverable.length !== 1 ? 's have ' : ' has ' }
-                    no active users and will not receive this message
+                    { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
+                    no active users and will not receive this message:
                   </Typography>
                   <List>
                     { undeliverable.map((item) => (
@@ -330,6 +348,16 @@ function ChplMessaging({ dispatch }) {
                         />
                       </ListItem>
                     ))}
+                    { undeliverableTotalCount > 25
+                      && (
+                        <ListItem>
+                          ...and
+                          {' '}
+                          {undeliverableTotalCount - 25}
+                          {' '}
+                          more
+                        </ListItem>
+                      )}
                   </List>
                 </>
               )}
