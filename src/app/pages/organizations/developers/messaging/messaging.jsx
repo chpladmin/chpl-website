@@ -4,8 +4,11 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Divider,
+  List,
+  ListItem,
   MenuItem,
   Table,
   TableBody,
@@ -85,6 +88,12 @@ const useStyles = makeStyles({
     paddingTop: '8px',
     padddingBottom: '8px',
   },
+  undeliverable: {
+    background: palette.secondary,
+    border: `.5px solid ${palette.primary}`,
+    borderRadius: '8px',
+    padding: '16px 8px',
+  },
 });
 
 const validationSchema = yup.object({
@@ -118,6 +127,7 @@ function ChplMessaging({ dispatch }) {
   const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(templateOptions[0]);
+  const [undeliverable, setUndeliverable] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
   const postMessagePreview = usePostMessagePreview();
@@ -125,20 +135,24 @@ function ChplMessaging({ dispatch }) {
 
   let formik;
 
-  const { data, isError, isLoading } = useFetchDevelopersBySearch({
-    orderBy: 'developer',
-    pageNumber: 0,
-    pageSize: 25,
-    sortDescending: false,
-    query: queryString(),
+  const { data: allData, isError: allIsError, isLoading: allIsLoading } = useFetchDevelopersBySearch({ query: queryString() });
+  const { data: undeliverableData, isError: undeliverableIsError, isLoading: undeliverableIsLoading } = useFetchDevelopersBySearch({
+    query: queryString()
+      .split('&')
+      .filter((p) => !p.startsWith('hasUsers'))
+      .concat('hasUsers=false')
+      .join('&'),
   });
 
   useEffect(() => {
-    if (isLoading) { return; }
-    if (isError || !data.results) { return; }
-    if (isLoading || !data.results) { return; }
-    setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading]);
+    if (allIsLoading || allIsError || !allData.results) { return; }
+    setRecordCount(allData.recordCount);
+  }, [allData, allIsError, allIsLoading]);
+
+  useEffect(() => {
+    if (undeliverableIsLoading || undeliverableIsError || !undeliverableData.results) { return; }
+    setUndeliverable(undeliverableData.results.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 
   const applyTemplate = () => {
     formik.setFieldValue('subject', selectedOption.subject);
@@ -280,6 +294,46 @@ function ChplMessaging({ dispatch }) {
               />
             </CardContent>
           </Card>
+          <Box className={classes.undeliverable}>
+            { undeliverableIsLoading
+              && (
+                <CircularProgress />
+              )}
+            { undeliverable.length === 0 && !undeliverableIsLoading
+              && (
+                <Typography>
+                  All Developers have at least one active user
+                </Typography>
+              )}
+            { undeliverable.length > 0
+              && (
+                <>
+                  <Typography>
+                    { undeliverable.length !== 1 ? `These ${undeliverable.length} ` : 'This ' }
+                    Developer
+                    { undeliverable.length !== 1 ? 's have ' : ' has ' }
+                    no active users and will not receive this message
+                  </Typography>
+                  <List>
+                    { undeliverable.map((item) => (
+                      <ListItem key={item.id}>
+                        <ChplLink
+                          href={`#/organizations/developers/${item.id}`}
+                          text={item.name}
+                          analytics={{
+                            ...analytics,
+                            event: 'Navigate to Developer Page',
+                            label: item.name,
+                          }}
+                          external={false}
+                          router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
+              )}
+          </Box>
           <Card bgcolor="white">
             <Box
               padding="16px"
