@@ -148,6 +148,7 @@ import { clearAuthTokens } from 'axios-jwt';
         $injector.get('networkService').logout({
           email: getCurrentUser().email,
         });
+        document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
       }
       delete $localStorage.jwtToken;
       delete $localStorage.refreshToken;
