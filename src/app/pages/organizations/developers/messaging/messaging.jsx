@@ -200,6 +200,7 @@ function ChplMessaging({ dispatch }) {
     onSubmit: () => {
       sendMessage();
     },
+    validateOnMount: true,
   });
 
   const minRows = window.outerWidth >= 1200 ? 16 : 8;
