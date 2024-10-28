@@ -26,9 +26,8 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
   const handleClick = (e) => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Open Quick Filter',
-        category: analytics.category,
-        group: analytics.group,
       });
     }
     setAnchor(e.currentTarget);
@@ -38,9 +37,8 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
   const handleClose = () => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Close Quick Filter',
-        category: analytics.category,
-        group: analytics.group,
       });
     }
     setAnchor(null);
@@ -50,10 +48,9 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
   const loadQuickFilter = (value) => {
     if (analytics) {
       eventTrack({
+        ...analytics,
         event: 'Open Quick Filter',
-        category: analytics.category,
         label: value.display,
-        group: analytics.group,
       });
     }
     dispatch('update', quickFilter, {

@@ -24,9 +24,11 @@ import { string } from 'prop-types';
 import { useFetchListing } from 'api/listing';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
 import { ChplLink, ChplTooltip } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -80,6 +82,10 @@ const useStyles = makeStyles({
 });
 
 function ChplComparePage({ ids }) {
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'Compare',
+  };
   const [activeListing, setActiveListing] = useState(undefined);
   const [cqms, setCqms] = useState([]);
   const [criteria, setCriteria] = useState([]);
@@ -240,6 +246,12 @@ function ChplComparePage({ ids }) {
   };
 
   const dropListing = (listing) => {
+    eventTrack({
+      ...analytics,
+      event: 'Remove Listing from Compare',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+    });
     setListings((prev) => prev.filter((l) => l.id !== listing.id));
   };
 
@@ -313,7 +325,12 @@ function ChplComparePage({ ids }) {
                     <ChplLink
                       href={`#/listing/${listing.id}`}
                       text="details"
-                      analytics={{ event: 'Go to Listing Details page', category: 'Compare Page', label: listing.chplProductNumber }}
+                      analytics={{
+                        ...analytics,
+                        event: 'Navigate to Listing Details Page',
+                        label: listing.chplProductNumber,
+                        aggregationName: listing.product.name,
+                      }}
                       external={false}
                       router={{ sref: 'listing', options: { id: listing.id } }}
                     />

@@ -10,7 +10,7 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from '@material-ui/lab';
-import { bool, object } from 'prop-types';
+import { bool, func, object } from 'prop-types';
 
 import compareSystemMaintenance from './services/system-maintenance.service';
 
@@ -49,7 +49,7 @@ const getDescription = (activity) => {
   return action;
 };
 
-function ChplSystemMaintenanceActivityDetails({ activity, last }) {
+function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
   const [details, setDetails] = useState([]);
   const classes = useStyles();
 
@@ -64,7 +64,7 @@ function ChplSystemMaintenanceActivityDetails({ activity, last }) {
       setDetails([]);
       return;
     }
-    setDetails(compareSystemMaintenance(data?.originalData, data?.newData)
+    setDetails(interpret(data?.originalData, data?.newData)
       .map((item) => `<li>${item}</li>`)
       .join(''));
   }, [data, isError, isLoading]);
@@ -98,5 +98,10 @@ export default ChplSystemMaintenanceActivityDetails;
 
 ChplSystemMaintenanceActivityDetails.propTypes = {
   activity: object.isRequired,
+  interpret: func,
   last: bool.isRequired,
+};
+
+ChplSystemMaintenanceActivityDetails.defaultProps = {
+  interpret: compareSystemMaintenance,
 };

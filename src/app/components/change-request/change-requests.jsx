@@ -88,7 +88,7 @@ function ChplChangeRequests(props) {
   const data = {
     analytics: {
       ...analytics,
-      category: 'CHPL Search - Change Requests',
+      category: 'Change Requests',
     },
   };
 

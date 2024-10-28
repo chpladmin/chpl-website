@@ -5,8 +5,10 @@ import {
   CardHeader,
   Chip,
   CircularProgress,
+  Checkbox,
   FormControlLabel,
   InputAdornment,
+  ListItemText,
   MenuItem,
   Select,
   Switch,
@@ -20,7 +22,7 @@ import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
-import { useFetchComplainantTypes } from 'api/data';
+import { useFetchComplaintTypes, useFetchComplainantTypes } from 'api/data';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTextField } from 'components/util';
@@ -32,14 +34,14 @@ import { theme } from 'themes';
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
-    gap: '16px',
+    gap: '32px',
     gridTemplateColumns: '1fr',
     alignItems: 'start',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '2fr 2fr',
     },
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '3fr 4fr 4fr 2fr',
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '2fr 2fr 2fr 1fr',
     },
   },
   dataEntry: {
@@ -72,9 +74,15 @@ const validationSchema = yup.object({
   complainantType: yup.object()
     .required('Complainant Type is required'),
   complainantTypeOther: yup.string()
-    .test('conditionallyRequired',
+    .test('conditionallyRequiredComplainant',
       'Complainant Type - Other Description is required',
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
+  complaintTypes: yup.array()
+    .min(1, 'Complaint Types is required'),
+  complaintTypesOther: yup.string()
+    .test('conditionallyRequiredComplaint',
+      'Complaint Types - Other Description is required',
+      (value, context) => (!!value || context.parent.complaintTypes?.every((t) => t.name !== 'Other'))),
   summary: yup.string()
     .required('Complaint Summary is required'),
   actions: yup.string()
@@ -90,6 +98,7 @@ function ChplComplaintEdit(props) {
   const { complaint: initialComplaint, dispatch } = props;
   const [certificationBodies, setCertificationBodies] = useState([]);
   const [complainantTypes, setComplainantTypes] = useState([]);
+  const [complaintTypes, setComplaintTypes] = useState([]);
   const [complaint, setComplaint] = useState({});
   const [criteria, setCriteria] = useState([]);
   const [criterionParagraph, setCriterionParagraph] = useState('170.315');
@@ -106,6 +115,7 @@ function ChplComplaintEdit(props) {
   const { mutate: remove } = useDeleteComplaint();
   const { data: certificationBodiesData, isLoading: certificationBodiesIsLoading, isSuccess: certificationBodiesIsSuccess } = useFetchAcbs(true);
   const { data: complainantTypesData, isLoading: complainantTypesIsLoading, isSuccess: complainantTypesIsSuccess } = useFetchComplainantTypes();
+  const { data: complaintTypesData, isLoading: complaintTypesIsLoading, isSuccess: complaintTypesIsSuccess } = useFetchComplaintTypes();
   const { data: criteriaData, isLoading: criteriaIsLoading, isSuccess: criteriaIsSuccess } = useFetchCriteria();
   const { data: listingsData, isLoading: listingsIsLoading, isSuccess: listingsIsSuccess } = useFetchListings({
     orderBy: 'chpl_id',
@@ -137,6 +147,12 @@ function ChplComplaintEdit(props) {
     setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
     formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
   }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
+
+  useEffect(() => {
+    if (complaintTypesIsLoading || !complaintTypesIsSuccess) { return; }
+    setComplaintTypes(complaintTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    formik.setFieldValue('complaintTypes', complaintTypesData.data.filter((type) => initialComplaint?.complaintTypes?.some((t) => t.id === type.id)) || []);
+  }, [complaintTypesData, complaintTypesIsLoading, complaintTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
@@ -293,6 +309,8 @@ function ChplComplaintEdit(props) {
     setCriterionParagraph(event.target.value);
   };
 
+  const isComplaintTypesOtherRequired = () => formik.values.complaintTypes.some((t) => t.name === 'Other');
+
   const save = () => {
     const mutate = complaint.id ? put : post;
     mutate({
@@ -304,6 +322,8 @@ function ChplComplaintEdit(props) {
       oncComplaintId: formik.values.oncComplaintId,
       complainantType: formik.values.complainantType,
       complainantTypeOther: formik.values.complainantTypeOther,
+      complaintTypes: formik.values.complaintTypes,
+      complaintTypesOther: formik.values.complaintTypesOther,
       summary: formik.values.summary,
       actions: formik.values.actions,
       complainantContacted: formik.values.complainantContacted,
@@ -333,6 +353,8 @@ function ChplComplaintEdit(props) {
       oncComplaintId: initialComplaint.oncComplaintId || '',
       complainantType: '',
       complainantTypeOther: initialComplaint.complainantTypeOther || '',
+      complaintTypes: [],
+      complaintTypesOther: initialComplaint.complaintTypesOther || '',
       summary: initialComplaint.summary || '',
       actions: initialComplaint.actions || '',
       complainantContacted: !!initialComplaint.complainantContacted,
@@ -348,7 +370,7 @@ function ChplComplaintEdit(props) {
     validateOnMount: true,
   });
 
-  if (certificationBodiesIsLoading || complainantTypesIsLoading) {
+  if (certificationBodiesIsLoading || complainantTypesIsLoading || complaintTypesIsLoading) {
     return (
       <CircularProgress />
     );
@@ -364,7 +386,7 @@ function ChplComplaintEdit(props) {
         <CardContent>
           { complaint.id
             ? (
-              <Typography variant="h5">
+              <Typography style={{ fontWeight: '600' }} variant="h5">
                 ONC-ACB:
                 {' '}
                 {complaint.certificationBody.name}
@@ -435,6 +457,49 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
+              <ChplTextField
+                select
+                id="complaint-types"
+                name="complaintTypes"
+                label="Complaint Type(s)"
+                required
+                value={formik.values.complaintTypes}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.complaintTypes && !!formik.errors.complaintTypes}
+                helperText={formik.touched.complaintTypes && formik.errors.complaintTypes}
+                SelectProps={{
+                  multiple: true,
+                  renderValue: (selected) => selected.map((value) => complaintTypes.find((item) => item.id === value.id)?.name).join(', '),
+                }}
+              >
+                { complaintTypes.map((item) => (
+                  <MenuItem key={item.id} value={item}>
+                    <Checkbox
+                      size="small"
+                      variant="outlined"
+                      color="primary"
+                      checked={formik.values.complaintTypes.some((type) => type.id === item.id)}
+                    />
+                    <ListItemText primary={item.name} />
+                  </MenuItem>
+                ))}
+              </ChplTextField>
+              { isComplaintTypesOtherRequired()
+                && (
+                  <ChplTextField
+                    id="complaint-types-other"
+                    name="complaintTypesOther"
+                    label="Complaint Type(s) - Other Description"
+                    required
+                    multiline
+                    value={formik.values.complaintTypesOther}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.complaintTypesOther && !!formik.errors.complaintTypesOther}
+                    helperText={formik.touched.complaintTypesOther && formik.errors.complaintTypesOther}
+                  />
+                )}
               <ChplTextField
                 select
                 id="complainant-type"

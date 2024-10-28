@@ -26,10 +26,13 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import ChplOrganizationActivity from 'components/activity/organization-activity';
+import { compareDeveloper } from 'components/activity/services/developers.service';
 import { ChplLink, ChplTooltip } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -44,6 +47,14 @@ const useStyles = makeStyles({
   developerHeader: {
     margin: '0',
     fontSize: '1.25em',
+  },
+  headerContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerTitle: {
+    margin: 0,
   },
   statusHistorySummary: {
     backgroundColor: '#fff',
@@ -182,6 +193,7 @@ function ChplDeveloperView(props) {
     dispatch,
     isSplitting,
   } = props;
+  const { analytics } = useAnalyticsContext();
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
@@ -216,14 +228,26 @@ function ChplDeveloperView(props) {
   };
 
   const edit = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Edit Demographics',
+    });
     dispatch('edit');
   };
 
   const join = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Join Developers',
+    });
     dispatch('join');
   };
 
   const split = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Split Developer',
+    });
     dispatch('split');
   };
 
@@ -232,8 +256,20 @@ function ChplDeveloperView(props) {
       title={`${developer.name} Information`}
     >
       <CardHeader
-        title={isSplitting ? 'Original Developer' : developer.name}
-        component="h2"
+        title={(
+          <div className={classes.headerContainer}>
+            {isSplitting ? 'Original Developer' : developer.name}
+            { can('edit') && !hasAnyRole(['chpl-developer'])
+              && (
+                <ChplOrganizationActivity
+                  organization={developer}
+                  type="developers"
+                  interpret={compareDeveloper}
+                />
+              )}
+          </div>
+        )}
+        component="div"
         className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
@@ -323,51 +359,51 @@ function ChplDeveloperView(props) {
         </div>
         {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
       </CardContent>
-      {(can('edit') || can('split') || can('join'))
+      { (can('edit') || can('split') || can('join'))
         && (
           <CardActions className={classes.cardActions}>
             <ButtonGroup
               color="primary"
             >
               {can('edit')
-                && (
-                  <ChplTooltip title={`Edit ${developer.name} Information`}>
-                    <Button
-                      variant="contained"
-                      aria-label={`Edit ${developer.name} Information`}
-                      id="developer-component-edit"
-                      onClick={edit}
-                    >
-                      <EditOutlinedIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
+               && (
+                 <ChplTooltip title={`Edit ${developer.name} Information`}>
+                   <Button
+                     variant="contained"
+                     aria-label={`Edit ${developer.name} Information`}
+                     id="developer-component-edit"
+                     onClick={edit}
+                   >
+                     <EditOutlinedIcon />
+                   </Button>
+                 </ChplTooltip>
+               )}
               {can('split')
-                && (
-                  <ChplTooltip title={`Split ${developer.name}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Split ${developer.name}`}
-                      id="developer-component-split"
-                      onClick={split}
-                    >
-                      <CallSplitIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
+               && (
+                 <ChplTooltip title={`Split ${developer.name}`}>
+                   <Button
+                     variant="outlined"
+                     aria-label={`Split ${developer.name}`}
+                     id="developer-component-split"
+                     onClick={split}
+                   >
+                     <CallSplitIcon />
+                   </Button>
+                 </ChplTooltip>
+               )}
               {can('join')
-                && (
-                  <ChplTooltip title={`Join ${developer.name}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Join ${developer.name}`}
-                      id="developer-component-join"
-                      onClick={join}
-                    >
-                      <CallMergeIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
+               && (
+                 <ChplTooltip title={`Join ${developer.name}`}>
+                   <Button
+                     variant="outlined"
+                     aria-label={`Join ${developer.name}`}
+                     id="developer-component-join"
+                     onClick={join}
+                   >
+                     <CallMergeIcon />
+                   </Button>
+                 </ChplTooltip>
+               )}
             </ButtonGroup>
           </CardActions>
         )}

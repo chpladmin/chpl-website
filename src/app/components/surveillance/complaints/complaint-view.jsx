@@ -23,14 +23,14 @@ import { complaint as complaintPropType } from 'shared/prop-types';
 const useStyles = makeStyles({
   content: {
     display: 'grid',
-    gap: '16px',
+    gap: '32px',
     gridTemplateColumns: '1fr',
     alignItems: 'start',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '2fr 2fr',
     },
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '2fr 2fr 2fr 1fr',
     },
   },
   dataContent: {
@@ -71,10 +71,10 @@ function ChplComplaintView(props) {
         subheader={complaint.acbComplaintId}
       />
       <CardContent>
-        <Typography variant="h5">
+        <Typography style={{ fontWeight: '600' }} variant="h5">
           ONC-ACB:
           {' '}
-          {complaint.certificationBody?.name}
+          { complaint.certificationBody?.name }
         </Typography>
         <div className={classes.content}>
           <div className={classes.dataContent}>
@@ -83,43 +83,60 @@ function ChplComplaintView(props) {
               Received Date:
             </Typography>
             <Typography>
-              {getDisplayDateFormat(complaint.receivedDate)}
+              { getDisplayDateFormat(complaint.receivedDate) }
             </Typography>
             <Typography variant="subtitle2">
               Closed Date:
             </Typography>
             <Typography>
-              {getDisplayDateFormat(complaint.closedDate)}
+              { getDisplayDateFormat(complaint.closedDate) }
             </Typography>
             <Typography variant="subtitle2">
               ONC-ACB Complaint ID:
             </Typography>
             <Typography>
-              {complaint.acbComplaintId}
+              { complaint.acbComplaintId }
             </Typography>
             <Typography variant="subtitle2">
               ONC Complaint ID:
             </Typography>
             <Typography>
-              {complaint.oncComplaintId}
+              { complaint.oncComplaintId }
             </Typography>
+            <Typography variant="subtitle2">
+              Complaint Type(s):
+            </Typography>
+            <Typography>
+              { complaint.complaintTypes?.map((t) => t.name).join(', ') }
+            </Typography>
+            { complaint.complaintTypesOther
+             && (
+               <>
+                 <Typography variant="subtitle2">
+                   Complaint Type(s) - Other:
+                 </Typography>
+                 <Typography>
+                   { complaint.complaintTypesOther }
+                 </Typography>
+               </>
+             )}
             <Typography variant="subtitle2">
               Complainant Type:
             </Typography>
             <Typography>
-              {complaint.complainantType?.name}
+              { complaint.complainantType?.name }
             </Typography>
-            {complaint.complainantType?.name === 'Other'
-             && (
-               <>
-                 <Typography variant="subtitle2">
-                   Complainant Type (Other):
-                 </Typography>
-                 <Typography>
-                   {complaint.complainantTypeOther}
-                 </Typography>
-               </>
-             )}
+            { complaint.complainantTypeOther
+              && (
+                <>
+                  <Typography variant="subtitle2">
+                    Complainant Type - Other:
+                  </Typography>
+                  <Typography>
+                    { complaint.complainantTypeOther }
+                  </Typography>
+                </>
+              )}
           </div>
           <div className={classes.dataContent}>
             <Typography variant="subtitle1">Summary and Actions</Typography>
@@ -127,13 +144,13 @@ function ChplComplaintView(props) {
               Complaint Summary:
             </Typography>
             <Typography>
-              {complaint.summary}
+              { complaint.summary }
             </Typography>
             <Typography variant="subtitle2">
               Actions/Responses:
             </Typography>
             <Typography>
-              {complaint.actions}
+              { complaint.actions }
             </Typography>
           </div>
           <div className={classes.dataContent}>
@@ -141,10 +158,12 @@ function ChplComplaintView(props) {
             <Typography variant="subtitle2">
               Associated Criteria:
             </Typography>
-            {complaint.criteria?.length > 0
+            { complaint.criteria?.length > 0
               ? (
                 <ul>
-                  {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
+                  { complaint
+                    .criteria
+                    .map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
                 </ul>
              )
               : (
@@ -155,10 +174,12 @@ function ChplComplaintView(props) {
             <Typography variant="subtitle2">
               Associated Listings:
             </Typography>
-            {complaint.listings?.length > 0
+            { complaint.listings?.length > 0
               ? (
                 <ul>
-                  {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
+                  {complaint
+                    .listings
+                    .map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
                 </ul>
              )
               : (
@@ -169,10 +190,12 @@ function ChplComplaintView(props) {
             <Typography variant="subtitle2">
               Associated Surveillance Activities:
             </Typography>
-            {complaint.surveillances?.length > 0
+            { complaint.surveillances?.length > 0
               ? (
                 <ul>
-                  {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
+                  { complaint
+                    .surveillances
+                    .map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
                 </ul>
              ) : (
                <Typography>
@@ -186,25 +209,25 @@ function ChplComplaintView(props) {
               Complainant Contacted:
             </Typography>
             <Typography>
-              {complaint.complainantContacted ? 'Yes' : 'No'}
+              { complaint.complainantContacted ? 'Yes' : 'No' }
             </Typography>
             <Typography variant="subtitle2">
               Developer Contacted:
             </Typography>
             <Typography>
-              {complaint.developerContacted ? 'Yes' : 'No'}
+              { complaint.developerContacted ? 'Yes' : 'No' }
             </Typography>
             <Typography variant="subtitle2">
               ONC-ATL Contacted:
             </Typography>
             <Typography>
-              {complaint.oncAtlContacted ? 'Yes' : 'No'}
+              { complaint.oncAtlContacted ? 'Yes' : 'No' }
             </Typography>
             <Typography variant="subtitle2">
               Informed ONC per &sect;170.523(s):
             </Typography>
             <Typography>
-              {complaint.flagForOncReview ? 'Yes' : 'No'}
+              { complaint.flagForOncReview ? 'Yes' : 'No' }
             </Typography>
           </div>
         </div>

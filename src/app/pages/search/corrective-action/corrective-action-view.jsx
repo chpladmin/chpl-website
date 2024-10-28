@@ -144,10 +144,9 @@ function ChplCorrectiveActionSearchView() {
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
+      ...analytics,
       event: 'Sort Column',
-      category: analytics.category,
       label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
-      group: analytics.group,
     });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -181,9 +180,8 @@ function ChplCorrectiveActionSearchView() {
                   href="#/resources/download"
                   text="Download the CHPL"
                   analytics={{
+                    ...analytics,
                     event: 'Navigate to Download the CHPL',
-                    category: analytics.category,
-                    group: analytics.group,
                   }}
                   external={false}
                   router={{ sref: 'resources.download' }}
@@ -226,7 +224,6 @@ function ChplCorrectiveActionSearchView() {
                     { listings.length > 0
                       && (
                         <ChplDownloadListings
-                          analytics={analytics}
                           listings={listings}
                           toggled={toggledCsvDefaults}
                         />
@@ -257,11 +254,10 @@ function ChplCorrectiveActionSearchView() {
                                           href={`#/listing/${item.id}`}
                                           text={item.chplProductNumber}
                                           analytics={{
+                                            ...analytics,
                                             event: 'Navigate to Listing Details Page',
-                                            category: analytics.category,
                                             label: item.chplProductNumber,
                                             aggregationName: item.product.name,
-                                            group: analytics.group,
                                           }}
                                           external={false}
                                           router={{ sref: 'listing', options: { id: item.id } }}
@@ -273,10 +269,9 @@ function ChplCorrectiveActionSearchView() {
                                         href={`#/organizations/developers/${item.developer.id}`}
                                         text={item.developer.name}
                                         analytics={{
+                                          ...analytics,
                                           event: 'Navigate to Developer Page',
-                                          category: analytics.category,
                                           label: item.developer.name,
-                                          group: analytics.group,
                                         }}
                                         external={false}
                                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
@@ -304,7 +299,6 @@ function ChplCorrectiveActionSearchView() {
                           rowsPerPageOptions={[25, 50, 100]}
                           setPage={setPageNumber}
                           setRowsPerPage={setPageSize}
-                          analytics={analytics}
                         />
                       </>
                     )}

@@ -9,11 +9,11 @@ import {
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { func } from 'prop-types';
-import ReactGA from 'react-ga4';
 
 import { usePostCognitoLogout } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   grid: {
@@ -32,11 +32,27 @@ function ChplLoggedIn({ dispatch }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
+  const { analytics } = useAnalyticsContext();
   const postLogout = usePostCognitoLogout();
   const classes = useStyles();
 
+  const changePassword = (e) => {
+    e.stopPropagation();
+    eventTrack({
+      ...analytics,
+      event: 'Change Password',
+      category: 'Authentication',
+    });
+    dispatch({ action: 'changePassword' });
+  };
+
   const logout = (e) => {
     e.stopPropagation();
+    eventTrack({
+      ...analytics,
+      event: 'Log Out',
+      category: 'Authentication',
+    });
     if (user?.email) {
       postLogout.mutate({
         email: user.email,
@@ -45,7 +61,6 @@ function ChplLoggedIn({ dispatch }) {
     setUser({});
     dispatch({ action: 'loggedOut' });
     authService.logout();
-    ReactGA.event({ action: 'Log Out', category: 'Authentication' });
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
   };
@@ -67,7 +82,7 @@ function ChplLoggedIn({ dispatch }) {
           fullWidth
           color="secondary"
           variant="contained"
-          onClick={(e) => { dispatch({ action: 'changePassword' }); e.stopPropagation(); }}
+          onClick={changePassword}
           endIcon={<CreateIcon />}
         >
           Change Password

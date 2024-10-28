@@ -69,10 +69,11 @@ function ChplDashboard() {
       frameHeight: '2500px',
       url: useFetchReportUrl('SurveillanceStatistics'),
     }, {
-      text: 'User Reporting',
-      reportId: 'UserReporting',
+      text: 'Test Tool Reporting',
+      reportId: 'TestToolReporting',
       icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
-      frameHeight: '',
+      frameHeight: '500px',
+      url: useFetchReportUrl('TestTool'),
     }, {
       text: 'More to Come',
       reportId: 'MoreToCome',

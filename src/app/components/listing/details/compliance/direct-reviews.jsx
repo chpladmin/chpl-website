@@ -20,7 +20,7 @@ import { getDataDisplay } from './compliance.services';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -127,10 +127,10 @@ const sortNonconformities = (a, b) => {
 };
 
 function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
+  const { analytics } = useAnalyticsContext();
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const { listing } = useContext(ListingContext);
-  const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -185,22 +185,22 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
 
   const handleAccordionChange = () => {
     eventTrack({
+      ...analytics,
       event: expanded ? 'Hide Direct Review Activities' : 'Show Direct Review Activities',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
     setExpanded(!expanded);
   };
 
   const handleWithinChange = (obj, isExpanded) => {
     eventTrack({
+      ...analytics,
       event: isExpanded ? 'Show Direct Review' : 'Hide Direct Review',
       category: 'Listing Details',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
-      group: user?.role,
     });
   };
 
@@ -309,11 +309,11 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                                       external={false}
                                       router={{ sref: 'listing', options: { id: dal.id } }}
                                       analytics={{
+                                        ...analytics,
                                         event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
                                         category: 'Listing Details',
                                         label: listing.chplProductNumber,
                                         aggregationName: listing.product.name,
-                                        group: user?.role,
                                       }}
                                     />
                                   </ListItem>

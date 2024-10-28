@@ -13,13 +13,14 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import ReactGA from 'react-ga4';
 import { setAuthTokens } from 'axios-jwt';
+import { useCookies } from 'react-cookie';
 
 import { usePostCognitoLogin } from 'api/auth';
-import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   grid: {
@@ -45,6 +46,8 @@ function ChplSignin({ dispatch }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { setUser } = useContext(UserContext);
+  const [, setCookie] = useCookies(['refresh_token']);
+  const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
   const classes = useStyles();
@@ -57,24 +60,43 @@ function ChplSignin({ dispatch }) {
     }
   };
 
+  const forgotPassword = (e) => {
+    e.stopPropagation();
+    eventTrack({
+      ...analytics,
+      event: 'Forgot Password',
+      category: 'Authentication',
+    });
+    dispatch({ action: 'forgotPassword' });
+  };
+
   const login = () => {
     mutate({
       userName: formik.values.userName,
       password: formik.values.password,
     }, {
       onSuccess: (response) => {
+        eventTrack({
+          ...analytics,
+          event: 'Log In',
+          category: 'Authentication',
+          group: response.user.role,
+        });
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         });
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
+        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();
-        ReactGA.event({ action: 'Log In', category: 'Authentication' });
         Idle.watch();
         $rootScope.$broadcast('loggedIn');
+        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
@@ -89,7 +111,7 @@ function ChplSignin({ dispatch }) {
         } else if (error?.response?.status === 471) {
           const body = 'For security reasons, all users are being asked to reset their password. Please use the Forgot Password functionality to complete this process.';
           enqueueSnackbar(body, { variant: 'error' });
-          dispatch({ 
+          dispatch({
             action: 'forgotPassword',
             payload: {
               userName: formik.values.userName,
@@ -161,7 +183,7 @@ function ChplSignin({ dispatch }) {
           fullWidth
           color="secondary"
           variant="contained"
-          onClick={(e) => { dispatch({ action: 'forgotPassword' }); e.stopPropagation(); }}
+          onClick={forgotPassword}
           endIcon={<HelpOutlineIcon />}
         >
           Forgot Password

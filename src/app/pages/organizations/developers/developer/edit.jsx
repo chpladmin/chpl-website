@@ -12,8 +12,9 @@ import { usePostChangeRequest } from 'api/change-requests';
 import { usePutDeveloper } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
 import { ChplConfirmation } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import { palette, theme } from 'themes';
 
@@ -55,6 +56,7 @@ const useStyles = makeStyles({
 
 function ChplEditDeveloper({ developer }) {
   const $state = getAngularService('$state');
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: putDeveloper } = usePutDeveloper();
@@ -64,11 +66,8 @@ function ChplEditDeveloper({ developer }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
 
-  const handleResponse = () => {
-    setConfirmationText('The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.');
-  };
-
   const handleError = (error) => {
+    setIsProcessing(false);
     let messages;
     let type = 'error';
     // todo: check on API to figure out how to trigger this
@@ -95,7 +94,10 @@ function ChplEditDeveloper({ developer }) {
         name: 'Developer Demographics Change Request',
       },
     }, {
-      onSuccess: () => handleResponse(),
+      onSuccess: () => {
+        setIsProcessing(false);
+        setConfirmationText('The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.');
+      },
       onError: (error) => handleError(error),
     });
   };
@@ -110,6 +112,12 @@ function ChplEditDeveloper({ developer }) {
         break;
       case 'save':
         setIsProcessing(true);
+        eventTrack({
+          ...analytics,
+          category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
+          label: developer.name, // todo: when the higher component is React, remove this and use the component from above
+          event: 'Save Demographics',
+        });
         if (hasAnyRole(['chpl-developer'])) {
           saveRequest(payload);
         } else {

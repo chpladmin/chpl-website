@@ -8,14 +8,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
-  name: 'reports.acbs',
-  url: '/onc-acbs',
-  component: 'chplReportsAcbs',
-  data: {
-    title: 'CHPL Activity - ONC-ACBs',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-  },
-}, {
   name: 'reports.activity',
   url: '/activity',
   component: 'chplActivityWrapperBridge',
@@ -39,19 +31,6 @@ const states = [{
     title: 'CHPL Activity - Api Key Management',
     roles: ['chpl-admin', 'chpl-onc'],
   },
-}, {
-  name: 'reports.atls',
-  url: '/onc-atls',
-  component: 'chplReportsAtls',
-  data: {
-    title: 'CHPL Activity - ONC-ATLs',
-    roles: ['chpl-admin', 'chpl-onc'],
-  },
-}, {
-  name: 'reports.developers',
-  url: '/developers',
-  component: 'chplReportsDevelopers',
-  data: { title: 'CHPL Activity - Developers' },
 }, {
   name: 'reports.products',
   url: '/products',

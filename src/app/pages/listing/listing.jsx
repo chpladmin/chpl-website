@@ -127,6 +127,17 @@ function ChplListingPage({ id }) {
     $state.go('listing.edit');
   };
 
+  const editUpload = () => {
+    eventTrack({
+      event: 'Edit',
+      category: 'Listing Details',
+      label: listing.chplProductNumber,
+      aggregationName: listing.product.name,
+      group: user?.role,
+    });
+    $state.go('listing.edit-upload');
+  };
+
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
@@ -174,6 +185,18 @@ function ChplListingPage({ id }) {
                         onClick={edit}
                       >
                         Edit
+                      </Button>
+                    )}
+                  { hasAnyRole(['chpl-admin']) && (listing.edition === null || listing.edition.name === '2015')
+                    && (
+                      <Button
+                        endIcon={<EditIcon />}
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={editUpload}
+                      >
+                        Edit - Upload
                       </Button>
                     )}
                   <ChplListingHistory

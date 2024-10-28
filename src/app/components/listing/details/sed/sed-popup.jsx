@@ -38,11 +38,10 @@ function ChplSedPopup({ id }) {
   useEffect(() => {
     if (open && listing) {
       eventTrack({
+        ...analytics,
         event: 'View SED Information',
-        category: analytics.category,
         label: listing.chplProductNumber,
         aggregationName: listing.product.name,
-        group: analytics.group,
       });
     }
   }, [listing, open]);
