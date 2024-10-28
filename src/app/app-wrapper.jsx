@@ -1,6 +1,9 @@
 /* global DEVELOPER_MODE */
 
 import React from 'react';
+import {
+  ThemeProvider,
+} from '@material-ui/core';
 import { bool, node } from 'prop-types';
 
 import { AnalyticsProvider } from 'shared/contexts';
@@ -11,26 +14,29 @@ import CompareWrapper from 'components/compare-widget/compare-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 import { SnackbarWrapper } from 'components/util';
+import theme from 'themes/theme';
 
 function AppWrapper({ children, showQueryTools }) {
   return (
-    <UserWrapper>
-      <SnackbarWrapper>
-        <ApiWrapper showQueryTools={showQueryTools}>
-          <FlagWrapper>
-            <CompareWrapper>
-              <CmsWrapper>
-                <BrowserWrapper>
-                  <AnalyticsProvider>
-                    {children}
-                  </AnalyticsProvider>
-                </BrowserWrapper>
-              </CmsWrapper>
-            </CompareWrapper>
-          </FlagWrapper>
-        </ApiWrapper>
-      </SnackbarWrapper>
-    </UserWrapper>
+    <ThemeProvider theme={theme}>
+      <UserWrapper>
+        <SnackbarWrapper>
+          <ApiWrapper showQueryTools={showQueryTools}>
+            <FlagWrapper>
+              <CompareWrapper>
+                <CmsWrapper>
+                  <BrowserWrapper>
+                    <AnalyticsProvider>
+                      {children}
+                    </AnalyticsProvider>
+                  </BrowserWrapper>
+                </CmsWrapper>
+              </CompareWrapper>
+            </FlagWrapper>
+          </ApiWrapper>
+        </SnackbarWrapper>
+      </UserWrapper>
+    </ThemeProvider>
   );
 }
 
