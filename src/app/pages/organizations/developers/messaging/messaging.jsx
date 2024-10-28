@@ -312,56 +312,59 @@ function ChplMessaging({ dispatch }) {
               />
             </CardContent>
           </Card>
-          <Box className={classes.undeliverable}>
-            { undeliverableIsLoading
-              && (
-                <CircularProgress />
-              )}
-            { undeliverableTotalCount === 0 && !undeliverableIsLoading
-              && (
-                <Typography>
-                  All Developers have at least one active user
-                </Typography>
-              )}
-            { undeliverableTotalCount > 0
-              && (
-                <>
-                  <Typography>
-                    { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
-                    Developer
-                    { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
-                    no active users and will not receive this message:
-                  </Typography>
-                  <List>
-                    { undeliverable.map((item) => (
-                      <ListItem key={item.id}>
-                        <ChplLink
-                          href={`#/organizations/developers/${item.id}`}
-                          text={item.name}
-                          analytics={{
-                            ...analytics,
-                            event: 'Navigate to Developer Page',
-                            label: item.name,
-                          }}
-                          external={false}
-                          router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                        />
-                      </ListItem>
-                    ))}
-                    { undeliverableTotalCount > 25
-                      && (
-                        <ListItem>
-                          ...and
-                          {' '}
-                          {undeliverableTotalCount - 25}
-                          {' '}
-                          more
-                        </ListItem>
-                      )}
-                  </List>
-                </>
-              )}
-          </Box>
+          { !queryString().includes('hasUsers=true')
+            && (
+              <Box className={classes.undeliverable}>
+                { undeliverableIsLoading
+                  && (
+                    <CircularProgress />
+                  )}
+                { undeliverableTotalCount === 0 && !undeliverableIsLoading
+                  && (
+                    <Typography>
+                      All Developers have at least one active user
+                    </Typography>
+                  )}
+                { undeliverableTotalCount > 0
+                  && (
+                    <>
+                      <Typography>
+                        { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
+                        Developer
+                        { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
+                        no active users and will not receive this message:
+                      </Typography>
+                      <List>
+                        { undeliverable.map((item) => (
+                          <ListItem key={item.id}>
+                            <ChplLink
+                              href={`#/organizations/developers/${item.id}`}
+                              text={item.name}
+                              analytics={{
+                                ...analytics,
+                                event: 'Navigate to Developer Page',
+                                label: item.name,
+                              }}
+                              external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                            />
+                          </ListItem>
+                        ))}
+                        { undeliverableTotalCount > 25
+                          && (
+                            <ListItem>
+                              ...and
+                              {' '}
+                              {undeliverableTotalCount - 25}
+                              {' '}
+                              more
+                            </ListItem>
+                          )}
+                      </List>
+                    </>
+                  )}
+              </Box>
+            )}
           <Card bgcolor="white">
             <Box
               padding="16px"
