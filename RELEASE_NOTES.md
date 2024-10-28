@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 13.27.0
+_28 October 2024_
+
+### Features
+* Save "Refresh Token" as a cookie when available
+* Add Criteria Attribute - Test Tool report to the dashboard
+* Display ONC-ATL history on respective pages
+* Display ONC-ACB history on respective pages
+* Enable "Developer activity" view on Developer Pages
+* Enable view/edit of "Complaint Type" for complaints
+* Provide page to upload Listing for edit
+
+---
+
 ## Version 13.26.0
 _14 October 2024_
 
