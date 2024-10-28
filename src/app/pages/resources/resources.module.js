@@ -7,7 +7,6 @@ import ChplNotFound from './not-found/not-found';
 import ChplResourcesApi from './api/api-wrapper';
 import ChplResourcesDownloadWrapper from './download/download-wrapper';
 import ChplResourcesOverview from './overview/overview-wrapper';
-import ChplStyleGuide from './style-guide';
 
 angular
   .module('chpl.resources', [
@@ -22,5 +21,4 @@ angular
   .component('chplResourcesApiBridge', reactToAngularComponent(ChplResourcesApi))
   .component('chplResourcesDownloadWrapperBridge', reactToAngularComponent(ChplResourcesDownloadWrapper))
   .component('chplResourcesOverviewBridge', reactToAngularComponent(ChplResourcesOverview))
-  .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide))
   .component('chplDashboardWrapperBridge', reactToAngularComponent(ChplDashboardWrapper));
