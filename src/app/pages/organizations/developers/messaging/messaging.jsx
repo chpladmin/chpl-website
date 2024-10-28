@@ -96,18 +96,18 @@ const useStyles = makeStyles({
     overflowY: 'auto',
     maxHeight: '35vh',
     '&::-webkit-scrollbar': {
-      width: '2px', // Width of the scrollbar
+      width: '2px',
     },
     '&::-webkit-scrollbar-track': {
-      background: '#f1f1f1', // Background of the scrollbar track
-      borderRadius: '8px', // Optional: matching border radius
+      background: '#f1f1f1',
+      borderRadius: '8px',
     },
     '&::-webkit-scrollbar-thumb': {
-      background: theme.palette.primary.main, // Color of the scrollbar thumb
-      borderRadius: '8px', // Optional: matching border radius
+      background: palette.primary,
+      borderRadius: '8px',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-      background: theme.palette.primary.dark, // Color on hover
+      background: theme.palette.primary.dark,
     },
   },
 });
@@ -132,7 +132,7 @@ The following individuals have been identified by your ONC-Authorized Certificat
 
 For questions related to authorized developer point of contacts, please reach out to your ONC-ACB for further assistance.
 
-Sincerely,
+Sincerely,  
 The Office of the National Coordinator for Health IT`,
   },
 ];
