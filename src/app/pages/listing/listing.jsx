@@ -82,7 +82,7 @@ function ChplListingPage({ id }) {
 
   const canEdit = () => {
     if (uploadToUpdateIsOn) {
-      if (!['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].find(listing.currentStatus.status.name)) { return false; }
+      if (!['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(listing.currentStatus.status.name)) { return false; }
       if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; }
       if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     } else {
