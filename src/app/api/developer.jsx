@@ -24,7 +24,7 @@ const useFetchDevelopersBySearch = ({
   orderBy = 'developer',
   pageNumber = 0,
   pageSize = 25,
-  sortDescending = true,
+  sortDescending = false,
   query,
 }) => {
   const axios = useAxios();
