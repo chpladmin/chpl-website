@@ -32,6 +32,9 @@
     "angular": true,
     "inject": true,
     "module": true,
+    "$": true,
+    "$$": true,
+    "browser": true,
   },
   "parser": "babel-eslint",
   "rules": {
