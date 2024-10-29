@@ -57,6 +57,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
   const authService = getAngularService('authService');
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { setListing } = useContext(ListingContext);
   const classes = useStyles();
 
@@ -73,6 +74,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
   const uploadFile = () => {
     setErrors([]);
     setWarnings([]);
+    setIsProcessing(true);
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
@@ -86,8 +88,10 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
     Upload.upload(item)
       .then((response) => {
         setListing(response.data);
+        setIsProcessing(false);
       })
       .catch((error) => {
+        setIsProcessing(false);
         if (error?.data?.errorMessages) {
           setErrors(error.data.errorMessages);
         }
@@ -142,6 +146,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
                     onClick={uploadFile}
                     endIcon={<DoneIcon />}
                     id="submit-upload-file"
+                    disabled={isProcessing}
                   >
                     Upload
                   </Button>
