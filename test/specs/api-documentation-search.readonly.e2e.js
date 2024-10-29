@@ -1,7 +1,5 @@
 import ApiDocumentationSearchPage from '../pageobjects/api-documentation-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the API Documentation Search page', () => {
