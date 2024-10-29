@@ -17,7 +17,7 @@ import {
 } from 'prop-types';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
-import ChplUploadListing from './components/upload-listing';
+import ChplUploadListing from './upload-listing';
 
 import { ChplActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
