@@ -276,7 +276,12 @@ function ChplListingEdit({
                 { selectedStatuses
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((status, idx, arr) => (
-                    <ListItem style={{ marginBottom:'8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px' }} key={status.eventDay}>
+                    <ListItem
+                      style={{
+                        marginBottom: '8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px',
+                      }}
+                      key={status.eventDay}
+                    >
                       <Box pb={2} flexGrow={1}>
                         {status.status.name}
                         {` on ${getDisplayDateFormat(status.eventDay)}`}
@@ -287,11 +292,11 @@ function ChplListingEdit({
                       { idx === 0 && status.status.name === 'Terminated by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography> }
                       { idx === 0 && status.status.name === 'Suspended by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography> }
                       { idx === 0 && status.status.name === 'Withdrawn by Developer' && <Typography>Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography> }
-                      <Tooltip className={classes.tooltipText} arrow title='Delete'>
+                      <Tooltip className={classes.tooltipText} arrow title="Delete">
                         <IconButton
                           onClick={() => removeStatus(status)}
                         >
-                            <DeleteIcon color="error" />
+                          <DeleteIcon color="error" />
                         </IconButton>
                       </Tooltip>
                     </ListItem>
@@ -411,15 +416,20 @@ function ChplListingEdit({
               <Divider />
               <List>
                 { selectedAtls.map((atl) => (
-                  <ListItem style={{ marginBottom:'8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px' }} key={atl.id}>
+                  <ListItem
+                    style={{
+                      marginBottom: '8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px',
+                    }}
+                    key={atl.id}
+                  >
                     <Box pb={2} flexGrow={1}>
                       {atl.name}
                     </Box>
-                    <Tooltip className={classes.tooltipText} arrow title='Delete'>
+                    <Tooltip className={classes.tooltipText} arrow title="Delete">
                       <IconButton
                         onClick={() => removeAtl(atl)}
                       >
-                          <DeleteIcon color="error" />
+                        <DeleteIcon color="error" />
                       </IconButton>
                     </Tooltip>
                   </ListItem>
