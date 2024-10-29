@@ -1,7 +1,5 @@
 import BannedDevelopersSearchPage from '../pageobjects/banned-developers-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the Banned Developers Search page', () => {

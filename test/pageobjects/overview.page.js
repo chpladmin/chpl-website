@@ -1,14 +1,22 @@
-const { $ } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-const Page = require('./page');
+import Page from './page.es6';
 
 class OverviewPage extends Page {
-  open () {
-    return super.open('resources/overview');
+  constructor() {
+    super();
+    this.name = 'Overview';
+    this.elements = {
+      ...this.elements,
+      acbatlTable: 'h2=ONC-ACB and ONC-ATL Information',
+    };
   }
 
-  get acbatlTable () {
-    return $('h2=ONC-ACB and ONC-ATL Information');
+  async open() {
+    await super.open('resources/overview');
+  }
+
+  get acbatlTable() {
+    return $(this.elements.acbatlTable);
   }
 }
 
-module.exports = new OverviewPage();
+export default OverviewPage;

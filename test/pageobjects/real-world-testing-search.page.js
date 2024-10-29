@@ -1,7 +1,5 @@
 import SearchPage from './search.page';
 
-const { $, browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 class RealWorldTestingSearchPage extends SearchPage {
   constructor() {
     super();
