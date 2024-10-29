@@ -226,6 +226,9 @@ function ChplListingEdit({
           <Box display="flex" padding={4} justifyContent="space-around" gridGap={16} flexDirection="column">
             <Box display="flex" justifyContent="space-around" gridGap={8} flexDirection="row">
               { /* CHPL Product Number */}
+              <Typography>
+                { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
+              </Typography>
               <ChplTextField
                 id="product-code"
                 name="productCode"
@@ -259,6 +262,9 @@ function ChplListingEdit({
                 error={formik.touched.icsCode && !!formik.errors.icsCode}
                 helperText={formik.touched.icsCode && formik.errors.icsCode}
               />
+              <Typography>
+                { listing.chplProductNumber.split('.').slice(7).join('.') }
+              </Typography>
             </Box>
             { /* Certification Events */}
             <Box display="flex" gridGap={8} flexDirection="column">
