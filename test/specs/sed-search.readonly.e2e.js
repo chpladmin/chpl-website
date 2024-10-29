@@ -1,7 +1,5 @@
 import SedSearchPage from '../pageobjects/sed-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the SED Search page', () => {
