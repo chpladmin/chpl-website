@@ -139,6 +139,21 @@ function ChplListingEditPage() {
       <Box sx={{ backgroundColor: palette.background }}>
         <Container maxWidth="lg">
           <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
+            {isEditing ? (
+              <ChplListingEdit
+                dispatch={handleDispatch}
+                errors={errors}
+                warnings={warnings}
+                isProcessing={isProcessing}
+              />
+            ) : (
+              <ChplListingEditUpload
+                dispatch={handleDispatch}
+                errors={errors}
+                warnings={warnings}
+                isProcessing={isProcessing}
+              />
+            )}
             <Card>
               <CardContent>
                 <ChplTextField
@@ -158,21 +173,6 @@ function ChplListingEditPage() {
                 </List>
               </CardContent>
             </Card>
-            {isEditing ? (
-              <ChplListingEdit
-                dispatch={handleDispatch}
-                errors={errors}
-                warnings={warnings}
-                isProcessing={isProcessing}
-              />
-            ) : (
-              <ChplListingEditUpload
-                dispatch={handleDispatch}
-                errors={errors}
-                warnings={warnings}
-                isProcessing={isProcessing}
-              />
-            )}
           </Box>
         </Container>
       </Box>
