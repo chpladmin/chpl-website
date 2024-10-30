@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -10,6 +9,7 @@ import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import {
+  usePostAuthorizeUser,
   usePostCreateCognitoInvitedUser,
   usePostCreateInvitedUser,
 } from 'api/users';
@@ -38,31 +38,30 @@ function ChplRegisterUser({ hash }) {
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const { analytics } = useAnalyticsContext();
-  const { setUser } = useContext(UserContext);
+  const { hasAnyRole, setUser } = useContext(UserContext);
   const { ssoIsOn } = useContext(FlagContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [invitationType, setInvitationType] = useState('');
   const [message, setMessage] = useState('');
-  const [state, setState] = useState('signin');
+  const [state, setState] = useState('cognito-login');
   const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
+  const { mutate: authorizeSsoUser } = usePostAuthorizeUser();
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
   const { mutate: createInvited } = usePostCreateInvitedUser();
   const classes = useStyles();
   let handleDispatch;
 
   useEffect(() => {
-    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer']) && hash.indexOf('-') === -1 && hash.length > 0) {
       handleDispatch('authorize', {});
     }
-  }, []);
+    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer']) && hash.indexOf('-') > -1 && hash.length > 0) {
+      handleDispatch('loggedIn', {});
+    }
+  }, [hash, hasAnyRole]);
 
   useEffect(() => {
-    const type = hash.indexOf('-') > -1 ? 'COGNITO' : 'CHPL';
-    setInvitationType(type);
-    if (type === 'COGNITO') {
-      setState('create');
-    }
-  }, [hash]);
+    setState(ssoIsOn ? 'cognito-login' : 'signin');
+  }, [ssoIsOn]);
 
   handleDispatch = (action, payload) => {
     setMessage('');
@@ -155,6 +154,20 @@ function ChplRegisterUser({ hash }) {
         break;
       case 'loggedIn':
         setMessage('');
+        authorizeSsoUser(hash, {
+          onSuccess: () => {
+            enqueueSnackbar('Success: Your new permissions have been added', {
+              variant: 'success',
+            });
+          },
+          onError: (error) => {
+            if (error.status === 401) {
+              setMessage('A user may not have more than one role, or your username / password are incorrect');
+            } else {
+              setMessage(error.response.data.error);
+            }
+          },
+        });
         break;
       default:
         console.error(`No action matches ${action} with payload ${payload}`);
@@ -172,6 +185,17 @@ function ChplRegisterUser({ hash }) {
               state={cognitoLoginComponentState}
               setState={setCognitoLoginComponentState}
             />
+            <Typography>
+              Or
+              {' '}
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => setState('create')}
+              >
+                create a new account
+              </Button>
+            </Typography>
           </>
         );
       case 'create':
@@ -185,11 +209,24 @@ function ChplRegisterUser({ hash }) {
                 { message }
               </Typography>
               )}
-            { ssoIsOn && invitationType === 'COGNITO'
+            { ssoIsOn
               && (
-                <ChplCognitoUserCreate dispatch={handleDispatch} />
+                <>
+                  <ChplCognitoUserCreate dispatch={handleDispatch} />
+                  <Typography>
+                    Or
+                    {' '}
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => setState('cognito-login')}
+                    >
+                      log in to your existing account
+                    </Button>
+                  </Typography>
+                </>
               )}
-            { invitationType === 'CHPL'
+            { !ssoIsOn
               && (
                 <>
                   <ChplUserCreate dispatch={handleDispatch} />
@@ -205,10 +242,6 @@ function ChplRegisterUser({ hash }) {
                     </Button>
                   </Typography>
                 </>
-              )}
-            { invitationType === ''
-              && (
-                <CircularProgress />
               )}
           </>
         );
