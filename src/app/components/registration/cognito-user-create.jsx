@@ -56,7 +56,7 @@ function ChplCognitoUserCreate({ dispatch }) {
         Welcome to ONC&apos;s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization&apos;s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by completing the form and selecting the &quot;create account&quot; button below.
       </Typography>
       <Typography>
-        Create a new Cognito account.
+        Create a new account.
       </Typography>
       <ChplTextField
         id="full-name"
