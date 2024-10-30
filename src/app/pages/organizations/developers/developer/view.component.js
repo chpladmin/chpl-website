@@ -107,7 +107,8 @@ const DeveloperViewComponent = {
         that.allowedAcbs = response.acbs;
       });
       if (this.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) && this.$stateParams.id) {
-        this.networkService.getUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
+        this.networkService.getUsersAtDeveloper(this.$stateParams.id, this.hasAnyRole(['chpl-admin', 'chpl-onc']))
+          .then((response) => { that.users = response.users; });
       }
     }
 
@@ -187,7 +188,8 @@ const DeveloperViewComponent = {
         case 'delete':
           this.action = undefined;
           this.networkService.removeUserFromDeveloper(data, this.$stateParams.id)
-            .then(() => that.networkService.getUsersAtDeveloper(that.$stateParams.id).then((response) => { that.users = response.users; }));
+            .then(() => that.networkService.getUsersAtDeveloper(that.$stateParams.id, that.hasAnyRole(['chpl-admin', 'chpl-onc']))
+              .then((response) => { that.users = response.users; }));
           break;
         case 'invite':
           this.action = undefined;
@@ -223,7 +225,7 @@ const DeveloperViewComponent = {
           break;
         case 'refresh':
           this.action = undefined;
-          this.networkService.getUsersAtDeveloper(this.$stateParams.id)
+          this.networkService.getUsersAtDeveloper(this.$stateParams.id, this.hasAnyRole(['chpl-admin', 'chpl-onc']))
             .then((response) => { that.users = response.users; });
           break;
         case 'impersonate':
