@@ -201,7 +201,7 @@ function ChplSystemMaintenance() {
           >
             QMS Standards
           </Button>
-          { hasAnyRole(['ROLE_ADMIN'])
+          { hasAnyRole(['chpl-admin'])
             && (
               <Button
                 onClick={() => navigate('standards')}

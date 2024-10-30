@@ -163,7 +163,7 @@ function ChplOncOrganizations() {
           },
         });
         break;
-      case 'invite':
+      case 'invite': // TODO: remove when ssoIsOn is turned on
         invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {
             enqueueSnackbar(`Email sent successfully to ${payload.email}`, {

@@ -1,4 +1,4 @@
-import credentials from '../../e2e/config/credentials';
+import credentials from '../config/credentials';
 
 class LoginComponent {
   constructor() {
