@@ -28,7 +28,7 @@ import { clearAuthTokens } from 'axios-jwt';
 
     /// /////////////////////////////////////////////////////////////////////
 
-    function canImpersonate(target) {
+    function canImpersonate(target) { // TODO: remove when ssoIsOn is turned on
       const userRole = parseJwt(getToken())?.Authority;
       const targetRole = target.role;
 
@@ -108,6 +108,7 @@ import { clearAuthTokens } from 'axios-jwt';
         return false;
       }
 
+      // TODO: remove when ssoIsOn is turned on
       if (roles.includes('chpl-admin')) {
         roles.push('ROLE_ADMIN');
       }

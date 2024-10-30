@@ -1,26 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import AppWrapper from './app-wrapper';
-
-import { ChplLoginToggle } from 'components/login';
-import ChplCognitoToggle from 'components/login/cognito-toggle';
-import { getAngularService } from 'services/angular-react-helper';
+import ChplLoginRoot from './login-root';
 
 function IndexWrapper() {
-  const Idle = getAngularService('Idle');
-  const authService = getAngularService('authService');
-
-  useEffect(() => {
-    if (authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-      Idle.watch();
-      console.log('Starting Idle in IndexWrapper');
-    }
-  }, [Idle, authService]);
-
   return (
     <AppWrapper showQueryTools={false}>
-      <ChplCognitoToggle />
-      <ChplLoginToggle />
+      <ChplLoginRoot />
     </AppWrapper>
   );
 }
