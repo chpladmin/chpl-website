@@ -1,18 +1,17 @@
 import React from 'react';
-import { arrayOf } from 'prop-types';
+import { arrayOf, bool } from 'prop-types';
 
-import ChplDirectReviewsView from './direct-reviews-view';
+import ChplDirectReviews from './direct-reviews';
 
 import AppWrapper from 'app-wrapper';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 
-function ChplDirectReviewsWrapper(props) {
-  const { directReviews } = props;
-
+function ChplDirectReviewsWrapper({ directReviews, directReviewsAvailable }) {
   return (
     <AppWrapper>
-      <ChplDirectReviewsView
+      <ChplDirectReviews
         directReviews={directReviews}
+        directReviewsAvailable={directReviewsAvailable}
       />
     </AppWrapper>
   );
@@ -21,9 +20,6 @@ function ChplDirectReviewsWrapper(props) {
 export default ChplDirectReviewsWrapper;
 
 ChplDirectReviewsWrapper.propTypes = {
-  directReviews: arrayOf(directReviewPropType),
-};
-
-ChplDirectReviewsWrapper.defaultProps = {
-  directReviews: [],
+  directReviews: arrayOf(directReviewPropType).isRequired,
+  directReviewsAvailable: bool.isRequired,
 };
