@@ -8,7 +8,6 @@ import {
   Typography,
   List,
   ListItem,
-  ButtonGroup,
   Button,
   Popper,
   Grow,
@@ -35,23 +34,23 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    gap:'16px',
-    },
-    optionMenu: {
-      alignItems: 'center',
-      borderRadius: '0 0 8px 8px',
-      border: `1px solid ${palette.grey}`,
-      boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
-      backgroundColor: '#fff',
-    },
-    reasonForChange: {
-      marginTop: '32px',
-    },
-    reasonForChangeText: {
-      paddingTop: '16px',
-      fontWeight: 'bold',
-    },
-  });
+    gap: '16px',
+  },
+  optionMenu: {
+    alignItems: 'center',
+    borderRadius: '0 0 8px 8px',
+    border: `1px solid ${palette.grey}`,
+    boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
+    backgroundColor: '#fff',
+  },
+  reasonForChange: {
+    marginTop: '32px',
+  },
+  reasonForChangeText: {
+    paddingTop: '16px',
+    fontWeight: 'bold',
+  },
+});
 
 function ChplListingEditPage() {
   const $state = getAngularService('$state');
@@ -111,14 +110,6 @@ function ChplListingEditPage() {
     }
   };
 
-  const toggleIsEditing = () => {
-    setIsEditing((prev) => !prev);
-    eventTrack({
-      ...analyticsData.analytics,
-      event: 'Toggle Edit Mode',
-    });
-  };
-
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -172,8 +163,7 @@ function ChplListingEditPage() {
               variant="outlined"
               color="primary"
               ref={anchorRef}
-              endIcon={<ArrowDropDown />
-              }
+              endIcon={<ArrowDropDown />}
             >
               {options[selectedIndex]}
             </Button>
@@ -224,7 +214,7 @@ function ChplListingEditPage() {
                 isProcessing={isProcessing}
               />
               <Card className={classes.reasonForChange}>
-                <CardHeader title={'Reason For Change'} />
+                <CardHeader title="Reason For Change" />
                 <CardContent>
                   <ChplTextField
                     id="reson-for-change"
@@ -253,7 +243,7 @@ function ChplListingEditPage() {
                 isProcessing={isProcessing}
               />
               <Card className={classes.reasonForChange}>
-                <CardHeader title={'Reason For Change'} />
+                <CardHeader title="Reason For Change" />
                 <CardContent>
                   <ChplTextField
                     id="reson-for-change"
