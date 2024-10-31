@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
+  Container,
   makeStyles,
 } from '@material-ui/core';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
@@ -46,7 +47,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
     borderTop: '1px solid #EEEEEE',
-    marginTop: '16px',
     paddingTop: '16px',
   },
 });
@@ -102,7 +102,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
   };
 
   return (
-    <>
+    <Container disableGutters maxWidth="xl">
       <div>
         <Button
           color="primary"
@@ -163,7 +163,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
               )}
           </Box>
         )}
-    </>
+    </Container>
   );
 }
 
