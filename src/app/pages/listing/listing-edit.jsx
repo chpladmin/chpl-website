@@ -144,7 +144,7 @@ function ChplListingEditPage() {
     },
   };
 
-  const options = ['Edit Minimal Listing Information', 'Upload Detailed Listing Iniormation'];
+  const options = ['Edit Minimal Listing Information', 'Upload Detailed Listing Information'];
 
   return (
     <AnalyticsContext.Provider value={analyticsData}>
