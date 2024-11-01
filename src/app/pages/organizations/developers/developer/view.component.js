@@ -4,7 +4,6 @@ const DeveloperViewComponent = {
   templateUrl: 'chpl.organizations/developers/developer/view.html',
   bindings: {
     developer: '<',
-    directReviews: '<',
   },
   controller: class DeveloperViewComponent {
     constructor($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
@@ -20,7 +19,6 @@ const DeveloperViewComponent = {
       this.networkService = networkService;
       this.toaster = toaster;
       this.backup = {};
-      this.drStatus = 'pending';
       this.splitEdit = true;
       this.movingProducts = [];
       this.activeAcbs = [];
@@ -48,11 +46,6 @@ const DeveloperViewComponent = {
       if (this.$stateParams.versionId) {
         this.versionId = this.$stateParams.versionId;
       }
-      this.networkService.getDirectReviews(this.developer.id)
-        .then((results) => {
-          that.drStatus = 'success';
-          that.directReviews = results;
-        }, () => { that.drStatus = 'error'; });
     }
 
     $onChanges(changes) {
@@ -60,9 +53,6 @@ const DeveloperViewComponent = {
         this.developer = angular.copy(changes.developer.currentValue);
         this.backup.developer = angular.copy(this.developer);
         this.bonusQuery = `&developerId=${this.developer.id}`;
-      }
-      if (changes.directReviews) {
-        this.directReviews = angular.copy(changes.directReviews.currentValue);
       }
     }
 

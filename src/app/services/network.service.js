@@ -224,10 +224,6 @@ export default class NetworkService {
     return this.apiGET('/developers');
   }
 
-  getDirectReviews(id) {
-    return this.apiGET(`/developers/${id}/direct-reviews`, { forceReload: true });
-  }
-
   getEditions() {
     return this.apiGET('/data/certification_editions');
   }
