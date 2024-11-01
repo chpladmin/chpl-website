@@ -38,51 +38,49 @@ function ChplRealWorldTestingView({ developer }) {
   }, [resultsQuery.data, resultsQuery.isLoading, resultsQuery.isSuccess]);
 
   return (
-    <>
-      <Card>
-        <CardHeader title="Real World Testing" />
-        <CardContent className={classes.content}>
-          <>
-            { plans.length > 0
-              && (
-                <>
-                  <Typography variant="subtitle1">
-                    {`RWT Plans URL${plans.length !== 1 ? 's' : ''}`}
-                  </Typography>
-                  <List dense>
-                    { plans.map((item) => (
-                      <ListItem key={item.url}>
-                        <ChplLink href={item.url} />
-                      </ListItem>
-                    ))}
-                  </List>
-                </>
-              )}
-            { results.length > 0
-              && (
-                <>
-                  <Typography variant="subtitle1">
-                    {`RWT Results URL${results.length !== 1 ? 's' : ''}`}
-                  </Typography>
-                  <List dense>
-                    { results.map((item) => (
-                      <ListItem key={item.url}>
-                        <ChplLink href={item.url} />
-                      </ListItem>
-                    ))}
-                  </List>
-                </>
-              )}
-            { results.length === 0 && plans.length === 0
-              && (
-                <Typography>
-                  No Real World Testing data is available
+    <Card>
+      <CardHeader title="Real World Testing" />
+      <CardContent className={classes.content}>
+        <>
+          { plans.length > 0
+            && (
+              <>
+                <Typography variant="subtitle1">
+                  {`RWT Plans URL${plans.length !== 1 ? 's' : ''}`}
                 </Typography>
-              )}
-          </>
-        </CardContent>
-      </Card>
-    </>
+                <List dense>
+                  { plans.map((item) => (
+                    <ListItem key={item.url}>
+                      <ChplLink href={item.url} />
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
+          { results.length > 0
+            && (
+              <>
+                <Typography variant="subtitle1">
+                  {`RWT Results URL${results.length !== 1 ? 's' : ''}`}
+                </Typography>
+                <List dense>
+                  { results.map((item) => (
+                    <ListItem key={item.url}>
+                      <ChplLink href={item.url} />
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
+          { results.length === 0 && plans.length === 0
+            && (
+              <Typography>
+                No Real World Testing data is available
+              </Typography>
+            )}
+        </>
+      </CardContent>
+    </Card>
   );
 }
 

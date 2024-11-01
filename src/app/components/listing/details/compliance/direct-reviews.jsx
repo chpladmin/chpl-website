@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -20,7 +20,7 @@ import { getDataDisplay } from './compliance.services';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -126,11 +126,10 @@ const sortNonconformities = (a, b) => {
   return a.created - b.created;
 };
 
-function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
+function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable, isListing }) {
   const { analytics } = useAnalyticsContext();
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -187,9 +186,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     eventTrack({
       ...analytics,
       event: expanded ? 'Hide Direct Review Activities' : 'Show Direct Review Activities',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setExpanded(!expanded);
   };
@@ -198,9 +194,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     eventTrack({
       ...analytics,
       event: isExpanded ? 'Show Direct Review' : 'Hide Direct Review',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
   };
 
@@ -233,10 +226,16 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
         </Box>
       </AccordionSummary>
       <CardContent>
-        { directReviewsAvailable
+        { directReviewsAvailable && isListing
           && (
             <Typography gutterBottom>
               Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing
+            </Typography>
+          )}
+        { directReviewsAvailable && !isListing
+          && (
+            <Typography gutterBottom>
+              Direct Review information is displayed here if a Direct Review has been opened by ONC that applies to this developer
             </Typography>
           )}
         { !directReviewsAvailable
@@ -293,33 +292,30 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                       { getDataDisplay('Developer Associated Listings',
                         <>
                           {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                           && (
-                             <Typography>
-                               None
-                             </Typography>
-                           )}
+                                          && (
+                                            <Typography>
+                                              None
+                                            </Typography>
+                                          )}
                           { nc.developerAssociatedListings?.length > 0
-                            && (
-                              <List>
-                                { nc.developerAssociatedListings.map((dal) => (
-                                  <ListItem key={dal.id}>
-                                    <ChplLink
-                                      href={`#/listing/${dal.id}`}
-                                      text={dal.chplProductNumber}
-                                      external={false}
-                                      router={{ sref: 'listing', options: { id: dal.id } }}
-                                      analytics={{
-                                        ...analytics,
-                                        event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
-                                        category: 'Listing Details',
-                                        label: listing.chplProductNumber,
-                                        aggregationName: listing.product.name,
-                                      }}
-                                    />
-                                  </ListItem>
-                                ))}
-                              </List>
-                            )}
+                                           && (
+                                             <List>
+                                               { nc.developerAssociatedListings.map((dal) => (
+                                                 <ListItem key={dal.id}>
+                                                   <ChplLink
+                                                     href={`#/listing/${dal.id}`}
+                                                     text={dal.chplProductNumber}
+                                                     external={false}
+                                                     router={{ sref: 'listing', options: { id: dal.id } }}
+                                                     analytics={{
+                                                       ...analytics,
+                                                       event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
+                                                     }}
+                                                   />
+                                                 </ListItem>
+                                               ))}
+                                             </List>
+                                           )}
                         </>,
                         'A listing of other certified products associated with the non-conformity, as applicable') }
                       { getDataDisplay('Corrective Action Plan Approval Date', <Typography>{ nc.friendlyCapApprovalDate }</Typography>, 'The date that ONC approved the corrective action plan proposed by the developer') }
@@ -342,4 +338,9 @@ export default ChplDirectReviews;
 ChplDirectReviews.propTypes = {
   directReviews: arrayOf(directReviewPropType).isRequired,
   directReviewsAvailable: bool.isRequired,
+  isListing: bool,
+};
+
+ChplDirectReviews.defaultProps = {
+  isListing: true,
 };
