@@ -289,7 +289,7 @@ function ChplListingEdit({
                         display: 'flex', 
                         flexDirection:'row', 
                         gap: '16px', 
-                        alignItems: 'flex-start',
+                        alignItems: 'center',
                       }}
                       key={status.eventDay}
                     >
