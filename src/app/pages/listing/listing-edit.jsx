@@ -45,6 +45,7 @@ const useStyles = makeStyles({
   },
   reasonForChange: {
     marginTop: '32px',
+    marginBottom: '48px',
   },
   reasonForChangeText: {
     paddingTop: '16px',
@@ -178,8 +179,9 @@ function ChplListingEditPage() {
                 <Grow
                   {...TransitionProps}
                   style={{
-                    transformOrigin: placement === 'bottom' ? 'ricenterop' : 'ricenterottom', // TODO: what is this value?
-                  }}
+                    transformOrigin:
+                    placement === 'bottom' ? 'center top' : 'center bottom',
+                }}                  
                 >
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>

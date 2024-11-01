@@ -282,11 +282,18 @@ function ChplListingEdit({
                   .map((status, idx, arr) => (
                     <ListItem
                       style={{
-                        marginBottom: '8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px',
+                        marginBottom: '8px', 
+                        border: '1px solid #c2c6ca', 
+                        borderRadius: '4px', 
+                        paddingBottom: '4px', 
+                        display: 'flex', 
+                        flexDirection:'row', 
+                        gap: '16px', 
+                        alignItems: 'center',
                       }}
                       key={status.eventDay}
                     >
-                      <Box pb={2} flexGrow={1}>
+                      <Box flexGrow={1}>
                         {status.status.name}
                         {` on ${getDisplayDateFormat(status.eventDay)}`}
                         {status.reason && ` for ${status.reason}`}
