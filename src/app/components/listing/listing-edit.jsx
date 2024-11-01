@@ -224,8 +224,11 @@ function ChplListingEdit({
         />
         <CardContent>
           <Box display="flex" padding={4} justifyContent="space-around" gridGap={16} flexDirection="column">
+            { /* CHPL Product Number */}
+            <Typography variant="h6">
+              CHPL Product Number
+            </Typography>
             <Box display="flex" justifyContent="space-around" alignItems="baseline" gridGap={8} flexDirection="row">
-              { /* CHPL Product Number */}
               <Typography>
                 { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
               </Typography>
