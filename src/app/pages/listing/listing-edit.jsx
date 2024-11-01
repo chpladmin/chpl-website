@@ -204,65 +204,43 @@ function ChplListingEditPage() {
       </Box>
       <Box sx={{ backgroundColor: palette.background }}>
         <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
-          { isEditing ? (
-            <Container maxWidth="md">
+          <Container maxWidth={isEditing ? 'md' : 'xl'}>
+            { isEditing ? (
               <ChplListingEdit
                 dispatch={handleDispatch}
                 errors={errors}
                 warnings={warnings}
                 isProcessing={isProcessing}
               />
-              <Card className={classes.reasonForChange}>
-                <CardHeader title="Reason For Change" />
-                <CardContent>
-                  <ChplTextField
-                    id="reson-for-change"
-                    name="reasonForChange"
-                    label="Reason"
-                    multiline
-                    value={reasonForChange}
-                    onChange={(event) => setReasonForChange(event.target.value)}
-                  />
-                  <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
-                  <List disablePadding>
-                    <ListItem>Clinical Quality Measure Removed</ListItem>
-                    <ListItem>Certification Criteria Removed</ListItem>
-                    <ListItem>Editing of a non-active Certified Product</ListItem>
-                    <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
-                  </List>
-                </CardContent>
-              </Card>
-            </Container>
-          ) : (
-            <Container maxWidth="xl">
+            ) : (
               <ChplListingEditUpload
                 dispatch={handleDispatch}
                 errors={errors}
                 warnings={warnings}
                 isProcessing={isProcessing}
               />
-              <Card className={classes.reasonForChange}>
-                <CardHeader title="Reason For Change" />
-                <CardContent>
-                  <ChplTextField
-                    id="reson-for-change"
-                    name="reasonForChange"
-                    label="Reason"
-                    multiline
-                    value={reasonForChange}
-                    onChange={(event) => setReasonForChange(event.target.value)}
-                  />
-                  <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
-                  <List disablePadding>
-                    <ListItem>Clinical Quality Measure Removed</ListItem>
-                    <ListItem>Certification Criteria Removed</ListItem>
-                    <ListItem>Editing of a non-active Certified Product</ListItem>
-                    <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
-                  </List>
-                </CardContent>
-              </Card>
-            </Container>
-          )}
+            )}
+            <Card className={classes.reasonForChange}>
+              <CardHeader title="Reason For Change" />
+              <CardContent>
+                <ChplTextField
+                  id="reson-for-change"
+                  name="reasonForChange"
+                  label="Reason"
+                  multiline
+                  value={reasonForChange}
+                  onChange={(event) => setReasonForChange(event.target.value)}
+                />
+                <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
+                <List disablePadding>
+                  <ListItem>Clinical Quality Measure Removed</ListItem>
+                  <ListItem>Certification Criteria Removed</ListItem>
+                  <ListItem>Editing of a non-active Certified Product</ListItem>
+                  <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+                </List>
+              </CardContent>
+            </Card>
+          </Container>
         </Box>
       </Box>
     </AnalyticsContext.Provider>
