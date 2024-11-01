@@ -269,13 +269,13 @@ function ChplListingEdit({
                 { listing.chplProductNumber.split('.').slice(7).join('.') }
               </Typography>
             </Box>
+            <Divider />
 
             { /* Certification Events */}
             <Box display="flex" gridGap={8} flexDirection="column">
               <Typography variant="h6">
                 Certification Status
               </Typography>
-              <Divider />
               <List>
                 { selectedStatuses
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
@@ -376,13 +376,13 @@ function ChplListingEdit({
                   </Box>
                 </>
               )}
+            <Divider />
 
             { /* ACB & ATL */}
             <Box display="flex" gridGap={12} flexDirection="column">
               <Typography variant="h6">
                 ONC-ACB
               </Typography>
-              <Divider />
               { hasAnyRole(['chpl-admin', 'chpl-onc'])
                 && (
                   <ChplTextField
@@ -412,12 +412,12 @@ function ChplListingEdit({
                   <Typography>{listing.certifyingBody.name}</Typography>
                 )}
             </Box>
+            <Divider />
             <Box pt={4} display="flex" gridGap={8} flexDirection="column">
               <Typography variant="h6">
                 ONC-ATL
                 { selectedAtls.length !== 1 ? 's' : '' }
               </Typography>
-              <Divider />
               <List>
                 { selectedAtls.map((atl) => (
                   <ListItem
@@ -491,13 +491,13 @@ function ChplListingEdit({
                   </>
                 )}
             </Box>
+            <Divider />
 
             { /* Real-World Testing */}
             <Box display="flex" pt={4} gridGap={8} flexDirection="column">
               <Typography variant="h6">
                 Real World Testing
               </Typography>
-              <Divider />
               <Box display="flex" pt={2} justifyContent="space-around" gridGap={32} flexDirection="row">
                 <ChplTextField
                   id="rwt-plans-url"
