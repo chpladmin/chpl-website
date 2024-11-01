@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -9,11 +9,11 @@ import {
 
 import { useFetchDirectReviews } from 'api/developer';
 import ChplDirectReviewsView from 'components/listing/details/compliance/direct-reviews';
-import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
+import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 
-function ChplDirectReviews({ developer }) {
+function ChplDirectReviews() {
   const { analytics } = useAnalyticsContext();
+  const { developer } = useContext(DeveloperContext);
   const [directReviews, setDirectReviews] = useState([]);
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(false);
   const { data, isLoading, isSuccess } = useFetchDirectReviews({ developer });
@@ -72,5 +72,4 @@ function ChplDirectReviews({ developer }) {
 export default ChplDirectReviews;
 
 ChplDirectReviews.propTypes = {
-  developer: developerPropType.isRequired,
 };
