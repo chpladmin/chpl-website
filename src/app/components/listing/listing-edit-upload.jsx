@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CircularProgress,
-  Container,
   Fade,
   FormControlLabel,
   List,
@@ -35,13 +34,12 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
+    gridTemplateColumns: '1fr 1fr',
     gap: '32px',
     padding: '32px 0',
     backgroundColor: palette.background,
     [theme.breakpoints.up('md')]: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
       alignItems: 'start',
       width: '100vw',
     },
@@ -213,16 +211,14 @@ function ChplListingEditUpload({
 
   return (
     <Box bgcolor={palette.background}>
-      <Container maxWidth="xl" id="main-content" tabIndex="-1">
-        <div style={{ paddingTop: '32px' }}>
-          <ListingContext.Provider value={newListingState}>
-            <ChplUploadListing
-              id={listing.id}
-              setErrors={setErrors}
-              setWarnings={setWarnings}
-            />
-          </ListingContext.Provider>
-        </div>
+      <Box id="main-content" tabIndex="-1">
+        <ListingContext.Provider value={newListingState}>
+          <ChplUploadListing
+            id={listing.id}
+            setErrors={setErrors}
+            setWarnings={setWarnings}
+          />
+        </ListingContext.Provider>
         <div className={classes.pageContainer}>
           <div className={classes.container}>
             <div className={classes.headerContainer}>
@@ -522,7 +518,7 @@ function ChplListingEditUpload({
               )}
           </Box>
         </div>
-      </Container>
+      </Box>
       <ChplActionBar
         dispatch={handleDispatch}
         errors={errors}

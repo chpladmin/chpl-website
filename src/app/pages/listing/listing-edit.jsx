@@ -1,17 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import {
   Box,
   Card,
   CardContent,
   CircularProgress,
   Container,
-  FormControlLabel,
+  Typography,
   List,
   ListItem,
-  Switch,
-  Typography,
+  Button,
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
+  MenuItem,
   makeStyles,
+  CardHeader,
 } from '@material-ui/core';
+import { ArrowDropDown } from '@material-ui/icons';
 
 import { usePutListing } from 'api/listing';
 import ChplListingEdit from 'components/listing/listing-edit';
@@ -29,6 +36,16 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
   },
+  optionMenu: {
+    alignItems: 'center',
+    borderRadius: '0 0 8px 8px',
+    border: `1px solid ${palette.grey}`,
+    boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
+    backgroundColor: '#fff',
+  },
+  reasonForChange: {
+    marginTop: '32px',
+  },
   reasonForChangeText: {
     paddingTop: '16px',
     fontWeight: 'bold',
@@ -45,6 +62,9 @@ function ChplListingEditPage() {
   const [isEditing, setIsEditing] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [reasonForChange, setReasonForChange] = useState('');
+  const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const anchorRef = useRef(null);
   const classes = useStyles();
   let analyticsData;
 
@@ -90,12 +110,25 @@ function ChplListingEditPage() {
     }
   };
 
-  const toggleIsEditing = () => {
-    setIsEditing((prev) => !prev);
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setIsEditing(index === 0);
+    setOpen(false);
     eventTrack({
       ...analyticsData.analytics,
       event: 'Toggle Edit Mode',
     });
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+    setOpen(false);
   };
 
   if (!listing) {
@@ -111,70 +144,127 @@ function ChplListingEditPage() {
     },
   };
 
+  const options = ['Edit Minimal Listing Information', 'Upload Detailed Listing Information'];
+
   return (
     <AnalyticsContext.Provider value={analyticsData}>
-      <Box bgcolor="white" p={8}>
-        <Container maxWidth="lg">
+      <Box bgcolor="white" py={8}>
+        <Container maxWidth="xl">
           <Box display="flex" justifyContent="space-between" flexDirection="row">
-            <Typography
-              variant="h1"
-            >
+            <Typography variant="h1">
               {listing.product.name}
             </Typography>
-            <FormControlLabel
-              control={(
-                <Switch
-                  id="is-editing"
-                  name="isEditing"
-                  checked={isEditing}
-                  color="primary"
-                  onChange={toggleIsEditing}
-                />
+            <Button
+              aria-controls={open ? 'menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-label="Select edit strategy"
+              aria-haspopup="menu"
+              onClick={handleToggle}
+              variant="outlined"
+              color="primary"
+              ref={anchorRef}
+              endIcon={<ArrowDropDown />}
+            >
+              {options[selectedIndex]}
+            </Button>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom' ? 'ricenterop' : 'ricenterottom',
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList className={classes.optionMenu} id="menu" autoFocusItem>
+                        {options.map((option, index) => (
+                          <MenuItem
+                            key={option}
+                            selected={index === selectedIndex}
+                            onClick={(event) => handleMenuItemClick(event, index)}
+                          >
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
               )}
-              label={isEditing ? 'Edit basic Listing information' : 'Upload detailed Listing information'}
-            />
+            </Popper>
           </Box>
         </Container>
       </Box>
       <Box sx={{ backgroundColor: palette.background }}>
-        <Container maxWidth="lg">
-          <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
-            {isEditing ? (
+        <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
+          {isEditing ? (
+            <Container maxWidth="md">
               <ChplListingEdit
                 dispatch={handleDispatch}
                 errors={errors}
                 warnings={warnings}
                 isProcessing={isProcessing}
               />
-            ) : (
+              <Card className={classes.reasonForChange}>
+                <CardHeader title="Reason For Change" />
+                <CardContent>
+                  <ChplTextField
+                    id="reson-for-change"
+                    name="reasonForChange"
+                    label="Reason"
+                    multiline
+                    value={reasonForChange}
+                    onChange={(event) => setReasonForChange(event.target.value)}
+                  />
+                  <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
+                  <List disablePadding>
+                    <ListItem>Clinical Quality Measure Removed</ListItem>
+                    <ListItem>Certification Criteria Removed</ListItem>
+                    <ListItem>Editing of a non-active Certified Product</ListItem>
+                    <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            </Container>
+          ) : (
+            <Container maxWidth="xl">
               <ChplListingEditUpload
                 dispatch={handleDispatch}
                 errors={errors}
                 warnings={warnings}
                 isProcessing={isProcessing}
               />
-            )}
-            <Card>
-              <CardContent>
-                <ChplTextField
-                  id="reson-for-change"
-                  name="reasonForChange"
-                  label="Reason For Change"
-                  multiline
-                  value={reasonForChange}
-                  onChange={(event) => setReasonForChange(event.target.value)}
-                />
-                <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
-                <List disablePadding>
-                  <ListItem>Clinical Quality Measure Removed</ListItem>
-                  <ListItem>Certification Criteria Removed</ListItem>
-                  <ListItem>Editing of a non-active Certified Product</ListItem>
-                  <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
-                </List>
-              </CardContent>
-            </Card>
-          </Box>
-        </Container>
+              <Card className={classes.reasonForChange}>
+                <CardHeader title="Reason For Change" />
+                <CardContent>
+                  <ChplTextField
+                    id="reson-for-change"
+                    name="reasonForChange"
+                    label="Reason"
+                    multiline
+                    value={reasonForChange}
+                    onChange={(event) => setReasonForChange(event.target.value)}
+                  />
+                  <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
+                  <List disablePadding>
+                    <ListItem>Clinical Quality Measure Removed</ListItem>
+                    <ListItem>Certification Criteria Removed</ListItem>
+                    <ListItem>Editing of a non-active Certified Product</ListItem>
+                    <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            </Container>
+          )}
+        </Box>
       </Box>
     </AnalyticsContext.Provider>
   );

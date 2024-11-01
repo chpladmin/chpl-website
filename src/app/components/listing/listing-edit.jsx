@@ -224,7 +224,7 @@ function ChplListingEdit({
         />
         <CardContent>
           <Box display="flex" padding={4} justifyContent="space-around" gridGap={16} flexDirection="column">
-            <Box display="flex" justifyContent="space-around" gridGap={8} flexDirection="row">
+            <Box display="flex" justifyContent="space-around" alignItems="baseline" gridGap={8} flexDirection="row">
               { /* CHPL Product Number */}
               <Typography>
                 { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
@@ -303,75 +303,75 @@ function ChplListingEdit({
                   ))}
               </List>
               { !addingStatus
-                && (
-                  <div>
-                    <Button
-                      onClick={() => setAddingStatus(true)}
-                      endIcon={<Add />}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      Add Certification Status
-                    </Button>
-                  </div>
-                )}
+                  && (
+                    <div>
+                      <Button
+                        onClick={() => setAddingStatus(true)}
+                        endIcon={<Add />}
+                        color="primary"
+                        variant="outlined"
+                      >
+                        Add Certification Status
+                      </Button>
+                    </div>
+                  )}
             </Box>
             { addingStatus
-              && (
-                <>
-                  <Box display="flex" justifyContent="space-around" gridGap={8} flexDirection="column">
-                    <ChplTextField
-                      select
-                      id="status"
-                      name="status"
-                      label="Certification Status"
-                      required
-                      value={statusToAdd}
-                      onChange={(event) => setStatusToAdd(event.target.value)}
-                    >
-                      {statuses
-                        .map((item) => (
-                          <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                        ))}
-                    </ChplTextField>
-                    <ChplTextField
-                      id="event-day-to-add"
-                      name="eventDayToAdd"
-                      label="Effective Date"
-                      type="date"
-                      required
-                      value={eventDayToAdd}
-                      onChange={(event) => setEventDayToAdd(event.target.value)}
-                    />
-                    <ChplTextField
-                      id="reson-to-add"
-                      name="reasonToAdd"
-                      label="Reason"
-                      value={reasonToAdd}
-                      onChange={(event) => setReasonToAdd(event.target.value)}
-                    />
-                  </Box>
-                  <Box py={2} display="flex" justifyContent="flex-start" gridGap={8} flexDirection="row">
-                    <Button
-                      onClick={() => addStatus()}
-                      disabled={statusToAdd === '' || eventDayToAdd === ''}
-                      endIcon={<Save />}
-                      color="primary"
-                      variant="contained"
-                    >
-                      Save Certification Status
-                    </Button>
-                    <Button
-                      onClick={() => setAddingStatus(false)}
-                      endIcon={<Close />}
-                      className={classes.deleteButton}
-                      variant="contained"
-                    >
-                      Cancel adding Certification Status
-                    </Button>
-                  </Box>
-                </>
-              )}
+                && (
+                  <>
+                    <Box display="flex" justifyContent="space-around" gridGap={8} flexDirection="column">
+                      <ChplTextField
+                        select
+                        id="status"
+                        name="status"
+                        label="Certification Status"
+                        required
+                        value={statusToAdd}
+                        onChange={(event) => setStatusToAdd(event.target.value)}
+                      >
+                        {statuses
+                          .map((item) => (
+                            <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                          ))}
+                      </ChplTextField>
+                      <ChplTextField
+                        id="event-day-to-add"
+                        name="eventDayToAdd"
+                        label="Effective Date"
+                        type="date"
+                        required
+                        value={eventDayToAdd}
+                        onChange={(event) => setEventDayToAdd(event.target.value)}
+                      />
+                      <ChplTextField
+                        id="reson-to-add"
+                        name="reasonToAdd"
+                        label="Reason"
+                        value={reasonToAdd}
+                        onChange={(event) => setReasonToAdd(event.target.value)}
+                      />
+                    </Box>
+                    <Box py={2} display="flex" justifyContent="flex-start" gridGap={8} flexDirection="row">
+                      <Button
+                        onClick={() => addStatus()}
+                        disabled={statusToAdd === '' || eventDayToAdd === ''}
+                        endIcon={<Save />}
+                        color="primary"
+                        variant="contained"
+                      >
+                        Save Certification Status
+                      </Button>
+                      <Button
+                        onClick={() => setAddingStatus(false)}
+                        endIcon={<Close />}
+                        className={classes.deleteButton}
+                        variant="contained"
+                      >
+                        Cancel adding Certification Status
+                      </Button>
+                    </Box>
+                  </>
+                )}
 
             { /* ACB & ATL */}
             <Box display="flex" gridGap={12} flexDirection="column">
@@ -380,33 +380,33 @@ function ChplListingEdit({
               </Typography>
               <Divider />
               { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                && (
-                  <ChplTextField
-                    select
-                    id="certifying-body"
-                    name="certifyingBody"
-                    label="ONC-ACB"
-                    required
-                    value={formik.values.certifyingBody}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
-                    helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
-                  >
-                    { acbs.map((item) => (
-                      <MenuItem
-                        value={item.name}
-                        key={item.id}
-                      >
-                        {`${item.name}${item.retired ? ' (Retired)' : ''}`}
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                )}
+                  && (
+                    <ChplTextField
+                      select
+                      id="certifying-body"
+                      name="certifyingBody"
+                      label="ONC-ACB"
+                      required
+                      value={formik.values.certifyingBody}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+                      helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+                    >
+                      { acbs.map((item) => (
+                        <MenuItem
+                          value={item.name}
+                          key={item.id}
+                        >
+                          {`${item.name}${item.retired ? ' (Retired)' : ''}`}
+                        </MenuItem>
+                      ))}
+                    </ChplTextField>
+                  )}
               { hasAnyRole(['chpl-onc-acb'])
-                && (
-                  <Typography>{listing.certifyingBody.name}</Typography>
-                )}
+                  && (
+                    <Typography>{listing.certifyingBody.name}</Typography>
+                  )}
             </Box>
             <Box pt={4} display="flex" gridGap={8} flexDirection="column">
               <Typography variant="h6">
@@ -436,56 +436,56 @@ function ChplListingEdit({
                 ))}
               </List>
               { !addingAtl
-                && (
-                  <div>
-                    <Button
-                      onClick={() => setAddingAtl(true)}
-                      endIcon={<Add />}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      Add ONC-ATL
-                    </Button>
-                  </div>
-                )}
-              { addingAtl
-                && (
-                  <>
-                    <ChplTextField
-                      select
-                      id="atl"
-                      name="atl"
-                      label="ONC-ATL"
-                      required
-                      value={atlToAdd}
-                      onChange={(event) => setAtlToAdd(event.target.value)}
-                    >
-                      {atls
-                        .filter((atl) => !selectedAtls.find((a) => a.id === atl.id))
-                        .map((item) => (
-                          <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
-                        ))}
-                    </ChplTextField>
-                    <Box py={2} display="flex" justifyContent="flex-start" gridGap={8} flexDirection="row">
+                  && (
+                    <div>
                       <Button
-                        onClick={() => addAtl()}
-                        disabled={atlToAdd === ''}
-                        endIcon={<Save />}
+                        onClick={() => setAddingAtl(true)}
+                        endIcon={<Add />}
                         color="primary"
-                        variant="contained"
+                        variant="outlined"
                       >
-                        Save ONC-ATL
+                        Add ONC-ATL
                       </Button>
-                      <Button
-                        onClick={() => setAddingAtl(false)}
-                        className={classes.deleteButton}
-                        endIcon={<Close />}
+                    </div>
+                  )}
+              { addingAtl
+                  && (
+                    <>
+                      <ChplTextField
+                        select
+                        id="atl"
+                        name="atl"
+                        label="ONC-ATL"
+                        required
+                        value={atlToAdd}
+                        onChange={(event) => setAtlToAdd(event.target.value)}
                       >
-                        Cancel adding ONC-ATL
-                      </Button>
-                    </Box>
-                  </>
-                )}
+                        {atls
+                          .filter((atl) => !selectedAtls.find((a) => a.id === atl.id))
+                          .map((item) => (
+                            <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+                          ))}
+                      </ChplTextField>
+                      <Box py={2} display="flex" justifyContent="flex-start" gridGap={8} flexDirection="row">
+                        <Button
+                          onClick={() => addAtl()}
+                          disabled={atlToAdd === ''}
+                          endIcon={<Save />}
+                          color="primary"
+                          variant="contained"
+                        >
+                          Save ONC-ATL
+                        </Button>
+                        <Button
+                          onClick={() => setAddingAtl(false)}
+                          className={classes.deleteButton}
+                          endIcon={<Close />}
+                        >
+                          Cancel adding ONC-ATL
+                        </Button>
+                      </Box>
+                    </>
+                  )}
             </Box>
             { /* Real-World Testing Plans */}
             <Box display="flex" pt={4} gridGap={8} flexDirection="column">
