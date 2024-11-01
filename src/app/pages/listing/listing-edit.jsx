@@ -1,22 +1,22 @@
 import React, { useContext, useRef, useState } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardContent,
+  CardHeader,
   CircularProgress,
+  ClickAwayListener,
   Container,
-  Typography,
+  Grow,
   List,
   ListItem,
-  Button,
-  Popper,
-  Grow,
-  Paper,
-  ClickAwayListener,
-  MenuList,
   MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+  Typography,
   makeStyles,
-  CardHeader,
 } from '@material-ui/core';
 import { ArrowDropDown } from '@material-ui/icons';
 
@@ -106,7 +106,7 @@ function ChplListingEditPage() {
           },
         });
         break;
-      // no default
+        // no default
     }
   };
 
@@ -165,7 +165,7 @@ function ChplListingEditPage() {
               ref={anchorRef}
               endIcon={<ArrowDropDown />}
             >
-              {options[selectedIndex]}
+              { options[selectedIndex] }
             </Button>
             <Popper
               open={open}
@@ -178,14 +178,13 @@ function ChplListingEditPage() {
                 <Grow
                   {...TransitionProps}
                   style={{
-                    transformOrigin:
-                      placement === 'bottom' ? 'ricenterop' : 'ricenterottom',
+                    transformOrigin: placement === 'bottom' ? 'ricenterop' : 'ricenterottom',
                   }}
                 >
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
                       <MenuList className={classes.optionMenu} id="menu" autoFocusItem>
-                        {options.map((option, index) => (
+                        { options.map((option, index) => (
                           <MenuItem
                             key={option}
                             selected={index === selectedIndex}
@@ -205,7 +204,7 @@ function ChplListingEditPage() {
       </Box>
       <Box sx={{ backgroundColor: palette.background }}>
         <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
-          {isEditing ? (
+          { isEditing ? (
             <Container maxWidth="md">
               <ChplListingEdit
                 dispatch={handleDispatch}
