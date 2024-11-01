@@ -63,7 +63,7 @@ function ChplListingEditPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [reasonForChange, setReasonForChange] = useState('');
   const [open, setOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedEditMode, setSelectedEditMode] = useState(0);
   const anchorRef = useRef(null);
   const classes = useStyles();
   let analyticsData;
@@ -115,7 +115,7 @@ function ChplListingEditPage() {
   };
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
+    setSelectedEditMode(index);
     setIsEditing(index === 0);
     setOpen(false);
     eventTrack({
@@ -144,7 +144,7 @@ function ChplListingEditPage() {
     },
   };
 
-  const options = ['Edit Minimal Listing Information', 'Upload Detailed Listing Information'];
+  const editOptions = ['Edit Minimal Listing Information', 'Upload Detailed Listing Information'];
 
   return (
     <AnalyticsContext.Provider value={analyticsData}>
@@ -165,7 +165,7 @@ function ChplListingEditPage() {
               ref={anchorRef}
               endIcon={<ArrowDropDown />}
             >
-              { options[selectedIndex] }
+              { editOptions[selectedEditMode] }
             </Button>
             <Popper
               open={open}
@@ -178,16 +178,16 @@ function ChplListingEditPage() {
                 <Grow
                   {...TransitionProps}
                   style={{
-                    transformOrigin: placement === 'bottom' ? 'ricenterop' : 'ricenterottom',
+                    transformOrigin: placement === 'bottom' ? 'ricenterop' : 'ricenterottom', // TODO: what is this value?
                   }}
                 >
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
                       <MenuList className={classes.optionMenu} id="menu" autoFocusItem>
-                        { options.map((option, index) => (
+                        { editOptions.map((option, index) => (
                           <MenuItem
                             key={option}
-                            selected={index === selectedIndex}
+                            selected={index === selectedEditMode}
                             onClick={(event) => handleMenuItemClick(event, index)}
                           >
                             {option}
