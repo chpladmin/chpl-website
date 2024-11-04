@@ -25,7 +25,10 @@ function ChplProducts() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    setProducts(developer.products);
+    setProducts(developer.products.map((p) => ({
+      ...p,
+      expanded: false,
+    })))
   }, [developer]);
 
   const analyticsData = {

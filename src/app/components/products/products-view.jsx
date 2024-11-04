@@ -124,9 +124,9 @@ function ChplProductsView({ products }) {
   const handleAccordionChange = (product) => {
     eventTrack({
       ...analytics,
-      event: expanded ? `Hide Product ${product.name}` : `Show Product ${product.name}`,
+      event: product.expanded ? 'Show Product' : 'Hide Product',
     });
-    setExpanded(!expanded);
+    product.expanded = !product.expanded;
   };
 
   return (
@@ -182,10 +182,7 @@ function ChplProductsView({ products }) {
             </AccordionSummary>
             <CardContent>
               <TableContainer component={Paper}>
-                <Table
-                  stickyHeader
-                  aria-label="Listings table"
-                >
+                <Table aria-label="Listings table">
                   <TableHead>
                     <TableRow>
                       <TableCell>CHPL ID</TableCell>
