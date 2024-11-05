@@ -110,11 +110,6 @@ function ChplProductsView({ products }) {
   const [params, setParams] = useState({});
   const classes = useStyles();
 
-  /*
-  useEffect(() => {
-    setDisplayedProducts(products);
-  }, [products]);
-*/
   useEffect(() => {
     setParams(queryParams());
   }, [queryParams]);
@@ -129,6 +124,12 @@ function ChplProductsView({ products }) {
                                let include = true;
                                if (params.certificationStatuses) {
                                  include = include && params.certificationStatuses.includes(listing.certificationStatus);
+                               }
+                               if (params.hasHadComplianceActivity === 'true') {
+                                 include = include && (listing.closedSurveillanceCount > 0 || listing.openSurveillanceCount > 0);
+                               }
+                               if (params.hasHadComplianceActivity === 'false') {
+                                 include = include && listing.closedSurveillanceCount === 0 && listing.openSurveillanceCount === 0;
                                }
                                return include;
                              }),
