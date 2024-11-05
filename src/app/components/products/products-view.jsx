@@ -1,27 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionSummary,
-  Button,
-  ButtonGroup,
-  Box,
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import Moment from 'react-moment';
 import { arrayOf } from 'prop-types';
 
 import ChplProductView from './product-view';
@@ -33,11 +17,8 @@ import {
 } from 'components/filter';
 import {
   ChplLink,
-  ChplPagination,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { product as productPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
@@ -136,10 +117,9 @@ const includeListing = (listing, params) => {
 };
 
 function ChplProductsView({ products }) {
-  const storageKey = 'storageKey-productsView';
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
-  const { queryParams, queryString } = useFilterContext();
+  const { queryParams } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [params, setParams] = useState({});
   const classes = useStyles();
@@ -150,14 +130,14 @@ function ChplProductsView({ products }) {
 
   useEffect(() => {
     setDisplayedProducts(products
-                         .map((product) => ({
-                           ...product,
-                           versions: product.versions.map((version) => ({
-                             ...version,
-                             listings: version.listings.filter((listing) => includeListing(listing, params)),
-                           })).filter((version) => version.listings.length > 0),
-                         }))
-                         .filter((product) => product.versions.length > 0));
+      .map((product) => ({
+        ...product,
+        versions: product.versions.map((version) => ({
+          ...version,
+          listings: version.listings.filter((listing) => includeListing(listing, params)),
+        })).filter((version) => version.listings.length > 0),
+      }))
+      .filter((product) => product.versions.length > 0));
   }, [params, products]);
 
   return (
