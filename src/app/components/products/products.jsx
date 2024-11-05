@@ -22,14 +22,6 @@ const staticFilters = [
 function ChplProducts() {
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    setProducts(developer.products.map((p) => ({
-      ...p,
-      expanded: false,
-    })))
-  }, [developer]);
 
   const analyticsData = {
     analytics: {
@@ -47,7 +39,7 @@ function ChplProducts() {
         storageKey="storageKey-productsComponent"
       >
         <ChplProductsView
-          products={products}
+          products={developer.products}
         />
       </FilterProvider>
     </AnalyticsContext.Provider>

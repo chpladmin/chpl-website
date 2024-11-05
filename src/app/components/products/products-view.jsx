@@ -24,6 +24,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
 import { arrayOf } from 'prop-types';
 
+import ChplProductView from './product-view';
+
 import {
   ChplFilterChips,
   useFilterContext,
@@ -104,30 +106,12 @@ function ChplProductsView({ products }) {
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
   const { queryParams, queryString } = useFilterContext();
-  const [displayedProdts, setDisplayedProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
   const classes = useStyles();
 
-  const getIcon = (product) => (product.expanded
-    ? (
-      <>
-        <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
-      </>
-    )
-    : (
-      <>
-        <Typography color="primary" variant="body2">Show Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" />
-      </>
-    ));
-
-  const handleAccordionChange = (product) => {
-    eventTrack({
-      ...analytics,
-      event: product.expanded ? 'Show Product' : 'Hide Product',
-    });
-    product.expanded = !product.expanded;
-  };
+  useEffect(() => {
+    setDisplayedProducts(products);
+  }, [products]);
 
   return (
     <Card>
@@ -139,80 +123,28 @@ function ChplProductsView({ products }) {
         <div className={classes.tableResultsHeaderContainer}>
           <div className={`${classes.resultsContainer} ${classes.wrap}`}>
             <Typography variant="subtitle2">Search Results:</Typography>
-            { products.length === 0
+            { displayedProducts.length === 0
               && (
                 <>
                   No results found
                 </>
               )}
-            { products.length > 0
+            { displayedProducts.length > 0
               && (
                 <Typography variant="body2">
-                  {products.length}
+                  { displayedProducts.length }
                   {' '}
                   Result
-                  { products.length === 1 ? '' : 's' }
+                  { displayedProducts.length === 1 ? '' : 's' }
                 </Typography>
               )}
           </div>
         </div>
-        { products.map((product) => (
-          <Accordion
+        { displayedProducts.map((product) => (
+          <ChplProductView
             key={product.id}
-            className={classes.products}
-            onChange={() => handleAccordionChange(product)}
-          >
-            <AccordionSummary
-              expandIcon={getIcon(product)}
-              className={classes.productsSummary}
-            >
-              <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-                <Typography variant="body1">
-                  { product.name }
-                </Typography>
-                <Typography variant="body2">
-                  (
-                  { product.versions.length }
-                  {' '}
-                  version
-                  { product.versions.length !== 1 ? 's ' : ' ' }
-                  found)
-                </Typography>
-              </Box>
-            </AccordionSummary>
-            <CardContent>
-              <TableContainer component={Paper}>
-                <Table aria-label="Listings table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>CHPL ID</TableCell>
-                      <TableCell>Status</TableCell>
-                      <TableCell># Non-conformities</TableCell>
-                      <TableCell>Certification Date</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { product.versions
-                      .filter((version) => version.version !== 'All') // remove when angularJS component is removed
-                      .flatMap((version) => version.listings
-                               .map((item) => (
-                                 <TableRow key={item.id}>
-                                   <TableCell>{item.chplProductNumber}</TableCell>
-                                   <TableCell>{item.certificationStatus}</TableCell>
-                                   <TableCell>
-                                     { item.openSurveillanceNonConformityCount }
-                                     {' open / '}
-                                     { item.closedSurveillanceNonConformityCount }
-                                     {' closed'}
-                                   </TableCell>
-                                   <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
-                                 </TableRow>
-                               )))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </CardContent>
-          </Accordion>
+            product={product}
+          />
         ))}
       </CardContent>
     </Card>
