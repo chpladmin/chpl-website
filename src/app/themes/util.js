@@ -42,6 +42,9 @@ const util = {
   halfWidth: {
     width: '50%',
   },
+  rotate: {
+    transform: 'rotate(180deg)',
+  },
 };
 
 export default util;

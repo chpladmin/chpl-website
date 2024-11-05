@@ -97,9 +97,6 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-  rotate: {
-    transform: 'rotate(180deg)',
-  },
 });
 
 const getFriendlyValues = (nc) => ({
