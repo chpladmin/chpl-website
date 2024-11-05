@@ -9,6 +9,7 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -31,6 +32,7 @@ import {
 import {
   ChplLink,
   ChplPagination,
+  ChplTextField,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -102,12 +104,16 @@ function ChplProductView({ product }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [expanded, setExpanded] = useState(false);
-  const [versionFilter, setVersionFilter] = useState([]);
-  const [options, setOptions] = useState([]);
+  const [selectedVersion, setSelectedVersion] = useState('All');
+  const [options, setOptions] = useState(['All']);
   const classes = useStyles();
 
   useEffect(() => {
-    setOptions(['All'].concat(product.versions.map((v) => (v.version))));
+    setOptions(
+      ['All']
+        .concat(product.versions
+                .filter((version) => version.version !== 'All') // remove when angularJS component is removed
+                .map((v) => (v.version))));
   }, [product]);
 
   const getIcon = () => (expanded
@@ -156,6 +162,20 @@ function ChplProductView({ product }) {
         </Box>
       </AccordionSummary>
       <CardContent>
+        <ChplTextField
+          id="version"
+          name="version"
+          label="Version"
+          select
+          value={selectedVersion}
+          onChange={(event) => setSelectedVersion(event.target.value)}
+        >
+          {options.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </ChplTextField>
         <TableContainer component={Paper}>
           <Table aria-label="Listings table">
             <TableHead>
@@ -169,6 +189,7 @@ function ChplProductView({ product }) {
             <TableBody>
               { product.versions
                 .filter((version) => version.version !== 'All') // remove when angularJS component is removed
+                .filter((version) => selectedVersion === 'All' || version.version === selectedVersion)
                 .flatMap((version) => version.listings
                          .map((item) => (
                            <TableRow key={item.id}>
