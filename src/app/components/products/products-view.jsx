@@ -107,11 +107,35 @@ function ChplProductsView({ products }) {
   const { hasAnyRole } = useContext(UserContext);
   const { queryParams, queryString } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [params, setParams] = useState({});
   const classes = useStyles();
 
+  /*
   useEffect(() => {
     setDisplayedProducts(products);
   }, [products]);
+*/
+  useEffect(() => {
+    setParams(queryParams());
+  }, [queryParams]);
+
+  useEffect(() => {
+    setDisplayedProducts(products
+                         .map((product) => ({
+                           ...product,
+                           versions: product.versions.map((version) => ({
+                             ...version,
+                             listings: version.listings.filter((listing) => {
+                               let include = true;
+                               if (params.certificationStatuses) {
+                                 include = include && params.certificationStatuses.includes(listing.certificationStatus);
+                               }
+                               return include;
+                             }),
+                           })).filter((version) => version.listings.length > 0),
+                         }))
+                         .filter((product) => product.versions.length > 0));
+  }, [params, products]);
 
   return (
     <Card>
