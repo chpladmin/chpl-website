@@ -9,14 +9,36 @@ import {
   getDateDisplay,
   getDateTimeEntry,
 } from 'components/filter';
-import {
-  certificationStatuses,
-} from 'components/filter/filters';
+import { certificationStatuses } from 'components/filter/filters';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const staticFilters = [
-  certificationStatuses,
+  certificationStatuses, {
+    ...defaultFilter,
+    key: 'hasHadComplianceActivity',
+    display: 'Compliance',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
+    values: [
+      { value: 'true', display: 'Has had Compliance Activity' },
+      { value: 'false', display: 'Has not had Compliance Activity' },
+    ],
+  }, {
+    ...defaultFilter,
+    key: 'nonConformityOptions',
+    display: 'Non-conformities',
+    operatorKey: 'nonConformityOptionsOperator',
+    values: [
+      { value: 'open_nonconformity', display: 'Open Non-conformity' },
+      { value: 'closed_nonconformity', display: 'Closed Non-conformity' },
+      { value: 'never_nonconformity', display: 'Never had a Non-conformity' },
+      { value: 'not_open_nonconformity', display: 'Has no open Non-conformities' },
+      { value: 'not_closed_nonconformity', display: 'Has no closed Non-conformities' },
+      { value: 'not_never_nonconformity', display: 'Has had a Non-conformity' },
+    ],
+  },
 ];
 
 function ChplProducts() {
