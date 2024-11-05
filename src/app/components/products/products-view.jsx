@@ -28,6 +28,7 @@ import ChplProductView from './product-view';
 
 import {
   ChplFilterChips,
+  ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import {
@@ -104,7 +105,6 @@ function ChplProductsView({ products }) {
   const storageKey = 'storageKey-productsView';
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
-  const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
   const { queryParams, queryString } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const classes = useStyles();
@@ -117,6 +117,9 @@ function ChplProductsView({ products }) {
     <Card>
       <CardHeader title="Products" />
       <CardContent>
+        <ChplFilterSearchBar
+          hideSearchTerm
+        />
         <div>
           <ChplFilterChips />
         </div>
