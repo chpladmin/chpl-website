@@ -101,6 +101,40 @@ const useStyles = makeStyles({
   },
 });
 
+const includeListing = (listing, params) => {
+  let include = true;
+  if (params.certificationStatuses) {
+    include = include && params.certificationStatuses.includes(listing.certificationStatus);
+  }
+  if (params.hasHadComplianceActivity === 'true') {
+    include = include && (listing.closedSurveillanceCount > 0 || listing.openSurveillanceCount > 0);
+  }
+  if (params.hasHadComplianceActivity === 'false') {
+    include = include && listing.closedSurveillanceCount === 0 && listing.openSurveillanceCount === 0;
+  }
+  if (params.nonConformityOptionsOperator === 'or') {
+    const opts = params.nonConformityOptions.split(',');
+    let meets = 0;
+    if (opts.includes('closed_nonconformity') && listing.closedSurveillanceNonConformityCount > 0) { meets += 1; }
+    if (opts.includes('never_nonconformity') && listing.closedSurveillanceNonConformityCount === 0 && listing.openSurveillanceNonConformityCount === 0) { meets += 1; }
+    if (opts.includes('not_closed_nonconformity') && listing.closedSurveillanceNonConformityCount === 0) { meets += 1; }
+    if (opts.includes('not_never_nonconformity') && (listing.closedSurveillanceNonConformityCount > 0 || listing.openSurveillanceNonConformityCount > 0)) { meets += 1; }
+    if (opts.includes('not_open_nonconformity') && listing.openSurveillanceNonConformityCount === 0) { meets += 1; }
+    if (opts.includes('open_nonconformity') && listing.openSurveillanceNonConformityCount > 0) { meets += 1; }
+    include = include && meets > 0;
+  }
+  if (params.nonConformityOptionsOperator === 'and') {
+    const opts = params.nonConformityOptions.split(',');
+    if (opts.includes('closed_nonconformity')) { include = include && listing.closedSurveillanceNonConformityCount > 0; }
+    if (opts.includes('never_nonconformity')) { include = include && listing.closedSurveillanceNonConformityCount === 0 && listing.openSurveillanceNonConformityCount === 0; }
+    if (opts.includes('not_closed_nonconformity')) { include = include && listing.closedSurveillanceNonConformityCount === 0; }
+    if (opts.includes('not_never_nonconformity')) { include = include && (listing.closedSurveillanceNonConformityCount > 0 || listing.openSurveillanceNonConformityCount > 0); }
+    if (opts.includes('not_open_nonconformity')) { include = include && listing.openSurveillanceNonConformityCount === 0; }
+    if (opts.includes('open_nonconformity')) { include = include && listing.openSurveillanceNonConformityCount > 0; }
+  }
+  return include;
+};
+
 function ChplProductsView({ products }) {
   const storageKey = 'storageKey-productsView';
   const { analytics } = useAnalyticsContext();
@@ -120,19 +154,7 @@ function ChplProductsView({ products }) {
                            ...product,
                            versions: product.versions.map((version) => ({
                              ...version,
-                             listings: version.listings.filter((listing) => {
-                               let include = true;
-                               if (params.certificationStatuses) {
-                                 include = include && params.certificationStatuses.includes(listing.certificationStatus);
-                               }
-                               if (params.hasHadComplianceActivity === 'true') {
-                                 include = include && (listing.closedSurveillanceCount > 0 || listing.openSurveillanceCount > 0);
-                               }
-                               if (params.hasHadComplianceActivity === 'false') {
-                                 include = include && listing.closedSurveillanceCount === 0 && listing.openSurveillanceCount === 0;
-                               }
-                               return include;
-                             }),
+                             listings: version.listings.filter((listing) => includeListing(listing, params)),
                            })).filter((version) => version.listings.length > 0),
                          }))
                          .filter((product) => product.versions.length > 0));
