@@ -2,13 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
-  Button,
-  ButtonGroup,
   Box,
-  Card,
   CardContent,
-  CardHeader,
-  CircularProgress,
   MenuItem,
   Paper,
   Table,
@@ -21,22 +16,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import Moment from 'react-moment';
-import { arrayOf } from 'prop-types';
 
 import {
-  ChplFilterChips,
-  useFilterContext,
-} from 'components/filter';
-import {
   ChplLink,
-  ChplPagination,
   ChplTextField,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { product as productPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
@@ -112,8 +98,9 @@ function ChplProductView({ product }) {
     setOptions(
       ['All']
         .concat(product.versions
-                .filter((version) => version.version !== 'All') // remove when angularJS component is removed
-                .map((v) => (v.version))));
+          .filter((version) => version.version !== 'All') // remove when angularJS component is removed
+          .map((v) => (v.version))),
+    );
   }, [product]);
 
   const getIcon = () => (expanded
@@ -191,19 +178,19 @@ function ChplProductView({ product }) {
                 .filter((version) => version.version !== 'All') // remove when angularJS component is removed
                 .filter((version) => selectedVersion === 'All' || version.version === selectedVersion)
                 .flatMap((version) => version.listings
-                         .map((item) => (
-                           <TableRow key={item.id}>
-                             <TableCell>{item.chplProductNumber}</TableCell>
-                             <TableCell>{item.certificationStatus}</TableCell>
-                             <TableCell>
-                               { item.openSurveillanceNonConformityCount }
-                               {' open / '}
-                               { item.closedSurveillanceNonConformityCount }
-                               {' closed'}
-                             </TableCell>
-                             <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
-                           </TableRow>
-                         )))}
+                  .map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.chplProductNumber}</TableCell>
+                      <TableCell>{item.certificationStatus}</TableCell>
+                      <TableCell>
+                        { item.openSurveillanceNonConformityCount }
+                        {' open / '}
+                        { item.closedSurveillanceNonConformityCount }
+                        {' closed'}
+                      </TableCell>
+                      <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
+                    </TableRow>
+                  )))}
             </TableBody>
           </Table>
         </TableContainer>
