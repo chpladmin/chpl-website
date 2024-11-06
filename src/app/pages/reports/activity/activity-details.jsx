@@ -9,6 +9,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
 import compareComplaint from './services/complaints.service';
+import compareUser from './services/users.service';
 
 import { compareDeveloper } from 'components/activity/services/developers.service';
 import { compareOrganization } from 'components/activity/services/organizations.service';
@@ -38,6 +39,7 @@ const getDetails = (activity) => {
     case 'STANDARD': compare = compareSystemMaintenance; break;
     case 'SVAP': compare = compareSystemMaintenance; break;
     case 'TESTING_LAB': compare = compareOrganization; break;
+    case 'USER': compare = compareUser; break;
     case 'VERSION': compare = compareVersion; break;
       // no default
   }
@@ -109,6 +111,7 @@ function ChplActivityDetails({ activity }) {
     'STANDARD',
     'SVAP',
     'TESTING_LAB',
+    'USER',
     'VERSION',
   ].includes(activity.concept)) {
     return (
