@@ -72,7 +72,7 @@ function ChplCognitoUserView({ user: initialUser, dispatch }) {
                 :
               </strong>
               <br />
-              { user.organizations.map((org) => (org.name)).join('; ') }
+              { user.organizations.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensistivity: 'base' })).map((org) => (org.name)).join('; ') }
             </Typography>
           )}
         <Typography gutterBottom>
