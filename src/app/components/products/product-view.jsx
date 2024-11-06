@@ -111,7 +111,7 @@ function ChplProductView({ product }) {
         ...obj,
         open: obj.open + l.openSurveillanceCount,
         closed: obj.closed + l.closedSurveillanceCount,
-        active: obj.active + ['Active', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB'].includes(l.certificationStatus) ? 1 : 0,
+        active: obj.active + (['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(l.certificationStatus) ? 1 : 0),
         total: obj.total + 1,
       }), {
         open: 0, closed: 0, active: 0, total: 0,
