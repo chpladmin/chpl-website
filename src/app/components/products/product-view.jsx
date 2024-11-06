@@ -106,7 +106,7 @@ function ChplProductView({ product }) {
     );
     const rollup = product.versions
       .filter((version) => version.version !== 'All') // remove when angularJS component is removed
-      .flatMap((version) => version.listings)
+      .flatMap((version) => version.unfilteredListings)
       .reduce((obj, l) => ({
         ...obj,
         open: obj.open + l.openSurveillanceCount,

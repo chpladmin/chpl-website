@@ -135,6 +135,7 @@ function ChplProductsView({ products }) {
         versions: product.versions.map((version) => ({
           ...version,
           listings: version.listings.filter((listing) => includeListing(listing, params)),
+          unfilteredListings: version.listings,
         })).filter((version) => version.listings.length > 0),
       }))
       .filter((product) => product.versions.length > 0));
