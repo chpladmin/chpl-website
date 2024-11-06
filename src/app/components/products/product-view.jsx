@@ -89,9 +89,11 @@ const useStyles = makeStyles({
 function ChplProductView({ product }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
+  const [active, setActive] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [listings, setListings] = useState([]);
   const [selectedVersion, setSelectedVersion] = useState('All');
+  const [surveillance, setSurveillance] = useState('');
   const [options, setOptions] = useState(['All']);
   const classes = useStyles();
 
@@ -102,6 +104,20 @@ function ChplProductView({ product }) {
           .filter((version) => version.version !== 'All') // remove when angularJS component is removed
           .map((v) => (v.version))),
     );
+    const rollup = product.versions
+      .filter((version) => version.version !== 'All') // remove when angularJS component is removed
+      .flatMap((version) => version.listings)
+      .reduce((obj, l) => ({
+        ...obj,
+        open: obj.open + l.openSurveillanceCount,
+        closed: obj.closed + l.closedSurveillanceCount,
+        active: obj.active + ['Active', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB'].includes(l.certificationStatus) ? 1 : 0,
+        total: obj.total + 1,
+      }), {
+        open: 0, closed: 0, active: 0, total: 0,
+      });
+    setSurveillance(`${rollup.open} open / ${rollup.open + rollup.closed} surveillance${(rollup.open + rollup.closed) !== 1 ? 's' : ''}`);
+    setActive(`${rollup.active} active / ${rollup.total} listing${rollup.total !== 1 ? 's' : ''}`);
   }, [product]);
 
   useEffect(() => {
@@ -148,12 +164,16 @@ function ChplProductView({ product }) {
             { product.name }
           </Typography>
           <Typography variant="body2">
-            (
+            { surveillance }
+          </Typography>
+          <Typography variant="body2">
+            { active }
+          </Typography>
+          <Typography variant="body2">
             { product.versions.length }
             {' '}
             version
-            { product.versions.length !== 1 ? 's ' : ' ' }
-            found)
+            { product.versions.length !== 1 ? 's' : '' }
           </Typography>
         </Box>
       </AccordionSummary>
