@@ -17,6 +17,8 @@ import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
 import { compareVersion } from 'pages/reports/versions/versions.service';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -50,14 +52,23 @@ const getDetails = (activity) => {
 };
 
 function ChplActivityDetails({ activity }) {
+  const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Activity Details',
+    });
     setOpen(true);
   };
 
   const handleClose = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Close Activity Details',
+    });
     setOpen(false);
   };
 
