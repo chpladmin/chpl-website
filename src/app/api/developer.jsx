@@ -12,6 +12,16 @@ const useFetchAttestations = ({ developer, isAuthenticated }) => {
   });
 };
 
+const useFetchDeveloperHierarchy = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/hierarchy', developer?.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/hierarchy`);
+    return response.data;
+  }, {
+    enabled: !!developer,
+  });
+};
+
 const useFetchDevelopers = () => {
   const axios = useAxios();
   return useQuery(['developers'], async () => {
@@ -114,6 +124,7 @@ const usePostMessagePreview = () => {
 
 export {
   useFetchAttestations,
+  useFetchDeveloperHierarchy,
   useFetchDevelopers,
   useFetchDevelopersBySearch,
   useFetchDirectReviews,
