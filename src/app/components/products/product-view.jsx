@@ -90,6 +90,7 @@ function ChplProductView({ product }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [expanded, setExpanded] = useState(false);
+  const [listings, setListings] = useState([]);
   const [selectedVersion, setSelectedVersion] = useState('All');
   const [options, setOptions] = useState(['All']);
   const classes = useStyles();
@@ -102,6 +103,14 @@ function ChplProductView({ product }) {
           .map((v) => (v.version))),
     );
   }, [product]);
+
+  useEffect(() => {
+    setListings(product.versions
+      .filter((version) => version.version !== 'All') // remove when angularJS component is removed
+      .filter((version) => selectedVersion === 'All' || version.version === selectedVersion)
+      .flatMap((version) => version.listings)
+      .sort((a, b) => (a.certificationDay < b.certificationDay ? 1 : (a.certificationDay > b.certificationDay ? -1 : (a.chplProductNumber < b.chplProductNumber ? -1 : 1)))));
+  }, [product, selectedVersion]);
 
   const getIcon = () => (expanded
     ? (
@@ -174,23 +183,19 @@ function ChplProductView({ product }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              { product.versions
-                .filter((version) => version.version !== 'All') // remove when angularJS component is removed
-                .filter((version) => selectedVersion === 'All' || version.version === selectedVersion)
-                .flatMap((version) => version.listings
-                  .map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.chplProductNumber}</TableCell>
-                      <TableCell>{item.certificationStatus}</TableCell>
-                      <TableCell>
-                        { item.openSurveillanceNonConformityCount }
-                        {' open / '}
-                        { item.closedSurveillanceNonConformityCount }
-                        {' closed'}
-                      </TableCell>
-                      <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
-                    </TableRow>
-                  )))}
+              { listings.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell>{item.chplProductNumber}</TableCell>
+                  <TableCell>{item.certificationStatus}</TableCell>
+                  <TableCell>
+                    { item.openSurveillanceNonConformityCount }
+                    {' open / '}
+                    { item.closedSurveillanceNonConformityCount }
+                    {' closed'}
+                  </TableCell>
+                  <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
