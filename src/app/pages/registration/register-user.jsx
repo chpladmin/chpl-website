@@ -85,7 +85,6 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
-            $state.go('administration');
             networkService.getUserById(authService.getUserId())
               .then((user) => {
                 setUser(user);
@@ -93,6 +92,7 @@ function ChplRegisterUser({ hash }) {
                 Idle.watch();
                 $rootScope.$broadcast('loggedIn');
               });
+            $state.go('administration');
           }, (error) => {
             if (error.status === 401) {
               setMessage('A user may not have more than one role, or your username / password are incorrect');
@@ -155,10 +155,13 @@ function ChplRegisterUser({ hash }) {
       case 'loggedIn':
         setMessage('');
         authorizeSsoUser(hash, {
-          onSuccess: () => {
+          onSuccess: (response) => {
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
+            setUser(response.data);
+            authService.saveCurrentUser(response.data);
+            $state.go('administration');
           },
           onError: (error) => {
             if (error.status === 401) {
