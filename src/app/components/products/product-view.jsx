@@ -205,7 +205,20 @@ function ChplProductView({ product }) {
             <TableBody>
               { listings.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.chplProductNumber}</TableCell>
+                  <TableCell>
+                    <ChplLink
+                      href={`#/listing/${item.id}`}
+                      text={item.chplProductNumber}
+                      analytics={{
+                        ...analytics,
+                        event: 'Navigate to Listing Details Page',
+                        label: item.chplProductNumber,
+                        aggregationName: product.name,
+                      }}
+                      external={false}
+                      router={{ sref: 'listing', options: { id: item.id } }}
+                    />
+                  </TableCell>
                   <TableCell>{item.certificationStatus}</TableCell>
                   <TableCell>
                     { item.openSurveillanceNonConformityCount }
