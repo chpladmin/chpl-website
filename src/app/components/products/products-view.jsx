@@ -116,6 +116,8 @@ const includeListing = (listing, params) => {
   return include;
 };
 
+const sortProducts = (a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+
 function ChplProductsView({ products }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -171,12 +173,14 @@ function ChplProductsView({ products }) {
               )}
           </div>
         </div>
-        { displayedProducts.map((product) => (
-          <ChplProductView
-            key={product.id}
-            product={product}
-          />
-        ))}
+        { displayedProducts
+          .sort((a, b) => sortProducts(a, b))
+          .map((product) => (
+            <ChplProductView
+              key={product.id}
+              product={product}
+            />
+          ))}
       </CardContent>
     </Card>
   );
