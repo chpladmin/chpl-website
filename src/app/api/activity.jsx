@@ -80,7 +80,7 @@ const useFetchProductActivitiesMetadata = ({ products, enabled }) => {
     ...options.daily,
     queryKey: ['activity/metadata/products', p.id, p.end],
     queryFn: async () => {
-      const response = await axios.get(`activity/metadata/products/${p.id}?end=${p.end}`);
+      const response = await axios.get(`activity/metadata/products/${p.id}?end=${p.end ?? Date.now()}`);
       return {
         data: response.data,
         id: p.id,
@@ -116,7 +116,7 @@ const useFetchVersionActivitiesMetadata = ({ versions, enabled }) => {
     ...options.daily,
     queryKey: ['activity/metadata/versions', v.id, v.end],
     queryFn: async () => {
-      const response = await axios.get(`activity/metadata/versions/${v.id}?end=${v.end}`);
+      const response = await axios.get(`activity/metadata/versions/${v.id}?end=${v.end ?? Date.now()}`);
       return {
         data: response.data,
         id: v.id,
