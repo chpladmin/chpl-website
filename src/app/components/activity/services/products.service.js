@@ -7,16 +7,10 @@ let lookup;
 const compare = (before, after, key, title = 'unknown') => {
   let options;
   switch (key) {
-    case 'statusEvents':
+    case 'ownerHistory':
       options = {
-        sort: (p, c) => (p.eventDate < c.eventDate ? -1 : p.eventDate > c.eventDate ? 1 : 0),
-        write: (f) => `Status "${f.status.name ?? f.status.statusName ?? f.status.status}"`,
-      };
-      break;
-    case 'statuses':
-      options = {
-        sort: (p, c) => (p.startDate < c.startDate ? -1 : p.startDate > c.startDate ? 1 : 0),
-        write: (f) => `Status "${f.status.name}"`,
+        sort: (p, c) => (p.transferDate < c.transferDate ? -1 : p.transferDate > c.transferDate ? 1 : 0),
+        write: (f) => `Developer "${f.developer.name}"`,
       };
       break;
     default:
@@ -33,6 +27,9 @@ const compare = (before, after, key, title = 'unknown') => {
 };
 
 lookup = {
+  shortCircuit: [
+    'root.owner',
+  ],
   'root.contact': { message: () => 'Contact changes:' },
   'root.contact.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
   'root.contact.firstName': { message: (before, after) => comparePrimitive(before, after, 'firstName', 'First Name') },
@@ -40,16 +37,17 @@ lookup = {
   'root.contact.lastName': { message: (before, after) => comparePrimitive(before, after, 'lastName', 'Last Name') },
   'root.contact.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
   'root.creationDate': { message: (before, after) => comparePrimitive(before, after, 'creationDate', 'Creation Date', getDisplayDateFormat) },
-  'root.developerName': { message: (before, after) => comparePrimitive(before, after, 'developerName', 'Developer Name') },
   'root.developerCode': { message: () => undefined },
   'root.developerId': { message: () => undefined },
+  'root.developerName': { message: (before, after) => comparePrimitive(before, after, 'developerName', 'Developer Name') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.lastModifiedUser': { message: () => undefined },
+  'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'root.ownerHistory': { message: (before, after) => compare(before, after, 'ownerHistory', 'Owner History') },
   'root.productId': { message: () => undefined },
   'root.productName': { message: (before, after) => comparePrimitive(before, after, 'productName', 'Product Name') },
+  'root.productVersions': { message: () => undefined },
   'root.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
-
-  'root.statusEvents': { message: (before, after) => compare(before, after, 'statusEvents', 'Status Events') },
 };
 
 const compareProducts = (prev, curr) => compareObject(prev, curr, lookup);
