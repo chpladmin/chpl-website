@@ -10,6 +10,7 @@ import { arrayOf } from 'prop-types';
 
 import ChplProductView from './product-view';
 
+import ChplProductsHistory from 'components/activity/products-history';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -41,6 +42,15 @@ const useStyles = makeStyles({
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 4px',
+  },
+  cardHeader: {
+    margin: '0',
+    fontSize: '1.25em',
+  },
+  headerContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   tableResultsHeaderContainer: {
     display: 'grid',
@@ -145,7 +155,21 @@ function ChplProductsView({ products }) {
 
   return (
     <Card>
-      <CardHeader title="Products" />
+      <CardHeader
+        title={(
+          <div className={classes.headerContainer}>
+            Products
+            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+              && (
+                <ChplProductsHistory
+                  products={products}
+                />
+              )}
+          </div>
+        )}
+        component="div"
+        className={classes.cardHeader}
+      />
       <CardContent>
         <ChplFilterSearchBar
           hideSearchTerm
