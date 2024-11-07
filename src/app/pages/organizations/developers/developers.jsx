@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ChplDevelopersView from './developers-view';
 
@@ -9,7 +9,8 @@ import {
   decertificationDate,
   quickFilters,
 } from 'components/filter/filters';
-import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   decertificationDate, {
@@ -50,6 +51,7 @@ const staticFilters = [
 function ChplDevelopersPage() {
   const [filters, setFilters] = useState(staticFilters);
   const { analytics } = useAnalyticsContext();
+  const { hasAnyRole } = useContext(UserContext);
   const acbQuery = useFetchAcbs();
 
   useEffect(() => {
@@ -79,6 +81,24 @@ function ChplDevelopersPage() {
         values,
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
+
+  useEffect(() => {
+    if (hasAnyRole(['chpl-admin', 'chpl-onc'])) {
+      setFilters((f) => f
+        .filter((filter) => filter.key !== 'hasUsers')
+        .concat({
+          ...defaultFilter,
+          key: 'hasUsers',
+          display: 'Has Users',
+          getValueEntry: getRadioValueEntry,
+          singular: true,
+          values: [
+            { value: 'true', display: 'Yes' },
+            { value: 'false', display: 'No' },
+          ],
+        }));
+    }
+  }, [hasAnyRole]);
 
   const data = {
     analytics: {
