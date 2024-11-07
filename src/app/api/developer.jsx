@@ -21,10 +21,10 @@ const useFetchDevelopers = () => {
 };
 
 const useFetchDevelopersBySearch = ({
-  orderBy,
-  pageNumber,
-  pageSize,
-  sortDescending,
+  orderBy = 'developer',
+  pageNumber = 0,
+  pageSize = 25,
+  sortDescending = false,
   query,
 }) => {
   const axios = useAxios();
