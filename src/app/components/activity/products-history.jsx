@@ -17,6 +17,7 @@ import {
   useFetchProductActivitiesMetadata,
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
+import compareProducts from 'components/activity/services/products.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
 const useStyles = makeStyles({
@@ -25,13 +26,9 @@ const useStyles = makeStyles({
   },
 });
 
-const interpret = (a, b) => {
-  console.log({a, b});
-  return `${a.id}-${b.id}`;
-};
-
 function ChplProductsHistory({ products }) {
   const [activities, setActivities] = useState([]);
+  const [evaluatedActivities, setEvaluatedActivities] = useState([]);
   const [open, setOpen] = useState(false);
   const [versions, setVersions] = useState([]);
   const classes = useStyles();
@@ -48,31 +45,32 @@ function ChplProductsHistory({ products }) {
 
   useEffect(() => {
     const vs = products
-          .flatMap((product) => product.versions)
-          .filter((version) => version.version !== 'All'); // todo remove when angularjs component is removed
+      .flatMap((product) => product.versions)
+      .filter((version) => version.version !== 'All'); // todo remove when angularjs component is removed
     setVersions(vs);
   }, [products]);
 
   useEffect(() => {
-    console.log(productQuery.isLoading, versionQuery.isLoading, productQuery.isError, versionQuery.isError);
-    if (productQuery.isLoading || versionQuery.isLoading) { return; }
-    if (productQuery.isError || versionQuery.isError || !productQuery.data || !versionQuery.data) {
-      setActivities([]);
-      return;
-    }
-    console.log(productQuery.data, versionQuery.data);
-    setActivities(productQuery.data
-      .concat(versionQuery.data)
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
-      .map((activity, idx, arr) => (
-        <ChplActivityDetails
-          key={activity.id}
-          activity={activity}
-          interpret={interpret}
-          last={idx === arr.length - 1}
-        />
-      )));
-  }, [productQuery.isError, versionQuery.isError, productQuery.isLoading, versionQuery.isLoading, productQuery.data, versionQuery.data]);
+    productQuery.forEach((q) => {
+      if (q.isLoading || q.isError || !q.data || evaluatedActivities.includes(q.data.id)) { return; }
+      setActivities((prev) => [
+        ...prev,
+        ...q.data.data,
+      ]);
+      setEvaluatedActivities((prev) => [...prev, q.data.id]);
+    });
+  }, [productQuery]);
+
+  useEffect(() => {
+    versionQuery.forEach((q) => {
+      if (q.isLoading || q.isError || !q.data || evaluatedActivities.includes(q.data.id)) { return; }
+      setActivities((prev) => [
+        ...prev,
+        ...q.data.data,
+      ]);
+      setEvaluatedActivities((prev) => [...prev, q.data.id]);
+    });
+  }, [versionQuery]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -113,7 +111,17 @@ function ChplProductsHistory({ products }) {
         </ChplDialogTitle>
         <DialogContent dividers>
           <Timeline>
-            { activities.map((activity) => activity) }
+            { activities
+              .sort((a, b) => (a.date < b.date ? 1 : -1))
+              .map((activity, idx, arr) => (
+                <ChplActivityDetails
+                  key={activity.id}
+                  activity={activity}
+                  interpret={compareProducts}
+                  last={idx === arr.length - 1}
+                  title={activity.concept === 'PRODUCT' ? 'Product ' : 'Version '}
+                />
+              ))}
           </Timeline>
         </DialogContent>
       </Dialog>
