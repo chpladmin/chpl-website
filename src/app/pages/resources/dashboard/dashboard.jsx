@@ -8,10 +8,6 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-// import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-// import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
-// import GroupOutlinedIcon from '@material-ui/icons/GroupOutlined';
-// import HighlightOutlinedIcon from '@material-ui/icons/HighlightOutlined';
 
 import { useFetchReportMetadata } from 'api/reports';
 import { palette, theme } from 'themes';
