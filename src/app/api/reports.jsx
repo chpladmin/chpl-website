@@ -5,11 +5,8 @@ import { useAxios } from './axios';
 const useFetchReportMetadata = (reportGroup) => {
   const axios = useAxios();
   return useQuery(['report-metadata', reportGroup], async () => {
-    if (reportGroup) {
-      const response = await axios.get(`report-data/report-metadata/group/${reportGroup}`);
-      return response.data;
-    }
-    return {};
+    const response = await axios.get(`report-data/report-metadata/group/${reportGroup}`);
+    return response.data;
   }, {
     enabled: !!reportGroup,
   });
