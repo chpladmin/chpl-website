@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -24,7 +24,7 @@ import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
-import { ListingContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -68,7 +68,6 @@ const makePercentage = (val) => `${makeRounded(val * 100)}%`;
 
 function ChplSedTaskView({ task: initialTask }) {
   const { analytics } = useAnalyticsContext();
-  const { listing } = useContext(ListingContext);
   const [expanded, setExpanded] = useState(false);
   const [meanExperience, setMeanExperience] = useState(0);
   const [task, setTask] = useState(undefined);
@@ -119,9 +118,6 @@ function ChplSedTaskView({ task: initialTask }) {
     eventTrack({
       ...analytics,
       event: expanded ? `Hide Details - ${task.description}` : `Show Details - ${task.description}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setExpanded(!expanded);
   };
