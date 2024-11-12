@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 13.28.0
+_12 November 2024_
+
+### Features
+* Add Criteria Migration - (a)(9) to (b)(11) report to dashboard
+* Display Developers that will not receive system messages
+* Enable filtering by "has / does not have users"
+
+### Flagged Features
+* Show only the "correct" login component based on flag state
+
+---
+
 ## Version 13.27.0
 _28 October 2024_
 
