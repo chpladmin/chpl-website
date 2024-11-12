@@ -55,7 +55,23 @@ function ChplRegisterUser({ hash }) {
       handleDispatch('authorize', {});
     }
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer']) && hash.indexOf('-') > -1 && hash.length > 0) {
-      handleDispatch('loggedIn', {});
+      authorizeSsoUser(hash, {
+        onSuccess: (response) => {
+          enqueueSnackbar('Success: Your new permissions have been added', {
+            variant: 'success',
+          });
+          setUser(response.data);
+          authService.saveCurrentUser(response.data);
+          $state.go('administration');
+        },
+        onError: (error) => {
+          if (error.status === 401) {
+            setMessage('A user may not have more than one role, or your username / password are incorrect');
+          } else {
+            setMessage(error.response.data.error);
+          }
+        },
+      });
     }
   }, [hash, hasAnyRole]);
 
@@ -154,23 +170,6 @@ function ChplRegisterUser({ hash }) {
         break;
       case 'loggedIn':
         setMessage('');
-        authorizeSsoUser(hash, {
-          onSuccess: (response) => {
-            enqueueSnackbar('Success: Your new permissions have been added', {
-              variant: 'success',
-            });
-            setUser(response.data);
-            authService.saveCurrentUser(response.data);
-            $state.go('administration');
-          },
-          onError: (error) => {
-            if (error.status === 401) {
-              setMessage('A user may not have more than one role, or your username / password are incorrect');
-            } else {
-              setMessage(error.response.data.error);
-            }
-          },
-        });
         break;
       default:
         console.error(`No action matches ${action} with payload ${payload}`);
