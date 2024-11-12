@@ -50,19 +50,13 @@ const useStyles = makeStyles({
 function ChplDashboard() {
   const classes = useStyles();
   const [activeReport, setActiveReport] = useState(undefined);
-  const [reportMetadata, setReportMetadata] = useState(undefined);
-  const reportMetadataQuery = useFetchReportMetadata('dashboard');
+  const [reportMetadata, setReportMetadata] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchReportMetadata('dashboard');
 
   useEffect(() => {
-    if (reportMetadataQuery.isLoading) {
-      return;
-    }
-    if (!reportMetadataQuery.isSuccess) {
-      setReportMetadata(undefined);
-      return;
-    }
-    setReportMetadata(reportMetadataQuery.data);
-  }, [reportMetadataQuery.data, reportMetadataQuery.isLoading, reportMetadataQuery.isSuccess]);
+    if (isLoading || !isSuccess) { return; }
+    setReportMetadata(data);
+  }, [data, isLoading, isSuccess]);
 
   const handleReportChange = (reportKey) => {
     setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
@@ -89,22 +83,24 @@ function ChplDashboard() {
                     >
                       Dashboard
                     </Button>
-                    { reportMetadata && reportMetadata.map((report) => (
-                      <Button
-                        key={`${report.reportKey}-button`}
-                        style={{ justifyContent: 'flex-start' }}
-                        color="primary"
-                        onClick={() => handleReportChange(report.reportKey)}
-                      >
-                        { report.title }
-                      </Button>
-                    ))}
+                    { reportMetadata
+                      .sort((a, b) => (a.title < b.title ? -1 : 1))
+                      .map((report) => (
+                        <Button
+                          key={`${report.reportKey}-button`}
+                          style={{ justifyContent: 'flex-start' }}
+                          color="primary"
+                          onClick={() => handleReportChange(report.reportKey)}
+                        >
+                          { report.title }
+                        </Button>
+                      ))}
                   </Box>
                 </CardContent>
               </Card>
             </Box>
             <Box width="100%">
-              {!activeReport && (
+              { !activeReport && (
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="h6">
@@ -130,8 +126,8 @@ function ChplDashboard() {
                   </CardContent>
                 </Card>
               )}
-              {activeReport && (
-                <Card 
+              { activeReport && (
+                <Card
                   style={{ width: '100%' }}
                   key={activeReport.reportKey}
                 >
