@@ -33,6 +33,11 @@
         dispatch="::$ctrl.handleAttestationDispatch"
         ></chpl-attestations-view-wrapper-bridge>
       <br />
+      <chpl-insights-view-wrapper-bridge
+        developer="$ctrl.developer"
+        dispatch="::$ctrl.handleAttestationDispatch"
+        ></chpl-insights-view-wrapper-bridge>
+      <br />
       <div ng-if="$ctrl.can('manageUsers')">
         <chpl-users-bridge
           users="$ctrl.users"
