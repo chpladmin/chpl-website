@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -71,10 +72,9 @@ const useStyles = makeStyles({
     },
   },
   resultsContainer: {
-    display: 'grid',
+    display: 'flex',
     gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   wrap: {
@@ -98,7 +98,9 @@ function ChplDevelopersView() {
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchDevelopersBySearch({
+  const {
+    data, isError, isLoading, isFetching,
+  } = useFetchDevelopersBySearch({
     orderBy,
     pageNumber,
     pageSize,
@@ -228,6 +230,10 @@ function ChplDevelopersView() {
                       <Typography variant="body2">
                         {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                       </Typography>
+                    )}
+                  { isFetching
+                    && (
+                      <CircularProgress size={24} />
                     )}
                 </div>
                 { developers.length > 0

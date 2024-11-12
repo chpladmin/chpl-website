@@ -4,8 +4,11 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Divider,
+  List,
+  ListItem,
   MenuItem,
   Table,
   TableBody,
@@ -85,6 +88,28 @@ const useStyles = makeStyles({
     paddingTop: '8px',
     padddingBottom: '8px',
   },
+  undeliverable: {
+    background: palette.secondary,
+    border: `.5px solid ${palette.primary}`,
+    borderRadius: '8px',
+    padding: '16px 8px',
+    overflowY: 'auto',
+    maxHeight: '35vh',
+    '&::-webkit-scrollbar': {
+      width: '2px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: '#f1f1f1',
+      borderRadius: '8px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: palette.primary,
+      borderRadius: '8px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: theme.palette.primary.dark,
+    },
+  },
 });
 
 const validationSchema = yup.object({
@@ -118,6 +143,8 @@ function ChplMessaging({ dispatch }) {
   const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(templateOptions[0]);
+  const [undeliverable, setUndeliverable] = useState([]);
+  const [undeliverableTotalCount, setUndeliverableTotalCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
   const postMessagePreview = usePostMessagePreview();
@@ -125,20 +152,25 @@ function ChplMessaging({ dispatch }) {
 
   let formik;
 
-  const { data, isError, isLoading } = useFetchDevelopersBySearch({
-    orderBy: 'developer',
-    pageNumber: 0,
-    pageSize: 25,
-    sortDescending: false,
-    query: queryString(),
+  const { data: allData, isError: allIsError, isLoading: allIsLoading } = useFetchDevelopersBySearch({ query: queryString() });
+  const { data: undeliverableData, isError: undeliverableIsError, isLoading: undeliverableIsLoading } = useFetchDevelopersBySearch({
+    query: queryString()
+      .split('&')
+      .filter((p) => !p.startsWith('hasUsers'))
+      .concat('hasUsers=false')
+      .join('&'),
   });
 
   useEffect(() => {
-    if (isLoading) { return; }
-    if (isError || !data.results) { return; }
-    if (isLoading || !data.results) { return; }
-    setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading]);
+    if (allIsLoading || allIsError || !allData.results) { return; }
+    setRecordCount(allData.recordCount);
+  }, [allData, allIsError, allIsLoading]);
+
+  useEffect(() => {
+    if (undeliverableIsLoading || undeliverableIsError || !undeliverableData.results) { return; }
+    setUndeliverable(undeliverableData.results.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })));
+    setUndeliverableTotalCount(undeliverableData.recordCount);
+  }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 
   const applyTemplate = () => {
     formik.setFieldValue('subject', selectedOption.subject);
@@ -200,6 +232,7 @@ function ChplMessaging({ dispatch }) {
     onSubmit: () => {
       sendMessage();
     },
+    validateOnMount: true,
   });
 
   const minRows = window.outerWidth >= 1200 ? 16 : 8;
@@ -279,6 +312,59 @@ function ChplMessaging({ dispatch }) {
               />
             </CardContent>
           </Card>
+          { !queryString().includes('hasUsers=true')
+            && (
+              <Box className={classes.undeliverable}>
+                { undeliverableIsLoading
+                  && (
+                    <CircularProgress />
+                  )}
+                { undeliverableTotalCount === 0 && !undeliverableIsLoading
+                  && (
+                    <Typography>
+                      All Developers have at least one active user
+                    </Typography>
+                  )}
+                { undeliverableTotalCount > 0
+                  && (
+                    <>
+                      <Typography>
+                        { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
+                        Developer
+                        { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
+                        no active users and will not receive this message:
+                      </Typography>
+                      <List>
+                        { undeliverable.map((item) => (
+                          <ListItem key={item.id}>
+                            <ChplLink
+                              href={`#/organizations/developers/${item.id}`}
+                              text={item.name}
+                              analytics={{
+                                ...analytics,
+                                event: 'Navigate to Developer Page',
+                                label: item.name,
+                              }}
+                              external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                            />
+                          </ListItem>
+                        ))}
+                        { undeliverableTotalCount > 25
+                          && (
+                            <ListItem>
+                              ...and
+                              {' '}
+                              {undeliverableTotalCount - 25}
+                              {' '}
+                              more
+                            </ListItem>
+                          )}
+                      </List>
+                    </>
+                  )}
+              </Box>
+            )}
           <Card bgcolor="white">
             <Box
               padding="16px"
