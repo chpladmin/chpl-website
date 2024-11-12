@@ -1,7 +1,5 @@
 import RealWorldTestingSearchPage from '../pageobjects/real-world-testing-search.page';
 
-const { expect } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 let page;
 
 describe('the Real World Testing Search page', () => {

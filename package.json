@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "13.27.0",
+  "version": "13.28.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -110,7 +110,7 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^5.6.0",
-    "http-proxy-middleware": "~0.9.1",
+    "http-proxy-middleware": "~3.0.3",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine-core": "^3.99.1",
@@ -145,5 +145,5 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.5.1"
 }

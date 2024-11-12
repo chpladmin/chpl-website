@@ -3,17 +3,14 @@ import { arrayOf, func } from 'prop-types';
 
 import ChplSedDetailsEdit from './details-edit';
 
-import ApiWrapper from 'api/api-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 import { criterion, listing, ucdProcessType } from 'shared/prop-types';
 
 function ChplWrapper(props) {
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <ChplSedDetailsEdit {...props} />
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplSedDetailsEdit {...props} />
+    </AppWrapper>
   );
 }
 
