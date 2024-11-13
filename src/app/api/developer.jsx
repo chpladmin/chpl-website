@@ -12,13 +12,13 @@ const useFetchAttestations = ({ developer, isAuthenticated }) => {
   });
 };
 
-const useFetchDeveloperHierarchy = ({ developer }) => {
+const useFetchDeveloperHierarchy = ({ id }) => {
   const axios = useAxios();
-  return useQuery(['developers/hierarchy', developer?.id], async () => {
-    const response = await axios.get(`/developers/${developer.id}/hierarchy`);
+  return useQuery(['developers/hierarchy', id], async () => {
+    const response = await axios.get(`/developers/${id}/hierarchy`);
     return response.data;
   }, {
-    enabled: !!developer,
+    enabled: !!id,
   });
 };
 
