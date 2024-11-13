@@ -15,18 +15,8 @@ const states = [
   }, {
     name: 'organizations.developers.developer',
     url: '/{id}',
-    component: 'chplDeveloperView',
-    resolve: {
-      developer: (networkService, $location, $transition$) => {
-        'ngInject';
-
-        if (!$transition$.params().id) {
-          $location.path('/organizations/developers');
-        }
-        return networkService.getDeveloperHierarchy($transition$.params().id);
-      },
-    },
-    data: { title: 'CHPL Developers' },
+    component: 'chplDeveloperPage',
+    data: { title: 'CHPL Developer' },
   }, {
     name: 'organizations.developers.developer.edit',
     url: '/edit',
@@ -34,7 +24,7 @@ const states = [
       'view@^': 'chplDevelopersEdit',
     },
     data: {
-      title: 'CHPL Developers - Edit',
+      title: 'CHPL Developer - Edit',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
     },
   }, {
@@ -44,7 +34,7 @@ const states = [
       'view@^': 'chplDevelopersSplit',
     },
     data: {
-      title: 'CHPL Developers - Split',
+      title: 'CHPL Developer - Split',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
   }, {
@@ -54,7 +44,7 @@ const states = [
       'view@^': 'chplDevelopersJoin',
     },
     data: {
-      title: 'CHPL Developers - Join',
+      title: 'CHPL Developer - Join',
       roles: ['chpl-admin', 'chpl-onc'],
     },
   }, {
@@ -66,7 +56,7 @@ const states = [
       'view@^.^': 'chplAttestationCreateWrapperBridge',
     },
     data: {
-      title: 'CHPL Developers - Attestation',
+      title: 'CHPL Developer - Attestation',
       roles: ['chpl-developer'],
     },
   }, {

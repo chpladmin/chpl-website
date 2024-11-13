@@ -1,3 +1,4 @@
+import ChplDeveloper from './developers/developer/developer-wrapper';
 import ChplDeveloperEdit from './developers/developer/edit-wrapper';
 import ChplDevelopersJoin from './developers/developer/join-wrapper';
 import ChplDevelopersWrapper from './developers/developers-wrapper';
@@ -14,6 +15,7 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
+  .component('chplDeveloperPageBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplDeveloperEditBridge', reactToAngularComponent(ChplDeveloperEdit))
   .component('chplDevelopersJoinBridge', reactToAngularComponent(ChplDevelopersJoin))
   .component('chplDevelopersWrapperBridge', reactToAngularComponent(ChplDevelopersWrapper))
