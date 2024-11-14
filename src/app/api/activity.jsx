@@ -26,6 +26,16 @@ const useFetchActivity = ({ id, isEnabled }) => {
   });
 };
 
+const useFetchAnnouncementsActivity = ({ isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/announcements'], async () => {
+    const response = await axios.get('activity/metadata/announcements');
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
   const axios = useAxios();
   return useQueries(developers.map((d) => ({
@@ -129,6 +139,7 @@ const useFetchVersionActivitiesMetadata = ({ versions, enabled }) => {
 export {
   useFetchActivities,
   useFetchActivity,
+  useFetchAnnouncementsActivity,
   useFetchDeveloperActivitiesMetadata,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,

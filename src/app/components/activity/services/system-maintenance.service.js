@@ -32,9 +32,11 @@ const lookup = {
   'root.additionalInformation': { message: (before, after) => comparePrimitive(before, after, 'additionalInformation', 'Additional Information') },
   'root.approvedStandardVersion': { message: (before, after) => comparePrimitive(before, after, 'approvedStandardVersion', 'Approved Standard Version') },
   'root.criteria': { message: (before, after) => compare(before, after, 'criteria', 'Certification Criteria') },
+  'root.endDateTime': { message: (before, after) => comparePrimitive(before, after, 'endDateTime', 'End Date / Time', getDisplayDateFormat) },
   'root.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Date', getDisplayDateFormat) },
   'root.groupName': { message: (before, after) => comparePrimitive(before, after, 'groupName', 'Group') },
   'root.id': { message: () => undefined },
+  'root.isPublic': { message: (before, after) => comparePrimitive(before, after, 'isPublic', 'Is Public?') },
   'root.practiceType': { message: () => 'Practice Type' },
   'root.practiceType.description': { message: () => undefined },
   'root.practiceType.id': { message: () => undefined },
@@ -46,7 +48,10 @@ const lookup = {
   'root.rule': { message: () => 'Rule' },
   'root.rule.id': { message: () => undefined },
   'root.rule.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'root.startDateTime': { message: (before, after) => comparePrimitive(before, after, 'startDateTime', 'Start Date / Time', getDisplayDateFormat) },
   'root.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Date', getDisplayDateFormat) },
+  'root.text': { message: (before, after) => comparePrimitive(before, after, 'text', 'Text') },
+  'root.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
   'root.value': { message: (before, after) => comparePrimitive(before, after, 'value', 'Value') },
 };
 
