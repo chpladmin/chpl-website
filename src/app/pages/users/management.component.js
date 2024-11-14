@@ -44,11 +44,12 @@ const UserManagementComponent = {
       switch (action) {
         case 'delete':
           this.networkService.deleteUser(data)
-            .then(() => that.networkService.getUsers().then((response) => {
-              that.users = response.users;
-            }));
+            .then(() => that.networkService.getUsers(that.hasAnyRole(['chpl-admin', 'chpl-onc']))
+              .then((response) => {
+                that.users = response.users;
+              }));
           break;
-        case 'cognito-invite' :
+        case 'cognito-invite':
           this.networkService.inviteCognitoUser({
             email: data.email,
             groupName: data.groupName,
@@ -77,7 +78,7 @@ const UserManagementComponent = {
           }));
           break;
         case 'refresh':
-          this.networkService.getUsers()
+          this.networkService.getUsers(that.hasAnyRole(['chpl-admin', 'chpl-onc']))
             .then((response) => {
               that.users = response.users
                 .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER', 'chpl-onc-acb', 'chpl-developer'].includes(user.role));
