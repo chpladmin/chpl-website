@@ -8,7 +8,7 @@ const states = [
         'ngInject';
 
         if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-          return networkService.getUsers();
+          return networkService.getUsers(true);
         }
         return [];
       },
