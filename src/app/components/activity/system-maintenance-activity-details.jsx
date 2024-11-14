@@ -87,7 +87,7 @@ function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
         { getDescription(activity) }
         <Typography variant="body2" className={classes.dateText}>
           { getDisplayDateFormat(activity.date) }
-          {` (${activity.responsibleUser.fullName})` }
+          {` (${activity.responsibleUser?.fullName ?? 'Anonymous'})` }
         </Typography>
         { activity.id && details?.length > 0
           && (
