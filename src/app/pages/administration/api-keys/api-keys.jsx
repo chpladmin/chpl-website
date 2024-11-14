@@ -45,7 +45,7 @@ function ChplApiKeys() {
       event: 'Revoke API Key',
       category: analyticsData.analytics.category,
     });
-    mutate({ key }, {
+    mutate(key, {
       onSuccess: () => {
         enqueueSnackbar(`API Key ${key.key} has been revoked`, {
           variant: 'success',
