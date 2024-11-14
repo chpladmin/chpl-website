@@ -30,17 +30,7 @@ const states = [{
 }, {
   name: 'administration.api-keys',
   url: '/api-keys',
-  component: 'chplApiKeys',
-  resolve: {
-    apiKeys: (authService, networkService) => {
-      'ngInject';
-
-      if (authService.hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-        return networkService.getApiUsers();
-      }
-      return [];
-    },
-  },
+  component: 'chplApiKeysWrapperBridge',
   data: {
     title: 'CHPL Administration - API Keys',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],

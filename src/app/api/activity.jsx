@@ -36,6 +36,16 @@ const useFetchAnnouncementsActivity = ({ isEnabled }) => {
   });
 };
 
+const useFetchApiKeyActivity = ({ isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/api-keys'], async () => {
+    const response = await axios.get('activity/metadata/api-keys');
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 const useFetchDeveloperActivitiesMetadata = ({ developers, enabled }) => {
   const axios = useAxios();
   return useQueries(developers.map((d) => ({
@@ -140,6 +150,7 @@ export {
   useFetchActivities,
   useFetchActivity,
   useFetchAnnouncementsActivity,
+  useFetchApiKeyActivity,
   useFetchDeveloperActivitiesMetadata,
   useFetchFunctionalitiesTestedActivity,
   useFetchListingActivityMetadata,
