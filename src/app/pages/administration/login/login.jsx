@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { func, shape } from 'prop-types';
-import {
-  Container,
-} from '@material-ui/core';
 
-import AppWrapper from 'app-wrapper';
-import { ChplLogin } from 'components/login';
+import { ChplCognitoLogin, ChplLogin } from 'components/login';
 import { getAngularService } from 'services/angular-react-helper';
+import { FlagContext } from 'shared/contexts';
 
 function ChplLoginPage(props) {
+  const { ssoIsOn } = useContext(FlagContext);
   /* eslint-disable react/destructuring-assignment */
   const $state = getAngularService('$state');
   const state = props.returnTo.state();
@@ -22,14 +20,18 @@ function ChplLoginPage(props) {
     }
   };
 
+  if (ssoIsOn) {
+    return (
+      <ChplCognitoLogin
+        dispatch={handleLogin}
+      />
+    );
+  }
+
   return (
-    <AppWrapper>
-      <Container id="login-component">
-        <ChplLogin
-          dispatch={handleLogin}
-        />
-      </Container>
-    </AppWrapper>
+    <ChplLogin
+      dispatch={handleLogin}
+    />
   );
 }
 
