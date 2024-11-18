@@ -10,18 +10,18 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
-import ChplAnnouncements from 'components/announcement/announcements';
-import ChplApiKeys from 'components/standards/api-key/api-keys';
-import ChplCertificationCriteria from 'components/standards/certification-criteria/certification-criteria';
-import ChplFunctionalitiesTested from 'components/standards/functionality-tested/functionalities-tested';
+import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
+import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
+import ChplApiKeys from 'components/system-maintenance/api-key/api-keys';
+import ChplCertificationCriteria from 'components/system-maintenance/certification-criteria/certification-criteria';
+import ChplFunctionalitiesTested from 'components/system-maintenance/functionality-tested/functionalities-tested';
 import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
-import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
-import ChplStandards from 'components/standards/standard/standards';
-import ChplSvaps from 'components/standards/svap/svaps';
+import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-standards';
+import ChplStandards from 'components/system-maintenance/standard/standards';
+import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
-import ChplTestTools from 'components/standards/test-tool/test-tools';
-import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
+import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
+import ChplUcdProcesses from 'components/system-maintenance/ucd-process/ucd-processes';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
