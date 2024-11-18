@@ -1,6 +1,5 @@
 /* global MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
 import 'ng-file-upload';
-import ChplApiKeysWrapper from './api-keys/api-keys-wrapper';
 import ChplCmsWrapper from './cms/cms-wrapper';
 import ChplLoginPage from './login';
 import ChplReportsWrapper from './reports/reports-wrapper';
@@ -36,7 +35,6 @@ angular
     IdleProvider.timeout(60 * MINUTES_UNTIL_LOGOUT);
     IdleProvider.autoResume(true);
   })
-  .component('chplApiKeysWrapperBridge', reactToAngularComponent(ChplApiKeysWrapper))
   .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
   .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))
   .component('chplReportsWrapperBridge', reactToAngularComponent(ChplReportsWrapper))

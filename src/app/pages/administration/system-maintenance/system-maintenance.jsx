@@ -10,16 +10,17 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
+import ChplAnnouncements from 'components/announcement/announcements';
+import ChplApiKeys from 'components/standards/api-key/api-keys';
 import ChplCertificationCriteria from 'components/standards/certification-criteria/certification-criteria';
-import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplFunctionalitiesTested from 'components/standards/functionality-tested/functionalities-tested';
 import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
-import ChplTestTools from 'components/standards/test-tool/test-tools';
+import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplStandards from 'components/standards/standard/standards';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
+import ChplTestTools from 'components/standards/test-tool/test-tools';
 import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -92,6 +93,7 @@ function ChplSystemMaintenance() {
     hide('announcements.viewall');
     hide('announcements.add.disabled');
     hide('announcements.edit.disabled');
+    hide('apiKeys.viewall.disabled');
     hide('certificationCriteria.viewall.disabled');
     hide('functionalitiesTested.viewall.disabled');
     hide('functionalitiesTested.viewall');
@@ -158,6 +160,18 @@ function ChplSystemMaintenance() {
             className={classes.menuItems}
           >
             Announcements
+          </Button>
+          <Button
+            onClick={() => navigate('apiKeys')}
+            disabled={active === 'apiKeys'}
+            id="system-maintenance-navigation-api-keys"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            API Keys
           </Button>
           { hasAnyRole(['chpl-admin'])
             && (
@@ -295,78 +309,32 @@ function ChplSystemMaintenance() {
                 <List>
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
-                    )}
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
-                    )}
+                  <ListItem>API Keys - View and optionally revoke existing API Keys</ListItem>
+                  { hasAnyRole(['chpl-admin']) && <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem> }
+                  { hasAnyRole(['chpl-admin']) && <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem> }
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem>
-                    )}
+                  { hasAnyRole(['chpl-admin']) && <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem> }
                   <ListItem>Subscriptions - Search and filter CHPL subscriptions</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
-                    )}
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
-                    )}
+                  { hasAnyRole(['chpl-admin']) && <ListItem>System Jobs - View and schedule system-related jobs</ListItem> }
+                  { hasAnyRole(['chpl-admin']) && <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem> }
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
               </CardContent>
             </Card>
           )}
-        { active === 'announcements'
-          && (
-            <ChplAnnouncements />
-          )}
-        { active === 'accessibilityStandards'
-          && (
-            <ChplAccessibilityStandards />
-          )}
-        { active === 'certificationCriteria'
-          && (
-            <ChplCertificationCriteria />
-          )}
-        { active === 'qmsStandards'
-          && (
-            <ChplQmsStandards />
-          )}
-        { active === 'functionalitiesTested'
-          && (
-            <ChplFunctionalitiesTested />
-          )}
-        { active === 'subscriptions'
-          && (
-            <ChplManageSubscriptions />
-          )}
-        { active === 'standards'
-          && (
-            <ChplStandards />
-          )}
-        { active === 'svaps'
-          && (
-            <ChplSvaps />
-          )}
-        { active === 'systemJobs'
-          && (
-            <ChplSystemJobs />
-          )}
-        { active === 'testTools'
-          && (
-            <ChplTestTools />
-          )}
-        { active === 'ucdProcesses'
-          && (
-            <ChplUcdProcesses />
-          )}
+        { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
+        { active === 'announcements' && <ChplAnnouncements /> }
+        { active === 'apiKeys' && <ChplApiKeys /> }
+        { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
+        { active === 'qmsStandards' && <ChplQmsStandards /> }
+        { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
+        { active === 'subscriptions' && <ChplManageSubscriptions /> }
+        { active === 'standards' && <ChplStandards /> }
+        { active === 'svaps' && <ChplSvaps /> }
+        { active === 'systemJobs' && <ChplSystemJobs /> }
+        { active === 'testTools' && <ChplTestTools /> }
+        { active === 'ucdProcesses' && <ChplUcdProcesses /> }
       </div>
     </div>
   );
