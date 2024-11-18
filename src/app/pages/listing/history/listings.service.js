@@ -34,6 +34,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => f.chplProductNumber,
       };
       break;
+    case 'chplProductNumberHistory':
+      options = {
+        sort: (p, c) => (p.endDateTime < c.endDateTime ? -1 : p.endDateTime > c.endDateTime ? 1 : 0),
+        write: (f) => `${f.chplProductNumber} ended as of ${getDisplayDateFormat(f.endDateTime)}`,
+      };
+      break;
     case 'codeSets':
       options = {
         sort: (p, c) => (p.codeSet.requiredDay < c.codeSet.requiredDay ? -1 : p.codeSet.requiredDay > c.codeSet.requiredDay ? 1 : 0),
@@ -443,7 +449,7 @@ const briefLookup = {
   'root.certifyingBody.id': { message: () => undefined },
   'root.certifyingBody.name': { message: () => undefined },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
-  'root.chplProductNumberHistory': { message: () => undefined }, // probably?
+  'root.chplProductNumberHistory': { message: () => undefined },
   'root.classificationType': { message: () => undefined },
   'root.classificationType.id': { message: () => undefined },
   'root.classificationType.name': { message: () => undefined },
@@ -656,6 +662,7 @@ const lookup = {
   'root.certificationStatus.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Status') },
   'root.certifyingBody': { message: () => 'ONC-ACB' },
   'root.certifyingBody.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'root.chplProductNumberHistory': { message: (before, after) => compare(before, after, 'chplProductNumberHistory', 'CHPL Product Number History') },
   'root.classificationType': { message: () => 'Listing Classification' },
   'root.classificationType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.decertificationDay': { message: (before, after) => comparePrimitive(before, after, 'decertificationDay', 'Decertification Date', getDisplayDateFormat) },
