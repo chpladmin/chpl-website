@@ -32,7 +32,7 @@ export const ChartsComponent = {
     ////////////////////////////////////////////////////////////////////
     loadUniquProductsReportUrl () {
       let that = this;
-      this.networkService.getReportUrl('UniqueProducts').then(data => that.uniqueProductsReportUrl = data.reportUrl);
+      this.networkService.getReportMetadata('UniqueProducts').then(data => that.uniqueProductsReportUrl = data.url);
 
     }
 
