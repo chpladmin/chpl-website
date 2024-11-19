@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
+  Box,
   Button,
   List,
   ListItem,
   Typography,
   makeStyles,
+  Divider,
+  ListItemText,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
@@ -34,16 +37,38 @@ const useStyles = makeStyles({
     gap: '16px',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
+      gridTemplateColumns: '.5fr 3fr',
       alignItems: 'start',
     },
   },
   navigation: {
     display: 'flex',
     flexDirection: 'column',
+    width: '232px',
+    position: 'sticky',
+    top: '115px',
+    zIndex: 1,
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirection: 'row',
+      width: '100%',
+      position: 'relative',
+      top: 0,
+    },
+  },
+  navigationFlex: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirection: 'row',
+      overflowX: 'scroll',
+    },
   },
   menuItems: {
     padding: '8px',
+    minWidth: 'min-content',
     justifyContent: 'space-between',
     '&.Mui-disabled': {
       color: '#000',
@@ -136,7 +161,7 @@ function ChplSystemMaintenance() {
   return (
     <div className={classes.container}>
       <div className={classes.navigation}>
-        <Card>
+        <Card className={classes.navigationFlex}>
           <Button
             onClick={() => navigate('accessibilityStandards')}
             disabled={active === 'accessibilityStandards'}
@@ -303,38 +328,76 @@ function ChplSystemMaintenance() {
           && (
             <Card>
               <CardContent>
-                <Typography>
-                  System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
+                <Typography variant="h6" component="h2" gutterBottom>
+                  <strong>System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.</strong>
                 </Typography>
+                <Divider />
                 <List>
-                  <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
-                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
-                  <ListItem>API Keys - View and optionally revoke existing API Keys</ListItem>
-                  { hasAnyRole(['chpl-admin']) && <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem> }
-                  { hasAnyRole(['chpl-admin']) && <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem> }
-                  <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
-                  { hasAnyRole(['chpl-admin']) && <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem> }
-                  <ListItem>Subscriptions - Search and filter CHPL subscriptions</ListItem>
-                  <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
-                  { hasAnyRole(['chpl-admin']) && <ListItem>System Jobs - View and schedule system-related jobs</ListItem> }
-                  { hasAnyRole(['chpl-admin']) && <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem> }
-                  <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
+                  <ListItem><ListItemText primary="Accessibility Standards" secondary="Add and update the Accessibility Standards available to be applied to listings" /></ListItem>
+                  <Divider component="li" />
+                  <ListItem><ListItemText primary="Announcements" secondary="Create and edit announcements displayed on CHPL for public and/or logged-in users" /></ListItem>
+                  <Divider component="li" />
+                  <ListItem><ListItemText primary="API Keys" secondary="View and optionally revoke existing API Keys" /></ListItem>
+                  <Divider component="li" />
+                  { hasAnyRole(['chpl-admin']) && (
+                  <>
+                    <ListItem><ListItemText primary="Certification Criteria" secondary="Table of the Certification Criteria values" /></ListItem>
+                    {' '}
+                    <Divider component="li" />
+                  </>
+                  )}
+                  { hasAnyRole(['chpl-admin']) && (
+                  <>
+                    <ListItem><ListItemText primary="Functionalities Tested" secondary="Table of the Functionality Tested values used during testing of certification criterion functionality" /></ListItem>
+                    <Divider  component="li" />
+                  </>
+                  ) }
+                  <ListItem><ListItemText primary="QMS Standards" secondary="Add and update the QMS Standards available to be applied to listings" /></ListItem>
+                  <Divider component="li" />
+                  { hasAnyRole(['chpl-admin']) && (
+                  <>
+                    <ListItem><ListItemText primary="Standards" secondary="Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs" /></ListItem>
+                    {' '}
+                    <Divider component="li" />
+                  </>
+                  ) }
+                  <ListItem><ListItemText primary="Subscriptions" secondary="Search and filter CHPL subscriptions" /></ListItem>
+                  <Divider component="li" />
+                  <ListItem><ListItemText primary="SVAP" secondary="Add and update SVAP values for use by ONC-ACBs on each listing" /></ListItem>
+                  <Divider component="li" />
+                  { hasAnyRole(['chpl-admin']) && (
+                  <>
+                    <ListItem><ListItemText primary="System Jobs" secondary="View and schedule system-related jobs" /></ListItem>
+                    {' '}
+                    <Divider  component="li" />
+                  </>
+                  ) }
+                  { hasAnyRole(['chpl-admin']) && (
+                  <>
+                    <ListItem><ListItemText primary="Test Tools" secondary="Table of the Test Tool values used during testing of certification criterion functionality" /></ListItem>
+                    {' '}
+                    <Divider  component="li" />
+                  </>
+                  ) }
+                  <ListItem><ListItemText primary="UCD Processes" secondary="Add and update the UCD process(es) available to be applied to certification criteria" /></ListItem>
                 </List>
               </CardContent>
             </Card>
           )}
-        { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
-        { active === 'announcements' && <ChplAnnouncements /> }
-        { active === 'apiKeys' && <ChplApiKeys /> }
-        { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
-        { active === 'qmsStandards' && <ChplQmsStandards /> }
-        { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
-        { active === 'subscriptions' && <ChplManageSubscriptions /> }
-        { active === 'standards' && <ChplStandards /> }
-        { active === 'svaps' && <ChplSvaps /> }
-        { active === 'systemJobs' && <ChplSystemJobs /> }
-        { active === 'testTools' && <ChplTestTools /> }
-        { active === 'ucdProcesses' && <ChplUcdProcesses /> }
+        <Box>
+          { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
+          { active === 'announcements' && <ChplAnnouncements /> }
+          { active === 'apiKeys' && <ChplApiKeys /> }
+          { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
+          { active === 'qmsStandards' && <ChplQmsStandards /> }
+          { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
+          { active === 'subscriptions' && <ChplManageSubscriptions /> }
+          { active === 'standards' && <ChplStandards /> }
+          { active === 'svaps' && <ChplSvaps /> }
+          { active === 'systemJobs' && <ChplSystemJobs /> }
+          { active === 'testTools' && <ChplTestTools /> }
+          { active === 'ucdProcesses' && <ChplUcdProcesses /> }
+        </Box>
       </div>
     </div>
   );
