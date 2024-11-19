@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -8,12 +8,8 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
-import GroupOutlinedIcon from '@material-ui/icons/GroupOutlined';
-import HighlightOutlinedIcon from '@material-ui/icons/HighlightOutlined';
 
-import { useFetchReportUrl } from 'api/reports';
+import { useFetchReportMetadata } from 'api/reports';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -54,42 +50,16 @@ const useStyles = makeStyles({
 function ChplDashboard() {
   const classes = useStyles();
   const [activeReport, setActiveReport] = useState(undefined);
+  const [reportMetadata, setReportMetadata] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchReportMetadata('dashboard');
 
-  const reports = [
-    {
-      text: 'Developer Reporting',
-      reportId: 'DeveloperStatistics',
-      icon: <AssessmentOutlinedIcon fontSize="large" color="primary" />,
-      frameHeight: '1300px',
-      url: useFetchReportUrl('DeveloperStatistics'),
-    }, {
-      text: 'Surveillance Reporting',
-      reportId: 'SurveillanceStatistics',
-      icon: <DashboardOutlinedIcon fontSize="large" color="primary" />,
-      frameHeight: '2500px',
-      url: useFetchReportUrl('SurveillanceStatistics'),
-    }, {
-      text: 'Test Tool Reporting',
-      reportId: 'TestToolReporting',
-      icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
-      frameHeight: '500px',
-      url: useFetchReportUrl('TestTool'),
-    }, {
-      text: 'Criteria Migration - (a)(9) to (b)(11)',
-      reportId: 'CriteriaMigration-a9tob11',
-      icon: <GroupOutlinedIcon fontSize="large" color="primary" />,
-      frameHeight: '825px',
-      url: useFetchReportUrl('CriteriaMigration-a9tob11'),
-    }, {
-      text: 'More to Come',
-      reportId: 'MoreToCome',
-      icon: <HighlightOutlinedIcon fontSize="large" color="primary" />,
-      frameHeight: '',
-    },
-  ];
+  useEffect(() => {
+    if (isLoading || !isSuccess) { return; }
+    setReportMetadata(data);
+  }, [data, isLoading, isSuccess]);
 
-  const handleReportChange = (reportId) => {
-    setActiveReport(reports.find((report) => report.reportId === reportId));
+  const handleReportChange = (reportKey) => {
+    setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
   };
 
   return (
@@ -113,22 +83,24 @@ function ChplDashboard() {
                     >
                       Dashboard
                     </Button>
-                    { reports.map((report) => (
-                      <Button
-                        key={`${report.reportId}-button`}
-                        style={{ justifyContent: 'flex-start' }}
-                        color="primary"
-                        onClick={() => handleReportChange(report.reportId)}
-                      >
-                        { report.text }
-                      </Button>
-                    ))}
+                    { reportMetadata
+                      .sort((a, b) => (a.title < b.title ? -1 : 1))
+                      .map((report) => (
+                        <Button
+                          key={`${report.reportKey}-button`}
+                          style={{ justifyContent: 'flex-start' }}
+                          color="primary"
+                          onClick={() => handleReportChange(report.reportKey)}
+                        >
+                          { report.title }
+                        </Button>
+                      ))}
                   </Box>
                 </CardContent>
               </Card>
             </Box>
             <Box width="100%">
-              {!activeReport && (
+              { !activeReport && (
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="h6">
@@ -138,15 +110,15 @@ function ChplDashboard() {
                       A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
                     </Typography>
                     <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
-                      {reports.map((report) => (
+                      {reportMetadata && reportMetadata.map((report) => (
                         <Card
-                          key={report.text}
+                          key={report.reportKey}
                           className={classes.card}
-                          onClick={() => handleReportChange(report.reportId)}
+                          onClick={() => handleReportChange(report.reportKey)}
                         >
                           <CardContent className={classes.cardContent}>
                             {report.icon}
-                            <Typography>{report.text}</Typography>
+                            <Typography>{report.title}</Typography>
                           </CardContent>
                         </Card>
                       ))}
@@ -154,17 +126,17 @@ function ChplDashboard() {
                   </CardContent>
                 </Card>
               )}
-              {activeReport && (
-                <Card 
+              { activeReport && (
+                <Card
                   style={{ width: '100%' }}
-                  key={activeReport.text}
+                  key={activeReport.reportKey}
                 >
                   <CardContent>
                     <iframe
-                      title={activeReport.text}
+                      title={activeReport.title}
                       width="100%"
-                      height={activeReport.frameHeight}
-                      src={activeReport.url?.data?.reportUrl}
+                      height={activeReport.height}
+                      src={activeReport.url}
                       frameBorder="0"
                       allowFullScreen
                     />
