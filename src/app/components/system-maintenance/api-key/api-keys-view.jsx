@@ -32,13 +32,28 @@ const useStyles = makeStyles({
   firstColumn: {
     position: 'sticky',
     left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
+    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
+    backgroundColor: '#f9f9f9',
+    zIndex: 1,
+    maxWidth: 100, 
+    overflowWrap:'anywhere', 
   },
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  deleteButton: {
+    border: '1px solid #c44f65',
+    backgroundColor: '#ffffff',
+    color: '#c44f65',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
+  container: {
+    maxWidth: '1280px',
+    overflowX: 'auto',
+  }
 });
 
 function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
@@ -67,32 +82,30 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
           title="API Keys History"
         />
       </div>
-      <TableContainer component={Paper}>
-        <Table
-          aria-label="API Keys table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
-            orderBy={orderBy}
-            order={order}
-            stickyHeader
-          />
-          <TableBody>
-            { apiKeys
-              .map((key) => (
+      <Paper className={classes.container}>
+        <TableContainer>
+          <Table aria-label="API Keys table">
+            <ChplSortableHeaders
+              headers={headers}
+              onTableSort={handleTableSort}
+              orderBy={orderBy}
+              order={order}
+              stickyHeader
+            />
+            <TableBody>
+              {apiKeys.map((key) => (
                 <TableRow key={key.key}>
-                  <TableCell className={classes.firstColumn}>{ key.name }</TableCell>
-                  <TableCell>{ key.email }</TableCell>
-                  <TableCell>{ key.key }</TableCell>
-                  <TableCell>{ getDisplayDateFormat(key.lastUsedDate) }</TableCell>
-                  <TableCell>{ getDisplayDateFormat(key.deleteWarningSentDate) }</TableCell>
-                  <TableCell align="right">
+                  <TableCell className={classes.firstColumn}>{key.name}</TableCell>
+                  <TableCell style={{ maxWidth: 100, overflowWrap:'anywhere' }}>{key.email}</TableCell>
+                  <TableCell style={{ maxWidth: 100, overflowWrap:'anywhere' }}>{key.key}</TableCell>
+                  <TableCell style={{ maxWidth: 50, overflowWrap:'anywhere' }}>{getDisplayDateFormat(key.lastUsedDate)}</TableCell>
+                  <TableCell style={{ maxWidth: 70, overflowWrap:'anywhere' }}>{getDisplayDateFormat(key.deleteWarningSentDate)}</TableCell>
+                  <TableCell style={{ overflowWrap:'anywhere' }} align="left">
                     <Button
                       onClick={() => dispatch({ action: 'revoke', payload: key })}
                       id={`revoke-api-key-${key.key}`}
                       variant="contained"
-                      color="secondary"
+                      className={classes.deleteButton}
                       endIcon={<DeleteIcon color="error" />}
                     >
                       Revoke key
@@ -100,16 +113,17 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
                   </TableCell>
                 </TableRow>
               ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </>
   );
 }
-
-export default ChplApiKeysView;
 
 ChplApiKeysView.propTypes = {
   apiKeys: arrayOf(object).isRequired,
   dispatch: func.isRequired,
 };
+
+export default ChplApiKeysView;

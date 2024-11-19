@@ -38,9 +38,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  container: {
-    maxHeight: '64vh',
-  },
   actionContainer: {
     display: 'grid',
     gap: '16px',
@@ -48,6 +45,16 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     },
+  },
+  container: {
+    maxHeight: '64vh',
+  },
+  firstColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
+    backgroundColor: '#f9f9f9',
+    zIndex: 1,
   },
   noResultsContainer: {
     padding: '16px 32px',

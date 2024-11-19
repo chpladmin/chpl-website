@@ -32,8 +32,9 @@ const useStyles = makeStyles({
   firstColumn: {
     position: 'sticky',
     left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
+    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
+    backgroundColor: '#f9f9f9',
+    zIndex: 1,
   },
   tableResultsHeaderContainer: {
     display: 'flex',
