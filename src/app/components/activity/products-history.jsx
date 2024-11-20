@@ -44,10 +44,7 @@ function ChplProductsHistory({ products }) {
   });
 
   useEffect(() => {
-    const vs = products
-      .flatMap((product) => product.versions)
-      .filter((version) => version.version !== 'All'); // todo remove when angularjs component is removed
-    setVersions(vs);
+    setVersions(products.flatMap((product) => product.versions));
   }, [products]);
 
   useEffect(() => {

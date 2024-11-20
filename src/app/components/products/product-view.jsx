@@ -101,12 +101,10 @@ function ChplProductView({ product }) {
     setOptions(
       ['All']
         .concat(product.versions
-          .filter((version) => version.version !== 'All') // remove when angularJS component is removed
           .map((v) => (v.version))),
     );
     const rollup = product.versions
-      .filter((version) => version.version !== 'All') // remove when angularJS component is removed
-      .flatMap((version) => version.unfilteredListings)
+      .flatMap((version) => version.listings)
       .reduce((obj, l) => ({
         ...obj,
         open: obj.open + l.openSurveillanceCount,
@@ -122,7 +120,6 @@ function ChplProductView({ product }) {
 
   useEffect(() => {
     setListings(product.versions
-      .filter((version) => version.version !== 'All') // remove when angularJS component is removed
       .filter((version) => selectedVersion === 'All' || version.version === selectedVersion)
       .flatMap((version) => version.listings)
       .sort((a, b) => (a.certificationDay < b.certificationDay ? 1 : (a.certificationDay > b.certificationDay ? -1 : (a.chplProductNumber < b.chplProductNumber ? -1 : 1)))));
