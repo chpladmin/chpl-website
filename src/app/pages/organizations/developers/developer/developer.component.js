@@ -1,9 +1,9 @@
 const DeveloperComponent = {
-  template: `<ui-view>
+  template: `<div ui-view="view">
   <chpl-developer-page-bridge
     id="$ctrl.id"
     ></chpl-developer-page-bridge>
-</ui-view>
+</div>
 `,
   controller: class DeveloperComponent {
     constructor($log, $stateParams) {

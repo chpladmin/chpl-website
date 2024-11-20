@@ -409,9 +409,9 @@ function ChplDeveloperView(props) {
 export default ChplDeveloperView;
 
 ChplDeveloperView.propTypes = {
-  canEdit: bool.isRequired,
-  canJoin: bool.isRequired,
-  canSplit: bool.isRequired,
+  canEdit: func.isRequired,
+  canJoin: func.isRequired,
+  canSplit: func.isRequired,
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
   isSplitting: bool.isRequired,

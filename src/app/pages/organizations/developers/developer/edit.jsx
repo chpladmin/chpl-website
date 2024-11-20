@@ -7,6 +7,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { func } from 'prop-types';
 
 import { usePostChangeRequest } from 'api/change-requests';
 import { usePutDeveloper } from 'api/developer';
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplEditDeveloper({ developer }) {
+function ChplEditDeveloper({ developer, dispatch }) {
   const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -105,10 +106,13 @@ function ChplEditDeveloper({ developer }) {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
+        dispatch('cancel');
+        /*
         $state.go('organizations.developers.developer', {
           id: developer.id,
           productId: undefined,
         }, { reload: true });
+        */
         break;
       case 'save':
         setIsProcessing(true);
@@ -127,7 +131,8 @@ function ChplEditDeveloper({ developer }) {
               setIsProcessing(false);
               let body;
               if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                $state.go('^', undefined, { reload: true });
+                dispatch('cancel');
+                //$state.go('^', undefined, { reload: true });
               } else if (response.data.errorMessages) {
                 body = response.data.errorMessages.join(', ');
               } else if (response.data.error) {
@@ -201,4 +206,5 @@ export default ChplEditDeveloper;
 
 ChplEditDeveloper.propTypes = {
   developer: developerPropType.isRequired,
+  dispatch: func,
 };

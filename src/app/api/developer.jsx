@@ -94,6 +94,7 @@ const usePutDeveloper = () => {
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
+      queryClient.invalidateQueries('developers/hierarchy');
     },
   });
 };
