@@ -49,13 +49,6 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: '#f9f9f9',
-    zIndex: 1,
-  },
   noResultsContainer: {
     padding: '16px 32px',
   },

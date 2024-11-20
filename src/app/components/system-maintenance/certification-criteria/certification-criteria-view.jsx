@@ -14,6 +14,7 @@ import { ChplLink } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { criterion as criterionPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'number', text: 'Number', sortable: true },
@@ -26,13 +27,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: '#f9f9f9',
-    zIndex: 1,
-  },
+  ...utilStyles
 });
 
 const getDisplay = (key) => {

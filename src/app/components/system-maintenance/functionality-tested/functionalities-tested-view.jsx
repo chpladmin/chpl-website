@@ -12,6 +12,7 @@ import {
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { utilStyles } from 'themes';
 
 import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -34,13 +35,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: '#f9f9f9',
-    zIndex: 1,
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
