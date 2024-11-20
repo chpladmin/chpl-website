@@ -8,7 +8,7 @@ const useFetchAttestations = ({ developer, isAuthenticated }) => {
     const response = await axios.get(`/developers/${developer.id}/attestations`);
     return response.data;
   }, {
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && !!developer?.id,
   });
 };
 
