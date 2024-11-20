@@ -29,15 +29,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: '#f9f9f9',
-    zIndex: 1,
-    maxWidth: 100, 
-    overflowWrap:'anywhere', 
-  },
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -47,7 +38,8 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     color: '#c44f65',
     '&:hover': {
-      backgroundColor: '#853544',
+      backgroundColor: '#c44f6525',
+      color: '#c44f65',
     },
   },
   container: {
@@ -95,12 +87,12 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
             <TableBody>
               {apiKeys.map((key) => (
                 <TableRow key={key.key}>
-                  <TableCell className={classes.firstColumn}>{key.name}</TableCell>
-                  <TableCell style={{ maxWidth: 100, overflowWrap:'anywhere' }}>{key.email}</TableCell>
-                  <TableCell style={{ maxWidth: 100, overflowWrap:'anywhere' }}>{key.key}</TableCell>
-                  <TableCell style={{ maxWidth: 50, overflowWrap:'anywhere' }}>{getDisplayDateFormat(key.lastUsedDate)}</TableCell>
-                  <TableCell style={{ maxWidth: 70, overflowWrap:'anywhere' }}>{getDisplayDateFormat(key.deleteWarningSentDate)}</TableCell>
-                  <TableCell style={{ overflowWrap:'anywhere' }} align="left">
+                  <TableCell className={classes.firstColumn}> {key.name} </TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}> {key.email} </TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}> {key.key} </TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 50, }}> {getDisplayDateFormat(key.lastUsedDate)} </TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 70, }}> {getDisplayDateFormat(key.deleteWarningSentDate)} </TableCell>
+                  <TableCell className={classes.linkWrap} align="left">
                     <Button
                       onClick={() => dispatch({ action: 'revoke', payload: key })}
                       id={`revoke-api-key-${key.key}`}
@@ -121,9 +113,9 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
   );
 }
 
+export default ChplApiKeysView;
+
 ChplApiKeysView.propTypes = {
   apiKeys: arrayOf(object).isRequired,
   dispatch: func.isRequired,
 };
-
-export default ChplApiKeysView;
