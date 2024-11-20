@@ -14,7 +14,7 @@ import ChplDeveloperEdit from './edit';
 import { useFetchDeveloperHierarchy } from 'api/developer';
 import ChplAttestationsView from 'components/attestation/attestations-view';
 import ChplChangeRequests from 'components/change-request/change-requests';
-import ChplDeveloper from 'components/developer/developer-view';
+import ChplDeveloperView from 'components/developer/developer-view';
 import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
 import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
@@ -78,9 +78,9 @@ function ChplDeveloperPage({ id }) {
         setState('view');
         break;
       case 'edit':
-        setState('edit');
-        break;
       case 'split':
+        setState(action);
+        break;
       case 'join':
         $state.go(`organizations.developers.developer.${action}`);
         break;
@@ -118,7 +118,7 @@ function ChplDeveloperPage({ id }) {
         { state === 'view'
           && (
             <Container maxWidth="lg" id="main-content" tabIndex="-1">
-              <ChplDeveloper
+              <ChplDeveloperView
                 developer={developer}
                 dispatch={handleDispatch}
                 canEdit={() => can('edit')}
@@ -160,6 +160,19 @@ function ChplDeveloperPage({ id }) {
               <ChplDeveloperEdit
                 developer={developer}
                 dispatch={handleDispatch}
+              />
+            </Container>
+          )}
+        { state === 'split'
+          && (
+            <Container maxWidth="lg" id="main-content" tabIndex="-1">
+              <ChplDeveloperView
+                developer={developer}
+                dispatch={handleDispatch}
+                canEdit={() => can('edit')}
+                canJoin={() => can('join')}
+                canSplit={() => can('split-developer')}
+                isSplitting={true}
               />
             </Container>
           )}
