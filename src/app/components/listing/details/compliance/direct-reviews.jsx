@@ -289,30 +289,30 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                       { getDataDisplay('Developer Associated Listings',
                         <>
                           {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                                          && (
-                                            <Typography>
-                                              None
-                                            </Typography>
-                                          )}
+                            && (
+                              <Typography>
+                                None
+                              </Typography>
+                            )}
                           { nc.developerAssociatedListings?.length > 0
-                                           && (
-                                             <List>
-                                               { nc.developerAssociatedListings.map((dal) => (
-                                                 <ListItem key={dal.id}>
-                                                   <ChplLink
-                                                     href={`#/listing/${dal.id}`}
-                                                     text={dal.chplProductNumber}
-                                                     external={false}
-                                                     router={{ sref: 'listing', options: { id: dal.id } }}
-                                                     analytics={{
-                                                       ...analytics,
-                                                       event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
-                                                     }}
-                                                   />
-                                                 </ListItem>
-                                               ))}
-                                             </List>
-                                           )}
+                            && (
+                              <List>
+                                { nc.developerAssociatedListings.map((dal) => (
+                                  <ListItem key={dal.id}>
+                                    <ChplLink
+                                      href={`#/listing/${dal.id}`}
+                                      text={dal.chplProductNumber}
+                                      external={false}
+                                      router={{ sref: 'listing', options: { id: dal.id } }}
+                                      analytics={{
+                                        ...analytics,
+                                        event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
+                                      }}
+                                    />
+                                  </ListItem>
+                                ))}
+                              </List>
+                            )}
                         </>,
                         'A listing of other certified products associated with the non-conformity, as applicable') }
                       { getDataDisplay('Corrective Action Plan Approval Date', <Typography>{ nc.friendlyCapApprovalDate }</Typography>, 'The date that ONC approved the corrective action plan proposed by the developer') }
