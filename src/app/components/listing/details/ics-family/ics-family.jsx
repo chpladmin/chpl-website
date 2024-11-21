@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -29,7 +28,7 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { ListingContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -129,7 +128,6 @@ const generateElements = (listings, activeId, selectedId) => {
 function ChplIcsFamily(props) {
   const { id } = props;
   const { analytics } = useAnalyticsContext();
-  const { listing: currentListing } = useContext(ListingContext);
   const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
   const [compare, setCompare] = useState('');
   const [elements, setElements] = useState([]);
@@ -175,9 +173,6 @@ function ChplIcsFamily(props) {
     eventTrack({
       ...analytics,
       event: `Hide ICS Relationship Detail - ${listing.chplProductNumber}`,
-      category: 'Listing Details',
-      label: currentListing.chplProductNumber,
-      aggregationName: currentListing.product.name,
     });
     setListingId(undefined);
   };
@@ -189,9 +184,6 @@ function ChplIcsFamily(props) {
       eventTrack({
         ...analytics,
         event: `Show ICS Relationship Detail - ${e.target.data().chplProductNumber}`,
-        category: 'Listing Details',
-        label: currentListing.chplProductNumber,
-        aggregationName: currentListing.product.name,
       });
       setListingId(e.target.id());
     });
@@ -199,18 +191,12 @@ function ChplIcsFamily(props) {
       eventTrack({
         ...analytics,
         event: 'Pan ICS Relationship Diagram',
-        category: 'Listing Details',
-        label: currentListing.chplProductNumber,
-        aggregationName: currentListing.product.name,
       });
     });
     cy.current.on('scrollzoom', () => {
       eventTrack({
         ...analytics,
         event: 'Zoom ICS Relationship Diagram',
-        category: 'Listing Details',
-        label: currentListing.chplProductNumber,
-        aggregationName: currentListing.product.name,
       });
     });
   }, [cy]);
@@ -243,9 +229,6 @@ function ChplIcsFamily(props) {
                 analytics={{
                   ...analytics,
                   event: 'Compare All ICS Listings',
-                  category: 'Listing Details',
-                  label: currentListing.chplProductNumber,
-                  aggregationName: currentListing.product.name,
                 }}
               />
             </div>
@@ -270,9 +253,6 @@ function ChplIcsFamily(props) {
                             analytics={{
                               ...analytics,
                               event: `Navigate to Listing from ICS Relationship Diagram - ${listing.chplProductNumber}`,
-                              category: 'Listing Details',
-                              label: currentListing.chplProductNumber,
-                              aggregationName: currentListing.product.name,
                             }}
                           />
                         )}
@@ -286,9 +266,6 @@ function ChplIcsFamily(props) {
                           analytics={{
                             ...analytics,
                             event: `Navigate to Developer from ICS Relationship Diagram - ${listing.developer.name}`,
-                            category: 'Listing Details',
-                            label: currentListing.chplProductNumber,
-                            aggregationName: currentListing.product.name,
                           }}
                         />
                       </Typography>
@@ -370,9 +347,6 @@ function ChplIcsFamily(props) {
                                 analytics={{
                                   ...analytics,
                                   event: `Navigate to ICS Relationship Listing - ${l.chplProductNumber}`,
-                                  category: 'Listing Details',
-                                  label: currentListing.chplProductNumber,
-                                  aggregationName: currentListing.product.name,
                                 }}
                               />
                             )}
@@ -386,9 +360,6 @@ function ChplIcsFamily(props) {
                             analytics={{
                               ...analytics,
                               event: `Navigate to ICS Relationship Developer - ${l.developer.name}`,
-                              category: 'Listing Details',
-                              label: currentListing.chplProductNumber,
-                              aggregationName: currentListing.product.name,
                             }}
                           />
                         </TableCell>

@@ -96,9 +96,6 @@ function ChplCriteria(props) {
     eventTrack({
       ...analytics,
       event: expanded ? 'Show Removed Criteria' : 'Hide Removed Criteria',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
   };
 
