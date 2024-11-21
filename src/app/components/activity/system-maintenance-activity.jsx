@@ -15,6 +15,8 @@ import { func, string } from 'prop-types';
 import ChplSystemMaintenanceActivityDetails from './system-maintenance-activity-details';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
 });
 
 function ChplSystemMaintenanceActivity({ fetch, title }) {
+  const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
   const [resultSetSize, setResultSetSize] = useState(0);
   const [open, setOpen] = useState(false);
@@ -49,6 +52,11 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open System Maintenance History',
+      label: title,
+    });
     setOpen(true);
   };
 

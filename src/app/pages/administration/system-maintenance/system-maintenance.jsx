@@ -36,7 +36,13 @@ import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
 import ChplUcdProcesses from 'components/system-maintenance/ucd-process/ucd-processes';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import {
+  AnalyticsContext,
+  BreadcrumbContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -152,11 +158,13 @@ const listItems = [
   },
 ];
 function ChplSystemMaintenance() {
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [active, setActive] = useState('');
   const classes = useStyles();
   let navigate;
+  let data;
 
   useEffect(() => {
     append(
@@ -222,6 +230,10 @@ function ChplSystemMaintenance() {
     hide('ucdProcesses.add.disabled');
     hide('ucdProcesses.edit.disabled');
     setActive(target);
+    eventTrack({
+      ...data.analytics,
+      event: `Navigate to ${target}`,
+    });
     if (target) {
       display('system-maintenance');
       hide('system-maintenance.disabled');
@@ -229,6 +241,13 @@ function ChplSystemMaintenance() {
       display('system-maintenance.disabled');
       hide('system-maintenance');
     }
+  };
+
+  data = {
+    analytics: {
+      ...analytics,
+      category: 'System Maintenance',
+    },
   };
 
   return (
