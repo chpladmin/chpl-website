@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardContent,
@@ -14,6 +14,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { UserContext } from 'shared/contexts';
+
 const useStyles = makeStyles({
   content: {
     display: 'grid',
@@ -22,6 +24,7 @@ const useStyles = makeStyles({
 });
 
 function ChplInsightsView() {
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   return (
@@ -56,12 +59,14 @@ function ChplInsightsView() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Typography variant="body1">
-          Submit Insights at
-          {' '}
-          <a href="test">The Insights Reporting System</a>
-          .
-        </Typography>
+        { hasAnyRole(['chpl-developer']) && (
+          <Typography variant="body1">
+            Submit Insights at
+            {' '}
+            <a href="test">The Insights Reporting System</a>
+            .
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );
