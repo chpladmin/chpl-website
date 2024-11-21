@@ -181,7 +181,15 @@ function ChplManageSubscriptionsView({ analytics }) {
         title={(
           <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
             <span>Subscriptions</span>
-
+            <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={getDeliveredMessages}
+                  className={classes.notificationsButton }
+                  endIcon={<NotificationsOutlined fontSize="small" />}
+                >
+                  Get Delivered Notifications
+            </Button>
           </Box>
         )}
       />
@@ -216,14 +224,6 @@ function ChplManageSubscriptionsView({ analytics }) {
                     )}
 
                 </div>
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  onClick={getDeliveredMessages}
-                  endIcon={<NotificationsOutlined />}
-                >
-                  Get Delivered Notifications
-                </Button>
               </div>
               { subscriptions.length > 0
                 && (
