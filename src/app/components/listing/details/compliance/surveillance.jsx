@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -16,7 +16,7 @@ import { getDataDisplay } from './compliance.services';
 
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
@@ -149,7 +149,6 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const { analytics } = useAnalyticsContext();
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -175,9 +174,6 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
     eventTrack({
       ...analytics,
       event: expanded ? `Hide ${title}` : `Show ${title}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setExpanded(!expanded);
   };
@@ -187,9 +183,6 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
     eventTrack({
       ...analytics,
       event: isExpanded ? `Show ${title}` : `Hide ${title}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
   };
 
@@ -198,9 +191,6 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
     eventTrack({
       ...analytics,
       event: isExpanded ? `Show ${title}` : `Hide ${title}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
   };
 

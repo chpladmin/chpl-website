@@ -16,6 +16,8 @@ import ChplActivityDetails from './activity-details';
 
 import { useFetchOrganizationActivityMetadata } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -24,6 +26,7 @@ const useStyles = makeStyles({
 });
 
 function ChplOrganizationActivity({ organization, type, interpret }) {
+  const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
   const [resultSetSize, setResultSetSize] = useState(0);
   const [open, setOpen] = useState(false);
@@ -55,6 +58,11 @@ function ChplOrganizationActivity({ organization, type, interpret }) {
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Organization History',
+      label: organization.name,
+    });
     setOpen(true);
   };
 
