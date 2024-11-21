@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { ListingContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -33,7 +33,6 @@ const useStyles = makeStyles({
 function ChplSedTaskParticipantsView(props) {
   const { task } = props;
   const { analytics } = useAnalyticsContext();
-  const { listing } = useContext(ListingContext);
   const [open, setOpen] = useState(false);
   const participants = props.participants.sort((a, b) => { // eslint-disable-line react/destructuring-assignment
     if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
@@ -49,9 +48,6 @@ function ChplSedTaskParticipantsView(props) {
     eventTrack({
       ...analytics,
       event: `Show SED Participant Details - ${task.description}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setOpen(true);
   };
@@ -60,9 +56,6 @@ function ChplSedTaskParticipantsView(props) {
     eventTrack({
       ...analytics,
       event: `Hide SED Participant Details - ${task.description}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setOpen(false);
   };

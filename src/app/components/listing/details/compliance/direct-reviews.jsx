@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -20,7 +20,7 @@ import { getDataDisplay } from './compliance.services';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -130,7 +130,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
   const { analytics } = useAnalyticsContext();
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
   useEffect(() => {
@@ -187,9 +186,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     eventTrack({
       ...analytics,
       event: expanded ? 'Hide Direct Review Activities' : 'Show Direct Review Activities',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setExpanded(!expanded);
   };
@@ -198,9 +194,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     eventTrack({
       ...analytics,
       event: isExpanded ? 'Show Direct Review' : 'Hide Direct Review',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
   };
 
@@ -311,9 +304,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                                       analytics={{
                                         ...analytics,
                                         event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,
-                                        category: 'Listing Details',
-                                        label: listing.chplProductNumber,
-                                        aggregationName: listing.product.name,
                                       }}
                                     />
                                   </ListItem>
