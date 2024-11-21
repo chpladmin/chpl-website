@@ -33,15 +33,6 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  deleteButton: {
-    border: '1px solid #c44f65',
-    backgroundColor: '#ffffff',
-    color: '#c44f65',
-    '&:hover': {
-      backgroundColor: '#c44f6525',
-      color: '#c44f65',
-    },
-  },
   container: {
     maxWidth: '1280px',
     overflowX: 'auto',
@@ -87,7 +78,7 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
             <TableBody>
               {apiKeys.map((key) => (
                 <TableRow key={key.key}>
-                  <TableCell className={classes.firstColumn}> {key.name} </TableCell>
+                  <TableCell className={classes.firstColumn}>{ key.name }</TableCell>
                   <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}> {key.email} </TableCell>
                   <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}> {key.key} </TableCell>
                   <TableCell className={classes.linkWrap} style={{ maxWidth: 50, }}> {getDisplayDateFormat(key.lastUsedDate)} </TableCell>
@@ -97,7 +88,7 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
                       onClick={() => dispatch({ action: 'revoke', payload: key })}
                       id={`revoke-api-key-${key.key}`}
                       variant="contained"
-                      className={classes.deleteButton}
+                      className={classes.deleteButtonOutlined}
                       endIcon={<DeleteIcon color="error" />}
                     >
                       Revoke key
