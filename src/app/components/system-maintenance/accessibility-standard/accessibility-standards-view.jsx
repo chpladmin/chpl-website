@@ -12,8 +12,8 @@ import {
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import { utilStyles } from 'themes';
 
+import { utilStyles } from 'themes';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { accessibilityStandardType } from 'shared/prop-types';
 
