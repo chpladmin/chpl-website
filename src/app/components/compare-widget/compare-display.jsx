@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ReactGA from 'react-ga4';
 
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
@@ -51,21 +50,12 @@ function ChplCompareDisplay() {
   const classes = useStyles();
 
   const compareAll = () => {
-    ReactGA.event({
-      category: 'Compare Widget',
-      action: 'Compare Listings',
-      label: 'test',
-    });
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();
   };
 
   const removeAll = () => {
-    ReactGA.event({
-      category: 'Compare Widget',
-      action: 'Remove all Listings',
-    }); 
     $rootScope.$broadcast('compare.removeAll');
   };
 

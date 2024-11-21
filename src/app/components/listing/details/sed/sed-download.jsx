@@ -83,9 +83,6 @@ function ChplSedDownload({ listing }) {
     eventTrack({
       ...analytics,
       event: 'Download Task Details',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     const csvExporter = new ExportToCsv({
       ...csvOptions,
