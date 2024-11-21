@@ -81,6 +81,7 @@ function ChplSignin({ dispatch }) {
           event: 'Log In',
           category: 'Authentication',
           group: response.user.role,
+          organization: response.user.organizations?.length > 0 ? response.user.organizations.map((org) => org.name).join(';') : undefined,
         });
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);

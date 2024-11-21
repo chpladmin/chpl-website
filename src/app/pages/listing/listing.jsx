@@ -102,11 +102,8 @@ function ChplListingPage({ id }) {
 
   const downloadOriginalCsv = () => {
     eventTrack({
+      ...analyticsData.analytics,
       event: 'Download Original CSV',
-      category: analyticsData.analytics.category,
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
-      group: analyticsData.analytics.group,
     });
     const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
@@ -114,11 +111,8 @@ function ChplListingPage({ id }) {
 
   const downloadCurrentCsv = () => {
     eventTrack({
+      ...analyticsData.analytics,
       event: 'Download Current CSV',
-      category: analyticsData.analytics.category,
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
-      group: analyticsData.analytics.group,
     });
     const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
@@ -126,11 +120,8 @@ function ChplListingPage({ id }) {
 
   const edit = () => {
     eventTrack({
+      ...analyticsData.analytics,
       event: 'Edit',
-      category: analyticsData.analytics.category,
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
-      group: analyticsData.analytics.group,
     });
     $state.go('listing.edit');
   };

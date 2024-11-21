@@ -58,10 +58,6 @@ describe('the ChplCriterion component', () => {
       await waitFor(() => {
         expect(eventTrack).toHaveBeenCalledWith({
           event: 'Show Details - 170.315 (z)(1)',
-          category: 'Listing Details',
-          label: '15.something',
-          aggregationName: 'a product',
-          group: undefined,
         });
       });
     });

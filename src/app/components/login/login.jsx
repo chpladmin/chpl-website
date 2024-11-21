@@ -253,6 +253,7 @@ function ChplLogin({ dispatch }) {
               event: 'Log In',
               category: 'Authentication',
               group: data.role,
+              organization: data.organizations?.length > 0 ? data.organizations.map((org) => org.name).join(';') : undefined,
             });
             authService.saveCurrentUser(data);
             Idle.watch();

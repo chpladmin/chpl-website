@@ -129,9 +129,6 @@ function ChplCriterion({
     eventTrack({
       ...analytics,
       event: `${expanded ? 'Hide' : 'Show'} Details - ${criterion.criterion.number}`,
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setExpanded(!expanded);
   };
