@@ -7,15 +7,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { number, oneOfType, string } from 'prop-types';
+import { func } from 'prop-types';
 
-import ChplDeveloperEdit from './edit';
-import ChplDeveloperSplit from './developer-split';
-import ChplDeveloperView from './developer-view';
-
-import { useFetchDeveloperHierarchy } from 'api/developer';
 import ChplAttestationsView from 'components/attestation/attestations-view';
 import ChplChangeRequests from 'components/change-request/change-requests';
+import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
 import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
@@ -33,27 +29,19 @@ import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  mainContent: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
+  },
 });
 
 const isActive = (statuses) => statuses.length === 0 || statuses.every((status) => status.endDay);
 
-function ChplDeveloperPage({ id }) {
-  const $state = getAngularService('$state');
-  const { analytics } = useAnalyticsContext();
+function ChplDeveloperView({ dispatch }) {
   const { canManageDeveloper, hasAnyRole, user } = useContext(UserContext);
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
-  const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
-  const [developer, setDeveloper] = useState(undefined);
-  const [state, setState] = useState('view');
+  const { developer } = useContext(DeveloperContext);
   const classes = useStyles();
-  let analyticsData;
-
-  useEffect(() => {
-    if (isLoading || !isSuccess) {
-      return;
-    }
-    setDeveloper(data);
-  }, [data, isLoading, isSuccess]);
 
   const can = (action) => {
     if (canManageDeveloper(developer)) { return false; } // basic authentication
@@ -73,77 +61,52 @@ function ChplDeveloperPage({ id }) {
     //return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // must be active
   };
 
-  const handleDispatch = (action) => {
-    switch (action) {
-      case 'cancel':
-        setState('view');
-        break;
-      case 'edit':
-      case 'split':
-        setState(action);
-        break;
-      case 'join':
-        $state.go(`organizations.developers.developer.${action}`);
-        break;
-      default:
-        console.error(`Unknown action: ${action}`);
-    }
-  };
-
-  if (isLoading || !isSuccess || !developer) {
-    return <CircularProgress />;
-  }
-
-  const developerState = {
-    developer,
-  };
-
-  analyticsData = {
-    analytics: {
-      ...analytics,
-      category: 'Developer',
-      label: developer.name,
-    },
-  };
-
   return (
-    <AnalyticsContext.Provider value={analyticsData}>
-      <DeveloperContext.Provider value={developerState}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h1"
-          >
-            { developer.name }
-          </Typography>
-        </Container>
-        <Container maxWidth="lg" id="main-content" tabIndex="-1">
-          { state === 'view'
-            && (
-              <ChplDeveloperView
-                dispatch={handleDispatch}
-              />
-            )}
-          { state === 'edit'
-            && (
-              <ChplDeveloperEdit
-                developer={developer}
-                dispatch={handleDispatch}
-              />
-            )}
-          { state === 'split'
-            && (
-              <ChplDeveloperSplit
-                dispatch={handleDispatch}
-              />
-            )}
-        </Container>
-      </DeveloperContext.Provider>
-    </AnalyticsContext.Provider>
+    <Box className={classes.mainContent}>
+      <Box>
+        <ChplDeveloperViewDetails
+          developer={developer}
+          dispatch={dispatch}
+          canEdit={() => can('edit')}
+          canJoin={() => can('join')}
+          canSplit={() => can('split-developer')}
+          isSplitting={false}
+        />
+        <ChplRealWorldTestingView
+          developer={developer}
+        />
+        <ChplAttestationsView
+          developer={developer}
+          dispatch={dispatch}
+        />
+        <ChplUsers
+          users={[]}
+          dispatch={dispatch}
+          roles={['ROLE_DEVELOPER']}
+          groupNames={['chpl-developer']}
+        />
+      </Box>
+      <Box>
+        { can('manageTracking')
+          && (
+            <ChplChangeRequests
+              disallowedFilters={['submittedDateTime', 'searchTerm']}
+              bonusQuery={`&developerId=${developer.id}`}
+            />
+          )}
+        <ChplDirectReviews
+          developer={developer}
+        />
+        <ChplProducts
+          developer={developer}
+        />
+      </Box>
+    </Box>
   );
 }
 
-export default ChplDeveloperPage;
+export default ChplDeveloperView;
 
-ChplDeveloperPage.propTypes = {
-  id: oneOfType([number, string]).isRequired,
+ChplDeveloperView.propTypes = {
+  dispatch: func.isRequired,
 };
