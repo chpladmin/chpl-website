@@ -47,7 +47,6 @@ const useStyles = makeStyles({
     alignItems: 'stretch',
     gap: '16px',
     [theme.breakpoints.up('md')]: {
-      display: 'flex',
       flexDirection: 'row',
       alignItems: 'start',
     },
@@ -70,7 +69,6 @@ const useStyles = makeStyles({
     top: '115px',
     zIndex: 1,
     [theme.breakpoints.down('sm')]: {
-      display: 'flex',
       flexDirection: 'row',
       width: '100%',
       position: 'relative',
@@ -83,7 +81,6 @@ const useStyles = makeStyles({
     padding: '8px',
     flexDirection: 'column',
     [theme.breakpoints.down('sm')]: {
-      display: 'flex',
       flexDirection: 'row',
       overflowX: 'scroll',
     },
