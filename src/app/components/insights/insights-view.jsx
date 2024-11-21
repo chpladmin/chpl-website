@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
-  Dialog,
-  DialogContent,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -18,14 +13,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-
-import { ChplDialogTitle } from 'components/util';
-import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   content: {
@@ -34,9 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplInsightsView({ developer }) {
-  const { analytics } = useAnalyticsContext();
-  const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
+function ChplInsightsView() {
   const classes = useStyles();
 
   return (
@@ -85,5 +70,4 @@ function ChplInsightsView({ developer }) {
 export default ChplInsightsView;
 
 ChplInsightsView.propTypes = {
-  developer: developerPropType.isRequired,
 };
