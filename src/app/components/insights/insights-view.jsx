@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 
 import { UserContext } from 'shared/contexts';
+import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   content: {
@@ -23,8 +24,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplInsightsView() {
-  const { hasAnyRole } = useContext(UserContext);
+function ChplInsightsView({ developer }) {
+  const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const classes = useStyles();
 
   return (
@@ -59,7 +60,7 @@ function ChplInsightsView() {
             </TableBody>
           </Table>
         </TableContainer>
-        { hasAnyRole(['chpl-developer']) && (
+        { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }) && (
           <Typography variant="body1">
             Submit Insights at
             {' '}
@@ -75,4 +76,5 @@ function ChplInsightsView() {
 export default ChplInsightsView;
 
 ChplInsightsView.propTypes = {
+  developer: developerPropType.isRequired,
 };
