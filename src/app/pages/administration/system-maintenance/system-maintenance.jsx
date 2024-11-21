@@ -21,7 +21,13 @@ import ChplStandards from 'components/standards/standard/standards';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import {
+  AnalyticsContext,
+  BreadcrumbContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -53,11 +59,13 @@ const useStyles = makeStyles({
 });
 
 function ChplSystemMaintenance() {
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [active, setActive] = useState('');
   const classes = useStyles();
   let navigate;
+  let data;
 
   useEffect(() => {
     append(
@@ -122,6 +130,10 @@ function ChplSystemMaintenance() {
     hide('ucdProcesses.add.disabled');
     hide('ucdProcesses.edit.disabled');
     setActive(target);
+    eventTrack({
+      ...data.analytics,
+      event: `Navigate to ${target}`,
+    });
     if (target) {
       display('system-maintenance');
       hide('system-maintenance.disabled');
@@ -131,244 +143,253 @@ function ChplSystemMaintenance() {
     }
   };
 
+  data = {
+    analytics: {
+      ...analytics,
+      category: 'System Maintenance',
+    },
+  };
+
   return (
-    <div className={classes.container}>
-      <div className={classes.navigation}>
-        <Card>
-          <Button
-            onClick={() => navigate('accessibilityStandards')}
-            disabled={active === 'accessibilityStandards'}
-            id="system-maintenance-navigation-accessibility-standards"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            Accessibility Standards
-          </Button>
-          <Button
-            onClick={() => navigate('announcements')}
-            disabled={active === 'announcements'}
-            id="system-maintenance-navigation-announcements"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            Announcements
-          </Button>
-          { hasAnyRole(['chpl-admin'])
+    <AnalyticsContext.Provider value={data}>
+      <div className={classes.container}>
+        <div className={classes.navigation}>
+          <Card>
+            <Button
+              onClick={() => navigate('accessibilityStandards')}
+              disabled={active === 'accessibilityStandards'}
+              id="system-maintenance-navigation-accessibility-standards"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<ArrowForwardIcon />}
+              className={classes.menuItems}
+            >
+              Accessibility Standards
+            </Button>
+            <Button
+              onClick={() => navigate('announcements')}
+              disabled={active === 'announcements'}
+              id="system-maintenance-navigation-announcements"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<ArrowForwardIcon />}
+              className={classes.menuItems}
+            >
+              Announcements
+            </Button>
+            { hasAnyRole(['chpl-admin'])
+              && (
+                <Button
+                  onClick={() => navigate('certificationCriteria')}
+                  disabled={active === 'certificationCriteria'}
+                  id="system-maintenance-navigation-certification-criteria"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  Certification Criteria
+                </Button>
+              )}
+            { hasAnyRole(['chpl-admin'])
+              && (
+                <Button
+                  onClick={() => navigate('functionalitiesTested')}
+                  disabled={active === 'functionalitiesTested'}
+                  id="system-maintenance-navigation-functionalities-tested"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  Functionalities Tested
+                </Button>
+              )}
+            <Button
+              onClick={() => navigate('qmsStandards')}
+              disabled={active === 'qmsStandards'}
+              id="system-maintenance-navigation-qms-standards"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<ArrowForwardIcon />}
+              className={classes.menuItems}
+            >
+              QMS Standards
+            </Button>
+            { hasAnyRole(['chpl-admin'])
+              && (
+                <Button
+                  onClick={() => navigate('standards')}
+                  disabled={active === 'standards'}
+                  id="system-maintenance-navigation-standards"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  Standards
+                </Button>
+              )}
+            <Button
+              onClick={() => navigate('subscriptions')}
+              disabled={active === 'subscriptions'}
+              id="system-maintenance-navigation-subscriptions"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<ArrowForwardIcon />}
+              className={classes.menuItems}
+            >
+              Subscriptions
+            </Button>
+            <Button
+              onClick={() => navigate('svaps')}
+              disabled={active === 'svaps'}
+              id="system-maintenance-navigation-svaps"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<ArrowForwardIcon />}
+              className={classes.menuItems}
+            >
+              SVAP
+            </Button>
+            { hasAnyRole(['chpl-admin'])
+              && (
+                <Button
+                  onClick={() => navigate('systemJobs')}
+                  disabled={active === 'systemJobs'}
+                  id="system-maintenance-navigation-system-jobs"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  System Jobs
+                </Button>
+              )}
+            { hasAnyRole(['chpl-admin'])
+              && (
+                <Button
+                  onClick={() => navigate('testTools')}
+                  disabled={active === 'testTools'}
+                  id="system-maintenance-navigation-test-tools"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  Test Tools
+                </Button>
+              )}
+            <Button
+              onClick={() => navigate('ucdProcesses')}
+              disabled={active === 'ucdProcesses'}
+              id="system-maintenance-navigation-ucd-processes"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<ArrowForwardIcon />}
+              className={classes.menuItems}
+            >
+              UCD Processes
+            </Button>
+          </Card>
+        </div>
+        <div>
+          { active === ''
             && (
-              <Button
-                onClick={() => navigate('certificationCriteria')}
-                disabled={active === 'certificationCriteria'}
-                id="system-maintenance-navigation-certification-criteria"
-                fullWidth
-                variant="text"
-                color="primary"
-                endIcon={<ArrowForwardIcon />}
-                className={classes.menuItems}
-              >
-                Certification Criteria
-              </Button>
+              <Card>
+                <CardContent>
+                  <Typography>
+                    System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
+                  </Typography>
+                  <List>
+                    <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
+                    <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
+                    { hasAnyRole(['chpl-admin'])
+                      && (
+                        <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
+                      )}
+                    { hasAnyRole(['chpl-admin'])
+                      && (
+                        <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
+                      )}
+                    <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
+                    { hasAnyRole(['chpl-admin'])
+                      && (
+                        <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem>
+                      )}
+                    <ListItem>Subscriptions - Search and filter CHPL subscriptions</ListItem>
+                    <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
+                    { hasAnyRole(['chpl-admin'])
+                      && (
+                        <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
+                      )}
+                    { hasAnyRole(['chpl-admin'])
+                      && (
+                        <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
+                      )}
+                    <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
+                  </List>
+                </CardContent>
+              </Card>
             )}
-          { hasAnyRole(['chpl-admin'])
+          { active === 'announcements'
             && (
-              <Button
-                onClick={() => navigate('functionalitiesTested')}
-                disabled={active === 'functionalitiesTested'}
-                id="system-maintenance-navigation-functionalities-tested"
-                fullWidth
-                variant="text"
-                color="primary"
-                endIcon={<ArrowForwardIcon />}
-                className={classes.menuItems}
-              >
-                Functionalities Tested
-              </Button>
+              <ChplAnnouncements />
             )}
-          <Button
-            onClick={() => navigate('qmsStandards')}
-            disabled={active === 'qmsStandards'}
-            id="system-maintenance-navigation-qms-standards"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            QMS Standards
-          </Button>
-          { hasAnyRole(['chpl-admin'])
+          { active === 'accessibilityStandards'
             && (
-              <Button
-                onClick={() => navigate('standards')}
-                disabled={active === 'standards'}
-                id="system-maintenance-navigation-standards"
-                fullWidth
-                variant="text"
-                color="primary"
-                endIcon={<ArrowForwardIcon />}
-                className={classes.menuItems}
-              >
-                Standards
-              </Button>
+              <ChplAccessibilityStandards />
             )}
-          <Button
-            onClick={() => navigate('subscriptions')}
-            disabled={active === 'subscriptions'}
-            id="system-maintenance-navigation-subscriptions"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            Subscriptions
-          </Button>
-          <Button
-            onClick={() => navigate('svaps')}
-            disabled={active === 'svaps'}
-            id="system-maintenance-navigation-svaps"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            SVAP
-          </Button>
-          { hasAnyRole(['chpl-admin'])
+          { active === 'certificationCriteria'
             && (
-              <Button
-                onClick={() => navigate('systemJobs')}
-                disabled={active === 'systemJobs'}
-                id="system-maintenance-navigation-system-jobs"
-                fullWidth
-                variant="text"
-                color="primary"
-                endIcon={<ArrowForwardIcon />}
-                className={classes.menuItems}
-              >
-                System Jobs
-              </Button>
+              <ChplCertificationCriteria />
             )}
-          { hasAnyRole(['chpl-admin'])
+          { active === 'qmsStandards'
             && (
-              <Button
-                onClick={() => navigate('testTools')}
-                disabled={active === 'testTools'}
-                id="system-maintenance-navigation-test-tools"
-                fullWidth
-                variant="text"
-                color="primary"
-                endIcon={<ArrowForwardIcon />}
-                className={classes.menuItems}
-              >
-                Test Tools
-              </Button>
+              <ChplQmsStandards />
             )}
-          <Button
-            onClick={() => navigate('ucdProcesses')}
-            disabled={active === 'ucdProcesses'}
-            id="system-maintenance-navigation-ucd-processes"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            UCD Processes
-          </Button>
-        </Card>
+          { active === 'functionalitiesTested'
+            && (
+              <ChplFunctionalitiesTested />
+            )}
+          { active === 'subscriptions'
+            && (
+              <ChplManageSubscriptions />
+            )}
+          { active === 'standards'
+            && (
+              <ChplStandards />
+            )}
+          { active === 'svaps'
+            && (
+              <ChplSvaps />
+            )}
+          { active === 'systemJobs'
+            && (
+              <ChplSystemJobs />
+            )}
+          { active === 'testTools'
+            && (
+              <ChplTestTools />
+            )}
+          { active === 'ucdProcesses'
+            && (
+              <ChplUcdProcesses />
+            )}
+        </div>
       </div>
-      <div>
-        { active === ''
-          && (
-            <Card>
-              <CardContent>
-                <Typography>
-                  System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
-                </Typography>
-                <List>
-                  <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
-                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
-                    )}
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
-                    )}
-                  <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Standards - Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs</ListItem>
-                    )}
-                  <ListItem>Subscriptions - Search and filter CHPL subscriptions</ListItem>
-                  <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
-                    )}
-                  { hasAnyRole(['chpl-admin'])
-                    && (
-                      <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
-                    )}
-                  <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
-                </List>
-              </CardContent>
-            </Card>
-          )}
-        { active === 'announcements'
-          && (
-            <ChplAnnouncements />
-          )}
-        { active === 'accessibilityStandards'
-          && (
-            <ChplAccessibilityStandards />
-          )}
-        { active === 'certificationCriteria'
-          && (
-            <ChplCertificationCriteria />
-          )}
-        { active === 'qmsStandards'
-          && (
-            <ChplQmsStandards />
-          )}
-        { active === 'functionalitiesTested'
-          && (
-            <ChplFunctionalitiesTested />
-          )}
-        { active === 'subscriptions'
-          && (
-            <ChplManageSubscriptions />
-          )}
-        { active === 'standards'
-          && (
-            <ChplStandards />
-          )}
-        { active === 'svaps'
-          && (
-            <ChplSvaps />
-          )}
-        { active === 'systemJobs'
-          && (
-            <ChplSystemJobs />
-          )}
-        { active === 'testTools'
-          && (
-            <ChplTestTools />
-          )}
-        { active === 'ucdProcesses'
-          && (
-            <ChplUcdProcesses />
-          )}
-      </div>
-    </div>
+    </AnalyticsContext.Provider>
   );
 }
 
