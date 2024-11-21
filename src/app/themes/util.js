@@ -6,6 +6,15 @@ const util = {
       backgroundColor: '#853544',
     },
   },
+  deleteButtonOutlined: {
+    border: '1px solid #c44f65',
+    backgroundColor: '#ffffff',
+    color: '#c44f65',
+    '&:hover': {
+      backgroundColor: '#c44f6525',
+      color: '#c44f65',
+    },
+  },
   firstColumn: {
     position: 'sticky',
     left: 0,
