@@ -77,7 +77,7 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
             />
             <TableBody>
               {apiKeys.map((key) => (
-                <TableRow key={ key.key }>
+                <TableRow key={key.key}>
                   <TableCell className={classes.firstColumn}>{ key.name }</TableCell>
                   <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.email }</TableCell>
                   <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.key }</TableCell>
