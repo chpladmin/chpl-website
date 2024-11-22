@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardHeader,
+  CircularProgress,
   List,
   ListItem,
   Paper,
@@ -202,7 +203,7 @@ function ChplManageSubscriptionsView({ analytics }) {
         </div>
         { isLoading
           && (
-            <>Loading</>
+            <CircularProgress />
           )}
         { !isLoading
           && (
