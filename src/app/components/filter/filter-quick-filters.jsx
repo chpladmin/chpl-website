@@ -49,7 +49,7 @@ function ChplFilterQuickFilters({ toggleMultipleFilters }) {
     if (analytics) {
       eventTrack({
         ...analytics,
-        event: 'Open Quick Filter',
+        event: 'Load Quick Filter',
         label: value.display,
       });
     }
