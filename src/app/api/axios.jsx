@@ -31,7 +31,7 @@ function AxiosProvider({ children }) {
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
-        return Axios.post('auth/refresh-token', { refreshToken, cognitoId }, { headers })
+        return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => {
             $localStorage.jwtToken = response.data.accessToken;
             return response.data.accessToken;

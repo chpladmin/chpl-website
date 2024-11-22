@@ -111,8 +111,6 @@
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
               <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
               <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>
-              <li feature-flag="sso" feature-flag-hide ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
-              <li feature-flag="sso" feature-flag-hide ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.user-actions')"></i> User Actions</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.activity()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.activity')"></i> Search</a></li>
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc'])"><a ui-sref="reports.questionable-activity()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.questionable-activity')"></i> Questionable Activity</a></li>
             </ul>

@@ -9,6 +9,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
 import compareComplaint from './services/complaints.service';
+import compareUser from './services/users.service';
 
 import { compareDeveloper } from 'components/activity/services/developers.service';
 import { compareOrganization } from 'components/activity/services/organizations.service';
@@ -17,6 +18,8 @@ import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { compareProduct } from 'pages/reports/products/products.service';
 import { compareVersion } from 'pages/reports/versions/versions.service';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -37,6 +40,7 @@ const getDetails = (activity) => {
     case 'STANDARD': compare = compareSystemMaintenance; break;
     case 'SVAP': compare = compareSystemMaintenance; break;
     case 'TESTING_LAB': compare = compareOrganization; break;
+    case 'USER': compare = compareUser; break;
     case 'VERSION': compare = compareVersion; break;
       // no default
   }
@@ -51,14 +55,23 @@ const getDetails = (activity) => {
 };
 
 function ChplActivityDetails({ activity }) {
+  const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
   const handleClickOpen = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Open Activity Details',
+    });
     setOpen(true);
   };
 
   const handleClose = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Close Activity Details',
+    });
     setOpen(false);
   };
 
@@ -100,6 +113,7 @@ function ChplActivityDetails({ activity }) {
     'STANDARD',
     'SVAP',
     'TESTING_LAB',
+    'USER',
     'VERSION',
   ].includes(activity.concept)) {
     return (
