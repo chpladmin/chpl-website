@@ -77,19 +77,19 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
             />
             <TableBody>
               {apiKeys.map((key) => (
-                <TableRow key={key.key}>
+                <TableRow key={ key.key }>
                   <TableCell className={classes.firstColumn}>{ key.name }</TableCell>
-                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}> {key.email} </TableCell>
-                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}> {key.key} </TableCell>
-                  <TableCell className={classes.linkWrap} style={{ maxWidth: 50, }}> {getDisplayDateFormat(key.lastUsedDate)} </TableCell>
-                  <TableCell className={classes.linkWrap} style={{ maxWidth: 70, }}> {getDisplayDateFormat(key.deleteWarningSentDate)} </TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.email }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.key }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 50, }}>{ getDisplayDateFormat(key.lastUsedDate) }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 70, }}>{ getDisplayDateFormat(key.deleteWarningSentDate) }</TableCell>
                   <TableCell className={classes.linkWrap} align="left">
                     <Button
                       onClick={() => dispatch({ action: 'revoke', payload: key })}
                       id={`revoke-api-key-${key.key}`}
                       variant="contained"
                       className={classes.deleteButtonOutlined}
-                      endIcon={<DeleteIcon color="error" />}
+                      endIcon={<DeleteIcon/>}
                     >
                       Revoke key
                     </Button>
