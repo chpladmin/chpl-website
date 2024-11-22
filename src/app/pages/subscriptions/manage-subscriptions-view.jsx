@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
+  Card,
+  CardHeader,
   List,
   ListItem,
   Paper,
@@ -52,7 +55,6 @@ const useStyles = makeStyles({
   },
   pageBody: {
     display: 'grid',
-    padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
   pageContent: {
@@ -62,8 +64,8 @@ const useStyles = makeStyles({
   stickyColumn: {
     position: 'sticky',
     left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
+    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
+    backgroundColor: '#f9f9f9',
     overflowWrap: 'anywhere',
     [theme.breakpoints.up('sm')]: {
       minWidth: '150px',
@@ -95,6 +97,17 @@ const useStyles = makeStyles({
   },
   wrap: {
     flexFlow: 'wrap',
+  },
+  listContainer: {
+    fontSize: 'smaller',
+    paddingY: '4px',
+  },
+  listItem: {
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
+  notificationsButton: {
+    fontSize: '14px',
   },
 });
 
@@ -163,18 +176,23 @@ function ChplManageSubscriptionsView({ analytics }) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
-      <div className={classes.pageHeader}>
-        <Typography variant="h3" component="h1">Subscriptions</Typography>
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={getDeliveredMessages}
-          endIcon={<NotificationsOutlined />}
-        >
-          Get Delivered Notifications
-        </Button>
-      </div>
+    <Card>
+      <CardHeader
+        title={(
+          <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
+            <span>Subscriptions</span>
+            <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={getDeliveredMessages}
+                  className={classes.notificationsButton }
+                  endIcon={<NotificationsOutlined fontSize="small" />}
+                >
+                  Get Delivered Notifications
+            </Button>
+          </Box>
+        )}
+      />
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           placeholder="Search by Subscriber Email or CHPL Product Number..."
@@ -204,6 +222,7 @@ function ChplManageSubscriptionsView({ analytics }) {
                         {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                       </Typography>
                     )}
+
                 </div>
               </div>
               { subscriptions.length > 0
@@ -242,11 +261,11 @@ function ChplManageSubscriptionsView({ analytics }) {
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
                                   />
-                                  <List>
+                                  <List className={classes.listContainer}>
                                     { item.subscriptionSubjects
                                       .sort((a, b) => (a < b ? -1 : 1))
                                       .map((sub) => (
-                                        <ListItem key={sub}>{ sub }</ListItem>
+                                        <ListItem className={classes.listItem} key={sub}>{ sub }</ListItem>
                                       ))}
                                   </List>
                                 </TableCell>
@@ -269,7 +288,7 @@ function ChplManageSubscriptionsView({ analytics }) {
             </>
           )}
       </div>
-    </>
+    </Card>
   );
 }
 

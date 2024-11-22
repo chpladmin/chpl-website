@@ -15,6 +15,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { ucdProcessType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'name', text: 'Name', sortable: true },
@@ -22,12 +23,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',

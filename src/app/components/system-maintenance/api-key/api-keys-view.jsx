@@ -29,16 +29,14 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  container: {
+    maxWidth: '1280px',
+    overflowX: 'auto',
+  }
 });
 
 function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
@@ -67,42 +65,41 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
           title="API Keys History"
         />
       </div>
-      <TableContainer component={Paper}>
-        <Table
-          aria-label="API Keys table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
-            orderBy={orderBy}
-            order={order}
-            stickyHeader
-          />
-          <TableBody>
-            { apiKeys
-              .map((key) => (
+      <Paper className={classes.container}>
+        <TableContainer>
+          <Table aria-label="API Keys table">
+            <ChplSortableHeaders
+              headers={headers}
+              onTableSort={handleTableSort}
+              orderBy={orderBy}
+              order={order}
+              stickyHeader
+            />
+            <TableBody>
+              {apiKeys.map((key) => (
                 <TableRow key={key.key}>
                   <TableCell className={classes.firstColumn}>{ key.name }</TableCell>
-                  <TableCell>{ key.email }</TableCell>
-                  <TableCell>{ key.key }</TableCell>
-                  <TableCell>{ getDisplayDateFormat(key.lastUsedDate) }</TableCell>
-                  <TableCell>{ getDisplayDateFormat(key.deleteWarningSentDate) }</TableCell>
-                  <TableCell align="right">
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.email }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.key }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 50, }}>{ getDisplayDateFormat(key.lastUsedDate) }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 70, }}>{ getDisplayDateFormat(key.deleteWarningSentDate) }</TableCell>
+                  <TableCell className={classes.linkWrap} align="left">
                     <Button
                       onClick={() => dispatch({ action: 'revoke', payload: key })}
                       id={`revoke-api-key-${key.key}`}
                       variant="contained"
-                      color="secondary"
-                      endIcon={<DeleteIcon color="error" />}
+                      className={classes.deleteButtonOutlined}
+                      endIcon={<DeleteIcon/>}
                     >
                       Revoke key
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </>
   );
 }

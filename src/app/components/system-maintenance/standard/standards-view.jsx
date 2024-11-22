@@ -20,6 +20,7 @@ import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-he
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { standard as standardPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'value', text: 'Value', sortable: true },
@@ -34,12 +35,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
