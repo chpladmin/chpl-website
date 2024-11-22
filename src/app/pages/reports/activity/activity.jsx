@@ -9,6 +9,7 @@ import {
   getDateDisplay,
   getDateTimeEntry,
 } from 'components/filter';
+import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -27,6 +28,7 @@ const staticFilters = [{
 }];
 
 function ChplActivityPage() {
+  const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const activityDataQuery = useFetchActivityData();
 
@@ -50,20 +52,23 @@ function ChplActivityPage() {
       }));
   }, [activityDataQuery.data, activityDataQuery.isLoading, activityDataQuery.isSuccess]);
 
-  const analytics = {
-    category: 'Activity',
+  const data = {
+    analytics: {
+      ...analytics,
+      category: 'CHPL Search - Activity',
+    },
   };
 
   return (
-    <FilterProvider
-      analytics={analytics}
-      filters={filters}
-      storageKey="storageKey-activity"
-    >
-      <ChplActivityView
-        analytics={analytics}
-      />
-    </FilterProvider>
+    <AnalyticsContext.Provider value={data}>
+      <FilterProvider
+        analytics={data.analytics}
+        filters={filters}
+        storageKey="storageKey-activity"
+      >
+        <ChplActivityView />
+      </FilterProvider>
+    </AnalyticsContext.Provider>
   );
 }
 

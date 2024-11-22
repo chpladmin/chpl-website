@@ -174,6 +174,14 @@ function ChplFilterPanel() {
   };
 
   const handleFilterUpdate = (event, filter, value) => {
+    if (filterContext.analytics) {
+      eventTrack({
+        ...filterContext.analytics,
+        event: 'Update Filter',
+        label: activeCategory.getValueDisplay(value),
+        aggregationName: activeCategory.display,
+      });
+    }
     filterContext.dispatch('update', filter, {
       ...value,
       selected: event.target.value,
