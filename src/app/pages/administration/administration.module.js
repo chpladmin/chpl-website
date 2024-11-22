@@ -1,7 +1,7 @@
 /* global MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
 import 'ng-file-upload';
 import ChplCmsWrapper from './cms/cms-wrapper';
-import ChplLoginPage from './login';
+import ChplLoginPage from './login/login-wrapper';
 import ChplReportsWrapper from './reports/reports-wrapper';
 import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
 import ChplUploadPageWrapper from './upload/upload-page-wrapper';
