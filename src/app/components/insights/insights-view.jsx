@@ -63,7 +63,7 @@ function ChplInsightsView({ developer }) {
               { error.response.data.error }
             </Typography>
           )}
-        { insights && !isError && !isLoading
+        { data?.length > 0 && !isError && !isLoading
           && (
             <TableContainer component={Paper}>
               <Table
@@ -88,7 +88,7 @@ function ChplInsightsView({ developer }) {
               </Table>
             </TableContainer>
           )}
-        { !insights && !isError && !isLoading
+        { data?.length === 0 && !isError && !isLoading
           && (
             <Typography>
               No insights data available.
