@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -27,18 +28,23 @@ const useStyles = makeStyles({
 
 function ChplInsightsView({ developer }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { data, isError, isLoading } = useFetchInsights({ developer });
+  const {
+    data,
+    error,
+    isError,
+    isLoading,
+  } = useFetchInsights({ developer });
   const [insights, setInsights] = useState({});
   const classes = useStyles();
 
   useEffect(() => {
-    if (isError || isLoading || !data) { return; }
+    if (isError || !data) { return; }
     setInsights(data.reduce((acc, val) => {
       if (!acc[val.year]) { acc[val.year] = 0; }
       acc[val.year] += 1;
       return acc;
     }, {}));
-  }, [data, isError, isLoading]);
+  }, [data, isError]);
 
   return (
     <Card>
@@ -50,28 +56,44 @@ function ChplInsightsView({ developer }) {
           <a href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf">Insights Guide</a>
           .
         </Typography>
-        <TableContainer component={Paper}>
-          <Table
-            aria-label="Developer Insights information"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell>Insights Period</TableCell>
-                <TableCell>Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { insights && Object.keys(insights)
-                .sort((a, b) => (a < b ? 1 : -1))
-                .map((key) => (
-                  <TableRow key={key}>
-                    <TableCell>{ key }</TableCell>
-                    <TableCell>{`${insights[key]} evaluated`}</TableCell>
+        { isLoading && <CircularProgress /> }
+        { isError
+          && (
+            <Typography>
+              { error.response.data.error }
+            </Typography>
+          )}
+        { insights && !isError && !isLoading
+          && (
+            <TableContainer component={Paper}>
+              <Table
+                aria-label="Developer Insights information"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Insights Period</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </TableHead>
+                <TableBody>
+                  { insights && Object.keys(insights)
+                    .sort((a, b) => (a < b ? 1 : -1))
+                    .map((key) => (
+                      <TableRow key={key}>
+                        <TableCell>{ key }</TableCell>
+                        <TableCell>{`${insights[key]} evaluated`}</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        { !insights && !isError && !isLoading
+          && (
+            <Typography>
+              No insights data available.
+            </Typography>
+          )}
         { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }) && (
           <Typography variant="body1">
             Submit Insights at
