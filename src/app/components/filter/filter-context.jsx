@@ -15,23 +15,7 @@ import { filter as filterPropType, analyticsConfig } from 'shared/prop-types';
 
 const FilterContext = createContext();
 
-const getDateDisplay = (value) => (
-  <>
-    {value.value}
-    :
-    {' '}
-    { value.selected
-      ? (
-        <>
-          { getDisplayDateFormat(value.selected) }
-        </>
-      ) : (
-        <>
-          No date selected
-        </>
-      )}
-  </>
-);
+const getDateDisplay = (value) => `${value.value}: ${value.selected ? getDisplayDateFormat(value.selected) : 'No date selected'}`;
 
 const defaultFilter = {
   getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}${filter.operatorKey ? `&${filter.operatorKey}=${filter.operator}` : ''}`,

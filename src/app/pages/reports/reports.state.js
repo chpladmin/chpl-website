@@ -45,22 +45,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
-  name: 'reports.user-actions',
-  url: '/user-actions',
-  component: 'chplReportsUserActions',
-  data: {
-    title: 'CHPL Activity - User Actions',
-    roles: ['chpl-admin', 'chpl-onc'],
-  },
-}, {
-  name: 'reports.users',
-  url: '/users',
-  component: 'chplReportsUsers',
-  data: {
-    title: 'CHPL Activity - Users',
-    roles: ['chpl-admin', 'chpl-onc'],
-  },
-}, {
   name: 'reports.versions',
   url: '/versions',
   component: 'chplReportsVersions',

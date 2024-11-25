@@ -313,8 +313,8 @@ export default class NetworkService {
     return this.apiGET(`/surveillance-report/quarterly/${reportId}/listings`);
   }
 
-  getReportUrl(reportName) {
-    return this.apiGET(`/report-data/${reportName}/url`);
+  getReportMetadata(reportKey) {
+    return this.apiGET(`/report-data/report-metadata/${reportKey}`);
   }
 
   getSearchOptions() {
@@ -435,11 +435,17 @@ export default class NetworkService {
     return this.apiGET(`/users/beta/${id}/details`);
   }
 
-  getUsers() {
+  getUsers(includeDisabled = false) {
+    if (includeDisabled) {
+      return this.apiGET('/users?includeDisabled=true');
+    }
     return this.apiGET('/users');
   }
 
-  getUsersAtDeveloper(id) {
+  getUsersAtDeveloper(id, includeDisabled = false) {
+    if (includeDisabled) {
+      return this.apiGET(`/developers/${id}/users?includeDisabled=true`);
+    }
     return this.apiGET(`/developers/${id}/users`);
   }
 
@@ -595,7 +601,6 @@ export default class NetworkService {
         if (angular.isObject(response.data)) {
           return response.data;
         }
-        return;
       }, (response) => this.$q.reject(response));
   }
 

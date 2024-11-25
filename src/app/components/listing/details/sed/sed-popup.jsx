@@ -40,8 +40,6 @@ function ChplSedPopup({ id }) {
       eventTrack({
         ...analytics,
         event: 'View SED Information',
-        label: listing.chplProductNumber,
-        aggregationName: listing.product.name,
       });
     }
   }, [listing, open]);

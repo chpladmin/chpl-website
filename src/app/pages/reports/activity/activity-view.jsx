@@ -9,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
 
@@ -21,9 +20,10 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -95,10 +95,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplActivityView(props) {
+function ChplActivityView() {
   const storageKey = 'storageKey-activity';
-  const $analytics = getAngularService('$analytics');
-  const { analytics } = props;
+  const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'activity_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -190,7 +189,11 @@ function ChplActivityView(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      ...analytics,
+      event: 'Sort Column',
+      label: `${property} - ${orderDirection === 'desc' ? 'DESC' : 'ASC'}`,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -274,7 +277,6 @@ function ChplActivityView(props) {
                       rowsPerPageOptions={[25, 50, 100]}
                       setPage={setPageNumber}
                       setRowsPerPage={setPageSize}
-                      analytics={analytics}
                     />
                   </>
                 )}
@@ -288,7 +290,4 @@ function ChplActivityView(props) {
 export default ChplActivityView;
 
 ChplActivityView.propTypes = {
-  analytics: shape({
-    category: string.isRequired,
-  }).isRequired,
 };

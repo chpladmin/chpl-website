@@ -1,23 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bool, func, string } from 'prop-types';
-import ReactGA from 'react-ga4';
 
 import ChplOncOrganizationEdit from './onc-organization-edit';
 import ChplOncOrganizationView from './onc-organization-view';
 
 import { usePostAcb, usePutAcb } from 'api/acbs';
 import { usePostAtl, usePutAtl } from 'api/atls';
-import { UserContext } from 'shared/contexts';
 import { acb as acbPropType } from 'shared/prop-types';
 
-function ChplOncOrganization(props) {
-  const {
-    dispatch,
-    organization: initialOrg,
-    orgType,
-    isCreating,
-  } = props;
-  const { hasAnyRole } = useContext(UserContext);
+function ChplOncOrganization({
+  dispatch,
+  organization: initialOrg,
+  orgType,
+  isCreating,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [organization, setOrganization] = useState(undefined);
@@ -32,7 +28,7 @@ function ChplOncOrganization(props) {
   }, [initialOrg, isCreating]);
 
   const handleDispatch = (action, payload) => {
-    const mutate = isCreating ? (orgType === 'acb' ? postAcb : postAtl) : (orgType === 'acb' ? putAcb : putAtl);
+    const mutate = isCreating ? (orgType === 'acb' ? postAcb : postAtl) : (orgType === 'acb' ? putAcb : putAtl); // eslint-disable-line no-nested-ternary
     switch (action) {
       case 'cancel':
         setIsEditing(false);
@@ -48,11 +44,6 @@ function ChplOncOrganization(props) {
           onSuccess: () => {
             setIsEditing(false);
             setIsProcessing(false);
-            ReactGA.event('Save', {
-              category: 'ONC Organizations',
-              label: organization.name,
-              group: hasAnyRole(['chpl-admin']) ? 'chpl-admin' : (hasAnyRole['chpl-onc'] ? 'chpl-onc' : 'chpl-onc-acb'),
-            });
             dispatch('edit', '');
           },
           onError: (error) => {
