@@ -61,14 +61,6 @@ function ChplInsightsView({ developer }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>15 July 2027 to 15 July 2028</TableCell>
-                <TableCell>Submitted</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>15 July 2026 to 15 July 2027</TableCell>
-                <TableCell>Submitted</TableCell>
-              </TableRow>
               { insights && Object.keys(insights)
                 .sort((a, b) => (a < b ? 1 : -1))
                 .map((key) => (
