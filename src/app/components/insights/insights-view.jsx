@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -14,6 +14,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { useFetchInsights } from 'api/developer';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -26,7 +27,18 @@ const useStyles = makeStyles({
 
 function ChplInsightsView({ developer }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
+  const { data, isError, isLoading } = useFetchInsights({ developer });
+  const [insights, setInsights] = useState({});
   const classes = useStyles();
+
+  useEffect(() => {
+    if (isError || isLoading || !data) { return; }
+    setInsights(data.reduce((acc, val) => {
+      if (!acc[val.year]) { acc[val.year] = 0; }
+      acc[val.year] += 1;
+      return acc;
+    }, {}));
+  }, [data, isError, isLoading]);
 
   return (
     <Card>
@@ -57,6 +69,14 @@ function ChplInsightsView({ developer }) {
                 <TableCell>15 July 2026 to 15 July 2027</TableCell>
                 <TableCell>Submitted</TableCell>
               </TableRow>
+              { insights && Object.keys(insights)
+                .sort((a, b) => (a < b ? 1 : -1))
+                .map((key) => (
+                  <TableRow key={key}>
+                    <TableCell>{ key }</TableCell>
+                    <TableCell>{`${insights[key]} evaluated`}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
