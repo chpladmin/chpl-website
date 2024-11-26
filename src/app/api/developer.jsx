@@ -111,6 +111,18 @@ const usePutJoinDevelopers = () => {
   });
 };
 
+const usePostDeveloperSplit = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post(`developers/${data.oldDeveloper.id}/split`, data)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('developers');
+      queryClient.invalidateQueries('developers/search/v3');
+    },
+  });
+};
+
 const usePostMessage = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('developers/messages', data)
@@ -134,6 +146,7 @@ export {
   usePostAttestationException,
   usePutDeveloper,
   usePutJoinDevelopers,
+  usePostDeveloperSplit,
   usePostMessage,
   usePostMessagePreview,
 };

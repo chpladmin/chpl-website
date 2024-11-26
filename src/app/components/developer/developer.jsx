@@ -70,9 +70,9 @@ function ChplDeveloper({
 export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
-  canEdit: bool,
-  canJoin: bool,
-  canSplit: bool,
+  canEdit: func,
+  canJoin: func,
+  canSplit: func,
   developer: developerPropType.isRequired,
   dispatch: func,
   errorMessages: arrayOf(string),
@@ -83,9 +83,9 @@ ChplDeveloper.propTypes = {
 };
 
 ChplDeveloper.defaultProps = {
-  canEdit: false,
-  canJoin: false,
-  canSplit: false,
+  canEdit: () => false,
+  canJoin: () => false,
+  canSplit: () => false,
   dispatch: () => {},
   errorMessages: [],
   isEditing: false,
