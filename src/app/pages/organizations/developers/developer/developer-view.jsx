@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 
+import { useFetchUsersAtDeveloper } from 'api/developer';
 import ChplAttestationsView from 'components/attestation/attestations-view';
 import ChplChangeRequests from 'components/change-request/change-requests';
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
@@ -29,7 +30,15 @@ function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
+  const usersQuery = useFetchUsersAtDeveloper(developer, hasAnyRole(['chpl-admin', 'chpl-onc']));
+  const [state, setState] = useState('view');
+  const [users, setUsers] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (usersQuery.isLoading || !usersQuery.isSuccess) { return; }
+    setUsers(usersQuery.data.users);
+  }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
 
   const can = (action) => {
     if (hasAuthorityOn(developer)) { return false; } // basic authentication
@@ -49,46 +58,71 @@ function ChplDeveloperView({ dispatch }) {
     //return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // must be active
   };
 
+  const handleUserDispatch = (action, payload) => {
+    switch (action) {
+      case 'cancel':
+      case 'refresh':
+        setState('view');
+        break;
+      case 'edit':
+        setState('editUser');
+        break;
+      default:
+        dispatch(action, payload);
+    }
+  };
+
   return (
     <Box className={classes.mainContent}>
-      <Box>
-        <ChplDeveloperViewDetails
-          developer={developer}
-          dispatch={dispatch}
-          canEdit={() => can('edit')}
-          canJoin={() => can('join')}
-          canSplit={() => can('split-developer')}
-          isSplitting={false}
-        />
-        <ChplRealWorldTestingView
-          developer={developer}
-        />
-        <ChplAttestationsView
-          developer={developer}
-          dispatch={dispatch}
-        />
-        <ChplUsers
-          users={[]}
-          dispatch={dispatch}
-          roles={['ROLE_DEVELOPER']}
-          groupNames={['chpl-developer']}
-        />
-      </Box>
-      <Box>
-        { can('manageTracking')
+      <Box className={state === 'editUser' ? classes.fullWidthGridRow : ''}>
+        { state === 'view'
           && (
-            <ChplChangeRequests
-              disallowedFilters={['submittedDateTime', 'searchTerm']}
-              bonusQuery={`&developerId=${developer.id}`}
+            <>
+              <ChplDeveloperViewDetails
+                developer={developer}
+                dispatch={dispatch}
+                canEdit={() => can('edit')}
+                canJoin={() => can('join')}
+                canSplit={() => can('split-developer')}
+                isSplitting={false}
+              />
+              <ChplRealWorldTestingView
+                developer={developer}
+              />
+              <ChplAttestationsView
+                developer={developer}
+                dispatch={dispatch}
+              />
+            </>
+          )}
+        { (state === 'view' || state === 'editUser')
+          && (
+            <ChplUsers
+              users={users}
+              dispatch={handleUserDispatch}
+              roles={['ROLE_DEVELOPER']}
+              groupNames={['chpl-developer']}
             />
           )}
-        <ChplDirectReviews
-          developer={developer}
-        />
-        <ChplProducts
-          developer={developer}
-        />
       </Box>
+      { state === 'view'
+        && (
+          <Box>
+            { can('manageTracking')
+              && (
+                <ChplChangeRequests
+                  disallowedFilters={['submittedDateTime', 'searchTerm']}
+                  bonusQuery={`&developerId=${developer.id}`}
+                />
+              )}
+            <ChplDirectReviews
+              developer={developer}
+            />
+            <ChplProducts
+              developer={developer}
+            />
+          </Box>
+        )}
     </Box>
   );
 }

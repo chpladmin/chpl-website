@@ -76,6 +76,17 @@ const useFetchRealWorldTestingResults = ({ developer }) => {
   });
 };
 
+const useFetchUsersAtDeveloper = (developer, includeDisabled = false) => {
+  const id = developer?.id;
+  const axios = useAxios();
+  return useQuery(['developers', 'users', id, includeDisabled], async () => {
+    const response = await axios.get(`developers/${id}/users?includeDisabled=${includeDisabled ? 'true' : 'false'}`);
+    return response.data;
+  }, {
+    enabled: !!id,
+  });
+};
+
 const usePostAttestationException = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -143,6 +154,7 @@ export {
   useFetchDirectReviews,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
+  useFetchUsersAtDeveloper,
   usePostAttestationException,
   usePutDeveloper,
   usePutJoinDevelopers,
