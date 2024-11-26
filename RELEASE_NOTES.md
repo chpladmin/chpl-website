@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.29.0
+_25 November 2024_
+
+### Features
+* Use updated data structure from endpoint to display Power BI reports
+* Show activity details for User actions
+* Display "disabled users" for certain roles
+* Remove Activity (Users and User Activity) Reports
+
+---
+
 ## Version 13.28.0
 _12 November 2024_
 
