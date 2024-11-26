@@ -181,7 +181,7 @@ function ChplListingEditPage() {
                   style={{
                     transformOrigin:
                     placement === 'bottom' ? 'center top' : 'center bottom',
-                }}                  
+                  }}
                 >
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>

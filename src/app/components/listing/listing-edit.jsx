@@ -48,6 +48,8 @@ const validationSchema = yup.object({
   icsCode: yup.string()
     .required('Ics Code is required')
     .matches(/^[0-9]{2}$/, 'ICS Code must be a two digit single number from 00 to 99'),
+  mandatoryDisclosures: yup.string()
+    .url('Improper format (http://www.example.com)'),
   rwtPlansCheckDate: yup.date()
     .when('rwtPlansUrl', {
       is: (rwtPlansUrl) => !!rwtPlansUrl,
@@ -182,6 +184,7 @@ function ChplListingEdit({
           certifyingBody: acbs.find((acb) => acb.name === formik.values.certifyingBody),
           testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
           chplProductNumber: `${listing.chplProductNumber.split('.').slice(0, 4).join('.')}.${formik.values.productCode}.${formik.values.versionCode}.${formik.values.icsCode}.${listing.chplProductNumber.split('.').slice(7).join('.')}`,
+          mandatoryDisclosures: formik.values.mandatoryDisclosures,
           rwtPlansCheckDate: formik.values.rwtPlansCheckDate,
           rwtPlansUrl: formik.values.rwtPlansUrl,
           rwtResultsCheckDate: formik.values.rwtResultsCheckDate,
@@ -199,6 +202,7 @@ function ChplListingEdit({
       productCode: listing.chplProductNumber.split('.')[4],
       versionCode: listing.chplProductNumber.split('.')[5],
       icsCode: listing.chplProductNumber.split('.')[6],
+      mandatoryDisclosures: listing.mandatoryDisclosures ?? '',
       rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
       rwtPlansUrl: listing.rwtPlansUrl ?? '',
       rwtResultsCheckDate: listing.rwtResultsCheckDate ?? '',
@@ -282,13 +286,13 @@ function ChplListingEdit({
                   .map((status, idx, arr) => (
                     <ListItem
                       style={{
-                        marginBottom: '8px', 
-                        border: '1px solid #c2c6ca', 
-                        borderRadius: '4px', 
-                        paddingBottom: '4px', 
-                        display: 'flex', 
-                        flexDirection:'row', 
-                        gap: '16px', 
+                        marginBottom: '8px',
+                        border: '1px solid #c2c6ca',
+                        borderRadius: '4px',
+                        paddingBottom: '4px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '16px',
                         alignItems: 'center',
                       }}
                       key={status.eventDay}
@@ -497,6 +501,24 @@ function ChplListingEdit({
                     </Box>
                   </>
                 )}
+            </Box>
+            <Divider />
+
+            { /* Mandatory Disclosures */}
+            <Box display="flex" gridGap={12} flexDirection="column">
+              <Typography variant="h6">
+                Mandatory Disclosures
+              </Typography>
+              <ChplTextField
+                id="mandatory-disclosures"
+                name="mandatoryDisclosures"
+                label="Mandatory Disclosures"
+                value={formik.values.mandatoryDisclosures}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.mandatoryDisclosures && !!formik.errors.mandatoryDisclosures}
+                helperText={formik.touched.mandatoryDisclosures && formik.errors.mandatoryDisclosures}
+              />
             </Box>
             <Divider />
 
