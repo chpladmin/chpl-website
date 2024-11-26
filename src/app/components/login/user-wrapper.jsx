@@ -30,18 +30,6 @@ function UserWrapper({ children }) {
     };
   }, [$rootScope, authService]);
 
-  const canManageDeveloper = (developer) => {
-    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      return true;
-    }
-    if (hasAnyRole(['chpl-developer'])) {
-      return user.organizations
-        .filter((d) => d.id === developer.id)
-        .length > 0;
-    }
-    return false;
-  }
-
   const hasAnyRole = (roles) => {
     if (!user || !roles || roles.length === 0 || !user.role) {
       return false;
@@ -68,7 +56,6 @@ function UserWrapper({ children }) {
         .length > 0;
 
   const userState = {
-    canManageDeveloper,
     hasAnyRole,
     hasAuthorityOn,
     impersonating,

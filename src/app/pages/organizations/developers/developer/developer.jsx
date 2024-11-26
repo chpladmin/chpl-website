@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
   CircularProgress,
   Container,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { number, oneOfType, string } from 'prop-types';
 
@@ -14,39 +11,15 @@ import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 
 import { useFetchDeveloperHierarchy } from 'api/developer';
-import ChplAttestationsView from 'components/attestation/attestations-view';
-import ChplChangeRequests from 'components/change-request/change-requests';
-import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
-import ChplProducts from 'components/products/products';
-import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
-import ChplUsers from 'components/user/users';
 import { getAngularService } from 'services/angular-react-helper';
-import { eventTrack } from 'services/analytics.service';
-import {
-  AnalyticsContext,
-  DeveloperContext,
-  FlagContext,
-  UserContext,
-  useAnalyticsContext,
-} from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-});
-
-const isActive = (statuses) => statuses.length === 0 || statuses.every((status) => status.endDay);
+import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 
 function ChplDeveloperPage({ id }) {
   const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
-  const { canManageDeveloper, hasAnyRole, user } = useContext(UserContext);
-  const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
   const [developer, setDeveloper] = useState(undefined);
   const [state, setState] = useState('view');
-  const classes = useStyles();
-  let analyticsData;
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -54,24 +27,6 @@ function ChplDeveloperPage({ id }) {
     }
     setDeveloper(data);
   }, [data, isLoading, isSuccess]);
-
-  const can = (action) => {
-    if (canManageDeveloper(developer)) { return false; } // basic authentication
-    if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']); } // only DEVELOPER can manage tracking
-    if (action === 'split-developer' && developer.products.length < 2) { return false; } // cannot split developer without at least two products
-    if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
-    if (action === 'join') { return false; } // if not above roles, can't join
-    if (action === 'split-developer') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); } // ACB can split
-    if (action === 'edit') {
-      if (demographicChangeRequestIsOn) {
-        return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); // Developer can only edit based on flag
-      }
-      return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
-    }
-    if (action === 'manageUsers') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
-    console.error(`Unknown action: ${action}`);
-    //return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // must be active
-  };
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -98,7 +53,7 @@ function ChplDeveloperPage({ id }) {
     developer,
   };
 
-  analyticsData = {
+  const analyticsData = {
     analytics: {
       ...analytics,
       category: 'Developer',

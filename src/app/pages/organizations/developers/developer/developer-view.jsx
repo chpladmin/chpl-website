@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
-  Button,
-  CircularProgress,
-  Container,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -16,16 +12,8 @@ import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
 import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
 import ChplUsers from 'components/user/users';
-import { getAngularService } from 'services/angular-react-helper';
-import { eventTrack } from 'services/analytics.service';
-import {
-  AnalyticsContext,
-  DeveloperContext,
-  FlagContext,
-  UserContext,
-  useAnalyticsContext,
-} from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -38,13 +26,13 @@ const useStyles = makeStyles({
 const isActive = (statuses) => statuses.length === 0 || statuses.every((status) => status.endDay);
 
 function ChplDeveloperView({ dispatch }) {
-  const { canManageDeveloper, hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
   const classes = useStyles();
 
   const can = (action) => {
-    if (canManageDeveloper(developer)) { return false; } // basic authentication
+    if (hasAuthorityOn(developer)) { return false; } // basic authentication
     if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']); } // only DEVELOPER can manage tracking
     if (action === 'split-developer' && developer.products.length < 2) { return false; } // cannot split developer without at least two products
     if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
