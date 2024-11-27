@@ -67,6 +67,10 @@ function ChplDeveloperView({ dispatch }) {
       case 'edit':
         setState('editUser');
         break;
+      case 'delete':
+        setState('view');
+        dispatch(action, payload);
+        break;
       default:
         dispatch(action, payload);
     }

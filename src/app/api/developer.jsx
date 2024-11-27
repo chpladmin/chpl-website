@@ -2,6 +2,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
+const useDeleteUserFromDeveloper = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`developers/${data.id}/users/${data.userId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['developers', 'users']);
+    },
+  });
+};
+
 const useFetchAttestations = ({ developer, isAuthenticated }) => {
   const axios = useAxios();
   return useQuery(['developers/attestations', developer.id], async () => {
@@ -147,6 +157,7 @@ const usePostMessagePreview = () => {
 };
 
 export {
+  useDeleteUserFromDeveloper,
   useFetchAttestations,
   useFetchDeveloperHierarchy,
   useFetchDevelopers,

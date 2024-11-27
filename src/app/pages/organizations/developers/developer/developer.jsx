@@ -11,7 +11,7 @@ import ChplDeveloperEdit from './edit';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 
-import { useFetchDeveloperHierarchy } from 'api/developer';
+import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
 import { usePostCreateInvitation } from 'api/users';
 import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
@@ -21,6 +21,7 @@ function ChplDeveloperPage({ id }) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
+  const { mutate: deleteUserFromDeveloper } = useDeleteUserFromDeveloper();
   const { mutate: createInvitation } = usePostCreateInvitation();
   const [developer, setDeveloper] = useState(undefined);
   const [state, setState] = useState('view');
@@ -56,6 +57,22 @@ function ChplDeveloperPage({ id }) {
           },
           onError: (error) => {
             enqueueSnackbar(error.data?.error ?? 'An unexpected error has occurred.', {
+              variant: 'error',
+            });
+          },
+        });
+        break;
+      case 'impersonate':
+        break;
+      case 'delete':
+        deleteUserFromDeveloper({ userId: payload, id: developer.id }, {
+          onSuccess: () => {
+            enqueueSnackbar('User removed', {
+              variant: 'success',
+            });
+          },
+          onError: () => {
+            enqueueSnackbar('An unexpected error has occurred.', {
               variant: 'error',
             });
           },
