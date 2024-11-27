@@ -17,6 +17,11 @@ const usePostCreateInvitedUser = () => {
   return useMutation(async (data) => axios.post('users/create', data));
 };
 
+const usePostCreateOldInvitation = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('users/invite', data));
+};
+
 const usePutUser = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -41,6 +46,7 @@ export {
   usePostCreateCognitoInvitedUser,
   usePostCreateInvitation,
   usePostCreateInvitedUser,
+  usePostCreateOldInvitation,
   usePutCognitoUser,
   usePutUser,
 };

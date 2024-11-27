@@ -12,7 +12,7 @@ import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
-import { usePostCreateInvitation } from 'api/users';
+import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
@@ -24,6 +24,7 @@ function ChplDeveloperPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
   const { mutate: deleteUserFromDeveloper } = useDeleteUserFromDeveloper();
   const { mutate: createInvitation } = usePostCreateInvitation();
+  const { mutate: createOldInvitation } = usePostCreateOldInvitation();
   const [developer, setDeveloper] = useState(undefined);
   const [state, setState] = useState('view');
 
@@ -51,6 +52,24 @@ function ChplDeveloperPage({ id }) {
         createInvitation({
           ...payload,
           organizationId: developer.id,
+        }, {
+          onSuccess: () => {
+            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
+              variant: 'success',
+            });
+          },
+          onError: (error) => {
+            enqueueSnackbar(error.data?.error ?? 'An unexpected error has occurred.', {
+              variant: 'error',
+            });
+          },
+        });
+        break;
+      case 'invite':
+        createOldInvitation({
+          ...payload,
+          emailAddress: payload.email,
+          permissionObjectId: developer.id,
         }, {
           onSuccess: () => {
             enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
