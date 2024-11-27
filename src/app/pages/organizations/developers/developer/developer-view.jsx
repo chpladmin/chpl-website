@@ -7,7 +7,7 @@ import { func } from 'prop-types';
 
 import { useFetchUsersAtDeveloper } from 'api/developer';
 import ChplAttestationsView from 'components/attestation/attestations-view';
-import ChplChangeRequests from 'components/change-request/change-requests';
+import ChplChangeRequests from 'components/change-request/change-requests-wrapper'; // figure out how to not need breadcrumbs
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
 import ChplProducts from 'components/products/products';
@@ -45,7 +45,7 @@ function ChplDeveloperView({ dispatch }) {
   }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
 
   const can = (action) => {
-    if (hasAuthorityOn(developer)) { return false; } // basic authentication
+    if (!hasAuthorityOn(developer)) { return false; } // basic authentication
     if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']); } // only DEVELOPER can manage tracking
     if (action === 'split-developer' && developer.products.length < 2) { return false; } // cannot split developer without at least two products
     if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
@@ -58,7 +58,7 @@ function ChplDeveloperView({ dispatch }) {
       return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
     }
     if (action === 'manageUsers') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
-    console.error(`Unknown action: ${action}`);
+    console.error(`Unknown "can" action: ${action}`);
     //return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // must be active
   };
 
