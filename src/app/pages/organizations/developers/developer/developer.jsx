@@ -99,6 +99,21 @@ function ChplDeveloperPage({ id }) {
           },
         });
         break;
+      case 'editProduct':
+        $state.go('organizations.developers.developer.product.edit', {
+          productId: payload.id,
+        });
+        break;
+      case 'joinProduct':
+        $state.go('organizations.developers.developer.product.merge', {
+          productId: payload.id,
+        });
+        break;
+      case 'splitProduct':
+        $state.go('organizations.developers.developer.product.split', {
+          productId: payload.id,
+        });
+        break;
       default:
         console.error(`Unknown action: ${action} with payload: ${JSON.stringify(payload)}`);
     }

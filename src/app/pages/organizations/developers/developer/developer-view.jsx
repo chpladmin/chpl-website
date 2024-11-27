@@ -62,6 +62,18 @@ function ChplDeveloperView({ dispatch }) {
     //return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // must be active
   };
 
+  const handleProductDispatch = ({action, payload}) => {
+    switch (action) {
+      case 'edit':
+      case 'split':
+      case 'join':
+        dispatch(`${action}Product`, payload);
+        break;
+      default:
+        dispatch(action, payload);
+    }
+  };
+
   const handleUserDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
@@ -128,6 +140,7 @@ function ChplDeveloperView({ dispatch }) {
             />
             <ChplProducts
               developer={developer}
+              dispatch={handleProductDispatch}
             />
           </Box>
         )}

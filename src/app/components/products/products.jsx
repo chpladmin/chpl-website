@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { arrayOf, string } from 'prop-types';
+import { func } from 'prop-types';
 
 import ChplProductsView from './products-view';
 
@@ -41,34 +41,32 @@ const staticFilters = [
   },
 ];
 
-function ChplProducts() {
+function ChplProducts({ dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
 
   const analyticsData = {
     analytics: {
       ...analytics,
-      category: 'Developer',
-      label: developer.name,
     },
   };
 
   return (
-    <AnalyticsContext.Provider value={analyticsData}>
-      <FilterProvider
-        analytics={analyticsData.analytics}
-        filters={staticFilters}
-        storageKey="storageKey-productsComponent"
-      >
-        <ChplProductsView
-          products={developer.products}
-        />
-      </FilterProvider>
-    </AnalyticsContext.Provider>
+    <FilterProvider
+      analytics={analyticsData.analytics}
+      filters={staticFilters}
+      storageKey="storageKey-productsComponent"
+    >
+      <ChplProductsView
+        products={developer.products}
+        dispatch={dispatch}
+      />
+    </FilterProvider>
   );
 }
 
 export default ChplProducts;
 
 ChplProducts.propTypes = {
+  dispatch: func.isRequired,
 };

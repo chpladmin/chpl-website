@@ -3,6 +3,8 @@ import {
   Accordion,
   AccordionSummary,
   Box,
+  Button,
+  ButtonGroup,
   CardContent,
   MenuItem,
   Paper,
@@ -15,12 +17,13 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CallSplitIcon from '@material-ui/icons/CallSplit';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { func } from 'prop-types';
 
-import {
-  ChplLink,
-  ChplTextField,
-} from 'components/util';
+import { ChplLink, ChplTextField, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -86,7 +89,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplProductView({ product }) {
+function ChplProductView({ product, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [active, setActive] = useState('');
@@ -189,6 +192,43 @@ function ChplProductView({ product }) {
             </MenuItem>
           ))}
         </ChplTextField>
+        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+          && (
+            <ButtonGroup
+              color="primary"
+            >
+              <ChplTooltip title={`Edit ${product.name}`}>
+                <Button
+                  variant="contained"
+                  aria-label={`Edit ${product.name}`}
+                  id={`product-edit-${product.id}`}
+                  onClick={() => dispatch({ action: 'edit', payload: product })}
+                >
+                  <EditOutlinedIcon />
+                </Button>
+              </ChplTooltip>
+              <ChplTooltip title={`Split ${product.name}`}>
+                <Button
+                  variant="outlined"
+                  aria-label={`Split ${product.name}`}
+                  id={`product-split-${product.id}`}
+                  onClick={() => dispatch({ action: 'split', payload: product })}
+                >
+                  <CallSplitIcon />
+                </Button>
+              </ChplTooltip>
+              <ChplTooltip title={`Join ${product.name}`}>
+                <Button
+                  variant="outlined"
+                  aria-label={`Join ${product.name}`}
+                  id={`product-join-${product.id}`}
+                  onClick={() => dispatch({ action: 'join', payload: product })}
+                >
+                  <CallMergeIcon />
+                </Button>
+              </ChplTooltip>
+            </ButtonGroup>
+          )}
         <TableContainer component={Paper}>
           <Table aria-label="Listings table">
             <TableHead>
@@ -238,4 +278,5 @@ export default ChplProductView;
 
 ChplProductView.propTypes = {
   product: productPropType.isRequired,
+  dispatch: func.isRequired,
 };

@@ -6,7 +6,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 
 import ChplProductView from './product-view';
 
@@ -128,7 +128,7 @@ const includeListing = (listing, params) => {
 
 const sortProducts = (a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
 
-function ChplProductsView({ products }) {
+function ChplProductsView({ products, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { queryParams } = useFilterContext();
@@ -202,6 +202,7 @@ function ChplProductsView({ products }) {
             <ChplProductView
               key={product.id}
               product={product}
+              dispatch={dispatch}
             />
           ))}
       </CardContent>
@@ -213,6 +214,7 @@ export default ChplProductsView;
 
 ChplProductsView.propTypes = {
   products: arrayOf(productPropType),
+  dispatch: func.isRequired,
 };
 
 ChplProductsView.defaultProps = {
