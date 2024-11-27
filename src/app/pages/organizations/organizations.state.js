@@ -51,15 +51,6 @@ const states = [
     name: 'organizations.developers.developer.attestation',
     url: '/attestation',
   }, {
-    name: 'organizations.developers.developer.attestation.create',
-    views: {
-      'view@^.^': 'chplAttestationCreateWrapperBridge',
-    },
-    data: {
-      title: 'CHPL Developer - Attestation',
-      roles: ['chpl-developer'],
-    },
-  }, {
     name: 'organizations.developers.developer.attestation.edit',
     views: {
       'view@^.^': 'chplAttestationEditWrapperBridge',

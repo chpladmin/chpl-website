@@ -13,6 +13,7 @@ import ChplDeveloperView from './developer-view';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
 import { usePostCreateInvitation } from 'api/users';
+import ChplAttestationCreate from 'components/attestation/attestation-create';
 import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 
@@ -40,6 +41,7 @@ function ChplDeveloperPage({ id }) {
         break;
       case 'edit':
       case 'split':
+      case 'createAttestation':
         setState(action);
         break;
       case 'join':
@@ -126,6 +128,12 @@ function ChplDeveloperPage({ id }) {
           { state === 'split'
             && (
               <ChplDeveloperSplit
+                dispatch={handleDispatch}
+              />
+            )}
+          { state === 'createAttestation'
+            && (
+              <ChplAttestationCreate
                 dispatch={handleDispatch}
               />
             )}

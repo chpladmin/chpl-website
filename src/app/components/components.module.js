@@ -2,11 +2,7 @@ import IndexWrapper from '../index-wrapper';
 
 import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
-import {
-  ChplAttestationCreateWrapper,
-  ChplAttestationEditWrapper,
-  ChplAttestationsViewWrapper,
-} from './attestation';
+import ChplAttestationEditWrapper from './attestation/attestation-edit-wrapper';
 import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
@@ -55,9 +51,7 @@ angular
   ])
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
-  .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
-  .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
