@@ -30,7 +30,11 @@ function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
-  const usersQuery = useFetchUsersAtDeveloper(developer, hasAnyRole(['chpl-admin', 'chpl-onc']));
+  const usersQuery = useFetchUsersAtDeveloper({
+    developer,
+    includeDisabled: hasAnyRole(['chpl-admin', 'chpl-onc']),
+    enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn(developer)),
+  });
   const [state, setState] = useState('view');
   const [users, setUsers] = useState([]);
   const classes = useStyles();

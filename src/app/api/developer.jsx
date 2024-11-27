@@ -86,14 +86,14 @@ const useFetchRealWorldTestingResults = ({ developer }) => {
   });
 };
 
-const useFetchUsersAtDeveloper = (developer, includeDisabled = false) => {
+const useFetchUsersAtDeveloper = ({ developer, includeDisabled, enabled }) => {
   const id = developer?.id;
   const axios = useAxios();
   return useQuery(['developers', 'users', id, includeDisabled], async () => {
     const response = await axios.get(`developers/${id}/users?includeDisabled=${includeDisabled ? 'true' : 'false'}`);
     return response.data;
   }, {
-    enabled: !!id,
+    enabled: !!id && enabled,
   });
 };
 
