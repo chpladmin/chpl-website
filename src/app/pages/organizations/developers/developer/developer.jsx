@@ -104,7 +104,7 @@ function ChplDeveloperPage({ id }) {
           productId: payload.id,
         });
         break;
-      case 'joinProduct':
+      case 'mergeProduct':
         $state.go('organizations.developers.developer.product.merge', {
           productId: payload.id,
         });

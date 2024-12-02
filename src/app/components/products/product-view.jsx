@@ -217,12 +217,12 @@ function ChplProductView({ product, dispatch }) {
                   <CallSplitIcon />
                 </Button>
               </ChplTooltip>
-              <ChplTooltip title={`Join ${product.name}`}>
+              <ChplTooltip title={`Merge ${product.name}`}>
                 <Button
                   variant="outlined"
-                  aria-label={`Join ${product.name}`}
-                  id={`product-join-${product.id}`}
-                  onClick={() => dispatch({ action: 'join', payload: product })}
+                  aria-label={`Merge ${product.name}`}
+                  id={`product-merge-${product.id}`}
+                  onClick={() => dispatch({ action: 'merge', payload: product })}
                 >
                   <CallMergeIcon />
                 </Button>

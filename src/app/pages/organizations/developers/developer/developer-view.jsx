@@ -59,14 +59,14 @@ function ChplDeveloperView({ dispatch }) {
     }
     if (action === 'manageUsers') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
     console.error(`Unknown "can" action: ${action}`);
-    //return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // must be active
+    return false;
   };
 
-  const handleProductDispatch = ({action, payload}) => {
+  const handleProductDispatch = ({ action, payload }) => {
     switch (action) {
       case 'edit':
       case 'split':
-      case 'join':
+      case 'merge':
         dispatch(`${action}Product`, payload);
         break;
       default:
