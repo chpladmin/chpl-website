@@ -13,13 +13,14 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-import { useFetchStandardsActivity } from 'api/activity';
+import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { standard as standardPropType } from 'shared/prop-types';
+import { functionalityTested as functionalityTestedPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'value', text: 'Value', sortable: true },
@@ -28,32 +29,27 @@ const headers = [
   { property: 'requiredDay', text: 'Required Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
+  { text: 'Practice Type' },
   { text: 'Applicable Criteria' },
-  { text: 'Group' },
   { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
 });
 
-function ChplStandardsView({ dispatch, standards: initialStandards }) {
-  const [standards, setStandards] = useState([]);
+function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {
+  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setStandards(initialStandards
+    setFunctionalitiesTested(initialFunctionalitiesTested
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -62,26 +58,26 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialStandards]);
+  }, [initialFunctionalitiesTested]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = standards.sort(sortComparator(property, descending));
+    const updated = functionalitiesTested.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setStandards(updated);
+    setFunctionalitiesTested(updated);
   };
 
   return (
     <>
       <div className={classes.tableResultsHeaderContainer}>
         <ChplSystemMaintenanceActivity
-          fetch={useFetchStandardsActivity}
-          title="Standards"
+          fetch={useFetchFunctionalitiesTestedActivity}
+          title="Functionalities Tested"
         />
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-standard"
+          id="add-new-functionality-tested"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -91,7 +87,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="Standards table"
+          aria-label="Functionalities Tested table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -101,12 +97,12 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
             stickyHeader
           />
           <TableBody>
-            { standards
+            { functionalitiesTested
               .map((item) => (
                 <TableRow key={`${item.id}-${item.value}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.value }
-                    { item.retired && ' (Expired)'}
+                    { item.retired && ' (Retired)'}
                     <ChplUpdateIndicator
                       requiredDay={item.requiredDay}
                       endDay={item.endDay}
@@ -129,15 +125,15 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                     { item.rule?.name ?? '' }
                   </TableCell>
                   <TableCell>
-                    { item.criteriaDisplay }
+                    { item.practiceType?.name ?? '' }
                   </TableCell>
                   <TableCell>
-                    { item.groupName ?? '' }
+                    { item.criteriaDisplay }
                   </TableCell>
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-standard-${item.value}`}
+                      id={`edit-functionality-tested-${item.value}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -154,9 +150,9 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
   );
 }
 
-export default ChplStandardsView;
+export default ChplFunctionalitiesTestedView;
 
-ChplStandardsView.propTypes = {
+ChplFunctionalitiesTestedView.propTypes = {
   dispatch: func.isRequired,
-  standards: arrayOf(standardPropType).isRequired,
+  functionalitiesTested: arrayOf(functionalityTestedPropType).isRequired,
 };

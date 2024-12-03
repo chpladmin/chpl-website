@@ -6,11 +6,22 @@ const util = {
       backgroundColor: '#853544',
     },
   },
+  deleteButtonOutlined: {
+    border: '1px solid #c44f65',
+    backgroundColor: '#ffffff',
+    color: '#c44f65',
+    '&:hover': {
+      backgroundColor: '#c44f6525',
+      color: '#c44f65',
+    },
+  },
   firstColumn: {
     position: 'sticky',
     left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
+    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
+    backgroundColor: '#f9f9f9',
+    zIndex: 1,
+    overflowWrap:'anywhere', 
   },
   fullWidth: {
     gridColumnEnd: -1,
