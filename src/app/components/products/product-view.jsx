@@ -95,17 +95,13 @@ function ChplProductView({ product, dispatch }) {
   const [active, setActive] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [listings, setListings] = useState([]);
-  const [selectedVersion, setSelectedVersion] = useState('All');
+  const [selectedVersion, setSelectedVersion] = useState('all');
   const [surveillance, setSurveillance] = useState('');
-  const [options, setOptions] = useState(['All']);
+  const [options, setOptions] = useState([{ id: 'all', version: 'All' }]);
   const classes = useStyles();
 
   useEffect(() => {
-    setOptions(
-      ['All']
-        .concat(product.versions
-          .map((v) => (v.version))),
-    );
+    setOptions([{ id: 'all', version: 'All' }].concat(product.versions));
     const rollup = product.versions
       .flatMap((version) => version.listings)
       .reduce((obj, l) => ({
@@ -123,7 +119,7 @@ function ChplProductView({ product, dispatch }) {
 
   useEffect(() => {
     setListings(product.versions
-      .filter((version) => selectedVersion === 'All' || version.version === selectedVersion)
+      .filter((version) => selectedVersion === 'all' || version.id === selectedVersion)
       .flatMap((version) => version.listings)
       .sort((a, b) => (a.certificationDay < b.certificationDay ? 1 : (a.certificationDay > b.certificationDay ? -1 : (a.chplProductNumber < b.chplProductNumber ? -1 : 1)))));
   }, [product, selectedVersion]);
@@ -187,8 +183,8 @@ function ChplProductView({ product, dispatch }) {
           onChange={(event) => setSelectedVersion(event.target.value)}
         >
           {options.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
+            <MenuItem key={option.id} value={option.id}>
+              {option.version}
             </MenuItem>
           ))}
         </ChplTextField>
