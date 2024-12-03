@@ -77,7 +77,7 @@ const states = [
     name: 'organizations.developers.developer.product.edit',
     url: '/edit',
     views: {
-      'products@^.^': 'chplProductsEdit',
+      'view@^.^': 'chplProductsEdit',
     },
     data: {
       title: 'CHPL Developers - Edit Product',
@@ -93,6 +93,13 @@ const states = [
       title: 'CHPL Developers - Merge Product',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
+    },
   }, {
     name: 'organizations.developers.developer.product.split',
     url: '/split',
@@ -103,6 +110,13 @@ const states = [
       title: 'CHPL Developers - Split Product',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
+    },
   }, {
     name: 'organizations.developers.developer.product.version',
     url: '/versions/{versionId}',
@@ -111,7 +125,7 @@ const states = [
     name: 'organizations.developers.developer.product.version.edit',
     url: '/edit',
     views: {
-      'products@^.^.^': 'chplVersionsEdit',
+      'view@^.^.^': 'chplVersionsEdit',
     },
     data: {
       title: 'CHPL Developers - Edit Version',
