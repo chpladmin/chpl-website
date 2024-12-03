@@ -14,7 +14,8 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { accessibilityStandardType } from 'shared/prop-types';
+import { ucdProcessType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'name', text: 'Name', sortable: true },
@@ -22,39 +23,34 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
 });
 
-function ChplAccessibilityStandardsView(props) {
+function ChplUcdProcessesView(props) {
   const { dispatch } = props;
-  const [accessibilityStandards, setAccessibilityStandards] = useState([]);
+  const [ucdProcesses, setUcdProcesses] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const classes = useStyles();
 
   useEffect(() => {
-    setAccessibilityStandards(props.accessibilityStandards
+    setUcdProcesses(props.ucdProcesses
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [props.accessibilityStandards]); // eslint-disable-line react/destructuring-assignment
+  }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = accessibilityStandards.sort(sortComparator(property, descending));
+    const updated = ucdProcesses.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setAccessibilityStandards(updated);
+    setUcdProcesses(updated);
   };
 
   return (
@@ -62,7 +58,7 @@ function ChplAccessibilityStandardsView(props) {
       <div className={classes.tableResultsHeaderContainer}>
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-accessibility-standard"
+          id="add-new-ucd-process"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -72,7 +68,7 @@ function ChplAccessibilityStandardsView(props) {
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="Accessibility Standard table"
+          aria-label="UCD Process table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -82,7 +78,7 @@ function ChplAccessibilityStandardsView(props) {
             stickyHeader
           />
           <TableBody>
-            { accessibilityStandards
+            { ucdProcesses
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
@@ -91,7 +87,7 @@ function ChplAccessibilityStandardsView(props) {
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-accessibility-standard-${item.id}`}
+                      id={`edit-ucd-process-${item.id}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -108,9 +104,9 @@ function ChplAccessibilityStandardsView(props) {
   );
 }
 
-export default ChplAccessibilityStandardsView;
+export default ChplUcdProcessesView;
 
-ChplAccessibilityStandardsView.propTypes = {
+ChplUcdProcessesView.propTypes = {
   dispatch: func.isRequired,
-  accessibilityStandards: arrayOf(accessibilityStandardType).isRequired,
+  ucdProcesses: arrayOf(ucdProcessType).isRequired,
 };

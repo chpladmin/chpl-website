@@ -38,13 +38,17 @@ const getDescription = (activity) => {
       break;
       // no default
   }
-  const action = (
+  const action = activity.object.name ? (
     <>
       <span style={{ fontWeight: 'bold' }}>
         {activity.object.name}
       </span>
       {` was ${verb}`}
     </>
+  ) : (
+    <span style={{ fontWeight: 'bold' }}>
+      {activity.description}
+    </span>
   );
   return action;
 };
@@ -83,7 +87,7 @@ function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
         { getDescription(activity) }
         <Typography variant="body2" className={classes.dateText}>
           { getDisplayDateFormat(activity.date) }
-          {` (${activity.responsibleUser.fullName})` }
+          {` (${activity.responsibleUser?.fullName ?? 'Anonymous'})` }
         </Typography>
         { activity.id && details?.length > 0
           && (
