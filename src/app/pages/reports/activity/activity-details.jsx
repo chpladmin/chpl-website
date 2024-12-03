@@ -31,6 +31,7 @@ const getDetails = (activity) => {
   let compare;
   let details;
   switch (activity.concept) {
+    case 'ANNOUNCEMENT': compare = compareSystemMaintenance; break;
     case 'CERTIFICATION_BODY': compare = compareOrganization; break;
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
     case 'COMPLAINT': compare = compareComplaint; break;
@@ -106,6 +107,7 @@ function ChplActivityDetails({ activity }) {
   }
 
   if (![
+    'ANNOUNCEMENT',
     'CERTIFICATION_BODY',
     'CERTIFIED_PRODUCT',
     'COMPLAINT',

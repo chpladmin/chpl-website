@@ -19,6 +19,8 @@ import { arrayOf, func } from 'prop-types';
 
 import ChplAnnouncementEdit from './announcement-edit';
 
+import { useFetchAnnouncementsActivity } from 'api/activity';
+import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplSortableHeaders } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { BreadcrumbContext } from 'shared/contexts';
@@ -36,9 +38,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  container: {
-    maxHeight: '64vh',
-  },
   actionContainer: {
     display: 'grid',
     gap: '16px',
@@ -46,6 +45,9 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     },
+  },
+  container: {
+    maxHeight: '64vh',
   },
   noResultsContainer: {
     padding: '16px 32px',
@@ -57,8 +59,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAnnouncementsView(props) {
-  const { dispatch } = props;
+function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [announcement, setAnnouncement] = useState(undefined);
   const [announcements, setAnnouncements] = useState([]);
@@ -110,8 +111,8 @@ function ChplAnnouncementsView(props) {
   }, []);
 
   useEffect(() => {
-    setAnnouncements(props.announcements.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
-  }, [props.announcements]); // eslint-disable-line react/destructuring-assignment
+    setAnnouncements(initialAnnouncements.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
+  }, [initialAnnouncements]);
 
   const handleActionBarDispatch = (action, payload) => {
     if (action !== 'close') {
@@ -181,6 +182,10 @@ function ChplAnnouncementsView(props) {
           && (
             <>
               <div className={classes.tableResultsHeaderContainer}>
+                <ChplSystemMaintenanceActivity
+                  fetch={useFetchAnnouncementsActivity}
+                  title="Announcements"
+                />
                 <Button
                   color="primary"
                   variant="contained"
