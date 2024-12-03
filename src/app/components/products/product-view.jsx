@@ -192,6 +192,15 @@ function ChplProductView({ product, dispatch }) {
             </MenuItem>
           ))}
         </ChplTextField>
+        { product.contact
+          && (
+            <>
+              <Typography variant="body1">Contact Information</Typography>
+              <Typography variant="body2">{ product.contact.fullName }</Typography>
+              <Typography variant="body2">{ product.contact.email }</Typography>
+              <Typography variant="body2">{ product.contact.phoneNumber }</Typography>
+            </>
+          )}
         { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
           && (
             <ButtonGroup
