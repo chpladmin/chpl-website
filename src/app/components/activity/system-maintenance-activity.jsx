@@ -3,6 +3,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 function ChplSystemMaintenanceActivity({ fetch, title }) {
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
+  const [resultSetSize, setResultSetSize] = useState(0);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
@@ -46,6 +48,7 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
         last={idx === arr.length - 1}
       />
     )));
+    setResultSetSize(data.resultSetSize);
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
@@ -95,6 +98,15 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
           <Timeline>
             { activities.map((activity) => activity) }
           </Timeline>
+          { resultSetSize > 50 && (
+            <Typography>
+              and
+              {' '}
+              {resultSetSize - 50}
+              {' '}
+              more...
+            </Typography>
+          )}
         </DialogContent>
       </Dialog>
     </>

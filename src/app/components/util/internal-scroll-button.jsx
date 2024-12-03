@@ -18,6 +18,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.white,
     color: palette.primary,
     padding: '8px 16px',
+    minWidth: 'min-content',
     '&:hover': {
       backgroundColor: palette.white,
       color: palette.black,
