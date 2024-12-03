@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ChplAnnouncementsDisplay from 'components/announcement/announcements-display';
+import ChplAnnouncementsDisplay from 'components/system-maintenance/announcement/announcements-display';
 
 function ChplNavigationBottom() {
   return (

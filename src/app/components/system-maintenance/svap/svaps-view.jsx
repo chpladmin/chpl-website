@@ -13,75 +13,66 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
+import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
-import { getDisplayDateFormat } from 'services/date-util';
-import { functionalityTested as functionalityTestedPropType } from 'shared/prop-types';
+import { svap as svapPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
-  { property: 'value', text: 'Value', sortable: true },
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
-  { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'requiredDay', text: 'Required Date', sortable: true },
-  { property: 'endDay', text: 'End Date', sortable: true },
-  { text: 'Rule' },
-  { text: 'Practice Type' },
+  { property: 'approvedStandardVersion', text: 'Approved Standard Version', sortable: true },
   { text: 'Applicable Criteria' },
+  { property: 'replaced', text: 'Replaced', sortable: true },
   { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
 });
 
-function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {
-  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
+function ChplSvapsView(props) {
+  const { dispatch } = props;
+  const [svaps, setSvaps] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('value');
+  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const classes = useStyles();
 
   useEffect(() => {
-    setFunctionalitiesTested(initialFunctionalitiesTested
+    setSvaps(props.svaps
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
           .sort(sortCriteria)
-          .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
+          .map((c) => c.number)
           .join(', '),
       }))
-      .sort(sortComparator('value')));
-  }, [initialFunctionalitiesTested]); // eslint-disable-line react/destructuring-assignment
+      .sort(sortComparator('regulatoryTextCitation')));
+  }, [props.svaps]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = functionalitiesTested.sort(sortComparator(property, descending));
+    const updated = svaps.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setFunctionalitiesTested(updated);
+    setSvaps(updated);
   };
 
   return (
     <>
       <div className={classes.tableResultsHeaderContainer}>
         <ChplSystemMaintenanceActivity
-          fetch={useFetchFunctionalitiesTestedActivity}
-          title="Functionalities Tested"
+          fetch={useFetchSvapsActivity}
+          title="SVAP"
         />
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-functionality-tested"
+          id="add-new-svap"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -91,7 +82,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="Functionalities Tested table"
+          aria-label="SVAP table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -101,43 +92,25 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
             stickyHeader
           />
           <TableBody>
-            { functionalitiesTested
+            { svaps
               .map((item) => (
-                <TableRow key={`${item.id}-${item.value}`}>
+                <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
                   <TableCell className={classes.firstColumn}>
-                    { item.value }
-                    { item.retired && ' (Retired)'}
-                    <ChplUpdateIndicator
-                      requiredDay={item.requiredDay}
-                      endDay={item.endDay}
-                      additionalInformation={item.additionalInformation}
-                    />
-                  </TableCell>
-                  <TableCell>
                     { item.regulatoryTextCitation }
                   </TableCell>
                   <TableCell>
-                    { getDisplayDateFormat(item.startDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.requiredDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.endDay) }
-                  </TableCell>
-                  <TableCell>
-                    { item.rule?.name ?? '' }
-                  </TableCell>
-                  <TableCell>
-                    { item.practiceType?.name ?? '' }
+                    { item.approvedStandardVersion }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
                   </TableCell>
+                  <TableCell>
+                    { item.replaced ? 'Yes' : 'No' }
+                  </TableCell>
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-functionality-tested-${item.value}`}
+                      id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -154,9 +127,9 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
   );
 }
 
-export default ChplFunctionalitiesTestedView;
+export default ChplSvapsView;
 
-ChplFunctionalitiesTestedView.propTypes = {
+ChplSvapsView.propTypes = {
   dispatch: func.isRequired,
-  functionalitiesTested: arrayOf(functionalityTestedPropType).isRequired,
+  svaps: arrayOf(svapPropType).isRequired,
 };

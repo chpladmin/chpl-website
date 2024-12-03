@@ -14,7 +14,8 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { ucdProcessType } from 'shared/prop-types';
+import { qmsStandardType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'name', text: 'Name', sortable: true },
@@ -22,39 +23,34 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
+  ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
 });
 
-function ChplUcdProcessesView(props) {
+function ChplQmsStandardsView(props) {
   const { dispatch } = props;
-  const [ucdProcesses, setUcdProcesses] = useState([]);
+  const [qmsStandards, setQmsStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const classes = useStyles();
 
   useEffect(() => {
-    setUcdProcesses(props.ucdProcesses
+    setQmsStandards(props.qmsStandards
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
+  }, [props.qmsStandards]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = ucdProcesses.sort(sortComparator(property, descending));
+    const updated = qmsStandards.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setUcdProcesses(updated);
+    setQmsStandards(updated);
   };
 
   return (
@@ -62,7 +58,7 @@ function ChplUcdProcessesView(props) {
       <div className={classes.tableResultsHeaderContainer}>
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-ucd-process"
+          id="add-new-qms-standard"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -72,7 +68,7 @@ function ChplUcdProcessesView(props) {
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="UCD Process table"
+          aria-label="QMS Standard table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -82,7 +78,7 @@ function ChplUcdProcessesView(props) {
             stickyHeader
           />
           <TableBody>
-            { ucdProcesses
+            { qmsStandards
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
@@ -91,7 +87,7 @@ function ChplUcdProcessesView(props) {
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-ucd-process-${item.id}`}
+                      id={`edit-qms-standard-${item.id}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -108,9 +104,9 @@ function ChplUcdProcessesView(props) {
   );
 }
 
-export default ChplUcdProcessesView;
+export default ChplQmsStandardsView;
 
-ChplUcdProcessesView.propTypes = {
+ChplQmsStandardsView.propTypes = {
   dispatch: func.isRequired,
-  ucdProcesses: arrayOf(ucdProcessType).isRequired,
+  qmsStandards: arrayOf(qmsStandardType).isRequired,
 };
