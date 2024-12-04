@@ -37,8 +37,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -166,7 +165,6 @@ const getEditField = ({
 
 function ChplDeveloperEdit(props) {
   const {
-    developer,
     dispatch,
     errorMessages: initialErrorMessages,
     isInvalid: initialIsInvalid,
@@ -174,6 +172,7 @@ function ChplDeveloperEdit(props) {
     isSplitting,
   } = props;
   const { analytics } = useAnalyticsContext();
+  const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
@@ -544,7 +543,6 @@ function ChplDeveloperEdit(props) {
 export default ChplDeveloperEdit;
 
 ChplDeveloperEdit.propTypes = {
-  developer: developerPropType.isRequired,
   dispatch: func.isRequired,
   errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,

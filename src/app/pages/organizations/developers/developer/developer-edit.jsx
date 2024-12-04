@@ -14,9 +14,7 @@ import { usePutDeveloper } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
 import { ChplConfirmation } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -55,9 +53,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplEditDeveloper({ developer, dispatch }) {
-  const $state = getAngularService('$state');
+function ChplEditDeveloper({ dispatch }) {
   const { analytics } = useAnalyticsContext();
+  const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: putDeveloper } = usePutDeveloper();
@@ -112,8 +110,6 @@ function ChplEditDeveloper({ developer, dispatch }) {
         setIsProcessing(true);
         eventTrack({
           ...analytics,
-          category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
-          label: developer.name, // todo: when the higher component is React, remove this and use the component from above
           event: 'Save Demographics',
         });
         if (hasAnyRole(['chpl-developer'])) {
@@ -126,7 +122,6 @@ function ChplEditDeveloper({ developer, dispatch }) {
               let body;
               if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                 dispatch('cancel');
-                //$state.go('^', undefined, { reload: true });
               } else if (response.data.errorMessages) {
                 body = response.data.errorMessages.join(', ');
               } else if (response.data.error) {
@@ -177,7 +172,6 @@ function ChplEditDeveloper({ developer, dispatch }) {
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
           <ChplDeveloper
-            developer={developer}
             dispatch={handleDispatch}
             isEditing
             isProcessing={isProcessing}
@@ -199,6 +193,5 @@ function ChplEditDeveloper({ developer, dispatch }) {
 export default ChplEditDeveloper;
 
 ChplEditDeveloper.propTypes = {
-  developer: developerPropType.isRequired,
-  dispatch: func,
+  dispatch: func.isRequired,
 };

@@ -173,7 +173,6 @@ function ChplDeveloperPage({ id }) {
           { state === 'edit'
             && (
               <ChplDeveloperEdit
-                developer={developer}
                 dispatch={handleDispatch}
               />
             )}

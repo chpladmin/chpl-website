@@ -7,7 +7,6 @@ import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
-import ChplDeveloper from './developer/developer-wrapper';
 import ChplDirectReviewsWrapper from './direct-reviews/direct-reviews-wrapper';
 import ChplInsightsViewWrapper from './insights/insights-view-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
@@ -65,7 +64,6 @@ angular
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
-  .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplInsightsViewWrapperBridge', reactToAngularComponent(ChplInsightsViewWrapper))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))

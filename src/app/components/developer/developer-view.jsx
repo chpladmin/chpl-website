@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -31,8 +31,12 @@ import { compareDeveloper } from 'components/activity/services/developers.servic
 import { ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { developer as developerPropType } from 'shared/prop-types';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  DeveloperContext,
+  FlagContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -189,19 +193,14 @@ function ChplDeveloperView(props) {
     canEdit,
     canJoin,
     canSplit,
-    developer: initialDeveloper,
     dispatch,
     isSplitting,
   } = props;
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
+  const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
-  const [developer, setDeveloper] = useState({});
   const classes = useStyles();
-
-  useEffect(() => {
-    setDeveloper(initialDeveloper);
-  }, [initialDeveloper]);
 
   const can = (action) => {
     if (action === 'edit') {
@@ -412,7 +411,6 @@ ChplDeveloperView.propTypes = {
   canEdit: func.isRequired,
   canJoin: func.isRequired,
   canSplit: func.isRequired,
-  developer: developerPropType.isRequired,
   dispatch: func.isRequired,
   isSplitting: bool.isRequired,
 };
