@@ -1,57 +1,57 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-let lookup;
-
-/* eslint-disable no-nested-ternary */
-const compare = (before, after, key, title = 'unknown') => {
-  let options;
-  switch (key) {
-    case 'ownerHistory':
-      options = {
-        sort: (p, c) => (p.transferDate < c.transferDate ? -1 : p.transferDate > c.transferDate ? 1 : 0),
-        write: (f) => `Developer "${f.developer.name}"`,
-      };
-      break;
-    default:
-      if (after.length > 0) {
-        console.debug({ before, after, key });
-      }
-      return undefined;
-  }
-  const changes = compareArrays(before, after, { ...options, root: key }, lookup);
-  if (changes && changes.length > 0) {
-    return `${title} changes<ul>${changes.join('')}</ul>`;
-  }
-  return undefined;
+const compareOwnerHistory = (before, after) => {
+  if (before.length === 0 && after.length === 0) { return undefined; }
+  let changes = 'Owner history changed. Was:<ul>';
+  changes += (before.length === 0) ? '<li>No previous history</li>' : before
+    .map((item) => `<li><strong>${item.developer.name}</strong> on ${getDisplayDateFormat(item.transferDay ? item.transferDay : item.transferDate)}</li>`)
+    .join('');
+  changes += '</ul>Now:<ul>';
+  changes += (after.length === 0) ? '<li>No current history</li>' : after
+    .map((item) => `<li><strong>${item.developer.name}</strong> on ${getDisplayDateFormat(item.transferDay ? item.transferDay : item.transferDate)}</li>`)
+    .join('');
+  changes += '</ul>';
+  return changes;
 };
 
-lookup = {
+const lookup = {
   shortCircuit: [
-    'root.owner',
+    'root.owner.address',
+    'root.owner.contact',
   ],
-  'root.contact': { message: () => 'Contact changes:' },
+  'root.contact': { message: () => 'Contact changes' },
   'root.contact.contactId': { message: () => undefined },
   'root.contact.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
   'root.contact.firstName': { message: (before, after) => comparePrimitive(before, after, 'firstName', 'First Name') },
+  'root.contact.friendlyName': { message: (before, after) => comparePrimitive(before, after, 'friendlyName', 'Friendly Name') },
   'root.contact.fullName': { message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name') },
   'root.contact.id': { message: () => undefined },
   'root.contact.lastName': { message: (before, after) => comparePrimitive(before, after, 'lastName', 'Last Name') },
   'root.contact.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
-  'root.creationDate': { message: (before, after) => comparePrimitive(before, after, 'creationDate', 'Creation Date', getDisplayDateFormat) },
+  'root.contact.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
   'root.developerCode': { message: () => undefined },
   'root.developerId': { message: () => undefined },
-  'root.developerName': { message: (before, after) => comparePrimitive(before, after, 'developerName', 'Developer Name') },
+  'root.developerName': { message: (before, after) => comparePrimitive(before, after, 'developerName', 'Developer') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.lastModifiedUser': { message: () => undefined },
-  'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
-  'root.ownerHistory': { message: (before, after) => compare(before, after, 'ownerHistory', 'Owner History') },
-  'root.productId': { message: () => undefined },
-  'root.productName': { message: (before, after) => comparePrimitive(before, after, 'productName', 'Product Name') },
+  'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Product Name') },
+  'root.owner': { message: () => 'Developer changes' },
+  'root.owner.attestations': { message: () => undefined },
+  'root.owner.developerCode': { message: () => undefined },
+  'root.owner.developerId': { message: () => undefined },
+  'root.owner.id': { message: () => undefined },
+  'root.owner.lastModifiedDate': { message: () => undefined },
+  'root.owner.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Developer') },
+  'root.owner.selfDeveloper': { message: () => undefined },
+  'root.owner.statusEvents': { message: () => undefined },
+  'root.owner.statuses': { message: () => undefined },
+  'root.owner.transparencyAttestationMappings': { message: () => undefined },
+  'root.owner.website': { message: () => undefined },
+  'root.ownerHistory': { message: compareOwnerHistory },
   'root.productVersions': { message: () => undefined },
-  'root.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
 };
 
-const compareProducts = (prev, curr) => compareObject(prev, curr, lookup);
+const compareProduct = (prev, curr) => compareObject(prev, curr, lookup);
 
-export default compareProducts;
+export { compareProduct }; // eslint-disable-line import/prefer-default-export

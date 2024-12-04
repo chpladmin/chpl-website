@@ -17,7 +17,7 @@ import {
   useFetchProductActivitiesMetadata,
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
-import compareProducts from 'components/activity/services/products.service';
+import { compareProduct } from 'components/activity/services/products.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
 const useStyles = makeStyles({
@@ -114,7 +114,7 @@ function ChplProductsHistory({ products }) {
                 <ChplActivityDetails
                   key={activity.id}
                   activity={activity}
-                  interpret={compareProducts}
+                  interpret={compareProduct}
                   last={idx === arr.length - 1}
                   title={activity.concept === 'PRODUCT' ? 'Product ' : 'Version '}
                 />
