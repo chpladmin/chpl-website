@@ -199,40 +199,76 @@ function ChplProductView({ product, dispatch }) {
           )}
         { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
           && (
-            <ButtonGroup
-              color="primary"
-            >
-              <ChplTooltip title={`Edit ${product.name}`}>
-                <Button
-                  variant="contained"
-                  aria-label={`Edit ${product.name}`}
-                  id={`product-edit-${product.id}`}
-                  onClick={() => dispatch({ action: 'edit', payload: product })}
-                >
-                  <EditOutlinedIcon />
-                </Button>
-              </ChplTooltip>
-              <ChplTooltip title={`Split ${product.name}`}>
-                <Button
-                  variant="outlined"
-                  aria-label={`Split ${product.name}`}
-                  id={`product-split-${product.id}`}
-                  onClick={() => dispatch({ action: 'split', payload: product })}
-                >
-                  <CallSplitIcon />
-                </Button>
-              </ChplTooltip>
-              <ChplTooltip title={`Merge ${product.name}`}>
-                <Button
-                  variant="outlined"
-                  aria-label={`Merge ${product.name}`}
-                  id={`product-merge-${product.id}`}
-                  onClick={() => dispatch({ action: 'merge', payload: product })}
-                >
-                  <CallMergeIcon />
-                </Button>
-              </ChplTooltip>
-            </ButtonGroup>
+            <>
+              <ButtonGroup
+                color="primary"
+              >
+                <ChplTooltip title={`Edit ${product.name}`}>
+                  <Button
+                    variant="contained"
+                    aria-label={`Edit ${product.name}`}
+                    id={`product-edit-${product.id}`}
+                    onClick={() => dispatch({ action: 'edit', payload: product })}
+                  >
+                    <EditOutlinedIcon />
+                  </Button>
+                </ChplTooltip>
+                <ChplTooltip title={`Split ${product.name}`}>
+                  <Button
+                    variant="outlined"
+                    aria-label={`Split ${product.name}`}
+                    id={`product-split-${product.id}`}
+                    onClick={() => dispatch({ action: 'split', payload: product })}
+                  >
+                    <CallSplitIcon />
+                  </Button>
+                </ChplTooltip>
+                <ChplTooltip title={`Merge ${product.name}`}>
+                  <Button
+                    variant="outlined"
+                    aria-label={`Merge ${product.name}`}
+                    id={`product-merge-${product.id}`}
+                    onClick={() => dispatch({ action: 'merge', payload: product })}
+                  >
+                    <CallMergeIcon />
+                  </Button>
+                </ChplTooltip>
+              </ButtonGroup>
+              <ButtonGroup
+                color="primary"
+              >
+                <ChplTooltip title="Edit selected version">
+                  <Button
+                    variant="contained"
+                    aria-label="Edit selected version"
+                    id="version-edit"
+                    onClick={() => dispatch({ action: 'editVersion', payload: { product, version: selectedVersion } })}
+                  >
+                    <EditOutlinedIcon />
+                  </Button>
+                </ChplTooltip>
+                <ChplTooltip title="Split selected version">
+                  <Button
+                    variant="outlined"
+                    aria-label="Split selected version"
+                    id="version-split"
+                    onClick={() => dispatch({ action: 'splitVersion', payload: { product, version: selectedVersion } })}
+                  >
+                    <CallSplitIcon />
+                  </Button>
+                </ChplTooltip>
+                <ChplTooltip title="Merge selected version">
+                  <Button
+                    variant="outlined"
+                    aria-label="Merge selected version"
+                    id="version-merge"
+                    onClick={() => dispatch({ action: 'mergeVersion', payload: { product, version: selectedVersion } })}
+                  >
+                    <CallMergeIcon />
+                  </Button>
+                </ChplTooltip>
+              </ButtonGroup>
+            </>
           )}
         <TableContainer component={Paper}>
           <Table aria-label="Listings table">

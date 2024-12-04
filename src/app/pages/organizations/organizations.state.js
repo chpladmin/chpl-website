@@ -141,6 +141,13 @@ const states = [
       title: 'CHPL Developers - Merge Version',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
+    },
   }, {
     name: 'organizations.developers.developer.product.version.split',
     url: '/split',
@@ -150,6 +157,13 @@ const states = [
     data: {
       title: 'CHPL Developers - Split Version',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
     },
   }, {
     name: 'organizations.onc-acbs',

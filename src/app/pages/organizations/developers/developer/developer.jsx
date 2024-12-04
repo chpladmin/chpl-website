@@ -114,6 +114,24 @@ function ChplDeveloperPage({ id }) {
           productId: payload.id,
         });
         break;
+      case 'editVersion':
+        $state.go('organizations.developers.developer.product.version.edit', {
+          productId: payload.product.id,
+          versionId: payload.version,
+        });
+        break;
+      case 'mergeVersion':
+        $state.go('organizations.developers.developer.product.version.merge', {
+          productId: payload.product.id,
+          versionId: payload.version,
+        });
+        break;
+      case 'splitVersion':
+        $state.go('organizations.developers.developer.product.version.split', {
+          productId: payload.product.id,
+          versionId: payload.version,
+        });
+        break;
       default:
         console.error(`Unknown action: ${action} with payload: ${JSON.stringify(payload)}`);
     }
