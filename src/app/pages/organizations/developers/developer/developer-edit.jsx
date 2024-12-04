@@ -107,12 +107,6 @@ function ChplEditDeveloper({ developer, dispatch }) {
     switch (action) {
       case 'cancel':
         dispatch('cancel');
-        /*
-        $state.go('organizations.developers.developer', {
-          id: developer.id,
-          productId: undefined,
-        }, { reload: true });
-        */
         break;
       case 'save':
         setIsProcessing(true);

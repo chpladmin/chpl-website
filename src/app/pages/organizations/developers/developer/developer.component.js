@@ -9,7 +9,6 @@ const DeveloperComponent = {
     constructor($log, $stateParams) {
       'ngInject';
 
-      this.$log = $log;
       this.$stateParams = $stateParams;
     }
 

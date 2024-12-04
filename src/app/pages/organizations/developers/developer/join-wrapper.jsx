@@ -1,7 +1,7 @@
 import React from 'react';
 import { string } from 'prop-types';
 
-import ChplJoinDevelopers from './join';
+import ChplJoinDevelopers from './developer-join';
 
 import AppWrapper from 'app-wrapper';
 

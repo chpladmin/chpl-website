@@ -18,26 +18,6 @@ const states = [
     component: 'chplDeveloperPage',
     data: { title: 'CHPL Developer' },
   }, {
-    name: 'organizations.developers.developer.edit',
-    url: '/edit',
-    views: {
-      'view@^': 'chplDevelopersEdit',
-    },
-    data: {
-      title: 'CHPL Developer - Edit',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
-    },
-  }, {
-    name: 'organizations.developers.developer.split',
-    url: '/split',
-    views: {
-      'view@^': 'chplDevelopersSplit',
-    },
-    data: {
-      title: 'CHPL Developer - Split',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-  }, {
     name: 'organizations.developers.developer.join',
     url: '/join',
     views: {
@@ -50,6 +30,7 @@ const states = [
   }, {
     name: 'organizations.developers.developer.attestation',
     url: '/attestation',
+    abstract: true,
   }, {
     name: 'organizations.developers.developer.attestation.edit',
     views: {

@@ -7,7 +7,7 @@ import {
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
 
-import ChplDeveloperEdit from './edit';
+import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 
