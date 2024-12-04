@@ -28,7 +28,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { product as productPropType } from 'shared/prop-types';
-import { palette, theme, utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -48,44 +48,6 @@ const useStyles = makeStyles({
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 4px',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
-  resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
-  },
-  tableFirstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-  },
-  tableDeveloperCell: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  },
-  developerName: {
-    fontWeight: '600',
-  },
-  noResultsContainer: {
-    padding: '16px 32px',
   },
 });
 

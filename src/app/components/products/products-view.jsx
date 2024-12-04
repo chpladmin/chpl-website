@@ -16,33 +16,12 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import {
-  ChplLink,
-} from 'components/util';
-import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { product as productPropType } from 'shared/prop-types';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  products: {
-    borderRadius: '4px',
-    display: 'flex',
-    flexDirection: 'column',
-    borderColor: palette.divider,
-    borderWidth: '.5px',
-    borderStyle: 'solid',
-    padding: '0px',
-    backgroundColor: palette.white,
-  },
-  productsSummary: {
-    backgroundColor: `${palette.white} !important`,
-    borderRadius: '4px',
-    borderBottom: `.5px solid ${palette.divider}`,
-    width: '100%',
-    padding: '0 4px',
-  },
   cardHeader: {
     margin: '0',
     fontSize: '1.25em',
@@ -72,23 +51,6 @@ const useStyles = makeStyles({
   },
   wrap: {
     flexFlow: 'wrap',
-  },
-  tableFirstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-  },
-  tableDeveloperCell: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  },
-  developerName: {
-    fontWeight: '600',
-  },
-  noResultsContainer: {
-    padding: '16px 32px',
   },
 });
 
@@ -129,7 +91,6 @@ const includeListing = (listing, params) => {
 const sortProducts = (a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
 
 function ChplProductsView({ products, dispatch }) {
-  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { queryParams } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);

@@ -21,7 +21,7 @@ const util = {
     boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
     backgroundColor: '#f9f9f9',
     zIndex: 1,
-    overflowWrap:'anywhere', 
+    overflowWrap: 'anywhere',
   },
   fullWidth: {
     gridColumnEnd: -1,
