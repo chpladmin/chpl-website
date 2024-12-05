@@ -34,6 +34,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => f.chplProductNumber,
       };
       break;
+    case 'chplProductNumberHistory':
+      options = {
+        sort: (p, c) => (p.endDateTime < c.endDateTime ? -1 : p.endDateTime > c.endDateTime ? 1 : 0),
+        write: (f) => `${f.chplProductNumber} ended as of ${getDisplayDateFormat(f.endDateTime)}`,
+      };
+      break;
     case 'codeSets':
       options = {
         sort: (p, c) => (p.codeSet.requiredDay < c.codeSet.requiredDay ? -1 : p.codeSet.requiredDay > c.codeSet.requiredDay ? 1 : 0),
@@ -357,6 +363,7 @@ const briefLookup = {
   'conformanceMethods.conformanceMethodVersion': { message: () => undefined },
   'conformanceMethods.id': { message: () => undefined },
   'cqmResults.allVersions': { message: () => undefined },
+  'cqmResults.cqmCriterionId': { message: () => undefined },
   'cqmResults.criteria': { message: (before, after) => compare(before, after, 'cqmResults.criteria', 'Certification Criteria') },
   'cqmResults.criteria.certificationId': { message: () => undefined },
   'cqmResults.criteria.id': { message: () => undefined },
@@ -437,8 +444,12 @@ const briefLookup = {
   'root.certificationStatus.id': { message: () => undefined },
   'root.certificationStatus.date': { message: () => undefined },
   'root.certificationStatus.name': { message: () => undefined },
+  'root.certifyingBody': { message: () => undefined },
+  'root.certifyingBody.code': { message: () => undefined },
+  'root.certifyingBody.id': { message: () => undefined },
+  'root.certifyingBody.name': { message: () => undefined },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
-  'root.chplProductNumberHistory': { message: () => undefined }, // probably?
+  'root.chplProductNumberHistory': { message: () => undefined },
   'root.classificationType': { message: () => undefined },
   'root.classificationType.id': { message: () => undefined },
   'root.classificationType.name': { message: () => undefined },
@@ -534,6 +545,7 @@ const briefLookup = {
   'testTasks.criteria.removed': { message: () => undefined },
   'testTasks.criteria.title': { message: () => undefined },
   'testTasks.description': { message: () => undefined },
+  'testTasks.friendlyId': { message: () => undefined },
   'testTasks.id': { message: () => undefined },
   'testTasks.taskErrors': { message: () => undefined },
   'testTasks.taskErrorsStddev': { message: () => undefined },
@@ -648,6 +660,9 @@ const lookup = {
   'root.certificationStatus': { message: () => 'Certification Status' },
   'root.certificationStatus.date': { message: (before, after) => comparePrimitive(before, after, 'date', 'Certification Status Date', getDisplayDateFormat) },
   'root.certificationStatus.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Status') },
+  'root.certifyingBody': { message: () => 'ONC-ACB' },
+  'root.certifyingBody.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'root.chplProductNumberHistory': { message: (before, after) => compare(before, after, 'chplProductNumberHistory', 'CHPL Product Number History') },
   'root.classificationType': { message: () => 'Listing Classification' },
   'root.classificationType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.decertificationDay': { message: (before, after) => comparePrimitive(before, after, 'decertificationDay', 'Decertification Date', getDisplayDateFormat) },
@@ -708,6 +723,7 @@ const lookup = {
   'testProcedures.testProcedureVersion': { message: (before, after) => comparePrimitive(before, after, 'testProcedureVersion', 'Version') },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
   'testTasks.description': { message: (before, after) => comparePrimitive(before, after, 'description', 'Description') },
+  'testTasks.friendlyId': { message: (before, after) => comparePrimitive(before, after, 'friendlyId', 'Task ID') },
   'testTasks.taskErrors': { message: (before, after) => comparePrimitive(before, after, 'taskErrors', 'Task Errors') },
   'testTasks.taskErrorsStddev': { message: (before, after) => comparePrimitive(before, after, 'taskErrorsStddev', 'Task Errors Standard Deviation') },
   'testTasks.taskPathDeviationObserved': { message: (before, after) => comparePrimitive(before, after, 'taskPathDeviationObserved', 'Task Path Deviation Observed') },
