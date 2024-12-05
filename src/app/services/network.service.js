@@ -309,6 +309,10 @@ export default class NetworkService {
     return this.apiPOST('/users/invite', invitationObject);
   }
 
+  logout(logoutRequest) {
+    return this.apiPOST('/auth/logout', logoutRequest);
+  }
+
   rejectPendingListing(id) {
     return this.apiDELETE(`/listings/pending/${id}`);
   }
