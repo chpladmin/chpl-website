@@ -204,17 +204,17 @@ function ChplDeveloperView(props) {
 
   const can = (action) => {
     if (action === 'edit') {
-      return canEdit
+      return canEdit && !isSplitting
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses)) // allowed for ACB iff Developer is "Active"
           || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
-      return canJoin
+      return canJoin && !isSplitting
         && hasAnyRole(['chpl-admin', 'chpl-onc']); // always allowed as ADMIN/ONC
     }
     if (action === 'split') {
-      return canSplit
+      return canSplit && !isSplitting
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses))); // allowed for ACB iff Developer is "Active"
     }
