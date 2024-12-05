@@ -15,7 +15,9 @@
           is-confirming="true"
           listing="$ctrl.listing"
           ></chpl-listing-view-bridge>
-        <p><button class="btn btn-default btn-block" ng-click="$ctrl.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
+        <p feature-flag="upload-to-update" feature-flag-hide>
+          <button class="btn btn-default btn-block" ng-click="$ctrl.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button>
+        </p>
       </div>
       <div class="panel-body" ng-if="$ctrl.isEditing">
         <chpl-listing-edit-page

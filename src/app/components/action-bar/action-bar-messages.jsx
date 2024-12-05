@@ -99,25 +99,25 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplActionBarMessages(props) {
+function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarnings }) {
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? 1 : -1)));
-    if (props.errors.length > 0) {
+    setErrors([...new Set(initialErrors)].sort((a, b) => (a < b ? 1 : -1)));
+    if (initialErrors.length > 0) {
       setOpen(true);
     }
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+  }, [initialErrors]);
 
   useEffect(() => {
-    setWarnings(props.warnings.sort((a, b) => (a < b ? 1 : -1)));
-    if (props.warnings.length > 0) {
+    setWarnings([...new Set(initialWarnings)].sort((a, b) => (a < b ? 1 : -1)));
+    if (initialWarnings.length > 0) {
       setOpen(true);
     }
-  }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
+  }, [initialWarnings]);
 
   const toggleDrawer = () => {
     setOpen(!open);
