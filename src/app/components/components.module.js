@@ -7,7 +7,6 @@ import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
-import ChplDirectReviewsWrapper from './direct-reviews/direct-reviews-wrapper';
 import ChplInsightsViewWrapper from './insights/insights-view-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
 import {
@@ -20,7 +19,6 @@ import {
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
-import ChplProducts from './products/products-wrapper';
 import ChplRealWorldTestingViewWrapper from './real-world-testing/real-world-testing-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage/reporting-date-selector';
@@ -63,12 +61,10 @@ angular
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
-  .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplInsightsViewWrapperBridge', reactToAngularComponent(ChplInsightsViewWrapper))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
-  .component('chplProductsBridge', reactToAngularComponent(ChplProducts))
   .component('chplRealWorldTestingViewBridge', reactToAngularComponent(ChplRealWorldTestingViewWrapper))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
