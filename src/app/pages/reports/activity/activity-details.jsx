@@ -51,6 +51,9 @@ const getDetails = (activity) => {
       .map((item) => `<li>${item}</li>`)
       .join(''));
   }
+  if (details.length === 0) {
+    details = '<li>No changes</li>';
+  }
   return <ul dangerouslySetInnerHTML={{ __html: details }} />;
 };
 

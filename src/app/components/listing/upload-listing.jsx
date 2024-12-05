@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
+  Container,
   makeStyles,
 } from '@material-ui/core';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
@@ -46,7 +47,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
     borderTop: '1px solid #EEEEEE',
-    marginTop: '16px',
     paddingTop: '16px',
   },
 });
@@ -57,6 +57,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
   const authService = getAngularService('authService');
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { setListing } = useContext(ListingContext);
   const classes = useStyles();
 
@@ -73,6 +74,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
   const uploadFile = () => {
     setErrors([]);
     setWarnings([]);
+    setIsProcessing(true);
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
@@ -86,8 +88,10 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
     Upload.upload(item)
       .then((response) => {
         setListing(response.data);
+        setIsProcessing(false);
       })
       .catch((error) => {
+        setIsProcessing(false);
         if (error?.data?.errorMessages) {
           setErrors(error.data.errorMessages);
         }
@@ -98,7 +102,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
   };
 
   return (
-    <>
+    <Container disableGutters maxWidth="xl">
       <div>
         <Button
           color="primary"
@@ -142,6 +146,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
                     onClick={uploadFile}
                     endIcon={<DoneIcon />}
                     id="submit-upload-file"
+                    disabled={isProcessing}
                   >
                     Upload
                   </Button>
@@ -158,7 +163,7 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
               )}
           </Box>
         )}
-    </>
+    </Container>
   );
 }
 
