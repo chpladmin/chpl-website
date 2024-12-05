@@ -1,5 +1,4 @@
 import ChplDeveloper from './developers/developer/developer-wrapper';
-import ChplDevelopersJoin from './developers/developer/join-wrapper';
 import ChplDevelopersWrapper from './developers/developers-wrapper';
 import ChplOncOrganizations from './onc-organizations/onc-organizations-wrapper';
 
@@ -15,6 +14,5 @@ angular
     'ui.router',
   ])
   .component('chplDeveloperPageBridge', reactToAngularComponent(ChplDeveloper))
-  .component('chplDevelopersJoinBridge', reactToAngularComponent(ChplDevelopersJoin))
   .component('chplDevelopersWrapperBridge', reactToAngularComponent(ChplDevelopersWrapper))
   .component('chplOncOrganizationsBridge', reactToAngularComponent(ChplOncOrganizations));

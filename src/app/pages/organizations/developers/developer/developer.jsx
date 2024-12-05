@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplDeveloperEdit from './developer-edit';
+import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 
@@ -40,13 +41,11 @@ function ChplDeveloperPage({ id }) {
       case 'cancel':
         setState('view');
         break;
-      case 'edit':
-      case 'split':
       case 'createAttestation':
-        setState(action);
-        break;
+      case 'edit':
       case 'join':
-        $state.go(`organizations.developers.developer.${action}`);
+      case 'split':
+        setState(action);
         break;
       case 'cognito-invite':
         createInvitation({
@@ -173,6 +172,12 @@ function ChplDeveloperPage({ id }) {
           { state === 'edit'
             && (
               <ChplDeveloperEdit
+                dispatch={handleDispatch}
+              />
+            )}
+          { state === 'join'
+            && (
+              <ChplDeveloperJoin
                 dispatch={handleDispatch}
               />
             )}

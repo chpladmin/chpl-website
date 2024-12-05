@@ -18,16 +18,6 @@ const states = [
     component: 'chplDeveloperPage',
     data: { title: 'CHPL Developer' },
   }, {
-    name: 'organizations.developers.developer.join',
-    url: '/join',
-    views: {
-      'view@^': 'chplDevelopersJoin',
-    },
-    data: {
-      title: 'CHPL Developer - Join',
-      roles: ['chpl-admin', 'chpl-onc'],
-    },
-  }, {
     name: 'organizations.developers.developer.attestation',
     url: '/attestation',
     abstract: true,

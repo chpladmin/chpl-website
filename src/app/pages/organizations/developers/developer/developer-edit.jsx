@@ -6,8 +6,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import { usePostChangeRequest } from 'api/change-requests';
 import { usePutDeveloper } from 'api/developer';

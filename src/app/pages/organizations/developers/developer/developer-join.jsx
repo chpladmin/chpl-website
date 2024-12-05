@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -19,12 +19,13 @@ import {
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { number } from 'prop-types';
+import { func } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { DeveloperContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -63,13 +64,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplJoinDevelopers({ id }) {
-  const $rootScope = getAngularService('$rootScope');
-  const $state = getAngularService('$state');
-  const toaster = getAngularService('toaster');
+function ChplJoinDevelopers({ dispatch }) {
+  const { developer: activeDeveloper } = useContext(DeveloperContext);
+  const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading } = useFetchDevelopers();
   const { mutate } = usePutJoinDevelopers();
-  const [activeDeveloper, setActiveDeveloper] = useState(undefined);
   const [developers, setDevelopers] = useState([]);
   const [developersToJoin, setDevelopersToJoin] = useState([]);
   const [developerValueToLoad, setDeveloperValueToLoad] = useState('');
@@ -78,11 +77,10 @@ function ChplJoinDevelopers({ id }) {
 
   useEffect(() => {
     if (isLoading) { return; }
-    setActiveDeveloper(data.find((dev) => dev.id === id));
     setDevelopers(data
-      .filter((dev) => dev.id !== id)
+      .filter((dev) => dev.id !== activeDeveloper.id)
       .sort((a, b) => (a.name < b.name ? -1 : 1)));
-  }, [data, id, isLoading]);
+  }, [data, isLoading]);
 
   const addDeveloper = (_, developer) => {
     if (developer) {
@@ -107,7 +105,7 @@ function ChplJoinDevelopers({ id }) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        $state.go('^');
+        dispatch('cancel');
         break;
       case 'save':
         setIsProcessing(true);
@@ -117,23 +115,16 @@ function ChplJoinDevelopers({ id }) {
         }, {
           onSuccess: (response) => {
             setIsProcessing(false);
-            const message = `Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`;
-            toaster.pop({
-              type: 'success',
-              title: 'Join Developer request submitted',
-              body: message,
+            enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
+              variant: 'success',
             });
-            $state.go('^');
+            dispatch('cancel');
           },
           onError: (error) => {
             setIsProcessing(false);
-            const message = error.response.data.error;
-            toaster.pop({
-              type: 'error',
-              title: 'An error has occurred',
-              body: message,
+            enqueueSnackbar(error.response.data.error, {
+              variant: 'error',
             });
-            $rootScope.$digest();
           },
         });
         break;
@@ -279,5 +270,5 @@ function ChplJoinDevelopers({ id }) {
 export default ChplJoinDevelopers;
 
 ChplJoinDevelopers.propTypes = {
-  id: number.isRequired,
+  dispatch: func.isRequired,
 };
