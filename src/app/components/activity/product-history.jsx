@@ -9,7 +9,7 @@ import {
   Timeline,
 } from '@material-ui/lab';
 import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
-import { arrayOf, object } from 'prop-types';
+import { object } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
 
@@ -26,37 +26,30 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplProductsHistory({ products }) {
+function ChplProductHistory({ product }) {
   const [activities, setActivities] = useState([]);
   const [evaluatedActivities, setEvaluatedActivities] = useState([]);
   const [open, setOpen] = useState(false);
-  const [versions, setVersions] = useState([]);
   const classes = useStyles();
 
-  const productQuery = useFetchProductActivitiesMetadata({
-    products,
+  const { data, isLoading, isError } = useFetchProductActivitiesMetadata({
+    product,
     enabled: open,
   });
 
   const versionQuery = useFetchVersionActivitiesMetadata({
-    versions,
+    versions: product.versions,
     enabled: open,
   });
 
   useEffect(() => {
-    setVersions(products.flatMap((product) => product.versions));
-  }, [products]);
-
-  useEffect(() => {
-    productQuery.forEach((q) => {
-      if (q.isLoading || q.isError || !q.data || evaluatedActivities.includes(q.data.id)) { return; }
-      setActivities((prev) => [
-        ...prev,
-        ...q.data.data,
-      ]);
-      setEvaluatedActivities((prev) => [...prev, q.data.id]);
-    });
-  }, [productQuery]);
+    if (isLoading || isError || !data || evaluatedActivities.includes(data.id)) { return; }
+    setActivities((prev) => [
+      ...prev,
+      ...data,
+    ]);
+    setEvaluatedActivities((prev) => [...prev, data.id]);
+  }, [data, isLoading, isError]);
 
   useEffect(() => {
     versionQuery.forEach((q) => {
@@ -81,7 +74,7 @@ function ChplProductsHistory({ products }) {
     <>
       <ChplTooltip title="Product/Version History">
         <Button
-          id="view-history"
+          id={`view-history-${product.id}`}
           aria-label="Open History"
           color="secondary"
           variant="contained"
@@ -126,8 +119,8 @@ function ChplProductsHistory({ products }) {
   );
 }
 
-export default ChplProductsHistory;
+export default ChplProductHistory;
 
-ChplProductsHistory.propTypes = {
-  products: arrayOf(object).isRequired,
+ChplProductHistory.propTypes = {
+  product: object.isRequired,
 };

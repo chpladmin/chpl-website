@@ -23,6 +23,7 @@ import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { func } from 'prop-types';
 
+import ChplProductHistory from 'components/activity/product-history';
 import { ChplLink, ChplTextField, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -150,6 +151,12 @@ function ChplProductView({ product, dispatch }) {
             </MenuItem>
           ))}
         </ChplTextField>
+        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+          && (
+            <ChplProductHistory
+              product={product}
+            />
+          )}
         { product.contact
           && (
             <>

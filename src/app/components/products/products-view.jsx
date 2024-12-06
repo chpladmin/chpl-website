@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -10,13 +10,11 @@ import { arrayOf, func } from 'prop-types';
 
 import ChplProductView from './product-view';
 
-import ChplProductsHistory from 'components/activity/products-history';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { UserContext } from 'shared/contexts';
 import { product as productPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
 
@@ -25,11 +23,6 @@ const useStyles = makeStyles({
   cardHeader: {
     margin: '0',
     fontSize: '1.25em',
-  },
-  headerContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
   tableResultsHeaderContainer: {
     display: 'grid',
@@ -91,7 +84,6 @@ const includeListing = (listing, params) => {
 const sortProducts = (a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
 
 function ChplProductsView({ products, dispatch }) {
-  const { hasAnyRole } = useContext(UserContext);
   const { queryParams } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [params, setParams] = useState({});
@@ -116,18 +108,7 @@ function ChplProductsView({ products, dispatch }) {
   return (
     <Card>
       <CardHeader
-        title={(
-          <div className={classes.headerContainer}>
-            Products
-            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-              && (
-                <ChplProductsHistory
-                  products={products}
-                />
-              )}
-          </div>
-        )}
-        component="div"
+        title="Products"
         className={classes.cardHeader}
       />
       <CardContent>
