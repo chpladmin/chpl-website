@@ -64,7 +64,7 @@ function ChplProductView({ product, dispatch }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setOptions([{ id: 'all', version: 'All' }].concat(product.versions));
+    setOptions([{ id: 'all', version: 'All' }].concat(product.versions.sort((a, b) => (a.id < b.id ? 1 : -1))));
     const rollup = product.versions
       .flatMap((version) => version.listings)
       .reduce((obj, l) => ({
