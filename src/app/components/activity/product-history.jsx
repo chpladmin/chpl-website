@@ -3,6 +3,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -100,19 +101,23 @@ function ChplProductHistory({ product }) {
           Product/Version History
         </ChplDialogTitle>
         <DialogContent dividers>
-          <Timeline>
-            { activities
-              .sort((a, b) => (a.date < b.date ? 1 : -1))
-              .map((activity, idx, arr) => (
-                <ChplActivityDetails
-                  key={activity.id}
-                  activity={activity}
-                  interpret={compareProduct}
-                  last={idx === arr.length - 1}
-                  title={activity.concept === 'PRODUCT' ? 'Product ' : 'Version '}
-                />
-              ))}
-          </Timeline>
+          { activities.length === 0 && <Typography>No history recorded</Typography> }
+          { activities.length > 0
+            && (
+              <Timeline>
+                { activities
+                  .sort((a, b) => (a.date < b.date ? 1 : -1))
+                  .map((activity, idx, arr) => (
+                    <ChplActivityDetails
+                      key={activity.id}
+                      activity={activity}
+                      interpret={compareProduct}
+                      last={idx === arr.length - 1}
+                      title={activity.concept === 'PRODUCT' ? 'Product ' : 'Version '}
+                    />
+                  ))}
+              </Timeline>
+            )}
         </DialogContent>
       </Dialog>
     </>
