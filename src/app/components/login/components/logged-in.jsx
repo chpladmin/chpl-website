@@ -29,7 +29,6 @@ const useStyles = makeStyles({
 
 function ChplLoggedIn({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
-  const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
@@ -61,7 +60,6 @@ function ChplLoggedIn({ dispatch }) {
     setUser({});
     dispatch({ action: 'loggedOut' });
     authService.logout();
-    Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
   };
 
