@@ -9,6 +9,7 @@ import {
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { func } from 'prop-types';
+import { useCookies } from 'react-cookie';
 
 import { usePostCognitoLogout } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
@@ -31,6 +32,7 @@ function ChplLoggedIn({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
+  const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { user, setUser } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostCognitoLogout();
@@ -59,6 +61,10 @@ function ChplLoggedIn({ dispatch }) {
       });
     }
     setUser({});
+    //removeCookie('cognito_id', { path: '/', domain: '.healthit.gov' });
+    //removeCookie('refresh_token', { path: '/', domain: '.healthit.gov' });
+    removeCookie('cognito_id', { path: '/', domain: 'localhost' });
+    removeCookie('refresh_token', { path: '/', domain: 'localhost' });
     dispatch({ action: 'loggedOut' });
     authService.logout();
     Idle.unwatch();

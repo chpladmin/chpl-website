@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack';
 import { setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
-import { usePostCognitoLogin } from 'api/auth';
+import { usePostCognitoLogin, usePostRefreshToken } from 'api/auth';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -45,14 +45,40 @@ function ChplSignin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
-  const { setUser } = useContext(UserContext);
-  const [, setCookie] = useCookies(['refresh_token']);
+  const { user, setUser } = useContext(UserContext);
+  const [cookies, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
+  const { mutate: refreshToken } = usePostRefreshToken();
   const classes = useStyles();
-
   let formik;
+
+  useEffect(() => {
+    console.log({cookies});
+    if (user) { return; }
+    if (cookies.cognito_id && cookies.refresh_token) {
+      refreshToken({
+        cognitoId: cookies.cognito_id,
+        refreshToken: cookies.refresh_token,
+      }, {
+        onSuccess: (response) => {
+          console.log({response});
+          authService.saveToken(response.accessToken);
+          authService.saveRefreshToken(cookies.refresh_token);
+          setAuthTokens({
+            accessToken: response.accessToken,
+            refreshToken: cookies.refresh_token,
+          });
+          setUser(response.user);
+          authService.saveCurrentUser(response.user);
+          $rootScope.$broadcast('loggedIn');
+          $rootScope.$digest();
+          dispatch({ action: 'loggedIn' });
+        },
+      });
+    }
+  }, [cookies]);
 
   const catchEnter = (e, target) => {
     if (e.key === 'Enter') {
@@ -91,7 +117,10 @@ function ChplSignin({ dispatch }) {
         });
         const expires = new Date();
         expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
-        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        //setCookie('cognito_id', response.user.id, { path: '/', expires, domain: '.healthit.gov' });
+        //setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        setCookie('cognito_id', response.user.cognitoId, { path: '/', expires, domain: 'localhost' });
+        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: 'localhost' });
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();

@@ -58,7 +58,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
-  const [, setCookie] = useCookies(['refresh_token']);
+  const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostNewPasswordRequired();
@@ -91,7 +91,10 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         authService.saveRefreshToken(response.refreshToken);
         const expires = new Date();
         expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
-        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        //setCookie('cognito_id', response.user.id, { path: '/', expires, domain: '.healthit.gov' });
+        //setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        setCookie('cognito_id', response.user.cognitoId, { path: '/', expires, domain: 'localhost' });
+        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: 'localhost' });
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
