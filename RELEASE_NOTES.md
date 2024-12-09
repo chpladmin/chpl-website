@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 13.30.0
+_9 December 2024_
+
+### Features
+* Move "Announcements activity" to system maintenance page
+
+### Bug Fixes
+* Show change in ONC-ACB ownership of Listings to logged in users
+
+### User Interface Updates
+* Convert API Keys page to React
+
+### Flagged Features
+* Show "Insights" and reporting link
+* Add new Listing Edit page
+
+---
+
 ## Version 13.29.0
 _25 November 2024_
 
