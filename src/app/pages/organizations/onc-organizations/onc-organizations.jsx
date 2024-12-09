@@ -237,6 +237,8 @@ function ChplOncOrganizations() {
                       roles={roles}
                       groupNames={roles}
                       dispatch={handleDispatch}
+                      organizationId={activeId}
+                      isLoading={userQuery.isLoading}
                     />
                   )}
               </>
