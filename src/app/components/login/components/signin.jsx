@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack';
 import { setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
-import { usePostCognitoLogin, usePostRefreshToken } from 'api/auth';
+import { usePostCognitoLogin } from 'api/auth';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -45,40 +45,13 @@ function ChplSignin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
-  const { user, setUser } = useContext(UserContext);
-  const [cookies, setCookie] = useCookies(['cognito_id', 'refresh_token']);
+  const { setUser } = useContext(UserContext);
+  const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
-  const { mutate: refreshToken } = usePostRefreshToken();
   const classes = useStyles();
   let formik;
-
-  useEffect(() => {
-    console.log({cookies});
-    if (user) { return; }
-    if (cookies.cognito_id && cookies.refresh_token) {
-      refreshToken({
-        cognitoId: cookies.cognito_id,
-        refreshToken: cookies.refresh_token,
-      }, {
-        onSuccess: (response) => {
-          console.log({response});
-          authService.saveToken(response.accessToken);
-          authService.saveRefreshToken(cookies.refresh_token);
-          setAuthTokens({
-            accessToken: response.accessToken,
-            refreshToken: cookies.refresh_token,
-          });
-          setUser(response.user);
-          authService.saveCurrentUser(response.user);
-          $rootScope.$broadcast('loggedIn');
-          $rootScope.$digest();
-          dispatch({ action: 'loggedIn' });
-        },
-      });
-    }
-  }, [cookies]);
 
   const catchEnter = (e, target) => {
     if (e.key === 'Enter') {

@@ -6,10 +6,13 @@ import {
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
-import { getAccessToken } from 'axios-jwt';
+import { getAccessToken, setAuthTokens } from 'axios-jwt';
+import { useCookies } from 'react-cookie';
 
 import ChplCognitoLogin from './cognito-login';
 
+import { usePostRefreshToken } from 'api/auth';
+import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
@@ -29,17 +32,46 @@ const useStyles = makeStyles({
 });
 
 function ChplCognitoToggle({ dispatch }) {
+  const $rootScope = getAngularService('$rootScope');
+  const authService = getAngularService('authService');
+  const { user, impersonating, setUser } = useContext(UserContext);
+  const { ssoIsOn } = useContext(FlagContext);
+  const [cookies] = useCookies(['cognito_id', 'refresh_token']);
+  const { mutate } = usePostRefreshToken();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [state, setState] = useState('SIGNIN');
-  const { user, impersonating } = useContext(UserContext);
-  const { ssoIsOn } = useContext(FlagContext);
   const classes = useStyles();
 
   useEffect(() => {
     getAccessToken().then((token) => (token ? setState('LOGGEDIN') : setState('SIGNIN')));
   }, []);
+
+  useEffect(() => {
+    if (user) { return; }
+    if (cookies.cognito_id && cookies.refresh_token) {
+      mutate({
+        cognitoId: cookies.cognito_id,
+        refreshToken: cookies.refresh_token,
+      }, {
+        onSuccess: (response) => {
+          authService.saveToken(response.accessToken);
+          authService.saveRefreshToken(cookies.refresh_token);
+          setAuthTokens({
+            accessToken: response.accessToken,
+            refreshToken: cookies.refresh_token,
+          });
+          setUser(response.user);
+          authService.saveCurrentUser(response.user);
+          $rootScope.$broadcast('loggedIn');
+          $rootScope.$digest();
+          setState('LOGGEDIN');
+          dispatch('loggedIn');
+        },
+      });
+    }
+  }, [cookies]);
 
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
