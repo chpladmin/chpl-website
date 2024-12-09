@@ -88,12 +88,8 @@ function ChplSignin({ dispatch }) {
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         });
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
-        //setCookie('cognito_id', response.user.id, { path: '/', expires, domain: '.healthit.gov' });
-        //setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
-        setCookie('cognito_id', response.user.cognitoId, { path: '/', expires, domain: 'localhost' });
-        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: 'localhost' });
+        setCookie('cognito_id', response.user.cognitoId);
+        setCookie('refresh_token', response.refreshToken);
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();

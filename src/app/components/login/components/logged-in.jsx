@@ -61,10 +61,8 @@ function ChplLoggedIn({ dispatch }) {
       });
     }
     setUser({});
-    //removeCookie('cognito_id', { path: '/', domain: '.healthit.gov' });
-    //removeCookie('refresh_token', { path: '/', domain: '.healthit.gov' });
-    removeCookie('cognito_id', { path: '/', domain: 'localhost' });
-    removeCookie('refresh_token', { path: '/', domain: 'localhost' });
+    removeCookie('cognito_id');
+    removeCookie('refresh_token');
     dispatch({ action: 'loggedOut' });
     authService.logout();
     Idle.unwatch();
