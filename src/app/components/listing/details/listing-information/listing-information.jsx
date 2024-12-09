@@ -35,6 +35,7 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('sm')]: {
       width: '48%',
     },
+    overflowWrap: 'anywhere',
   },
 });
 

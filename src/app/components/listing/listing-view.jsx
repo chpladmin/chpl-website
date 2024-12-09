@@ -143,9 +143,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     eventTrack({
       ...analytics,
       event: seeAllCriteria ? 'See only attested Certification Criteria' : 'See all Certification Criteria',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setSeeAllCriteria(!seeAllCriteria);
   };
@@ -154,14 +151,105 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     eventTrack({
       ...analytics,
       event: seeAllCqms ? 'See only attested CQMs' : 'See all CQMs',
-      category: 'Listing Details',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     });
     setSeeAllCqms(!seeAllCqms);
   };
 
+  const getNavigation = ({
+    event,
+    id,
+    children,
+    displayFilter = () => true,
+  }) => {
+    if (displayFilter(listing)) {
+      return (
+        <Box
+          className={classes.menuItems}
+          key={id}
+        >
+          <InternalScrollButton
+            id={id}
+            analytics={{
+              ...analytics,
+              event,
+            }}
+          >
+            { children }
+          </InternalScrollButton>
+        </Box>
+      );
+    }
+    return null;
+  };
+
   if (!listing) { return null; }
+
+  const navigationItems = [{
+    id: 'listingInformation',
+    event: 'Navigate to Listing Information',
+    children: (
+      <>
+        Listing Information
+        <NotesOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+  }, {
+    id: 'certificationCriteria',
+    event: 'Navigate to Certification Criteria',
+    children: (
+      <>
+        Certification Criteria
+        <BookOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+  }, {
+    id: 'clinicalQualityMeasures',
+    event: 'Navigate to Clinical Quality Measures',
+    children: (
+      <>
+        Clinical Quality Measures
+        <DoneAllOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+  }, {
+    id: 'sed',
+    event: 'Navigate to Safety Enhanced Design',
+    children: (
+      <>
+        Safety Enhanced Design (SED)
+        <TouchAppOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+    displayFilter: (l) => (l.edition === null || l.edition.name !== '2011'),
+  }, {
+    id: 'g1g2Measures',
+    event: 'Navigate to G1/G2 Measures',
+    children: (
+      <>
+        G1/G2 Measures
+        <AssessmentOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+    displayFilter: (l) => (l.edition === null || l.edition.name === '2015'),
+  }, {
+    id: 'compliance',
+    event: 'Navigate to Compliance Activities',
+    children: (
+      <>
+        Compliance Activities
+        <SecurityOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+  }, {
+    id: 'additional',
+    event: 'Navigate to Additional Information',
+    children: (
+      <>
+        Additional Information
+        <InfoOutlinedIcon className={classes.iconSpacing} />
+      </>
+    ),
+  }];
 
   return (
     <>
@@ -170,131 +258,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
           <div className={classes.leftSideContent}>
             <div className={classes.navigation}>
               <Box className={classes.menuContainer}>
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="listingInformation"
-                    analytics={{
-                      ...analytics,
-                      event: 'Navigate to Listing Information',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
-                    }}
-                  >
-                    Listing Information
-                    <NotesOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="certificationCriteria"
-                    analytics={{
-                      ...analytics,
-                      event: 'Navigate to Certification Criteria',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
-                    }}
-                  >
-                    Certification Criteria
-                    <BookOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="clinicalQualityMeasures"
-                    analytics={{
-                      ...analytics,
-                      event: 'Navigate to Clinical Quality Measures',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
-                    }}
-                  >
-                    Clinical Quality Measures
-                    <DoneAllOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
-                { (listing.edition === null || listing.edition.name !== '2011')
-                 && (
-                   <Box
-                     className={classes.menuItems}
-                   >
-                     <InternalScrollButton
-                       id="sed"
-                       analytics={{
-                         ...analytics,
-                         event: 'Navigate to Safety Enhanced Design',
-                         category: 'Listing Details',
-                         label: listing.chplProductNumber,
-                         aggregationName: listing.product.name,
-                       }}
-                     >
-                       Safety Enhanced Design (SED)
-                       <TouchAppOutlinedIcon className={classes.iconSpacing} />
-                     </InternalScrollButton>
-                   </Box>
-                 )}
-                { (listing.edition === null || listing.edition.name === '2015')
-                  && (
-                    <Box
-                      className={classes.menuItems}
-                    >
-                      <InternalScrollButton
-                        id="g1g2Measures"
-                        analytics={{
-                          ...analytics,
-                          event: 'Navigate to G1/G2 Measures',
-                          category: 'Listing Details',
-                          label: listing.chplProductNumber,
-                          aggregationName: listing.product.name,
-                        }}
-                      >
-                        G1/G2 Measures
-                        <AssessmentOutlinedIcon className={classes.iconSpacing} />
-                      </InternalScrollButton>
-                    </Box>
-                  )}
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="compliance"
-                    analytics={{
-                      ...analytics,
-                      event: 'Navigate to Compliance Activities',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
-                    }}
-                  >
-                    Compliance Activities
-                    <SecurityOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="additional"
-                    analytics={{
-                      ...analytics,
-                      event: 'Navigate to Additional Information',
-                      category: 'Listing Details',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
-                    }}
-                  >
-                    Additional Information
-                    <InfoOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
+                { navigationItems.map((item) => getNavigation(item)) }
               </Box>
             </div>
             <Box className={classes.subscribe}>
@@ -445,9 +409,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                       analytics={{
                         ...analytics,
                         event: 'Manage Surveillance Activities',
-                        category: 'Listing Details',
-                        label: listing.chplProductNumber,
-                        aggregationName: listing.product.name,
                       }}
                     />
                   )}
