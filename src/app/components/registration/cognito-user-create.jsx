@@ -36,7 +36,7 @@ function ChplCognitoUserCreate({ dispatch }) {
       email: formik.values.email,
       fullName: formik.values.fullName,
     };
-    dispatch('cognito-create', user);
+    dispatch('create', user);
   };
 
   formik = useFormik({
