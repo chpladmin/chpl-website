@@ -61,7 +61,7 @@ const states = [
     component: 'chplDashboardWrapperBridge',
     data: {
       title: 'Dashboard',
-      roles: ['chpl-admin'],
+      roles: ['chpl-admin', 'chpl-onc'],
     },
   },
 ];
