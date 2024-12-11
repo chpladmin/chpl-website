@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Container,
   Typography,
+  Box,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
@@ -155,13 +156,15 @@ function ChplDeveloperPage({ id }) {
   return (
     <AnalyticsContext.Provider value={analyticsData}>
       <DeveloperContext.Provider value={developerState}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h1"
-          >
-            { developer.name }
-          </Typography>
-        </Container>
+        <Box py={8} mb={4} bgcolor={'white'}>
+          <Container disableGutters maxWidth="lg">
+            <Typography
+              variant="h1"
+            >
+              { developer.name }
+            </Typography>
+          </Container>
+        </Box>
         <Container maxWidth="lg" id="main-content" tabIndex="-1">
           { state === 'view'
             && (
