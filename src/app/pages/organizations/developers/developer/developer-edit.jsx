@@ -164,11 +164,6 @@ function ChplEditDeveloper({ dispatch }) {
 
   return (
     <>
-      <Box p={8} bgcolor={palette.white}>
-        <Typography variant="h1">
-          Developer Information
-        </Typography>
-      </Box>
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
           <ChplDeveloper
