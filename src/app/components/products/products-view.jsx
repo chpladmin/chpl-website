@@ -20,14 +20,10 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  cardHeader: {
-    margin: '0',
-    fontSize: '1.25em',
-  },
   tableResultsHeaderContainer: {
     display: 'grid',
     gap: '8px',
-    margin: '16px 32px',
+    margin: '8px',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -42,8 +38,17 @@ const useStyles = makeStyles({
     gridTemplateColumns: 'auto auto',
     alignItems: 'center',
   },
+  searchContainer: {
+    color: 'white!important',
+  },
   wrap: {
     flexFlow: 'wrap',
+  },
+  '@global': {
+    '.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
+      width: 'min-content!important',
+      right: '600px!important',
+    },
   },
 });
 
@@ -109,7 +114,6 @@ function ChplProductsView({ products, dispatch }) {
     <Card>
       <CardHeader
         title="Products"
-        className={classes.cardHeader}
       />
       <CardContent>
         <ChplFilterSearchBar
