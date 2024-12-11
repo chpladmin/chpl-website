@@ -56,6 +56,10 @@ const util = {
   rotate: {
     transform: 'rotate(180deg)',
   },
+  pageHeader: {
+    backgroundColor: '#FFF',
+    padding: '32px',
+  },
 };
 
 export default util;
