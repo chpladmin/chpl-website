@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { useFetchInsights } from 'api/developer';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -26,7 +28,23 @@ const useStyles = makeStyles({
 
 function ChplInsightsView({ developer }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
+  const {
+    data,
+    error,
+    isError,
+    isLoading,
+  } = useFetchInsights({ developer });
+  const [insights, setInsights] = useState({});
   const classes = useStyles();
+
+  useEffect(() => {
+    if (isError || !data) { return; }
+    setInsights(data.reduce((acc, val) => {
+      if (!acc[val.year]) { acc[val.year] = 0; }
+      acc[val.year] += 1;
+      return acc;
+    }, {}));
+  }, [data, isError]);
 
   return (
     <Card>
@@ -38,28 +56,44 @@ function ChplInsightsView({ developer }) {
           <a href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf">Insights Guide</a>
           .
         </Typography>
-        <TableContainer component={Paper}>
-          <Table
-            aria-label="Developer Insights information"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell>Insights Period</TableCell>
-                <TableCell>Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>15 July 2027 to 15 July 2028</TableCell>
-                <TableCell>Submitted</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>15 July 2026 to 15 July 2027</TableCell>
-                <TableCell>Submitted</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        { isLoading && <CircularProgress /> }
+        { isError
+          && (
+            <Typography>
+              { error.response.data.error }
+            </Typography>
+          )}
+        { data?.length > 0 && !isError && !isLoading
+          && (
+            <TableContainer component={Paper}>
+              <Table
+                aria-label="Developer Insights information"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Insights Period</TableCell>
+                    <TableCell>Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { insights && Object.keys(insights)
+                    .sort((a, b) => (a < b ? 1 : -1))
+                    .map((key) => (
+                      <TableRow key={key}>
+                        <TableCell>{ key }</TableCell>
+                        <TableCell>{`${insights[key]} evaluated`}</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        { data?.length === 0 && !isError && !isLoading
+          && (
+            <Typography>
+              No insights data available.
+            </Typography>
+          )}
         { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }) && (
           <Typography variant="body1">
             Submit Insights at

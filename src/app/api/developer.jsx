@@ -66,6 +66,16 @@ const useFetchDirectReviews = ({ developer }) => {
   });
 };
 
+const useFetchInsights = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/insights', developer.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/insights`);
+    return response.data;
+  }, {
+    enabled: !!developer,
+  });
+};
+
 const useFetchRealWorldTestingPlans = ({ developer }) => {
   const axios = useAxios();
   return useQuery(['developers/rwt-plans-urls', developer?.id], async () => {
@@ -163,6 +173,7 @@ export {
   useFetchDevelopers,
   useFetchDevelopersBySearch,
   useFetchDirectReviews,
+  useFetchInsights,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
   useFetchUsersAtDeveloper,
