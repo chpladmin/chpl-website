@@ -5,7 +5,9 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
   CardContent,
+  Menu,
   MenuItem,
   Paper,
   Table,
@@ -33,6 +35,10 @@ import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  buttonGroupMenu:{
+    width: '200px!important',
+    right: '200px!important',
+  },
   products: {
     borderRadius: '4px',
     display: 'flex',
@@ -50,6 +56,9 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '0 4px',
   },
+  chplIdFirstColumn:{
+    width: '132px'
+  }
 });
 
 function ChplProductView({ product, dispatch }) {
@@ -63,6 +72,24 @@ function ChplProductView({ product, dispatch }) {
   const [options, setOptions] = useState([{ id: 'all', version: 'All' }]);
   const classes = useStyles();
 
+  const [editAnchorEl, setEditAnchorEl] = useState(null);
+  const [splitAnchorEl, setSplitAnchorEl] = useState(null);
+  const [mergeAnchorEl, setMergeAnchorEl] = useState(null);
+
+  const handleMenuClick = (setter) => (event) => {
+    setter(event.currentTarget);
+  };
+
+  const handleMenuClose = (setter) => () => {
+    setter(null);
+  };
+
+  const handleAction = (action, payload) => () => {
+    dispatch({ action, payload });
+    setEditAnchorEl(null);
+    setSplitAnchorEl(null);
+    setMergeAnchorEl(null);
+  };
   useEffect(() => {
     setOptions([{ id: 'all', version: 'All' }].concat(product.versions.sort((a, b) => (a.id < b.id ? 1 : -1))));
     const rollup = product.versions
@@ -118,8 +145,8 @@ function ChplProductView({ product, dispatch }) {
         expandIcon={getIcon(product)}
         className={classes.productsSummary}
       >
-        <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-          <Typography variant="body1">
+        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
+          <Typography className={classes.chplIdFirstColumn} variant="body1">
             { product.name }
           </Typography>
           <Typography variant="body2">
@@ -137,148 +164,149 @@ function ChplProductView({ product, dispatch }) {
         </Box>
       </AccordionSummary>
       <CardContent>
-        <ChplTextField
-          id="version"
-          name="version"
-          label="Version"
-          select
-          value={selectedVersion}
-          onChange={(event) => setSelectedVersion(event.target.value)}
-        >
-          {options.map((option) => (
-            <MenuItem key={option.id} value={option.id}>
-              {option.version}
-            </MenuItem>
-          ))}
-        </ChplTextField>
-        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-          && (
-            <ChplProductHistory
-              product={product}
-            />
-          )}
-        { product.contact
-          && (
-            <>
-              <Typography variant="body1">Contact Information</Typography>
-              <Typography variant="body2">{ product.contact.fullName }</Typography>
-              <Typography variant="body2">{ product.contact.email }</Typography>
-              <Typography variant="body2">{ product.contact.phoneNumber }</Typography>
-            </>
-          )}
-        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-          && (
-            <>
-              <ButtonGroup
-                color="primary"
-              >
-                <ChplTooltip title={`Edit ${product.name}`}>
-                  <Button
-                    variant="contained"
-                    aria-label={`Edit ${product.name}`}
-                    id={`product-edit-${product.id}`}
-                    onClick={() => dispatch({ action: 'edit', payload: product })}
-                  >
-                    <EditOutlinedIcon />
-                  </Button>
-                </ChplTooltip>
-                <ChplTooltip title={`Split ${product.name}`}>
-                  <Button
-                    variant="outlined"
-                    aria-label={`Split ${product.name}`}
-                    id={`product-split-${product.id}`}
-                    onClick={() => dispatch({ action: 'split', payload: product })}
-                  >
-                    <CallSplitIcon />
-                  </Button>
-                </ChplTooltip>
-                <ChplTooltip title={`Merge ${product.name}`}>
-                  <Button
-                    variant="outlined"
-                    aria-label={`Merge ${product.name}`}
-                    id={`product-merge-${product.id}`}
-                    onClick={() => dispatch({ action: 'merge', payload: product })}
-                  >
-                    <CallMergeIcon />
-                  </Button>
-                </ChplTooltip>
-              </ButtonGroup>
-              <ButtonGroup
-                color="primary"
-              >
-                <ChplTooltip title="Edit selected version">
-                  <Button
-                    variant="contained"
-                    aria-label="Edit selected version"
-                    id="version-edit"
-                    onClick={() => dispatch({ action: 'editVersion', payload: { product, version: selectedVersion } })}
-                  >
-                    <EditOutlinedIcon />
-                  </Button>
-                </ChplTooltip>
-                <ChplTooltip title="Split selected version">
-                  <Button
-                    variant="outlined"
-                    aria-label="Split selected version"
-                    id="version-split"
-                    onClick={() => dispatch({ action: 'splitVersion', payload: { product, version: selectedVersion } })}
-                  >
-                    <CallSplitIcon />
-                  </Button>
-                </ChplTooltip>
-                <ChplTooltip title="Merge selected version">
-                  <Button
-                    variant="outlined"
-                    aria-label="Merge selected version"
-                    id="version-merge"
-                    onClick={() => dispatch({ action: 'mergeVersion', payload: { product, version: selectedVersion } })}
-                  >
-                    <CallMergeIcon />
-                  </Button>
-                </ChplTooltip>
-              </ButtonGroup>
-            </>
-          )}
-        <TableContainer component={Paper}>
-          <Table aria-label="Listings table">
-            <TableHead>
-              <TableRow>
-                <TableCell>CHPL ID</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell># Non-conformities</TableCell>
-                <TableCell>Certification Date</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { listings.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <ChplLink
-                      href={`#/listing/${item.id}`}
-                      text={item.chplProductNumber}
-                      analytics={{
-                        ...analytics,
-                        event: 'Navigate to Listing Details Page',
-                        label: item.chplProductNumber,
-                        aggregationName: product.name,
-                      }}
-                      external={false}
-                      router={{ sref: 'listing', options: { id: item.id } }}
-                    />
-                  </TableCell>
-                  <TableCell>{item.certificationStatus}</TableCell>
-                  <TableCell>
-                    { item.openSurveillanceNonConformityCount }
-                    {' open / '}
-                    { item.closedSurveillanceNonConformityCount }
-                    {' closed'}
-                  </TableCell>
-                  <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
-                </TableRow>
+        <Box display={'flex'} mb={4} flexDirection={'row'} justifyContent={'space-between'}>
+          <Box minWidth={'35%'}>
+            <ChplTextField
+              id="version"
+              name="version"
+              label="Version"
+              select
+              value={selectedVersion}
+              onChange={(event) => setSelectedVersion(event.target.value)}
+            >
+              {options.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.version}
+                </MenuItem>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            </ChplTextField>
+          </Box>
+          <Box display={'flex'} mb={4} flexDirection={'row'} gridGap={4}>
+            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+              && (
+                <ChplProductHistory
+                  product={product}
+                />
+              )}
+            { product.contact
+              && (
+                <>
+                  <Typography variant="body1">Contact Information</Typography>
+                  <Typography variant="body2">{ product.contact.fullName }</Typography>
+                  <Typography variant="body2">{ product.contact.email }</Typography>
+                  <Typography variant="body2">{ product.contact.phoneNumber }</Typography>
+                </>
+              )}
+            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+              && (
+                <>
+                 <ButtonGroup color="primary">
+                  <ChplTooltip title={`Edit ${product.name}`}>
+                    <Button
+                      variant="contained"
+                      aria-label={`Edit ${product.name}`}
+                      id={`product-edit-${product.id}`}
+                      onClick={handleMenuClick(setEditAnchorEl)}
+                    >
+                      <EditOutlinedIcon />
+                    </Button>
+                  </ChplTooltip>
+                  <Menu
+                    anchorEl={editAnchorEl}
+                    open={Boolean(editAnchorEl)}
+                    onClose={handleMenuClose(setEditAnchorEl)}
+                    className={classes.buttonGroupMenu} 
+                  >
+                    <MenuItem onClick={handleAction('edit', product)}>Edit Product</MenuItem>
+                    <MenuItem onClick={handleAction('editVersion', { product, version: selectedVersion })}>Edit Version</MenuItem>
+                  </Menu>
+
+                  <ChplTooltip title={`Split ${product.name}`}>
+                    <Button
+                      variant="outlined"
+                      aria-label={`Split ${product.name}`}
+                      id={`product-split-${product.id}`}
+                      onClick={handleMenuClick(setSplitAnchorEl)}
+                    >
+                      <CallSplitIcon />
+                    </Button>
+                  </ChplTooltip>
+                  <Menu
+                    anchorEl={splitAnchorEl}
+                    open={Boolean(splitAnchorEl)}
+                    onClose={handleMenuClose(setSplitAnchorEl)}
+                    className={classes.buttonGroupMenu} 
+                  >
+                    <MenuItem onClick={handleAction('split', product)}>Split Product</MenuItem>
+                    <MenuItem onClick={handleAction('splitVersion', { product, version: selectedVersion })}>Split Version</MenuItem>
+                  </Menu>
+
+                  <ChplTooltip title={`Merge ${product.name}`}>
+                    <Button
+                      variant="outlined"
+                      aria-label={`Merge ${product.name}`}
+                      id={`product-merge-${product.id}`}
+                      onClick={handleMenuClick(setMergeAnchorEl)}
+                    >
+                      <CallMergeIcon />
+                    </Button>
+                  </ChplTooltip>
+                  <Menu
+                    anchorEl={mergeAnchorEl}
+                    open={Boolean(mergeAnchorEl)}
+                    onClose={handleMenuClose(setMergeAnchorEl)}
+                    className={classes.buttonGroupMenu} 
+                  >
+                    <MenuItem onClick={handleAction('merge', product)}>Merge Product</MenuItem>
+                    <MenuItem onClick={handleAction('mergeVersion', { product, version: selectedVersion })}>Merge Version</MenuItem>
+                  </Menu>
+                </ButtonGroup>
+                </>
+              )}
+            </Box>
+          </Box>
+        <Card>
+          <TableContainer component={Paper}>
+            <Table aria-label="Listings table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>CHPL ID</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell># Non-conformities</TableCell>
+                  <TableCell>Certification Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { listings.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <ChplLink
+                        href={`#/listing/${item.id}`}
+                        text={item.chplProductNumber}
+                        analytics={{
+                          ...analytics,
+                          event: 'Navigate to Listing Details Page',
+                          label: item.chplProductNumber,
+                          aggregationName: product.name,
+                        }}
+                        external={false}
+                        router={{ sref: 'listing', options: { id: item.id } }}
+                      />
+                    </TableCell>
+                    <TableCell>{item.certificationStatus}</TableCell>
+                    <TableCell>
+                      { item.openSurveillanceNonConformityCount }
+                      {' open / '}
+                      { item.closedSurveillanceNonConformityCount }
+                      {' closed'}
+                    </TableCell>
+                    <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
       </CardContent>
     </Accordion>
   );
