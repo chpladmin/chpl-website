@@ -330,13 +330,13 @@ function ChplDeveloperEdit(props) {
   });
 
   return (
-    <Container maxWidth="md">
+    <Container disableGutters maxWidth="md">
       <Card>
         { isSplitting
           && (
             <CardHeader
               title="New Developer"
-              component="h2"
+              component="h5"
               className={classes.developerHeader}
             />
           )}
@@ -366,7 +366,7 @@ function ChplDeveloperEdit(props) {
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
-              <>
+              <Card>
                 <TableContainer className={classes.fullWidth}>
                   <Table className={classes.table}>
                     <TableHead>
@@ -511,7 +511,7 @@ function ChplDeveloperEdit(props) {
                       <Divider className={classes.fullWidth} />
                     </>
                   )}
-              </>
+              </Card>
             )}
           <Divider className={classes.fullWidth} />
           { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
