@@ -57,10 +57,10 @@ function ChplCognitoToggle({ dispatch }) {
       }, {
         onSuccess: (response) => {
           authService.saveToken(response.accessToken);
-          authService.saveRefreshToken(cookies.refresh_token);
+          authService.saveRefreshToken(response.refreshToken);
           setAuthTokens({
             accessToken: response.accessToken,
-            refreshToken: cookies.refresh_token,
+            refreshToken: response.refreshToken,
           });
           setUser(response.user);
           authService.saveCurrentUser(response.user);
