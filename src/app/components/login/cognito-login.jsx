@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { func, string } from 'prop-types';
 
 import ChplChangePassword from './components/change-password';
@@ -8,14 +8,25 @@ import ChplLoggedIn from './components/logged-in';
 import ChplResetForgottenPassword from './components/reset-forgotten-password';
 import ChplSignin from './components/signin';
 
+import { UserContext } from 'shared/contexts';
+
 function ChplCognitoLogin({
   dispatch,
   setState,
   state,
   uuid,
 }) {
+  const { user } = useContext(UserContext);
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    if (user?.cognitoId) {
+      setState('LOGGEDIN');
+    } else {
+      setState('SIGNIN');
+    }
+  }, [user]);
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
