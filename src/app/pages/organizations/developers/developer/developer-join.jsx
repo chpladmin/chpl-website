@@ -140,11 +140,6 @@ function ChplJoinDevelopers({ dispatch }) {
 
   return (
     <>
-      <Box p={8} bgcolor={palette.white}>
-        <Typography variant="h1">
-          Join Developers
-        </Typography>
-      </Box>
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
           <Card className={classes.stickyCardContainer}>
