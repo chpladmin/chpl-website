@@ -36,6 +36,14 @@ const useFetchDevelopersBySearch = ({
   }, { keepPreviousData: true });
 };
 
+const useFetchInsights = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/insights', developer.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/insights`);
+    return response.data;
+  });
+};
+
 const useFetchRealWorldTestingPlans = ({ developer }) => {
   const axios = useAxios();
   return useQuery(['developers/rwt-plans-urls', developer?.id], async () => {
@@ -106,6 +114,7 @@ export {
   useFetchAttestations,
   useFetchDevelopers,
   useFetchDevelopersBySearch,
+  useFetchInsights,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
   usePostAttestationException,
