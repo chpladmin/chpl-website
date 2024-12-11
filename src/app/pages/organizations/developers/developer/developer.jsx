@@ -4,6 +4,7 @@ import {
   Container,
   Typography,
   Box,
+  makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
@@ -18,6 +19,11 @@ import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
+
+const useStyles = makeStyles({
+  ...utilStyles,
+});
 
 function ChplDeveloperPage({ id }) {
   const $state = getAngularService('$state');
@@ -29,7 +35,8 @@ function ChplDeveloperPage({ id }) {
   const { mutate: createOldInvitation } = usePostCreateOldInvitation();
   const [developer, setDeveloper] = useState(undefined);
   const [state, setState] = useState('view');
-
+  const classes = useStyles();
+  
   useEffect(() => {
     if (isLoading || !isSuccess) {
       return;
@@ -156,7 +163,7 @@ function ChplDeveloperPage({ id }) {
   return (
     <AnalyticsContext.Provider value={analyticsData}>
       <DeveloperContext.Provider value={developerState}>
-        <Box py={8} mb={4} bgcolor={'white'}>
+        <Box className={classes.pageHeader}>
           <Container disableGutters maxWidth="lg">
             <Typography
               variant="h1"

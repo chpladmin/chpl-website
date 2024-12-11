@@ -29,16 +29,9 @@ import { DeveloperContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  pageContainer: {
-    padding: '32px 32px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gridGap: '16px',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-    },
+  errorColor: {
+    border: '1px solid #c44f65',
+    color: palette.error,
   },
   cardContainer: {
     width: '100%',
@@ -50,6 +43,17 @@ const useStyles = makeStyles({
       overflowY: 'hidden',
     },
   },
+  pageContainer: {
+    padding: '32px 32px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gridGap: '16px',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
   stickyCardContainer: {
     width: '100%',
     [theme.breakpoints.up('md')]: {
@@ -57,10 +61,6 @@ const useStyles = makeStyles({
       position: 'sticky',
       top: '100px',
     },
-  },
-  errorColor: {
-    border: '1px solid #c44f65',
-    color: palette.error,
   },
 });
 

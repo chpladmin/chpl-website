@@ -3,7 +3,6 @@ import {
   Box,
   CircularProgress,
   Container,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -18,16 +17,9 @@ import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/conte
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  pageContainer: {
-    padding: '32px 32px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gridGap: '16px',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-    },
+  errorColor: {
+    border: '1px solid #c44f65',
+    color: palette.error,
   },
   cardContainer: {
     width: '100%',
@@ -47,9 +39,16 @@ const useStyles = makeStyles({
       top: '100px',
     },
   },
-  errorColor: {
-    border: '1px solid #c44f65',
-    color: palette.error,
+  pageContainer: {
+    padding: '32px 32px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gridGap: '16px',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
   },
 });
 

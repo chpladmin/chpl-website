@@ -19,15 +19,7 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  mainContent: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '32px',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-    },
-  },
-  lefthandContainer:{
+  lefthandContainer: {
     width: '33%',
     minWidth: '33%',
     [theme.breakpoints.down('md')]: {
@@ -39,6 +31,14 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '32px',
+  },
+  mainContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '32px',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
   },
   righthandColumn: {
     display: 'flex',
@@ -117,31 +117,31 @@ function ChplDeveloperView({ dispatch }) {
 
   return (
     <Box className={classes.mainContent}>
-        <Box className={`${classes.lefthandContainer} ${state === 'editUser' ? classes.fullWidthGridRow : ''}`}>
-          { state === 'view'
-            && (
-              <Box className={classes.lefthandColumn}>
-                <ChplDeveloperViewDetails
-                  developer={developer}
-                  dispatch={dispatch}
-                  canEdit={() => can('edit')}
-                  canJoin={() => can('join')}
-                  canSplit={() => can('split-developer')}
-                  isSplitting={false}
-                />
-                <ChplRealWorldTestingView
-                  developer={developer}
-                />
-                <ChplAttestationsView
-                  developer={developer}
-                  dispatch={dispatch}
-                />
-              </Box>
-            )}
-         
-        </Box>
+      <Box className={`${classes.lefthandContainer} ${state === 'editUser' ? classes.fullWidthGridRow : ''}`}>
+        { state === 'view'
+          && (
+            <Box className={classes.lefthandColumn}>
+              <ChplDeveloperViewDetails
+                developer={developer}
+                dispatch={dispatch}
+                canEdit={() => can('edit')}
+                canJoin={() => can('join')}
+                canSplit={() => can('split-developer')}
+                isSplitting={false}
+              />
+              <ChplRealWorldTestingView
+                developer={developer}
+              />
+              <ChplAttestationsView
+                developer={developer}
+                dispatch={dispatch}
+              />
+            </Box>
+          )}
+
+      </Box>
       <Box className={classes.lefthandColumn}>
-      { state === 'view'
+        { state === 'view'
         && (
           <>
             { can('manageTracking')
@@ -170,7 +170,7 @@ function ChplDeveloperView({ dispatch }) {
                 groupNames={['chpl-developer']}
               />
             </Box>
-        )}
+          )}
       </Box>
     </Box>
   );

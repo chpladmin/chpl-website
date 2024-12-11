@@ -24,6 +24,20 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  columnContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '350px',
+    gridGap: '32px',
+  },
+  halfWidth: {
+    width: '50%',
+  },
+  listItem: {
+    fontSize: 'small',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   pageContainer: {
     padding: '32px 32px',
     display: 'flex',
@@ -35,21 +49,6 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-  columnContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '350px',
-    gridGap: '32px',
-  },
-  rowContainer: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    gridGap: '32px',
-  },
-  halfWidth: {
-    width: '50%',
-  },
   productList: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -58,10 +57,11 @@ const useStyles = makeStyles({
   productName: {
     width: '75%',
   },
-  listItem: {
-    fontSize: 'small',
+  rowContainer: {
+    width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'row',
+    gridGap: '32px',
   },
 });
 
