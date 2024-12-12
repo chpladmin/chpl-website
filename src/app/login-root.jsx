@@ -11,10 +11,10 @@ function ChplLoginRoot() {
   const { hasAnyRole } = useContext(UserContext);
 
   useEffect(() => {
-    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+    if (!ssoIsOn && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       Idle.watch();
     }
-  }, [Idle, hasAnyRole]);
+  }, [Idle, hasAnyRole, ssoIsOn]);
 
   if (ssoIsOn) {
     return (

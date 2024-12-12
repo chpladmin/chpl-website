@@ -55,7 +55,6 @@ const validationSchema = yup.object({
 
 function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const $rootScope = getAngularService('$rootScope');
-  const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
@@ -103,7 +102,6 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           category: 'Authentication',
           group: response.user.role,
         });
-        Idle.watch();
         $rootScope.$broadcast('loggedIn');
         $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
