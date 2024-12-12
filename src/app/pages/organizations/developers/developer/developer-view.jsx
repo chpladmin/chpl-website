@@ -44,6 +44,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '32px',
+    width: '100%',
   },
 });
 
@@ -140,7 +141,7 @@ function ChplDeveloperView({ dispatch }) {
           )}
 
       </Box>
-      <Box className={classes.lefthandColumn}>
+      <Box className={classes.righthandColumn}>
         { state === 'view'
         && (
           <>
