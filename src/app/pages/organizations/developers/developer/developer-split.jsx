@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   columnContainer: {
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '350px',
+    minWidth: '375px',
     gridGap: '32px',
   },
   halfWidth: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
   },
   pageContainer: {
-    padding: '32px 32px',
+    padding: '32px 0px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -55,10 +55,9 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   productName: {
-    width: '75%',
+    width: '64%',
   },
   rowContainer: {
-    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     gridGap: '32px',
@@ -177,7 +176,7 @@ function ChplDeveloperSplit({ dispatch }) {
           <Box className={classes.rowContainer}>
             <Box className={classes.halfWidth}>
               <Card>
-                <CardHeader title="Products Available to Move" />
+                <CardHeader title="Products staying with original developer" />
                 <CardContent>
                   <List className={classes.productList}>
                     {products.map((product) => (
@@ -187,7 +186,6 @@ function ChplDeveloperSplit({ dispatch }) {
                         </Box>
                         <Button
                           endIcon={<ArrowForward />}
-                          size="small"
                           color="secondary"
                           variant="contained"
                           onClick={() => moveProduct(product, true)}
@@ -202,26 +200,27 @@ function ChplDeveloperSplit({ dispatch }) {
             </Box>
             <Box className={classes.halfWidth}>
               <Card>
-                <CardHeader title="Products Moving" />
+                <CardHeader title="Products moving to new developer" />
                 <CardContent>
                   <div>
                     {movingProducts.length === 0 ? (
                       <Typography variant="body1" color="textSecondary" align="left">
-                        No products selected. Please select a product.
+                        No products selected. At least one product must be selected to move.
                       </Typography>
                     ) : (
                       <List className={classes.productList}>
                         {movingProducts.map((product) => (
                           <ListItem divider className={classes.listItem} dense key={product.id}>
+                            <Box className={classes.productName}>
                             {product.name}
+                            </Box>
                             <Button
                               endIcon={<ArrowBack />}
-                              size="small"
-                              color="secondary"
-                              variant="contained"
+                              variant="outlined"
+                              className={classes.deleteButtonOutlined}
                               onClick={() => moveProduct(product, false)}
                             >
-                              Move
+                              Remove
                             </Button>
                           </ListItem>
                         ))}
