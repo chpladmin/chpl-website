@@ -18,6 +18,7 @@ import { ArrowBack, ArrowForward } from '@material-ui/icons';
 
 import { usePostDeveloperSplit } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
+import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
     gridGap: '32px',
   },
   halfWidth: {
-    width: '50%',
+    width: 'auto',
   },
   listItem: {
     fontSize: 'small',
@@ -46,7 +47,8 @@ const useStyles = makeStyles({
     alignItems: 'flex-start',
     gridGap: '32px',
     [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   productList: {
@@ -163,6 +165,8 @@ function ChplDeveloperSplit({ dispatch }) {
               developer={developer}
               isSplitting
             />
+          </Box>
+          <Box>
             <ChplDeveloper
               developer={{}}
               dispatch={handleDispatch}
@@ -173,64 +177,70 @@ function ChplDeveloperSplit({ dispatch }) {
               errorMessages={errorMessages}
             />
           </Box>
-          <Box className={classes.rowContainer}>
-            <Box className={classes.halfWidth}>
-              <Card>
-                <CardHeader title="Products staying with original developer" />
-                <CardContent>
+          <Card>
+            <CardHeader title="Products staying with original developer" />
+            <CardContent>
+              <List className={classes.productList}>
+                {products.map((product) => (
+                  <ListItem divider className={classes.listItem} dense key={product.id}>
+                    <Box className={classes.productName}>
+                      {product.name}
+                    </Box>
+                    <ChplTooltip
+                      placement="top"
+                      title="Move product to new developer"
+                    >
+                      <Button
+                        endIcon={<ArrowForward />}
+                        size="small"
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => moveProduct(product, true)}
+                      >
+                        Move
+                      </Button>
+                    </ChplTooltip>
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader title="Products moving to new developer" />
+            <CardContent>
+              <div>
+                {movingProducts.length === 0 ? (
+                  <Typography variant="body1" color="textSecondary" align="left">
+                    No products selected. At least one product must be selected to move.
+                  </Typography>
+                ) : (
                   <List className={classes.productList}>
-                    {products.map((product) => (
+                    {movingProducts.map((product) => (
                       <ListItem divider className={classes.listItem} dense key={product.id}>
                         <Box className={classes.productName}>
                           {product.name}
                         </Box>
-                        <Button
-                          endIcon={<ArrowForward />}
-                          color="secondary"
-                          variant="contained"
-                          onClick={() => moveProduct(product, true)}
+                        <ChplTooltip
+                          placement="top"
+                          title="Move product to original developer"
                         >
-                          Move
-                        </Button>
+                          <Button
+                            endIcon={<ArrowBack />}
+                            size="small"
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => moveProduct(product, false)}
+                          >
+                            Move
+                          </Button>
+                        </ChplTooltip>
                       </ListItem>
                     ))}
                   </List>
-                </CardContent>
-              </Card>
-            </Box>
-            <Box className={classes.halfWidth}>
-              <Card>
-                <CardHeader title="Products moving to new developer" />
-                <CardContent>
-                  <div>
-                    {movingProducts.length === 0 ? (
-                      <Typography variant="body1" color="textSecondary" align="left">
-                        No products selected. At least one product must be selected to move.
-                      </Typography>
-                    ) : (
-                      <List className={classes.productList}>
-                        {movingProducts.map((product) => (
-                          <ListItem divider className={classes.listItem} dense key={product.id}>
-                            <Box className={classes.productName}>
-                            {product.name}
-                            </Box>
-                            <Button
-                              endIcon={<ArrowBack />}
-                              variant="outlined"
-                              className={classes.deleteButtonOutlined}
-                              onClick={() => moveProduct(product, false)}
-                            >
-                              Remove
-                            </Button>
-                          </ListItem>
-                        ))}
-                      </List>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </Box>
-          </Box>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </Box>
       </Container>
     </>
