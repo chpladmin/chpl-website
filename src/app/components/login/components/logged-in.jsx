@@ -30,7 +30,6 @@ const useStyles = makeStyles({
 
 function ChplLoggedIn({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
-  const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { user, setUser } = useContext(UserContext);
@@ -65,7 +64,6 @@ function ChplLoggedIn({ dispatch }) {
     removeCookie('refresh_token');
     dispatch({ action: 'loggedOut' });
     authService.logout();
-    Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
   };
 
