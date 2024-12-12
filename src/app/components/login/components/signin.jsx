@@ -43,7 +43,6 @@ const validationSchema = yup.object({
 
 function ChplSignin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
-  const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { setUser } = useContext(UserContext);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
@@ -93,7 +92,6 @@ function ChplSignin({ dispatch }) {
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();
-        Idle.watch();
         $rootScope.$broadcast('loggedIn');
         $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
