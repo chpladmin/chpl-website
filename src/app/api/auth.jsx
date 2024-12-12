@@ -60,6 +60,12 @@ const usePostNewPasswordRequired = () => {
     .then((response) => response.data));
 };
 
+const usePostRefreshToken = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('auth/refresh-token', data)
+    .then((response) => response.data));
+};
+
 const usePostResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/reset-password-request', data)
@@ -81,6 +87,7 @@ export {
   usePostForgotPassword,
   usePostLogin,
   usePostNewPasswordRequired,
+  usePostRefreshToken,
   usePostResetPassword,
   usePostSetForgottenPassword,
 };

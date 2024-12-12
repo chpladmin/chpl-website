@@ -5,6 +5,7 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 import { bool, node } from 'prop-types';
+import { CookiesProvider } from 'react-cookie';
 
 import { AnalyticsProvider } from 'shared/contexts';
 import ApiWrapper from 'api/api-wrapper';
@@ -27,7 +28,14 @@ function AppWrapper({ children, showQueryTools }) {
                 <CmsWrapper>
                   <BrowserWrapper>
                     <AnalyticsProvider>
-                      {children}
+                      <CookiesProvider defaultSetOptions={{
+                        path: '/',
+                        expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
+                        domain: '.healthit.gov',
+                      }}
+                      >
+                        {children}
+                      </CookiesProvider>
                     </AnalyticsProvider>
                   </BrowserWrapper>
                 </CmsWrapper>

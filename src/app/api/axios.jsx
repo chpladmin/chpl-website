@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
-import {
-  applyAuthTokenInterceptor,
-  getAccessToken,
-}
-  from 'axios-jwt';
+import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
