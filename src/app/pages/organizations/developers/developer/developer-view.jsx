@@ -35,6 +35,7 @@ const useStyles = makeStyles({
   mainContent: {
     display: 'flex',
     flexDirection: 'row',
+    paddingTop: '16px',
     gap: '32px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
