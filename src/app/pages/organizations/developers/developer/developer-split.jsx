@@ -7,6 +7,7 @@ import {
   CardHeader,
   CircularProgress,
   Container,
+  Divider,
   List,
   ListItem,
   Typography,
@@ -34,6 +35,9 @@ const useStyles = makeStyles({
   halfWidth: {
     width: 'auto',
   },
+  fullWidth: {
+    gridColumn: '1 / -1',
+  },
   listItem: {
     fontSize: 'small',
     display: 'flex',
@@ -44,12 +48,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
     gridGap: '32px',
     alignItems: 'stretch',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
+      alignItems: 'flex-start',
     },
   },
   productList: {
@@ -178,6 +182,7 @@ function ChplDeveloperSplit({ dispatch }) {
               errorMessages={errorMessages}
             />
           </Box>
+          <Divider className={classes.fullWidth} />
           <Card>
             <CardHeader title="Products staying with original developer" />
             <CardContent>
