@@ -84,6 +84,8 @@ function ChplRegisterUser({ hash }) {
           onError: (error) => {
             if (error.response.data.errorMessages?.length > 0) {
               setMessage(error.response.data.errorMessages[0]);
+            } else if (error.response.data.error) {
+              setMessage(error.response.data.error);
             } else {
               setMessage('An error occurred');
             }
