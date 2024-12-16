@@ -367,19 +367,19 @@ function ChplDeveloperEdit(props) {
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
               <Card className={classes.fullWidth}>
-                  <TableContainer className={classes.fullWidth}>
-                    <Table className={classes.table}>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
-                          <TableCell><Typography variant="body2">Start Date</Typography></TableCell>
-                          <TableCell><Typography variant="body2">End Date</Typography></TableCell>
-                          <TableCell><Typography variant="body2">Reason</Typography></TableCell>
-                          <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {statuses
+                <TableContainer className={classes.fullWidth}>
+                  <Table className={classes.table}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
+                        <TableCell><Typography variant="body2">Start Date</Typography></TableCell>
+                        <TableCell><Typography variant="body2">End Date</Typography></TableCell>
+                        <TableCell><Typography variant="body2">Reason</Typography></TableCell>
+                        <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {statuses
                           ?.sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
                           .map((status) => (
                             <TableRow key={getKey(status)}>
@@ -409,8 +409,8 @@ function ChplDeveloperEdit(props) {
                               </TableCell>
                             </TableRow>
                           ))}
-                      </TableBody>
-                      { !formik.values.isAdding
+                    </TableBody>
+                    { !formik.values.isAdding
                         && (
                           <TableFooter>
                             <TableRow>
@@ -430,8 +430,8 @@ function ChplDeveloperEdit(props) {
                             </TableRow>
                           </TableFooter>
                         )}
-                    </Table>
-                  </TableContainer>
+                  </Table>
+                </TableContainer>
                   { formik.values.isAdding
                     && (
                       <Card sx={{

@@ -199,69 +199,69 @@ function ChplProductView({ product, dispatch }) {
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <>
-                 <ButtonGroup color="primary">
-                  <ChplTooltip title={`Edit ${product.name}`}>
-                    <Button
-                      variant="contained"
-                      aria-label={`Edit ${product.name}`}
-                      id={`product-edit-${product.id}`}
-                      onClick={handleMenuClick(setEditAnchorEl)}
+                  <ButtonGroup color="primary">
+                    <ChplTooltip title={`Edit ${product.name}`}>
+                      <Button
+                        variant="contained"
+                        aria-label={`Edit ${product.name}`}
+                        id={`product-edit-${product.id}`}
+                        onClick={handleMenuClick(setEditAnchorEl)}
+                      >
+                        <EditOutlinedIcon />
+                      </Button>
+                    </ChplTooltip>
+                    <Menu
+                      anchorEl={editAnchorEl}
+                      open={Boolean(editAnchorEl)}
+                      onClose={handleMenuClose(setEditAnchorEl)}
+                      className={classes.buttonGroupMenu}
                     >
-                      <EditOutlinedIcon />
-                    </Button>
-                  </ChplTooltip>
-                  <Menu
-                    anchorEl={editAnchorEl}
-                    open={Boolean(editAnchorEl)}
-                    onClose={handleMenuClose(setEditAnchorEl)}
-                    className={classes.buttonGroupMenu} 
-                  >
-                    <MenuItem onClick={handleAction('edit', product)}>Edit Product</MenuItem>
-                    <MenuItem onClick={handleAction('editVersion', { product, version: selectedVersion })}>Edit Version</MenuItem>
-                  </Menu>
-                  <ChplTooltip title={`Split ${product.name}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Split ${product.name}`}
-                      id={`product-split-${product.id}`}
-                      onClick={handleMenuClick(setSplitAnchorEl)}
+                      <MenuItem onClick={handleAction('edit', product)}>Edit Product</MenuItem>
+                      <MenuItem onClick={handleAction('editVersion', { product, version: selectedVersion })}>Edit Version</MenuItem>
+                    </Menu>
+                    <ChplTooltip title={`Split ${product.name}`}>
+                      <Button
+                        variant="outlined"
+                        aria-label={`Split ${product.name}`}
+                        id={`product-split-${product.id}`}
+                        onClick={handleMenuClick(setSplitAnchorEl)}
+                      >
+                        <CallSplitIcon />
+                      </Button>
+                    </ChplTooltip>
+                    <Menu
+                      anchorEl={splitAnchorEl}
+                      open={Boolean(splitAnchorEl)}
+                      onClose={handleMenuClose(setSplitAnchorEl)}
+                      className={classes.buttonGroupMenu}
                     >
-                      <CallSplitIcon />
-                    </Button>
-                  </ChplTooltip>
-                  <Menu
-                    anchorEl={splitAnchorEl}
-                    open={Boolean(splitAnchorEl)}
-                    onClose={handleMenuClose(setSplitAnchorEl)}
-                    className={classes.buttonGroupMenu} 
-                  >
-                    <MenuItem onClick={handleAction('split', product)}>Split Product</MenuItem>
-                    <MenuItem onClick={handleAction('splitVersion', { product, version: selectedVersion })}>Split Version</MenuItem>
-                  </Menu>
-                  <ChplTooltip title={`Merge ${product.name}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Merge ${product.name}`}
-                      id={`product-merge-${product.id}`}
-                      onClick={handleMenuClick(setMergeAnchorEl)}
+                      <MenuItem onClick={handleAction('split', product)}>Split Product</MenuItem>
+                      <MenuItem onClick={handleAction('splitVersion', { product, version: selectedVersion })}>Split Version</MenuItem>
+                    </Menu>
+                    <ChplTooltip title={`Merge ${product.name}`}>
+                      <Button
+                        variant="outlined"
+                        aria-label={`Merge ${product.name}`}
+                        id={`product-merge-${product.id}`}
+                        onClick={handleMenuClick(setMergeAnchorEl)}
+                      >
+                        <CallMergeIcon />
+                      </Button>
+                    </ChplTooltip>
+                    <Menu
+                      anchorEl={mergeAnchorEl}
+                      open={Boolean(mergeAnchorEl)}
+                      onClose={handleMenuClose(setMergeAnchorEl)}
+                      className={classes.buttonGroupMenu}
                     >
-                      <CallMergeIcon />
-                    </Button>
-                  </ChplTooltip>
-                  <Menu
-                    anchorEl={mergeAnchorEl}
-                    open={Boolean(mergeAnchorEl)}
-                    onClose={handleMenuClose(setMergeAnchorEl)}
-                    className={classes.buttonGroupMenu} 
-                  >
-                    <MenuItem onClick={handleAction('merge', product)}>Merge Product</MenuItem>
-                    <MenuItem onClick={handleAction('mergeVersion', { product, version: selectedVersion })}>Merge Version</MenuItem>
-                  </Menu>
-                </ButtonGroup>
+                      <MenuItem onClick={handleAction('merge', product)}>Merge Product</MenuItem>
+                      <MenuItem onClick={handleAction('mergeVersion', { product, version: selectedVersion })}>Merge Version</MenuItem>
+                    </Menu>
+                  </ButtonGroup>
                 </>
               )}
-            </Box>
           </Box>
+        </Box>
         <Card>
           <TableContainer component={Paper}>
             <Table aria-label="Listings table">
