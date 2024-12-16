@@ -14,8 +14,7 @@ import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
 import ChplUsers from 'components/user/users';
 import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
-import theme from 'themes/theme';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -140,7 +139,6 @@ function ChplDeveloperView({ dispatch }) {
               />
             </Box>
           )}
-
       </Box>
       <Box className={classes.righthandColumn}>
         { state === 'view'

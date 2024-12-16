@@ -109,7 +109,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
             </Typography>
             { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
               && (
-                <Card>
+                 <Card>
                   <TableContainer component={Paper}>
                     <Table
                       aria-label="Developer Attestations information"

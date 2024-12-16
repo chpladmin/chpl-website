@@ -35,7 +35,7 @@ import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  buttonGroupMenu:{
+  buttonGroupMenu: {
     width: '200px!important',
     right: '200px!important',
   },
@@ -56,9 +56,9 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '0 4px',
   },
-  chplIdFirstColumn:{
-    width: '132px'
-  }
+  chplIdFirstColumn: {
+    width: '132px',
+  },
 });
 
 function ChplProductView({ product, dispatch }) {
@@ -70,26 +70,11 @@ function ChplProductView({ product, dispatch }) {
   const [selectedVersion, setSelectedVersion] = useState('all');
   const [surveillance, setSurveillance] = useState('');
   const [options, setOptions] = useState([{ id: 'all', version: 'All' }]);
-  const classes = useStyles();
-
   const [editAnchorEl, setEditAnchorEl] = useState(null);
   const [splitAnchorEl, setSplitAnchorEl] = useState(null);
   const [mergeAnchorEl, setMergeAnchorEl] = useState(null);
+  const classes = useStyles();
 
-  const handleMenuClick = (setter) => (event) => {
-    setter(event.currentTarget);
-  };
-
-  const handleMenuClose = (setter) => () => {
-    setter(null);
-  };
-
-  const handleAction = (action, payload) => () => {
-    dispatch({ action, payload });
-    setEditAnchorEl(null);
-    setSplitAnchorEl(null);
-    setMergeAnchorEl(null);
-  };
   useEffect(() => {
     setOptions([{ id: 'all', version: 'All' }].concat(product.versions.sort((a, b) => (a.id < b.id ? 1 : -1))));
     const rollup = product.versions
@@ -136,6 +121,20 @@ function ChplProductView({ product, dispatch }) {
     setExpanded((prev) => !prev);
   };
 
+  const handleMenuClick = (setter) => (event) => {
+    setter(event.currentTarget);
+  };
+
+  const handleMenuClose = (setter) => () => {
+    setter(null);
+  };
+
+  const handleAction = (action, payload) => () => {
+    setEditAnchorEl(null);
+    setSplitAnchorEl(null);
+    setMergeAnchorEl(null);
+    dispatch({ action, payload });
+  };
   return (
     <Accordion
       className={classes.products}
@@ -164,8 +163,8 @@ function ChplProductView({ product, dispatch }) {
         </Box>
       </AccordionSummary>
       <CardContent>
-        <Box display={'flex'} mb={4} flexDirection={'row'} justifyContent={'space-between'}>
-          <Box minWidth={'35%'}>
+        <Box display="flex" mb={4} flexDirection="row" justifyContent="space-between">
+          <Box minWidth="35%">
             <ChplTextField
               id="version"
               name="version"
@@ -174,14 +173,14 @@ function ChplProductView({ product, dispatch }) {
               value={selectedVersion}
               onChange={(event) => setSelectedVersion(event.target.value)}
             >
-              {options.map((option) => (
+              { options.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.version}
                 </MenuItem>
               ))}
             </ChplTextField>
           </Box>
-          <Box display={'flex'} mb={4} flexDirection={'row'} gridGap={4}>
+          <Box display="flex" mb={4} flexDirection="row" gridGap={4}>
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <ChplProductHistory
@@ -220,7 +219,6 @@ function ChplProductView({ product, dispatch }) {
                     <MenuItem onClick={handleAction('edit', product)}>Edit Product</MenuItem>
                     <MenuItem onClick={handleAction('editVersion', { product, version: selectedVersion })}>Edit Version</MenuItem>
                   </Menu>
-
                   <ChplTooltip title={`Split ${product.name}`}>
                     <Button
                       variant="outlined"
@@ -240,7 +238,6 @@ function ChplProductView({ product, dispatch }) {
                     <MenuItem onClick={handleAction('split', product)}>Split Product</MenuItem>
                     <MenuItem onClick={handleAction('splitVersion', { product, version: selectedVersion })}>Split Version</MenuItem>
                   </Menu>
-
                   <ChplTooltip title={`Merge ${product.name}`}>
                     <Button
                       variant="outlined"
