@@ -102,61 +102,48 @@ const useStyles = makeStyles({
     },
   },
 });
-const listItems = [
-  {
-    primary: 'Accessibility Standards:',
-    secondary: 'Add and update the Accessibility Standards available to be applied to listings',
-  },
-  {
-    primary: 'Announcements:',
-    secondary: 'Create and edit announcements displayed on CHPL for public and/or logged-in users',
-  },
-  {
-    primary: 'API Keys:',
-    secondary: 'View and optionally revoke existing API Keys',
-  },
-  {
-    primary: 'Certification Criteria:',
-    secondary: 'Table of the Certification Criteria values',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'Functionalities Tested:',
-    secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'QMS Standards:',
-    secondary: 'Add and update the QMS Standards available to be applied to listings',
-  },
-  {
-    primary: 'Standards:',
-    secondary: 'Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'Subscriptions:',
-    secondary: 'Search and filter CHPL subscriptions',
-  },
-  {
-    primary: 'SVAP:',
-    secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
-  },
-  {
-    primary: 'System Jobs:',
-    secondary: 'View and schedule system-related jobs',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'Test Tools:',
-    secondary: 'Table of the Test Tool values used during testing of certification criterion functionality',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'UCD Processes:',
-    secondary: 'Add and update the UCD process(es) available to be applied to certification criteria',
-  },
-];
+
+const listItems = [{
+  primary: 'Accessibility Standards:',
+  secondary: 'Add and update the Accessibility Standards available to be applied to listings',
+}, {
+  primary: 'Announcements:',
+  secondary: 'Create and edit announcements displayed on CHPL for public and/or logged-in users',
+}, {
+  primary: 'API Keys:',
+  secondary: 'View and optionally revoke existing API Keys',
+  roles: ['chpl-admin', 'chpl-onc'],
+}, {
+  primary: 'Certification Criteria:',
+  secondary: 'Table of the Certification Criteria values',
+}, {
+  primary: 'Functionalities Tested:',
+  secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
+}, {
+  primary: 'QMS Standards:',
+  secondary: 'Add and update the QMS Standards available to be applied to listings',
+}, {
+  primary: 'Standards:',
+  secondary: 'Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs',
+}, {
+  primary: 'Subscriptions:',
+  secondary: 'Search and filter CHPL subscriptions',
+  roles: ['chpl-admin', 'chpl-onc'],
+}, {
+  primary: 'SVAP:',
+  secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
+}, {
+  primary: 'System Jobs:',
+  secondary: 'View and schedule system-related jobs',
+  roles: ['chpl-admin'],
+}, {
+  primary: 'Test Tools:',
+  secondary: 'Table of the Test Tool values used during testing of certification criterion functionality',
+}, {
+  primary: 'UCD Processes:',
+  secondary: 'Add and update the UCD process(es) available to be applied to certification criteria',
+}];
+
 function ChplSystemMaintenance() {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -279,48 +266,45 @@ function ChplSystemMaintenance() {
             >
               Announcements
             </Button>
+            { hasAnyRole(['chpl-admin', 'chpl-onc'])
+              && (
+                <Button
+                  onClick={() => navigate('apiKeys')}
+                  disabled={active === 'apiKeys'}
+                  id="system-maintenance-navigation-api-keys"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<CodeOutlinedIcon />}
+                  className={classes.menuItems}
+                >
+                  API Keys
+                </Button>
+              )}
             <Button
-              onClick={() => navigate('apiKeys')}
-              disabled={active === 'apiKeys'}
-              id="system-maintenance-navigation-api-keys"
+              onClick={() => navigate('certificationCriteria')}
+              disabled={active === 'certificationCriteria'}
+              id="system-maintenance-navigation-certification-criteria"
               fullWidth
               variant="text"
               color="primary"
-              endIcon={<CodeOutlinedIcon />}
+              endIcon={<BookOutlinedIcon />}
               className={classes.menuItems}
             >
-              API Keys
+              Certification Criteria
             </Button>
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('certificationCriteria')}
-                  disabled={active === 'certificationCriteria'}
-                  id="system-maintenance-navigation-certification-criteria"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<BookOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Certification Criteria
-                </Button>
-              )}
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('functionalitiesTested')}
-                  disabled={active === 'functionalitiesTested'}
-                  id="system-maintenance-navigation-functionalities-tested"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<BeenhereOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Functionalities Tested
-                </Button>
-              )}
+            <Button
+              onClick={() => navigate('functionalitiesTested')}
+              disabled={active === 'functionalitiesTested'}
+              id="system-maintenance-navigation-functionalities-tested"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<BeenhereOutlinedIcon />}
+              className={classes.menuItems}
+            >
+              Functionalities Tested
+            </Button>
             <Button
               onClick={() => navigate('qmsStandards')}
               disabled={active === 'qmsStandards'}
@@ -333,33 +317,33 @@ function ChplSystemMaintenance() {
             >
               QMS Standards
             </Button>
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('standards')}
-                  disabled={active === 'standards'}
-                  id="system-maintenance-navigation-standards"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<PlaylistAddCheckOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Standards
-                </Button>
-              )}
             <Button
-              onClick={() => navigate('subscriptions')}
-              disabled={active === 'subscriptions'}
-              id="system-maintenance-navigation-subscriptions"
+              onClick={() => navigate('standards')}
+              disabled={active === 'standards'}
+              id="system-maintenance-navigation-standards"
               fullWidth
               variant="text"
               color="primary"
-              endIcon={<SubscriptionsOutlinedIcon />}
+              endIcon={<PlaylistAddCheckOutlinedIcon />}
               className={classes.menuItems}
             >
-              Subscriptions
+              Standards
             </Button>
+            { hasAnyRole(['chpl-admin', 'chpl-onc'])
+              && (
+                <Button
+                  onClick={() => navigate('subscriptions')}
+                  disabled={active === 'subscriptions'}
+                  id="system-maintenance-navigation-subscriptions"
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<SubscriptionsOutlinedIcon />}
+                  className={classes.menuItems}
+                >
+                  Subscriptions
+                </Button>
+              )}
             <Button
               onClick={() => navigate('svaps')}
               disabled={active === 'svaps'}
@@ -387,21 +371,18 @@ function ChplSystemMaintenance() {
                   System Jobs
                 </Button>
               )}
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('testTools')}
-                  disabled={active === 'testTools'}
-                  id="system-maintenance-navigation-test-tools"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<BuildOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Test Tools
-                </Button>
-              )}
+            <Button
+              onClick={() => navigate('testTools')}
+              disabled={active === 'testTools'}
+              id="system-maintenance-navigation-test-tools"
+              fullWidth
+              variant="text"
+              color="primary"
+              endIcon={<BuildOutlinedIcon />}
+              className={classes.menuItems}
+            >
+              Test Tools
+            </Button>
             <Button
               onClick={() => navigate('ucdProcesses')}
               disabled={active === 'ucdProcesses'}
@@ -426,19 +407,16 @@ function ChplSystemMaintenance() {
                   </Typography>
                   <Divider />
                   <List>
-                    {listItems.map((item, index) => {
-                      if (item.roles && !hasAnyRole(item.roles)) {
-                        return null; // Skip if the user doesn't have the required role
-                      }
-                      return (
+                    { listItems
+                      .filter((item) => !item.roles || hasAnyRole(item.roles))
+                      .map((item, index) => (
                         <React.Fragment key={item.primary}>
                           <ListItem>
                             <ListItemText className={classes.listItemsText} primary={item.primary} secondary={item.secondary} />
                           </ListItem>
                           {index < listItems.length - 1 && <Divider component="li" />}
                         </React.Fragment>
-                      );
-                    })}
+                      )) }
                   </List>
                 </CardContent>
               </Card>
