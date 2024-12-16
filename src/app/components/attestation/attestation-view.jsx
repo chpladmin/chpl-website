@@ -129,21 +129,21 @@ function ChplAttestationView(props) {
         { attestations.sections
           && (
             <Card>
-              <TableContainer component={Card}>
-                  <Table
-                    aria-label="Developer Attestations details"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Attestation</TableCell>
-                        <TableCell>Response</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      { attestations.sections.map((section) => getRows(section, classes)) }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+              <TableContainer>
+                <Table
+                  aria-label="Developer Attestations details"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Attestation</TableCell>
+                      <TableCell>Response</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { attestations.sections.map((section) => getRows(section, classes)) }
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Card>
           )}
       </Box>

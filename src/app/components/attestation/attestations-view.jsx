@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogContent,
   IconButton,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -110,7 +109,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
             { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
               && (
                 <Card>
-                  <TableContainer component={Paper}>
+                  <TableContainer>
                     <Table
                       aria-label="Developer Attestations information"
                     >

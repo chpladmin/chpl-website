@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     },
   },
   pageContainer: {
-    padding: '32px 32px',
+    padding: '32px 0',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -163,7 +163,7 @@ function ChplEditDeveloper({ dispatch }) {
 
   return (
     <>
-      <Container disableGutters maxWidth="xl">
+      <Container disableGutters maxWidth="lg">
         <Box className={classes.pageContainer}>
           <ChplDeveloper
             dispatch={handleDispatch}

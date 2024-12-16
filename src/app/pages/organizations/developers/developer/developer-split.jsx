@@ -32,12 +32,6 @@ const useStyles = makeStyles({
     minWidth: '375px',
     gridGap: '32px',
   },
-  halfWidth: {
-    width: 'auto',
-  },
-  fullWidth: {
-    gridColumn: '1 / -1',
-  },
   listItem: {
     fontSize: 'small',
     display: 'flex',
@@ -182,7 +176,7 @@ function ChplDeveloperSplit({ dispatch }) {
               errorMessages={errorMessages}
             />
           </Box>
-          <Divider className={classes.fullWidth} />
+          <Divider className={classes.fullWidthGridRow} />
           <Card>
             <CardHeader title="Products staying with original developer" />
             <CardContent>
