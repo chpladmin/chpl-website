@@ -266,7 +266,7 @@ function ChplProductView({ product, dispatch }) {
           </Box>
         </Box>
         <Card>
-          <TableContainer component={Paper}>
+          <TableContainer>
             <Table aria-label="Listings table">
               <TableHead>
                 <TableRow>
