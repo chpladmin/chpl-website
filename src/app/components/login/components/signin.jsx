@@ -43,15 +43,13 @@ const validationSchema = yup.object({
 
 function ChplSignin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
-  const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { setUser } = useContext(UserContext);
-  const [, setCookie] = useCookies(['refresh_token']);
+  const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
   const classes = useStyles();
-
   let formik;
 
   const catchEnter = (e, target) => {
@@ -89,13 +87,11 @@ function ChplSignin({ dispatch }) {
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         });
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
-        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        setCookie('cognito_id', response.user.cognitoId);
+        setCookie('refresh_token', response.refreshToken);
         setUser(response.user);
         authService.saveCurrentUser(response.user);
         formik.resetForm();
-        Idle.watch();
         $rootScope.$broadcast('loggedIn');
         $rootScope.$digest();
         dispatch({ action: 'loggedIn' });

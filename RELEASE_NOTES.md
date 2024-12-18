@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 13.31.0
+_18 December 2024_
+
+### Features
+* Allow ASTP to access the Dashboard
+* Enable workflow for adding organizations to SSO users
+
+### Flagged Features
+* Support cross-subdomain log in
+* Disable "idle" timeout
+
+### Flagged User Interface Updates
+* Display Insights data as API provides
+
+---
+
 ## Version 13.30.0
 _9 December 2024_
 

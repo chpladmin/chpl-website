@@ -75,7 +75,9 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', flags);
 
     const logout = $scope.$on('IdleTimeout', () => {
-      vm.logout();
+      if (!vm.isOn('sso')) {
+        vm.logout();
+      }
     });
     $scope.$on('$destroy', logout);
   };
