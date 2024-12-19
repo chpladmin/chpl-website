@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   CircularProgress,
   Container,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
@@ -17,6 +19,11 @@ import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
+
+const useStyles = makeStyles({
+  ...utilStyles,
+});
 
 function ChplDeveloperPage({ id }) {
   const $state = getAngularService('$state');
@@ -28,6 +35,7 @@ function ChplDeveloperPage({ id }) {
   const { mutate: createOldInvitation } = usePostCreateOldInvitation();
   const [developer, setDeveloper] = useState(undefined);
   const [state, setState] = useState('view');
+  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -155,13 +163,15 @@ function ChplDeveloperPage({ id }) {
   return (
     <AnalyticsContext.Provider value={analyticsData}>
       <DeveloperContext.Provider value={developerState}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h1"
-          >
-            { developer.name }
-          </Typography>
-        </Container>
+        <Box className={classes.pageHeader}>
+          <Container disableGutters maxWidth="lg">
+            <Typography
+              variant="h1"
+            >
+              { developer.name }
+            </Typography>
+          </Container>
+        </Box>
         <Container maxWidth="lg" id="main-content" tabIndex="-1">
           { state === 'view'
             && (

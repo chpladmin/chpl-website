@@ -14,13 +14,42 @@ import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
 import ChplUsers from 'components/user/users';
 import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  editUser:{
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    paddingTop: '16px',
+  },
+  lefthandContainer: {
+    width: '33%',
+    minWidth: '33%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      minWidth: '100%',
+    },
+  },
+  lefthandColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '32px',
+  },
   mainContent: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 2fr',
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: '16px',
+    gap: '32px',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
+  },
+  righthandColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '32px',
+    width: '100%',
   },
 });
 
@@ -93,11 +122,11 @@ function ChplDeveloperView({ dispatch }) {
   };
 
   return (
-    <Box className={classes.mainContent}>
-      <Box className={state === 'editUser' ? classes.fullWidthGridRow : ''}>
+    <Box className={`${state === 'editUser' ? classes.editUser : classes.mainContent}`}>
+      <Box className={classes.lefthandContainer}>
         { state === 'view'
           && (
-            <>
+            <Box className={classes.lefthandColumn}>
               <ChplDeveloperViewDetails
                 developer={developer}
                 dispatch={dispatch}
@@ -113,37 +142,31 @@ function ChplDeveloperView({ dispatch }) {
                 developer={developer}
                 dispatch={dispatch}
               />
-            </>
-          )}
-        { (state === 'view' || state === 'editUser')
-          && (
-            <ChplUsers
-              users={users}
-              dispatch={handleUserDispatch}
-              roles={['ROLE_DEVELOPER']}
-              groupNames={['chpl-developer']}
-            />
+            </Box>
           )}
       </Box>
-      { state === 'view'
-        && (
-          <Box>
-            { can('manageTracking')
-              && (
-                <ChplChangeRequests
-                  disallowedFilters={['submittedDateTime', 'searchTerm']}
-                  bonusQuery={`&developerId=${developer.id}`}
-                />
-              )}
-            <ChplDirectReviews
-              developer={developer}
-            />
-            <ChplProducts
-              developer={developer}
-              dispatch={handleProductDispatch}
-            />
-          </Box>
+      <Box className={classes.righthandColumn}>
+        {state === 'view' && (
+          <>
+            {can('manageTracking') && (
+              <ChplChangeRequests
+                disallowedFilters={['submittedDateTime', 'searchTerm']}
+                bonusQuery={`&developerId=${developer.id}`}
+              />
+            )}
+            <ChplDirectReviews developer={developer} />
+            <ChplProducts developer={developer} dispatch={handleProductDispatch} />
+          </>
         )}
+        {(state === 'view' || state === 'editUser') && (
+          <ChplUsers
+            users={users}
+            dispatch={handleUserDispatch}
+            roles={['ROLE_DEVELOPER']}
+            groupNames={['chpl-developer']}
+          />
+        )}
+      </Box>
     </Box>
   );
 }

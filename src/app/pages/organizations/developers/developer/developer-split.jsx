@@ -2,35 +2,66 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   CircularProgress,
   Container,
+  Divider,
   List,
   ListItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
 import { usePostDeveloperSplit } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
+import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  columnContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    minWidth: '375px',
+    gridGap: '32px',
+  },
+  listItem: {
+    fontSize: 'small',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   pageContainer: {
-    padding: '32px 32px',
+    padding: '32px 0px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gridGap: '16px',
+    gridGap: '32px',
+    alignItems: 'stretch',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
+      alignItems: 'flex-start',
     },
+  },
+  productList: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+  },
+  productName: {
+    width: '64%',
+  },
+  rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gridGap: '32px',
   },
 });
 
@@ -108,7 +139,7 @@ function ChplDeveloperSplit({ dispatch }) {
           },
         });
         break;
-        // no default
+      // no default
     }
   };
 
@@ -126,46 +157,90 @@ function ChplDeveloperSplit({ dispatch }) {
 
   return (
     <>
-      <Box p={8} bgcolor={palette.white}>
-        <Typography variant="h1">
-          Developer Information
-        </Typography>
-      </Box>
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
-          <ChplDeveloper
-            developer={developer}
-            isSplitting
-          />
-          <ChplDeveloper
-            developer={{}}
-            dispatch={handleDispatch}
-            isEditing
-            isSplitting
-            isInvalid={products.length === 0 || movingProducts.length === 0}
-            isProcessing={isProcessing}
-            errorMessages={errorMessages}
-          />
-          <Box>
-            <List>
-              { products.map((product) => (
-                <ListItem key={product.id}>
-                  { product.name }
-                  <Button onClick={() => moveProduct(product, true)}>Move</Button>
-                </ListItem>
-              ))}
-            </List>
+          <Box className={classes.columnContainer}>
+            <ChplDeveloper
+              developer={developer}
+              isSplitting
+            />
           </Box>
           <Box>
-            <List>
-              { movingProducts.map((product) => (
-                <ListItem key={product.id}>
-                  { product.name }
-                  <Button onClick={() => moveProduct(product, false)}>Move</Button>
-                </ListItem>
-              ))}
-            </List>
+            <ChplDeveloper
+              developer={{}}
+              dispatch={handleDispatch}
+              isEditing
+              isSplitting
+              isInvalid={products.length === 0 || movingProducts.length === 0}
+              isProcessing={isProcessing}
+              errorMessages={errorMessages}
+            />
           </Box>
+          <Divider className={classes.fullWidthGridRow} />
+          <Card>
+            <CardHeader title="Products staying with original developer" />
+            <CardContent>
+              <List className={classes.productList}>
+                {products.map((product) => (
+                  <ListItem divider className={classes.listItem} dense key={product.id}>
+                    <Box className={classes.productName}>
+                      {product.name}
+                    </Box>
+                    <ChplTooltip
+                      placement="top"
+                      title="Move product to new developer"
+                    >
+                      <Button
+                        endIcon={<ArrowForward />}
+                        size="small"
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => moveProduct(product, true)}
+                      >
+                        Move
+                      </Button>
+                    </ChplTooltip>
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader title="Products moving to new developer" />
+            <CardContent>
+              <div>
+                {movingProducts.length === 0 ? (
+                  <Typography variant="body1" color="textSecondary" align="left">
+                    No products selected. At least one product must be selected to move.
+                  </Typography>
+                ) : (
+                  <List className={classes.productList}>
+                    {movingProducts.map((product) => (
+                      <ListItem divider className={classes.listItem} dense key={product.id}>
+                        <Box className={classes.productName}>
+                          {product.name}
+                        </Box>
+                        <ChplTooltip
+                          placement="top"
+                          title="Move product to original developer"
+                        >
+                          <Button
+                            endIcon={<ArrowBack />}
+                            size="small"
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => moveProduct(product, false)}
+                          >
+                            Move
+                          </Button>
+                        </ChplTooltip>
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </Box>
       </Container>
     </>
