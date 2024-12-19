@@ -123,24 +123,24 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                                 <span className="sr-only">View Details</span>
                               </TableCell>
                             )}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      { attestations
-                        .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
-                        .map((item) => (
-                          <TableRow key={item.id ?? item.attestationPeriod.id}>
-                            <TableCell>
-                              { getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                              {' '}
-                              to
-                              {' '}
-                              { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                            </TableCell>
-                            <TableCell>
-                              { item.statusText }
-                            </TableCell>
-                            { canSeeAttestationData()
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        { attestations
+                          .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
+                          .map((item) => (
+                            <TableRow key={item.id ?? item.attestationPeriod.id}>
+                              <TableCell>
+                                { getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                                {' '}
+                                to
+                                {' '}
+                                { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                              </TableCell>
+                              <TableCell>
+                                { item.statusText }
+                              </TableCell>
+                              { canSeeAttestationData()
                                 && (
                                   <TableCell>
                                     { item.status === 'ATTESTATIONS_SUBMITTED'
@@ -166,12 +166,12 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                                       )}
                                   </TableCell>
                                 )}
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Card>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Card>
               )}
           </>
           { exceptionPeriod

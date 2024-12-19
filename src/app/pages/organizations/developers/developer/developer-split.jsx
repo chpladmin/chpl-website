@@ -139,7 +139,7 @@ function ChplDeveloperSplit({ dispatch }) {
           },
         });
         break;
-      // no default
+        // no default
     }
   };
 

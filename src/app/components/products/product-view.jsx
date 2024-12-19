@@ -9,7 +9,6 @@ import {
   CardContent,
   Menu,
   MenuItem,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -135,6 +134,7 @@ function ChplProductView({ product, dispatch }) {
     setMergeAnchorEl(null);
     dispatch({ action, payload });
   };
+
   return (
     <Accordion
       className={classes.products}
