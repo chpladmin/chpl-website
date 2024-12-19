@@ -22,7 +22,7 @@ import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { func } from 'prop-types';
+import { func, number } from 'prop-types';
 
 import ChplProductHistory from 'components/activity/product-history';
 import { ChplLink, ChplTextField, ChplTooltip } from 'components/util';
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplProductView({ product, dispatch }) {
+function ChplProductView({ product, productCount, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [active, setActive] = useState('');
@@ -200,11 +200,11 @@ function ChplProductView({ product, dispatch }) {
               && (
                 <>
                   <ButtonGroup color="primary">
-                    <ChplTooltip title={`Edit ${product.name}`}>
+                    <ChplTooltip title="Edit">
                       <Button
                         variant="contained"
-                        aria-label={`Edit ${product.name}`}
-                        id={`product-edit-${product.id}`}
+                        aria-label="Edit"
+                        id={`edit-${product.id}`}
                         onClick={handleMenuClick(setEditAnchorEl)}
                       >
                         <EditOutlinedIcon />
@@ -212,18 +212,27 @@ function ChplProductView({ product, dispatch }) {
                     </ChplTooltip>
                     <Menu
                       anchorEl={editAnchorEl}
-                      open={Boolean(editAnchorEl)}
+                      open={!!editAnchorEl}
                       onClose={handleMenuClose(setEditAnchorEl)}
                       className={classes.buttonGroupMenu}
                     >
-                      <MenuItem onClick={handleAction('edit', product)}>Edit Product</MenuItem>
-                      <MenuItem onClick={handleAction('editVersion', { product, version: selectedVersion })}>Edit Version</MenuItem>
+                      <MenuItem
+                        onClick={handleAction('edit', product)}
+                      >
+                        Edit Product
+                      </MenuItem>
+                      <MenuItem
+                        onClick={handleAction('editVersion', { product, version: selectedVersion })}
+                        disabled={selectedVersion === 'all'}
+                      >
+                        Edit Version
+                      </MenuItem>
                     </Menu>
-                    <ChplTooltip title={`Split ${product.name}`}>
+                    <ChplTooltip title="Split">
                       <Button
                         variant="outlined"
-                        aria-label={`Split ${product.name}`}
-                        id={`product-split-${product.id}`}
+                        aria-label="Split"
+                        id={`split-${product.id}`}
                         onClick={handleMenuClick(setSplitAnchorEl)}
                       >
                         <CallSplitIcon />
@@ -231,32 +240,58 @@ function ChplProductView({ product, dispatch }) {
                     </ChplTooltip>
                     <Menu
                       anchorEl={splitAnchorEl}
-                      open={Boolean(splitAnchorEl)}
+                      open={!!splitAnchorEl}
                       onClose={handleMenuClose(setSplitAnchorEl)}
                       className={classes.buttonGroupMenu}
                     >
-                      <MenuItem onClick={handleAction('split', product)}>Split Product</MenuItem>
-                      <MenuItem onClick={handleAction('splitVersion', { product, version: selectedVersion })}>Split Version</MenuItem>
-                    </Menu>
-                    <ChplTooltip title={`Merge ${product.name}`}>
-                      <Button
-                        variant="outlined"
-                        aria-label={`Merge ${product.name}`}
-                        id={`product-merge-${product.id}`}
-                        onClick={handleMenuClick(setMergeAnchorEl)}
+                      <MenuItem
+                        onClick={handleAction('split', product)}
+                        disabled={product.versions.length < 2}
                       >
-                        <CallMergeIcon />
-                      </Button>
-                    </ChplTooltip>
-                    <Menu
-                      anchorEl={mergeAnchorEl}
-                      open={Boolean(mergeAnchorEl)}
-                      onClose={handleMenuClose(setMergeAnchorEl)}
-                      className={classes.buttonGroupMenu}
-                    >
-                      <MenuItem onClick={handleAction('merge', product)}>Merge Product</MenuItem>
-                      <MenuItem onClick={handleAction('mergeVersion', { product, version: selectedVersion })}>Merge Version</MenuItem>
+                        Split Product
+                      </MenuItem>
+                      <MenuItem
+                        onClick={handleAction('splitVersion', { product, version: selectedVersion })}
+                        disabled={selectedVersion === 'all' || product.versions.find((v) => v.id === selectedVersion).listings.length < 2}
+                      >
+                        Split Version
+                      </MenuItem>
                     </Menu>
+                    { hasAnyRole(['chpl-admin', 'chpl-onc'])
+                      && (
+                        <ChplTooltip title="Merge">
+                          <Button
+                            variant="outlined"
+                            aria-label="Merge"
+                            id={`merge-${product.id}`}
+                            onClick={handleMenuClick(setMergeAnchorEl)}
+                          >
+                            <CallMergeIcon />
+                          </Button>
+                        </ChplTooltip>
+                      )}
+                    { hasAnyRole(['chpl-admin', 'chpl-onc'])
+                      && (
+                        <Menu
+                          anchorEl={mergeAnchorEl}
+                          open={!!mergeAnchorEl}
+                          onClose={handleMenuClose(setMergeAnchorEl)}
+                          className={classes.buttonGroupMenu}
+                        >
+                          <MenuItem
+                            onClick={handleAction('merge', product)}
+                            disabled={productCount < 2}
+                          >
+                            Merge Product
+                          </MenuItem>
+                          <MenuItem
+                            onClick={handleAction('mergeVersion', { product, version: selectedVersion })}
+                            disabled={selectedVersion === 'all' || product.versions.length < 2}
+                          >
+                            Merge Version
+                          </MenuItem>
+                        </Menu>
+                      )}
                   </ButtonGroup>
                 </>
               )}
@@ -313,5 +348,6 @@ export default ChplProductView;
 
 ChplProductView.propTypes = {
   product: productPropType.isRequired,
+  productCount: number.isRequired,
   dispatch: func.isRequired,
 };

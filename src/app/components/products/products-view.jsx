@@ -148,6 +148,7 @@ function ChplProductsView({ products, dispatch }) {
             <ChplProductView
               key={product.id}
               product={product}
+              productCount={displayedProducts.length}
               dispatch={dispatch}
             />
           ))}
