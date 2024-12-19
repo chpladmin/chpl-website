@@ -39,15 +39,15 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   searchContainer: {
-    color: 'white!important',
+    color: 'white !important',
   },
   wrap: {
     flexFlow: 'wrap',
   },
   '@global': {
     '.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
-      width: 'min-content!important',
-      right: '600px!important',
+      width: 'min-content !important',
+      right: '600px !important',
     },
   },
 });
@@ -148,6 +148,7 @@ function ChplProductsView({ products, dispatch }) {
             <ChplProductView
               key={product.id}
               product={product}
+              productCount={displayedProducts.length}
               dispatch={dispatch}
             />
           ))}

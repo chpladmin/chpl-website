@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   CircularProgress,
   Container,
   Typography,
-  Box,
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -36,7 +36,7 @@ function ChplDeveloperPage({ id }) {
   const [developer, setDeveloper] = useState(undefined);
   const [state, setState] = useState('view');
   const classes = useStyles();
-  
+
   useEffect(() => {
     if (isLoading || !isSuccess) {
       return;

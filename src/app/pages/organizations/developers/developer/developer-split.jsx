@@ -13,9 +13,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
-import { ArrowBack, ArrowForward } from '@material-ui/icons';
 
 import { usePostDeveloperSplit } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
@@ -139,7 +139,7 @@ function ChplDeveloperSplit({ dispatch }) {
           },
         });
         break;
-      // no default
+        // no default
     }
   };
 
