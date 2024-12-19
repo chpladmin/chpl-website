@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  Box,
   IconButton,
   Card,
   CardHeader,
@@ -265,7 +264,7 @@ function ChplDeveloperEdit(props) {
       case 'save':
         formik.submitForm();
         break;
-      // no default
+        // no default
     }
   };
 
@@ -341,7 +340,7 @@ function ChplDeveloperEdit(props) {
   return (
     <Container disableGutters maxWidth="lg">
       <Card>
-        {isSplitting
+        { isSplitting
           && (
             <CardHeader
               title="New Developer"
@@ -349,7 +348,7 @@ function ChplDeveloperEdit(props) {
               className={classes.developerHeader}
             />
           )}
-        {!isSplitting
+        { !isSplitting
           && (
             <CardHeader
               title={developer.name}
@@ -358,7 +357,7 @@ function ChplDeveloperEdit(props) {
             />
           )}
         <CardContent className={classes.content}>
-          {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+          { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth })}
           <FormControlLabel
             control={(
@@ -373,7 +372,7 @@ function ChplDeveloperEdit(props) {
             )}
             label="Self-Developer"
           />
-          {hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
               <Box className={classes.fullWidth}>
                 <TableContainer className={classes.fullWidth}>
@@ -419,7 +418,7 @@ function ChplDeveloperEdit(props) {
                             </TableRow>
                           ))}
                     </TableBody>
-                    {!formik.values.isAdding
+                    { !formik.values.isAdding
                         && (
                           <TableFooter>
                             <TableRow>
@@ -441,7 +440,7 @@ function ChplDeveloperEdit(props) {
                         )}
                   </Table>
                 </TableContainer>
-                  {formik.values.isAdding
+                  { formik.values.isAdding
                     && (
                       <Card className={classes.developerStatus}>
                         <ChplTextField
@@ -522,19 +521,19 @@ function ChplDeveloperEdit(props) {
               </Box>
             )}
           <Divider className={classes.fullWidth} />
-          {getEnhancedEditField({ key: 'fullName', display: 'Full Name' })}
-          {getEnhancedEditField({ key: 'title', display: 'Title', required: false })}
-          {getEnhancedEditField({ key: 'email', display: 'Email' })}
-          {getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' })}
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
+          { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
+          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
           <Divider className={classes.fullWidth} />
-          {getEnhancedEditField({ key: 'line1', display: 'Address' })}
-          {getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false })}
-          {getEnhancedEditField({ key: 'city', display: 'City' })}
-          {getEnhancedEditField({ key: 'state', display: 'State' })}
-          {getEnhancedEditField({ key: 'zipcode', display: 'Zip' })}
-          {getEnhancedEditField({ key: 'country', display: 'Country' })}
+          { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
+          { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
+          { getEnhancedEditField({ key: 'city', display: 'City' }) }
+          { getEnhancedEditField({ key: 'state', display: 'State' }) }
+          { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
+          { getEnhancedEditField({ key: 'country', display: 'Country' }) }
           <Divider className={classes.fullWidth} />
-          {getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth })}
+          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
         </CardContent>
       </Card>
       <ChplActionBar
