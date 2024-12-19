@@ -18,6 +18,11 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  editUser:{
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    paddingTop: '16px',
+  },
   lefthandContainer: {
     width: '33%',
     minWidth: '33%',
@@ -117,8 +122,8 @@ function ChplDeveloperView({ dispatch }) {
   };
 
   return (
-    <Box className={classes.mainContent}>
-      <Box className={`${classes.lefthandContainer} ${state === 'editUser' ? classes.fullWidthGridRow : ''}`}>
+    <Box className={`${state === 'editUser' ? classes.editUser : classes.mainContent}`}>
+      <Box className={classes.lefthandContainer}>
         { state === 'view'
           && (
             <Box className={classes.lefthandColumn}>
@@ -141,36 +146,26 @@ function ChplDeveloperView({ dispatch }) {
           )}
       </Box>
       <Box className={classes.righthandColumn}>
-        { state === 'view'
-        && (
+        {state === 'view' && (
           <>
-            { can('manageTracking')
-              && (
-                <ChplChangeRequests
-                  disallowedFilters={['submittedDateTime', 'searchTerm']}
-                  bonusQuery={`&developerId=${developer.id}`}
-                />
-              )}
-            <ChplDirectReviews
-              developer={developer}
-            />
-            <ChplProducts
-              developer={developer}
-              dispatch={handleProductDispatch}
-            />
+            {can('manageTracking') && (
+              <ChplChangeRequests
+                disallowedFilters={['submittedDateTime', 'searchTerm']}
+                bonusQuery={`&developerId=${developer.id}`}
+              />
+            )}
+            <ChplDirectReviews developer={developer} />
+            <ChplProducts developer={developer} dispatch={handleProductDispatch} />
           </>
         )}
-        { (state === 'view' || state === 'editUser')
-          && (
-            <Box>
-              <ChplUsers
-                users={users}
-                dispatch={handleUserDispatch}
-                roles={['ROLE_DEVELOPER']}
-                groupNames={['chpl-developer']}
-              />
-            </Box>
-          )}
+        {(state === 'view' || state === 'editUser') && (
+          <ChplUsers
+            users={users}
+            dispatch={handleUserDispatch}
+            roles={['ROLE_DEVELOPER']}
+            groupNames={['chpl-developer']}
+          />
+        )}
       </Box>
     </Box>
   );

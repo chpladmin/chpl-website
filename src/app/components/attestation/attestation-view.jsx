@@ -129,7 +129,7 @@ function ChplAttestationView(props) {
         { attestations.sections
           && (
             <Card>
-              <TableContainer component={Card}>
+              <TableContainer>
                 <Table
                   aria-label="Developer Attestations details"
                 >

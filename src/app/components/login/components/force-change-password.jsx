@@ -55,10 +55,9 @@ const validationSchema = yup.object({
 
 function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const $rootScope = getAngularService('$rootScope');
-  const Idle = getAngularService('Idle');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
-  const [, setCookie] = useCookies(['refresh_token']);
+  const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostNewPasswordRequired();
@@ -89,9 +88,8 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
         });
         authService.saveToken(response.accessToken);
         authService.saveRefreshToken(response.refreshToken);
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (10 * 60 * 60 * 1000));
-        setCookie('refresh_token', response.refreshToken, { path: '/', expires, domain: '.healthit.gov' });
+        setCookie('cognito_id', response.user.cognitoId);
+        setCookie('refresh_token', response.refreshToken);
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
@@ -104,7 +102,6 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           category: 'Authentication',
           group: response.user.role,
         });
-        Idle.watch();
         $rootScope.$broadcast('loggedIn');
         $rootScope.$digest();
         dispatch({ action: 'loggedIn' });

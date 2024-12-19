@@ -38,8 +38,10 @@ import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -52,6 +54,12 @@ const useStyles = makeStyles({
   developerHeader: {
     margin: '0',
     fontSize: '1.25em',
+  },
+  developerStatus: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: ' 8px',
+    gap: '8px',
   },
   fullWidth: {
     gridColumn: '1 / -1',
@@ -330,7 +338,7 @@ function ChplDeveloperEdit(props) {
   });
 
   return (
-    <Container disableGutters maxWidth="md">
+    <Container disableGutters maxWidth="lg">
       <Card>
         { isSplitting
           && (
@@ -366,7 +374,7 @@ function ChplDeveloperEdit(props) {
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
-              <Card className={classes.fullWidth}>
+              <Box className={classes.fullWidth}>
                 <TableContainer className={classes.fullWidth}>
                   <Table className={classes.table}>
                     <TableHead>
@@ -434,10 +442,7 @@ function ChplDeveloperEdit(props) {
                 </TableContainer>
                   { formik.values.isAdding
                     && (
-                      <Card sx={{
-                        display: 'flex', flexDirection: 'column', gridGap: '8px', padding: '16px',
-                      }}
-                      >
+                      <Card className={classes.developerStatus}>
                         <ChplTextField
                           select
                           id="status"
@@ -503,7 +508,7 @@ function ChplDeveloperEdit(props) {
                             <CheckIcon />
                           </Button>
                           <Button
-                            className={classes.errorColor}
+                            className={classes.deleteButtonOutlined}
                             onClick={cancelAdd}
                             aria-label="Cancel adding item"
                             id="certification-status-close-item"
@@ -511,10 +516,9 @@ function ChplDeveloperEdit(props) {
                             <CloseIcon />
                           </Button>
                         </ButtonGroup>
-                        <Divider className={classes.fullWidth} />
                       </Card>
                     )}
-              </Card>
+              </Box>
             )}
           <Divider className={classes.fullWidth} />
           { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }

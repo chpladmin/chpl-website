@@ -36,8 +36,8 @@ import { palette, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   buttonGroupMenu: {
-    width: '200px!important',
-    right: '200px!important',
+    width: '200px !important',
+    right: '200px !important',
   },
   products: {
     borderRadius: '4px',
@@ -263,7 +263,7 @@ function ChplProductView({ product, dispatch }) {
           </Box>
         </Box>
         <Card>
-          <TableContainer component={Paper}>
+          <TableContainer>
             <Table aria-label="Listings table">
               <TableHead>
                 <TableRow>
