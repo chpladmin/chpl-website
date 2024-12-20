@@ -20,6 +20,20 @@ class OverviewPage extends Page {
 
   get title() { return $(this.elements.title); }
 
+  async browseAllListings() {
+    const productsPanel = await (
+          await (
+            await (
+              await $(this.elements.productsSearchPanelTitle)
+            ).parentElement()
+          ).parentElement()
+    ).parentElement();
+    await (await (await productsPanel.$('#filter-chips')).$$('[role="button"]')).forEach(async (chip) => {
+      const btn = await chip.$('svg');
+      return btn.click();
+    });
+  }
+
   async getProductsSearchResults() {
     return (
       await (

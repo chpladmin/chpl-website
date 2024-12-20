@@ -22,6 +22,16 @@ describe('the Developer page for "gMed, Inc."', () => {
     it('should have no results found by default', async () => {
       await expect(await page.getProductsSearchResults()).toHaveText(expect.stringContaining('No results found'));
     });
+
+    describe('when browsing all listings', () => {
+      beforeEach(async () => {
+        await page.browseAllListings();
+      });
+
+      it('should not have "no results found"', async () => {
+        await expect(await page.getProductsSearchResults()).not.toHaveText(expect.stringContaining('No results found'));
+      });
+    });
   });
 
   describe('when logged in as ONC', () => {
