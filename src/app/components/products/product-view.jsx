@@ -4,7 +4,6 @@ import {
   AccordionSummary,
   Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   Menu,
@@ -57,6 +56,14 @@ const useStyles = makeStyles({
   },
   chplIdFirstColumn: {
     width: '132px',
+  },
+  buttonGroup: {
+    minWidth: '40px',
+  },
+  buttonGroupMiddle: {
+    minWidth: '40px',
+    borderRadius: 0,
+    margin: '0 -1px',
   },
 });
 
@@ -163,7 +170,7 @@ function ChplProductView({ product, productCount, dispatch }) {
         </Box>
       </AccordionSummary>
       <CardContent>
-        <Box display="flex" mb={4} flexDirection="row" justifyContent="space-between">
+        <Box display="flex" mb={4} flexDirection="row" alignItems="center" justifyContent="space-between">
           <Box minWidth="35%">
             <ChplTextField
               id="version"
@@ -180,7 +187,7 @@ function ChplProductView({ product, productCount, dispatch }) {
               ))}
             </ChplTextField>
           </Box>
-          <Box display="flex" mb={4} flexDirection="row" gridGap={4}>
+          <Box display="flex" flexDirection="row" alignItems="stretch" gridGap={8}>
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <ChplProductHistory
@@ -199,15 +206,18 @@ function ChplProductView({ product, productCount, dispatch }) {
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <>
-                  <ButtonGroup color="primary">
+                  <Box display="flex" flexDirection="row">
                     <ChplTooltip title="Edit">
                       <Button
                         variant="contained"
+                        color="primary"
+                        size="small"
+                        className={classes.buttonGroup}
                         aria-label="Edit"
                         id={`edit-${product.id}`}
                         onClick={handleMenuClick(setEditAnchorEl)}
                       >
-                        <EditOutlinedIcon />
+                        <EditOutlinedIcon htmlColor="#fff" />
                       </Button>
                     </ChplTooltip>
                     <Menu
@@ -231,11 +241,14 @@ function ChplProductView({ product, productCount, dispatch }) {
                     <ChplTooltip title="Split">
                       <Button
                         variant="outlined"
+                        color="primary"
+                        size="small"
+                        className={classes.buttonGroupMiddle}
                         aria-label="Split"
                         id={`split-${product.id}`}
                         onClick={handleMenuClick(setSplitAnchorEl)}
                       >
-                        <CallSplitIcon />
+                        <CallSplitIcon color="primary" />
                       </Button>
                     </ChplTooltip>
                     <Menu
@@ -262,11 +275,14 @@ function ChplProductView({ product, productCount, dispatch }) {
                         <ChplTooltip title="Merge">
                           <Button
                             variant="outlined"
+                            color="primary"
+                            size="small"
+                            className={classes.buttonGroup}
                             aria-label="Merge"
                             id={`merge-${product.id}`}
                             onClick={handleMenuClick(setMergeAnchorEl)}
                           >
-                            <CallMergeIcon />
+                            <CallMergeIcon color="primary" />
                           </Button>
                         </ChplTooltip>
                       )}
@@ -292,7 +308,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                           </MenuItem>
                         </Menu>
                       )}
-                  </ButtonGroup>
+                  </Box>
                 </>
               )}
           </Box>
