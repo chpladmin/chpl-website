@@ -63,7 +63,7 @@ const useStyles = makeStyles({
   },
   buttonGroupMiddle: {
     minWidth: '40px',
-    borderRadius: '0px',
+    borderRadius: 0,
     margin: '0 -1px'
   }
 });
