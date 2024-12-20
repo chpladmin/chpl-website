@@ -21,30 +21,31 @@ class OverviewPage extends Page {
   get title() { return $(this.elements.title); }
 
   async browseAllListings() {
-    const productsPanel = await (
-          await (
-            await (
-              await $(this.elements.productsSearchPanelTitle)
-            ).parentElement()
-          ).parentElement()
-    ).parentElement();
-    await (await (await productsPanel.$('#filter-chips')).$$('[role="button"]')).forEach(async (chip) => {
+    const productsPanel = await this.getProductsPanel();
+    await (
+      await (
+        await productsPanel.$('#filter-chips')
+      ).$$('[role="button"]')
+    ).forEach(async (chip) => {
       const btn = await chip.$('svg');
       return btn.click();
     });
   }
 
-  async getProductsSearchResults() {
+  async getProductsPanel() {
     return (
       await (
         await (
-          await (
-            await (
-              await $(this.elements.productsSearchPanelTitle)
-            ).parentElement()
-          ).parentElement()
+          await $(this.elements.productsSearchPanelTitle)
         ).parentElement()
-      ).$('h6=Search Results:')
+      ).parentElement()
+    ).parentElement();
+  }
+
+  async getProductsSearchResults() {
+    const productsPanel = await this.getProductsPanel();
+    return (
+      await productsPanel.$('h6=Search Results:')
     ).parentElement();
   }
 }
