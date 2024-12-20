@@ -61,7 +61,7 @@ const useStyles = makeStyles({
   buttonGroup: {
     minWidth: '40px',
   },
-  buttonGroupMiddle:{
+  buttonGroupMiddle: {
     minWidth: '40px',
     borderRadius: '0px',
     margin: '0 -1px'
