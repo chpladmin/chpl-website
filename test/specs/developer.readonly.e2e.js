@@ -18,6 +18,12 @@ describe('the Developer page for "gMed, Inc."', () => {
     await expect(page.editDeveloperButton).not.toBeExisting();
   });
 
+  describe('the Products section', () => {
+    it('should have no results found by default', async () => {
+      await expect(await page.getProductsSearchResults()).toHaveText(expect.stringContaining('No results found'));
+    });
+  });
+
   describe('when logged in as ONC', () => {
     beforeEach(async () => {
       login = new LoginComponent();

@@ -6,8 +6,9 @@ class OverviewPage extends Page {
     this.name = 'Developer';
     this.elements = {
       ...this.elements,
-      title: 'h1',
       editDeveloperButton: '#developer-component-edit',
+      productsSearchPanelTitle: '.MuiTypography-h5=Products',
+      title: 'h1',
     };
   }
 
@@ -15,12 +16,22 @@ class OverviewPage extends Page {
     await super.open(`organizations/developers/${id}`);
   }
 
-  get title() {
-    return $(this.elements.title);
-  }
+  get editDeveloperButton() { return $(this.elements.editDeveloperButton); }
 
-  get editDeveloperButton() {
-    return $(this.elements.editDeveloperButton);
+  get title() { return $(this.elements.title); }
+
+  async getProductsSearchResults() {
+    return (
+      await (
+        await (
+          await (
+            await (
+              await $(this.elements.productsSearchPanelTitle)
+            ).parentElement()
+          ).parentElement()
+        ).parentElement()
+      ).$('h6=Search Results:')
+    ).parentElement();
   }
 }
 
