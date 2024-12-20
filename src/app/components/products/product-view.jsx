@@ -218,7 +218,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                         id={`edit-${product.id}`}
                         onClick={handleMenuClick(setEditAnchorEl)}
                       >
-                        <EditOutlinedIcon htmlColor='#FFF'/>
+                        <EditOutlinedIcon htmlColor='#fff' />
                       </Button>
                     </ChplTooltip>
                     <Menu
