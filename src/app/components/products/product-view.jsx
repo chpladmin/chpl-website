@@ -58,7 +58,7 @@ const useStyles = makeStyles({
   chplIdFirstColumn: {
     width: '132px',
   },
-  buttonGroup:{
+  buttonGroup: {
     minWidth: '40px',
   },
   buttonGroupMiddle:{
