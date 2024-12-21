@@ -7,6 +7,8 @@ class OverviewPage extends Page {
     this.elements = {
       ...this.elements,
       editDeveloperButton: '#developer-component-edit',
+      productSummary: '.MuiAccordionSummary-root',
+      products: '.MuiAccordion-root',
       productsSearchPanelTitle: '.MuiTypography-h5=Products',
       title: 'h1',
     };
@@ -30,6 +32,16 @@ class OverviewPage extends Page {
       const btn = await chip.$('svg');
       return btn.click();
     });
+  }
+
+  async getProductName(product) {
+    const summary = await product.$(this.elements.productSummary);
+    return summary.$$('p');
+  }
+
+  async getProducts() {
+    const productsPanel = await this.getProductsPanel();
+    return productsPanel.$$(this.elements.products);
   }
 
   async getProductsPanel() {

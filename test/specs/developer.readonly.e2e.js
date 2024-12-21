@@ -20,7 +20,7 @@ describe('the Developer page for "gMed, Inc."', () => {
 
   describe('the Products section', () => {
     it('should have no results found by default', async () => {
-      await expect(await page.getProductsSearchResults()).toHaveText(expect.stringContaining('No results found'));
+      await expect(await page.getProductsSearchResults()).toHaveTextContaining('No results found');
     });
 
     describe('when browsing all listings', () => {
@@ -29,7 +29,18 @@ describe('the Developer page for "gMed, Inc."', () => {
       });
 
       it('should not have "no results found"', async () => {
-        await expect(await page.getProductsSearchResults()).not.toHaveText(expect.stringContaining('No results found'));
+        await expect(await page.getProductsSearchResults()).not.toHaveTextContaining('No results found');
+      });
+
+      it('should have seven products', async () => {
+        const products = await page.getProducts();
+        expect(products.length).toBe(7);
+      });
+
+      it('should show "gGastro" as the third product', async () => {
+        const products = await page.getProducts();
+        const productName = await page.getProductName(products[2]);
+        expect(productName).toHaveTextContaining('gGastro');
       });
     });
   });
