@@ -7,6 +7,9 @@ class OverviewPage extends Page {
     this.elements = {
       ...this.elements,
       editDeveloperButton: '#developer-component-edit',
+      filterPanelPrimaryItems: (category) => `#filter-panel-primary-items-${category}`,
+      filterPanelSecondaryItems: (value) => `#filter-panel-secondary-items-${value}`,
+      filterPanelToggle: '#filter-panel-toggle',
       productSummary: '.MuiAccordionSummary-root',
       products: '.MuiAccordion-root',
       productsSearchPanelTitle: '.MuiTypography-h5=Products',
@@ -34,8 +37,21 @@ class OverviewPage extends Page {
     });
   }
 
+  async filterBy(category, value) {
+    const productsPanel = await this.getProductsPanel();
+    const advancedSearch = productsPanel.$(this.elements.filterPanelToggle);
+    const categoryButton = $(this.elements.filterPanelPrimaryItems(category));
+    const valueButton = $(this.elements.filterPanelSecondaryItems(value));
+    await advancedSearch.click();
+    await categoryButton.waitForClickable();
+    await categoryButton.click();
+    await valueButton.waitForClickable();
+    await valueButton.click();
+    await browser.keys('Escape');
+  }
+
   async getProductName(product) {
-    const summary = await product.$(this.elements.productSummary);
+    const summary = product.$(this.elements.productSummary);
     return summary.$$('p');
   }
 

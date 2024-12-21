@@ -43,6 +43,20 @@ describe('the Developer page for "gMed, Inc."', () => {
         expect(productName).toHaveTextContaining('gGastro');
       });
     });
+
+    describe('when filtering listings', () => {
+      beforeEach(async () => {
+        await page.browseAllListings();
+      });
+
+      it('should allow selection of a certification status', async () => {
+        await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
+        const products = await page.getProducts();
+        const productName = await page.getProductName(products[4]);
+        expect(products.length).toBe(5);
+        expect(productName).toHaveTextContaining('gMed Connect');
+      });
+    });
   });
 
   describe('when logged in as ONC', () => {
