@@ -20,7 +20,7 @@ describe('the Developer page for "gMed, Inc."', () => {
 
   describe('the Products section', () => {
     it('should have no results found by default', async () => {
-      await expect(await page.getProductsSearchResults()).toHaveTextContaining('No results found');
+      await expect(await page.getProductsSearchResults()).toHaveText(expect.stringContaining('No results found'));
     });
 
     describe('when browsing all listings', () => {
@@ -29,7 +29,7 @@ describe('the Developer page for "gMed, Inc."', () => {
       });
 
       it('should not have "no results found"', async () => {
-        await expect(await page.getProductsSearchResults()).not.toHaveTextContaining('No results found');
+        await expect(await page.getProductsSearchResults()).not.toHaveText(expect.stringContaining('No results found'));
       });
 
       it('should have seven products', async () => {
@@ -40,7 +40,7 @@ describe('the Developer page for "gMed, Inc."', () => {
       it('should show "gGastro" as the third product', async () => {
         const products = await page.getProducts();
         const productName = await page.getProductName(products[2]);
-        expect(productName).toHaveTextContaining('gGastro');
+        expect(productName).toHaveText('gGastro');
       });
     });
 
@@ -54,7 +54,20 @@ describe('the Developer page for "gMed, Inc."', () => {
         const products = await page.getProducts();
         const productName = await page.getProductName(products[4]);
         expect(products.length).toBe(5);
-        expect(productName).toHaveTextContaining('gMed Connect');
+        expect(productName).toHaveText('gMed Connect');
+      });
+    });
+
+    describe('when looking at individual products', () => {
+      beforeEach(async () => {
+        await page.browseAllListings();
+        await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
+        await page.viewProduct('gCardio');
+      });
+
+      it('should have two listings', async () => {
+        const listings = await page.getListings('gCardio');
+        expect(listings.length).toBe(2);
       });
     });
   });

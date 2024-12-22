@@ -10,6 +10,7 @@ class OverviewPage extends Page {
       filterPanelPrimaryItems: (category) => `#filter-panel-primary-items-${category}`,
       filterPanelSecondaryItems: (value) => `#filter-panel-secondary-items-${value}`,
       filterPanelToggle: '#filter-panel-toggle',
+      listingsTable: 'aria/Listings table',
       productSummary: '.MuiAccordionSummary-root',
       products: '.MuiAccordion-root',
       productsSearchPanelTitle: '.MuiTypography-h5=Products',
@@ -50,9 +51,21 @@ class OverviewPage extends Page {
     await browser.keys('Escape');
   }
 
+  async getListings(productName) {
+    const products = await this.getProducts();
+    const product = await products
+      .find(async (p) => (await
+      (await this.getProductName(p))
+        .getText()) === productName);
+    const table = await product.$(this.elements.listingsTable);
+    const body = await table.$('tbody');
+    const rows = await body.$$('tr');
+    return rows;
+  }
+
   async getProductName(product) {
     const summary = product.$(this.elements.productSummary);
-    return summary.$$('p');
+    return summary.$$('p')[0];
   }
 
   async getProducts() {
@@ -75,6 +88,16 @@ class OverviewPage extends Page {
     return (
       await productsPanel.$('h6=Search Results:')
     ).parentElement();
+  }
+
+  async viewProduct(productName) {
+    const products = await this.getProducts();
+    const product = await products
+      .find(async (p) => (await
+      (await this.getProductName(p))
+        .getText()) === productName);
+    const button = await product.$('.MuiAccordionSummary-root');
+    await button.click();
   }
 }
 
