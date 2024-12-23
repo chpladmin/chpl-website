@@ -53,11 +53,7 @@ class OverviewPage extends Page {
   }
 
   async getListings(productName) {
-    const products = await this.getProducts();
-    const product = await products
-      .find(async (p) => (await
-      (await this.getProductName(p))
-        .getText()) === productName);
+    const product = await this.getProduct(productName);
     const table = await product.$(this.elements.listingsTable);
     const body = await table.$('tbody');
     const rows = await body.$$('tr');
@@ -66,6 +62,14 @@ class OverviewPage extends Page {
 
   async getMergeProductButton(productId) {
     return $(this.elements.mergeProductButton(productId));
+  }
+
+  async getProduct(product) {
+    const products = await this.getProducts();
+    return products
+      .find(async (p) => (await
+      (await this.getProductName(p))
+        .getText()) === product);
   }
 
   async getProductName(product) {
@@ -96,11 +100,7 @@ class OverviewPage extends Page {
   }
 
   async viewProduct(productName) {
-    const products = await this.getProducts();
-    const product = await products
-      .find(async (p) => (await
-      (await this.getProductName(p))
-        .getText()) === productName);
+    const product = await this.getProduct(productName);
     const button = await product.$('.MuiAccordionSummary-root');
     await button.click();
   }

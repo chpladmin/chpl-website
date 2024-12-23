@@ -72,7 +72,7 @@ describe('the Developer page for "gMed, Inc."', () => {
     });
   });
 
-  fdescribe('when logged in as ONC', () => {
+  describe('when logged in as ONC', () => {
     beforeEach(async () => {
       login = new LoginComponent();
       await login.logIn('onc');
@@ -94,7 +94,7 @@ describe('the Developer page for "gMed, Inc."', () => {
     });
   });
 
-  fdescribe('when logged in as ONC-ACB', () => {
+  describe('when logged in as ONC-ACB', () => {
     beforeEach(async () => {
       login = new LoginComponent();
       await login.logIn('drummond');
