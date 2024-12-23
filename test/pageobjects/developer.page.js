@@ -16,6 +16,7 @@ class OverviewPage extends Page {
       products: '.MuiAccordion-root',
       productsSearchPanelTitle: '.MuiTypography-h5=Products',
       title: 'h1',
+      versionSelect: '#version',
     };
   }
 
@@ -97,6 +98,17 @@ class OverviewPage extends Page {
     return (
       await productsPanel.$('h6=Search Results:')
     ).parentElement();
+  }
+
+  async getVersionOptions(productName) {
+    const product = await this.getProduct(productName);
+    await this.viewProduct(productName);
+    const select = await product.$(this.elements.versionSelect);
+    await select.scrollIntoView();
+    await select.click();
+    const options = await $$('[role="option"]');
+    await options.forEach(async (option) => option.getText()); // I don't know why this is required, but without it the value "All" is not populated in the returned array
+    return options;
   }
 
   async viewProduct(productName) {

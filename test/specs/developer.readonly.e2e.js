@@ -69,6 +69,13 @@ describe('the Developer page for "gMed, Inc."', () => {
         const listings = await page.getListings('gCardio');
         expect(listings.length).toBe(2);
       });
+
+      it('should have a selector for versions', async () => {
+        const versions = await page.getVersionOptions('gCardio');
+        const vals = await versions.map(async (v) => v.getText());
+        expect(vals.length).toBe(3);
+        await expect(vals).toEqual(expect.arrayContaining(['All', 'Version 4.64', 'Version 4.63']));
+      });
     });
   });
 
