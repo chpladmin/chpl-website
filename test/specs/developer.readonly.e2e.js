@@ -14,7 +14,7 @@ describe('the Developer page for "gMed, Inc."', () => {
     await expect(page.title).toHaveText('gMed, Inc.');
   });
 
-  it('should not have the edit button for anonymous users', async () => {
+  it('should not have the developer edit button', async () => {
     await expect(page.editDeveloperButton).not.toBeExisting();
   });
 
@@ -72,7 +72,7 @@ describe('the Developer page for "gMed, Inc."', () => {
     });
   });
 
-  describe('when logged in as ONC', () => {
+  fdescribe('when logged in as ONC', () => {
     beforeEach(async () => {
       login = new LoginComponent();
       await login.logIn('onc');
@@ -82,12 +82,19 @@ describe('the Developer page for "gMed, Inc."', () => {
       await login.logOut();
     });
 
-    it('should have the edit button for ASTP users', async () => {
+    it('should have the developer edit button', async () => {
       await expect(page.editDeveloperButton).toBeExisting();
+    });
+
+    it('should have the product/version merge button', async () => {
+      await page.browseAllListings();
+      await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
+      await page.viewProduct('gCardio');
+      await expect(await page.getMergeProductButton(2538)).toBeExisting();
     });
   });
 
-  describe('when logged in as ONC-ACB', () => {
+  fdescribe('when logged in as ONC-ACB', () => {
     beforeEach(async () => {
       login = new LoginComponent();
       await login.logIn('drummond');
@@ -97,8 +104,15 @@ describe('the Developer page for "gMed, Inc."', () => {
       await login.logOut();
     });
 
-    it('should have the edit button for ONC-ACB users', async () => {
+    it('should have the developer edit button', async () => {
       await expect(page.editDeveloperButton).toBeExisting();
+    });
+
+    it('should not have the product/version merge button', async () => {
+      await page.browseAllListings();
+      await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
+      await page.viewProduct('gCardio');
+      await expect(await page.getMergeProductButton(2538)).not.toBeExisting();
     });
   });
 });

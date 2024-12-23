@@ -11,6 +11,7 @@ class OverviewPage extends Page {
       filterPanelSecondaryItems: (value) => `#filter-panel-secondary-items-${value}`,
       filterPanelToggle: '#filter-panel-toggle',
       listingsTable: 'aria/Listings table',
+      mergeProductButton: (productId) => `#merge-${productId}`,
       productSummary: '.MuiAccordionSummary-root',
       products: '.MuiAccordion-root',
       productsSearchPanelTitle: '.MuiTypography-h5=Products',
@@ -61,6 +62,10 @@ class OverviewPage extends Page {
     const body = await table.$('tbody');
     const rows = await body.$$('tr');
     return rows;
+  }
+
+  async getMergeProductButton(productId) {
+    return $(this.elements.mergeProductButton(productId));
   }
 
   async getProductName(product) {
