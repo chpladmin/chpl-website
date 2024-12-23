@@ -54,7 +54,7 @@ class OverviewPage extends Page {
   }
 
   async getListings(productName) {
-    const product = await this.getProduct(productName);
+    const product = await this.viewProduct(productName);
     const table = await product.$(this.elements.listingsTable);
     const body = await table.$('tbody');
     const rows = await body.$$('tr');
@@ -101,8 +101,7 @@ class OverviewPage extends Page {
   }
 
   async getVersionOptions(productName) {
-    const product = await this.getProduct(productName);
-    await this.viewProduct(productName);
+    const product = await this.viewProduct(productName);
     const select = await product.$(this.elements.versionSelect);
     await select.scrollIntoView();
     await select.click();
@@ -115,6 +114,8 @@ class OverviewPage extends Page {
     const product = await this.getProduct(productName);
     const button = await product.$('.MuiAccordionSummary-root');
     await button.click();
+    await button.scrollIntoView();
+    return product;
   }
 }
 
