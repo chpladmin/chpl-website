@@ -52,9 +52,9 @@ describe('the Developer page for "gMed, Inc."', () => {
       it('should allow selection of a certification status', async () => {
         await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
         const products = await page.getProducts();
-        const productName = await page.getProductName(products[4]);
+        const productName = await page.getProductName(products[3]);
         expect(products.length).toBe(5);
-        expect(productName).toHaveText('gMed Connect');
+        await expect(productName).toHaveText('gMed Connect');
       });
     });
 
