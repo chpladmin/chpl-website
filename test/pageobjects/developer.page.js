@@ -110,6 +110,7 @@ class DeveloperPage extends Page {
     await select.click();
     const options = await $$('[role="option"]');
     await options.forEach(async (option) => option.getText()); // I don't know why this is required, but without it the value "All" is not populated in the returned array
+    await browser.keys('Escape');
     return options;
   }
 
