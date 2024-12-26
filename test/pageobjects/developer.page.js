@@ -1,6 +1,6 @@
 import Page from './page.es6';
 
-class OverviewPage extends Page {
+class DeveloperPage extends Page {
   constructor() {
     super();
     this.name = 'Developer';
@@ -119,4 +119,4 @@ class OverviewPage extends Page {
   }
 }
 
-export default OverviewPage;
+export default DeveloperPage;
