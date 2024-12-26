@@ -54,7 +54,7 @@ class DeveloperPage extends Page {
   }
 
   async getListings(productName) {
-    const product = await this.viewProduct(productName);
+    const product = await this.getProduct(productName);
     const table = await product.$(this.elements.listingsTable);
     const body = await table.$('tbody');
     const rows = await body.$$('tr');
@@ -101,9 +101,12 @@ class DeveloperPage extends Page {
   }
 
   async getVersionOptions(productName) {
-    const product = await this.viewProduct(productName);
+    const product = await this.getProduct(productName);
     const select = await product.$(this.elements.versionSelect);
     await select.scrollIntoView();
+    if (!(await select.isClickable())) {
+      await product.click(); // this should not be necessary, as the product should be open, but if it isn't, for whatever reason, this will open it
+    }
     await select.click();
     const options = await $$('[role="option"]');
     await options.forEach(async (option) => option.getText()); // I don't know why this is required, but without it the value "All" is not populated in the returned array
