@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { arrayOf, bool } from 'prop-types';
+import {
+  Button,
+} from '@material-ui/core';
+import { arrayOf, bool, func } from 'prop-types';
 
 import ChplDirectReviews from './direct-reviews';
 import ChplSurveillance from './surveillance';
@@ -11,7 +14,7 @@ const isIcs = (req) => {
   return req.requirementType.requirementGroupType.name === 'Inherited Certified Status';
 };
 
-function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: initialSurveillance }) {
+function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: initialSurveillance, dispatch }) {
   const [surveillance, setSurveillance] = useState([]);
   const [icsSurveillance, setIcsSurveillance] = useState([]);
 
@@ -22,8 +25,11 @@ function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: i
 
   return (
     <>
-      <ChplSurveillance surveillance={icsSurveillance} ics />
-      <ChplSurveillance surveillance={surveillance} />
+      <Button
+        onClick={() => dispatch({ action: 'edit', payload: {} })}
+      >Initiate Surveillance</Button>
+      <ChplSurveillance surveillance={icsSurveillance} ics dispatch={dispatch} />
+      <ChplSurveillance surveillance={surveillance} dispatch={dispatch} />
       <ChplDirectReviews directReviews={directReviews} directReviewsAvailable={directReviewsAvailable} />
     </>
   );
@@ -35,4 +41,9 @@ ChplCompliance.propTypes = {
   directReviews: arrayOf(directReviewPropType).isRequired,
   directReviewsAvailable: bool.isRequired,
   surveillance: arrayOf(surveillancePropType).isRequired,
+  dispatch: func,
+};
+
+ChplCompliance.defaultProps = {
+  dispatch: () => {},
 };

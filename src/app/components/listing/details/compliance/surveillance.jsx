@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionSummary,
   Box,
+  Button,
   CardContent,
   List,
   ListItem,
@@ -10,7 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { arrayOf, bool } from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
@@ -145,7 +146,7 @@ const getSurveillanceTitle = (surv) => {
   return title;
 };
 
-function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
+function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -240,6 +241,9 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
               </Typography>
             </AccordionSummary>
             <CardContent>
+              <Button
+                onClick={() => dispatch({ action: 'edit', payload: surv })}
+              >Edit Surveillance</Button>
               <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
                 { getDataDisplay('Date Surveillance Ended', <Typography>{ getDisplayDateFormat(surv.endDay) }</Typography>, 'The date surveillance was completed') }
@@ -318,9 +322,11 @@ export default ChplSurveillance;
 
 ChplSurveillance.propTypes = {
   surveillance: arrayOf(surveillancePropType).isRequired,
+  dispatch: func,
   ics: bool,
 };
 
 ChplSurveillance.defaultProps = {
+  dispatch: () => {},
   ics: false,
 };

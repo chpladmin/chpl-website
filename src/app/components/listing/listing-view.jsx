@@ -25,7 +25,8 @@ import ChplG1G2 from 'components/listing/details/g1g2/g1g2';
 import ChplListingInformation from 'components/listing/details/listing-information/listing-information';
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
-import { ChplLink, InternalScrollButton } from 'components/util';
+import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
+import { InternalScrollButton } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -120,6 +121,7 @@ const useStyles = makeStyles({
 function ChplListingView({ isConfirming, listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
+  const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
@@ -137,6 +139,18 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
+  };
+
+  const handleDispatch = ({ action, payload }) => {
+    switch (action) {
+      case 'cancel':
+        setActiveSurveillance(undefined);
+        break;
+      case 'edit':
+        setActiveSurveillance(payload);
+        break;
+        // no default
+    }
   };
 
   const toggleSeeAllCriteria = () => {
@@ -183,6 +197,15 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
   };
 
   if (!listing) { return null; }
+
+  if (activeSurveillance) {
+    return (
+      <ChplSurveillanceEdit
+        surveillance={activeSurveillance}
+        dispatch={handleDispatch}
+      />
+    );
+  }
 
   const navigationItems = [{
     id: 'listingInformation',
@@ -398,20 +421,8 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   directReviews={listing.directReviews}
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
+                  dispatch={handleDispatch}
                 />
-                { canManageSurveillance()
-                  && (
-                    <ChplLink
-                      href="#/surveillance/manage"
-                      text="Manage Surveillance Activities"
-                      external={false}
-                      router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                      analytics={{
-                        ...analytics,
-                        event: 'Manage Surveillance Activities',
-                      }}
-                    />
-                  )}
               </CardContent>
             </Card>
           )}
