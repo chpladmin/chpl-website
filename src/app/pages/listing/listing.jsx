@@ -16,6 +16,7 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
+import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -69,6 +70,7 @@ function ChplListingPage({ id }) {
   const { hasAnyRole, user } = useContext(UserContext);
   const { uploadToUpdateIsOn } = useContext(FlagContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });
+  const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
   let analyticsData;
@@ -126,6 +128,18 @@ function ChplListingPage({ id }) {
     $state.go('listing.edit');
   };
 
+  const handleDispatch = ({ action, payload }) => {
+    switch (action) {
+      case 'cancel':
+        setActiveSurveillance(undefined);
+        break;
+      case 'edit':
+        setActiveSurveillance(payload);
+        break;
+        // no default
+    }
+  };
+
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
@@ -143,6 +157,19 @@ function ChplListingPage({ id }) {
       aggregationName: listing.product.name,
     },
   };
+
+  if (activeSurveillance) {
+    return (
+      <AnalyticsContext.Provider value={analyticsData}>
+        <ListingContext.Provider value={listingState}>
+          <ChplSurveillanceEdit
+            surveillance={activeSurveillance}
+            dispatch={handleDispatch}
+          />
+        </ListingContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  }
 
   return (
     <AnalyticsContext.Provider value={analyticsData}>
@@ -216,6 +243,7 @@ function ChplListingPage({ id }) {
             <ListingContext.Provider value={listingState}>
               <ChplListingView
                 listing={listing}
+                dispatch={handleDispatch}
               />
             </ListingContext.Provider>
           </div>
