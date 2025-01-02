@@ -8,6 +8,7 @@ import {
   CardHeader,
   List,
   ListItem,
+  MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -36,15 +37,29 @@ const validationSchema = yup.object({
   endDay: yup.date()
     .max(new Date(), 'End Date must not be in the future')
     .min(yup.ref('startDay'), 'End Date cannot be before the Start Date'),
+  type: yup.string()
+    .required('Type is required'),
+  randomizedSitesUsed: yup.number()
+    .when('type', {
+      is: 'randomized',
+      then: yup.number()
+        .required('Sites Used is required'),
+    })
+    .min(1, 'At least one site must be used'),
 });
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
-  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
   let formik;
 
   const handleDispatch = (action) => {
-    dispatch({ action });
+    switch (action) {
+      case 'save':
+        formik.handleSubmit();
+        break;
+      default:
+        dispatch({ action });
+    }
   };
 
   const save = () => {
@@ -55,6 +70,8 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     initialValues: {
       startDay: surveillance.startDay ?? '',
       endDay: surveillance.endDay ?? '',
+      type: surveillance.type?.name ?? '',
+      randomizedSitesUsed: surveillance.randomizedSitesUsed ?? '',
     },
     onSubmit: () => {
       save();
@@ -65,7 +82,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   return (
     <>
       <Card>
-        <CardHeader title={`${ surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
+        <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
         <CardContent>
           <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
             <ChplTextField
@@ -90,6 +107,34 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               onBlur={formik.handleBlur}
               error={formik.touched.endDay && !!formik.errors.endDay}
               helperText={formik.touched.endDay && formik.errors.endDay}
+            />
+            <ChplTextField
+              select
+              id="type"
+              name="type"
+              label="Type"
+              required
+              value={formik.values.type}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.type && !!formik.errors.type}
+              helperText={formik.touched.type && formik.errors.type}
+            >
+              <MenuItem key="Randomized" value="Randomized">Randomized</MenuItem>
+              <MenuItem key="Reactive" value="Reactive">Reactive</MenuItem>
+            </ChplTextField>
+            <ChplTextField
+              type="number"
+              id="randomized-sites-used"
+              name="randomizedSitesUsed"
+              label="Randomized Sites Used"
+              required={formik.values.type === 'Randomized'}
+              disabled={formik.values.type !== 'Randomized'}
+              value={formik.values.randomizedSitesUsed}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.randomizedSitesUsed && !!formik.errors.randomizedSitesUsed}
+              helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
             />
           </Box>
         </CardContent>
