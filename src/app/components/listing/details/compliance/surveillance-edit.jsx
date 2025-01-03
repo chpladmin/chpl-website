@@ -17,6 +17,8 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplRequirementEdit from './requirement-edit';
+
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
@@ -144,6 +146,14 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           </Box>
         </CardContent>
       </Card>
+      { surveillance.requirements.map((req, idx) => (
+        <ChplRequirementEdit
+          key={req.id ?? Date.now()}
+          requirement={req}
+          dispatch={handleDispatch}
+          guid={req.id ?? Date.now()}
+        />
+      ))}
       <ChplActionBar
         dispatch={handleDispatch}
         canDelete={!!surveillance.id}
