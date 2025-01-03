@@ -41,7 +41,7 @@ const validationSchema = yup.object({
     .required('Type is required'),
   randomizedSitesUsed: yup.number()
     .when('type', {
-      is: 'randomized',
+      is: 'Randomized',
       then: yup.number()
         .required('Sites Used is required'),
     })
@@ -85,6 +85,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
         <CardContent>
           <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
+            <Typography>
+              Surveillance ID:
+              {' '}
+              { surveillance.friendlyId }
+            </Typography>
             <ChplTextField
               type="date"
               id="start-day"
