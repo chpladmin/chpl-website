@@ -19,6 +19,7 @@ import * as yup from 'yup';
 
 import ChplRequirementEdit from './requirement-edit';
 
+import { useFetchSurveillanceTypes } from 'api/data';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
@@ -51,8 +52,15 @@ const validationSchema = yup.object({
 });
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
+  const { data, isLoading, isError } = useFetchSurveillanceTypes();
+  const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    if (isLoading || isError) { return; }
+    setSurveillanceTypes(data.sort((a, b) => a.name.localeCompare(b.name)));
+  }, [data, isLoading, isError]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -127,8 +135,9 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               error={formik.touched.type && !!formik.errors.type}
               helperText={formik.touched.type && formik.errors.type}
             >
-              <MenuItem key="Randomized" value="Randomized">Randomized</MenuItem>
-              <MenuItem key="Reactive" value="Reactive">Reactive</MenuItem>
+              { surveillanceTypes.map((type) => (
+                <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
+              ))}
             </ChplTextField>
             <ChplTextField
               type="number"
