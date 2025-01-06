@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   List,
   ListItem,
   MenuItem,
@@ -88,6 +89,8 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     },
     validationSchema,
   });
+
+  if (surveillanceTypes.length === 0) { return <CircularProgress />; }
 
   return (
     <>

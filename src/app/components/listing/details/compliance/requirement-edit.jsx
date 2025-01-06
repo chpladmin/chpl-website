@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   List,
   ListItem,
   MenuItem,
@@ -28,7 +29,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
-import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
+import { getRequirementDisplay, sortRequirements, sortRequirementTypes } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -75,6 +76,10 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
     setResultTypes(resultQuery.data.sort((a, b) => a.name.localeCompare(b.name)));
   }, [resultQuery.data, resultQuery.isLoading, resultQuery.isError]);
 
+  const isRequirementAvailable = (type) => {
+    return type.requirementGroupType.name === formik.values.requirementGroupType;
+  };
+
   const handleDispatch = (action) => {
     dispatch({ action });
   };
@@ -82,7 +87,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
   formik = useFormik({
     initialValues: {
       requirementGroupType: requirement.requirementType?.requirementGroupType.name ?? '',
-      requirementType: requirement.requirementType?.title ?? '',
+      requirementType: requirement.requirementType?.id ?? '',
       requirementTypeOther: requirement.requirementTypeOther ?? '',
       result: requirement.result?.name ?? '',
     },
@@ -91,6 +96,8 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
     },
     validationSchema,
   });
+
+  if (requirementGroupTypes.length === 0 || requirementTypes.length === 0 || resultTypes.length === 0) { return <CircularProgress />; }
 
   return (
     <>
@@ -119,25 +126,33 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
               id="requirement-type"
               name="requirementType"
               label="Requirement"
-              required={formik.values.requirementType !== 'Other'}
-              disabled={formik.values.requirementType === 'Other'}
+              required={formik.values.requirementGroupType !== 'Other Requirement'}
+              disabled={formik.values.requirementGroupType === 'Other Requirement'}
               value={formik.values.requirementType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.requirementType && !!formik.errors.requirementType}
               helperText={formik.touched.requirementType && formik.errors.requirementType}
             >
-              { requirementTypes.map((type) => (
-                <MenuItem key={type.id} value={type.title}>{type.title}</MenuItem>
-              ))}
+              { requirementTypes
+                .filter(isRequirementAvailable)
+                .sort(sortRequirementTypes)
+                .map((type) => (
+                  <MenuItem key={type.id} value={type.id}>
+                    {type.status === 'REMOVED' ? 'Removed | ' : ''}
+                    {type.status === 'RETIRED' ? 'Retired | ' : ''}
+                    {type.number ? (`${type.number}: `) : ''}
+                    {type.title}
+                  </MenuItem>
+                ))}
             </ChplTextField>
             <ChplTextField
               type="text"
               id="requirement-type-other"
               name="requirementTypeOther"
               label="Requirement Type - Other"
-              required={formik.values.requirementType === 'Other'}
-              disabled={formik.values.requirementType !== 'Other'}
+              required={formik.values.requirementGroupType === 'Other Requirement'}
+              disabled={formik.values.requirementGroupType !== 'Other Requirement'}
               value={formik.values.requirementTypeOther}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
