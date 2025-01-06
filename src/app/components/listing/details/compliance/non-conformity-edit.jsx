@@ -25,7 +25,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
-import { getRequirementDisplay, sortRequirements, sortRequirementTypes } from 'services/surveillance.service';
+import { getRequirementDisplay, sortNonconformityTypes, sortRequirements, sortRequirementTypes } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -45,7 +45,7 @@ const validationSchema = yup.object({
   resolution: yup.string(),
   sitesPassed: yup.number(),
   summary: yup.string(),
-  totalSites: yup.number,
+  totalSites: yup.number(),
   type: yup.string(),
 /*
   requirementGroupType: yup.string()
@@ -71,7 +71,7 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid }) {
 
   useEffect(() => {
     if (isLoading || isError) { return; }
-    setNonConformityTypes(data.sort((a, b) => a.name.localeCompare(b.name)));
+    setNonConformityTypes(data.sort(sortNonconformityTypes));
   }, [data, isLoading, isError]);
 
   const handleDispatch = (action) => {
@@ -122,7 +122,12 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid }) {
               helperText={formik.touched.type && formik.errors.type}
             >
               { nonConformityTypes.map((type) => (
-                <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
+                <MenuItem key={type.id} value={type.id}>
+                  {type.status === 'REMOVED' ? 'Removed | ' : ''}
+                  {type.status === 'RETIRED' ? 'Retired | ' : ''}
+                  {type.number ? (type.number + ': ') : ''}
+                  {type.title}
+                </MenuItem>
               ))}
             </ChplTextField>
           </Box>
