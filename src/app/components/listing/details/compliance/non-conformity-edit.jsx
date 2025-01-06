@@ -18,13 +18,7 @@ import { func, number, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import ChplNonConformityEdit from './non-conformity-edit';
-
-import {
-  useFetchRequirementGroupTypes,
-  useFetchRequirementTypes,
-  useFetchSurveillanceResultTypes,
-} from 'api/data';
+import { useFetchNonConformityTypes } from 'api/data';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
@@ -39,6 +33,21 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
+  capApprovalDay: yup.date(),
+  capEndDay: yup.date(),
+  capMustCompleteDay: yup.date(),
+  capStartDay: yup.date(),
+  dateOfDeterminationDay: yup.date(),
+  developerExplanation: yup.string(),
+  findings: yup.string(),
+  nonconformityCloseDay: yup.date(),
+  nonconformityStatus: yup.string(),
+  resolution: yup.string(),
+  sitesPassed: yup.number(),
+  summary: yup.string(),
+  totalSites: yup.number,
+  type: yup.string(),
+/*
   requirementGroupType: yup.string()
     .required('Requirement Type is required'),
   requirementType: yup.string()
@@ -51,48 +60,40 @@ const validationSchema = yup.object({
     }),
   result: yup.string()
     .required('Result is required'),
+    */
 });
 
-function ChplRequirementEdit({ requirement, dispatch, guid }) {
-  const groupTypeQuery = useFetchRequirementGroupTypes();
-  const typeQuery = useFetchRequirementTypes();
-  const resultQuery = useFetchSurveillanceResultTypes();
-  const [requirementGroupTypes, setRequirementGroupTypes] = useState([]);
-  const [requirementTypes, setRequirementTypes] = useState([]);
-  const [resultTypes, setResultTypes] = useState([]);
+function ChplNonConformityEdit({ nonConformity, dispatch, guid }) {
+  const { data, isLoading, isError } = useFetchNonconformityTypes();
+  const [nonConformityTypes, setNonConformityTypes] = useState([]);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    if (groupTypeQuery.isLoading || groupTypeQuery.isError) { return; }
-    setRequirementGroupTypes(groupTypeQuery.data.sort((a, b) => a.name.localeCompare(b.name)));
-  }, [groupTypeQuery.data, groupTypeQuery.isLoading, groupTypeQuery.isError]);
-
-  useEffect(() => {
-    if (typeQuery.isLoading || typeQuery.isError) { return; }
-    setRequirementTypes(typeQuery.data.sort((a, b) => a.title.localeCompare(b.title)));
-  }, [typeQuery.data, typeQuery.isLoading, typeQuery.isError]);
-
-  useEffect(() => {
-    if (resultQuery.isLoading || resultQuery.isError) { return; }
-    setResultTypes(resultQuery.data.sort((a, b) => a.name.localeCompare(b.name)));
-  }, [resultQuery.data, resultQuery.isLoading, resultQuery.isError]);
-
-  const isRequirementAvailable = (type) => {
-    return type.requirementGroupType.name === formik.values.requirementGroupType;
-  };
+    if (isLoading || isError) { return; }
+    setNonConformityTypes(data.sort((a, b) => a.name.localeCompare(b.name)));
+  }, [data, isLoading, isError]);
 
   const handleDispatch = (action) => {
-    console.log('req-edit', action);
     dispatch({ action });
   };
 
   formik = useFormik({
     initialValues: {
-      requirementGroupType: requirement.requirementType?.requirementGroupType.name ?? '',
-      requirementType: requirement.requirementType?.id ?? '',
-      requirementTypeOther: requirement.requirementTypeOther ?? '',
-      result: requirement.result?.name ?? '',
+      capApprovalDay: nonConformity.capApprovalDay ?? '',
+      capEndDay: nonConformity.capEndDay ?? '',
+      capMustCompleteDay: nonConformity.capMustCompleteDay ?? '',
+      capStartDay: nonConformity.capStartDay ?? '',
+      dateOfDeterminationDay: nonConformity.dateOfDeterminationDay ?? '',
+      developerExplanation: nonConformity.developerExplanation ?? '',
+      findings: nonConformity.findings ?? '',
+      nonconformityCloseDay: nonConformity.nonconformityCloseDay ?? '',
+      nonconformityStatus: nonConformity.nonconformityStatus ?? '',
+      resolution: nonConformity.resolution ?? '',
+      sitesPassed: nonConformity.sitesPassed ?? '',
+      summary: nonConformity.summary ?? '',
+      totalSites: nonConformity.totalSites ?? '',
+      type: nonConformity.type?.id ?? '',
     },
     onSubmit: () => {
       save();
@@ -105,7 +106,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
   return (
     <>
       <Card>
-        <CardHeader title="Requirement" />
+        <CardHeader title="Non-Conformity" />
         <CardContent>
           <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
             <ChplTextField
@@ -181,22 +182,14 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
           </Box>
         </CardContent>
       </Card>
-      { requirement.nonconformities?.map((nc) => (
-        <ChplNonConformityEdit
-          key={nc.id ?? Date.now()}
-          nonConformity={nc}
-          dispatch={handleDispatch}
-          guid={nc.id ?? Date.now()}
-        />
-      ))}
     </>
   );
 }
 
-export default ChplRequirementEdit;
+export default ChplNonConformityEdit;
 
-ChplRequirementEdit.propTypes = {
-  requirement: object.isRequired,
+ChplNonConformityEdit.propTypes = {
+  nonConformity: object.isRequired,
   dispatch: func.isRequired,
   guid: number.isRequired,
 };

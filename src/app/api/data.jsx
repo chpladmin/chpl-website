@@ -59,7 +59,7 @@ const useFetchMeasures = () => {
   }, options.daily);
 };
 
-const useFetchNonconformityTypes = () => {
+const useFetchNonConformityTypes = () => {
   const axios = useAxios();
   return useQuery(['data/nonconformity-types'], async () => {
     const response = await axios.get('data/nonconformity-types/v2');
@@ -123,7 +123,7 @@ export {
   useFetchCqms,
   useFetchMeasureTypes,
   useFetchMeasures,
-  useFetchNonconformityTypes,
+  useFetchNonConformityTypes,
   useFetchPracticeTypes,
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,

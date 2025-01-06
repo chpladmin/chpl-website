@@ -64,6 +64,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   }, [data, isLoading, isError]);
 
   const handleDispatch = (action) => {
+    console.log('surv-edit', action);
     switch (action) {
       case 'save':
         formik.handleSubmit();
@@ -158,7 +159,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           </Box>
         </CardContent>
       </Card>
-      { surveillance.requirements.map((req, idx) => (
+      { surveillance.requirements?.map((req, idx) => (
         <ChplRequirementEdit
           key={req.id ?? Date.now()}
           requirement={req}
