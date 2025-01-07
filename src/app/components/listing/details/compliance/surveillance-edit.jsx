@@ -165,6 +165,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           requirement={req}
           dispatch={handleDispatch}
           guid={req.id ?? Date.now()}
+          randomizedSitesUsed={formik.values.randomizedSitesUsed}
         />
       ))}
       <ChplActionBar

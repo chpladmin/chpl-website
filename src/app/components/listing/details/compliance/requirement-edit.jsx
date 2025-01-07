@@ -14,7 +14,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { func, number, object } from 'prop-types';
+import { func, number, object, oneOfType, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -53,7 +53,7 @@ const validationSchema = yup.object({
     .required('Result is required'),
 });
 
-function ChplRequirementEdit({ requirement, dispatch, guid }) {
+function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed }) {
   const groupTypeQuery = useFetchRequirementGroupTypes();
   const typeQuery = useFetchRequirementTypes();
   const resultQuery = useFetchSurveillanceResultTypes();
@@ -187,6 +187,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid }) {
           nonConformity={nc}
           dispatch={handleDispatch}
           guid={nc.id ?? Date.now()}
+          randomizedSitesUsed={randomizedSitesUsed}
         />
       ))}
     </>
@@ -199,4 +200,5 @@ ChplRequirementEdit.propTypes = {
   requirement: object.isRequired,
   dispatch: func.isRequired,
   guid: number.isRequired,
+  randomizedSitesUsed: oneOfType([number, string]).isRequired,
 };
