@@ -57,7 +57,7 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  listItemsText: {
+  maintenanceItemsText: {
     display: 'flex',
     flexDirection: 'row',
     gap: '4px',
@@ -102,61 +102,72 @@ const useStyles = makeStyles({
     },
   },
 });
-const listItems = [
-  {
-    primary: 'Accessibility Standards:',
-    secondary: 'Add and update the Accessibility Standards available to be applied to listings',
-  },
-  {
-    primary: 'Announcements:',
-    secondary: 'Create and edit announcements displayed on CHPL for public and/or logged-in users',
-  },
-  {
-    primary: 'API Keys:',
-    secondary: 'View and optionally revoke existing API Keys',
-  },
-  {
-    primary: 'Certification Criteria:',
-    secondary: 'Table of the Certification Criteria values',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'Functionalities Tested:',
-    secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'QMS Standards:',
-    secondary: 'Add and update the QMS Standards available to be applied to listings',
-  },
-  {
-    primary: 'Standards:',
-    secondary: 'Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'Subscriptions:',
-    secondary: 'Search and filter CHPL subscriptions',
-  },
-  {
-    primary: 'SVAP:',
-    secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
-  },
-  {
-    primary: 'System Jobs:',
-    secondary: 'View and schedule system-related jobs',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'Test Tools:',
-    secondary: 'Table of the Test Tool values used during testing of certification criterion functionality',
-    roles: ['chpl-admin'],
-  },
-  {
-    primary: 'UCD Processes:',
-    secondary: 'Add and update the UCD process(es) available to be applied to certification criteria',
-  },
-];
+
+const maintenanceItems = [{
+  id: 'accessibilityStandards',
+  primary: 'Accessibility Standards',
+  secondary: 'Add and update the Accessibility Standards available to be applied to listings',
+  icon: <AccessibilityNewOutlinedIcon />,
+}, {
+  id: 'announcements',
+  primary: 'Announcements',
+  secondary: 'Create and edit announcements displayed on CHPL for public and/or logged-in users',
+  icon: <AnnouncementOutlinedIcon />,
+}, {
+  id: 'apiKeys',
+  primary: 'API Keys',
+  secondary: 'View and optionally revoke existing API Keys',
+  roles: ['chpl-admin', 'chpl-onc'],
+  icon: <CodeOutlinedIcon />,
+}, {
+  id: 'certificationCriteria',
+  primary: 'Certification Criteria',
+  secondary: 'Table of the Certification Criteria values',
+  icon: <BookOutlinedIcon />,
+}, {
+  id: 'functionalitiesTested',
+  primary: 'Functionalities Tested',
+  secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
+  icon: <BeenhereOutlinedIcon />,
+}, {
+  id: 'qmsStandards',
+  primary: 'QMS Standards',
+  secondary: 'Add and update the QMS Standards available to be applied to listings',
+  icon: <AssessmentOutlinedIcon />,
+}, {
+  id: 'standards',
+  primary: 'Standards',
+  secondary: 'Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs',
+  icon: <PlaylistAddCheckOutlinedIcon />,
+}, {
+  id: 'subscriptions',
+  primary: 'Subscriptions',
+  secondary: 'Search and filter CHPL subscriptions',
+  roles: ['chpl-admin', 'chpl-onc'],
+  icon: <SubscriptionsOutlinedIcon />,
+}, {
+  id: 'svaps',
+  primary: 'SVAP',
+  secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
+  icon: <TrendingUpOutlinedIcon />,
+}, {
+  id: 'systemJobs',
+  primary: 'System Jobs',
+  secondary: 'View and schedule system-related jobs',
+  roles: ['chpl-admin'],
+  icon: <PlayArrowOutlinedIcon />,
+}, {
+  id: 'testTools',
+  primary: 'Test Tools',
+  secondary: 'Table of the Test Tool values used during testing of certification criterion functionality',
+  icon: <BuildOutlinedIcon />,
+}, {
+  id: 'ucdProcesses',
+  primary: 'UCD Processes',
+  secondary: 'Add and update the UCD process(es) available to be applied to certification criteria',
+  icon: <TouchAppOutlinedIcon />,
+}];
+
 function ChplSystemMaintenance() {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -189,6 +200,22 @@ function ChplSystemMaintenance() {
     );
     display('system-maintenance.disabled');
   }, []);
+
+  const getNavigationItem = (item) => (
+    <Button
+      key={item.id}
+      onClick={() => navigate(item.id)}
+      disabled={active === item.id}
+      id={`system-maintenance-navigation-${item.id}`}
+      fullWidth
+      variant="text"
+      color="primary"
+      endIcon={item.icon}
+      className={classes.menuItems}
+    >
+      { item.primary }
+    </Button>
+  );
 
   navigate = (target) => {
     hide('accessibilityStandards.viewall.disabled');
@@ -255,165 +282,9 @@ function ChplSystemMaintenance() {
       <div className={classes.container}>
         <div className={classes.navigation}>
           <Card className={classes.navigationFlex}>
-            <Button
-              onClick={() => navigate('accessibilityStandards')}
-              disabled={active === 'accessibilityStandards'}
-              id="system-maintenance-navigation-accessibility-standards"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<AccessibilityNewOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              Accessibility Standards
-            </Button>
-            <Button
-              onClick={() => navigate('announcements')}
-              disabled={active === 'announcements'}
-              id="system-maintenance-navigation-announcements"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<AnnouncementOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              Announcements
-            </Button>
-            <Button
-              onClick={() => navigate('apiKeys')}
-              disabled={active === 'apiKeys'}
-              id="system-maintenance-navigation-api-keys"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<CodeOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              API Keys
-            </Button>
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('certificationCriteria')}
-                  disabled={active === 'certificationCriteria'}
-                  id="system-maintenance-navigation-certification-criteria"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<BookOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Certification Criteria
-                </Button>
-              )}
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('functionalitiesTested')}
-                  disabled={active === 'functionalitiesTested'}
-                  id="system-maintenance-navigation-functionalities-tested"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<BeenhereOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Functionalities Tested
-                </Button>
-              )}
-            <Button
-              onClick={() => navigate('qmsStandards')}
-              disabled={active === 'qmsStandards'}
-              id="system-maintenance-navigation-qms-standards"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<AssessmentOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              QMS Standards
-            </Button>
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('standards')}
-                  disabled={active === 'standards'}
-                  id="system-maintenance-navigation-standards"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<PlaylistAddCheckOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Standards
-                </Button>
-              )}
-            <Button
-              onClick={() => navigate('subscriptions')}
-              disabled={active === 'subscriptions'}
-              id="system-maintenance-navigation-subscriptions"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<SubscriptionsOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              Subscriptions
-            </Button>
-            <Button
-              onClick={() => navigate('svaps')}
-              disabled={active === 'svaps'}
-              id="system-maintenance-navigation-svaps"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<TrendingUpOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              SVAP
-            </Button>
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('systemJobs')}
-                  disabled={active === 'systemJobs'}
-                  id="system-maintenance-navigation-system-jobs"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<PlayArrowOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  System Jobs
-                </Button>
-              )}
-            { hasAnyRole(['chpl-admin'])
-              && (
-                <Button
-                  onClick={() => navigate('testTools')}
-                  disabled={active === 'testTools'}
-                  id="system-maintenance-navigation-test-tools"
-                  fullWidth
-                  variant="text"
-                  color="primary"
-                  endIcon={<BuildOutlinedIcon />}
-                  className={classes.menuItems}
-                >
-                  Test Tools
-                </Button>
-              )}
-            <Button
-              onClick={() => navigate('ucdProcesses')}
-              disabled={active === 'ucdProcesses'}
-              id="system-maintenance-navigation-ucd-processes"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<TouchAppOutlinedIcon />}
-              className={classes.menuItems}
-            >
-              UCD Processes
-            </Button>
+            { maintenanceItems
+              .filter((item) => !item.roles || hasAnyRole(item.roles))
+              .map((item) => getNavigationItem(item))}
           </Card>
         </div>
         <Box width="100%">
@@ -426,19 +297,16 @@ function ChplSystemMaintenance() {
                   </Typography>
                   <Divider />
                   <List>
-                    {listItems.map((item, index) => {
-                      if (item.roles && !hasAnyRole(item.roles)) {
-                        return null; // Skip if the user doesn't have the required role
-                      }
-                      return (
-                        <React.Fragment key={item.primary}>
+                    { maintenanceItems
+                      .filter((item) => !item.roles || hasAnyRole(item.roles))
+                      .map((item, index) => (
+                        <React.Fragment key={item.id}>
                           <ListItem>
-                            <ListItemText className={classes.listItemsText} primary={item.primary} secondary={item.secondary} />
+                            <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
                           </ListItem>
-                          {index < listItems.length - 1 && <Divider component="li" />}
+                          { index < maintenanceItems.length - 1 && <Divider component="li" /> }
                         </React.Fragment>
-                      );
-                    })}
+                      )) }
                   </List>
                 </CardContent>
               </Card>

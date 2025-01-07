@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Paper,
@@ -17,6 +17,7 @@ import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
+import { UserContext } from 'shared/contexts';
 import { svap as svapPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -39,6 +40,7 @@ const useStyles = makeStyles({
 function ChplSvapsView(props) {
   const { dispatch } = props;
   const [svaps, setSvaps] = useState([]);
+  const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const classes = useStyles();
@@ -70,22 +72,24 @@ function ChplSvapsView(props) {
           fetch={useFetchSvapsActivity}
           title="SVAP"
         />
-        <Button
-          onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-svap"
-          variant="contained"
-          color="primary"
-          endIcon={<AddIcon />}
-        >
-          Add
-        </Button>
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-svap"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        )}
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="SVAP table"
         >
           <ChplSortableHeaders
-            headers={headers}
+            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
@@ -107,17 +111,19 @@ function ChplSvapsView(props) {
                   <TableCell>
                     { item.replaced ? 'Yes' : 'No' }
                   </TableCell>
-                  <TableCell align="right">
-                    <Button
-                      onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
-                      variant="contained"
-                      color="secondary"
-                      endIcon={<EditOutlinedIcon />}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
+                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                    <TableCell align="right">
+                      <Button
+                        onClick={() => dispatch({ action: 'edit', payload: item })}
+                        id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
+                        variant="contained"
+                        color="secondary"
+                        endIcon={<EditOutlinedIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>

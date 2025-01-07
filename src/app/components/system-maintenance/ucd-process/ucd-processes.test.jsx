@@ -11,7 +11,7 @@ import userEvent from '@testing-library/user-event';
 
 import ChplUcdProcesses from './ucd-processes';
 
-import { BreadcrumbContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
@@ -24,6 +24,9 @@ const mock = {
     append: () => {},
     display: () => {},
     hide: () => {},
+  },
+  userContext: {
+    hasAnyRole: () => true,
   },
 };
 
@@ -62,9 +65,11 @@ jest.mock('notistack', () => ({
 describe('the ChplUcdProcesses component', () => {
   beforeEach(async () => {
     render(
-      <BreadcrumbContext.Provider value={mock.breadcrumbContext}>
-        <ChplUcdProcesses />
-      </BreadcrumbContext.Provider>,
+      <UserContext.Provider value={mock.userContext}>
+        <BreadcrumbContext.Provider value={mock.breadcrumbContext}>
+          <ChplUcdProcesses />
+        </BreadcrumbContext.Provider>
+      </UserContext.Provider>,
     );
   });
 
