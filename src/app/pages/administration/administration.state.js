@@ -90,7 +90,7 @@ const states = [{
   component: 'chplSystemMaintenanceWrapperBridge',
   data: {
     title: 'CHPL Administration - System Maintenance',
-    roles: ['chpl-admin', 'chpl-onc'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
   name: 'administration.upload',
