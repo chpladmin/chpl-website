@@ -37,7 +37,8 @@ const validationSchema = yup.object({
   capEndDay: yup.date(),
   capMustCompleteDay: yup.date(),
   capStartDay: yup.date(),
-  dateOfDeterminationDay: yup.date(),
+  dateOfDeterminationDay: yup.date()
+    .required('Date of Determination is required'),
   developerExplanation: yup.string(),
   findings: yup.string(),
   nonconformityCloseDay: yup.date(),
@@ -46,7 +47,8 @@ const validationSchema = yup.object({
   sitesPassed: yup.number(),
   summary: yup.string(),
   totalSites: yup.number(),
-  type: yup.string(),
+  type: yup.string()
+    .required('Non-Conformity Type is required'),
 /*
   requirementGroupType: yup.string()
     .required('Requirement Type is required'),
@@ -130,6 +132,18 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid }) {
                 </MenuItem>
               ))}
             </ChplTextField>
+            <ChplTextField
+              type="date"
+              id="date-of-determination"
+              name="dateOfDeterminationDay"
+              label="Date of Determination"
+              required
+              value={formik.values.dateOfDeterminationDay}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.dateOfDeterminationDay && !!formik.errors.dateOfDeterminationDay}
+              helperText={formik.touched.dateOfDeterminationDay && formik.errors.dateOfDeterminationDay}
+            />
           </Box>
         </CardContent>
       </Card>
