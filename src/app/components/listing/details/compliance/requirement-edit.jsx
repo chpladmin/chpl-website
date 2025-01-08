@@ -83,8 +83,17 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
   };
 
   const handleDispatch = ({ action, payload }) => {
-    console.log('req-edit', action, payload);
-    dispatch({ action, payload });
+    if (action === 'update-nc') {
+      const updated = {
+        ...requirement,
+        nonconformities: requirement.nonconformities.map((nc) => (nc.guid === payload.guid ? payload : nc)),
+      };
+      console.log('updated', action, updated); // guid isn't in the array elements
+      dispatch({ action: 'update-req', payload: updated });
+    } else {
+      console.log('req-edit', action, payload);
+      dispatch({ action, payload });
+    }
   };
 
   formik = useFormik({
