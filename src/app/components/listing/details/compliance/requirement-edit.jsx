@@ -82,9 +82,9 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
     return type.requirementGroupType.name === formik.values.requirementGroupType;
   };
 
-  const handleDispatch = (action) => {
-    console.log('req-edit', action);
-    dispatch({ action });
+  const handleDispatch = ({ action, payload }) => {
+    console.log('req-edit', action, payload);
+    dispatch({ action, payload });
   };
 
   formik = useFormik({

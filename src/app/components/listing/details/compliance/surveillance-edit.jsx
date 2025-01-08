@@ -63,8 +63,8 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     setSurveillanceTypes(data.sort((a, b) => a.name.localeCompare(b.name)));
   }, [data, isLoading, isError]);
 
-  const handleDispatch = (action) => {
-    console.log('surv-edit', action);
+  const handleActionBar = (action) => {
+    console.log('surv-edit-1', action);
     switch (action) {
       case 'save':
         formik.handleSubmit();
@@ -72,6 +72,10 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
       default:
         dispatch({ action });
     }
+  };
+
+  const handleDispatch = ({ action, payload }) => {
+    console.log('surv-edit-2', action, payload);
   };
 
   const save = () => {
@@ -169,7 +173,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         />
       ))}
       <ChplActionBar
-        dispatch={handleDispatch}
+        dispatch={handleActionBar}
         canDelete={!!surveillance.id}
       />
     </>
