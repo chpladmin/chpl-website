@@ -179,17 +179,17 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
               ))}
             </ChplTextField>
           </Box>
+          { requirement.nonconformities?.map((nc) => (
+            <ChplNonConformityEdit
+              key={nc.id ?? Date.now()}
+              nonConformity={nc}
+              dispatch={handleDispatch}
+              guid={nc.id ?? Date.now()}
+              randomizedSitesUsed={randomizedSitesUsed}
+            />
+          ))}
         </CardContent>
       </Card>
-      { requirement.nonconformities?.map((nc) => (
-        <ChplNonConformityEdit
-          key={nc.id ?? Date.now()}
-          nonConformity={nc}
-          dispatch={handleDispatch}
-          guid={nc.id ?? Date.now()}
-          randomizedSitesUsed={randomizedSitesUsed}
-        />
-      ))}
     </>
   );
 }

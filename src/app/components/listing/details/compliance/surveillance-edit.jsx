@@ -161,17 +161,17 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
             />
           </Box>
+          { surveillance.requirements?.map((req, idx) => (
+            <ChplRequirementEdit
+              key={req.id ?? Date.now()}
+              requirement={req}
+              dispatch={handleDispatch}
+              guid={req.id ?? Date.now()}
+              randomizedSitesUsed={formik.values.randomizedSitesUsed}
+            />
+          ))}
         </CardContent>
       </Card>
-      { surveillance.requirements?.map((req, idx) => (
-        <ChplRequirementEdit
-          key={req.id ?? Date.now()}
-          requirement={req}
-          dispatch={handleDispatch}
-          guid={req.id ?? Date.now()}
-          randomizedSitesUsed={formik.values.randomizedSitesUsed}
-        />
-      ))}
       <ChplActionBar
         dispatch={handleActionBar}
         canDelete={!!surveillance.id}
