@@ -1,9 +1,13 @@
 import React, { useContext } from 'react';
 import { func, shape } from 'prop-types';
-
+import {
+  Box,
+  Container
+} from '@material-ui/core';
 import { ChplCognitoLogin, ChplLogin } from 'components/login';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 function ChplLoginPage(props) {
   const { ssoIsOn } = useContext(FlagContext);
@@ -22,16 +26,24 @@ function ChplLoginPage(props) {
 
   if (ssoIsOn) {
     return (
-      <ChplCognitoLogin
-        dispatch={handleLogin}
-      />
+      <Box py={'4vh'} bgcolor={palette.background}>
+        <Container maxWidth="xs">
+          <ChplCognitoLogin
+          dispatch={handleLogin}
+          />
+      </Container>
+      </Box>
     );
   }
 
   return (
-    <ChplLogin
-      dispatch={handleLogin}
-    />
+    <Box py={'4vh'} bgcolor={palette.background}>
+      <Container maxWidth="xs">
+        <ChplLogin
+          dispatch={handleLogin}
+        />
+      </Container>
+    </Box>
   );
 }
 
