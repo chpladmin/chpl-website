@@ -19,10 +19,10 @@
     <div ng-if="$ctrl.chartState.tab === 'product' && $ctrl.uniqueProductsReportUrl">
       <chpl-charts-product unique-products-report-url="$ctrl.uniqueProductsReportUrl"></chpl-charts-product>
     </div>  
-    <div ng-if="$ctrl.chartState.tab === 'nonconformity' && $ctrl.nonconformityCriteriaCount">
-      <chpl-charts-surveillance
-        nonconformity-criteria-count="$ctrl.nonconformityCriteriaCount"
-        ></chpl-charts-surveillance>
+    <div ng-if="$ctrl.chartState.tab === 'nonconformity' && $ctrl.nonconformityCountsReportUrl">
+      <chpl-charts-surveillance 
+        nonconformity-counts-report-url="$ctrl.nonconformityCountsReportUrl"
+      ></chpl-charts-surveillance>
     </div>
   </div>
 </div>

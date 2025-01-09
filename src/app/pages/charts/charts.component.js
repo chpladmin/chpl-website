@@ -14,7 +14,7 @@ export const ChartsComponent = {
       this.chartState = {
         tab: 'product',
       };
-      this.loadNonconformityCountChart();
+      this.loadNonconformityCountsUrl();
       this.loadUniquProductsReportUrl();
     }
 
@@ -36,9 +36,9 @@ export const ChartsComponent = {
 
     }
 
-    loadNonconformityCountChart () {
+    loadNonconformityCountsUrl () {
       let that = this;
-      this.networkService.getNonconformityStatisticsCount().then(data => that.nonconformityCriteriaCount = data);
+      this.networkService.getReportMetadata('Non-conformityCounts').then(data => that.nonconformityCountsReportUrl = data.url);
     }
   },
 };
