@@ -27,6 +27,16 @@ const useStyles = makeStyles({
   body: {
     padding: '2vh',
   },
+  cardFooter: {
+    border: '.5px solid #afafaf',
+    bgcolor: '#fff',
+    mt: '-8px',
+    display: 'flex',
+    gridGap: '4px',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: '8px',
+  },
 });
 
 function ChplRegisterUser({ hash }) {
@@ -101,13 +111,9 @@ function ChplRegisterUser({ hash }) {
             } else {
               errorMessage = 'An error occurred';
             }
-            // Show the error message using enqueueSnackbar
             enqueueSnackbar(errorMessage, {
               variant: 'error',
             });
-
-            // Optionally set the message state for internal use
-            setMessage(errorMessage);
           },
         });
         break;
@@ -133,16 +139,7 @@ function ChplRegisterUser({ hash }) {
               state={cognitoLoginComponentState}
               setState={setCognitoLoginComponentState}
             />
-            <Box
-              border=".5px solid #afafaf"
-              bgcolor="#fff"
-              mt="-8px"
-              display="flex"
-              gridGap={4}
-              flexDirection="row"
-              alignItems="center"
-              p={4}
-            >
+            <Box className={classes.cardFooter}>
               <Typography variant="body2">
                 Dont have an account?
               </Typography>
@@ -161,16 +158,7 @@ function ChplRegisterUser({ hash }) {
         return (
           <>
             <ChplCognitoUserCreate dispatch={handleDispatch} />
-            <Box
-              border=".5px solid #afafaf"
-              bgcolor="#fff"
-              mt="-8px"
-              display="flex"
-              gridGap={4}
-              flexDirection="row"
-              alignItems="center"
-              p={4}
-            >
+            <Box className={classes.cardFooter}>
               <Typography>
                 Have an account?
               </Typography>
