@@ -21,6 +21,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
+import { palette } from 'themes';
 
 const zxcvbn = require('zxcvbn');
 
@@ -31,8 +32,8 @@ const useStyles = makeStyles({
     gridRowGap: '16px',
   },
   loginHeader: {
-    backgroundColor: '#ffffff',
-    padding: '16px 0px 0px 16px',
+    backgroundColor: palette.secondary,
+    padding: '16px',
   },
 });
 
