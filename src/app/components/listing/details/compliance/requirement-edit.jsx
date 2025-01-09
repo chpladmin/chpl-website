@@ -97,6 +97,22 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
     return type.requirementGroupType.name === formik.values.requirementGroupType;
   };
 
+  const handleChange = (e) => {
+    if (e.target.name === 'requirementGroupType') {
+      formik.setFieldValue('requirementType', '');
+    }
+    formik.handleChange(e);
+    const req = {
+      ...requirement,
+      guid,
+      requirementGroupType: requirementGroupTypes.find((t) => t.name === (e.target.name === 'requirementGroupType' ? e.target.value : formik.values.requirementGroupType)),
+      requirementType: requirementTypes.find((t) => t.id === (e.target.name === 'requirementType' ? e.target.value : formik.values.requirementType)),
+      requirementTypeOther: e.target.name === 'requirementTypeOther' ? e.target.value : formik.values.requirementTypeOther,
+      result: resultTypes.find((t) => t.id === (e.target.name === 'result' ? e.target.value : formik.values.result)),
+    };
+    dispatch({ action: 'update-req', payload: req });
+  };
+
   const handleDispatch = ({ action, payload }) => {
     let updated;
     switch (action) {
@@ -104,6 +120,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
         setNonConformities((prev) => prev.filter((nc) => nc.guid !== payload));
         updated = {
           ...requirement,
+          guid,
           nonconformities: nonConformities,
         };
         dispatch({ action: 'update-req', payload: updated });
@@ -111,6 +128,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
       case 'update-nc':
         updated = {
           ...requirement,
+          guid,
           nonconformities: nonConformities.map((nc) => (nc.guid === payload.guid ? payload : nc)),
         };
         dispatch({ action: 'update-req', payload: updated });
@@ -121,15 +139,16 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
     }
   };
 
+  const remove = () => {
+    dispatch({ action: 'remove-req', payload: guid });
+  };
+
   formik = useFormik({
     initialValues: {
       requirementGroupType: requirement.requirementType?.requirementGroupType.name ?? '',
       requirementType: requirement.requirementType?.id ?? '',
       requirementTypeOther: requirement.requirementTypeOther ?? '',
-      result: requirement.result?.name ?? '',
-    },
-    onSubmit: () => {
-      save();
+      result: requirement.result?.id ?? '',
     },
     validationSchema,
   });
@@ -141,6 +160,11 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
       <Card>
         <CardHeader title="Requirement" />
         <CardContent>
+          <Button
+            onClick={remove}
+          >
+            Remove Requirement
+          </Button>
           <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
             <ChplTextField
               select
@@ -149,7 +173,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
               label="Requirement Type"
               required
               value={formik.values.requirementGroupType}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.requirementGroupType && !!formik.errors.requirementGroupType}
               helperText={formik.touched.requirementGroupType && formik.errors.requirementGroupType}
@@ -166,7 +190,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
               required={formik.values.requirementGroupType !== 'Other Requirement'}
               disabled={formik.values.requirementGroupType === 'Other Requirement'}
               value={formik.values.requirementType}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.requirementType && !!formik.errors.requirementType}
               helperText={formik.touched.requirementType && formik.errors.requirementType}
@@ -191,7 +215,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
               required={formik.values.requirementGroupType === 'Other Requirement'}
               disabled={formik.values.requirementGroupType !== 'Other Requirement'}
               value={formik.values.requirementTypeOther}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.requirementTypeOther && !!formik.errors.requirementTypeOther}
               helperText={formik.touched.requirementTypeOther && formik.errors.requirementTypeOther}
@@ -203,13 +227,13 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
               label="Result"
               required
               value={formik.values.result}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.result && !!formik.errors.result}
               helperText={formik.touched.result && formik.errors.result}
             >
               { resultTypes.map((type) => (
-                <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
+                <MenuItem key={type.id} value={type.id}>{type.name}</MenuItem>
               ))}
             </ChplTextField>
           </Box>

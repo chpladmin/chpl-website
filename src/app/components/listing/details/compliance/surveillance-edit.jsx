@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionSummary,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -54,14 +55,28 @@ const validationSchema = yup.object({
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { data, isLoading, isError } = useFetchSurveillanceTypes();
+  const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
+    if (surveillance.requirements) {
+      setRequirements(surveillance.requirements.map((req, idx) => ({
+        ...req,
+        guid: req.id ?? idx,
+      })));
+    }
+  }, []);
+
+  useEffect(() => {
     if (isLoading || isError) { return; }
     setSurveillanceTypes(data.sort((a, b) => a.name.localeCompare(b.name)));
   }, [data, isLoading, isError]);
+
+  const addReq = () => {
+    setRequirements((prev) => prev.concat({ guid: Date.now() }));
+  };
 
   const handleActionBar = (action) => {
     console.log('surv-edit-1', action);
@@ -75,11 +90,23 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   };
 
   const handleDispatch = ({ action, payload }) => {
-    console.log('surv-edit-2', action, payload);
+    let updated;
+    switch (action) {
+      case 'remove-req':
+        setRequirements((prev) => prev.filter((req) => req.guid !== payload));
+        break;
+      case 'update-req':
+        setRequirements((prev) => prev.map((req) => (req.guid === payload.guid ? payload : req)));
+        break;
+      default:
+        console.log('surv-edit-2', action, payload);
+        dispatch({ action, payload });
+    }
   };
 
   const save = () => {
     console.log('formik.values', formik.values);
+    console.log('requirements', requirements);
   };
 
   formik = useFormik({
@@ -161,12 +188,17 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
             />
           </Box>
-          { surveillance.requirements?.map((req, idx) => (
+          <Button
+            onClick={addReq}
+          >
+          Add Requirement
+          </Button>
+          { requirements.map((req) => (
             <ChplRequirementEdit
-              key={req.id ?? Date.now()}
+              key={req.guid}
               requirement={req}
               dispatch={handleDispatch}
-              guid={req.id ?? Date.now()}
+              guid={req.guid}
               randomizedSitesUsed={formik.values.randomizedSitesUsed}
             />
           ))}

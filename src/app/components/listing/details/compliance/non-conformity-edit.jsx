@@ -106,13 +106,13 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid, randomizedSitesU
       sitesPassed: e.target.name === 'sitesPassed' ? e.target.value : formik.values.sitesPassed,
       summary: e.target.name === 'summary' ? e.target.value : formik.values.summary,
       totalSites: e.target.name === 'totalSites' ? e.target.value : formik.values.totalSites,
-      type: nonConformityTypes.find((t) => t.id === (e.target.name === 'type' ? e.target.value : formik.values.totalSites)),
+      type: nonConformityTypes.find((t) => t.id === (e.target.name === 'type' ? e.target.value : formik.values.type)),
     };
     dispatch({ action: 'update-nc', payload: nc });
   };
 
   const remove = () => {
-    dispatch({ action: 'remove-nc', payload: nonConformity.guid });
+    dispatch({ action: 'remove-nc', payload: guid });
   };
 
   formik = useFormik({
