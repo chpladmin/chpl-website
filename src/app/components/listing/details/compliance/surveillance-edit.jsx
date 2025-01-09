@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionSummary,
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
-  List,
-  ListItem,
   MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -24,11 +19,7 @@ import ChplRequirementEdit from './requirement-edit';
 import { useFetchSurveillanceTypes } from 'api/data';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
-import { useAnalyticsContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
-import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -90,7 +81,6 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   };
 
   const handleDispatch = ({ action, payload }) => {
-    let updated;
     switch (action) {
       case 'remove-req':
         setRequirements((prev) => prev.filter((req) => req.guid !== payload));
@@ -191,7 +181,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           <Button
             onClick={addReq}
           >
-          Add Requirement
+            Add Requirement
           </Button>
           { requirements.map((req) => (
             <ChplRequirementEdit

@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionSummary,
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
-  List,
-  ListItem,
   MenuItem,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { func, number, object, oneOfType, string } from 'prop-types';
+import {
+  func, number, object, oneOfType, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -26,13 +22,8 @@ import {
   useFetchRequirementTypes,
   useFetchSurveillanceResultTypes,
 } from 'api/data';
-import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
-import { useAnalyticsContext } from 'shared/contexts';
-import { surveillance as surveillancePropType } from 'shared/prop-types';
-import { getRequirementDisplay, sortRequirements, sortRequirementTypes } from 'services/surveillance.service';
+import { sortRequirementTypes } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -54,7 +45,9 @@ const validationSchema = yup.object({
     .required('Result is required'),
 });
 
-function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed }) {
+function ChplRequirementEdit({
+  requirement, dispatch, guid, randomizedSitesUsed,
+}) {
   const groupTypeQuery = useFetchRequirementGroupTypes();
   const typeQuery = useFetchRequirementTypes();
   const resultQuery = useFetchSurveillanceResultTypes();
@@ -93,9 +86,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
     setNonConformities((prev) => prev.concat({ guid: Date.now() }));
   };
 
-  const isRequirementAvailable = (type) => {
-    return type.requirementGroupType.name === formik.values.requirementGroupType;
-  };
+  const isRequirementAvailable = (type) => type.requirementGroupType.name === formik.values.requirementGroupType;
 
   const handleChange = (e) => {
     if (e.target.name === 'requirementGroupType') {
@@ -240,7 +231,7 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
           <Button
             onClick={addNc}
           >
-          Add Non-Conformity
+            Add Non-Conformity
           </Button>
           { nonConformities.map((nc) => (
             <ChplNonConformityEdit

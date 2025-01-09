@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionSummary,
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
-  List,
-  ListItem,
   MenuItem,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { func, number, object, oneOfType, string } from 'prop-types';
+import {
+  func, number, object, oneOfType, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchNonConformityTypes } from 'api/data';
-import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
-import { useAnalyticsContext } from 'shared/contexts';
-import { surveillance as surveillancePropType } from 'shared/prop-types';
-import { getRequirementDisplay, sortNonconformityTypes, sortRequirements, sortRequirementTypes } from 'services/surveillance.service';
+import { sortNonconformityTypes } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -73,7 +64,9 @@ const validationSchema = yup.object({
     .required('Non-Conformity Type is required'),
 });
 
-function ChplNonConformityEdit({ nonConformity, dispatch, guid, randomizedSitesUsed }) {
+function ChplNonConformityEdit({
+  nonConformity, dispatch, guid, randomizedSitesUsed,
+}) {
   const { data, isLoading, isError } = useFetchNonConformityTypes();
   const [nonConformityTypes, setNonConformityTypes] = useState([]);
   const classes = useStyles();
@@ -165,7 +158,7 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid, randomizedSitesU
                 <MenuItem key={type.id} value={type.id}>
                   {type.status === 'REMOVED' ? 'Removed | ' : ''}
                   {type.status === 'RETIRED' ? 'Retired | ' : ''}
-                  {type.number ? (type.number + ': ') : ''}
+                  {type.number ? (`${type.number}: `) : ''}
                   {type.title}
                 </MenuItem>
               ))}
