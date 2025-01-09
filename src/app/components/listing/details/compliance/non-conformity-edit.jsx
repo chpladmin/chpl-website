@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionSummary,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -110,6 +111,10 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid, randomizedSitesU
     dispatch({ action: 'update-nc', payload: nc });
   };
 
+  const remove = () => {
+    dispatch({ action: 'remove-nc', payload: nonConformity.guid });
+  };
+
   formik = useFormik({
     initialValues: {
       randomizedSitesUsed: typeof (randomizedSitesUsed) === 'string' ? 0 : randomizedSitesUsed,
@@ -138,6 +143,11 @@ function ChplNonConformityEdit({ nonConformity, dispatch, guid, randomizedSitesU
       <Card>
         <CardHeader title="Non-Conformity" />
         <CardContent>
+          <Button
+            onClick={remove}
+          >
+            Remove Non-Conformity
+          </Button>
           <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
             <ChplTextField
               select

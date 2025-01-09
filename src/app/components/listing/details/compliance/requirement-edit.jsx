@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionSummary,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -57,11 +58,21 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
   const groupTypeQuery = useFetchRequirementGroupTypes();
   const typeQuery = useFetchRequirementTypes();
   const resultQuery = useFetchSurveillanceResultTypes();
+  const [nonConformities, setNonConformities] = useState([]);
   const [requirementGroupTypes, setRequirementGroupTypes] = useState([]);
   const [requirementTypes, setRequirementTypes] = useState([]);
   const [resultTypes, setResultTypes] = useState([]);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    if (requirement.nonconformities) {
+      setNonConformities(requirement.nonconformities.map((nc, idx) => ({
+        ...nc,
+        guid: nc.id ?? idx,
+      })));
+    }
+  }, []);
 
   useEffect(() => {
     if (groupTypeQuery.isLoading || groupTypeQuery.isError) { return; }
@@ -78,21 +89,35 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
     setResultTypes(resultQuery.data.sort((a, b) => a.name.localeCompare(b.name)));
   }, [resultQuery.data, resultQuery.isLoading, resultQuery.isError]);
 
+  const addNc = () => {
+    setNonConformities((prev) => prev.concat({ guid: Date.now() }));
+  };
+
   const isRequirementAvailable = (type) => {
     return type.requirementGroupType.name === formik.values.requirementGroupType;
   };
 
   const handleDispatch = ({ action, payload }) => {
-    if (action === 'update-nc') {
-      const updated = {
-        ...requirement,
-        nonconformities: requirement.nonconformities.map((nc) => (nc.guid === payload.guid ? payload : nc)),
-      };
-      console.log('updated', action, updated); // guid isn't in the array elements
-      dispatch({ action: 'update-req', payload: updated });
-    } else {
-      console.log('req-edit', action, payload);
-      dispatch({ action, payload });
+    let updated;
+    switch (action) {
+      case 'remove-nc':
+        setNonConformities((prev) => prev.filter((nc) => nc.guid !== payload));
+        updated = {
+          ...requirement,
+          nonconformities: nonConformities,
+        };
+        dispatch({ action: 'update-req', payload: updated });
+        break;
+      case 'update-nc':
+        updated = {
+          ...requirement,
+          nonconformities: nonConformities.map((nc) => (nc.guid === payload.guid ? payload : nc)),
+        };
+        dispatch({ action: 'update-req', payload: updated });
+        break;
+      default:
+        console.log('req-edit', action, payload);
+        dispatch({ action, payload });
     }
   };
 
@@ -188,12 +213,17 @@ function ChplRequirementEdit({ requirement, dispatch, guid, randomizedSitesUsed 
               ))}
             </ChplTextField>
           </Box>
-          { requirement.nonconformities?.map((nc) => (
+          <Button
+            onClick={addNc}
+          >
+          Add Non-Conformity
+          </Button>
+          { nonConformities.map((nc) => (
             <ChplNonConformityEdit
-              key={nc.id ?? Date.now()}
+              key={nc.guid}
               nonConformity={nc}
               dispatch={handleDispatch}
-              guid={nc.id ?? Date.now()}
+              guid={nc.guid}
               randomizedSitesUsed={randomizedSitesUsed}
             />
           ))}
