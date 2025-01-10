@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { func, shape } from 'prop-types';
 import {
   Box,
-  Container
+  Container,
 } from '@material-ui/core';
+import { func, shape } from 'prop-types';
+
 import { ChplCognitoLogin, ChplLogin } from 'components/login';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext } from 'shared/contexts';
@@ -26,18 +27,18 @@ function ChplLoginPage(props) {
 
   if (ssoIsOn) {
     return (
-      <Box py={'4vh'} bgcolor={palette.background}>
+      <Box py="4vh" bgcolor={palette.background}>
         <Container maxWidth="xs">
           <ChplCognitoLogin
-          dispatch={handleLogin}
+            dispatch={handleLogin}
           />
-      </Container>
+        </Container>
       </Box>
     );
   }
 
   return (
-    <Box py={'4vh'} bgcolor={palette.background}>
+    <Box py="4vh" bgcolor={palette.background}>
       <Container maxWidth="xs">
         <ChplLogin
           dispatch={handleLogin}
