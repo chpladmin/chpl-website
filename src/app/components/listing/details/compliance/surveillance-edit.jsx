@@ -42,6 +42,7 @@ const validationSchema = yup.object({
         .required('Sites Used is required'),
     })
     .min(1, 'At least one site must be used'),
+  reason: yup.string(),
 });
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
@@ -105,6 +106,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
       endDay: surveillance.endDay ?? '',
       type: surveillance.type?.name ?? '',
       randomizedSitesUsed: surveillance.randomizedSitesUsed ?? '',
+      reason: '',
     },
     onSubmit: () => {
       save();
@@ -194,6 +196,25 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           ))}
         </CardContent>
       </Card>
+      { !!surveillance.id
+        && (
+          <Card>
+            <CardHeader title="Reason for Change" />
+            <CardContent>
+              <ChplTextField
+                id="reason"
+                name="reason"
+                label="Reason For Change"
+                value={formik.values.reason}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.reason && !!formik.errors.reason}
+                helperText={formik.touched.reason && formik.errors.reason}
+              />
+              Reason for Change is required if the Surveillance is being deleted
+            </CardContent>
+          </Card>
+        )}
       <ChplActionBar
         dispatch={handleActionBar}
         canDelete={!!surveillance.id}
