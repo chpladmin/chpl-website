@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 
-const useFetchReportMetadata = (reportGroup) => {
+const useFetchReportGroupMetadata = (reportGroup) => {
   const axios = useAxios();
   return useQuery(['report-metadata', reportGroup], async () => {
     const response = await axios.get(`report-data/report-metadata/group/${reportGroup}`);
@@ -12,6 +12,17 @@ const useFetchReportMetadata = (reportGroup) => {
   });
 };
 
-/* eslint-disable import/prefer-default-export */
-// remove eslint disable line when new api methods are added
-export { useFetchReportMetadata };
+const useFetchReportMetadata = (report) => {
+  const axios = useAxios();
+  return useQuery(['report-metadata', report], async () => {
+    const response = await axios.get(`report-data/report-metadata/${report}`);
+    return response.data;
+  }, {
+    enabled: !!report,
+  });
+};
+
+export {
+  useFetchReportGroupMetadata,
+  useFetchReportMetadata,
+};

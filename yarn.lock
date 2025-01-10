@@ -4325,15 +4325,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-google-chart@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "angular-google-chart@npm:0.1.0"
-  dependencies:
-    angular: "npm:>1.2.9"
-  checksum: 10/d5bf22bc74381b59cfa3480ad1c1183e156ee88d60e05001ac3bf9e8c7ef71a2a93b66c779a7515efea7c1a0e3ae41a34f215e0ebefcf25c1d19304465040a73
-  languageName: node
-  linkType: hard
-
 "angular-loading-bar@npm:^0.9.0":
   version: 0.9.0
   resolution: "angular-loading-bar@npm:0.9.0"
@@ -4394,7 +4385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular@npm:>1.2.9, angular@npm:^1.2.0":
+"angular@npm:^1.2.0":
   version: 1.8.2
   resolution: "angular@npm:1.8.2"
   checksum: 10/16950a7814b1dbcb7aa4cf6a9470616c3e153a439bd26b92358e773ce3c51ef69604ad415dce3729d49a84ccd896a0b887810a2deeb0c7edba94b7dea4fc061b
@@ -6491,7 +6482,6 @@ __metadata:
     angular-confirm: "npm:1.2.6"
     angular-feature-flags: "npm:^1.6.1"
     angular-file-saver: "npm:^1.1.3"
-    angular-google-chart: "npm:^0.1.0"
     angular-loading-bar: "npm:^0.9.0"
     angular-mocks: "npm:^1.8.3"
     angular-resource: "npm:^1.8.3"
