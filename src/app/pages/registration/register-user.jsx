@@ -29,13 +29,13 @@ const useStyles = makeStyles({
   },
   cardFooter: {
     border: '.5px solid #afafaf',
-    bgcolor: '#fff',
-    mt: '-8px',
+    backgroundColor: '#fff',
+    marginTop: '-8px',
     display: 'flex',
     gridGap: '4px',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: '8px',
+    padding: '8px 16px',
   },
 });
 
@@ -45,7 +45,6 @@ function ChplRegisterUser({ hash }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [message, setMessage] = useState('');
   const [state, setState] = useState('login');
   const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
   const { mutate: authorizeSsoUser } = usePostAuthorizeUser();
@@ -60,8 +59,6 @@ function ChplRegisterUser({ hash }) {
   }, [hash]);
 
   handleDispatch = (action, payload) => {
-    setMessage('');
-    let packet;
     switch (action) {
       case 'authorize':
         authorizeSsoUser(hash, {
@@ -79,13 +76,15 @@ function ChplRegisterUser({ hash }) {
                 variant: 'error',
               });
             } else {
-              setMessage(error.response.data.error);
+              enqueueSnackbar(error.response.data.error, {
+                variant: 'error',
+              });
             }
           },
         });
         break;
-      case 'create':
-        packet = {
+      case 'create': {
+        const packet = {
           hash,
           user: payload,
         };
@@ -102,8 +101,7 @@ function ChplRegisterUser({ hash }) {
             setState('login');
           },
           onError: (error) => {
-            let errorMessage = ''; // Initialize the errorMessage variable
-
+            let errorMessage;
             if (error.response?.data?.errorMessages?.length > 0) {
               errorMessage = error.response.data.errorMessages[0];
             } else if (error.response?.data?.error) {
@@ -117,12 +115,11 @@ function ChplRegisterUser({ hash }) {
           },
         });
         break;
+      }
       case 'forceChangePassword':
-        setMessage('');
         break;
       case 'loggedIn':
         handleDispatch('authorize', {});
-        setMessage('');
         break;
       default:
         console.error(`No action matches ${action} with payload ${payload}`);
@@ -141,7 +138,7 @@ function ChplRegisterUser({ hash }) {
             />
             <Box className={classes.cardFooter}>
               <Typography variant="body2">
-                Dont have an account?
+                Don&apos;t have an account?
               </Typography>
               <Button
                 color="primary"
@@ -149,7 +146,7 @@ function ChplRegisterUser({ hash }) {
                 size="small"
                 onClick={() => setState('create')}
               >
-                create a new account
+                Create a new account
               </Button>
             </Box>
           </>
@@ -168,15 +165,16 @@ function ChplRegisterUser({ hash }) {
                 size="small"
                 onClick={() => setState('cognito-login')}
               >
-                log in to your existing account
+                Log in to your existing account
               </Button>
             </Box>
           </>
         );
       case 'success':
-        return (
-          <Typography>{ message }</Typography>
-        );
+        enqueueSnackbar({
+          variant: 'success',
+        });
+        return null;
       default:
         console.error(`No state matches ${state}`);
         return null;
