@@ -18,7 +18,6 @@ const typeOrder = [
   'Other Non-Conformity',
 ];
 
-
 const getRequirementDisplay = (req) => {
   if (req.requirementTypeOther) {
     return req.requirementTypeOther;
@@ -52,23 +51,6 @@ const getSurveillanceTitle = (surv) => {
   return title;
 };
 
-const interpretRequirements = (reqs) => reqs
-  .sort(sortRequirements)
-  .map((req) => ({
-    ...req,
-    display: getRequirementDisplay(req),
-  }));
-
-const sortNonconformityTypes = (a, b) => {
-  if (a.number && b.number) {
-    return sortCriteria(a, b);
-  }
-  if (a.number || b.number) {
-    return a.number ? -1 : 1;
-  }
-  return typeOrder.indexOf(a.title) - typeOrder.indexOf(b.title);
-};
-
 const sortRequirementTypes = (a, b) => {
   if (a.requirementGroupType.name === 'Certified Capability' || a.requirementGroupType.name === 'Inherited Certified Status') {
     return sortCriteria(a, b);
@@ -84,6 +66,23 @@ const sortRequirements = (a, b) => {
     return a.requirementTypeOther ? 1 : -1;
   }
   return sortRequirementTypes(a.requirementType, b.requirementType);
+};
+
+const interpretRequirements = (reqs) => reqs
+  .sort(sortRequirements)
+  .map((req) => ({
+    ...req,
+    display: getRequirementDisplay(req),
+  }));
+
+const sortNonconformityTypes = (a, b) => {
+  if (a.number && b.number) {
+    return sortCriteria(a, b);
+  }
+  if (a.number || b.number) {
+    return a.number ? -1 : 1;
+  }
+  return typeOrder.indexOf(a.title) - typeOrder.indexOf(b.title);
 };
 
 const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);

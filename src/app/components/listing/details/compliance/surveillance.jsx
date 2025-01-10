@@ -19,7 +19,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
-import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
+import { getRequirementDisplay, getSurveillanceTitle, sortRequirements } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -120,32 +120,6 @@ const getSurveillanceResult = (surveillance) => {
   );
 };
 
-const getSurveillanceTitle = (surv) => {
-  let title = surv.endDay
-    ? `Closed Surveillance, Ended ${getDisplayDateFormat(surv.endDay)}: `
-    : `Open Surveillance, Began ${getDisplayDateFormat(surv.startDay)}: `;
-  const open = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities.filter((nc) => nc.nonconformityStatus === 'Open').length, 0);
-  const closed = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities.filter((nc) => nc.nonconformityStatus === 'Closed').length, 0);
-  if (open && closed) {
-    title += `${open} Open and ${closed} Closed Non-Conformities Were Found`;
-  } else if (open) {
-    if (open === 1) {
-      title += '1 Open Non-Conformity Was Found';
-    } else {
-      title += `${open} Open Non-Conformities Were Found`;
-    }
-  } else if (closed) {
-    if (closed === 1) {
-      title += '1 Closed Non-Conformity Was Found';
-    } else {
-      title += `${closed} Closed Non-Conformities Were Found`;
-    }
-  } else {
-    title += 'No Non-Conformities Were Found';
-  }
-  return title;
-};
-
 function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const [surveillance, setSurveillance] = useState([]);
@@ -243,7 +217,9 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) 
             <CardContent>
               <Button
                 onClick={() => dispatch({ action: 'edit', payload: surv })}
-              >Edit Surveillance</Button>
+              >
+                Edit Surveillance
+              </Button>
               <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
                 { getDataDisplay('Date Surveillance Ended', <Typography>{ getDisplayDateFormat(surv.endDay) }</Typography>, 'The date surveillance was completed') }
