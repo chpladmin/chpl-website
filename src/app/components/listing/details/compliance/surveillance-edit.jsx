@@ -19,6 +19,7 @@ import ChplRequirementEdit from './requirement-edit';
 import { useFetchSurveillanceTypes } from 'api/data';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { getSurveillanceTitle } from 'services/surveillance.service';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
@@ -118,6 +119,9 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
 
   return (
     <>
+      <Typography>
+        { getSurveillanceTitle(surveillance) }
+      </Typography>
       <Card>
         <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
         <CardContent>

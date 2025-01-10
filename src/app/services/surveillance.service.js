@@ -1,3 +1,4 @@
+import { getDisplayDateFormat } from './date-util';
 import { sortCriteria } from './criteria.service';
 
 const typeOrder = [
@@ -16,6 +17,47 @@ const typeOrder = [
   'Semiannual Attestations Submission',
   'Other Non-Conformity',
 ];
+
+
+const getRequirementDisplay = (req) => {
+  if (req.requirementTypeOther) {
+    return req.requirementTypeOther;
+  }
+  return `${req.requirementType.removed ? 'Removed | ' : ''}${req.requirementType.number ? (`${req.requirementType.number}: `) : ''}${req.requirementType.title}`;
+};
+
+const getSurveillanceTitle = (surv) => {
+  let title = surv.endDay
+    ? `Closed Surveillance, Ended ${getDisplayDateFormat(surv.endDay)}: `
+    : `Open Surveillance, Began ${getDisplayDateFormat(surv.startDay)}: `;
+  const open = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities.filter((nc) => nc.nonconformityStatus === 'Open').length, 0);
+  const closed = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities.filter((nc) => nc.nonconformityStatus === 'Closed').length, 0);
+  if (open && closed) {
+    title += `${open} Open and ${closed} Closed Non-Conformities Were Found`;
+  } else if (open) {
+    if (open === 1) {
+      title += '1 Open Non-Conformity Was Found';
+    } else {
+      title += `${open} Open Non-Conformities Were Found`;
+    }
+  } else if (closed) {
+    if (closed === 1) {
+      title += '1 Closed Non-Conformity Was Found';
+    } else {
+      title += `${closed} Closed Non-Conformities Were Found`;
+    }
+  } else {
+    title += 'No Non-Conformities Were Found';
+  }
+  return title;
+};
+
+const interpretRequirements = (reqs) => reqs
+  .sort(sortRequirements)
+  .map((req) => ({
+    ...req,
+    display: getRequirementDisplay(req),
+  }));
 
 const sortNonconformityTypes = (a, b) => {
   if (a.number && b.number) {
@@ -46,22 +88,9 @@ const sortRequirements = (a, b) => {
 
 const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);
 
-const getRequirementDisplay = (req) => {
-  if (req.requirementTypeOther) {
-    return req.requirementTypeOther;
-  }
-  return `${req.requirementType.removed ? 'Removed | ' : ''}${req.requirementType.number ? (`${req.requirementType.number}: `) : ''}${req.requirementType.title}`;
-};
-
-const interpretRequirements = (reqs) => reqs
-  .sort(sortRequirements)
-  .map((req) => ({
-    ...req,
-    display: getRequirementDisplay(req),
-  }));
-
 export {
   getRequirementDisplay,
+  getSurveillanceTitle,
   interpretRequirements,
   sortNonconformityTypes,
   sortRequirementTypes,

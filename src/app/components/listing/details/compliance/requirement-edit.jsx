@@ -23,7 +23,7 @@ import {
   useFetchSurveillanceResultTypes,
 } from 'api/data';
 import { ChplTextField } from 'components/util';
-import { sortRequirementTypes } from 'services/surveillance.service';
+import { getRequirementDisplay, sortRequirementTypes } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -149,7 +149,7 @@ function ChplRequirementEdit({
   return (
     <>
       <Card>
-        <CardHeader title="Requirement" />
+        <CardHeader title={'Requirement: ' + getRequirementDisplay(requirement)} />
         <CardContent>
           <Button
             onClick={remove}
