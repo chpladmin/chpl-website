@@ -170,11 +170,6 @@ function ChplRegisterUser({ hash }) {
             </Box>
           </>
         );
-      case 'success':
-        enqueueSnackbar({
-          variant: 'success',
-        });
-        return null;
       default:
         console.error(`No state matches ${state}`);
         return null;
@@ -182,7 +177,7 @@ function ChplRegisterUser({ hash }) {
   };
 
   return (
-    <div>
+    <>
       <Container maxWidth="xs" className={classes.content}>
         <Typography variant="h1">
           User Registration
@@ -193,7 +188,7 @@ function ChplRegisterUser({ hash }) {
           { getState() }
         </Container>
       </Box>
-    </div>
+    </>
   );
 }
 
