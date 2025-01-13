@@ -164,7 +164,10 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   return (
     <>
       <Typography>
-        { getSurveillanceTitle(surveillance) }
+        { getSurveillanceTitle({
+          ...surveillance,
+          requirements,
+        }) }
       </Typography>
       <Card>
         <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />

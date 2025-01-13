@@ -22,15 +22,15 @@ const getRequirementDisplay = (req) => {
   if (req.requirementTypeOther) {
     return req.requirementTypeOther;
   }
-  return `${req.requirementType.removed ? 'Removed | ' : ''}${req.requirementType.number ? (`${req.requirementType.number}: `) : ''}${req.requirementType.title}`;
+  return `${req.requirementType?.removed ? 'Removed | ' : ''}${req.requirementType?.number ? (`${req.requirementType?.number}: `) : ''}${req.requirementType?.title}`;
 };
 
 const getSurveillanceTitle = (surv) => {
   let title = surv.endDay
     ? `Closed Surveillance, Ended ${getDisplayDateFormat(surv.endDay)}: `
     : `Open Surveillance, Began ${getDisplayDateFormat(surv.startDay)}: `;
-  const open = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities.filter((nc) => nc.nonconformityStatus === 'Open').length, 0);
-  const closed = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities.filter((nc) => nc.nonconformityStatus === 'Closed').length, 0);
+  const open = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities?.filter((nc) => nc.nonconformityStatus === 'Open').length, 0);
+  const closed = surv.requirements.reduce((rCnt, r) => rCnt + r.nonconformities?.filter((nc) => nc.nonconformityStatus === 'Closed').length, 0);
   if (open && closed) {
     title += `${open} Open and ${closed} Closed Non-Conformities Were Found`;
   } else if (open) {
