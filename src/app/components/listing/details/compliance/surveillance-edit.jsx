@@ -11,12 +11,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
+import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import ChplRequirementEdit from './requirement-edit';
 
 import { useFetchSurveillanceTypes } from 'api/data';
+import { useDeleteSurveillance } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getSurveillanceTitle } from 'services/surveillance.service';
@@ -48,6 +50,8 @@ const validationSchema = yup.object({
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { data, isLoading, isError } = useFetchSurveillanceTypes();
+  const { mutate: remove } = useDeleteSurveillance();
+  const { enqueueSnackbar } = useSnackbar();
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   const classes = useStyles();
@@ -72,12 +76,25 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   };
 
   const handleActionBar = (action) => {
-    console.log('surv-edit-1', action);
     switch (action) {
+      case 'delete':
+        remove({ id: surveillance.id, reason: formik.values.reason }, {
+          onSuccess: () => {
+            dispatch('cancel');
+          },
+          onError: (error) => {
+            const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
+            enqueueSnackbar(body, {
+              variant: 'error',
+            });
+          },
+        });
+        break;
       case 'save':
-        formik.handleSubmit();
+        save();
         break;
       default:
+        console.log('surv-edit-1', action);
         dispatch({ action });
     }
   };
@@ -108,9 +125,6 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
       type: surveillance.type?.name ?? '',
       randomizedSitesUsed: surveillance.randomizedSitesUsed ?? '',
       reason: '',
-    },
-    onSubmit: () => {
-      save();
     },
     validationSchema,
   });

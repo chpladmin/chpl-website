@@ -3,6 +3,11 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
+const useDeleteSurveillance = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.delete(`surveillance/${data.id}`, { data: { reason: data.reason } }));
+};
+
 const useFetchIcsFamilyData = ({ id }) => {
   const axios = useAxios();
   return useQuery(['listing/ics-relationships', id], async () => {
@@ -51,6 +56,7 @@ const usePutListing = () => {
 };
 
 export {
+  useDeleteSurveillance,
   useFetchIcsFamilyData,
   useFetchListing,
   useFetchRelatedListings,
