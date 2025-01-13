@@ -66,9 +66,9 @@ function ChplActivityDetails({
     }
     if (data.originalData && data.newData) {
       if (data.description.startsWith('Merged ')) {
-        setDetails(`<li>Developers ${data.originalData.map((p) => p.name).join(' and ')} merged to form ${data.newData.name}`);
+        setDetails(`<li>${data.originalData.map((p) => p.name ?? p.version).join(' and ')} merged to form ${data.newData.name ?? data.newData.version}`);
       } else if (activity.description.startsWith('Split ')) {
-        setDetails(`<li>Developers ${data.originalData.name} split to become Developers ${data.newData[0].name} and ${data.newData[1].name}`);
+        setDetails(`<li>${data.originalData.name ?? data.originalData.version} split to become ${data.newData[0].name ?? data.newData[0].version} and ${data.newData[1].name ?? data.newData[1].version}`);
       } else {
         setDetails(interpret(data?.originalData, data?.newData)
           .map((item) => `<li>${item}</li>`)
