@@ -54,12 +54,6 @@ export default class NetworkService {
     return this.apiDELETE(`/surveillance-report/quarterly/${id}`);
   }
 
-  deleteSurveillance(surveillanceId, reason) {
-    return this.apiDELETE(`/surveillance/${surveillanceId}`, {
-      reason,
-    });
-  }
-
   deleteUser(userId) {
     return this.apiDELETE(`/users/${userId}`);
   }
@@ -466,10 +460,6 @@ export default class NetworkService {
     return this.apiGET(`/auth/impersonate?id=${user.userId}`);
   }
 
-  initiateSurveillance(surveillance) {
-    return this.apiPOST('/surveillance', surveillance);
-  }
-
   inviteUser(invitationObject) {
     return this.apiPOST('/users/invite', invitationObject);
   }
@@ -556,10 +546,6 @@ export default class NetworkService {
 
   updateRelevantSurveillance(reportId, surveillance) {
     return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
-  }
-
-  updateSurveillance(surveillance) {
-    return this.apiPUT(`/surveillance/${surveillance.id}`, surveillance);
   }
 
   updateVersion(versionObject) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -18,10 +18,11 @@ import * as yup from 'yup';
 import ChplRequirementEdit from './requirement-edit';
 
 import { useFetchSurveillanceTypes } from 'api/data';
-import { useDeleteSurveillance } from 'api/listing';
+import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getSurveillanceTitle } from 'services/surveillance.service';
+import { ListingContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
@@ -49,8 +50,11 @@ const validationSchema = yup.object({
 });
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
+  const { listing } = useContext(ListingContext);
   const { data, isLoading, isError } = useFetchSurveillanceTypes();
   const { mutate: remove } = useDeleteSurveillance();
+  const { mutate: create } = usePostSurveillance();
+  const { mutate: update } = usePutSurveillance();
   const { enqueueSnackbar } = useSnackbar();
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
@@ -76,9 +80,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   };
 
   const handleActionBar = (action) => {
+    let payload;
     switch (action) {
       case 'delete':
-        remove({ id: surveillance.id, reason: formik.values.reason }, {
+        payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
+        remove(payload, {
           onSuccess: () => {
             dispatch('cancel');
           },
@@ -91,10 +97,40 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         });
         break;
       case 'save':
-        save();
+        payload = {
+          ...surveillance,
+          ...formik.values,
+          certifiedProduct: listing,
+          requirements,
+          type: surveillanceTypes.find((t) => t.name === formik.values.type),
+        };
+        if (surveillance.id) {
+          update(payload, {
+            onSuccess: () => {
+              dispatch('cancel');
+            },
+            onError: (error) => {
+              const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
+              enqueueSnackbar(body, {
+                variant: 'error',
+              });
+            },
+          });
+        } else {
+          create(payload, {
+            onSuccess: () => {
+              dispatch('cancel');
+            },
+            onError: (error) => {
+              const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
+              enqueueSnackbar(body, {
+                variant: 'error',
+              });
+            },
+          });
+        }
         break;
       default:
-        console.log('surv-edit-1', action);
         dispatch({ action });
     }
   };
@@ -108,14 +144,8 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         setRequirements((prev) => prev.map((req) => (req.guid === payload.guid ? payload : req)));
         break;
       default:
-        console.log('surv-edit-2', action, payload);
         dispatch({ action, payload });
     }
-  };
-
-  const save = () => {
-    console.log('formik.values', formik.values);
-    console.log('requirements', requirements);
   };
 
   formik = useFormik({
