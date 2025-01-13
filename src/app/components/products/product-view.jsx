@@ -4,7 +4,6 @@ import {
   AccordionSummary,
   Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   Menu,
@@ -24,7 +23,7 @@ import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Email from '@material-ui/icons/Email';
 import Phone from '@material-ui/icons/Phone';
-import Person from '@material-ui/icons/Person'
+import Person from '@material-ui/icons/Person';
 import { func, number } from 'prop-types';
 
 import ChplProductHistory from 'components/activity/product-history';
@@ -67,8 +66,8 @@ const useStyles = makeStyles({
   buttonGroupMiddle: {
     minWidth: '40px',
     borderRadius: 0,
-    margin: '0 -1px'
-  }
+    margin: '0 -1px',
+  },
 });
 
 function ChplProductView({ product, productCount, dispatch }) {
@@ -212,7 +211,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                         id={`edit-${product.id}`}
                         onClick={handleMenuClick(setEditAnchorEl)}
                       >
-                        <EditOutlinedIcon htmlColor='#fff' />
+                        <EditOutlinedIcon htmlColor="#fff" />
                       </Button>
                     </ChplTooltip>
                     <Menu
@@ -243,7 +242,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                         id={`split-${product.id}`}
                         onClick={handleMenuClick(setSplitAnchorEl)}
                       >
-                        <CallSplitIcon color='primary' />
+                        <CallSplitIcon color="primary" />
                       </Button>
                     </ChplTooltip>
                     <Menu
@@ -277,7 +276,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                             id={`merge-${product.id}`}
                             onClick={handleMenuClick(setMergeAnchorEl)}
                           >
-                            <CallMergeIcon color='primary' />
+                            <CallMergeIcon color="primary" />
                           </Button>
                         </ChplTooltip>
                       )}
@@ -314,20 +313,20 @@ function ChplProductView({ product, productCount, dispatch }) {
               <Typography variant="body1">Contact Information</Typography>
               <Box display="flex" gridGap="8px" pt="8px" pb="16px" flexDirection="row">
                 <ChplTooltip title="Full Name">
-                  <Person/>
+                  <Person />
                 </ChplTooltip>
                 <Typography variant="body2">{ product.contact.fullName }</Typography>
-                <ChplTooltip title="Email Address"> 
-                  <Email/> 
+                <ChplTooltip title="Email Address">
+                  <Email />
                 </ChplTooltip>
                 <Typography variant="body2">{ product.contact.email }</Typography>
-                <ChplTooltip title="Phone Number"> 
-                  <Phone/>
+                <ChplTooltip title="Phone Number">
+                  <Phone />
                 </ChplTooltip>
                 <Typography variant="body2">{ product.contact.phoneNumber }</Typography>
               </Box>
             </>
-        )}
+          )}
         <Card>
           <TableContainer>
             <Table aria-label="Listings table">
