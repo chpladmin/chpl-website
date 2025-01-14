@@ -18,7 +18,7 @@ import * as yup from 'yup';
 import ChplRequirementEdit from './requirement-edit';
 
 import { useFetchSurveillanceTypes } from 'api/data';
-import { usePutListing } from 'api/listing';
+import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getSurveillanceTitle } from 'services/surveillance.service';
@@ -52,7 +52,9 @@ const validationSchema = yup.object({
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { listing } = useContext(ListingContext);
   const { data, isLoading, isError } = useFetchSurveillanceTypes();
-  const { mutate } = usePutListing();
+  const { mutate: remove } = useDeleteSurveillance();
+  const { mutate: create } = usePostSurveillance();
+  const { mutate: update } = usePutSurveillance();
   const { enqueueSnackbar } = useSnackbar();
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
@@ -81,52 +83,55 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     let payload;
     switch (action) {
       case 'delete':
-        payload = {
-          ...listing,
-          surveillance: listing.surveillance.filter((s) => s.id !== surveillance.id),
-        };
+        payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
+        remove(payload, {
+          onSuccess: () => {
+            dispatch('cancel');
+          },
+          onError: (error) => {
+            const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
+            enqueueSnackbar(body, {
+              variant: 'error',
+            });
+          },
+        });
         break;
       case 'save':
+        payload = {
+          ...surveillance,
+          ...formik.values,
+          listingId: listing.id,
+          requirements,
+          type: surveillanceTypes.find((t) => t.name === formik.values.type),
+        };
         if (surveillance.id) {
-          payload = {
-            ...listing,
-            surveillance: listing.surveillance.filter((s) => s.id !== surveillance.id).concat({
-              ...surveillance,
-              ...formik.values,
-              requirements,
-              type: surveillanceTypes.find((t) => t.name === formik.values.type),
-            }),
-          };
+          update(payload, {
+            onSuccess: () => {
+              dispatch({ action: 'cancel' });
+            },
+            onError: (error) => {
+              const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
+              enqueueSnackbar(body, {
+                variant: 'error',
+              });
+            },
+          });
         } else {
-          payload = {
-            ...listing,
-            surveillance: listing.surveillance.concat({
-              ...surveillance,
-              ...formik.values,
-              requirements,
-              type: surveillanceTypes.find((t) => t.name === formik.values.type),
-            }),
-          };
+          create(payload, {
+            onSuccess: () => {
+              dispatch({ action: 'cancel' });
+            },
+            onError: (error) => {
+              const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
+              enqueueSnackbar(body, {
+                variant: 'error',
+              });
+            },
+          });
         }
         break;
       default:
         dispatch({ action });
-    }
-    if (payload) {
-      mutate({
-        listing: payload,
-        reason: formik.values.reason,
-      }, {
-        onSuccess: () => {
-          dispatch({ action: 'cancel' });
-        },
-        onError: (error) => {
-          const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
-          enqueueSnackbar(body, {
-            variant: 'error',
-          });
-        },
-      });
     }
   };
 
