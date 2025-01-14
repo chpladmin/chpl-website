@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -17,7 +17,7 @@ import { getDataDisplay } from './compliance.services';
 
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext, ListingContext, UserContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { getRequirementDisplay, getSurveillanceTitle, sortRequirements } from 'services/surveillance.service';
 import { palette, utilStyles } from 'themes';
@@ -122,6 +122,8 @@ const getSurveillanceResult = (surveillance) => {
 
 function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) {
   const { analytics } = useAnalyticsContext();
+  const { listing } = useContext(ListingContext);
+  const { hasAnyRole, user } = useContext(UserContext);
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
@@ -129,6 +131,13 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) 
   useEffect(() => {
     setSurveillance(initialSurveillance);
   }, [initialSurveillance]);
+
+  const canManageSurveillance = () => {
+    if (hasAnyRole(['chpl-admin'])) { return true; }
+    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
+    if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
+    return false;
+  };
 
   const getIcon = () => (expanded
     ? (
@@ -215,11 +224,14 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) 
               </Typography>
             </AccordionSummary>
             <CardContent>
-              <Button
-                onClick={() => dispatch({ action: 'edit', payload: surv })}
-              >
-                Edit Surveillance
-              </Button>
+              { canManageSurveillance()
+                && (
+                  <Button
+                    onClick={() => dispatch({ action: 'edit', payload: surv })}
+                  >
+                    Edit Surveillance
+                  </Button>
+                )}
               <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
                 { getDataDisplay('Date Surveillance Ended', <Typography>{ getDisplayDateFormat(surv.endDay) }</Typography>, 'The date surveillance was completed') }
