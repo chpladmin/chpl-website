@@ -3,18 +3,6 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
-const useDeleteSurveillance = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.delete(`surveillance/${data.id}`, { data: { reason: data.reason } }), {
-    onSuccess: (response) => {
-      console.log(response);
-      console.log(data);
-      queryClient.invalidateQueries(['listing', `${data.listingId}`]);
-    },
-  });
-};
-
 const useFetchIcsFamilyData = ({ id }) => {
   const axios = useAxios();
   return useQuery(['listing/ics-relationships', id], async () => {
@@ -52,18 +40,6 @@ const useFetchRelatedListings = ({ id }) => {
   });
 };
 
-const usePostSurveillance = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('surveillance', data), {
-    onSuccess: (response) => {
-      console.log(response);
-      console.log(data.certifiedProduct.id);
-      queryClient.invalidateQueries(['listing', `${data.certifiedProduct.id}`]);
-    },
-  });
-};
-
 const usePutListing = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -74,24 +50,9 @@ const usePutListing = () => {
   });
 };
 
-const usePutSurveillance = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put(`surveillance/${data.id}`, data), {
-    onSuccess: (response) => {
-      console.log(response);
-      console.log(data.certifiedProduct.id);
-      queryClient.invalidateQueries(['listing', `${data.certifiedProduct.id}`]);
-    },
-  });
-};
-
 export {
-  useDeleteSurveillance,
   useFetchIcsFamilyData,
   useFetchListing,
   useFetchRelatedListings,
-  usePostSurveillance,
   usePutListing,
-  usePutSurveillance,
 };
