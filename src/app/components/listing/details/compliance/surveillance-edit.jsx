@@ -118,7 +118,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         reason: formik.values.reason,
       }, {
         onSuccess: () => {
-          dispatch('cancel');
+          dispatch({ action: 'cancel' });
         },
         onError: (error) => {
           const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
