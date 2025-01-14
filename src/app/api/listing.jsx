@@ -7,9 +7,8 @@ const useDeleteSurveillance = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`certified_products/${data.listingId}/surveillance/${data.id}`, { data: { reason: data.reason } }), {
-    onSuccess: (response) => {
-      console.log(response);
-      //queryClient.invalidateQueries(['listing', data.listingId]);
+    onSuccess: () => {
+      queryClient.invalidateQueries(['listing']);
     },
   });
 };
@@ -55,9 +54,8 @@ const usePostSurveillance = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post(`certified_products/${data.listingId}/surveillance`, data), {
-    onSuccess: (response) => {
-      console.log(response);
-      //queryClient.invalidateQueries(['listing', data.listingId]);
+    onSuccess: () => {
+      queryClient.invalidateQueries(['listing']);
     },
   });
 };
@@ -76,9 +74,8 @@ const usePutSurveillance = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`certified_products/${data.listingId}/surveillance/${data.id}`, data), {
-    onSuccess: (response) => {
-      console.log(response);
-      //queryClient.invalidateQueries(['listing', data.listingId]);
+    onSuccess: () => {
+      queryClient.invalidateQueries(['listing']);
     },
   });
 };
