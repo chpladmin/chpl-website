@@ -89,8 +89,8 @@ import { clearAuthTokens } from 'axios-jwt';
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-        const token = getToken();
+      const token = getToken();
+      if (token) {
         if (parseJwt(token).Identity) {
           const identity = parseJwt(token).Identity;
           return identity[0];
