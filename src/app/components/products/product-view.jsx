@@ -21,6 +21,9 @@ import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Email from '@material-ui/icons/Email';
+import Phone from '@material-ui/icons/Phone';
+import Person from '@material-ui/icons/Person';
 import { func, number } from 'prop-types';
 
 import ChplProductHistory from 'components/activity/product-history';
@@ -194,15 +197,6 @@ function ChplProductView({ product, productCount, dispatch }) {
                   product={product}
                 />
               )}
-            { product.contact
-              && (
-                <>
-                  <Typography variant="body1">Contact Information</Typography>
-                  <Typography variant="body2">{ product.contact.fullName }</Typography>
-                  <Typography variant="body2">{ product.contact.email }</Typography>
-                  <Typography variant="body2">{ product.contact.phoneNumber }</Typography>
-                </>
-              )}
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <>
@@ -313,6 +307,26 @@ function ChplProductView({ product, productCount, dispatch }) {
               )}
           </Box>
         </Box>
+        { product.contact
+          && (
+            <>
+              <Typography variant="body1">Contact Information</Typography>
+              <Box display="flex" gridGap="8px" pt="8px" pb="16px" flexDirection="row">
+                <ChplTooltip title="Full Name">
+                  <Person />
+                </ChplTooltip>
+                <Typography variant="body2">{ product.contact.fullName }</Typography>
+                <ChplTooltip title="Email Address">
+                  <Email />
+                </ChplTooltip>
+                <Typography variant="body2">{ product.contact.email }</Typography>
+                <ChplTooltip title="Phone Number">
+                  <Phone />
+                </ChplTooltip>
+                <Typography variant="body2">{ product.contact.phoneNumber }</Typography>
+              </Box>
+            </>
+          )}
         <Card>
           <TableContainer>
             <Table aria-label="Listings table">
