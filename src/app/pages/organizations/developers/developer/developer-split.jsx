@@ -72,7 +72,6 @@ function ChplDeveloperSplit({ dispatch }) {
   const { mutate } = usePostDeveloperSplit();
   const [products, setProducts] = useState([]);
   const [movingProducts, setMovingProducts] = useState([]);
-  const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
 
@@ -91,7 +90,6 @@ function ChplDeveloperSplit({ dispatch }) {
           ...analytics,
           event: 'Split Developer',
         });
-        setErrorMessages([]);
         mutate({
           oldDeveloper: developer,
           newDeveloper: payload,
@@ -123,11 +121,13 @@ function ChplDeveloperSplit({ dispatch }) {
             setIsProcessing(false);
             let body;
             if (error.data?.errorMessages) {
-              setErrorMessages(error.data.errorMessages);
+              body = error.data.errorMessages.join(', ');
             } else if (error.response?.data?.errorMessages) {
-              setErrorMessages(error.response.data.errorMessages);
+              body = error.response.data.errorMessages.join(', ');
             } else if (error.data?.error) {
               body = error.data.error;
+            } else if (error.response.data.error) {
+              body = error.response.data.error;
             } else {
               body = 'An unexpected error has occurred.';
             }
@@ -173,7 +173,6 @@ function ChplDeveloperSplit({ dispatch }) {
               isSplitting
               isInvalid={products.length === 0 || movingProducts.length === 0}
               isProcessing={isProcessing}
-              errorMessages={errorMessages}
             />
           </Box>
           <Divider className={classes.fullWidthGridRow} />
