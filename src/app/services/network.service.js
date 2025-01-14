@@ -184,15 +184,6 @@ export default class NetworkService {
     return this.apiGET(`/users/${ssoUserId}`);
   }
 
-  getCollection(type) {
-    switch (type) {
-      case 'surveillanceManagement':
-        return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
-      // no default
-    }
-    return null;
-  }
-
   getComplaintsWithSurveillance(surveillanceId) {
     return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
   }

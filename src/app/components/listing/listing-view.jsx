@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -28,7 +28,7 @@ import ChplSubscribe from 'components/subscriptions/subscribe';
 import { InternalScrollButton } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -118,7 +118,6 @@ const useStyles = makeStyles({
 });
 
 function ChplListingView({ isConfirming, listing: initialListing, dispatch }) {
-  const { hasAnyRole, user } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
@@ -131,13 +130,6 @@ function ChplListingView({ isConfirming, listing: initialListing, dispatch }) {
     setCanSeeAllCriteria(isListingActive(initialListing));
     setListing(initialListing);
   }, [initialListing]);
-
-  const canManageSurveillance = () => {
-    if (hasAnyRole(['chpl-admin'])) { return true; }
-    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
-    if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
-    return false;
-  };
 
   const toggleSeeAllCriteria = () => {
     eventTrack({

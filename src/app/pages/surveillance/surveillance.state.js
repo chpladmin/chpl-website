@@ -18,33 +18,6 @@ const states = [{
     title: 'CHPL Surveillance - Complaints Reporting',
   },
 }, {
-  name: 'surveillance.manage',
-  url: '/manage',
-  params: {
-    listingId: { squash: true, value: null },
-    chplProductNumber: { squash: true, value: null },
-  },
-  component: 'chplSurveillanceManagement',
-  resolve: {
-    allowedAcbs: (networkService) => {
-      'ngInject';
-
-      return networkService.getAcbs(true);
-    },
-    listings: (networkService) => {
-      'ngInject';
-
-      return networkService.getCollection('surveillanceManagement');
-    },
-  },
-  data: {
-    title: 'CHPL Surveillance - Manage',
-    roles: ['chpl-admin', 'chpl-onc-acb'],
-  },
-  ncyBreadcrumb: {
-    label: 'Manage',
-  },
-}, {
   name: 'surveillance.activity-reporting',
   url: '/activity-reporting',
   component: 'chplSurveillanceActivityReporting',
