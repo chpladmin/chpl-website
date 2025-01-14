@@ -327,6 +327,29 @@ function ChplProductView({ product, productCount, dispatch }) {
               </Box>
             </>
           )}
+        { product.ownerHistory?.length > 0
+          && (
+            <Card>
+              <TableContainer>
+                <Table aria-label="Ownershipt History table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Previous Owner</TableCell>
+                      <TableCell>Transfer Date</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { product.ownerHistory.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>{ item.developer.name }</TableCell>
+                        <TableCell>{ getDisplayDateFormat(item.transferDay) }</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Card>
+          )}
         <Card>
           <TableContainer>
             <Table aria-label="Listings table">
@@ -355,14 +378,14 @@ function ChplProductView({ product, productCount, dispatch }) {
                         router={{ sref: 'listing', options: { id: item.id } }}
                       />
                     </TableCell>
-                    <TableCell>{item.certificationStatus}</TableCell>
+                    <TableCell>{ item.certificationStatus }</TableCell>
                     <TableCell>
                       { item.openSurveillanceNonConformityCount }
                       {' open / '}
                       { item.closedSurveillanceNonConformityCount }
                       {' closed'}
                     </TableCell>
-                    <TableCell>{getDisplayDateFormat(item.certificationDay)}</TableCell>
+                    <TableCell>{ getDisplayDateFormat(item.certificationDay) }</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
