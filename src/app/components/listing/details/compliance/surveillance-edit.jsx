@@ -166,6 +166,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
       <Typography>
         { getSurveillanceTitle({
           ...surveillance,
+          ...formik.values,
           requirements,
         }) }
       </Typography>
