@@ -2,17 +2,11 @@ import IndexWrapper from '../index-wrapper';
 
 import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
-import {
-  ChplAttestationCreateWrapper,
-  ChplAttestationEditWrapper,
-  ChplAttestationsViewWrapper,
-} from './attestation';
+import ChplAttestationEditWrapper from './attestation/attestation-edit-wrapper';
 import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
-import ChplDeveloper from './developer/developer-wrapper';
-import ChplDirectReviewsWrapper from './direct-reviews/direct-reviews-wrapper';
 import ChplInsightsViewWrapper from './insights/insights-view-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
 import {
@@ -54,9 +48,7 @@ angular
   ])
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
-  .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
-  .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
@@ -69,8 +61,6 @@ angular
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
-  .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
-  .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplInsightsViewWrapperBridge', reactToAngularComponent(ChplInsightsViewWrapper))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
