@@ -13,11 +13,11 @@ import compareUser from './services/users.service';
 
 import { compareDeveloper } from 'components/activity/services/developers.service';
 import { compareOrganization } from 'components/activity/services/organizations.service';
+import { compareProduct } from 'components/activity/services/products.service';
 import compareSystemMaintenance from 'components/activity/services/system-maintenance.service';
+import { compareVersion } from 'components/activity/services/versions.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareListing } from 'pages/listing/history/listings.service';
-import { compareProduct } from 'pages/reports/products/products.service';
-import { compareVersion } from 'pages/reports/versions/versions.service';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 

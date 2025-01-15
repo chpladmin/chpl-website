@@ -4,6 +4,7 @@ import BrowserContext from './browser-context';
 import CmsContext from './cms-context';
 import CompareContext from './compare-context';
 import CriterionContext from './criterion-context';
+import DeveloperContext from './developer-context';
 import FlagContext from './flag-context';
 import ListingContext from './listing-context';
 import UserContext from './user-context';
@@ -16,6 +17,7 @@ export {
   CmsContext,
   CompareContext,
   CriterionContext,
+  DeveloperContext,
   FlagContext,
   ListingContext,
   UserContext,

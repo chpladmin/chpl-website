@@ -94,13 +94,13 @@ const useFetchOrganizationActivityMetadata = ({ organization, isEnabled, type })
   });
 };
 
-const useFetchProductActivitiesMetadata = ({ products, enabled }) => {
+const useFetchProductsActivitiesMetadata = ({ products, enabled }) => {
   const axios = useAxios();
   return useQueries(products.map((p) => ({
     ...options.daily,
     queryKey: ['activity/metadata/products', p.id, p.end],
     queryFn: async () => {
-      const response = await axios.get(`activity/metadata/products/${p.id}?end=${p.end}`);
+      const response = await axios.get(`activity/metadata/products/${p.id}?end=${p.end ?? Date.now()}`);
       return {
         data: response.data,
         id: p.id,
@@ -108,6 +108,16 @@ const useFetchProductActivitiesMetadata = ({ products, enabled }) => {
     },
     enabled: enabled && !!products,
   })));
+};
+
+const useFetchProductActivitiesMetadata = ({ product, enabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/products', product.id, product.end], async () => {
+    const response = await axios.get(`activity/metadata/products/${product.id}?end=${product.end ?? Date.now()}`);
+    return response.data;
+  }, {
+    enabled: enabled && !!product,
+  });
 };
 
 const useFetchStandardsActivity = ({ isEnabled }) => {
@@ -136,7 +146,7 @@ const useFetchVersionActivitiesMetadata = ({ versions, enabled }) => {
     ...options.daily,
     queryKey: ['activity/metadata/versions', v.id, v.end],
     queryFn: async () => {
-      const response = await axios.get(`activity/metadata/versions/${v.id}?end=${v.end}`);
+      const response = await axios.get(`activity/metadata/versions/${v.id}?end=${v.end ?? Date.now()}`);
       return {
         data: response.data,
         id: v.id,
@@ -156,6 +166,7 @@ export {
   useFetchListingActivityMetadata,
   useFetchOrganizationActivityMetadata,
   useFetchProductActivitiesMetadata,
+  useFetchProductsActivitiesMetadata,
   useFetchStandardsActivity,
   useFetchSvapsActivity,
   useFetchVersionActivitiesMetadata,

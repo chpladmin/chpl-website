@@ -9,14 +9,10 @@ import {
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
-import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
-
 function ChplDeveloper({
   canEdit,
   canJoin,
   canSplit,
-  developer,
   dispatch,
   errorMessages,
   isEditing,
@@ -24,27 +20,17 @@ function ChplDeveloper({
   isProcessing,
   isSplitting,
 }) {
-  const { analytics } = useAnalyticsContext();
   const [isInvalid, setIsInvalid] = useState(false);
 
   useEffect(() => {
     setIsInvalid(initialIsInvalid);
   }, [initialIsInvalid]);
 
-  const data = {
-    analytics: {
-      ...analytics,
-      category: 'Developer',
-      label: developer.name,
-    },
-  };
-
   return (
-    <AnalyticsContext.Provider value={data}>
+    <>
       { isEditing
         && (
           <ChplDeveloperEdit
-            developer={developer}
             dispatch={dispatch}
             isInvalid={isInvalid}
             isProcessing={isProcessing}
@@ -58,22 +44,20 @@ function ChplDeveloper({
             canEdit={canEdit}
             canJoin={canJoin}
             canSplit={canSplit}
-            developer={developer}
             dispatch={dispatch}
             isSplitting={isSplitting}
           />
         )}
-    </AnalyticsContext.Provider>
+    </>
   );
 }
 
 export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
-  canEdit: bool,
-  canJoin: bool,
-  canSplit: bool,
-  developer: developerPropType.isRequired,
+  canEdit: func,
+  canJoin: func,
+  canSplit: func,
   dispatch: func,
   errorMessages: arrayOf(string),
   isEditing: bool,
@@ -83,9 +67,9 @@ ChplDeveloper.propTypes = {
 };
 
 ChplDeveloper.defaultProps = {
-  canEdit: false,
-  canJoin: false,
-  canSplit: false,
+  canEdit: () => false,
+  canJoin: () => false,
+  canSplit: () => false,
   dispatch: () => {},
   errorMessages: [],
   isEditing: false,
