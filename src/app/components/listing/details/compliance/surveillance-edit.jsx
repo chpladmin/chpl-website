@@ -86,7 +86,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
         remove(payload, {
           onSuccess: () => {
-            dispatch('cancel');
+            dispatch({ action: 'cancel' });
           },
           onError: (error) => {
             const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
