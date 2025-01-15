@@ -79,7 +79,7 @@ const useStyles = makeStyles({
     },
   },
   tooltipText: {
-    fontSize: '1.5em!important',
+    fontSize: '1.5em !important',
   },
 });
 

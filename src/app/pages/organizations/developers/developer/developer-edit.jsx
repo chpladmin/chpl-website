@@ -3,9 +3,9 @@ import {
   Box,
   CircularProgress,
   Container,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
+import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { usePostChangeRequest } from 'api/change-requests';
@@ -13,22 +13,13 @@ import { usePutDeveloper } from 'api/developer';
 import ChplDeveloper from 'components/developer/developer';
 import { ChplConfirmation } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  pageContainer: {
-    padding: '32px 32px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gridGap: '16px',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-    },
+  errorColor: {
+    border: '1px solid #c44f65',
+    color: palette.error,
   },
   cardContainer: {
     width: '100%',
@@ -48,15 +39,22 @@ const useStyles = makeStyles({
       top: '100px',
     },
   },
-  errorColor: {
-    border: '1px solid #c44f65',
-    color: palette.error,
+  pageContainer: {
+    padding: '32px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gridGap: '16px',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
   },
 });
 
-function ChplEditDeveloper({ developer }) {
-  const $state = getAngularService('$state');
+function ChplEditDeveloper({ dispatch }) {
   const { analytics } = useAnalyticsContext();
+  const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: putDeveloper } = usePutDeveloper();
@@ -105,17 +103,12 @@ function ChplEditDeveloper({ developer }) {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
-        $state.go('organizations.developers.developer', {
-          id: developer.id,
-          productId: undefined,
-        }, { reload: true });
+        dispatch('cancel');
         break;
       case 'save':
         setIsProcessing(true);
         eventTrack({
           ...analytics,
-          category: 'Developer', // todo: when the higher component is React, remove this and use the component from above
-          label: developer.name, // todo: when the higher component is React, remove this and use the component from above
           event: 'Save Demographics',
         });
         if (hasAnyRole(['chpl-developer'])) {
@@ -127,7 +120,7 @@ function ChplEditDeveloper({ developer }) {
               setIsProcessing(false);
               let body;
               if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                $state.go('^', undefined, { reload: true });
+                dispatch('cancel');
               } else if (response.data.errorMessages) {
                 body = response.data.errorMessages.join(', ');
               } else if (response.data.error) {
@@ -170,15 +163,9 @@ function ChplEditDeveloper({ developer }) {
 
   return (
     <>
-      <Box p={8} bgcolor={palette.white}>
-        <Typography variant="h1">
-          Developer Information
-        </Typography>
-      </Box>
-      <Container disableGutters maxWidth="xl">
+      <Container disableGutters maxWidth="lg">
         <Box className={classes.pageContainer}>
           <ChplDeveloper
-            developer={developer}
             dispatch={handleDispatch}
             isEditing
             isProcessing={isProcessing}
@@ -200,5 +187,5 @@ function ChplEditDeveloper({ developer }) {
 export default ChplEditDeveloper;
 
 ChplEditDeveloper.propTypes = {
-  developer: developerPropType.isRequired,
+  dispatch: func.isRequired,
 };

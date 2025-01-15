@@ -42,9 +42,9 @@ const useStyles = makeStyles({
   },
   deleteButton: {
     backgroundColor: '#c44f65 !important',
-    color: '#ffffff!important',
+    color: '#ffffff !important',
     '&:hover': {
-      backgroundColor: '#853544!important',
+      backgroundColor: '#853544 !important',
     },
   },
 });

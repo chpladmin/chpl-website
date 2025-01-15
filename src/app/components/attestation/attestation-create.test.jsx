@@ -76,6 +76,7 @@ describe('the ChplAttestationCreate component', () => {
       <UserContext.Provider value={userContextMock}>
         <ChplAttestationCreate
           developer={developerMock}
+          dispatch={() => {}}
         />
       </UserContext.Provider>,
     );

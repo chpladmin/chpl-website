@@ -15,60 +15,12 @@ const states = [
   }, {
     name: 'organizations.developers.developer',
     url: '/{id}',
-    component: 'chplDeveloperView',
-    resolve: {
-      developer: (networkService, $location, $transition$) => {
-        'ngInject';
-
-        if (!$transition$.params().id) {
-          $location.path('/organizations/developers');
-        }
-        return networkService.getDeveloperHierarchy($transition$.params().id);
-      },
-    },
-    data: { title: 'CHPL Developers' },
-  }, {
-    name: 'organizations.developers.developer.edit',
-    url: '/edit',
-    views: {
-      'view@^': 'chplDevelopersEdit',
-    },
-    data: {
-      title: 'CHPL Developers - Edit',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
-    },
-  }, {
-    name: 'organizations.developers.developer.split',
-    url: '/split',
-    views: {
-      'view@^': 'chplDevelopersSplit',
-    },
-    data: {
-      title: 'CHPL Developers - Split',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-  }, {
-    name: 'organizations.developers.developer.join',
-    url: '/join',
-    views: {
-      'view@^': 'chplDevelopersJoin',
-    },
-    data: {
-      title: 'CHPL Developers - Join',
-      roles: ['chpl-admin', 'chpl-onc'],
-    },
+    component: 'chplDeveloperPage',
+    data: { title: 'CHPL Developer' },
   }, {
     name: 'organizations.developers.developer.attestation',
     url: '/attestation',
-  }, {
-    name: 'organizations.developers.developer.attestation.create',
-    views: {
-      'view@^.^': 'chplAttestationCreateWrapperBridge',
-    },
-    data: {
-      title: 'CHPL Developers - Attestation',
-      roles: ['chpl-developer'],
-    },
+    abstract: true,
   }, {
     name: 'organizations.developers.developer.attestation.edit',
     views: {
@@ -96,7 +48,7 @@ const states = [
     name: 'organizations.developers.developer.product.edit',
     url: '/edit',
     views: {
-      'products@^.^': 'chplProductsEdit',
+      'view@^.^': 'chplProductsEdit',
     },
     data: {
       title: 'CHPL Developers - Edit Product',
@@ -112,6 +64,13 @@ const states = [
       title: 'CHPL Developers - Merge Product',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
+    },
   }, {
     name: 'organizations.developers.developer.product.split',
     url: '/split',
@@ -122,6 +81,13 @@ const states = [
       title: 'CHPL Developers - Split Product',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
+    },
   }, {
     name: 'organizations.developers.developer.product.version',
     url: '/versions/{versionId}',
@@ -130,7 +96,7 @@ const states = [
     name: 'organizations.developers.developer.product.version.edit',
     url: '/edit',
     views: {
-      'products@^.^.^': 'chplVersionsEdit',
+      'view@^.^.^': 'chplVersionsEdit',
     },
     data: {
       title: 'CHPL Developers - Edit Version',
@@ -146,6 +112,13 @@ const states = [
       title: 'CHPL Developers - Merge Version',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
+    },
   }, {
     name: 'organizations.developers.developer.product.version.split',
     url: '/split',
@@ -155,6 +128,13 @@ const states = [
     data: {
       title: 'CHPL Developers - Split Version',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    },
+    resolve: {
+      developer: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getDeveloperHierarchy($transition$.params().id);
+      },
     },
   }, {
     name: 'organizations.onc-acbs',
