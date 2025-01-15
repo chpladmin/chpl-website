@@ -4,10 +4,6 @@
     grid-template-columns: 1fr 2fr;
 }
 
-.products__products-header-item--last {
-    justify-self: end;
-}
-
 .products__product {
     border: 1px solid var(--grey);
     border-radius: 8px;

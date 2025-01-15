@@ -20,6 +20,7 @@ const lookup = {
     'root.owner.address',
     'root.owner.contact',
   ],
+  'root.creationDate': { message: () => undefined },
   'root.contact': { message: () => 'Contact changes' },
   'root.contact.contactId': { message: () => undefined },
   'root.contact.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
@@ -50,6 +51,7 @@ const lookup = {
   'root.owner.website': { message: () => undefined },
   'root.ownerHistory': { message: compareOwnerHistory },
   'root.productVersions': { message: () => undefined },
+  'root.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version Name') },
 };
 
 const compareProduct = (prev, curr) => compareObject(prev, curr, lookup);

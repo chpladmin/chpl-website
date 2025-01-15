@@ -79,11 +79,11 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.5.0",
     "@testing-library/webdriverio": "^3.2.1",
-    "@wdio/cli": "^8.36.1",
-    "@wdio/jasmine-framework": "^8.36.1",
-    "@wdio/junit-reporter": "^8.36.1",
-    "@wdio/local-runner": "^8.36.1",
-    "@wdio/spec-reporter": "^8.36.1",
+    "@wdio/cli": "^9.4.4",
+    "@wdio/jasmine-framework": "^9.4.4",
+    "@wdio/junit-reporter": "^9.4.4",
+    "@wdio/local-runner": "^9.4.4",
+    "@wdio/spec-reporter": "^9.4.4",
     "angular-mocks": "^1.8.3",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^26.6.3",
@@ -144,5 +144,5 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.6.0"
 }
