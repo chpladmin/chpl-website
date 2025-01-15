@@ -97,9 +97,6 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-  rotate: {
-    transform: 'rotate(180deg)',
-  },
 });
 
 const getFriendlyValues = (nc) => ({
@@ -126,7 +123,7 @@ const sortNonconformities = (a, b) => {
   return a.created - b.created;
 };
 
-function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
+function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable, isListing }) {
   const { analytics } = useAnalyticsContext();
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -226,10 +223,16 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
         </Box>
       </AccordionSummary>
       <CardContent>
-        { directReviewsAvailable
+        { directReviewsAvailable && isListing
           && (
             <Typography gutterBottom>
               Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing
+            </Typography>
+          )}
+        { directReviewsAvailable && !isListing
+          && (
+            <Typography gutterBottom>
+              Direct Review information is displayed here if a Direct Review has been opened by ONC that applies to this developer
             </Typography>
           )}
         { !directReviewsAvailable
@@ -286,11 +289,11 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                       { getDataDisplay('Developer Associated Listings',
                         <>
                           {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                           && (
-                             <Typography>
-                               None
-                             </Typography>
-                           )}
+                            && (
+                              <Typography>
+                                None
+                              </Typography>
+                            )}
                           { nc.developerAssociatedListings?.length > 0
                             && (
                               <List>
@@ -332,4 +335,9 @@ export default ChplDirectReviews;
 ChplDirectReviews.propTypes = {
   directReviews: arrayOf(directReviewPropType).isRequired,
   directReviewsAvailable: bool.isRequired,
+  isListing: bool,
+};
+
+ChplDirectReviews.defaultProps = {
+  isListing: true,
 };

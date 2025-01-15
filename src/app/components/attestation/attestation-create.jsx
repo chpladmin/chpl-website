@@ -5,16 +5,15 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { func } from 'prop-types';
 
 import ChplAttestationWizard from './attestation-wizard';
 
 import { useFetchAttestationForm } from 'api/attestations';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { useFetchAttestations } from 'api/developer';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
-import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -22,11 +21,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationCreate(props) {
-  const $state = getAngularService('$state');
-  const { analytics } = useAnalyticsContext();
+function ChplAttestationCreate({ dispatch }) {
+  const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
-  const { developer } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [changeRequestType, setChangeRequestType] = useState({});
   const [form, setForm] = useState({});
@@ -62,7 +59,7 @@ function ChplAttestationCreate(props) {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'close':
-        $state.go('organizations.developers.developer', { id: developer.id });
+        dispatch('cancel');
         break;
       case 'stage':
         setStage(payload);
@@ -99,16 +96,8 @@ function ChplAttestationCreate(props) {
     }
   };
 
-  const analyticsData = {
-    analytics: {
-      ...analytics,
-      category: 'Developer',
-      label: developer.name,
-    },
-  };
-
   return (
-    <AnalyticsContext.Provider value={analyticsData}>
+    <>
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
           Submit Attestations
@@ -134,12 +123,12 @@ function ChplAttestationCreate(props) {
         period={period}
         stage={stage}
       />
-    </AnalyticsContext.Provider>
+    </>
   );
 }
 
 export default ChplAttestationCreate;
 
 ChplAttestationCreate.propTypes = {
-  developer: developerPropType.isRequired,
+  dispatch: func.isRequired,
 };
