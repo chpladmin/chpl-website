@@ -234,42 +234,22 @@ const SurveillanceEditComponent = {
     }
 
     save() {
-      if (this.workType === 'initiate') {
-        this.surveillance.certifiedProduct.edition = this.surveillance.certifiedProduct.edition?.name;
-        this.networkService.initiateSurveillance(this.surveillance)
-          .then((response) => {
-            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-              this.close({ $value: response });
-            } else {
-              this.errorMessages = [response];
-            }
-          }, (error) => {
-            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-              this.errorMessages = error.data.errorMessages;
-            } else if (error.data.error) {
-              this.errorMessages = [error.data.error];
-            } else {
-              this.errorMessages = [error.statusText];
-            }
-          });
-      } else if (this.workType === 'edit') {
-        this.networkService.updateSurveillance(this.surveillance)
-          .then((response) => {
-            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-              this.close({ $value: response });
-            } else {
-              this.errorMessages = [response];
-            }
-          }, (error) => {
-            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-              this.errorMessages = error.data.errorMessages;
-            } else if (error.data.error) {
-              this.errorMessages = [error.data.error];
-            } else {
-              this.errorMessages = [error.statusText];
-            }
-          });
-      }
+      this.networkService.updateSurveillance(this.surveillance)
+        .then((response) => {
+          if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+            this.close({ $value: response });
+          } else {
+            this.errorMessages = [response];
+          }
+        }, (error) => {
+          if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+            this.errorMessages = error.data.errorMessages;
+          } else if (error.data.error) {
+            this.errorMessages = [error.data.error];
+          } else {
+            this.errorMessages = [error.statusText];
+          }
+        });
     }
   },
 };
