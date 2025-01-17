@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '8px',
     gridTemplateColumns: '1fr',
+    padding: '16px',
   },
 });
 
@@ -20,15 +21,19 @@ function ChplForgotPassword({ uuid }) {
   const classes = useStyles();
 
   return (
-    <Container className={classes.content}>
-      <Typography variant="h1">
-        Forgot Password
-      </Typography>
-      <ChplCognitoLogin
-        state="RESETFORGOTTENPASSWORD"
-        uuid={uuid}
-      />
-    </Container>
+    <>
+      <Container maxWidth="xs" className={classes.content}>
+        <Typography variant="h1">
+          Forgot Password
+        </Typography>
+      </Container>
+      <Container maxWidth="xs">
+        <ChplCognitoLogin
+          state="RESETFORGOTTENPASSWORD"
+          uuid={uuid}
+        />
+      </Container>
+    </>
   );
 }
 

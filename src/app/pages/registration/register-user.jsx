@@ -45,7 +45,7 @@ function ChplRegisterUser({ hash }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [state, setState] = useState('login');
+  const [state, setState] = useState('create');
   const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
   const { mutate: authorizeSsoUser } = usePostAuthorizeUser();
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
@@ -128,6 +128,25 @@ function ChplRegisterUser({ hash }) {
 
   const getState = () => {
     switch (state) {
+      case 'create':
+        return (
+          <>
+            <ChplCognitoUserCreate dispatch={handleDispatch} />
+            <Box className={classes.cardFooter}>
+              <Typography>
+                Have an account?
+              </Typography>
+              <Button
+                color="primary"
+                variant="outlined"
+                size="small"
+                onClick={() => setState('login')} // Switch to login state
+              >
+                Log in to your existing account
+              </Button>
+            </Box>
+          </>
+        );
       case 'login':
         return (
           <>
@@ -144,32 +163,14 @@ function ChplRegisterUser({ hash }) {
                 color="primary"
                 variant="outlined"
                 size="small"
-                onClick={() => setState('create')}
+                onClick={() => setState('create')} // Switch to login state
               >
                 Create a new account
               </Button>
             </Box>
           </>
         );
-      case 'create':
-        return (
-          <>
-            <ChplCognitoUserCreate dispatch={handleDispatch} />
-            <Box className={classes.cardFooter}>
-              <Typography>
-                Have an account?
-              </Typography>
-              <Button
-                color="primary"
-                variant="outlined"
-                size="small"
-                onClick={() => setState('cognito-login')}
-              >
-                Log in to your existing account
-              </Button>
-            </Box>
-          </>
-        );
+
       default:
         console.error(`No state matches ${state}`);
         return null;
