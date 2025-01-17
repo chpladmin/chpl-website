@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardContent,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { func, string } from 'prop-types';
@@ -79,8 +80,13 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
           event: 'Confirm New Password',
           category: 'Authentication',
         });
-        enqueueSnackbar(body, { variant: 'success' });
-        dispatch({ action: 'loggedOut' });
+        enqueueSnackbar(body, {
+          variant: 'success',
+          onClose: () => {
+            dispatch({ action: 'loggedOut' });
+            window.location.href = '/#/login'; // Redirect using window.location.href
+          },
+        });
       },
       onError: (error) => {
         console.error(error);
@@ -124,6 +130,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
     <Card>
       <CardHeader className={classes.loginHeader} title="Reset forgotten password" />
       <CardContent className={classes.grid}>
+        <Typography>Choose a strong, unique password that youll easily remember, making sure it’s different from your previous one. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.</Typography>
         <ChplTextField
           type="password"
           id="new-password"
@@ -142,13 +149,13 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
           value={strength}
         />
         {passwordMessages.length > 0
-         && (
-           <ul>
-             {passwordMessages.map((msg) => (
-               <li key={msg}>{msg}</li>
-             ))}
-           </ul>
-         )}
+          && (
+            <ul>
+              {passwordMessages.map((msg) => (
+                <li key={msg}>{msg}</li>
+              ))}
+            </ul>
+          )}
         <ChplTextField
           type="password"
           id="password-verification"
