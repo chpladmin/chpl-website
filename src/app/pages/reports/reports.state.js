@@ -16,22 +16,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
-  name: 'reports.announcements',
-  url: '/announcements',
-  component: 'chplReportsAnnouncements',
-  data: {
-    title: 'CHPL Activity - Announcements',
-    roles: ['chpl-admin', 'chpl-onc'],
-  },
-}, {
-  name: 'reports.api-keys',
-  url: '/api-keys',
-  component: 'chplReportsApiKeys',
-  data: {
-    title: 'CHPL Activity - Api Key Management',
-    roles: ['chpl-admin', 'chpl-onc'],
-  },
-}, {
   name: 'reports.products',
   url: '/products',
   component: 'chplReportsProducts',
@@ -44,11 +28,6 @@ const states = [{
     title: 'CHPL Activity - Questionable Activity',
     roles: ['chpl-admin', 'chpl-onc'],
   },
-}, {
-  name: 'reports.versions',
-  url: '/versions',
-  component: 'chplReportsVersions',
-  data: { title: 'CHPL Activity - Versions' },
 }];
 
 function reportsStatesConfig($stateProvider) {

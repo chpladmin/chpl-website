@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -31,8 +31,12 @@ import { compareDeveloper } from 'components/activity/services/developers.servic
 import { ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { developer as developerPropType } from 'shared/prop-types';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  DeveloperContext,
+  FlagContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -189,33 +193,28 @@ function ChplDeveloperView(props) {
     canEdit,
     canJoin,
     canSplit,
-    developer: initialDeveloper,
     dispatch,
     isSplitting,
   } = props;
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
+  const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
-  const [developer, setDeveloper] = useState({});
   const classes = useStyles();
-
-  useEffect(() => {
-    setDeveloper(initialDeveloper);
-  }, [initialDeveloper]);
 
   const can = (action) => {
     if (action === 'edit') {
-      return canEdit
+      return canEdit && !isSplitting
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses)) // allowed for ACB iff Developer is "Active"
           || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
-      return canJoin
+      return canJoin && !isSplitting
         && hasAnyRole(['chpl-admin', 'chpl-onc']); // always allowed as ADMIN/ONC
     }
     if (action === 'split') {
-      return canSplit
+      return canSplit && !isSplitting
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses))); // allowed for ACB iff Developer is "Active"
     }
@@ -409,10 +408,9 @@ function ChplDeveloperView(props) {
 export default ChplDeveloperView;
 
 ChplDeveloperView.propTypes = {
-  canEdit: bool.isRequired,
-  canJoin: bool.isRequired,
-  canSplit: bool.isRequired,
-  developer: developerPropType.isRequired,
+  canEdit: func.isRequired,
+  canJoin: func.isRequired,
+  canSplit: func.isRequired,
   dispatch: func.isRequired,
   isSplitting: bool.isRequired,
 };
