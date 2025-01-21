@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogContent,
   IconButton,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -109,68 +108,70 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
             </Typography>
             { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
               && (
-                <TableContainer component={Paper}>
-                  <Table
-                    aria-label="Developer Attestations information"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Attestation Period</TableCell>
-                        <TableCell>Status</TableCell>
-                        { canSeeAttestationData()
-                          && (
-                            <TableCell>
-                              <span className="sr-only">View Details</span>
-                            </TableCell>
-                          )}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      { attestations
-                        .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
-                        .map((item) => (
-                          <TableRow key={item.id ?? item.attestationPeriod.id}>
-                            <TableCell>
-                              { getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                              {' '}
-                              to
-                              {' '}
-                              { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                            </TableCell>
-                            <TableCell>
-                              { item.statusText }
-                            </TableCell>
-                            { canSeeAttestationData()
-                              && (
-                                <TableCell>
-                                  { item.status === 'ATTESTATIONS_SUBMITTED'
-                                    ? (
-                                      <IconButton
-                                        color="primary"
-                                        variant="contained"
-                                        onClick={() => viewAttestations(item)}
-                                        aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
-                                      >
-                                        <VisibilityIcon color="primary" />
-                                      </IconButton>
-                                    ) : (
-                                      <IconButton
-                                        color="primary"
-                                        variant="contained"
-                                        onClick={() => setExceptionPeriod(item.attestationPeriod)}
-                                        aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
-                                        disabled={!canCreateException}
-                                      >
-                                        <AddIcon color="primary" />
-                                      </IconButton>
-                                    )}
-                                </TableCell>
-                              )}
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                <Card>
+                  <TableContainer>
+                    <Table
+                      aria-label="Developer Attestations information"
+                    >
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Attestation Period</TableCell>
+                          <TableCell>Status</TableCell>
+                          { canSeeAttestationData()
+                            && (
+                              <TableCell>
+                                <span className="sr-only">View Details</span>
+                              </TableCell>
+                            )}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        { attestations
+                          .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
+                          .map((item) => (
+                            <TableRow key={item.id ?? item.attestationPeriod.id}>
+                              <TableCell>
+                                { getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                                {' '}
+                                to
+                                {' '}
+                                { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                              </TableCell>
+                              <TableCell>
+                                { item.statusText }
+                              </TableCell>
+                              { canSeeAttestationData()
+                                && (
+                                  <TableCell>
+                                    { item.status === 'ATTESTATIONS_SUBMITTED'
+                                      ? (
+                                        <IconButton
+                                          color="primary"
+                                          variant="contained"
+                                          onClick={() => viewAttestations(item)}
+                                          aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
+                                        >
+                                          <VisibilityIcon color="primary" />
+                                        </IconButton>
+                                      ) : (
+                                        <IconButton
+                                          color="primary"
+                                          variant="contained"
+                                          onClick={() => setExceptionPeriod(item.attestationPeriod)}
+                                          aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
+                                          disabled={!canCreateException}
+                                        >
+                                          <AddIcon color="primary" />
+                                        </IconButton>
+                                      )}
+                                  </TableCell>
+                                )}
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Card>
               )}
           </>
           { exceptionPeriod

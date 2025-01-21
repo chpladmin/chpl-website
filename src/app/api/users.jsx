@@ -12,9 +12,19 @@ const usePostCreateCognitoInvitedUser = () => {
   return useMutation(async (data) => axios.post('users', data));
 };
 
+const usePostCreateInvitation = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('users/invitation', data));
+};
+
 const usePostCreateInvitedUser = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('users/create', data));
+};
+
+const usePostCreateOldInvitation = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('users/invite', data));
 };
 
 const usePutUser = () => {
@@ -40,7 +50,9 @@ const usePutCognitoUser = () => {
 export {
   usePostAuthorizeUser,
   usePostCreateCognitoInvitedUser,
+  usePostCreateInvitation,
   usePostCreateInvitedUser,
+  usePostCreateOldInvitation,
   usePutCognitoUser,
   usePutUser,
 };

@@ -15,12 +15,12 @@ import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
 import { compareDeveloper } from './services/developers.service';
+import { compareProduct } from './services/products.service';
+import { compareVersion } from './services/versions.service';
 
 import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareListing } from 'pages/listing/history/listings.service';
-import { compareProduct } from 'pages/reports/products/products.service';
-import { compareVersion } from 'pages/reports/versions/versions.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({

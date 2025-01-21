@@ -23,7 +23,7 @@ import { useFetchAnnouncementsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplSortableHeaders } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
 
@@ -61,6 +61,7 @@ const useStyles = makeStyles({
 
 function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }) {
   const { append, display, hide } = useContext(BreadcrumbContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [announcement, setAnnouncement] = useState(undefined);
   const [announcements, setAnnouncements] = useState([]);
   const classes = useStyles();
@@ -186,15 +187,17 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                   fetch={useFetchAnnouncementsActivity}
                   title="Announcements"
                 />
-                <Button
-                  color="primary"
-                  variant="contained"
-                  id="add-new-announcement"
-                  onClick={() => handleBreadcrumbs({ action: 'add' })}
-                  endIcon={<AddIcon />}
-                >
-                  Add
-                </Button>
+                { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    id="add-new-announcement"
+                    onClick={() => handleBreadcrumbs({ action: 'add' })}
+                    endIcon={<AddIcon />}
+                  >
+                    Add
+                  </Button>
+                )}
               </div>
               { (announcements.length === 0)
                 && (
@@ -209,7 +212,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                       aria-label="Announcements table"
                     >
                       <ChplSortableHeaders
-                        headers={headers}
+                        headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
                         onTableSort={() => {}}
                         orderBy="currentStatusChangeDate"
                         order="asc"
@@ -230,16 +233,19 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                               <TableCell>
                                 { item.isPublic ? 'Yes' : 'No' }
                               </TableCell>
-                              <TableCell align="right">
-                                <Button
-                                  onClick={() => handleBreadcrumbs({ action: 'edit', payload: item })}
-                                  variant="contained"
-                                  color="secondary"
-                                  endIcon={<EditOutlinedIcon />}
-                                >
-                                  Edit
-                                </Button>
-                              </TableCell>
+                              { hasAnyRole(['chpl-admin', 'chpl-onc'])
+                                && (
+                                  <TableCell align="right">
+                                    <Button
+                                      onClick={() => handleBreadcrumbs({ action: 'edit', payload: item })}
+                                      variant="contained"
+                                      color="secondary"
+                                      endIcon={<EditOutlinedIcon />}
+                                    >
+                                      Edit
+                                    </Button>
+                                  </TableCell>
+                                )}
                             </TableRow>
                           ))}
                       </TableBody>

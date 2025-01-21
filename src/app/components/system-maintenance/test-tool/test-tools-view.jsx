@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Paper,
@@ -16,6 +16,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { testTool as testToolPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
 });
 
 function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
+  const { hasAnyRole } = useContext(UserContext);
   const [testTools, setTestTools] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
@@ -65,23 +67,25 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
 
   return (
     <>
-      <div className={classes.tableResultsHeaderContainer}>
-        <Button
-          onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-test-tool"
-          variant="contained"
-          color="primary"
-          endIcon={<AddIcon />}
-        >
-          Add
-        </Button>
-      </div>
+      { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+        <div className={classes.tableResultsHeaderContainer}>
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-test-tool"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        </div>
+      )}
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Test Tools table"
         >
           <ChplSortableHeaders
-            headers={headers}
+            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
@@ -110,17 +114,19 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                   <TableCell>
                     { item.criteriaDisplay }
                   </TableCell>
-                  <TableCell align="right">
-                    <Button
-                      onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-test-tool-${item.value}`}
-                      variant="contained"
-                      color="secondary"
-                      endIcon={<EditOutlinedIcon />}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
+                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                    <TableCell align="right">
+                      <Button
+                        onClick={() => dispatch({ action: 'edit', payload: item })}
+                        id={`edit-test-tool-${item.value}`}
+                        variant="contained"
+                        color="secondary"
+                        endIcon={<EditOutlinedIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>

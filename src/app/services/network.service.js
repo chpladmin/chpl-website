@@ -1,17 +1,10 @@
 export default class NetworkService {
-  constructor($http, $log, $q, $rootScope, API) {
+  constructor($http, $q, API) {
     'ngInject';
 
     this.$http = $http;
-    this.$log = $log;
     this.$q = $q;
-    this.$rootScope = $rootScope;
     this.API = API;
-    this.store = {
-      activity: {
-        types: {},
-      },
-    };
   }
 
   authorizeUser(userAuthorization, userId) {
@@ -34,20 +27,12 @@ export default class NetworkService {
     return this.apiPOST('/surveillance-report/annual', report);
   }
 
-  createComplaint(complaint) {
-    return this.apiPOST('/complaints', complaint);
-  }
-
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
 
   deleteAnnualSurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/annual/${id}`);
-  }
-
-  deleteComplaint(complaintId) {
-    return this.apiDELETE(`/complaints/${complaintId}`);
   }
 
   deleteQuarterlySurveillanceReport(id) {
@@ -72,50 +57,12 @@ export default class NetworkService {
     return this.apiGET(`/surveillance-report/export/quarterly/${reportId}`);
   }
 
-  getAcbActivity(activityRange) {
-    const call = '/activity/acbs';
-    return this.getActivity(call, activityRange);
-  }
-
-  getAcb(id) {
-    return this.apiGET(`/acbs/${id}`);
-  }
-
   getAcbs(editable) {
     return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
   }
 
   getAccessibilityStandards() {
     return this.apiGET('/accessibility-standards');
-  }
-
-  getActivityMetadata(key, options) {
-    let call = `/activity/metadata/${key}`;
-    const params = [];
-    const headerOptions = {};
-    if (options && options.ignoreLoadingBar) {
-      headerOptions.ignoreLoadingBar = true;
-    }
-    if (options && options.startDate) {
-      params.push(`start=${options.startDate.getTime()}`);
-    }
-    if (options && options.endDate) {
-      params.push(`end=${options.endDate.getTime()}`);
-    }
-    if (options && options.pageNum) {
-      params.push(`pageNum=${options.pageNum}`);
-    }
-    if (options && options.pageSize) {
-      params.push(`pageSize=${options.pageSize}`);
-    }
-    if (params.length > 0) {
-      call += `?${params.join('&')}`;
-    }
-    return this.apiGET(call, headerOptions);
-  }
-
-  getActivityById(id, options = {}) {
-    return this.apiGET(`/activity/${id}`, options);
   }
 
   getAgeRanges() {
@@ -141,53 +88,12 @@ export default class NetworkService {
     return this.apiGET(`/surveillance-report/annual/${reportId}`);
   }
 
-  getApiDocumentationDate() {
-    return this.apiGET('/files/api_documentation/details');
-  }
-
-  getApiUsers(includeDeleted) {
-    if (includeDeleted) {
-      return this.apiGET('/key?includeDeleted=true');
-    }
-    return this.apiGET('/key?includeDeleted=false');
-  }
-
-  getAtl(id) {
-    return this.apiGET(`/atls/${id}`);
-  }
-
-  getAtlActivity(activityRange) {
-    const call = '/activity/atls';
-    return this.getActivity(call, activityRange);
-  }
-
   getAtls(editable) {
     return this.apiGET(`/atls?editable=${editable}`, { forceReload: true });
   }
 
-  getCertBodies() {
-    return this.apiGET('/data/certification_bodies');
-  }
-
-  getCertificationStatuses() {
-    return this.apiGET('/data/certification_statuses');
-  }
-
-  getCertifiedProductActivity(activityRange) {
-    const call = '/activity/certified_products';
-    return this.getActivity(call, activityRange);
-  }
-
-  getChangeRequests() {
-    return this.apiGET('/change-requests');
-  }
-
   getCodeSets() {
     return this.apiGET('/code-sets');
-  }
-
-  getCognitoUser(ssoUserId) {
-    return this.apiGET(`/users/${ssoUserId}`);
   }
 
   getCollection(type) {
@@ -211,25 +117,12 @@ export default class NetworkService {
     return this.apiGET(`/developers/${id}`);
   }
 
-  getDeveloperActivity(activityRange) {
-    const call = '/activity/developers';
-    return this.getActivity(call, activityRange);
-  }
-
   getDeveloperHierarchy(id) {
     return this.apiGET(`/developers/${id}/hierarchy`);
   }
 
   getDevelopers() {
     return this.apiGET('/developers');
-  }
-
-  getDirectReviews(id) {
-    return this.apiGET(`/developers/${id}/direct-reviews`, { forceReload: true });
-  }
-
-  getEditions() {
-    return this.apiGET('/data/certification_editions');
   }
 
   getEducation() {
@@ -240,10 +133,6 @@ export default class NetworkService {
     return this.apiGET('/functionalities-tested');
   }
 
-  getIcsFamily(id) {
-    return this.apiGET(`/certified_products/${id}/ics_relationships`);
-  }
-
   getListing(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}/details`, { forceReload });
   }
@@ -252,12 +141,12 @@ export default class NetworkService {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
   }
 
-  getMeasures() {
-    return this.apiGET('/data/measures');
-  }
-
   getMeasureTypes() {
     return this.apiGET('/data/measure-types');
+  }
+
+  getMeasures() {
+    return this.apiGET('/data/measures');
   }
 
   getNonconformityStatisticsCount() {
@@ -272,17 +161,8 @@ export default class NetworkService {
     return this.apiGET(`/listings/pending/${id}`);
   }
 
-  getPractices() {
-    return this.apiGET('/data/practice_types');
-  }
-
   getProduct(id) {
     return this.apiGET(`/products/${id}`);
-  }
-
-  getProductActivity(activityRange) {
-    const call = '/activity/products';
-    return this.getActivity(call, activityRange);
   }
 
   getProductsByDeveloper(developerId) {
@@ -325,45 +205,8 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}`);
   }
 
-  getSingleDeveloperActivityMetadata(id, options) {
-    let url = `/activity/metadata/developers/${id}`;
-    if (options && options.end) {
-      url += `?end=${options.end}`;
-    }
-    return this.apiGET(url);
-  }
-
-  getSingleListingActivityMetadata(id, options) {
-    let url = `/activity/metadata/listings/${id}`;
-    if (options && options.end) {
-      url += `?end=${options.end}`;
-    }
-    return this.apiGET(url);
-  }
-
-  getSingleProductActivityMetadata(id, options) {
-    let url = `/activity/metadata/products/${id}`;
-    if (options && options.end) {
-      url += `?end=${options.end}`;
-    }
-    return this.apiGET(url);
-  }
-
-  getSingleVersionActivityMetadata(id, options) {
-    let url = `/activity/metadata/versions/${id}`;
-    if (options && options.end) {
-      url += `?end=${options.end}`;
-    }
-    return this.apiGET(url);
-  }
-
   getStandards() {
     return this.apiGET('/standards');
-  }
-
-  getSurveillanceActivityReport(range) {
-    const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
-    return this.apiGET(url);
   }
 
   getSurveillanceLookups() {
@@ -403,16 +246,16 @@ export default class NetworkService {
     return this.apiGET('/svaps');
   }
 
+  getSystemStatus() {
+    return this.$http.get('/rest/system-status');
+  }
+
   getTargetedUsers() {
     return this.apiGET('/data/targeted_users');
   }
 
   getTestData() {
     return this.apiGET('/data/test_data');
-  }
-
-  getTestTools() {
-    return this.apiGET('/test-tools');
   }
 
   getTestProcedures() {
@@ -423,12 +266,12 @@ export default class NetworkService {
     return this.apiGET('/data/test_standards');
   }
 
-  getUcdProcesses() {
-    return this.apiGET('/ucd-processes');
+  getTestTools() {
+    return this.apiGET('/test-tools');
   }
 
-  getUploadTemplateVersions() {
-    return this.apiGET('/data/upload_template_versions');
+  getUcdProcesses() {
+    return this.apiGET('/ucd-processes');
   }
 
   getUserById(id) {
@@ -442,20 +285,8 @@ export default class NetworkService {
     return this.apiGET('/users');
   }
 
-  getUsersAtDeveloper(id, includeDisabled = false) {
-    if (includeDisabled) {
-      return this.apiGET(`/developers/${id}/users?includeDisabled=true`);
-    }
-    return this.apiGET(`/developers/${id}/users`);
-  }
-
   getVersion(id) {
     return this.apiGET(`/versions/${id}`);
-  }
-
-  getVersionActivity(activityRange) {
-    const call = '/activity/versions';
-    return this.getActivity(call, activityRange);
   }
 
   getVersionsByProduct(productId) {
@@ -470,48 +301,24 @@ export default class NetworkService {
     return this.apiPOST('/surveillance', surveillance);
   }
 
-  inviteUser(invitationObject) {
-    return this.apiPOST('/users/invite', invitationObject);
-  }
-
   inviteCognitoUser(invitationObject) {
     return this.apiPOST('/users/invitation', invitationObject);
+  }
+
+  inviteUser(invitationObject) {
+    return this.apiPOST('/users/invite', invitationObject);
   }
 
   logout(logoutRequest) {
     return this.apiPOST('/auth/logout', logoutRequest);
   }
 
-  mergeDevelopers(mergeDeveloperObject) {
-    return this.apiPOST('/developers/merge', mergeDeveloperObject);
-  }
-
-  rejectPendingCp(cpId) {
-    return this.apiDELETE(`/certified_products/pending/${cpId}`);
-  }
-
   rejectPendingListing(id) {
     return this.apiDELETE(`/listings/pending/${id}`);
   }
 
-  removeUserFromDeveloper(userId, id) {
-    return this.apiDELETE(`/developers/${id}/users/${userId}`);
-  }
-
   requestApiKey(apiKeyRequest) {
     return this.apiPOST('/key/request', apiKeyRequest);
-  }
-
-  revokeApi(user) {
-    return this.apiDELETE(`/key/${user.key}`);
-  }
-
-  search(queryObj) {
-    return this.apiPOST('/search', queryObj);
-  }
-
-  splitDeveloper(developerSplitObject) {
-    return this.apiPOST(`/developers/${developerSplitObject.oldDeveloper.id}/split`, developerSplitObject);
   }
 
   splitProduct(productObject) {
@@ -522,24 +329,12 @@ export default class NetworkService {
     return this.apiPOST(`/versions/${versionObject.oldVersion.id}/split`, versionObject);
   }
 
-  submitChangeRequest(request) {
-    return this.apiPOST('/change-requests', request);
-  }
-
   unimpersonateUser() {
     return this.apiGET('/auth/unimpersonate');
   }
 
   updateAnnualSurveillanceReport(report) {
     return this.apiPUT('/surveillance-report/annual', report);
-  }
-
-  updateChangeRequest(changeRequest) {
-    return this.apiPUT('/change-requests', changeRequest);
-  }
-
-  updateComplaint(complaint) {
-    return this.apiPUT(`/complaints/${complaint.id}`, complaint);
   }
 
   updateCP(cpObject) {
@@ -564,10 +359,6 @@ export default class NetworkService {
 
   updateVersion(versionObject) {
     return this.apiPUT('/versions', versionObject);
-  }
-
-  getSystemStatus() {
-    return this.$http.get('/rest/system-status');
   }
 
   /*
@@ -615,28 +406,6 @@ export default class NetworkService {
         }
         return response;
       }, (response) => this.$q.reject(response));
-  }
-
-  getActivity(call, activityRange) {
-    const EXPIRATION_TIME = 15; // in minutes
-    const params = [];
-    let type = call;
-    if (activityRange.startDate) {
-      params.push(`start=${activityRange.startDate.getTime()}`);
-    }
-    if (activityRange.endDate) {
-      params.push(`end=${activityRange.endDate.getTime()}`);
-    }
-    if (params.length > 0) {
-      type += `?${params.join('&')}`;
-    }
-    if (!this.store.activity.types[type] || !this.store.activity.types[type].data || (Date.now() - this.store.activity.types[type].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-      this.store.activity.types[type] = {
-        data: this.apiGET(type),
-        lastUpdated: Date.now(),
-      };
-    }
-    return this.store.activity.types[type].data;
   }
 }
 
