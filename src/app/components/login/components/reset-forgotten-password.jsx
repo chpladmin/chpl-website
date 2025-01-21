@@ -149,13 +149,13 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
           value={strength}
         />
         {passwordMessages.length > 0
-          && (
-            <ul>
-              {passwordMessages.map((msg) => (
-                <li key={msg}>{msg}</li>
-              ))}
-            </ul>
-          )}
+        && (
+          <ul>
+            {passwordMessages.map((msg) => (
+              <li key={msg}>{msg}</li>
+            ))}
+          </ul>
+        )}
         <ChplTextField
           type="password"
           id="password-verification"

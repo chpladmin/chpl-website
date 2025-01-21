@@ -153,7 +153,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
     <Card>
       <CardHeader className={classes.loginHeader} title="Change password" />
       <CardContent className={classes.grid}>
-        <Typography>Choose a strong, unique password that youll easily remember, making sure it’s different from your previous one. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.</Typography>
+        <Typography>Choose a strong, unique password that you will easily remember. Make sure it’s different from your previous one. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.</Typography>
         <ChplTextField
           type="password"
           id="new-password"
