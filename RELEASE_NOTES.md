@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 13.32.0
+_21 January 2025_
+
+### Features
+* Enable ROLE_ADMIN to edit non-active Listings
+* Enable "read-only" mode of System Maintenance pages
+
+### User Interface Updates
+* Make "Developer" page fully React
+* Display Product information updated UI on Developer Page
+* Display Direct Reviews in React on Developer page
+
+---
+
 ## Version 13.31.0
 _18 December 2024_
 
