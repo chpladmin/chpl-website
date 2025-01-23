@@ -62,7 +62,7 @@ function ChplDecisionSupportInterventionsSearchPage() {
         value: cc.id,
         display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}`,
         longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
-        default: [56, 181, 182].includes(cc.id),
+        default: [210].includes(cc.id),
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
