@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import ChplRiskManagementSearchView from './risk-management-view';
+import ChplDecisionSupportInterventionsSearchView from './decision-support-interventions-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria } from 'api/standards';
@@ -26,7 +26,7 @@ const staticFilters = [
     ],
   }];
 
-function ChplRiskManagementSearchPage() {
+function ChplDecisionSupportInterventionsSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
   const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
@@ -75,7 +75,7 @@ function ChplRiskManagementSearchPage() {
   const data = {
     analytics: {
       ...analytics,
-      category: 'CHPL Search - Risk Management Summary Information',
+      category: 'CHPL Search - Decision Support Interventions',
     },
   };
 
@@ -84,15 +84,15 @@ function ChplRiskManagementSearchPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
-        storageKey="storageKey-riskManagementPage"
+        storageKey="storageKey-decisionSupportInterventionsPage"
       >
-        <ChplRiskManagementSearchView />
+        <ChplDecisionSupportInterventionsSearchView />
       </FilterProvider>
     </AnalyticsContext.Provider>
   );
 }
 
-export default ChplRiskManagementSearchPage;
+export default ChplDecisionSupportInterventionsSearchPage;
 
-ChplRiskManagementSearchPage.propTypes = {
+ChplDecisionSupportInterventionsSearchPage.propTypes = {
 };

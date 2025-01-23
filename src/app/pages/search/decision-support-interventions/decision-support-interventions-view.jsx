@@ -100,8 +100,8 @@ const headers = [
   { text: 'Actions', invisible: true },
 ];
 
-function ChplRiskManagementSearchView() {
-  const storageKey = 'storageKey-riskManagementView';
+function ChplDecisionSupportInterventionsSearchView() {
+  const storageKey = 'storageKey-decisionSupportInterventionsView';
   const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -156,7 +156,7 @@ function ChplRiskManagementSearchView() {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">Risk Management Summary Information</Typography>
+        <Typography variant="h1">Decision Support Interventions</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
@@ -212,7 +212,7 @@ function ChplRiskManagementSearchView() {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="Risk Management Summary Information Search table"
+                      aria-label="Decision Support Interventions Search table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -301,7 +301,7 @@ function ChplRiskManagementSearchView() {
   );
 }
 
-export default ChplRiskManagementSearchView;
+export default ChplDecisionSupportInterventionsSearchView;
 
-ChplRiskManagementSearchView.propTypes = {
+ChplDecisionSupportInterventionsSearchView.propTypes = {
 };

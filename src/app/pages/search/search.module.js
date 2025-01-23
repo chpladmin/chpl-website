@@ -7,7 +7,7 @@ import ChplRealWorldTestingSearchWrapper from './real-world-testing/real-world-t
 import ChplListingsSearchWrapper from './listings/listings-wrapper';
 import ChplSedSearchWrapper from './sed/sed-wrapper';
 import ChplSvapSearchWrapper from './svap/svap-wrapper';
-import ChplRiskManagementSearchWrapper from './risk-management/risk-management-wrapper';
+import ChplDecisionSupportInterventionsSearchWrapper from './decision-support-interventions/decision-support-interventions-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -26,4 +26,4 @@ export default angular
   .component('chplListingsSearchWrapperBridge', reactToAngularComponent(ChplListingsSearchWrapper))
   .component('chplSedSearchWrapperBridge', reactToAngularComponent(ChplSedSearchWrapper))
   .component('chplSvapSearchWrapperBridge', reactToAngularComponent(ChplSvapSearchWrapper))
-  .component('chplRiskManagementSearchWrapperBridge', reactToAngularComponent(ChplRiskManagementSearchWrapper));
+  .component('chplDecisionSupportInterventionsSearchWrapperBridge', reactToAngularComponent(ChplDecisionSupportInterventionsSearchWrapper));

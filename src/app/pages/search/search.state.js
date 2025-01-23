@@ -51,10 +51,10 @@ const states = [
     component: 'chplSvapSearchWrapperBridge',
     data: { title: 'SVAP Information' },
   }, {
-    name: 'shortcut.risk-management-summary-information',
-    url: '/risk-management-summary-information',
-    component: 'chplRiskManagementSearchWrapperBridge',
-    data: { title: 'Risk Management Summary Information' },
+    name: 'shortcut.decision-support-interventions',
+    url: '/decision-support-interventions',
+    component: 'chplDecisionSupportInterventionsSearchWrapperBridge',
+    data: { title: 'Decision Support Interventions' },
   }, 
 ];
 
