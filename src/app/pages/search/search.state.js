@@ -50,7 +50,12 @@ const states = [
     url: '/svap',
     component: 'chplSvapSearchWrapperBridge',
     data: { title: 'SVAP Information' },
-  },
+  }, {
+    name: 'shortcut.risk-management-summary-information',
+    url: '/risk-management-summary-information',
+    component: 'chplRiskManagementSearchWrapperBridge',
+    data: { title: 'Risk Management Summary Information' },
+  }, 
 ];
 
 function searchStatesConfig($stateProvider) {

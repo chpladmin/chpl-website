@@ -9,12 +9,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import Moment from 'react-moment';
 
-import {
-  useFetchApiDocumentationData,
-  useFetchListings,
-} from 'api/search';
+import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -29,7 +25,6 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -94,10 +89,6 @@ const useStyles = makeStyles({
   },
 });
 
-const criteriaLookup = {
-  210: { display: '170.315 (b)(11)', sort: 0 },
-};
-
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -108,33 +99,9 @@ const headers = [
   { text: 'Risk Management Summary Information' },
   { text: 'Actions', invisible: true },
 ];
-  return (
-    <dl>
-      {items.map(({ url, criteria }) => (
-        <React.Fragment key={url}>
-          <dt>{ criteria }</dt>
-          <dd>
-            <ChplLink
-              key={url}
-              href={url}
-              analytics={{
-                ...analytics,
-                event: 'Go to API Documentation',
-                label: chplProductNumber,
-                aggregationName: product.name,
-              }}
-            />
-          </dd>
-        </React.Fragment>
-      ))}
-    </dl>
-  );
-};
 
 function ChplRiskManagementSearchView() {
   const storageKey = 'storageKey-riskManagementView';
-  const API = getAngularService('API');
-  const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -143,7 +110,7 @@ function ChplRiskManagementSearchView() {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const toggledCsvDefaults = ['riskManagement'];
+  const toggledCsvDefaults = ['riskManagementSummaryInformation'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchListings({
@@ -153,8 +120,7 @@ function ChplRiskManagementSearchView() {
     sortDescending,
     query: filterContext.queryString(),
   });
-  const { data: documentation } = useFetchApiDocumentationData();
-
+  
   useEffect(() => {
     if (isLoading) { return; }
     if (isError || !data.results) {
@@ -173,15 +139,6 @@ function ChplRiskManagementSearchView() {
       setPageNumber(0);
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
-
-  useEffect(() => {
-    setDownloadLink(`${API}/files/risk_management?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
-
-  useEffect(() => {
-    if (!documentation?.associatedDate) { return; }
-    setDocumentationDate(documentation.associatedDate);
-  }, [documentation?.associatedDate]);
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
@@ -301,13 +258,9 @@ function ChplRiskManagementSearchView() {
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                               <TableCell className={classes.linkWrap}>
-                                { item.apiDocumentationNode }
-                              </TableCell>
-                              <TableCell className={classes.linkWrap}>
                                 { item.riskManagementSummaryInformationValue
                                   ? (
                                     <dl>
-                                      <dt>170.315 (g)(10)</dt>
                                       <dd>
                                         <ChplLink
                                           href={item.riskManagementSummaryInformationValue}

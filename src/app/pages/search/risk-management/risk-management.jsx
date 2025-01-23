@@ -4,7 +4,7 @@ import ChplRiskManagementSearchView from './risk-management-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria } from 'api/standards';
-import { FilterProvider } from 'components/filter';
+import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
   certificationCriteriaIds,
@@ -15,10 +15,18 @@ import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
-  certificationStatuses,
-];
+  certificationStatuses, {
+    ...defaultFilter,
+    key: 'riskManagementSummaryInformationOptions',
+    display: 'Risk Management Summary Information',
+    operatorKey: 'riskManagementSummaryInformationOperator',
+    values: [
+      { value: 'has_risk_management_summary_information', display: 'Has Risk Management Summary Information URL', default: true },
+      { value: 'no_risk_management_summary_information', display: 'Does not have Risk Management Summary Information URL' },
+    ],
+  }];
 
-function ChplApiDocumentationSearchPage() {
+function ChplRiskManagementSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
   const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
@@ -67,7 +75,7 @@ function ChplApiDocumentationSearchPage() {
   const data = {
     analytics: {
       ...analytics,
-      category: 'CHPL Search - API Information',
+      category: 'CHPL Search - Risk Management Summary Information',
     },
   };
 
@@ -76,15 +84,15 @@ function ChplApiDocumentationSearchPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
-        storageKey="storageKey-apiDocumentationPage"
+        storageKey="storageKey-riskManagementPage"
       >
-        <ChplApiDocumentationSearchView />
+        <ChplRiskManagementSearchView />
       </FilterProvider>
     </AnalyticsContext.Provider>
   );
 }
 
-export default ChplApiDocumentationSearchPage;
+export default ChplRiskManagementSearchPage;
 
-ChplApiDocumentationSearchPage.propTypes = {
+ChplRiskManagementSearchPage.propTypes = {
 };

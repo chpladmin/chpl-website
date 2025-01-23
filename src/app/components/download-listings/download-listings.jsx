@@ -61,6 +61,7 @@ const allHeaders = [
   { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl', group: 'rwt' },
   { headerName: 'SVAP', objectKey: 'svap', group: 'svap' },
   { headerName: 'SVAP Notice URL', objectKey: 'svapNoticeUrl', group: 'svap' },
+  { headerName: 'Risk Management Summary Information ', objectKey: 'riskManagementSummaryInformation' },
 ];
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -79,6 +80,7 @@ const allCategories = [
   { name: 'Practice Type', key: 'practiceTypeName' },
   { name: 'Real World Testing', key: 'rwt' },
   { name: 'SVAP', key: 'svap' },
+  { name: 'Risk Management Summary Information', key: 'riskManagementSummaryInformation' },
 ];
 
 const parseSvapCsv = ({ svaps }, data) => {
@@ -130,6 +132,7 @@ function ChplDownloadListings(props) {
       rwtResultsUrl: listing.rwtResultsUrl || '',
       svap: parseSvapCsv(listing, svaps),
       svapNoticeUrl: listing.svapNoticeUrl || '',
+      riskManagementSummaryInformation: listing.riskManagementSummaryInformation?.value || '',
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 

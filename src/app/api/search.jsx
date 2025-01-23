@@ -35,6 +35,7 @@ const useFetchListings = ({
   query,
 }) => {
   const axios = useAxios();
+  console.log({ query });
   return useQuery(['search/v3', {
     orderBy, pageNumber, pageSize, sortDescending, query,
   }], async () => {
