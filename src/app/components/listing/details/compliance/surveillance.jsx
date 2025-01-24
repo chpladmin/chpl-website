@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import EditIcon from '@material-ui/icons/Edit';
 import { arrayOf, bool, func } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
@@ -24,6 +25,11 @@ import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  editButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    fontSize: 'x-small',
+  },
   infoIcon: {
     color: palette.primary,
   },
@@ -224,16 +230,21 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) 
               </Typography>
             </AccordionSummary>
             <CardContent>
-              { canManageSurveillance()
-                && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: surv })}
-                  >
-                    Edit Surveillance
-                  </Button>
-                )}
               <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
+                { canManageSurveillance()
+                && (
+                  <Box className={classes.editButton}>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      endIcon={<EditIcon fontSize="small" color="primary" />}
+                      onClick={() => dispatch({ action: 'edit', payload: surv })}
+                    >
+                      Edit Surveillance
+                    </Button>
+                  </Box>
+                )}
                 { getDataDisplay('Date Surveillance Ended', <Typography>{ getDisplayDateFormat(surv.endDay) }</Typography>, 'The date surveillance was completed') }
                 { getDataDisplay('Surveillance Type',
                   <Typography>
