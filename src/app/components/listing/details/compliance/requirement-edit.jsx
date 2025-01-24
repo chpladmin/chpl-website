@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  IconButton,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
@@ -14,17 +15,19 @@ import {
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 
 import ChplNonConformityEdit from './non-conformity-edit';
 
+import { ChplTooltip, ChplTextField } from 'components/util';
 import {
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,
   useFetchSurveillanceResultTypes,
 } from 'api/data';
-import { ChplTextField } from 'components/util';
 import { getRequirementDisplay, sortRequirementTypes } from 'services/surveillance.service';
-import { palette, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -55,7 +58,6 @@ function ChplRequirementEdit({
   const [requirementGroupTypes, setRequirementGroupTypes] = useState([]);
   const [requirementTypes, setRequirementTypes] = useState([]);
   const [resultTypes, setResultTypes] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -149,90 +151,103 @@ function ChplRequirementEdit({
   return (
     <>
       <Card>
-        <CardHeader title={'Requirement: ' + getRequirementDisplay(requirement)} />
+        <CardHeader
+          title={`Requirement: ${getRequirementDisplay(requirement)}`}
+          action={(
+            <ChplTooltip placement="left" title="Remove Requirement">
+              <IconButton onClick={remove}>
+                <DeleteIcon color="error" />
+              </IconButton>
+            </ChplTooltip>
+        )}
+        />
         <CardContent>
-          <Button
-            onClick={remove}
-          >
-            Remove Requirement
-          </Button>
-          <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
-            <ChplTextField
-              select
-              id="requirement-group-type"
-              name="requirementGroupType"
-              label="Requirement Type"
-              required
-              value={formik.values.requirementGroupType}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.requirementGroupType && !!formik.errors.requirementGroupType}
-              helperText={formik.touched.requirementGroupType && formik.errors.requirementGroupType}
-            >
-              { requirementGroupTypes.map((type) => (
-                <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
-              ))}
-            </ChplTextField>
-            <ChplTextField
-              select
-              id="requirement-type"
-              name="requirementType"
-              label="Requirement"
-              required={formik.values.requirementGroupType !== 'Other Requirement'}
-              disabled={formik.values.requirementGroupType === 'Other Requirement'}
-              value={formik.values.requirementType}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.requirementType && !!formik.errors.requirementType}
-              helperText={formik.touched.requirementType && formik.errors.requirementType}
-            >
-              { requirementTypes
-                .filter(isRequirementAvailable)
-                .sort(sortRequirementTypes)
-                .map((type) => (
-                  <MenuItem key={type.id} value={type.id}>
-                    {type.status === 'REMOVED' ? 'Removed | ' : ''}
-                    {type.status === 'RETIRED' ? 'Retired | ' : ''}
-                    {type.number ? (`${type.number}: `) : ''}
-                    {type.title}
-                  </MenuItem>
+          <Box display="flex" gridGap="16px" flexWrap="wrap" flexDirection="column" justifyContent="space-between" pb={4}>
+            <Box display="flex" justifyContent="space-between" gridGap="16px" flexDirection="row">
+              <ChplTextField
+                select
+                id="requirement-group-type"
+                name="requirementGroupType"
+                label="Requirement Type"
+                required
+                value={formik.values.requirementGroupType}
+                onChange={handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.requirementGroupType && !!formik.errors.requirementGroupType}
+                helperText={formik.touched.requirementGroupType && formik.errors.requirementGroupType}
+              >
+                { requirementGroupTypes.map((type) => (
+                  <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
                 ))}
-            </ChplTextField>
-            <ChplTextField
-              type="text"
-              id="requirement-type-other"
-              name="requirementTypeOther"
-              label="Requirement Type - Other"
-              required={formik.values.requirementGroupType === 'Other Requirement'}
-              disabled={formik.values.requirementGroupType !== 'Other Requirement'}
-              value={formik.values.requirementTypeOther}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.requirementTypeOther && !!formik.errors.requirementTypeOther}
-              helperText={formik.touched.requirementTypeOther && formik.errors.requirementTypeOther}
-            />
-            <ChplTextField
-              select
-              id="result"
-              name="result"
-              label="Result"
-              required
-              value={formik.values.result}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.result && !!formik.errors.result}
-              helperText={formik.touched.result && formik.errors.result}
-            >
-              { resultTypes.map((type) => (
-                <MenuItem key={type.id} value={type.id}>{type.name}</MenuItem>
-              ))}
-            </ChplTextField>
+              </ChplTextField>
+              <ChplTextField
+                select
+                id="requirement-type"
+                name="requirementType"
+                label="Requirement"
+                required={formik.values.requirementGroupType !== 'Other Requirement'}
+                disabled={formik.values.requirementGroupType === 'Other Requirement'}
+                value={formik.values.requirementType}
+                onChange={handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.requirementType && !!formik.errors.requirementType}
+                helperText={formik.touched.requirementType && formik.errors.requirementType}
+              >
+                { requirementTypes
+                  .filter(isRequirementAvailable)
+                  .sort(sortRequirementTypes)
+                  .map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      {type.status === 'REMOVED' ? 'Removed | ' : ''}
+                      {type.status === 'RETIRED' ? 'Retired | ' : ''}
+                      {type.number ? (`${type.number}: `) : ''}
+                      {type.title}
+                    </MenuItem>
+                  ))}
+              </ChplTextField>
+            </Box>
+            <Box display="flex" justifyContent="space-between" gridGap="16px" flexDirection="row">
+              <ChplTextField
+                type="text"
+                id="requirement-type-other"
+                name="requirementTypeOther"
+                label="Requirement Type - Other"
+                required={formik.values.requirementGroupType === 'Other Requirement'}
+                disabled={formik.values.requirementGroupType !== 'Other Requirement'}
+                value={formik.values.requirementTypeOther}
+                onChange={handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.requirementTypeOther && !!formik.errors.requirementTypeOther}
+                helperText={formik.touched.requirementTypeOther && formik.errors.requirementTypeOther}
+              />
+              <ChplTextField
+                select
+                id="result"
+                name="result"
+                label="Result"
+                required
+                value={formik.values.result}
+                onChange={handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.result && !!formik.errors.result}
+                helperText={formik.touched.result && formik.errors.result}
+              >
+                { resultTypes.map((type) => (
+                  <MenuItem key={type.id} value={type.id}>{type.name}</MenuItem>
+                ))}
+              </ChplTextField>
+            </Box>
+            <Box display="flex" justifyContent="flex-start">
+              <Button
+                onClick={addNc}
+                variant="outlined"
+                color="primary"
+                endIcon={<AddIcon color="primary" />}
+              >
+                Add Non-Conformity
+              </Button>
+            </Box>
           </Box>
-          <Button
-            onClick={addNc}
-          >
-            Add Non-Conformity
-          </Button>
           { nonConformities.map((nc) => (
             <ChplNonConformityEdit
               key={nc.guid}
