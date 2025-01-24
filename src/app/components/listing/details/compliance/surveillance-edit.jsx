@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  Container,
   MenuItem,
   Typography,
   makeStyles,
@@ -14,6 +15,7 @@ import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import AddIcon from '@material-ui/icons/Add';
 
 import ChplRequirementEdit from './requirement-edit';
 
@@ -28,6 +30,11 @@ import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  background: {
+    backgroundColor: palette.background,
+    minHeight: '50vh',
+    paddingBottom: '16px',
+  },
 });
 
 const validationSchema = yup.object({
@@ -163,110 +170,125 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
 
   return (
     <>
-      <Typography>
-        { getSurveillanceTitle({
-          ...surveillance,
-          ...formik.values,
-          requirements,
-        }) }
-      </Typography>
-      <Card>
-        <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
-        <CardContent>
-          <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
-            <Typography>
-              Surveillance ID:
-              {' '}
-              { surveillance.friendlyId }
-            </Typography>
-            <ChplTextField
-              type="date"
-              id="start-day"
-              name="startDay"
-              label="Start Date"
-              required
-              value={formik.values.startDay}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.startDay && !!formik.errors.startDay}
-              helperText={formik.touched.startDay && formik.errors.startDay}
-            />
-            <ChplTextField
-              type="date"
-              id="end-day"
-              name="endDay"
-              label="End Date"
-              value={formik.values.endDay}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.endDay && !!formik.errors.endDay}
-              helperText={formik.touched.endDay && formik.errors.endDay}
-            />
-            <ChplTextField
-              select
-              id="type"
-              name="type"
-              label="Type"
-              required
-              value={formik.values.type}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.type && !!formik.errors.type}
-              helperText={formik.touched.type && formik.errors.type}
-            >
-              { surveillanceTypes.map((type) => (
-                <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
-              ))}
-            </ChplTextField>
-            <ChplTextField
-              type="number"
-              id="randomized-sites-used"
-              name="randomizedSitesUsed"
-              label="Randomized Sites Used"
-              required={formik.values.type === 'Randomized'}
-              disabled={formik.values.type !== 'Randomized'}
-              value={formik.values.randomizedSitesUsed}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.randomizedSitesUsed && !!formik.errors.randomizedSitesUsed}
-              helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
-            />
-          </Box>
-          <Button
-            onClick={addReq}
-          >
-            Add Requirement
-          </Button>
-          { requirements.map((req) => (
-            <ChplRequirementEdit
-              key={req.guid}
-              requirement={req}
-              dispatch={handleDispatch}
-              guid={req.guid}
-              randomizedSitesUsed={formik.values.randomizedSitesUsed}
-            />
-          ))}
-        </CardContent>
-      </Card>
-      { !!surveillance.id
-        && (
-          <Card>
-            <CardHeader title="Reason for Change" />
-            <CardContent>
-              <ChplTextField
-                id="reason"
-                name="reason"
-                label="Reason For Change"
-                value={formik.values.reason}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.reason && !!formik.errors.reason}
-                helperText={formik.touched.reason && formik.errors.reason}
+      <Container className={classes.pageHeader} maxWidth="md">
+        <Typography variant="h1">
+          { getSurveillanceTitle({
+            ...surveillance,
+            ...formik.values,
+            requirements,
+          }) }
+        </Typography>
+      </Container>
+      <Box pt={4} className={classes.background}>
+        <Container maxWidth="lg">
+          <Box display="flex" gridGap="16px" flexDirection="column">
+            <Card>
+              <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
+              <CardContent>
+                <Box display="flex" gridGap="8px" flexDirection="column" justifyContent="space-between" pb={2}>
+                  <Typography gutterBottom>
+                    <strong>Surveillance ID:</strong>
+                    {' '}
+                    { surveillance.friendlyId }
+                  </Typography>
+                  <Box display="flex" gridGap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
+                    <ChplTextField
+                      type="date"
+                      id="start-day"
+                      name="startDay"
+                      label="Start Date"
+                      required
+                      value={formik.values.startDay}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.startDay && !!formik.errors.startDay}
+                      helperText={formik.touched.startDay && formik.errors.startDay}
+                    />
+                    <ChplTextField
+                      type="date"
+                      id="end-day"
+                      name="endDay"
+                      label="End Date"
+                      value={formik.values.endDay}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.endDay && !!formik.errors.endDay}
+                      helperText={formik.touched.endDay && formik.errors.endDay}
+                    />
+                  </Box>
+                  <Box display="flex" gridGap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
+                    <ChplTextField
+                      select
+                      id="type"
+                      name="type"
+                      label="Type"
+                      required
+                      value={formik.values.type}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.type && !!formik.errors.type}
+                      helperText={formik.touched.type && formik.errors.type}
+                    >
+                      { surveillanceTypes.map((type) => (
+                        <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
+                      ))}
+                    </ChplTextField>
+                    <ChplTextField
+                      type="number"
+                      id="randomized-sites-used"
+                      name="randomizedSitesUsed"
+                      label="Randomized Sites Used"
+                      required={formik.values.type === 'Randomized'}
+                      disabled={formik.values.type !== 'Randomized'}
+                      value={formik.values.randomizedSitesUsed}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.randomizedSitesUsed && !!formik.errors.randomizedSitesUsed}
+                      helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
+                    />
+                  </Box>
+                </Box>
+                <Button
+                  onClick={addReq}
+                  variant="outlined"
+                  color="primary"
+                  endIcon={<AddIcon color="primary" />}
+                >
+                  Add Requirement
+                </Button>
+              </CardContent>
+            </Card>
+            { requirements.map((req) => (
+              <ChplRequirementEdit
+                key={req.guid}
+                requirement={req}
+                dispatch={handleDispatch}
+                guid={req.guid}
+                randomizedSitesUsed={formik.values.randomizedSitesUsed}
               />
-              Reason for Change is required if the Surveillance is being deleted
-            </CardContent>
-          </Card>
-        )}
+            ))}
+            { !!surveillance.id
+            && (
+              <Card>
+                <CardHeader title="Reason for Change" />
+                <CardContent>
+                  <ChplTextField
+                    id="reason"
+                    name="reason"
+                    label="Reason For Change"
+                    value={formik.values.reason}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.reason && !!formik.errors.reason}
+                    helperText={formik.touched.reason && formik.errors.reason}
+                  />
+                  <Typography style={{ marginTop: '4px' }} variant="body2"> Reason for Change is required if the Surveillance is being deleted</Typography>
+                </CardContent>
+              </Card>
+            )}
+          </Box>
+        </Container>
+      </Box>
       <ChplActionBar
         dispatch={handleActionBar}
         canDelete={!!surveillance.id}
