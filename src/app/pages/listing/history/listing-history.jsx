@@ -28,7 +28,7 @@ import {
   useFetchActivities,
   useFetchDeveloperActivitiesMetadata,
   useFetchListingActivityMetadata,
-  useFetchProductActivitiesMetadata,
+  useFetchProductsActivitiesMetadata,
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
 import { ChplDialogTitle } from 'components/util';
@@ -133,7 +133,7 @@ function ChplListingHistory(props) {
     ids: productActivityIds,
     enabled: open,
   });
-  const fetchProductActivitiesMetadata = useFetchProductActivitiesMetadata({
+  const fetchProductsActivitiesMetadata = useFetchProductsActivitiesMetadata({
     products,
     enabled: open,
   });
@@ -171,7 +171,7 @@ function ChplListingHistory(props) {
   }, [fetchProductActivities]);
 
   useEffect(() => {
-    fetchProductActivitiesMetadata.forEach((f) => {
+    fetchProductsActivitiesMetadata.forEach((f) => {
       if (f.isLoading || f.isError || !f.data || evaluatedProducts.includes(f.data.id)) { return; }
       setProductActivityIds((prev) => [
         ...prev,
@@ -179,7 +179,7 @@ function ChplListingHistory(props) {
       ]);
       setEvaluatedProducts((prev) => [...prev, f.data.id]);
     });
-  }, [fetchProductActivitiesMetadata]);
+  }, [fetchProductsActivitiesMetadata]);
 
   /* version activity */
   const [versions, setVersions] = useState([{ id: listing.version.id, end: Date.now() }]);

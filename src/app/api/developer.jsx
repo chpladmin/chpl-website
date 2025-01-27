@@ -2,13 +2,33 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
+const useDeleteUserFromDeveloper = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`developers/${data.id}/users/${data.userId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['developers', 'users']);
+    },
+  });
+};
+
 const useFetchAttestations = ({ developer, isAuthenticated }) => {
   const axios = useAxios();
   return useQuery(['developers/attestations', developer.id], async () => {
     const response = await axios.get(`/developers/${developer.id}/attestations`);
     return response.data;
   }, {
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && !!developer?.id,
+  });
+};
+
+const useFetchDeveloperHierarchy = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['developers/hierarchy', id], async () => {
+    const response = await axios.get(`/developers/${id}/hierarchy`);
+    return response.data;
+  }, {
+    enabled: !!id,
   });
 };
 
@@ -36,11 +56,23 @@ const useFetchDevelopersBySearch = ({
   }, { keepPreviousData: true });
 };
 
+const useFetchDirectReviews = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/direct-reviews', developer?.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/direct-reviews`);
+    return response.data;
+  }, {
+    enabled: !!developer,
+  });
+};
+
 const useFetchInsights = ({ developer }) => {
   const axios = useAxios();
   return useQuery(['developers/insights', developer.id], async () => {
     const response = await axios.get(`/developers/${developer.id}/insights`);
     return response.data;
+  }, {
+    enabled: !!developer,
   });
 };
 
@@ -64,6 +96,17 @@ const useFetchRealWorldTestingResults = ({ developer }) => {
   });
 };
 
+const useFetchUsersAtDeveloper = ({ developer, enabled }) => {
+  const id = developer?.id;
+  const axios = useAxios();
+  return useQuery(['developers', 'users', id], async () => {
+    const response = await axios.get(`developers/${id}/users`);
+    return response.data;
+  }, {
+    enabled: !!id && enabled,
+  });
+};
+
 const usePostAttestationException = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -82,6 +125,7 @@ const usePutDeveloper = () => {
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
+      queryClient.invalidateQueries('developers/hierarchy');
     },
   });
 };
@@ -90,6 +134,18 @@ const usePutJoinDevelopers = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`developers/${data.developer.id}/join`, data)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('developers');
+      queryClient.invalidateQueries('developers/search/v3');
+    },
+  });
+};
+
+const usePostDeveloperSplit = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post(`developers/${data.oldDeveloper.id}/split`, data)
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
@@ -111,15 +167,20 @@ const usePostMessagePreview = () => {
 };
 
 export {
+  useDeleteUserFromDeveloper,
   useFetchAttestations,
+  useFetchDeveloperHierarchy,
   useFetchDevelopers,
   useFetchDevelopersBySearch,
+  useFetchDirectReviews,
   useFetchInsights,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
+  useFetchUsersAtDeveloper,
   usePostAttestationException,
   usePutDeveloper,
   usePutJoinDevelopers,
+  usePostDeveloperSplit,
   usePostMessage,
   usePostMessagePreview,
 };
