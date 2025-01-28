@@ -190,11 +190,14 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
               <CardContent>
                 <Box display="flex" gridGap="8px" flexDirection="column" justifyContent="space-between" pb={2}>
-                  <Typography gutterBottom>
-                    <strong>Surveillance ID:</strong>
-                    {' '}
-                    { surveillance.friendlyId }
-                  </Typography>
+                  { surveillance.id
+                    && (
+                      <Typography gutterBottom>
+                        <strong>Surveillance ID:</strong>
+                        {' '}
+                        { surveillance.friendlyId }
+                      </Typography>
+                    )}
                   <Box display="flex" gridGap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
                     <ChplTextField
                       type="date"
@@ -286,7 +289,9 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
                       error={formik.touched.reason && !!formik.errors.reason}
                       helperText={formik.touched.reason && formik.errors.reason}
                     />
-                    <Typography style={{ marginTop: '4px' }} variant="body2"> Reason for Change is required if the Surveillance is being deleted</Typography>
+                    <Typography style={{ marginTop: '4px' }} variant="body2">
+                      Reason for Change is required if the Surveillance is being deleted
+                    </Typography>
                   </CardContent>
                 </Card>
               )}
