@@ -3,8 +3,8 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import { arrayOf, bool, func } from 'prop-types';
 import PlayCircleFilledWhiteOutlinedIcon from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
+import { arrayOf, bool, func } from 'prop-types';
 
 import ChplDirectReviews from './direct-reviews';
 import ChplSurveillance from './surveillance';

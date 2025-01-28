@@ -11,11 +11,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import AddIcon from '@material-ui/icons/Add';
 
 import ChplRequirementEdit from './requirement-edit';
 
@@ -268,24 +268,24 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               />
             ))}
             { !!surveillance.id
-            && (
-              <Card>
-                <CardHeader title="Reason for Change" />
-                <CardContent>
-                  <ChplTextField
-                    id="reason"
-                    name="reason"
-                    label="Reason For Change"
-                    value={formik.values.reason}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.reason && !!formik.errors.reason}
-                    helperText={formik.touched.reason && formik.errors.reason}
-                  />
-                  <Typography style={{ marginTop: '4px' }} variant="body2"> Reason for Change is required if the Surveillance is being deleted</Typography>
-                </CardContent>
-              </Card>
-            )}
+              && (
+                <Card>
+                  <CardHeader title="Reason for Change" />
+                  <CardContent>
+                    <ChplTextField
+                      id="reason"
+                      name="reason"
+                      label="Reason For Change"
+                      value={formik.values.reason}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.reason && !!formik.errors.reason}
+                      helperText={formik.touched.reason && formik.errors.reason}
+                    />
+                    <Typography style={{ marginTop: '4px' }} variant="body2"> Reason for Change is required if the Surveillance is being deleted</Typography>
+                  </CardContent>
+                </Card>
+              )}
           </Box>
         </Container>
       </Box>

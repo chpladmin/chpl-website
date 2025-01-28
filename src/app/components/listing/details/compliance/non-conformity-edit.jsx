@@ -9,12 +9,12 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
   func, number, object, oneOfType, string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useFetchNonConformityTypes } from 'api/data';
 import { ChplTextField, ChplTooltip } from 'components/util';
@@ -146,33 +146,31 @@ function ChplNonConformityEdit({
                 <DeleteIcon color="error" />
               </IconButton>
             </ChplTooltip>
-        )}
+          )}
         />
         <CardContent>
           <Box display="flex" gridGap="16px" flexDirection="column" justifyContent="space-between" pb={2}>
-            <Box display="flex" gridGap="16px" flexDirection="row">
-              <ChplTextField
-                select
-                id="type"
-                name="type"
-                label="Non-Conformity Type"
-                required
-                value={formik.values.type}
-                onChange={handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.type && !!formik.errors.type}
-                helperText={formik.touched.type && formik.errors.type}
-              >
-                { nonConformityTypes.map((type) => (
-                  <MenuItem key={type.id} value={type.id}>
-                    {type.status === 'REMOVED' ? 'Removed | ' : ''}
-                    {type.status === 'RETIRED' ? 'Retired | ' : ''}
-                    {type.number ? (`${type.number}: `) : ''}
-                    {type.title}
-                  </MenuItem>
-                ))}
-              </ChplTextField>
-            </Box>
+            <ChplTextField
+              select
+              id="type"
+              name="type"
+              label="Non-Conformity Type"
+              required
+              value={formik.values.type}
+              onChange={handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.type && !!formik.errors.type}
+              helperText={formik.touched.type && formik.errors.type}
+            >
+              { nonConformityTypes.map((type) => (
+                <MenuItem key={type.id} value={type.id}>
+                  {type.status === 'REMOVED' ? 'Removed | ' : ''}
+                  {type.status === 'RETIRED' ? 'Retired | ' : ''}
+                  {type.number ? (`${type.number}: `) : ''}
+                  {type.title}
+                </MenuItem>
+              ))}
+            </ChplTextField>
             <Box display="flex" gridGap="16px" flexDirection="row">
               <ChplTextField
                 type="date"
@@ -186,7 +184,6 @@ function ChplNonConformityEdit({
                 error={formik.touched.dateOfDeterminationDay && !!formik.errors.dateOfDeterminationDay}
                 helperText={formik.touched.dateOfDeterminationDay && formik.errors.dateOfDeterminationDay}
               />
-
               <ChplTextField
                 type="date"
                 id="cap-approval-day"
