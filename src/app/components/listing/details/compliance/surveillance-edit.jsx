@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { func } from 'prop-types';
-import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -62,7 +61,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { mutate: remove } = useDeleteSurveillance();
   const { mutate: create } = usePostSurveillance();
   const { mutate: update } = usePutSurveillance();
-  const { enqueueSnackbar } = useSnackbar();
+  const [errors, setErrors] = useState([]);
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   const classes = useStyles();
@@ -90,20 +89,23 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     let payload;
     switch (action) {
       case 'delete':
+        setErrors([]);
         payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
         remove(payload, {
           onSuccess: () => {
             dispatch({ action: 'cancel' });
           },
           onError: (error) => {
-            const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
-            enqueueSnackbar(body, {
-              variant: 'error',
-            });
+            if (error.response.data.error) {
+              setErrors([error.response.data.error]);
+            } else {
+              setErrors(error.response.data.errorMessages);
+            }
           },
         });
         break;
       case 'save':
+        setErrors([]);
         payload = {
           ...surveillance,
           ...formik.values,
@@ -117,10 +119,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
-              const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
-              enqueueSnackbar(body, {
-                variant: 'error',
-              });
+              if (error.response.data.error) {
+                setErrors([error.response.data.error]);
+              } else {
+                setErrors(error.response.data.errorMessages);
+              }
             },
           });
         } else {
@@ -129,10 +132,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
-              const body = error.response.data.error ?? error.response.data.errorMessages.join('; ');
-              enqueueSnackbar(body, {
-                variant: 'error',
-              });
+              if (error.response.data.error) {
+                setErrors([error.response.data.error]);
+              } else {
+                setErrors(error.response.data.errorMessages);
+              }
             },
           });
         }
@@ -293,6 +297,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         dispatch={handleActionBar}
         canDelete={!!surveillance.id}
         isDeleteDisabled={formik.values.reason === ''}
+        errors={errors}
       />
     </>
   );
