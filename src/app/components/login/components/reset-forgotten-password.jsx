@@ -84,7 +84,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
           variant: 'success',
           onClose: () => {
             dispatch({ action: 'loggedOut' });
-            window.location.href = '/#/login'; // Redirect using window.location.href
+            window.location.href = '/#'; // Redirect using window.location.href
           },
         });
       },
