@@ -292,6 +292,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
       <ChplActionBar
         dispatch={handleActionBar}
         canDelete={!!surveillance.id}
+        isDeleteDisabled={formik.values.reason === ''}
       />
     </>
   );
