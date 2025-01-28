@@ -74,7 +74,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
       password: formik.values.newPassword,
     }, {
       onSuccess: () => {
-        const body = 'Your password has been successfully reset';
+        const body = 'Your password has been successfully reset. Please dismiss this message to be redirected to the homepage. Access the administration panel and log in with your new credentials';
         eventTrack({
           ...analytics,
           event: 'Confirm New Password',
