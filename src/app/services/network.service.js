@@ -269,10 +269,7 @@ export default class NetworkService {
     return this.apiGET(`/users/beta/${id}/details`);
   }
 
-  getUsers(includeDisabled = false) {
-    if (includeDisabled) {
-      return this.apiGET('/users?includeDisabled=true');
-    }
+  getUsers() {
     return this.apiGET('/users');
   }
 
