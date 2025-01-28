@@ -1,10 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import {
-  func,
-} from 'prop-types';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import React from 'react';
 import {
   Button,
   ButtonGroup,
@@ -15,11 +9,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { func } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
-import {
-  user as userPropType,
-} from 'shared/prop-types';
+import { user as userPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   content: {
@@ -32,13 +26,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoUserView({ user: initialUser, dispatch }) {
-  const [user, setUser] = useState({});
+function ChplCognitoUserView({ user, dispatch }) {
   const classes = useStyles();
-
-  useEffect(() => {
-    setUser(initialUser);
-  }, [initialUser]);
 
   const edit = () => {
     dispatch('edit', user);
@@ -79,13 +68,6 @@ function ChplCognitoUserView({ user: initialUser, dispatch }) {
           <strong>Status:</strong>
           <br />
           { user.status }
-        </Typography>
-        <Typography gutterBottom>
-          <strong>Account Enabled:</strong>
-          <br />
-          { user.accountEnabled
-            ? <CheckBoxIcon />
-            : <CheckBoxOutlineBlankOutlinedIcon />}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>

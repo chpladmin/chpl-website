@@ -89,8 +89,8 @@ import { clearAuthTokens } from 'axios-jwt';
     }
 
     function getUserId() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc-acb', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-        const token = getToken();
+      const token = getToken();
+      if (token) {
         if (parseJwt(token).Identity) {
           const identity = parseJwt(token).Identity;
           return identity[0];
@@ -124,9 +124,9 @@ import { clearAuthTokens } from 'axios-jwt';
       if (roles.includes('chpl-cms-staff')) {
         roles.push('ROLE_CMS_STAFF');
       }
-      const token = getToken();
-      if (token) {
-        const userRole = parseJwt(token).Authority ? parseJwt(token).Authority : parseJwt(token)['cognito:groups'].filter((grp) => !grp.endsWith('-env'))[0];
+      const user = getCurrentUser();
+      if (user) {
+        const userRole = user.role;
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
@@ -164,9 +164,6 @@ import { clearAuthTokens } from 'axios-jwt';
         if (vals.length > 1) {
           const base64 = vals[1].replace('-', '+').replace('_', '/');
           const user = angular.fromJson($window.atob(base64));
-          if (user['cognito:groups']) {
-            user['cognito:groups'] = user['cognito:groups'].filter((grp) => !grp.endsWith('-env'));
-          }
           return user;
         }
         return {};
