@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => ({
     padding: '16px 32px',
     borderBottom: '6px solid #000d25',
     borderTop: '1px solid #000d25',
+    zIndex: 1000,
   },
   footerText: {
     color: '#fff',
