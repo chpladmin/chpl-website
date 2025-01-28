@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
 } from '@material-ui/core';
 import { arrayOf, bool, func } from 'prop-types';
+import PlayCircleFilledWhiteOutlinedIcon from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
 
 import ChplDirectReviews from './direct-reviews';
 import ChplSurveillance from './surveillance';
@@ -39,11 +41,16 @@ function ChplCompliance({
     <>
       { canManageSurveillance()
         && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-          >
-            Initiate Surveillance
-          </Button>
+          <Box mb={4} display="flex" justifyContent="flex-end">
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              endIcon={<PlayCircleFilledWhiteOutlinedIcon color="primary" />}
+            >
+              Initiate Surveillance
+            </Button>
+          </Box>
         )}
       <ChplSurveillance surveillance={icsSurveillance} ics dispatch={dispatch} />
       <ChplSurveillance surveillance={surveillance} dispatch={dispatch} />
