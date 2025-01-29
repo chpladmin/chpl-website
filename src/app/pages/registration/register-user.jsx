@@ -128,25 +128,6 @@ function ChplRegisterUser({ hash }) {
 
   const getState = () => {
     switch (state) {
-      case 'create':
-        return (
-          <>
-            <ChplCognitoUserCreate dispatch={handleDispatch} />
-            <Box className={classes.cardFooter}>
-              <Typography>
-                Have an account?
-              </Typography>
-              <Button
-                color="primary"
-                variant="outlined"
-                size="small"
-                onClick={() => setState('login')} // Switch to login state
-              >
-                Log in to your existing account
-              </Button>
-            </Box>
-          </>
-        );
       case 'login':
         return (
           <>
@@ -170,7 +151,25 @@ function ChplRegisterUser({ hash }) {
             </Box>
           </>
         );
-
+      case 'create':
+        return (
+          <>
+            <ChplCognitoUserCreate dispatch={handleDispatch} />
+            <Box className={classes.cardFooter}>
+              <Typography>
+                Have an account?
+              </Typography>
+              <Button
+                color="primary"
+                variant="outlined"
+                size="small"
+                onClick={() => setState('login')} // Switch to login state
+              >
+                Log in to your existing account
+              </Button>
+            </Box>
+          </>
+        );
       default:
         console.error(`No state matches ${state}`);
         return null;
