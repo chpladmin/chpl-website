@@ -40,7 +40,7 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
   .filter((e) => !e.eventTypeId || e.eventTypeId === 1)
   .filter((e) => e.eventDay <= jsJoda.LocalDate.now())
   .map((e) => {
-    e.activityDate = parseInt(e.eventDate, 10);
+    e.activityDate = localDateToTimestamp(e.eventDay);
     if (e.eventTypeId && e.eventTypeId === 1) {
       e.change = ['Certification Status became "Active"'];
     } else if (e.certificationStatusName) {
