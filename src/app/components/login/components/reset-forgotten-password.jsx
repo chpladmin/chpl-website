@@ -13,6 +13,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
+import { getAngularService } from 'services/angular-react-helper';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostSetForgottenPassword } from 'api/auth';
@@ -59,6 +60,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
+  const $state = getAngularService('$state');
 
   let formik;
 
@@ -80,11 +82,11 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
           event: 'Confirm New Password',
           category: 'Authentication',
         });
+        $state.go('administration-redirect');
         enqueueSnackbar(body, {
           variant: 'success',
           onClose: () => {
             dispatch({ action: 'loggedOut' });
-            window.location.href = '/#'; // Redirect using window.location.href
           },
         });
       },
