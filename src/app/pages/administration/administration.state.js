@@ -85,9 +85,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
-  name: 'administration-redirect',
-  url:'/#/',
-},{
   name: 'administration.system-maintenance',
   url: '/system-maintenance',
   component: 'chplSystemMaintenanceWrapperBridge',

@@ -59,6 +59,7 @@ function ChplRegisterUser({ hash }) {
   }, [hash]);
 
   handleDispatch = (action, payload) => {
+    let packet;
     switch (action) {
       case 'authorize':
         authorizeSsoUser(hash, {
@@ -84,7 +85,7 @@ function ChplRegisterUser({ hash }) {
         });
         break;
       case 'create': {
-        const packet = {
+        packet = {
           hash,
           user: payload,
         };
@@ -163,7 +164,7 @@ function ChplRegisterUser({ hash }) {
                 color="primary"
                 variant="outlined"
                 size="small"
-                onClick={() => setState('login')} // Switch to login state
+                onClick={() => setState('login')}
               >
                 Log in to your existing account
               </Button>
