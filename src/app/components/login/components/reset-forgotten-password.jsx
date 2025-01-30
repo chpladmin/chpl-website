@@ -13,7 +13,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
-import { getAngularService } from 'services/angular-react-helper';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostSetForgottenPassword } from 'api/auth';
@@ -60,7 +59,6 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
-  const $state = getAngularService('$state');
 
   let formik;
 
@@ -76,22 +74,16 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
       password: formik.values.newPassword,
     }, {
       onSuccess: () => {
-        const body = 'Your password has been successfully reset. Please dismiss this message to be redirected to the homepage. Access the administration panel and log in with your new credentials';
+        const body = 'Your password has been successfully reset. You may log in with your new credentials';
         eventTrack({
           ...analytics,
           event: 'Confirm New Password',
           category: 'Authentication',
         });
-        $state.go('administration-redirect');
-        enqueueSnackbar(body, {
-          variant: 'success',
-          onClose: () => {
-            dispatch({ action: 'loggedOut' });
-          },
-        });
+        enqueueSnackbar(body, { variant: 'success' });
+        dispatch({ action: 'loggedOut' });
       },
       onError: (error) => {
-        console.error(error);
         const body = 'Error. Please check your credentials or contact the administrator';
         enqueueSnackbar(body, { variant: 'error' });
       },
