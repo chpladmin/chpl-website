@@ -79,8 +79,8 @@ const allCategories = [
   { name: 'ONC-ACB', key: 'acb' },
   { name: 'Practice Type', key: 'practiceTypeName' },
   { name: 'Real World Testing', key: 'rwt' },
-  { name: 'SVAP', key: 'svap' },
   { name: 'Risk Management Summary Information', key: 'riskManagementSummaryInformation' },
+  { name: 'SVAP', key: 'svap' },
 ];
 
 const parseSvapCsv = ({ svaps }, data) => {
@@ -132,7 +132,7 @@ function ChplDownloadListings(props) {
       rwtResultsUrl: listing.rwtResultsUrl || '',
       svap: parseSvapCsv(listing, svaps),
       svapNoticeUrl: listing.svapNoticeUrl || '',
-      riskManagementSummaryInformation: listing.riskManagementSummaryInformation?.value || '',
+      riskManagementSummaryInformation: listing.riskManagementSummaryInformation?.value || 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 

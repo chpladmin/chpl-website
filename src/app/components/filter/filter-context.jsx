@@ -146,7 +146,6 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
     }
     return prev;
   });
-
 };
 
 function FilterProvider(props) {
@@ -301,8 +300,6 @@ function FilterProvider(props) {
   const filterData = {
     analytics, dispatch, filters, hasSearched, queryParams, queryString, searchTerm, setSearchTerm,
   };
-
-  console.log(<FilterContext.Provider value={filterData} />);
 
   /* eslint-disable react/jsx-props-no-spreading */
   return <FilterContext.Provider value={filterData} {...props} />;

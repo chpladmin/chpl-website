@@ -31,6 +31,11 @@ const states = [
     component: 'chplDecertifiedProductsSearchWrapperBridge',
     data: { title: 'Decertified Products' },
   }, {
+    name: 'shortcut.decision-support-interventions',
+    url: '/decision-support-interventions',
+    component: 'chplDecisionSupportInterventionsSearchWrapperBridge',
+    data: { title: 'Decision Support Interventions' },
+  }, {
     name: 'shortcut.inactive-certificates',
     url: '/inactive-certificates',
     component: 'chplInactiveCertificatesSearchWrapperBridge',
@@ -50,11 +55,6 @@ const states = [
     url: '/svap',
     component: 'chplSvapSearchWrapperBridge',
     data: { title: 'SVAP Information' },
-  }, {
-    name: 'shortcut.decision-support-interventions',
-    url: '/decision-support-interventions',
-    component: 'chplDecisionSupportInterventionsSearchWrapperBridge',
-    data: { title: 'Decision Support Interventions' },
   }, 
 ];
 

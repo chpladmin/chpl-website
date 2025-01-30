@@ -120,7 +120,7 @@ function ChplDecisionSupportInterventionsSearchView() {
     sortDescending,
     query: filterContext.queryString(),
   });
-  
+
   useEffect(() => {
     if (isLoading) { return; }
     if (isError || !data.results) {
@@ -260,21 +260,17 @@ function ChplDecisionSupportInterventionsSearchView() {
                               <TableCell className={classes.linkWrap}>
                                 { item.riskManagementSummaryInformationValue
                                   ? (
-                                    <dl>
-                                      <dd>
-                                        <ChplLink
-                                          href={item.riskManagementSummaryInformationValue}
-                                          analytics={{
-                                            ...analytics,
-                                            event: 'Go to Risk Management Summary Information',
-                                            label: item.chplProductNumber,
-                                            aggregationName: item.product.name,
-                                          }}
-                                        />
-                                      </dd>
-                                    </dl>
+                                    <ChplLink
+                                      href={item.riskManagementSummaryInformationValue}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Go to Risk Management Summary Information',
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
+                                      }}
+                                    />
                                   ) : (
-                                    <>N/A</>
+                                    <>The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module</>
                                   )}
                               </TableCell>
                               <TableCell>
