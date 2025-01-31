@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
     top: 'auto',
     marginTop: '5%',
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       position: 'relative',
       marginTop: 0,
     },
