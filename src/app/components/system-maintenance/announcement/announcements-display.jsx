@@ -79,7 +79,7 @@ function ChplAnnouncementsDisplay() {
   };
 
   return (
-    <Container className={classes.footerAnnouncement} maxWidth="lg">
+    <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg">
       <Box className={classes.announcementBox} key={currentAnnouncement.id}>
         {currentAnnouncement.title}
         {currentAnnouncement.text ? `: ${currentAnnouncement.text}` : ''}

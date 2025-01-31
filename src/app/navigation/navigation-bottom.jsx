@@ -25,6 +25,10 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
     top: 'auto',
     marginTop: '5%',
+    [theme.breakpoints.up('xs')]: {
+      position: 'relative',
+      marginTop: 0,
+    },
   },
   footerContentContainer: {
     display: 'flex',
@@ -38,6 +42,9 @@ const useStyles = makeStyles(() => ({
   },
   footerText: {
     color: '#fff',
+    '&:hover': {
+      color: '#fff',
+    },
   },
 }));
 function ChplNavigationBottom() {
