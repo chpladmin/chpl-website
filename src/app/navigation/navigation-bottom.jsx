@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  AppBar, Box, Typography, Container,
+  Box, Typography, Container,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -9,16 +9,32 @@ import HHSLogo from '../../assets/images/HHS-White_HiRes.png';
 import USAGovLogo from '../../assets/images/USAgov_logo_2.png';
 import USAGovEspLogo from '../../assets/images/Logo_USAGov_Spanish.png';
 
+import { theme } from 'themes';
 import ChplAnnouncementsDisplay from 'components/system-maintenance/announcement/announcements-display';
 
 const useStyles = makeStyles(() => ({
   footer: {
-    position: 'relative',
+    position: 'fixed',
+    width: '100%',
     backgroundColor: '#001439!important',
-    padding: '16px 32px',
-    borderBottom: '6px solid #000d25',
+    padding: '4px 32px',
     borderTop: '1px solid #000d25',
     zIndex: 1000,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 'auto',
+    marginTop: '5%',
+  },
+  footerContentContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: '4px',
+    [theme.breakpoints.up('xs')]: {
+      flexWrap: 'wrap',
+      gap: '8px',
+    },
   },
   footerText: {
     color: '#fff',
@@ -28,9 +44,11 @@ function ChplNavigationBottom() {
   const classes = useStyles();
   return (
     <>
-      <AppBar className={classes.footer} component="footer">
+
+      <Box className={classes.footer}>
+        <ChplAnnouncementsDisplay />
         <Container maxWidth="lg" disableGutters>
-          <Box display="flex" justifyContent="space-between">
+          <Box className={classes.footerContentContainer}>
             <Box display="flex" flexDirection="column" gridGap={4}>
               <Typography className={classes.footerText} variant="body2">Helpful Links</Typography>
               <Box color="#fff" display="flex" gridGap={2}>
@@ -64,10 +82,9 @@ function ChplNavigationBottom() {
               <Typography className={classes.footerText} variant="body2">Owned By</Typography>
               <Typography className={classes.footerText} variant="body1">The Assistant Secretary for Technology Policy</Typography>
             </Box>
-            <ChplAnnouncementsDisplay />
           </Box>
         </Container>
-      </AppBar>
+      </Box>
     </>
   );
 }
