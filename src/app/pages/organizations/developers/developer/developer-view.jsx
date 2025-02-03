@@ -97,9 +97,6 @@ function ChplDeveloperView({ dispatch }) {
       case 'merge':
         dispatch(`${action}Product`, payload);
         break;
-      case 'editVersion':
-        setState('focusProduct');
-        break;
       default:
         dispatch(action, payload);
     }
@@ -159,7 +156,7 @@ function ChplDeveloperView({ dispatch }) {
             <ChplDirectReviews developer={developer} />
           </>
         )}
-        {(state === 'view' || state === 'focusProduct') && (
+        {state === 'view' && (
           <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
         {(state === 'view' || state === 'editUser') && (

@@ -226,7 +226,10 @@ function ChplProductView({ product, productCount, dispatch }) {
                         Edit Product
                       </MenuItem>
                       <MenuItem
-                        onClick={handleAction('editVersion', { product, version: selectedVersion })}
+                        onClick={handleAction('editVersion', {
+                          version: product.versions.find((v) => v.id === selectedVersion),
+                          productId: product.id,
+                        })}
                         disabled={selectedVersion === 'all'}
                       >
                         Edit Version
