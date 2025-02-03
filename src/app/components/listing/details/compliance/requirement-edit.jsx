@@ -102,13 +102,15 @@ function ChplRequirementEdit({
 
   const handleDispatch = ({ action, payload }) => {
     let updated;
+    let ncs;
     switch (action) {
       case 'remove-nc':
+        ncs = nonConformities.filter((nc) => nc.guid !== payload);
         setNonConformities((prev) => prev.filter((nc) => nc.guid !== payload));
         updated = {
           ...requirement,
           guid,
-          nonconformities: nonConformities,
+          nonconformities: ncs,
         };
         dispatch({ action: 'update-req', payload: updated });
         break;
