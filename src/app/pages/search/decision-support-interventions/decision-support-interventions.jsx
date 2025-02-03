@@ -12,6 +12,7 @@ import {
   certificationStatuses,
 } from 'components/filter/filters';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 
 const staticFilters = [
   certificationDate,
@@ -19,7 +20,8 @@ const staticFilters = [
     ...defaultFilter,
     key: 'riskManagementSummaryInformationOptions',
     display: 'Risk Management Summary Information',
-    operatorKey: 'riskManagementSummaryInformationOperator',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
     values: [
       { value: 'has_risk_management_summary_information', display: 'Has Risk Management Summary Information URL', default: true },
       { value: 'no_risk_management_summary_information', display: 'Does not have Risk Management Summary Information URL' },
