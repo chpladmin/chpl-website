@@ -62,6 +62,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { mutate: create } = usePostSurveillance();
   const { mutate: update } = usePutSurveillance();
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   const classes = useStyles();
@@ -89,13 +90,16 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     let payload;
     switch (action) {
       case 'delete':
+        setIsProcessing(true);
         setErrors([]);
         payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
         remove(payload, {
           onSuccess: () => {
+            setIsProcessing(false);
             dispatch({ action: 'cancel' });
           },
           onError: (error) => {
+            setIsProcessing(false);
             if (error.response.data.error) {
               setErrors([error.response.data.error]);
             } else {
@@ -106,6 +110,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         payload = {
           ...surveillance,
           ...formik.values,
@@ -116,9 +121,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         if (surveillance.id) {
           update(payload, {
             onSuccess: () => {
+              setIsProcessing(false);
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
+              setIsProcessing(false);
               if (error.response.data.error) {
                 setErrors([error.response.data.error]);
               } else {
@@ -129,9 +136,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         } else {
           create(payload, {
             onSuccess: () => {
+              setIsProcessing(false);
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
+              setIsProcessing(false);
               if (error.response.data.error) {
                 setErrors([error.response.data.error]);
               } else {
@@ -304,6 +313,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         canDelete={!!surveillance.id}
         isDeleteDisabled={formik.values.reason === ''}
         errors={errors}
+        isProcessing={isProcessing}
       />
     </>
   );
