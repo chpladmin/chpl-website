@@ -140,7 +140,7 @@ function ChplRequirementEdit({
 
   formik = useFormik({
     initialValues: {
-      requirementGroupType: requirement.requirementType?.requirementGroupType.name ?? '',
+      requirementGroupType: requirement.requirementTypeOther ? 'Other Requirement' : (requirement.requirementType?.requirementGroupType.name ?? ''),
       requirementType: requirement.requirementType?.id ?? '',
       requirementTypeOther: requirement.requirementTypeOther ?? '',
       result: requirement.result?.id ?? '',
