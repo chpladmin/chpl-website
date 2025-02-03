@@ -18,6 +18,7 @@ import * as yup from 'yup';
 
 import { useFetchNonConformityTypes } from 'api/data';
 import { ChplTextField, ChplTooltip } from 'components/util';
+import { isDateBetweenInclusive } from 'services/date-util';
 import { sortNonconformityTypes } from 'services/surveillance.service';
 import { utilStyles } from 'themes';
 
@@ -69,7 +70,11 @@ const validationSchema = yup.object({
 });
 
 function ChplNonConformityEdit({
-  nonConformity, dispatch, guid, randomizedSitesUsed,
+  nonConformity,
+  dispatch,
+  guid,
+  randomizedSitesUsed,
+  surveillanceStartDay,
 }) {
   const { data, isLoading, isError } = useFetchNonConformityTypes();
   const [nonConformityTypes, setNonConformityTypes] = useState([]);
@@ -78,8 +83,10 @@ function ChplNonConformityEdit({
 
   useEffect(() => {
     if (isLoading || isError) { return; }
-    setNonConformityTypes(data.sort(sortNonconformityTypes));
-  }, [data, isLoading, isError]);
+    setNonConformityTypes(data
+      .filter((type) => isDateBetweenInclusive(type.startDay, type.endDay, surveillanceStartDay))
+      .sort(sortNonconformityTypes));
+  }, [data, isLoading, isError, surveillanceStartDay]);
 
   useEffect(() => {
     formik.setFieldValue('randomizedSitesUsed', typeof (randomizedSitesUsed) === 'string' ? 0 : randomizedSitesUsed);
@@ -336,4 +343,5 @@ ChplNonConformityEdit.propTypes = {
   dispatch: func.isRequired,
   guid: number.isRequired,
   randomizedSitesUsed: oneOfType([number, string]).isRequired,
+  surveillanceStartDay: string.isRequired,
 };

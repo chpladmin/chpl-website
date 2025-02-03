@@ -272,6 +272,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
                 dispatch={handleDispatch}
                 guid={req.guid}
                 randomizedSitesUsed={formik.values.randomizedSitesUsed}
+                surveillanceStartDay={formik.values.startDay}
               />
             ))}
             { !!surveillance.id

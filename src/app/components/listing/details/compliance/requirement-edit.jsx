@@ -25,6 +25,7 @@ import {
   useFetchSurveillanceResultTypes,
 } from 'api/data';
 import { ChplTooltip, ChplTextField } from 'components/util';
+import { isDateBetweenInclusive } from 'services/date-util';
 import { getRequirementDisplay, sortRequirementTypes } from 'services/surveillance.service';
 
 const validationSchema = yup.object({
@@ -43,7 +44,11 @@ const validationSchema = yup.object({
 });
 
 function ChplRequirementEdit({
-  requirement, dispatch, guid, randomizedSitesUsed,
+  requirement,
+  dispatch,
+  guid,
+  randomizedSitesUsed,
+  surveillanceStartDay,
 }) {
   const groupTypeQuery = useFetchRequirementGroupTypes();
   const typeQuery = useFetchRequirementTypes();
@@ -82,7 +87,8 @@ function ChplRequirementEdit({
     setNonConformities((prev) => prev.concat({ guid: Date.now() }));
   };
 
-  const isRequirementAvailable = (type) => type.requirementGroupType.name === formik.values.requirementGroupType;
+  const isRequirementAvailable = (type) => type.requirementGroupType.name === formik.values.requirementGroupType
+        && isDateBetweenInclusive(type.startDay, type.endDay, surveillanceStartDay);
 
   const handleChange = (e) => {
     if (e.target.name === 'requirementGroupType') {
@@ -248,6 +254,7 @@ function ChplRequirementEdit({
             dispatch={handleDispatch}
             guid={nc.guid}
             randomizedSitesUsed={randomizedSitesUsed}
+            surveillanceStartDay={surveillanceStartDay}
           />
         ))}
       </CardContent>
@@ -262,4 +269,5 @@ ChplRequirementEdit.propTypes = {
   dispatch: func.isRequired,
   guid: number.isRequired,
   randomizedSitesUsed: oneOfType([number, string]).isRequired,
+  surveillanceStartDay: string.isRequired,
 };
