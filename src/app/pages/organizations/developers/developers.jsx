@@ -11,6 +11,13 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { Box, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  pageBody: {
+    minHeight: 'calc(100vh - 188px)',
+  },
+});
 
 const staticFilters = [
   decertificationDate, {
@@ -49,6 +56,7 @@ const staticFilters = [
 ];
 
 function ChplDevelopersPage() {
+  const classes = useStyles();
   const [filters, setFilters] = useState(staticFilters);
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -109,13 +117,15 @@ function ChplDevelopersPage() {
 
   return (
     <AnalyticsContext.Provider value={data}>
-      <FilterProvider
-        analytics={data.analytics}
-        filters={filters}
-        storageKey="storageKey-developersPage"
-      >
+      <Box className={classes.pageBody}>
+        <FilterProvider
+          analytics={data.analytics}
+          filters={filters}
+          storageKey="storageKey-developersPage"
+        >
         <ChplDevelopersView />
-      </FilterProvider>
+        </FilterProvider>
+      </Box>
     </AnalyticsContext.Provider>
   );
 }
