@@ -1,10 +1,17 @@
 import React from 'react';
 import { arrayOf, string } from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 
 import ChplChangeRequests from './change-requests';
 
 import AppWrapper from 'app-wrapper';
 import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
+
+const useStyles = makeStyles(() => ({
+  container: {
+    minHeight: 'calc(100vh - 268px)',
+  },
+}));
 
 function ChplChangeRequestsWrapper(props) {
   const {
@@ -12,16 +19,20 @@ function ChplChangeRequestsWrapper(props) {
     bonusQuery,
   } = props;
 
+  const classes = useStyles();
+
   return (
     <AppWrapper>
       <BreadcrumbWrapper
         disabled={!!bonusQuery}
         title="Change Requests"
       >
-        <ChplChangeRequests
-          disallowedFilters={disallowedFilters}
-          bonusQuery={bonusQuery}
-        />
+        <div className={classes.container}>
+          <ChplChangeRequests
+            disallowedFilters={disallowedFilters}
+            bonusQuery={bonusQuery}
+          />
+        </div>
       </BreadcrumbWrapper>
     </AppWrapper>
   );
