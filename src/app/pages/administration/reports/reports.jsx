@@ -22,6 +22,9 @@ import ChplUserTriggersView from 'components/jobs/user-triggers-view';
 
 const useStyles = makeStyles({
   container: {
+    minHeight: 'calc(100vh - 188px)',
+  },
+  containerTrigger: {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
@@ -115,11 +118,11 @@ function ChplReports() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.container} maxWidth="lg">
       <Typography className={classes.titlePadding} variant="h1">Scheduled Reports</Typography>
       { !job
         && (
-          <div className={classes.container}>
+          <div className={classes.containerTrigger}>
             <div>
               { (userQuery.isLoading || !userQuery.isSuccess)
                 && (
