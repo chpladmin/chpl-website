@@ -57,12 +57,12 @@ function ChplAnnouncementsDisplay() {
 
   useEffect(() => {
     if (announcements.length === 0) {
-      return undefined; // Explicitly return undefined
+      return undefined; 
     }
-    return () => {}; // Return a cleanup function or an empty function
+    return () => {};
   }, [announcements]);
 
-  const currentAnnouncement = announcements[currentAnnouncementIndex];
+  const currentAnnouncement = announcements[currentAnnouncementIndex] || {};
 
   const handleNext = () => {
     setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % announcements.length);
@@ -73,32 +73,36 @@ function ChplAnnouncementsDisplay() {
   };
 
   return (
-    <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg">
-      <Box className={classes.announcementBox} key={currentAnnouncement.id}>
-        <strong>{currentAnnouncement.title}</strong>
-        {currentAnnouncement.text ? `: ${currentAnnouncement.text}` : ''}
-      </Box>
-      <Box className={classes.counter}>
-        {announcements.length > 1 && (
-        <Typography color="secondary" variant="body2">
-          {currentAnnouncementIndex + 1}
-          {' '}
-          /
-          {announcements.length}
-        </Typography>
-        )}
-      </Box>
+    <>
       {announcements.length > 1 && (
-        <Box className={classes.nextButton}>
-          <IconButton onClick={handlePrevious}>
-            <ArrowBackIcon color="secondary" />
-          </IconButton>
-          <IconButton onClick={handleNext}>
-            <ArrowForwardIcon color="secondary" />
-          </IconButton>
-        </Box>
+        <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg">
+          {currentAnnouncement.id && (
+            <Box className={classes.announcementBox} key={currentAnnouncement.id}>
+              <strong>{currentAnnouncement.title}</strong>
+              {currentAnnouncement.text ? `: ${currentAnnouncement.text}` : ''}
+            </Box>
+          )}
+            <Box className={classes.counter}>
+              <Typography color="secondary" variant="body2">
+              {currentAnnouncementIndex + 1}
+              {' '}
+              /
+              {announcements.length}
+              </Typography>
+            </Box>        
+          {announcements.length > 1 && (
+            <Box className={classes.nextButton}>
+              <IconButton onClick={handlePrevious}>
+                <ArrowBackIcon color="secondary" />
+              </IconButton>
+              <IconButton onClick={handleNext}>
+                <ArrowForwardIcon color="secondary" />
+              </IconButton>
+            </Box>
+          )}
+        </Container>
       )}
-    </Container>
+  </>
   );
 }
 
