@@ -35,6 +35,9 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  container: {
+    minHeight: 'calc(100vh - 158px)',
+  },
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -206,7 +209,7 @@ function ChplSvapSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
+    <div className={classes.container}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">SVAP Information</Typography>
       </div>
@@ -428,7 +431,7 @@ function ChplSvapSearchView() {
               )}
           </>
         )}
-    </>
+    </div>
   );
 }
 
