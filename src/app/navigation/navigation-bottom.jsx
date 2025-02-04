@@ -1,8 +1,10 @@
 import React from 'react';
 import {
-  Box, Typography, Container,
+  Box, 
+  Container,
+  Typography,
+  makeStyles
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import WhiteHouseLogo from '../../assets/images/US-WhiteHouse-Logo.svg.png';
 import HHSLogo from '../../assets/images/HHS-White_HiRes.png';
@@ -14,17 +16,16 @@ import ChplAnnouncementsDisplay from 'components/system-maintenance/announcement
 
 const useStyles = makeStyles(() => ({
   footer: {
-    position: 'fixed',
+    position: 'sticky',
     width: '100%',
     backgroundColor: '#001439!important',
     padding: '4px 32px',
     borderTop: '1px solid #000d25',
-    zIndex: 1000,
+    zIndex: 999,
     left: 0,
     right: 0,
     bottom: 0,
     top: 'auto',
-    marginTop: '5%',
     [theme.breakpoints.down('sm')]: {
       position: 'relative',
       marginTop: 0,
