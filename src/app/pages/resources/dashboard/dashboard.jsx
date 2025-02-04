@@ -14,7 +14,7 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
-    height: '1200px',
+    minHeight: 'calc(100vh - 259px)',
     padding: theme.spacing(8),
     backgroundColor: palette.greyLight,
   },
