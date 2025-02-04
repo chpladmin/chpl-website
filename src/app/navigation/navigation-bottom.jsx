@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  Box, 
+  Box,
   Container,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 
 import WhiteHouseLogo from '../../assets/images/US-WhiteHouse-Logo.svg.png';
