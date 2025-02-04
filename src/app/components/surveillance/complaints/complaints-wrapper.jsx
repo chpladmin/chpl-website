@@ -1,5 +1,6 @@
 import React from 'react';
 import { arrayOf, bool, string } from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 
 import ChplComplaints from './complaints';
 
@@ -10,7 +11,14 @@ import {
   listing as listingPropType,
 } from 'shared/prop-types';
 
+const useStyles = makeStyles({
+  container: {
+    minHeight: 'calc(100vh - 188px)',
+  },
+});
+
 function ChplComplaintsWrapper(props) {
+  const classes = useStyles();
   const {
     bonusQuery,
     canAdd,
@@ -23,11 +31,13 @@ function ChplComplaintsWrapper(props) {
         disabled={!!bonusQuery}
         title="Complaints Reporting"
       >
-        <ChplComplaints
-          bonusQuery={bonusQuery}
-          canAdd={canAdd}
-          disallowedFilters={disallowedFilters}
-        />
+        <div className={classes.container}>
+          <ChplComplaints
+            bonusQuery={bonusQuery}
+            canAdd={canAdd}
+            disallowedFilters={disallowedFilters}
+          />
+        </div>
       </BreadcrumbWrapper>
     </AppWrapper>
   );
