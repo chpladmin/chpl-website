@@ -11,7 +11,6 @@ import /* angularLoadingBar from */ 'angular-loading-bar';
 import /* angulartics from */ 'angulartics';
 import /* angularticsGoogleTagManager from */ 'angulartics-google-tag-manager';
 import 'angular-feature-flags';
-import /* googlechart from */ 'angular-google-chart';
 import /* ngAnimate from */ 'angular-animate';
 import /* ngAria from */ 'angular-aria';
 import /* ngCsv from */ 'ng-csv';
@@ -59,7 +58,6 @@ const dependencies = [
   'angulartics',
   'angulartics.google.tagmanager',
   'feature-flags',
-  'googlechart',
   'ncy-angular-breadcrumb',
   'ngAnimate',
   'ngAria',
