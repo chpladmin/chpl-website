@@ -65,6 +65,9 @@ const useStyles = makeStyles({
     margin: '0 32px',
     border: `1px solid ${palette.greyMain}`,
   },
+  container: { 
+    minHeight: 'calc(100vh - 159px)',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -195,7 +198,7 @@ function ChplListingsView() {
   }
 
   return (
-    <>
+    <div className={classes.container}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">CHPL Listings</Typography>
       </div>
@@ -329,7 +332,7 @@ function ChplListingsView() {
               )}
           </>
         )}
-    </>
+    </div>
   );
 }
 
