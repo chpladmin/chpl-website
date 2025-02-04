@@ -1,15 +1,16 @@
-let states = [{
+const states = [{
   name: 'charts',
   url: '/charts',
-  component: 'chplCharts',
+  component: 'chplChartsBridge',
   data: { title: 'CHPL Charts' },
 }];
 
-function chartsStatesConfig ($stateProvider) {
+function chartsStatesConfig($stateProvider) {
   'ngInject';
-  states.forEach(state => {
+
+  states.forEach((state) => {
     $stateProvider.state(state);
   });
 }
 
-export { chartsStatesConfig };
+export default chartsStatesConfig;
