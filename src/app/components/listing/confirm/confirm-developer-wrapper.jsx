@@ -1,16 +1,26 @@
 import React from 'react';
 import { arrayOf, object, func } from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 
 import ChplConfirmDeveloper from './confirm-developer';
 
 import AppWrapper from 'app-wrapper';
 import { developer as developerProp } from 'shared/prop-types';
 
+const useStyles = makeStyles(() => ({
+  container: {
+    minHeight: 'calc(100vh - 257px)',
+  },
+}));
+
 function ChplConfirmDeveloperWrapper(props) {
+  const classes = useStyles();
   /* eslint-disable react/jsx-props-no-spreading */
   return (
     <AppWrapper>
-      <ChplConfirmDeveloper {...props} />
+      <div className={classes.container}>
+        <ChplConfirmDeveloper {...props} />
+      </div>
     </AppWrapper>
   );
   /* eslint-enable react/jsx-props-no-spreading */

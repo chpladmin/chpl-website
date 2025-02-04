@@ -41,6 +41,9 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     whiteSpace: 'pre-wrap',
   },
+  container: {
+    minHeight: 'calc(100vh - 257px)',
+  },
   developerConfirm: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -163,88 +166,90 @@ function ChplConfirmVersion(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
-        <div className={classes.developerConfirm}>
-          <div className={classes.developerSubContainer}>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              disabled={versions?.length === 0}
-              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(false)}
-            >
-              <span className={classes.buttonContent}>
-                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                { selectedVersion
-                  ? (
-                    <>
-                      {`Use "${selectedVersion.version}"`}
-                    </>
-                  ) : (
-                    <>
-                      Choose A Version To Use
-                    </>
-                  )}
-              </span>
-            </Button>
-            <div className={classes.orContainer}>
-              <Divider />
-              <Typography>OR</Typography>
-              <Divider />
+        <div className={classes.container}>
+          <div className={classes.developerConfirm}>
+            <div className={classes.developerSubContainer}>
+              <Button
+                variant="outlined"
+                color="default"
+                fullWidth
+                disabled={versions?.length === 0}
+                className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+                onClick={() => handleCreationToggle(false)}
+              >
+                <span className={classes.buttonContent}>
+                  <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                  { selectedVersion
+                    ? (
+                      <>
+                        {`Use "${selectedVersion.version}"`}
+                      </>
+                    ) : (
+                      <>
+                        Choose A Version To Use
+                      </>
+                    )}
+                </span>
+              </Button>
+              <div className={classes.orContainer}>
+                <Divider />
+                <Typography>OR</Typography>
+                <Divider />
+              </div>
+              <Button
+                variant="outlined"
+                color="default"
+                fullWidth
+                className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+                onClick={() => handleCreationToggle(true)}
+              >
+                <span className={classes.buttonContent}>
+                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                  Create A Version
+                </span>
+              </Button>
             </div>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(true)}
-            >
-              <span className={classes.buttonContent}>
-                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                Create A Version
-              </span>
-            </Button>
+            <Divider />
+            { isCreating
+              ? (
+                <Card>
+                  <CardHeader title="Create A New Version" />
+                  <CardContent>
+                    <ChplTextField
+                      id="version"
+                      name="version"
+                      label="Version"
+                      value={formik.values.version}
+                      error={formik.touched.version && !!formik.errors.version}
+                      helperText={formik.touched.version && formik.errors.version}
+                      onChange={handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card>
+                  <CardHeader title="Existing Versions" />
+                  <CardContent>
+                    <ChplTextField
+                      select
+                      id="selected-version"
+                      name="selectedVersion"
+                      label="Select a Version"
+                      required
+                      value={selectedVersion}
+                      onChange={handleSelectOnChange}
+                    >
+                      { versions.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          { item.version }
+                        </MenuItem>
+                      ))}
+                    </ChplTextField>
+                  </CardContent>
+                </Card>
+              )}
           </div>
-          <Divider />
-          { isCreating
-            ? (
-              <Card>
-                <CardHeader title="Create A New Version" />
-                <CardContent>
-                  <ChplTextField
-                    id="version"
-                    name="version"
-                    label="Version"
-                    value={formik.values.version}
-                    error={formik.touched.version && !!formik.errors.version}
-                    helperText={formik.touched.version && formik.errors.version}
-                    onChange={handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardHeader title="Existing Versions" />
-                <CardContent>
-                  <ChplTextField
-                    select
-                    id="selected-version"
-                    name="selectedVersion"
-                    label="Select a Version"
-                    required
-                    value={selectedVersion}
-                    onChange={handleSelectOnChange}
-                  >
-                    { versions.map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        { item.version }
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                </CardContent>
-              </Card>
-            )}
         </div>
       </Container>
     </ThemeProvider>

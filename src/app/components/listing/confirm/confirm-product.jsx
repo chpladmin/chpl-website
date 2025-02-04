@@ -41,6 +41,9 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     whiteSpace: 'pre-wrap',
   },
+  container: {
+    minHeight: 'calc(100vh - 257px)',
+  },
   developerConfirm: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -162,93 +165,95 @@ function ChplConfirmProduct(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="md">
-        <div className={classes.developerConfirm}>
-          <div className={classes.developerSubContainer}>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              disabled={products?.length === 0}
-              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(false)}
-            >
-              <span className={classes.buttonContent}>
-                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                { selectedProduct
-                  ? (
-                    <>
-                      {`Use "${selectedProduct.name}"`}
-                    </>
-                  ) : (
-                    <>
-                      Choose A Product To Use
-                    </>
-                  )}
-              </span>
-            </Button>
-            <div className={classes.orContainer}>
-              <Divider />
-              <Typography>OR</Typography>
-              <Divider />
+      <div className={classes.container}>
+        <Container maxWidth="md">
+          <div className={classes.developerConfirm}>
+            <div className={classes.developerSubContainer}>
+              <Button
+                variant="outlined"
+                color="default"
+                fullWidth
+                disabled={products?.length === 0}
+                className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+                onClick={() => handleCreationToggle(false)}
+              >
+                <span className={classes.buttonContent}>
+                  <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                  { selectedProduct
+                    ? (
+                      <>
+                        {`Use "${selectedProduct.name}"`}
+                      </>
+                    ) : (
+                      <>
+                        Choose A Product To Use
+                      </>
+                    )}
+                </span>
+              </Button>
+              <div className={classes.orContainer}>
+                <Divider />
+                <Typography>OR</Typography>
+                <Divider />
+              </div>
+              <Button
+                variant="outlined"
+                color="default"
+                fullWidth
+                className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+                onClick={() => handleCreationToggle(true)}
+              >
+                <span className={classes.buttonContent}>
+                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                  Create a Product
+                </span>
+              </Button>
             </div>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(true)}
-            >
-              <span className={classes.buttonContent}>
-                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                Create a Product
-              </span>
-            </Button>
-          </div>
-          <Divider />
-          {isCreating
-            ? (
-              <Card>
-                <CardHeader title="Create A New Product" />
-                <CardContent>
-                  <div className={classes.formContainer}>
+            <Divider />
+            {isCreating
+              ? (
+                <Card>
+                  <CardHeader title="Create A New Product" />
+                  <CardContent>
+                    <div className={classes.formContainer}>
+                      <ChplTextField
+                        id="name"
+                        name="name"
+                        label="Product Name"
+                        value={formik.values.name}
+                        error={formik.touched.name && !!formik.errors.name}
+                        helperText={formik.touched.name && formik.errors.name}
+                        onChange={handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card>
+                  <CardHeader title="Select An Existing Product" />
+                  <CardContent>
                     <ChplTextField
-                      id="name"
-                      name="name"
-                      label="Product Name"
-                      value={formik.values.name}
-                      error={formik.touched.name && !!formik.errors.name}
-                      helperText={formik.touched.name && formik.errors.name}
-                      onChange={handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardHeader title="Select An Existing Product" />
-                <CardContent>
-                  <ChplTextField
-                    select
-                    id="selected-product"
-                    name="selectedProduct"
-                    label="Select a Product"
-                    required
-                    value={selectedProduct}
-                    onChange={handleSelectOnChange}
-                  >
-                    {products.map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                </CardContent>
-              </Card>
-            )}
-        </div>
-      </Container>
+                      select
+                      id="selected-product"
+                      name="selectedProduct"
+                      label="Select a Product"
+                      required
+                      value={selectedProduct}
+                      onChange={handleSelectOnChange}
+                    >
+                      {products.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </ChplTextField>
+                  </CardContent>
+                </Card>
+              )}
+          </div>
+        </Container>
+      </div>
     </ThemeProvider>
   );
 }
