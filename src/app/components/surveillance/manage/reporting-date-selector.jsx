@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     padding: '8px',
   },
+  container: { 
+    minHeight: 'calc(100vh - 438px)',
+  },
   fullWidth: {
     gridColumn: '1 / -1',
   },
@@ -109,6 +112,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
 
   return (
     <ThemeProvider theme={theme}>
+      <div className={classes.container}>
       <div className={classes.apiRegistrationLayout}>
         <div className={classes.fullWidth}>
           <Typography variant="subtitle1">
@@ -171,6 +175,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
             />
           </Button>
         </div>
+      </div>
       </div>
     </ThemeProvider>
   );
