@@ -17,6 +17,9 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     paddingBottom: '16px',
   },
+  pageBody: {
+    minHeight: 'calc(100vh - 188px)',
+  },
 });
 
 function ChplCms() {
@@ -41,7 +44,7 @@ function ChplCms() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.pageBody} maxWidth="lg">
       <Typography className={classes.titlePadding} variant="h1">CMS Management</Typography>
       <Typography className={classes.titlePadding} variant="h2">Download the latest CMS listing</Typography>
       <Button
