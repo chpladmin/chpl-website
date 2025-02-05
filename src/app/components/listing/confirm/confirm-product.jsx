@@ -17,11 +17,11 @@ import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../../themes/theme';
-import { product as productProp } from '../../../shared/prop-types';
-import { ChplTextField } from '../../util';
+import theme from 'themes/theme';
+import { product as productProp } from 'shared/prop-types';
+import { ChplTextField } from 'components/util';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   buttonCard: {
     padding: '32px',
     display: 'flex',
@@ -99,7 +99,7 @@ const useStyles = makeStyles(() => ({
   verticalDivider: {
     height: '25%',
   },
-}));
+});
 
 const validationSchema = yup.object({
   name: yup.string()

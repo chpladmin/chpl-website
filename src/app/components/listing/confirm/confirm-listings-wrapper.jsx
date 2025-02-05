@@ -6,11 +6,11 @@ import ChplConfirmListings from './confirm-listings';
 
 import AppWrapper from 'app-wrapper';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     minHeight: 'calc(100vh - 257px)',
   },
-}));
+});
 function ChplConfirmListingsWrapper(props) {
   const { onProcess } = props;
   const classes = useStyles();

@@ -7,11 +7,11 @@ import ChplConfirmDeveloper from './confirm-developer';
 import AppWrapper from 'app-wrapper';
 import { developer as developerProp } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     minHeight: 'calc(100vh - 257px)',
   },
-}));
+});
 
 function ChplConfirmDeveloperWrapper(props) {
   const classes = useStyles();
