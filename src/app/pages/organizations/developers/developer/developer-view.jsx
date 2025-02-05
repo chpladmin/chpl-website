@@ -61,7 +61,6 @@ function ChplDeveloperView({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const usersQuery = useFetchUsersAtDeveloper({
     developer,
-    includeDisabled: hasAnyRole(['chpl-admin', 'chpl-onc']),
     enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn(developer)),
   });
   const [state, setState] = useState('view');
@@ -164,6 +163,8 @@ function ChplDeveloperView({ dispatch }) {
             dispatch={handleUserDispatch}
             roles={['ROLE_DEVELOPER']}
             groupNames={['chpl-developer']}
+            organizationId={developer.id}
+            isLoading={usersQuery.isLoading}
           />
         )}
       </Box>

@@ -4,10 +4,13 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, number, string,
+} from 'prop-types';
 
 import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
@@ -62,14 +65,14 @@ const useStyles = makeStyles({
 });
 
 function ChplUsersView({
-  dispatch, roles, groupNames, users: initialUsers,
+  dispatch, roles, groupNames, users: initialUsers, organizationId, isLoading,
 }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const { analytics } = useAnalyticsContext();
   const { ssoIsOn } = useContext(FlagContext);
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const { mutate } = usePutUser();
   const cognitoMutate = usePutCognitoUser().mutate;
   const [activeUser, setActiveUser] = useState(undefined);
@@ -221,6 +224,7 @@ function ChplUsersView({
           user={userToEdit}
           errors={errors}
           dispatch={handleDispatch}
+          organizationId={organizationId}
         />
       );
     }
@@ -236,6 +240,8 @@ function ChplUsersView({
   if (!hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
     return null;
   }
+
+  if (isLoading) { return <CircularProgress />; }
 
   return (
     <Box>
@@ -306,4 +312,11 @@ ChplUsersView.propTypes = {
   dispatch: func.isRequired,
   roles: arrayOf(string).isRequired,
   groupNames: arrayOf(string).isRequired,
+  organizationId: number,
+  isLoading: bool,
+};
+
+ChplUsersView.defaultProps = {
+  organizationId: undefined,
+  isLoading: false,
 };

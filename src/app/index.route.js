@@ -1,5 +1,5 @@
 import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state';
-import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state';
+import chartsStates from './pages/charts/charts.state';
 import compareStates from './pages/compare/compare.state';
 import listingStates from './pages/listing/listing.state';
 import organizationsStates from './pages/organizations/organizations.state';

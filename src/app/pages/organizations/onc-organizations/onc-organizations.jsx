@@ -78,7 +78,7 @@ function ChplOncOrganizations() {
   const { mutate: cognitoInvite } = usePostCognitoUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
-  const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType, hasAnyRole(['chpl-admin', 'chpl-onc']));
+  const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['chpl-onc-acb'];
   const classes = useStyles();
   let analyticsData;
@@ -237,6 +237,8 @@ function ChplOncOrganizations() {
                       roles={roles}
                       groupNames={roles}
                       dispatch={handleDispatch}
+                      organizationId={activeId}
+                      isLoading={userQuery.isLoading}
                     />
                   )}
               </>

@@ -44,7 +44,7 @@ const UserManagementComponent = {
       switch (action) {
         case 'delete':
           this.networkService.deleteUser(data)
-            .then(() => that.networkService.getUsers(that.hasAnyRole(['chpl-admin', 'chpl-onc']))
+            .then(() => that.networkService.getUsers()
               .then((response) => {
                 that.users = response.users;
               }));
@@ -78,7 +78,7 @@ const UserManagementComponent = {
           }));
           break;
         case 'refresh':
-          this.networkService.getUsers(that.hasAnyRole(['chpl-admin', 'chpl-onc']))
+          this.networkService.getUsers()
             .then((response) => {
               that.users = response.users
                 .filter((user) => !['ROLE_ACB', 'ROLE_DEVELOPER', 'chpl-onc-acb', 'chpl-developer'].includes(user.role));
