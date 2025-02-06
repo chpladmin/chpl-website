@@ -44,7 +44,6 @@ function ChplEditVersion({ dispatch, productId, version }) {
         dispatch('cancel');
         break;
       case 'save':
-        console.log(action, payload);
         setIsProcessing(true);
         eventTrack({
           ...analytics,
@@ -52,23 +51,15 @@ function ChplEditVersion({ dispatch, productId, version }) {
         });
         setErrorMessages([]);
         mutate({
-          ...payload,
+          version: payload,
           versionIds: [payload.id],
-          newProductId: productId,
         }, {
-          onSuccess: (response) => {
+          onSuccess: () => {
             setIsProcessing(false);
-            console.log({response});
-            let body;
-            if (body) {
-              enqueueSnackbar(body, {
-                variant: 'error',
-              });
-            }
+            dispatch('cancel');
           },
           onError: (error) => {
             setIsProcessing(false);
-            console.log({error});
             let body = error?.response?.data?.error;
             if (body) {
               enqueueSnackbar(body, {
