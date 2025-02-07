@@ -3,11 +3,11 @@ import {
   Box,
   Container,
   IconButton,
+  Button,
   makeStyles,
   Typography,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { palette } from 'themes';
 import { useFetchAnnouncements } from 'api/announcements';
@@ -18,7 +18,8 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     width: '90%',
-    alignContent: 'center',
+    alignItems: 'center',
+    gridGap: '8px',
   },
   nextButton: {
     display: 'flex',
@@ -39,6 +40,9 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+  readMore: {
+    fontSize: '1.2rem',
+  },
 });
 
 function ChplAnnouncementsDisplay() {
@@ -57,7 +61,7 @@ function ChplAnnouncementsDisplay() {
 
   useEffect(() => {
     if (announcements.length === 0) {
-      return undefined; 
+      return undefined;
     }
     return () => {};
   }, [announcements]);
@@ -68,41 +72,39 @@ function ChplAnnouncementsDisplay() {
     setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % announcements.length);
   };
 
-  const handlePrevious = () => {
-    setCurrentAnnouncementIndex((prevIndex) => (prevIndex - 1 + announcements.length) % announcements.length);
-  };
-
   return (
     <>
-      {announcements.length > 1 && (
+      {announcements.length > 0 && (
         <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg">
           {currentAnnouncement.id && (
-            <Box className={classes.announcementBox} key={currentAnnouncement.id}>
-              <strong>{currentAnnouncement.title}</strong>
-              {currentAnnouncement.text ? `: ${currentAnnouncement.text}` : ''}
-            </Box>
+            <>
+              <Box className={classes.announcementBox} key={currentAnnouncement.id}>
+                <strong>{currentAnnouncement.title}</strong>
+                {`${currentAnnouncement.text.substring(0, 160)}...`}
+              </Box>
+              <Button className={classes.readMore} variant="text" color="secondary" size="small" onClick={() => { window.location.href = '#/resources/overview'; window.scrollTo(0, 0); }}>Read more</Button>
+            </>
           )}
-            <Box className={classes.counter}>
-              <Typography color="secondary" variant="body2">
-              {currentAnnouncementIndex + 1}
-              {' '}
-              /
-              {announcements.length}
-              </Typography>
-            </Box>        
           {announcements.length > 1 && (
-            <Box className={classes.nextButton}>
-              <IconButton onClick={handlePrevious}>
-                <ArrowBackIcon color="secondary" />
-              </IconButton>
-              <IconButton onClick={handleNext}>
-                <ArrowForwardIcon color="secondary" />
-              </IconButton>
-            </Box>
+            <>
+              <Box className={classes.counter}>
+                <Typography color="secondary" variant="body2">
+                  {currentAnnouncementIndex + 1}
+                  {' '}
+                  /
+                  {announcements.length}
+                </Typography>
+              </Box>
+              <Box className={classes.nextButton}>
+                <IconButton size="small" onClick={handleNext}>
+                  <ArrowForwardIcon size="small" color="secondary" />
+                </IconButton>
+              </Box>
+            </>
           )}
         </Container>
       )}
-  </>
+    </>
   );
 }
 
