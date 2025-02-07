@@ -57,8 +57,8 @@ function ChplNavigationBottom() {
         <ChplAnnouncementsDisplay />
         <Container maxWidth="lg" disableGutters>
           <Box className={classes.footerContentContainer}>
-            <Box display="flex" flexDirection="column" gridGap={4}>
-              <Typography className={classes.footerText} variant="body2">Helpful Links</Typography>
+            <Box display="flex" flexDirection="row" gridGap={4}>
+              <Typography className={classes.footerText} variant="body1">Helpful Links</Typography>
               <Box color="#fff" display="flex" gridGap={2}>
                 <a className={classes.footerText} href="#/search">Home</a>
                 {' | '}
@@ -69,8 +69,8 @@ function ChplNavigationBottom() {
                 <a className={classes.footerText} href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
               </Box>
             </Box>
-            <Box display="flex" flexDirection="column" gridGap={4}>
-              <Typography className={classes.footerText} variant="body2">Affiliate Websites</Typography>
+            <Box display="flex" flexDirection="row" gridGap={4}>
+              <Typography className={classes.footerText} variant="body1">Affiliate Websites</Typography>
               <Box display="flex" alignItems="center" gridGap={16}>
                 <a href="https://www.whitehouse.gov/">
                   <img src={WhiteHouseLogo} alt="Whitehouse.gov" style={{ height: '24px' }} />
@@ -86,8 +86,8 @@ function ChplNavigationBottom() {
                 </a>
               </Box>
             </Box>
-            <Box display="flex" flexDirection="column" gridGap={4}>
-              <Typography className={classes.footerText} variant="body2">Owned By</Typography>
+            <Box display="flex" alignItems="center" flexDirection="row" gridGap={4}>
+              <Typography className={classes.footerText} variant="body1">Owned By</Typography>
               <Typography className={classes.footerText} variant="body1">The Assistant Secretary for Technology Policy</Typography>
             </Box>
           </Box>
