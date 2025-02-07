@@ -38,10 +38,8 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   startDay: yup.date()
-    .max(new Date(), 'Start Date must not be in the future')
     .required('Start Date is required'),
   endDay: yup.date()
-    .max(new Date(), 'End Date must not be in the future')
     .min(yup.ref('startDay'), 'End Date cannot be before the Start Date'),
   type: yup.string()
     .required('Type is required'),
