@@ -21,6 +21,9 @@ import {
 } from 'shared/prop-types';
 
 const useStyles = makeStyles({
+  container: { 
+    minHeight : 'calc(100vh - 188px)',
+  },
   content: {
     display: 'grid',
     gap: '16px',
@@ -83,7 +86,7 @@ function ChplCognitoUserEdit({
   });
 
   return (
-    <>
+    <div className={classes.container}>
       <Card>
         <CardHeader
           title="Edit User"
@@ -128,7 +131,7 @@ function ChplCognitoUserEdit({
         errors={errors}
         isDisabled={!formik.isValid}
       />
-    </>
+    </div>
   );
 }
 
