@@ -59,6 +59,9 @@ const useStyles = makeStyles({
       gridGap: 'none',
     },
   },
+  loadingScreen: {
+    height: '100vh', 
+  },
 });
 
 function ChplListingPage({ id }) {
@@ -128,7 +131,11 @@ function ChplListingPage({ id }) {
   };
 
   if (isLoading || !isSuccess || !listing) {
-    return <CircularProgress />;
+    return (
+      <div className={classes.loadingScreen}>
+        <CircularProgress />
+      </div>
+    );
   }
 
   const listingState = {
