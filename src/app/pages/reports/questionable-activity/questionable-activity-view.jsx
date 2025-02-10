@@ -31,7 +31,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
-  container: {  
+  fixedFooterSpacing: {  
     minHeight: 'calc(100vh - 188px)',
   },
   linkWrap: {
@@ -170,7 +170,7 @@ function ChplQuestionableActivityView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.fixedFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Questionable Activity</Typography>
       </div>

@@ -14,9 +14,11 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
-    minHeight: 'calc(100vh - 259px)',
     padding: theme.spacing(8),
     backgroundColor: palette.greyLight,
+  },
+  fixedFooterSpacing: {
+    minHeight: 'calc(100vh - 259px)',
   },
   stickyCard: {
     position: 'sticky',
@@ -69,84 +71,86 @@ function ChplDashboard() {
           <Typography variant="h1">Dashboard</Typography>
         </Container>
       </Box>
-      <Box className={classes.container}>
-        <Container maxWidth="lg">
-          <Box display="flex" flexDirection="row" gridGap={32} width="100%">
-            <Box maxWidth="350px">
-              <Card className={classes.stickyCard}>
-                <CardContent>
-                  <Box className={classes.cardButtons}>
-                    <Button
-                      style={{ justifyContent: 'flex-start' }}
-                      color="primary"
-                      onClick={() => handleReportChange(undefined)}
-                    >
-                      Dashboard
-                    </Button>
-                    { reportMetadata
-                      .sort((a, b) => (a.title < b.title ? -1 : 1))
-                      .map((report) => (
-                        <Button
-                          key={`${report.reportKey}-button`}
-                          style={{ justifyContent: 'flex-start' }}
-                          color="primary"
-                          onClick={() => handleReportChange(report.reportKey)}
-                        >
-                          { report.title }
-                        </Button>
-                      ))}
-                  </Box>
-                </CardContent>
-              </Card>
-            </Box>
-            <Box width="100%">
-              { !activeReport && (
-                <Card>
+      <div className={classes.fixedFooterSpacing}>
+        <Box className={classes.container}>
+          <Container maxWidth="lg">
+            <Box display="flex" flexDirection="row" gridGap={32} width="100%">
+              <Box maxWidth="350px">
+                <Card className={classes.stickyCard}>
                   <CardContent>
-                    <Typography gutterBottom variant="h6">
-                      <b>Welcome to the CHPL Dashboard</b>
-                    </Typography>
-                    <Typography gutterBottom>
-                      A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
-                    </Typography>
-                    <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
-                      {reportMetadata && reportMetadata.map((report) => (
-                        <Card
-                          key={report.reportKey}
-                          className={classes.card}
-                          onClick={() => handleReportChange(report.reportKey)}
-                        >
-                          <CardContent className={classes.cardContent}>
-                            {report.icon}
-                            <Typography>{report.title}</Typography>
-                          </CardContent>
-                        </Card>
-                      ))}
+                    <Box className={classes.cardButtons}>
+                      <Button
+                        style={{ justifyContent: 'flex-start' }}
+                        color="primary"
+                        onClick={() => handleReportChange(undefined)}
+                      >
+                        Dashboard
+                      </Button>
+                      { reportMetadata
+                        .sort((a, b) => (a.title < b.title ? -1 : 1))
+                        .map((report) => (
+                          <Button
+                            key={`${report.reportKey}-button`}
+                            style={{ justifyContent: 'flex-start' }}
+                            color="primary"
+                            onClick={() => handleReportChange(report.reportKey)}
+                          >
+                            { report.title }
+                          </Button>
+                        ))}
                     </Box>
                   </CardContent>
                 </Card>
-              )}
-              { activeReport && (
-                <Card
-                  style={{ width: '100%' }}
-                  key={activeReport.reportKey}
-                >
-                  <CardContent>
-                    <iframe
-                      title={activeReport.title}
-                      width="100%"
-                      height={activeReport.height}
-                      src={activeReport.url}
-                      frameBorder="0"
-                      allowFullScreen
-                    />
-                  </CardContent>
-                </Card>
-              )}
+              </Box>
+              <Box width="100%">
+                { !activeReport && (
+                  <Card>
+                    <CardContent>
+                      <Typography gutterBottom variant="h6">
+                        <b>Welcome to the CHPL Dashboard</b>
+                      </Typography>
+                      <Typography gutterBottom>
+                        A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
+                      </Typography>
+                      <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
+                        {reportMetadata && reportMetadata.map((report) => (
+                          <Card
+                            key={report.reportKey}
+                            className={classes.card}
+                            onClick={() => handleReportChange(report.reportKey)}
+                          >
+                            <CardContent className={classes.cardContent}>
+                              {report.icon}
+                              <Typography>{report.title}</Typography>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                )}
+                { activeReport && (
+                  <Card
+                    style={{ width: '100%' }}
+                    key={activeReport.reportKey}
+                  >
+                    <CardContent>
+                      <iframe
+                        title={activeReport.title}
+                        width="100%"
+                        height={activeReport.height}
+                        src={activeReport.url}
+                        frameBorder="0"
+                        allowFullScreen
+                      />
+                    </CardContent>
+                  </Card>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </Container>
-      </Box>
+          </Container>
+        </Box>
+      </div>
     </>
   );
 }

@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     padding: '8px',
   },
-  container: { 
+  fixedFooterSpacing: { 
     minHeight: 'calc(100vh - 438px)',
   },
   fullWidth: {
@@ -112,7 +112,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.container}>
+      <div className={classes.fixedFooterSpacing}>
         <div className={classes.apiRegistrationLayout}>
           <div className={classes.fullWidth}>
             <Typography variant="subtitle1">

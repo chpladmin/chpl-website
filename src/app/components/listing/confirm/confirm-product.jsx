@@ -41,7 +41,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     whiteSpace: 'pre-wrap',
   },
-  container: {
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 257px)',
   },
   developerConfirm: {
@@ -165,7 +165,7 @@ function ChplConfirmProduct(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.container}>
+      <div className={classes.fixFooterSpacing}>
         <Container maxWidth="md">
           <div className={classes.developerConfirm}>
             <div className={classes.developerSubContainer}>

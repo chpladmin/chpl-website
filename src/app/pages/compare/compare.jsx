@@ -36,6 +36,8 @@ const useStyles = makeStyles({
   container: {
     padding: '32px 0',
     backgroundColor: palette.background,
+  },
+  fixedFooterSpacing: {
     minHeight: 'calc(100vh - 259px)', 
   },
   pageHeader: {
@@ -281,67 +283,69 @@ function ChplComparePage({ ids }) {
           </Box>
         </Container>
       </div>
-      <Box className={classes.container}>
-        <Container id="main-content" tabIndex="-1" maxWidth="lg">
-          <Card>
-            <TableContainer className={classes.Table}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow hover={false} className={classes.headerRow}>
-                    <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
-                    { listings.map((listing) => (
-                      <TableCell className={classes.headerColumnContent} key={listing.id}>
-                        <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                          { listing.product.name }
-                          <ChplBrowserComparedWidget
-                            listing={listing}
-                          />
-                          <IconButton
-                            size="small"
-                            onClick={() => dropListing(listing)}
-                            disabled={listings.length <= 2}
-                          >
-                            <CloseIcon />
-                          </IconButton>
-                        </Box>
-                      </TableCell>
+      <div className={classes.fixedFooterSpacing}>
+        <Box className={classes.container}>
+          <Container id="main-content" tabIndex="-1" maxWidth="lg">
+            <Card>
+              <TableContainer className={classes.Table}>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow hover={false} className={classes.headerRow}>
+                      <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
+                      { listings.map((listing) => (
+                        <TableCell className={classes.headerColumnContent} key={listing.id}>
+                          <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                            { listing.product.name }
+                            <ChplBrowserComparedWidget
+                              listing={listing}
+                            />
+                            <IconButton
+                              size="small"
+                              onClick={() => dropListing(listing)}
+                              disabled={listings.length <= 2}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </Box>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { makeRow('Developer', (listing) => listing.developer.name) }
+                    { makeRow('Version', (listing) => listing.version.version) }
+                    { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
+                    { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : null }
+                    { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
+                    { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
+                    { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
+                    { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
+                    { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
+                    { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
+                    { criteria.map(makeCriterionRow) }
+                    { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
+                    { cqms.map(makeCqmRow) }
+                    { makeRow('View product details', (listing) => (
+                      <ChplLink
+                        href={`#/listing/${listing.id}`}
+                        text="details"
+                        analytics={{
+                          ...analytics,
+                          event: 'Navigate to Listing Details Page',
+                          label: listing.chplProductNumber,
+                          aggregationName: listing.product.name,
+                        }}
+                        external={false}
+                        router={{ sref: 'listing', options: { id: listing.id } }}
+                      />
                     ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  { makeRow('Developer', (listing) => listing.developer.name) }
-                  { makeRow('Version', (listing) => listing.version.version) }
-                  { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
-                  { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : null }
-                  { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
-                  { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
-                  { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
-                  { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
-                  { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
-                  { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
-                  { criteria.map(makeCriterionRow) }
-                  { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
-                  { cqms.map(makeCqmRow) }
-                  { makeRow('View product details', (listing) => (
-                    <ChplLink
-                      href={`#/listing/${listing.id}`}
-                      text="details"
-                      analytics={{
-                        ...analytics,
-                        event: 'Navigate to Listing Details Page',
-                        label: listing.chplProductNumber,
-                        aggregationName: listing.product.name,
-                      }}
-                      external={false}
-                      router={{ sref: 'listing', options: { id: listing.id } }}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Card>
-        </Container>
-      </Box>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Card>
+          </Container>
+        </Box>
+      </div>
     </Box>
   );
 }

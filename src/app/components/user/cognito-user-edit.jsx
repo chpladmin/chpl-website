@@ -21,9 +21,6 @@ import {
 } from 'shared/prop-types';
 
 const useStyles = makeStyles({
-  container: { 
-    minHeight : 'calc(100vh - 188px)',
-  },
   content: {
     display: 'grid',
     gap: '16px',
@@ -33,6 +30,9 @@ const useStyles = makeStyles({
   dataEntry: {
     display: 'grid',
     gap: '8px',
+  },
+  fixFooterSpacing: { 
+    minHeight : 'calc(100vh - 188px)',
   },
 });
 
@@ -86,7 +86,7 @@ function ChplCognitoUserEdit({
   });
 
   return (
-    <div className={classes.container}>
+    <div className={classes.fixFooterSpacing}>
       <Card>
         <CardHeader
           title="Edit User"

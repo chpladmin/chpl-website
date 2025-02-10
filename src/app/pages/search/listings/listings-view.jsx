@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     margin: '0 32px',
     border: `1px solid ${palette.greyMain}`,
   },
-  container: { 
+  fixedFooterSpacing: { 
     minHeight: 'calc(100vh - 159px)',
   },
   linkWrap: {
@@ -198,7 +198,7 @@ function ChplListingsView() {
   }
 
   return (
-    <div className={classes.container}>
+    <div className={classes.fixedFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">CHPL Listings</Typography>
       </div>

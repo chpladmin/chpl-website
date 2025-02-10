@@ -42,7 +42,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  container: {
+  fixedFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
   linkWrap: {
@@ -154,7 +154,7 @@ function ChplDecertifiedProductsSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.fixedFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Decertified Products</Typography>
       </div>
