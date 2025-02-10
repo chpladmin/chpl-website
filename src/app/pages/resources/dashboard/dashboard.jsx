@@ -9,7 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { useFetchReportMetadata } from 'api/reports';
+import { useFetchReportGroupMetadata } from 'api/reports';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -51,7 +51,7 @@ function ChplDashboard() {
   const classes = useStyles();
   const [activeReport, setActiveReport] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchReportMetadata('dashboard');
+  const { data, isLoading, isSuccess } = useFetchReportGroupMetadata('dashboard');
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }

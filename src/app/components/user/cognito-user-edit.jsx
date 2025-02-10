@@ -1,10 +1,5 @@
 import React from 'react';
 import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
-import {
   Card,
   CardHeader,
   CardContent,
@@ -13,6 +8,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import {
+  arrayOf, func, number, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -40,7 +38,9 @@ const validationSchema = yup.object({
     .required('Full Name is required'),
 });
 
-function ChplCognitoUserEdit({ user, dispatch, errors }) {
+function ChplCognitoUserEdit({
+  user, dispatch, errors, organizationId,
+}) {
   const classes = useStyles();
   let formik;
 
@@ -52,7 +52,8 @@ function ChplCognitoUserEdit({ user, dispatch, errors }) {
     const updatedUser = {
       ...user,
       fullName: formik.values.fullName,
-      accountEnabled: formik.values.accountEnabled,
+      organizations: formik.values.accountEnabled ? user.organizations : user.organizations.filter((org) => org.id !== organizationId),
+      accountEnabled: formik.values.accountEnabled || user.organizations.length > 1,
     };
     dispatch('cognito-save', updatedUser);
   };
@@ -79,8 +80,6 @@ function ChplCognitoUserEdit({ user, dispatch, errors }) {
       save();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
@@ -139,9 +138,11 @@ ChplCognitoUserEdit.propTypes = {
   user: userPropType.isRequired,
   errors: arrayOf(string),
   dispatch: func,
+  organizationId: number,
 };
 
 ChplCognitoUserEdit.defaultProps = {
   errors: [],
   dispatch: () => {},
+  organizationId: undefined,
 };

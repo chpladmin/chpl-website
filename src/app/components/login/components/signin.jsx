@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
   CardHeader,
   CardContent,
+  CircularProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -21,6 +22,7 @@ import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   grid: {
@@ -29,8 +31,15 @@ const useStyles = makeStyles({
     gridRowGap: '16px',
   },
   loginHeader: {
-    backgroundColor: '#ffffff',
-    padding: '16px 0px 0px 16px',
+    backgroundColor: palette.secondary,
+    padding: '16px',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 });
 
@@ -49,6 +58,7 @@ function ChplSignin({ dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostCognitoLogin();
+  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -69,11 +79,13 @@ function ChplSignin({ dispatch }) {
   };
 
   const login = () => {
+    setIsProcessing(true);
     mutate({
       userName: formik.values.userName,
       password: formik.values.password,
     }, {
       onSuccess: (response) => {
+        setIsProcessing(false);
         eventTrack({
           ...analytics,
           event: 'Log In',
@@ -97,6 +109,7 @@ function ChplSignin({ dispatch }) {
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {
+        setIsProcessing(false);
         if (error?.response?.status === 470) {
           dispatch({
             action: 'forceChangePassword',
@@ -173,7 +186,9 @@ function ChplSignin({ dispatch }) {
           variant="contained"
           onClick={submitSignin}
           endIcon={<VpnKeyIcon />}
+          disabled={isProcessing}
         >
+          { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
           Log In
         </Button>
         <Button
