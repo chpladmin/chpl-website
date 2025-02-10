@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { arrayOf, string } from 'prop-types';
-
+import { makeStyles } from '@material-ui/core';
 import ChplChangeRequestsView from './change-requests-view';
 
 import { useFetchChangeRequestTypes } from 'api/change-requests';
@@ -11,6 +11,12 @@ import {
   getDateTimeEntry,
 } from 'components/filter';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
+
+const useStyles = makeStyles(() => ({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 283px)',
+  },
+}));
 
 const staticFilters = [{
   ...defaultFilter,
@@ -58,6 +64,7 @@ function ChplChangeRequests(props) {
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
+  const classes = useStyles();
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
@@ -99,10 +106,12 @@ function ChplChangeRequests(props) {
         filters={filters}
         storageKey="storageKey-changeRequestsComponent"
       >
-        <ChplChangeRequestsView
-          disallowedFilters={disallowedFilters}
-          bonusQuery={bonusQuery}
-        />
+        <div className={classes.fixFooterSpacing}>
+          <ChplChangeRequestsView
+            disallowedFilters={disallowedFilters}
+            bonusQuery={bonusQuery}
+          />
+        </div>
       </FilterProvider>
     </AnalyticsContext.Provider>
   );

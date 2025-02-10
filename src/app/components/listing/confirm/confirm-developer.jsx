@@ -78,6 +78,9 @@ const useStyles = makeStyles({
     gap: '16px',
     flexDirection: 'column',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 257px)',
+  },
   formSubContainer: {
     display: 'grid',
     gap: '16px',
@@ -232,157 +235,159 @@ function ChplConfirmDeveloper(props) {
   });
 
   return (
-    <Container maxWidth="md">
-      <div className={classes.developerConfirm}>
-        <div className={classes.developerSubContainer}>
-          <Button
-            variant="outlined"
-            color="default"
-            fullWidth
-            className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-            onClick={() => handleCreationToggle(false)}
-          >
-            <span className={classes.buttonContent}>
-              <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-              { selectedDeveloper
-                ? (
-                  <>
-                    {`Use "${selectedDeveloper.name}"`}
-                  </>
-                ) : (
-                  <>
-                    Choose A Developer To Use
-                  </>
-                )}
-            </span>
-          </Button>
-          <div className={classes.orContainer}>
-            <Divider />
-            <Typography>OR</Typography>
-            <Divider />
+    <div className={classes.fixFooterSpacing}>
+      <Container maxWidth="md">
+        <div className={classes.developerConfirm}>
+          <div className={classes.developerSubContainer}>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(false)}
+            >
+              <span className={classes.buttonContent}>
+                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                { selectedDeveloper
+                  ? (
+                    <>
+                      {`Use "${selectedDeveloper.name}"`}
+                    </>
+                  ) : (
+                    <>
+                      Choose A Developer To Use
+                    </>
+                  )}
+              </span>
+            </Button>
+            <div className={classes.orContainer}>
+              <Divider />
+              <Typography>OR</Typography>
+              <Divider />
+            </div>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(true)}
+            >
+              <span className={classes.buttonContent}>
+                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                Create a developer
+              </span>
+            </Button>
           </div>
-          <Button
-            variant="outlined"
-            color="default"
-            fullWidth
-            className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-            onClick={() => handleCreationToggle(true)}
-          >
-            <span className={classes.buttonContent}>
-              <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-              Create a developer
-            </span>
-          </Button>
-        </div>
-        <Divider />
-        { isCreating
-          ? (
-            <Card>
-              <CardHeader title="Create A New Developer" />
-              <CardContent>
-                <div className={classes.formContainer}>
-                  <div className={classes.formSubContainer}>
-                    <div className={classes.developerInfo}>
+          <Divider />
+          { isCreating
+            ? (
+              <Card>
+                <CardHeader title="Create A New Developer" />
+                <CardContent>
+                  <div className={classes.formContainer}>
+                    <div className={classes.formSubContainer}>
+                      <div className={classes.developerInfo}>
+                        <ChplTextField
+                          id="name"
+                          name="name"
+                          label="Developer Name"
+                          value={formik.values.name}
+                          error={formik.touched.name && !!formik.errors.name}
+                          helperText={formik.touched.name && formik.errors.name}
+                          onChange={handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <FormControlLabel
+                          label={`Self-Developer (${formik.values.selfDeveloper ? 'Yes' : 'No'})`}
+                          control={(
+                            <Switch
+                              id="self-developer"
+                              name="selfDeveloper"
+                              color="primary"
+                              checked={formik.values.selfDeveloper}
+                              onChange={handleChange}
+                            />
+                          )}
+                        />
+                      </div>
                       <ChplTextField
-                        id="name"
-                        name="name"
-                        label="Developer Name"
-                        value={formik.values.name}
-                        error={formik.touched.name && !!formik.errors.name}
-                        helperText={formik.touched.name && formik.errors.name}
+                        id="website"
+                        name="website"
+                        label="Website"
+                        value={formik.values.website}
+                        error={formik.touched.website && !!formik.errors.website}
+                        helperText={formik.touched.website && formik.errors.website}
                         onChange={handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      <FormControlLabel
-                        label={`Self-Developer (${formik.values.selfDeveloper ? 'Yes' : 'No'})`}
-                        control={(
-                          <Switch
-                            id="self-developer"
-                            name="selfDeveloper"
-                            color="primary"
-                            checked={formik.values.selfDeveloper}
-                            onChange={handleChange}
-                          />
-                        )}
+                    </div>
+                    <div className={classes.formSubContainer}>
+                      <ChplConfirmDeveloperAddress
+                        address={developer.address}
+                        editing
+                        formik={formik}
+                        handleChange={handleChange}
                       />
                     </div>
-                    <ChplTextField
-                      id="website"
-                      name="website"
-                      label="Website"
-                      value={formik.values.website}
-                      error={formik.touched.website && !!formik.errors.website}
-                      helperText={formik.touched.website && formik.errors.website}
-                      onChange={handleChange}
-                      onBlur={formik.handleBlur}
-                    />
+                    <div className={classes.formSubContainer}>
+                      <ChplConfirmDeveloperContact
+                        contact={developer.contact}
+                        editing
+                        formik={formik}
+                        handleChange={handleChange}
+                      />
+                    </div>
                   </div>
-                  <div className={classes.formSubContainer}>
-                    <ChplConfirmDeveloperAddress
-                      address={developer.address}
-                      editing
-                      formik={formik}
-                      handleChange={handleChange}
-                    />
-                  </div>
-                  <div className={classes.formSubContainer}>
-                    <ChplConfirmDeveloperContact
-                      contact={developer.contact}
-                      editing
-                      formik={formik}
-                      handleChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <>
-              <Card>
-                <CardHeader title="Existing Developers" />
-                <CardContent>
-                  <ChplTextField
-                    select
-                    id="selected-developer"
-                    name="selectedDeveloper"
-                    label="Select a Developer"
-                    required
-                    value={selectedDeveloper}
-                    onChange={handleSelectOnChange}
-                    className={classes.chpltextfieldSpacing}
-                  >
-                    {developers.map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        {item.name}
-                        {item.developerCode && (` (Developer Code: ${item.developerCode})`)}
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                  <br />
-                  { !isShowingComparison
-                    && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => setIsShowingComparison(true)}
-                    >
-                      Compare with uploaded information
-                      <CompareArrowsIcon className={classes.iconSpacing} />
-                    </Button>
-                    )}
                 </CardContent>
               </Card>
-              { isShowingComparison
-                && (
-                  <ChplCompareUploadedAndSystemDevelopers
-                    dispatch={handleCompareDispatch}
-                    listing={listing}
-                  />
-                )}
-            </>
-          )}
-      </div>
-    </Container>
+            ) : (
+              <>
+                <Card>
+                  <CardHeader title="Existing Developers" />
+                  <CardContent>
+                    <ChplTextField
+                      select
+                      id="selected-developer"
+                      name="selectedDeveloper"
+                      label="Select a Developer"
+                      required
+                      value={selectedDeveloper}
+                      onChange={handleSelectOnChange}
+                      className={classes.chpltextfieldSpacing}
+                    >
+                      {developers.map((item) => (
+                        <MenuItem value={item} key={item.id}>
+                          {item.name}
+                          {item.developerCode && (` (Developer Code: ${item.developerCode})`)}
+                        </MenuItem>
+                      ))}
+                    </ChplTextField>
+                    <br />
+                    { !isShowingComparison
+                      && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setIsShowingComparison(true)}
+                      >
+                        Compare with uploaded information
+                        <CompareArrowsIcon className={classes.iconSpacing} />
+                      </Button>
+                      )}
+                  </CardContent>
+                </Card>
+                { isShowingComparison
+                  && (
+                    <ChplCompareUploadedAndSystemDevelopers
+                      dispatch={handleCompareDispatch}
+                      listing={listing}
+                    />
+                  )}
+              </>
+            )}
+        </div>
+      </Container>
+    </div>
   );
 }
 

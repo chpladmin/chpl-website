@@ -29,6 +29,9 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  fixFooterSpacing: { 
+    minHeight: 'calc(100vh - 257px)',
+  },
   messageButton: {
     marginLeft: '-8px',
     textTransform: 'none',
