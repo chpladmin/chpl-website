@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Container,
   Typography,
@@ -14,12 +15,27 @@ import { ChplCognitoUserCreate } from 'components/registration';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   content: {
     display: 'grid',
+    padding: '16px',
     gap: '8px',
     gridTemplateColumns: '1fr',
+  },
+  body: {
+    padding: '2vh',
+  },
+  cardFooter: {
+    border: '.5px solid #afafaf',
+    backgroundColor: '#fff',
+    marginTop: '-8px',
+    display: 'flex',
+    gridGap: '4px',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: '8px 16px',
   },
 });
 
@@ -29,8 +45,7 @@ function ChplRegisterUser({ hash }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [message, setMessage] = useState('');
-  const [state, setState] = useState('login');
+  const [state, setState] = useState('create');
   const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
   const { mutate: authorizeSsoUser } = usePostAuthorizeUser();
   const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
@@ -44,7 +59,6 @@ function ChplRegisterUser({ hash }) {
   }, [hash]);
 
   handleDispatch = (action, payload) => {
-    setMessage('');
     let packet;
     switch (action) {
       case 'authorize':
@@ -59,14 +73,18 @@ function ChplRegisterUser({ hash }) {
           },
           onError: (error) => {
             if (error.status === 401) {
-              setMessage('A user may not have more than one role, or your username / password are incorrect');
+              enqueueSnackbar('A user may not have more than one role, or your username / password are incorrect', {
+                variant: 'error',
+              });
             } else {
-              setMessage(error.response.data.error);
+              enqueueSnackbar(error.response.data.error, {
+                variant: 'error',
+              });
             }
           },
         });
         break;
-      case 'create':
+      case 'create': {
         packet = {
           hash,
           user: payload,
@@ -78,26 +96,31 @@ function ChplRegisterUser({ hash }) {
               category: 'Authentication',
               event: 'Create New Account',
             });
-            setMessage('Your account has been created. Please check your email for your temporary password');
+            enqueueSnackbar('Your account has been created. Please check your email for your temporary password', {
+              variant: 'success',
+            });
             setState('login');
           },
           onError: (error) => {
-            if (error.response.data.errorMessages?.length > 0) {
-              setMessage(error.response.data.errorMessages[0]);
-            } else if (error.response.data.error) {
-              setMessage(error.response.data.error);
+            let errorMessage;
+            if (error.response?.data?.errorMessages?.length > 0) {
+              errorMessage = error.response.data.errorMessages[0];
+            } else if (error.response?.data?.error) {
+              errorMessage = error.response.data.error;
             } else {
-              setMessage('An error occurred');
+              errorMessage = 'An error occurred';
             }
+            enqueueSnackbar(errorMessage, {
+              variant: 'error',
+            });
           },
         });
         break;
+      }
       case 'forceChangePassword':
-        setMessage('');
         break;
       case 'loggedIn':
         handleDispatch('authorize', {});
-        setMessage('');
         break;
       default:
         console.error(`No action matches ${action} with payload ${payload}`);
@@ -109,53 +132,44 @@ function ChplRegisterUser({ hash }) {
       case 'login':
         return (
           <>
-            <Typography>{ message }</Typography>
             <ChplCognitoLogin
               dispatch={handleDispatch}
               state={cognitoLoginComponentState}
               setState={setCognitoLoginComponentState}
             />
-            <Typography>
-              Or
-              {' '}
+            <Box className={classes.cardFooter}>
+              <Typography variant="body2">
+                Don&apos;t have an account?
+              </Typography>
               <Button
                 color="primary"
                 variant="outlined"
-                onClick={() => setState('create')}
+                size="small"
+                onClick={() => setState('create')} // Switch to login state
               >
-                create a new account
+                Create a new account
               </Button>
-            </Typography>
+            </Box>
           </>
         );
       case 'create':
         return (
           <>
-            { message.length > 0
-              && (
-                <Typography
-                  color="error"
-                >
-                  { message }
-                </Typography>
-              )}
             <ChplCognitoUserCreate dispatch={handleDispatch} />
-            <Typography>
-              Or
-              {' '}
+            <Box className={classes.cardFooter}>
+              <Typography>
+                Have an account?
+              </Typography>
               <Button
                 color="primary"
                 variant="outlined"
-                onClick={() => setState('cognito-login')}
+                size="small"
+                onClick={() => setState('login')}
               >
-                log in to your existing account
+                Log in to your existing account
               </Button>
-            </Typography>
+            </Box>
           </>
-        );
-      case 'success':
-        return (
-          <Typography>{ message }</Typography>
         );
       default:
         console.error(`No state matches ${state}`);
@@ -164,12 +178,18 @@ function ChplRegisterUser({ hash }) {
   };
 
   return (
-    <Container className={classes.content}>
-      <Typography variant="h1">
-        User Registration
-      </Typography>
-      { getState() }
-    </Container>
+    <>
+      <Container maxWidth="xs" className={classes.content}>
+        <Typography variant="h1">
+          User Registration
+        </Typography>
+      </Container>
+      <Box className={classes.body} bgcolor={palette.background}>
+        <Container maxWidth="xs">
+          { getState() }
+        </Container>
+      </Box>
+    </>
   );
 }
 
