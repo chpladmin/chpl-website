@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
@@ -18,6 +19,7 @@ import { usePostSetForgottenPassword } from 'api/auth';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 const zxcvbn = require('zxcvbn');
 
@@ -28,8 +30,8 @@ const useStyles = makeStyles({
     gridRowGap: '16px',
   },
   loginHeader: {
-    backgroundColor: '#ffffff',
-    padding: '16px 0px 0px 16px',
+    backgroundColor: palette.secondary,
+    padding: '16px',
   },
 });
 
@@ -72,7 +74,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
       password: formik.values.newPassword,
     }, {
       onSuccess: () => {
-        const body = 'Your password has been successfully reset';
+        const body = 'Your password has been successfully reset. You may log in with your new credentials';
         eventTrack({
           ...analytics,
           event: 'Confirm New Password',
@@ -81,8 +83,7 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
         enqueueSnackbar(body, { variant: 'success' });
         dispatch({ action: 'loggedOut' });
       },
-      onError: (error) => {
-        console.error(error);
+      onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';
         enqueueSnackbar(body, { variant: 'error' });
       },
@@ -123,6 +124,9 @@ function ChplResetForgottenPassword({ dispatch, uuid }) {
     <Card>
       <CardHeader className={classes.loginHeader} title="Reset forgotten password" />
       <CardContent className={classes.grid}>
+        <Typography>
+          Choose a strong, unique password that you will easily remember. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.
+        </Typography>
         <ChplTextField
           type="password"
           id="new-password"
