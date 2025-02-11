@@ -102,17 +102,37 @@ function ChplUrlChecker() {
                 {urlCheckResponse.url}
               </Typography>
               <Typography>
-                HTTP Status Code:
-                {urlCheckResponse.httpResponseAssertion.actualValue}
+                Passed:
+                {urlCheckResponse.passed.toString()}
               </Typography>
-              <Typography>
-                Response Time (in milliseconds):
-                {urlCheckResponse.responseTimeAssertion.actualValue}
-              </Typography>
-              <Typography>
-                Body Content:
-                {urlCheckResponse.bodyNotEmptyAssertion.actualValue ? urlCheckResponse.bodyNotEmptyAssertion.actualValue : 'Empty body content'}
-              </Typography>
+              { urlCheckResponse.errorMessage
+                && (
+                  <Typography>
+                    Error Message:
+                    {urlCheckResponse.errorMessage}
+                  </Typography>
+                )}
+              { urlCheckResponse.httpResponseAssertion?.actualValue
+                && (
+                  <Typography>
+                    HTTP Status Code:
+                    {urlCheckResponse.httpResponseAssertion.actualValue}
+                  </Typography>
+                )}
+              { urlCheckResponse.responseTimeAssertion?.actualValue
+                && (
+                  <Typography>
+                    Response Time (in milliseconds):
+                    {urlCheckResponse.responseTimeAssertion.actualValue}
+                  </Typography>
+                )}
+              { urlCheckResponse.bodyNotEmptyAssertion?.actualValue
+                && (
+                  <Typography>
+                    Body Content:
+                    {urlCheckResponse.bodyNotEmptyAssertion.actualValue ? urlCheckResponse.bodyNotEmptyAssertion.actualValue : 'Empty body content'}
+                  </Typography>
+                )}
             </Box>
           )}
     </Container>
