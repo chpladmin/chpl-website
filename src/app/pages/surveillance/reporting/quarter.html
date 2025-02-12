@@ -19,26 +19,54 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
+      <p>Surveillance Activities and Outcomes</p>
       <div class="form-group">
-        <label class="control-label" for="surveillance-activities">Surveillance Activities and Outcomes</label>
+        <label class="control-label" for="surveillance-activities">Randomized Surveillance – Selection Methods</label>
         <p class="form-control-static">The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.</p>
         <textarea class="form-control" id="surveillance-activities" name="surveillanceActivities" ng-model="$ctrl.report.surveillanceActivitiesAndOutcomes" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+        <p><i>All Surveillance Activities and Outcomes</i></p>
+        <p>Please log the surveillance activities and their outcomes to the "Activities and Outcomes" sheet of this workbook.</p>
       </div>
+      <p>Sampling and Selecting</p>
       <div class="form-group">
-        <label class="control-label" for="reactive">Reactive Surveillance Summary</label>
+        <label class="control-label" for="reactive-surveillance-summary">Reactive Surveillance Summary</label>
         <p class="form-control-static">In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.</p>
         <textarea class="form-control" id="reactive-surveillance-summary" name="reactiveSurveillanceSummary" ng-model="$ctrl.report.reactiveSurveillanceSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <div class="form-group">
-        <label class="control-label" for="prioritized-element">Prioritized Element Summary</label>
-        <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to evaluate and address the prioritized elements of surveillance referred to in Program Policy Resource #18-03 (October 5, 2018).</p>
-        <textarea class="form-control" id="prioritized-element" name="prioritizedElement" ng-model="$ctrl.report.prioritizedElementSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+        <label class="control-label" for="ics-surveillance-summary">ICS Surveillance Summary</label>
+        <p class="form-control-static">To fulfill requirements  to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance activities. Please detail the number of ICS-related surveillances conducted, the method used to surveil these products and the approach taken to incorporate prioritized elements as outlined in the Surveillance Resource.</p>
+        <textarea class="form-control" id="ics-surveillance-summary" name="icsSurveillanceSummary" ng-model="$ctrl.report.icsSurveillanceSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+      </div>
+      <p>Prioritized Surveillance</p>
+      <p>The ONC-ACB undertook the following activities and implemented specific measures to evaluate and address the prioritized elements of surveillance as outlined in Program Policy Resource #18-03 (October 5, 2018).</p>
+      <div class="form-group">
+        <label class="control-label" for="prioritized-criteria">Prioritized Criteria</label>
+        <p class="form-control-static">Please describe which prioritized criteria were surveilled, how and with what frequency. Provide the approach taken to conduct surveillance on these prioritized criteria.</p>
+        <textarea class="form-control" id="prioritized-criteria" name="prioritizedCriteria" ng-model="$ctrl.report.prioritizeCriteria" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <div class="form-group">
-        <label class="control-label" for="disclosure-requirements">Disclosure Requirements Summary</label>
-        <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclosure requirements, as required of the ONC-ACB under 45 CFR &sect; 170.523(k):</p>
+        <label class="control-label" for="disclosure-requirements-summary">Disclosure Requirements Summary</label>
+        <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR &sect; 170.523(k):</p>
         <textarea class="form-control" id="disclosure-requirements-summary" name="disclosureRequirementsSummary" ng-model="$ctrl.report.disclosureRequirementsSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
+      <div class="form-group">
+        <label class="control-label" for="developer-complaints-log-review">Developer Complaints Log Review</label>
+        <p class="form-control-static">Describe the activities conducted in the past quarter related to the review of developers' complaints logs. In your description, include an assessment of the extent to which the developer followed its internal complaints process and any deficiencies in that process. Additionally, specify the frequency of complaints received that relate to each prioritized elements outlined in the Surveillance Resource. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under "Surveillance Findings"</p>
+        <textarea class="form-control" id="developer-complaints-log-review" name="developerComplaintsLogReview" ng-model="$ctrl.report.developerComplaintsLogReview" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="post-certification-performance-of-certified-capabilities">Post-certification Performance of Certified Capabilities</label>
+        <p class="form-control-static">The assessment of potential non-conformities resulting from a developer’s implementation or business practices that may impact the performance of certified capabilities in the field.</p>
+        <textarea class="form-control" id="post-certification-performance-of-certified-capabilities" name="postCertificationPerformanceOfCertifiedCapatilities" ng-model="$ctrl.report.postCertificationPerformanceOfCertifiedCapatilities" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="appropriate-use-of-mark">Appropriate Use of Mark</label>
+        <p class="form-control-static">Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials, if applicable.</p>
+        <textarea class="form-control" id="appropriate-use-of-mark" name="appropriateUseOfMark" ng-model="$ctrl.report.appropriateUseOfMark" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+      </div>
+      <p>Complaints Reported to ONC-ACB</p>
+      <p>Please log the complaints and any actions to the "Complaints" sheet of this workbook.</p>
       <chpl-action-bar-wrapper-bridge
         can-delete="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
         can-save="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
