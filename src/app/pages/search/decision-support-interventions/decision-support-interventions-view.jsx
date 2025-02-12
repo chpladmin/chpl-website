@@ -161,7 +161,7 @@ function ChplDecisionSupportInterventionsSearchView() {
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
           <Typography variant="body1">
-            This list includes all health IT products that have been certified to following Criterion:
+            This list includes all health IT products that have been certified to the following Criterion:
           </Typography>
           <ul>
             <li>&sect;170.315 (b)(11): Decision Support Interventions</li>
