@@ -32,10 +32,14 @@ const validationSchema = yup.object({
   requirementGroupType: yup.string()
     .required('Requirement Type is required'),
   requirementType: yup.string()
-    .required('Requirement is required'),
+    .when('requirementGroupType', {
+      is: (value) => value !== 'Other Requirement',
+      then: yup.string()
+        .required('Requirement is required'),
+    }),
   requirementTypeOther: yup.string()
-    .when('requirementType', {
-      is: 'Other',
+    .when('requirementGroupType', {
+      is: 'Other Requirement',
       then: yup.string()
         .required('Requirement Type - Other is required'),
     }),
