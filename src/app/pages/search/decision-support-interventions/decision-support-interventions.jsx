@@ -19,11 +19,11 @@ const staticFilters = [
   certificationStatuses, {
     ...defaultFilter,
     key: 'riskManagementSummaryInformationOptions',
-    display: 'Risk Management Summary Information',
+    display: 'Risk Mgmt Summary Info',
     getValueEntry: getRadioValueEntry,
     singular: true,
     values: [
-      { value: 'has_risk_management_summary_information', display: 'Has Risk Management Summary Information URL', default: true },
+      { value: 'has_risk_management_summary_information', display: 'Has Risk Management Summary Information URL' },
       { value: 'no_risk_management_summary_information', display: 'Does not have Risk Management Summary Information URL' },
     ],
   }];
