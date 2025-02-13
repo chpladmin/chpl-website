@@ -97,6 +97,7 @@ function ChplRequirementEdit({
   const handleChange = (e) => {
     if (e.target.name === 'requirementGroupType') {
       formik.setFieldValue('requirementType', '');
+      formik.setFieldValue('requirementTypeOther', '');
     }
     formik.handleChange(e);
     const req = {
