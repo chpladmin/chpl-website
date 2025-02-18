@@ -11,7 +11,7 @@ import AppWrapper from 'app-wrapper';
 function ChplLoginWrapper(props) {
   return (
     <AppWrapper>
-      <Container id="login-component">
+      <Container disableGutters maxWidth="false" id="login-component">
         <ChplLoginPage
           {...props}
         />
