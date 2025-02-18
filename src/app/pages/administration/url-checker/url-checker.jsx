@@ -25,7 +25,8 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   url: yup.string()
-    .required('Field is required'),
+    .required('Field is required')
+    .url('Improper format (http://www.example.com)'),
 });
 
 function ChplUrlChecker() {
