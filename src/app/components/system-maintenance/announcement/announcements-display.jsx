@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Container,
   IconButton,
-  Button,
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
@@ -58,13 +58,6 @@ function ChplAnnouncementsDisplay() {
     const sortedAnnouncements = data.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1));
     setAnnouncements(sortedAnnouncements);
   }, [data, isLoading, isSuccess]);
-
-  useEffect(() => {
-    if (announcements.length === 0) {
-      return undefined;
-    }
-    return () => {};
-  }, [announcements]);
 
   const currentAnnouncement = announcements[currentAnnouncementIndex] || {};
 
