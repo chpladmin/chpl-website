@@ -776,7 +776,7 @@ function ChplCriterionDetailsView(props) {
                       </ChplTooltip>
                       Privacy &amp; Security Framework
                     </TableCell>
-                    <TableCell>{criterion.privacySecurityFramework}</TableCell>
+                    <TableCell>{criterion.privacySecurityFramework ? criterion.privacySecurityFramework : 'None'}</TableCell>
                   </TableRow>
                 )}
               { criterion.success && criterion.criterion.attributes?.sed
