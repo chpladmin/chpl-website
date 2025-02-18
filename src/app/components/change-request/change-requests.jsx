@@ -12,11 +12,11 @@ import {
 } from 'components/filter';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 283px)',
   },
-}));
+});
 
 const staticFilters = [{
   ...defaultFilter,

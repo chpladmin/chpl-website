@@ -5,6 +5,7 @@ import ChplChangeRequests from './change-requests';
 
 import AppWrapper from 'app-wrapper';
 import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
+
 function ChplChangeRequestsWrapper(props) {
   const {
     disallowedFilters,
@@ -17,10 +18,10 @@ function ChplChangeRequestsWrapper(props) {
         disabled={!!bonusQuery}
         title="Change Requests"
       >
-          <ChplChangeRequests
-            disallowedFilters={disallowedFilters}
-            bonusQuery={bonusQuery}
-          />
+        <ChplChangeRequests
+          disallowedFilters={disallowedFilters}
+          bonusQuery={bonusQuery}
+        />
       </BreadcrumbWrapper>
     </AppWrapper>
   );
