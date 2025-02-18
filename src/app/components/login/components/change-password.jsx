@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -19,6 +20,7 @@ import { usePostCognitoChangePassword } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
+import { palette } from 'themes';
 
 const zxcvbn = require('zxcvbn');
 
@@ -29,8 +31,8 @@ const useStyles = makeStyles({
     gridRowGap: '16px',
   },
   loginHeader: {
-    backgroundColor: '#ffffff',
-    padding: '16px 0px 0px 16px',
+    backgroundColor: palette.secondary,
+    padding: '16px',
   },
 });
 
@@ -136,6 +138,9 @@ function ChplChangePassword({ dispatch }) {
     <Card>
       <CardHeader className={classes.loginHeader} title="Change password" />
       <CardContent className={classes.grid}>
+        <Typography>
+          Choose a strong, unique password that you will easily remember. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.
+        </Typography>
         <ChplTextField
           type="password"
           id="password"

@@ -21,12 +21,14 @@ function ChplCognitoLogin({
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    if (user?.cognitoId) {
+    if (uuid) {
+      setState('RESETFORGOTTENPASSWORD');
+    } else if (user?.cognitoId) {
       setState('LOGGEDIN');
     } else {
       setState('SIGNIN');
     }
-  }, [user]);
+  }, [user, uuid]);
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
