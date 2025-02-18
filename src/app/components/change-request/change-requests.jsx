@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { arrayOf, string } from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { arrayOf, string } from 'prop-types';
 import ChplChangeRequestsView from './change-requests-view';
 
 import { useFetchChangeRequestTypes } from 'api/change-requests';
