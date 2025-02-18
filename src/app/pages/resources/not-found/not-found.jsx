@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('xl')]: {
       maxWidth: '50%',
     },
-    minHeight: 'calc(100vh - 158px)', 
+    minHeight: 'calc(100vh - 137px)', 
   },
   cardActions: {
     padding: '16px',

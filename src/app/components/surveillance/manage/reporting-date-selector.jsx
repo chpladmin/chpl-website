@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     padding: '8px',
   },
   fixedFooterSpacing: { 
-    minHeight: 'calc(100vh - 438px)',
+    minHeight: 'calc(100vh - 416px)',
   },
   fullWidth: {
     gridColumn: '1 / -1',

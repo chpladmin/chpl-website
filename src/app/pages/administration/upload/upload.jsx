@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     backgroundColor: palette.background,
     padding: '32px 0',
-    minHeight: 'calc(100vh - 289px)',
+    minHeight: 'calc(100vh - 268px)',
   },
   uploadCards: {
     width: '48%',

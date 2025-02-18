@@ -52,7 +52,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '16px',
-    minHeight: 'calc(100vh - 289px)',
+    minHeight: 'calc(100vh - 283px)',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       alignItems: 'start',

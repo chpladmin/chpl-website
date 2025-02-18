@@ -56,6 +56,7 @@ const useStyles = makeStyles({
     gap: '16px',
     paddingTop: '32px',
     paddingBottom: '32px',
+    minHeight: 'calc(100vh - 100px)',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 1fr',
