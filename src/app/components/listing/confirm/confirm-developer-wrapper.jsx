@@ -5,11 +5,12 @@ import ChplConfirmDeveloper from './confirm-developer';
 
 import AppWrapper from 'app-wrapper';
 import { developer as developerProp } from 'shared/prop-types';
+
 function ChplConfirmDeveloperWrapper(props) {
   /* eslint-disable react/jsx-props-no-spreading */
   return (
     <AppWrapper>
-        <ChplConfirmDeveloper {...props} />
+      <ChplConfirmDeveloper {...props} />
     </AppWrapper>
   );
   /* eslint-enable react/jsx-props-no-spreading */
