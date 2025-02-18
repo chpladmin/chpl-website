@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.32.2
+_18 February 2025_
+
+### User Interface Updates
+* Indicate value when P&S Framework is not supplied
+
+---
+
 ## Version 13.32.1
 _10 February 2025_
 
