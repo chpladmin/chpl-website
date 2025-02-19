@@ -4,14 +4,15 @@ import { func } from 'prop-types';
 import ChplConfirmListings from './confirm-listings';
 
 import AppWrapper from 'app-wrapper';
+
 function ChplConfirmListingsWrapper(props) {
   const { onProcess } = props;
 
   return (
     <AppWrapper>
-        <ChplConfirmListings
-          onProcess={onProcess}
-        />
+      <ChplConfirmListings
+        onProcess={onProcess}
+      />
     </AppWrapper>
   );
 }
