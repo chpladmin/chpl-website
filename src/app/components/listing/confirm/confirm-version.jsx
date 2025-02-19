@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
     gap: '32px',
     padding: '32px 0',
     alignItems: 'start',
-    minHeight: 'calc(100vh - 257px)',
+    paddingBottom: '26vh',
   },
   developerSubContainer: {
     display: 'grid',

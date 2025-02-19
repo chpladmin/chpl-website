@@ -21,8 +21,7 @@ const useStyles = makeStyles({
     gridRowGap: '16px',
     gridTemplateColumns: '1fr 1fr',
     backgroundColor: '#ffffff',
-    padding: '8px',
-    minHeight: 'calc(100vh - 416px)',
+    padding: '8px 8px 35vh 8px',
   },
   fullWidth: {
     gridColumn: '1 / -1',
