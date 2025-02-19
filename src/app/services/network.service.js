@@ -200,6 +200,11 @@ export default class NetworkService {
     return this.apiGET('/standards');
   }
 
+  getSurveillanceActivityReport(range) {
+    const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
+    return this.apiGET(url);
+  }
+
   getSurveillanceLookups() {
     const data = {};
     this.apiGET('/data/surveillance_types')
@@ -283,10 +288,6 @@ export default class NetworkService {
 
   impersonateUser(user) {
     return this.apiGET(`/auth/impersonate?id=${user.userId}`);
-  }
-
-  inviteUser(invitationObject) {
-    return this.apiPOST('/users/invite', invitationObject);
   }
 
   inviteCognitoUser(invitationObject) {
@@ -380,6 +381,7 @@ export default class NetworkService {
         if (angular.isObject(response.data)) {
           return response.data;
         }
+        return response;
       }, (response) => this.$q.reject(response));
   }
 
