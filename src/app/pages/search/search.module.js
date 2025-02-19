@@ -2,6 +2,7 @@ import ChplApiDocumentationSearchWrapper from './api-documentation/api-documenta
 import ChplBannedDevelopersSearchWrapper from './banned-developers/banned-developers-wrapper';
 import ChplCorrectiveActionSearchWrapper from './corrective-action/corrective-action-wrapper';
 import ChplDecertifiedProductsSearchWrapper from './decertified-products/decertified-products-wrapper';
+import ChplDecisionSupportInterventionsSearchWrapper from './decision-support-interventions/decision-support-interventions-wrapper';
 import ChplInactiveCertificatesSearchWrapper from './inactive-certificates/inactive-certificates-wrapper';
 import ChplRealWorldTestingSearchWrapper from './real-world-testing/real-world-testing-wrapper';
 import ChplListingsSearchWrapper from './listings/listings-wrapper';
@@ -20,6 +21,7 @@ export default angular
   .component('chplBannedDevelopersSearchPageBridge', reactToAngularComponent(ChplBannedDevelopersSearchWrapper))
   .component('chplCorrectiveActionSearchWrapperBridge', reactToAngularComponent(ChplCorrectiveActionSearchWrapper))
   .component('chplDecertifiedProductsSearchWrapperBridge', reactToAngularComponent(ChplDecertifiedProductsSearchWrapper))
+  .component('chplDecisionSupportInterventionsSearchWrapperBridge', reactToAngularComponent(ChplDecisionSupportInterventionsSearchWrapper))
   .component('chplInactiveCertificatesSearchWrapperBridge', reactToAngularComponent(ChplInactiveCertificatesSearchWrapper))
   .component('chplRealWorldTestingSearchWrapperBridge', reactToAngularComponent(ChplRealWorldTestingSearchWrapper))
   .component('chplListingsSearchWrapperBridge', reactToAngularComponent(ChplListingsSearchWrapper))
