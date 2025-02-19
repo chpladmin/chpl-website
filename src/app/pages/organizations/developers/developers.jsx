@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Box, makeStyles } from '@material-ui/core';
 
 import ChplDevelopersView from './developers-view';
 
@@ -11,7 +12,6 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-import { Box, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   pageBody: {

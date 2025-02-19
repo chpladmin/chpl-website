@@ -11,7 +11,6 @@ import {
 } from 'shared/prop-types';
 
 function ChplComplaintsWrapper(props) {
-  const classes = useStyles();
   const {
     bonusQuery,
     canAdd,

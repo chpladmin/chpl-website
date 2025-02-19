@@ -14,11 +14,11 @@ import USAGovEspLogo from '../../assets/images/Logo_USAGov_Spanish.png';
 import { theme } from 'themes';
 import ChplAnnouncementsDisplay from 'components/system-maintenance/announcement/announcements-display';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   footer: {
     position: 'sticky',
     width: '100%',
-    backgroundColor: '#001439!important',
+    backgroundColor: '#001439 !important',
     padding: '4px 32px',
     borderTop: '1px solid #000d25',
     zIndex: 999,
@@ -47,12 +47,10 @@ const useStyles = makeStyles(() => ({
       color: '#fff',
     },
   },
-}));
+});
 function ChplNavigationBottom() {
   const classes = useStyles();
   return (
-    <>
-
       <Box className={classes.footer}>
         <ChplAnnouncementsDisplay />
         <Container maxWidth="lg" disableGutters>
@@ -92,7 +90,6 @@ function ChplNavigationBottom() {
           </Box>
         </Container>
       </Box>
-    </>
   );
 }
 
