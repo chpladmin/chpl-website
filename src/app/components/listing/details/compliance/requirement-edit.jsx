@@ -126,10 +126,12 @@ function ChplRequirementEdit({
         dispatch({ action: 'update-req', payload: updated });
         break;
       case 'update-nc':
+        ncs = nonConformities.map((nc) => (nc.guid === payload.guid ? payload : nc));
+        setNonConformities((prev) => prev.map((nc) => (nc.guid === payload.guid ? payload : nc)));
         updated = {
           ...requirement,
           guid,
-          nonconformities: nonConformities.map((nc) => (nc.guid === payload.guid ? payload : nc)),
+          nonconformities: ncs,
         };
         dispatch({ action: 'update-req', payload: updated });
         break;
