@@ -55,12 +55,13 @@ function ChplAnnouncementsDisplay() {
     if (isLoading || !isSuccess) {
       return;
     }
-    const sortedAnnouncements = data.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1));
-    setAnnouncements(sortedAnnouncements);
+    setAnnouncements(data.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
   }, [data, isLoading, isSuccess]);
 
-  const currentAnnouncement = announcements[currentAnnouncementIndex] || {};
-
+  let currentAnnouncement = {};
+  if (announcements.length > 0) {
+    currentAnnouncement = announcements[currentAnnouncementIndex];
+  }
   const handleNext = () => {
     setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % announcements.length);
   };
