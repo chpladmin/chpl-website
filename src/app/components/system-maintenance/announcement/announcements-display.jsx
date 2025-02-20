@@ -11,6 +11,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import { palette } from 'themes';
 import { useFetchAnnouncements } from 'api/announcements';
+import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
   announcementBox: {
@@ -50,6 +51,7 @@ function ChplAnnouncementsDisplay() {
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
+  const $state = getAngularService('$state');
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -73,10 +75,14 @@ function ChplAnnouncementsDisplay() {
           {currentAnnouncement.id && (
             <>
               <Box className={classes.announcementBox} key={currentAnnouncement.id}>
-                <strong>{currentAnnouncement.title}</strong>
-                {`${currentAnnouncement.text.substring(0, 160)}...`}
+                <strong>
+                  {currentAnnouncement.title.length > 25
+                    ? `${currentAnnouncement.title.substring(0, 25)}...`
+                    : currentAnnouncement.title}
+                </strong>
+                {`${currentAnnouncement.text.substring(0, 140)}...`}
               </Box>
-              <Button className={classes.readMore} variant="text" color="secondary" size="small" onClick={() => { state.go('resources.overview'); window.scrollTo(0, 0); }}>Read more</Button>
+              <Button className={classes.readMore} variant="text" color="secondary" size="small" onClick={() => { $state.go('resources.overview'); window.scrollTo(0, 0); }}>Read more</Button>
             </>
           )}
           {announcements.length > 1 && (
