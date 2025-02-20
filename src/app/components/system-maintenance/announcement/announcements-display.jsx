@@ -76,7 +76,7 @@ function ChplAnnouncementsDisplay() {
                 <strong>{currentAnnouncement.title}</strong>
                 {`${currentAnnouncement.text.substring(0, 160)}...`}
               </Box>
-              <Button className={classes.readMore} variant="text" color="secondary" size="small" onClick={() => { window.location.href = '#/resources/overview'; window.scrollTo(0, 0); }}>Read more</Button>
+              <Button className={classes.readMore} variant="text" color="secondary" size="small" onClick={() => { state.go('resources.overview'); window.scrollTo(0, 0); }}>Read more</Button>
             </>
           )}
           {announcements.length > 1 && (
