@@ -169,11 +169,11 @@ function FilterProvider(props) {
       ...filter,
       required: !!filter.required,
       operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
-      values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((v) => ({
-        ...v,
-        selected: v.default,
-        default: v.default,
-        display: v.display || v.value,
+      values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
+        ...value,
+        selected: value.default,
+        default: value.default,
+        display: value.display || value.value,
       })),
     })));
   }, [props.filters]); // eslint-disable-line react/destructuring-assignment
