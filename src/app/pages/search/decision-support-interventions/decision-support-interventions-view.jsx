@@ -42,9 +42,6 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr',
-    },
   },
   pageContent: {
     display: 'grid',
