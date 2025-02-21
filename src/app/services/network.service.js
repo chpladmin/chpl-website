@@ -354,6 +354,10 @@ export default class NetworkService {
     return this.apiPUT(`/surveillance/${surveillance.id}`, surveillance);
   }
 
+  updateVersion(versionObject) {
+    return this.apiPUT('/versions', versionObject);
+  }
+
   /*
    * Helper functions
    */
