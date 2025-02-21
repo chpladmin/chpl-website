@@ -10,12 +10,8 @@ import {
 import ChplVersionEdit from './version-edit';
 
 function ChplVersion({
-  canEdit,
-  canJoin,
-  canSplit,
   dispatch,
   errorMessages,
-  isEditing,
   isInvalid: initialIsInvalid,
   isProcessing,
   isSplitting,
@@ -42,12 +38,8 @@ function ChplVersion({
 export default ChplVersion;
 
 ChplVersion.propTypes = {
-  canEdit: func,
-  canJoin: func,
-  canSplit: func,
   dispatch: func,
   errorMessages: arrayOf(string),
-  isEditing: bool,
   isInvalid: bool,
   isProcessing: bool,
   isSplitting: bool,
@@ -55,12 +47,8 @@ ChplVersion.propTypes = {
 };
 
 ChplVersion.defaultProps = {
-  canEdit: () => false,
-  canJoin: () => false,
-  canSplit: () => false,
   dispatch: () => {},
   errorMessages: [],
-  isEditing: false,
   isInvalid: false,
   isProcessing: false,
   isSplitting: false,

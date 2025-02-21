@@ -5,14 +5,14 @@ import {
   Container,
   makeStyles,
 } from '@material-ui/core';
-import { func, number, object } from 'prop-types';
+import { func, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { usePutVersion } from 'api/version';
 import ChplVersion from 'components/version/version';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
   pageContainer: {
@@ -28,10 +28,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplEditVersion({ dispatch, productId, version }) {
+function ChplEditVersion({ dispatch, version }) {
   const { analytics } = useAnalyticsContext();
-  const { developer } = useContext(DeveloperContext);
-  const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePutVersion();
   const [errorMessages, setErrorMessages] = useState([]);
@@ -60,7 +58,7 @@ function ChplEditVersion({ dispatch, productId, version }) {
           },
           onError: (error) => {
             setIsProcessing(false);
-            let body = error?.response?.data?.error;
+            const body = error?.response?.data?.error;
             if (body) {
               enqueueSnackbar(body, {
                 variant: 'error',
@@ -94,6 +92,5 @@ export default ChplEditVersion;
 
 ChplEditVersion.propTypes = {
   dispatch: func.isRequired,
-  productId: number.isRequired,
   version: object.isRequired,
 };

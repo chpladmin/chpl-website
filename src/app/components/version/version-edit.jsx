@@ -1,30 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  ButtonGroup,
-  IconButton,
   Card,
   CardHeader,
   CardContent,
   Container,
-  Divider,
-  FormControlLabel,
-  MenuItem,
-  Switch,
-  Table,
-  TableContainer,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableFooter,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import {
   arrayOf,
   bool,
@@ -38,7 +19,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -72,7 +52,6 @@ function ChplVersionEdit(props) {
   } = props;
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
-  const { hasAnyRole } = useContext(UserContext);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
