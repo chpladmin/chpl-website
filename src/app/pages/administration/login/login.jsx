@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { makeStyles } from '@material-ui/core';
 import {
   Box,
   Container,
@@ -10,6 +11,12 @@ import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext } from 'shared/contexts';
 import { palette } from 'themes';
 
+const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 276px)',
+  },
+});
+
 function ChplLoginPage(props) {
   const { ssoIsOn } = useContext(FlagContext);
   /* eslint-disable react/destructuring-assignment */
@@ -18,6 +25,7 @@ function ChplLoginPage(props) {
   const params = props.returnTo.params();
   const options = { ...props.returnTo.options(), reload: true };
   /* eslint-enable react/destructuring-assignment */
+  const classes = useStyles();
 
   const handleLogin = (action) => {
     if (action === 'loggedIn') {
@@ -28,11 +36,13 @@ function ChplLoginPage(props) {
   if (ssoIsOn) {
     return (
       <Box py="4vh" bgcolor={palette.background}>
-        <Container maxWidth="xs">
-          <ChplCognitoLogin
-            dispatch={handleLogin}
-          />
-        </Container>
+        <div className={classes.fixFooterSpacing}>
+          <Container maxWidth="xs">
+            <ChplCognitoLogin
+              dispatch={handleLogin}
+            />
+          </Container>
+        </div>
       </Box>
     );
   }
