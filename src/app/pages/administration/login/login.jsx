@@ -13,7 +13,7 @@ import { palette } from 'themes';
 
 const useStyles = makeStyles({
   fixFooterSpacing: {
-    minHeight: 'calc(100vh - 276px)',
+    minHeight: 'calc(100vh - 100px)',
   },
 });
 
@@ -36,13 +36,11 @@ function ChplLoginPage(props) {
   if (ssoIsOn) {
     return (
       <Box py="4vh" bgcolor={palette.background}>
-        <div className={classes.fixFooterSpacing}>
-          <Container maxWidth="xs">
-            <ChplCognitoLogin
-              dispatch={handleLogin}
-            />
-          </Container>
-        </div>
+        <Container className={classes.fixFooterSpacing} maxWidth="xs">
+          <ChplCognitoLogin
+            dispatch={handleLogin}
+          />
+        </Container>
       </Box>
     );
   }
