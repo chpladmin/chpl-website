@@ -28,9 +28,11 @@ import ChplAccessibilityStandards from 'components/system-maintenance/accessibil
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
 import ChplApiKeys from 'components/system-maintenance/api-key/api-keys';
 import ChplCertificationCriteria from 'components/system-maintenance/certification-criterion/certification-criteria';
+import ChplCodeSets from 'components/system-maintenance/code-set/code-sets';
 import ChplConformanceMethods from 'components/system-maintenance/conformance-method/conformance-methods';
 import ChplCqms from 'components/system-maintenance/cqm/cqms';
 import ChplFunctionalitiesTested from 'components/system-maintenance/functionality-tested/functionalities-tested';
+import ChplG1g2 from 'components/system-maintenance/g1g2/g1g2';
 import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
 import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-standards';
 import ChplStandards from 'components/system-maintenance/standard/standards';
@@ -128,6 +130,11 @@ const maintenanceItems = [{
   secondary: 'Table of the Certification Criteria values',
   icon: <BookOutlinedIcon />,
 }, {
+  id: 'codeSets',
+  primary: 'Code Sets',
+  secondary: 'Table of Code Sets',
+  icon: <BookOutlinedIcon />,
+}, {
   id: 'conformanceMethods',
   primary: 'Conformance Methods',
   secondary: 'Table of Conformance Methods',
@@ -142,6 +149,11 @@ const maintenanceItems = [{
   primary: 'Functionalities Tested',
   secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
   icon: <BeenhereOutlinedIcon />,
+}, {
+  id: 'g1g2',
+  primary: 'G1/G2 Measures',
+  secondary: 'Table of G1/G2 Measures',
+  icon: <BookOutlinedIcon />,
 }, {
   id: 'qmsStandards',
   primary: 'QMS Standards',
@@ -246,12 +258,14 @@ function ChplSystemMaintenance() {
     hide('announcements.edit.disabled');
     hide('apiKeys.viewall.disabled');
     hide('certificationCriteria.viewall.disabled');
+    hide('codeSets.viewall.disabled');
     hide('conformanceMethods.viewall.disabled');
     hide('cqms.viewall.disabled');
     hide('functionalitiesTested.viewall.disabled');
     hide('functionalitiesTested.viewall');
     hide('functionalitiesTested.add.disabled');
     hide('functionalitiesTested.edit.disabled');
+    hide('g1g2.viewall.disabled');
     hide('manageSubscriptions.viewall.disabled');
     hide('qmsStandards.viewall.disabled');
     hide('qmsStandards.viewall');
@@ -336,12 +350,14 @@ function ChplSystemMaintenance() {
           { active === 'announcements' && <ChplAnnouncements /> }
           { active === 'apiKeys' && <ChplApiKeys /> }
           { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
+          { active === 'codeSets' && <ChplCodeSets /> }
           { active === 'conformanceMethods' && <ChplConformanceMethods /> }
           { active === 'cqms' && <ChplCqms /> }
-          { active === 'qmsStandards' && <ChplQmsStandards /> }
           { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
-          { active === 'subscriptions' && <ChplManageSubscriptions /> }
+          { active === 'g1g2' && <ChplG1g2 /> }
+          { active === 'qmsStandards' && <ChplQmsStandards /> }
           { active === 'standards' && <ChplStandards /> }
+          { active === 'subscriptions' && <ChplManageSubscriptions /> }
           { active === 'svaps' && <ChplSvaps /> }
           { active === 'systemJobs' && <ChplSystemJobs /> }
           { active === 'testData' && <ChplTestData /> }
