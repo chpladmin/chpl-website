@@ -11,18 +11,21 @@ import {
   Divider,
   ListItemText,
 } from '@material-ui/core';
-import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
-import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
+import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
+import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
+import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
+import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
+import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
 
 import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
@@ -131,12 +134,12 @@ const maintenanceItems = [{
   id: 'conformanceMethods',
   primary: 'Conformance Methods',
   secondary: 'Table of Conformance Methods',
-  icon: <BookOutlinedIcon />,
+  icon: <AssessmentOutlinedIcon />,
 }, {
   id: 'cqms',
   primary: 'CQMs',
   secondary: 'Table of the CQM values',
-  icon: <BookOutlinedIcon />,
+  icon: <SpeedOutlinedIcon />,
 }, {
   id: 'functionalitiesTested',
   primary: 'Functionalities Tested',
@@ -146,7 +149,7 @@ const maintenanceItems = [{
   id: 'qmsStandards',
   primary: 'QMS Standards',
   secondary: 'Add and update the QMS Standards available to be applied to listings',
-  icon: <AssessmentOutlinedIcon />,
+  icon: <AssignmentTurnedInOutlinedIcon />,
 }, {
   id: 'standards',
   primary: 'Standards',
@@ -173,7 +176,7 @@ const maintenanceItems = [{
   id: 'testData',
   primary: 'Test Data',
   secondary: 'Table of Test Data',
-  icon: <BookOutlinedIcon />,
+  icon: <DataUsageOutlinedIcon />,
 }, {
   id: 'testTools',
   primary: 'Test Tools',
