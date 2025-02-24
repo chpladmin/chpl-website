@@ -84,6 +84,30 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
+const useFetchConformanceMethods = () => {
+  const axios = useAxios();
+  return useQuery(['conformance-methods'], async () => {
+    const response = await axios.get('conformance-methods');
+    return response.data;
+  });
+};
+
+const useFetchCqms = (props = { active: true }) => {
+  const params = Object
+    .entries(props)
+    .filter(([key, value]) => key !== 'active' && value)
+    .filter(([key]) => (key !== 'active'))
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+  let query = 'cqms';
+  if (params.length > 0) { query += `?${params}`; }
+  const axios = useAxios();
+  return useQuery(['cqms', params], async () => {
+    const response = await axios.get(query);
+    return response.data.filter((cc) => !props.active || cc.startDay < jsJoda.LocalDate.now());
+  });
+};
+
 const useFetchCriteria = (props = { enabled: true, active: true }) => {
   const params = Object
     .entries(props)
@@ -171,6 +195,14 @@ const useFetchSvaps = () => {
   return useQuery(['svaps'], async () => {
     const response = await axios.get('svaps');
     return response.data;
+  });
+};
+
+const useFetchTestData = () => {
+  const axios = useAxios();
+  return useQuery(['test-data'], async () => {
+    const response = await axios.get('data/test_data');
+    return response.data.data;
   });
 };
 
@@ -345,6 +377,8 @@ export {
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
+  useFetchConformanceMethods,
+  useFetchCqms,
   useFetchCriteria,
   useFetchCriteriaForFunctionalitiesTested,
   useFetchCriteriaForStandards,
@@ -355,6 +389,7 @@ export {
   useFetchRules,
   useFetchStandards,
   useFetchSvaps,
+  useFetchTestData,
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,

@@ -27,13 +27,16 @@ import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
 import ChplApiKeys from 'components/system-maintenance/api-key/api-keys';
-import ChplCertificationCriteria from 'components/system-maintenance/certification-criteria/certification-criteria';
+import ChplCertificationCriteria from 'components/system-maintenance/certification-criterion/certification-criteria';
+import ChplConformanceMethods from 'components/system-maintenance/conformance-method/conformance-methods';
+import ChplCqms from 'components/system-maintenance/cqm/cqms';
 import ChplFunctionalitiesTested from 'components/system-maintenance/functionality-tested/functionalities-tested';
 import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
 import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-standards';
 import ChplStandards from 'components/system-maintenance/standard/standards';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
+import ChplTestData from 'components/system-maintenance/test-data/test-data';
 import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
 import ChplUcdProcesses from 'components/system-maintenance/ucd-process/ucd-processes';
 import { eventTrack } from 'services/analytics.service';
@@ -125,6 +128,16 @@ const maintenanceItems = [{
   secondary: 'Table of the Certification Criteria values',
   icon: <BookOutlinedIcon />,
 }, {
+  id: 'conformanceMethods',
+  primary: 'Conformance Methods',
+  secondary: 'Table of Conformance Methods',
+  icon: <BookOutlinedIcon />,
+}, {
+  id: 'cqms',
+  primary: 'CQMs',
+  secondary: 'Table of the CQM values',
+  icon: <BookOutlinedIcon />,
+}, {
   id: 'functionalitiesTested',
   primary: 'Functionalities Tested',
   secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
@@ -156,6 +169,11 @@ const maintenanceItems = [{
   secondary: 'View and schedule system-related jobs',
   roles: ['chpl-admin'],
   icon: <PlayArrowOutlinedIcon />,
+}, {
+  id: 'testData',
+  primary: 'Test Data',
+  secondary: 'Table of Test Data',
+  icon: <BookOutlinedIcon />,
 }, {
   id: 'testTools',
   primary: 'Test Tools',
@@ -228,6 +246,8 @@ function ChplSystemMaintenance() {
     hide('announcements.edit.disabled');
     hide('apiKeys.viewall.disabled');
     hide('certificationCriteria.viewall.disabled');
+    hide('conformanceMethods.viewall.disabled');
+    hide('cqms.viewall.disabled');
     hide('functionalitiesTested.viewall.disabled');
     hide('functionalitiesTested.viewall');
     hide('functionalitiesTested.add.disabled');
@@ -241,6 +261,7 @@ function ChplSystemMaintenance() {
     hide('standards.viewall');
     hide('standards.add.disabled');
     hide('standards.edit.disabled');
+    hide('testData.viewall.disabled');
     hide('testTools.viewall.disabled');
     hide('testTools.viewall');
     hide('testTools.add.disabled');
@@ -315,12 +336,15 @@ function ChplSystemMaintenance() {
           { active === 'announcements' && <ChplAnnouncements /> }
           { active === 'apiKeys' && <ChplApiKeys /> }
           { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
+          { active === 'conformanceMethods' && <ChplConformanceMethods /> }
+          { active === 'cqms' && <ChplCqms /> }
           { active === 'qmsStandards' && <ChplQmsStandards /> }
           { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
           { active === 'subscriptions' && <ChplManageSubscriptions /> }
           { active === 'standards' && <ChplStandards /> }
           { active === 'svaps' && <ChplSvaps /> }
           { active === 'systemJobs' && <ChplSystemJobs /> }
+          { active === 'testData' && <ChplTestData /> }
           { active === 'testTools' && <ChplTestTools /> }
           { active === 'ucdProcesses' && <ChplUcdProcesses /> }
         </Box>
