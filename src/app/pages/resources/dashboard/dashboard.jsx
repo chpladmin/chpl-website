@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     padding: theme.spacing(8),
     backgroundColor: palette.greyLight,
   },
-  fixedFooterSpacing: {
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 259px)',
   },
   stickyCard: {
@@ -71,7 +71,7 @@ function ChplDashboard() {
           <Typography variant="h1">Dashboard</Typography>
         </Container>
       </Box>
-      <div className={classes.fixedFooterSpacing}>
+      <div className={classes.fixFooterSpacing}>
         <Box className={classes.container}>
           <Container maxWidth="lg">
             <Box display="flex" flexDirection="row" gridGap={32} width="100%">

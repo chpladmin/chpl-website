@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
   },
-  fixedFooterSpacing: {
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
   },
   header: {
@@ -254,7 +254,7 @@ function ChplUsersView({
         )}
       { !activeUser
         && (
-          <div className={classes.fixedFooterSpacing}>
+          <div className={classes.fixFooterSpacing}>
             <div className={classes.container}>
               <Card>
                 <CardHeader

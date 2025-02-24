@@ -35,7 +35,7 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  fixedFooterSpacing: {
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
   pageHeader: {
@@ -209,7 +209,7 @@ function ChplSvapSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixedFooterSpacing}>
+    <div className={classes.fixFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">SVAP Information</Typography>
       </div>
