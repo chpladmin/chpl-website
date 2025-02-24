@@ -7,7 +7,6 @@ const filter = {
   key: 'standardIds',
   display: 'Standards',
   operatorKey: 'standardOperator',
-  // sortValues: (f, a, b) => sortCqms(a, b),
   getValueEntry: getStandardValueEntry,
 };
 

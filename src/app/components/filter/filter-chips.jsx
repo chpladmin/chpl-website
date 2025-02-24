@@ -4,7 +4,6 @@ import {
   Chip,
   FormControlLabel,
   Switch,
-  Tooltip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
