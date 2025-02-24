@@ -71,16 +71,16 @@ function ChplNavigationBottom() {
               <Typography className={classes.footerText} variant="body1">Affiliate Websites</Typography>
               <Box display="flex" alignItems="center" gridGap={16}>
                 <a href="https://www.whitehouse.gov/">
-                  <img src={WhiteHouseLogo} alt="Whitehouse.gov" style={{ height: '24px' }} />
+                  <img src={WhiteHouseLogo} alt="Whitehouse.gov logo" style={{ height: '24px' }} />
                 </a>
                 <a href="https://www.usa.gov/">
-                  <img src={USAGovLogo} alt="USA.gov" style={{ height: '24px' }} />
+                  <img src={USAGovLogo} alt="USA.gov logo" style={{ height: '24px' }} />
                 </a>
                 <a href="http://www.hhs.gov/">
-                  <img src={HHSLogo} alt="HHS.gov" style={{ height: '24px' }} />
+                  <img src={HHSLogo} alt="HHS.gov logo" style={{ height: '24px' }} />
                 </a>
                 <a href="https://gobierno.usa.gov/">
-                  <img src={USAGovEspLogo} alt="gobiernoUSA.gov" style={{ height: '24px' }} />
+                  <img src={USAGovEspLogo} alt="gobiernoUSA.gov logo" style={{ height: '24px' }} />
                 </a>
               </Box>
             </Box>
