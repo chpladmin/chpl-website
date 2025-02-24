@@ -27,7 +27,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixedFooterSpacing: {  
+  fixFooterSpacing: {  
     minHeight: 'calc(100vh - 188px)',
   },
   linkWrap: {
@@ -205,7 +205,7 @@ function ChplActivityView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixedFooterSpacing}>
+    <div className={classes.fixFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Activity</Typography>
       </div>

@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     padding: '32px 0',
     backgroundColor: palette.background,
   },
-  fixedFooterSpacing: {
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 259px)', 
   },
   pageHeader: {
@@ -283,7 +283,7 @@ function ChplComparePage({ ids }) {
           </Box>
         </Container>
       </div>
-      <div className={classes.fixedFooterSpacing}>
+      <div className={classes.fixFooterSpacing}>
         <Box className={classes.container}>
           <Container id="main-content" tabIndex="-1" maxWidth="lg">
             <Card>
