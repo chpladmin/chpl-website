@@ -12,14 +12,19 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
+import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
 import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
 import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
 import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
 import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
@@ -133,12 +138,12 @@ const maintenanceItems = [{
   id: 'codeSets',
   primary: 'Code Sets',
   secondary: 'Table of Code Sets',
-  icon: <BookOutlinedIcon />,
+  icon: <SettingsEthernetIcon />,
 }, {
   id: 'conformanceMethods',
   primary: 'Conformance Methods',
   secondary: 'Table of Conformance Methods',
-  icon: <AssessmentOutlinedIcon />,
+  icon: <AccountBalanceOutlinedIcon />,
 }, {
   id: 'cqms',
   primary: 'CQMs',
@@ -153,7 +158,7 @@ const maintenanceItems = [{
   id: 'g1g2',
   primary: 'G1/G2 Measures',
   secondary: 'Table of G1/G2 Measures',
-  icon: <BookOutlinedIcon />,
+  icon: <AssessmentOutlinedIcon />,
 }, {
   id: 'qmsStandards',
   primary: 'QMS Standards',
