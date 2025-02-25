@@ -10,25 +10,27 @@ import {
 } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
 
-import { ChplLink } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { getDisplayDateFormat } from 'services/date-util';
 import { cqm as cqmPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
 const headers = [
-  { property: 'number', text: 'Number', sortable: true },
+  { property: 'display', text: 'ID', sortable: true },
   { property: 'title', text: 'Title', sortable: true },
-  { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'endDay', text: 'End Date', sortable: true },
-  { text: 'Certification Companion Guide' },
-  { text: 'Rule' },
-  { text: 'Attributes' },
+  { property: 'description', text: 'Description', sortable: true },
+  { property: 'domain', text: 'Domain', sortable: true },
+  { text: 'Version(s)' },
 ];
 
 const useStyles = makeStyles({
   ...utilStyles,
 });
+
+const sortVersion = (a, b) => {
+  const aNum = parseInt(a.substring(1), 10);
+  const bNum = parseInt(b.substring(1), 10);
+  return aNum - bNum;
+};
 
 function ChplCqmsView({ cqms: initialCqms }) {
   const [cqms, setCqms] = useState([]);
@@ -38,6 +40,11 @@ function ChplCqmsView({ cqms: initialCqms }) {
 
   useEffect(() => {
     setCqms(initialCqms
+      .map((c) => ({
+        ...c,
+        display: c.cmsId ? c.cmsId : `NQF-${c.nqfNumber}`,
+        versionDisplay: c.versions.sort(sortVersion).join(', '),
+      }))
       .sort(sortComparator('value')));
   }, [initialCqms]);
 
@@ -67,42 +74,19 @@ function ChplCqmsView({ cqms: initialCqms }) {
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
-                    { item.removed
-                      && (
-                        <>
-                          Removed |
-                        </>
-                      )}
-                    { item.number }
+                    { item.display }
                   </TableCell>
                   <TableCell>
                     { item.title }
                   </TableCell>
                   <TableCell>
-                    { getDisplayDateFormat(item.startDay) }
+                    { item.description }
                   </TableCell>
                   <TableCell>
-                    { getDisplayDateFormat(item.endDay) }
+                    { item.domain }
                   </TableCell>
                   <TableCell>
-                    { item.companionGuideLink
-                      && (
-                        <ChplLink
-                          href={item.companionGuideLink}
-                          text={item.companionGuideLink}
-                          external={false}
-                        />
-                      )}
-                    { !item.companionGuideLink
-                      && (
-                        'N/A'
-                      )}
-                  </TableCell>
-                  <TableCell>
-                    { item.rule?.name }
-                  </TableCell>
-                  <TableCell>
-                    { item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A' }
+                    { item.versionDisplay }
                   </TableCell>
                 </TableRow>
               ))}
