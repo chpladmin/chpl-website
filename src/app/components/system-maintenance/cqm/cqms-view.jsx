@@ -72,7 +72,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
           <TableBody>
             { cqms
               .map((item) => (
-                <TableRow key={`${item.id}`}>
+                <TableRow key={`${item.display}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.display }
                   </TableCell>
