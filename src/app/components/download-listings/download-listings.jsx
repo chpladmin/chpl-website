@@ -59,6 +59,7 @@ const allHeaders = [
   { headerName: 'Practice Type', objectKey: 'practiceTypeName' },
   { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl', group: 'rwt' },
   { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl', group: 'rwt' },
+  { headerName: 'Risk Management Summary Information ', objectKey: 'riskManagementSummaryInformation' },
   { headerName: 'SVAP', objectKey: 'svap', group: 'svap' },
   { headerName: 'SVAP Notice URL', objectKey: 'svapNoticeUrl', group: 'svap' },
 ];
@@ -78,6 +79,7 @@ const allCategories = [
   { name: 'ONC-ACB', key: 'acb' },
   { name: 'Practice Type', key: 'practiceTypeName' },
   { name: 'Real World Testing', key: 'rwt' },
+  { name: 'Risk Management Summary Information', key: 'riskManagementSummaryInformation' },
   { name: 'SVAP', key: 'svap' },
 ];
 
@@ -130,6 +132,7 @@ function ChplDownloadListings(props) {
       rwtResultsUrl: listing.rwtResultsUrl || '',
       svap: parseSvapCsv(listing, svaps),
       svapNoticeUrl: listing.svapNoticeUrl || '',
+      riskManagementSummaryInformation: listing.riskManagementSummaryInformation?.value || 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 
