@@ -133,8 +133,8 @@ function ChplListingsPage() {
       .map((standard) => ({
         ...standard,
         value: standard.id,
-        display: standard.value + (standard.retired ? ' (Expired)' : ''),
-        longDisplay: standard.value + (standard.retired ? ' (Expired)' : ''),
+        display: standard.regulatoryTextCitation + (standard.retired ? ' (Expired)' : ''),
+        longDisplay: standard.regulatoryTextCitation + ': ' + standard.value + (standard.retired ? ' (Expired)' : ''),
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'standards')
