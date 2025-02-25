@@ -12,13 +12,13 @@ import { arrayOf, object } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
-import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
 
 const headers = [
+  { property: 'abbreviation', text: 'Abbreviation', sortable: true },
+  { property: 'domainDisplay', text: 'Domain', sortable: true },
+  { property: 'requiredTest', text: 'Required Test', sortable: true },
   { property: 'name', text: 'Name', sortable: true },
-  { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'requiredDay', text: 'Required Date', sortable: true },
   { text: 'Applicable Criteria' },
 ];
 
@@ -29,19 +29,20 @@ const useStyles = makeStyles({
 function ChplG1g2View({ g1g2: initialG1g2 }) {
   const [g1g2, setG1g2] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('abbreviation');
   const classes = useStyles();
 
   useEffect(() => {
     setG1g2(initialG1g2
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
+        domainDisplay: item.domain.name,
+        criteriaDisplay: item.allowedCriteria
           .sort(sortCriteria)
           .map((c) => c.number)
           .join(', '),
       }))
-      .sort(sortComparator('name')));
+      .sort(sortComparator('abbreviation')));
   }, [initialG1g2]);
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -70,13 +71,22 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
+                    { item.abbreviation }
+                  </TableCell>
+                  <TableCell>
+                    { item.domainDisplay }
+                  </TableCell>
+                  <TableCell>
+                    { item.removed
+                      && (
+                        <>
+                          Removed |
+                        </>
+                      )}
+                    { item.requiredTest }
+                  </TableCell>
+                  <TableCell>
                     { item.name }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.startDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.requiredDay) }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
