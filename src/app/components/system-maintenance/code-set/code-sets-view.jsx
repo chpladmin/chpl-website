@@ -8,59 +8,55 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf } from 'prop-types';
+import { arrayOf, object } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { cqm as cqmPropType } from 'shared/prop-types';
+import { sortCriteria } from 'services/criteria.service';
+import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
 
 const headers = [
-  { property: 'display', text: 'ID', sortable: true },
-  { property: 'title', text: 'Title', sortable: true },
-  { property: 'description', text: 'Description', sortable: true },
-  { property: 'domain', text: 'Domain', sortable: true },
-  { text: 'Version(s)' },
+  { property: 'name', text: 'Name', sortable: true },
+  { property: 'startDay', text: 'Start Date', sortable: true },
+  { property: 'requiredDay', text: 'Required Date', sortable: true },
+  { text: 'Applicable Criteria' },
 ];
 
 const useStyles = makeStyles({
   ...utilStyles,
 });
 
-const sortVersion = (a, b) => {
-  const aNum = parseInt(a.substring(1), 10);
-  const bNum = parseInt(b.substring(1), 10);
-  return aNum - bNum;
-};
-
-function ChplCqmsView({ cqms: initialCqms }) {
-  const [cqms, setCqms] = useState([]);
+function ChplCodeSetsView({ codeSets: initialCodeSets }) {
+  const [codeSets, setCodeSets] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('value');
+  const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
-    setCqms(initialCqms
-      .map((c) => ({
-        ...c,
-        display: c.cmsId ? c.cmsId : `NQF-${c.nqfNumber}`,
-        versionDisplay: c.versions.sort(sortVersion).join(', '),
+    setCodeSets(initialCodeSets
+      .map((item) => ({
+        ...item,
+        criteriaDisplay: item.criteria
+          .sort(sortCriteria)
+          .map((c) => c.number)
+          .join(', '),
       }))
-      .sort(sortComparator('value')));
-  }, [initialCqms]);
+      .sort(sortComparator('name')));
+  }, [initialCodeSets]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = cqms.sort(sortComparator(property, descending));
+    const updated = codeSets.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setCqms(updated);
+    setCodeSets(updated);
   };
 
   return (
     <>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="CQM table"
+          aria-label="Code Set table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -70,23 +66,20 @@ function ChplCqmsView({ cqms: initialCqms }) {
             stickyHeader
           />
           <TableBody>
-            { cqms
+            { codeSets
               .map((item) => (
-                <TableRow key={`${item.display}`}>
+                <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
-                    { item.display }
+                    { item.name }
                   </TableCell>
                   <TableCell>
-                    { item.title }
+                    { getDisplayDateFormat(item.startDay) }
                   </TableCell>
                   <TableCell>
-                    { item.description }
+                    { getDisplayDateFormat(item.requiredDay) }
                   </TableCell>
                   <TableCell>
-                    { item.domain }
-                  </TableCell>
-                  <TableCell>
-                    { item.versionDisplay }
+                    { item.criteriaDisplay }
                   </TableCell>
                 </TableRow>
               ))}
@@ -97,8 +90,8 @@ function ChplCqmsView({ cqms: initialCqms }) {
   );
 }
 
-export default ChplCqmsView;
+export default ChplCodeSetsView;
 
-ChplCqmsView.propTypes = {
-  cqms: arrayOf(cqmPropType).isRequired,
+ChplCodeSetsView.propTypes = {
+  codeSets: arrayOf(object).isRequired,
 };

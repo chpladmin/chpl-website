@@ -84,6 +84,14 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
+const useFetchCodeSets = () => {
+  const axios = useAxios();
+  return useQuery(['code-sets'], async () => {
+    const response = await axios.get('code-sets');
+    return response.data;
+  });
+};
+
 const useFetchConformanceMethods = () => {
   const axios = useAxios();
   return useQuery(['conformance-methods'], async () => {
@@ -163,6 +171,14 @@ const useFetchFunctionalitiesTested = () => {
   return useQuery(['functionalities-tested'], async () => {
     const response = await axios.get('functionalities-tested');
     return response.data;
+  });
+};
+
+const useFetchG1g2 = () => {
+  const axios = useAxios();
+  return useQuery(['g1g2'], async () => {
+    const response = await axios.get('data/measures');
+    return response.data.data;
   });
 };
 
@@ -377,6 +393,7 @@ export {
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
+  useFetchCodeSets,
   useFetchConformanceMethods,
   useFetchCqms,
   useFetchCriteria,
@@ -385,6 +402,7 @@ export {
   useFetchCriteriaForSvaps,
   useFetchCriteriaForTestTools,
   useFetchFunctionalitiesTested,
+  useFetchG1g2,
   useFetchQmsStandards,
   useFetchRules,
   useFetchStandards,
