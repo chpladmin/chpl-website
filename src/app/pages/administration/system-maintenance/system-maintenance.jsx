@@ -11,18 +11,18 @@ import {
   Divider,
   ListItemText,
 } from '@material-ui/core';
-import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
-import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
+import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
+import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
+import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
 
 import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
