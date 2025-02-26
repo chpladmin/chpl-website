@@ -89,9 +89,6 @@ function ChplUrlChecker() {
   const validate = (urlToValidate) => {
     setUrlCheckResponse(undefined);
     postUrlChecker.mutate(urlToValidate, {
-      onSuccess: (data) => {
-        // console.log(data);
-      },
       onError: () => {
         enqueueSnackbar('There was an error attempting to check the URL.', {
           variant: 'error',
@@ -210,7 +207,12 @@ function ChplUrlChecker() {
                             <Typography>
                               {urlCheckResponse.httpResponseAssertion.actualValue}
                             </Typography>
-                            <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                            {urlCheckResponse.httpResponseAssertion.passed
+                              ? (
+                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                              ) : (
+                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                              )}
                           </Box>
                           <Typography variant="body2">
                             <a
@@ -227,10 +229,17 @@ function ChplUrlChecker() {
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             No HTTP Status Code Available:
                           </Typography>
-                          <Typography>
-                            The HTTP response code could not be retrieved or is unavailable.
-                          </Typography>
-                          <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                          <Box className={classes.statusText}>
+                            <Typography>
+                              The HTTP response code could not be retrieved or is unavailable.
+                            </Typography>
+                            {urlCheckResponse.httpResponseAssertion.passed
+                              ? (
+                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                              ) : (
+                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                              )}
+                          </Box>
                         </>
                       )}
                     </CardContent>
@@ -245,9 +254,17 @@ function ChplUrlChecker() {
                             <Typography variant='h6' style={{ fontWeight: 600 }}>
                               Response Time (in milliseconds):
                             </Typography>
-                            <Typography>
-                              {urlCheckResponse.responseTimeAssertion.actualValue}
-                            </Typography>
+                            <Box className={classes.statusText}>
+                              <Typography>
+                                {urlCheckResponse.responseTimeAssertion.actualValue}
+                              </Typography>
+                              {urlCheckResponse.responseTimeAssertion.passed
+                                ? (
+                                  <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                                ) : (
+                                  <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                                )}
+                            </Box>
                           </>
                         )}
                     </CardContent>
@@ -261,20 +278,36 @@ function ChplUrlChecker() {
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Body Content:
                           </Typography>
-                          <Typography>
-                            {urlCheckResponse.bodyNotEmptyAssertion.actualValue
-                              ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
-                              : 'Empty body content'}
-                          </Typography>
+                          <Box className={classes.statusText}>
+                            <Typography>
+                              {urlCheckResponse.bodyNotEmptyAssertion.actualValue
+                                ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
+                                : 'Empty body content'}
+                            </Typography>
+                            {urlCheckResponse.bodyNotEmptyAssertion.passed
+                              ? (
+                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                              ) : (
+                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                              )}
+                          </Box>
                         </>
                       ) : (
                         <>
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             No Content Available:
                           </Typography>
-                          <Typography>
-                            The body content is empty or unavailable.
-                          </Typography>
+                          <Box className={classes.statusText}>
+                            <Typography>
+                              The body content is empty or unavailable.
+                            </Typography>
+                            {urlCheckResponse.bodyNotEmptyAssertion.passed
+                              ? (
+                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                              ) : (
+                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                              )}
+                          </Box>
                         </>
                       )}
                     </CardContent>
