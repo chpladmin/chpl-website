@@ -196,7 +196,6 @@ function ChplUrlChecker() {
                     </CardContent>
                   </Card>
                 </Slide>
-
               </Box>
               <Box className={classes.resultsContainer}>
                 <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={{ enter: 1500 }}>
