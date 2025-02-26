@@ -165,8 +165,12 @@ function ChplUrlChecker() {
                       </Typography>
                       <Typography variant='h6' className={classes.statusText}>
                         {urlCheckResponse.passed.toString()}
-                        {urlCheckResponse.passed && <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />}
-                        {!urlCheckResponse.passed && <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />}
+                        {urlCheckResponse.passed
+                          ? (
+                            <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                          ) : (
+                            <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                          )}
                       </Typography>
                       {urlCheckResponse.errorMessage
                         && (
