@@ -94,6 +94,8 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
         setIsProcessing(false);
         if (error?.data?.errorMessages) {
           setErrors(error.data.errorMessages);
+        } else {
+          setErrors(['An unexpected error occurred. Please check your file and try again.']);
         }
       })
       .finally(() => {
