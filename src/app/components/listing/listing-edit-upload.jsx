@@ -217,6 +217,7 @@ function ChplListingEditUpload({
             id={listing.id}
             setErrors={setErrors}
             setWarnings={setWarnings}
+            setDiff={setDiff}
           />
         </ListingContext.Provider>
         <div className={classes.pageContainer}>
