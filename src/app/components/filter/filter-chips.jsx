@@ -50,6 +50,8 @@ const truncate = (str, n, useWordBoundary) => {
   return (useWordBoundary ? subString.slice(0, subString.lastIndexOf(" ")) : subString) + "...";
 };
 
+const maxLengthForChip = 40;
+
 function ChplFilterChips() {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
@@ -134,13 +136,13 @@ function ChplFilterChips() {
               .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
               .map((v) => (
                 <React.Fragment key={v.value}>
-                  { f.getValueDisplay(v).length > 40
+                  { f.getValueDisplay(v).length > maxLengthForChip
                     ? (
                       <ChplTooltip
                         title={f.getLongValueDisplay(v)}
                       >
                         <Chip
-                          label={truncate(f.getValueDisplay(v), 40, true)}
+                          label={truncate(f.getValueDisplay(v), maxLengthForChip, true)}
                           onDelete={() => removeChip(f, v)}
                           color="primary"
                           variant="outlined"
