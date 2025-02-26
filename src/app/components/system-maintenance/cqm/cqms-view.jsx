@@ -73,19 +73,19 @@ function ChplCqmsView({ cqms: initialCqms }) {
             { cqms
               .map((item) => (
                 <TableRow key={`${item.display}`}>
-                  <TableCell className={classes.firstColumn}>
+                  <TableCell style={{ minWidth: '175px' }} className={classes.firstColumn}>
                     { item.display }
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ minWidth: '150px' }}>
                     { item.title }
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ minWidth: '150px' }}>
                     { item.description }
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ minWidth: '150px' }}>
                     { item.domain }
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ minWidth: '150px' }}>
                     { item.versionDisplay }
                   </TableCell>
                 </TableRow>
