@@ -76,16 +76,16 @@ function ChplCqmsView({ cqms: initialCqms }) {
                   <TableCell style={{ minWidth: '175px' }} className={classes.firstColumn}>
                     { item.display }
                   </TableCell>
-                  <TableCell style={{ minWidth: '150px' }}>
+                  <TableCell>
                     { item.title }
                   </TableCell>
-                  <TableCell style={{ minWidth: '150px' }}>
+                  <TableCell>
                     { item.description }
                   </TableCell>
-                  <TableCell style={{ minWidth: '150px' }}>
+                  <TableCell>
                     { item.domain }
                   </TableCell>
-                  <TableCell style={{ minWidth: '150px' }}>
+                  <TableCell>
                     { item.versionDisplay }
                   </TableCell>
                 </TableRow>
