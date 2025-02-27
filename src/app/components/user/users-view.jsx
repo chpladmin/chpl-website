@@ -35,8 +35,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-  },
-  fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
   },
   header: {
@@ -254,56 +252,54 @@ function ChplUsersView({
         )}
       { !activeUser
         && (
-          <div className={classes.fixFooterSpacing}>
-            <div className={classes.container}>
-              <Card>
-                <CardHeader
-                  title="Manage Users"
-                  classes={{
-                    action: classes.cardHeaderAction,
-                  }}
-                  action={(
-                    <Typography className={classes.userCount}>
-                      (
-                      {users.length}
-                      {' '}
-                      user
-                      {users.length === 1 ? '' : 's'}
-                      )
-                    </Typography>
-                  )}
-                />
-                <CardContent>
-                  <div className={classes.header}>
-                    <ChplTextField
-                      id="user-filter"
-                      name="userFilter"
-                      label="Search by Name or Email"
-                      onChange={handleFilter}
-                    />
-                    { !ssoIsOn
-                      && (
-                        <ChplUserInvite
-                          roles={roles}
-                          dispatch={handleDispatch}
-                        />
-                      )}
-                    { ssoIsOn
-                      && (
-                        <ChplCognitoUserInvite
-                          groupNames={groupNames}
-                          dispatch={handleDispatch}
-                        />
-                      )}
-                  </div>
-                  <div className={classes.users}>
-                    { users
-                      .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
-                      .map((u) => displayUser(u))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+          <div className={classes.container}>
+            <Card>
+              <CardHeader
+                title="Manage Users"
+                classes={{
+                  action: classes.cardHeaderAction,
+                }}
+                action={(
+                  <Typography className={classes.userCount}>
+                    (
+                    {users.length}
+                    {' '}
+                    user
+                    {users.length === 1 ? '' : 's'}
+                    )
+                  </Typography>
+                )}
+              />
+              <CardContent>
+                <div className={classes.header}>
+                  <ChplTextField
+                    id="user-filter"
+                    name="userFilter"
+                    label="Search by Name or Email"
+                    onChange={handleFilter}
+                  />
+                  { !ssoIsOn
+                    && (
+                      <ChplUserInvite
+                        roles={roles}
+                        dispatch={handleDispatch}
+                      />
+                    )}
+                  { ssoIsOn
+                    && (
+                      <ChplCognitoUserInvite
+                        groupNames={groupNames}
+                        dispatch={handleDispatch}
+                      />
+                    )}
+                </div>
+                <div className={classes.users}>
+                  { users
+                    .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
+                    .map((u) => displayUser(u))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
     </Box>
