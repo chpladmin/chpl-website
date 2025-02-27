@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -15,7 +15,7 @@ import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import { bool } from 'prop-types';
+import { bool, func } from 'prop-types';
 
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import ChplCompliance from 'components/listing/details/compliance/compliance';
@@ -25,10 +25,10 @@ import ChplG1G2 from 'components/listing/details/g1g2/g1g2';
 import ChplListingInformation from 'components/listing/details/listing-information/listing-information';
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
-import { ChplLink, InternalScrollButton } from 'components/util';
+import { InternalScrollButton } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -117,8 +117,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingView({ isConfirming, listing: initialListing }) {
-  const { hasAnyRole, user } = useContext(UserContext);
+function ChplListingView({ isConfirming, listing: initialListing, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
@@ -131,13 +130,6 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
     setCanSeeAllCriteria(isListingActive(initialListing));
     setListing(initialListing);
   }, [initialListing]);
-
-  const canManageSurveillance = () => {
-    if (hasAnyRole(['chpl-admin'])) { return true; }
-    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
-    if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
-    return false;
-  };
 
   const toggleSeeAllCriteria = () => {
     eventTrack({
@@ -398,20 +390,8 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
                   directReviews={listing.directReviews}
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
+                  dispatch={dispatch}
                 />
-                { canManageSurveillance()
-                  && (
-                    <ChplLink
-                      href="#/surveillance/manage"
-                      text="Manage Surveillance Activities"
-                      external={false}
-                      router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                      analytics={{
-                        ...analytics,
-                        event: 'Manage Surveillance Activities',
-                      }}
-                    />
-                  )}
               </CardContent>
             </Card>
           )}
@@ -439,8 +419,10 @@ export default ChplListingView;
 ChplListingView.propTypes = {
   isConfirming: bool,
   listing: listingPropType.isRequired,
+  dispatch: func,
 };
 
 ChplListingView.defaultProps = {
   isConfirming: false,
+  dispatch: () => {},
 };
