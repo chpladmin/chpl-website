@@ -179,7 +179,10 @@ const criteriaSortOrder = [
 const sortCriteria = (a, b) => {
   const aValue = a.number ?? a.certificationNumber;
   const bValue = b.number ?? b.certificationNumber;
-  return criteriaSortOrder.indexOf(aValue) - criteriaSortOrder.indexOf(bValue);
+  if (criteriaSortOrder.indexOf(aValue) !== criteriaSortOrder.indexOf(bValue)) {
+    return criteriaSortOrder.indexOf(aValue) - criteriaSortOrder.indexOf(bValue);
+  }
+  return a.id - b.id;
 };
 
 export {

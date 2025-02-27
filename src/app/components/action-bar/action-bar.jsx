@@ -100,6 +100,7 @@ function ChplActionBar(props) {
   const [warningAcknowledged, setWarningAcknowledged] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isConfirming, setIsConfirming] = useState(false);
+  const [isDeleteDisabled, setIsDeleteDisabled] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [pendingAction, setPendingAction] = useState('');
@@ -124,6 +125,10 @@ function ChplActionBar(props) {
   useEffect(() => {
     setShowWarningAcknowledgement(props.showWarningAcknowledgement);
   }, [props.showWarningAcknowledgement]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setIsDeleteDisabled(props.isDeleteDisabled);
+  }, [props.isDeleteDisabled]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setIsDisabled(props.isDisabled);
@@ -320,6 +325,7 @@ function ChplActionBar(props) {
                   variant="contained"
                   className={`${classes.actionBarButton} ${classes.deleteButton}`}
                   onClick={() => confirmDelete()}
+                  disabled={isDeleteDisabled}
                 >
                   Delete
                   <DeleteOutlinedIcon
@@ -380,6 +386,7 @@ ChplActionBar.propTypes = {
   canReject: bool,
   canSave: bool,
   canWithdraw: bool,
+  isDeleteDisabled: bool,
   isDisabled: bool,
   isProcessing: bool,
   showErrorAcknowledgement: bool,
@@ -397,6 +404,7 @@ ChplActionBar.defaultProps = {
   canReject: false,
   canSave: true,
   canWithdraw: false,
+  isDeleteDisabled: false,
   isDisabled: false,
   isProcessing: false,
   showErrorAcknowledgement: false,
