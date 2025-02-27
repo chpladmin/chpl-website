@@ -56,7 +56,7 @@ const ListingEditComponent = {
       }
       this.listing.certificationEvents = this.listing.certificationEvents.map((ce) => ({
         ...ce,
-        statusDateObject: new Date(ce.eventDate),
+        statusDateObject: this.DateUtil.getDateFromLocalDate(this.DateUtil.getLocalDate(ce.eventDay)),
       }));
 
       if (this.listing.practiceType) {
@@ -121,17 +121,17 @@ const ListingEditComponent = {
     }
 
     matchesPreviousDate(event) {
-      const orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject');
+      const orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'eventDay');
       const statusLoc = orderedStatus.indexOf(event);
       if (statusLoc > 0) {
-        const test = this.$filter('date')(event.statusDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC');
+        const test = event.eventDay === orderedStatus[statusLoc - 1].eventDay;
         return test;
       }
       return false;
     }
 
     matchesPreviousStatus(event) {
-      const orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject');
+      const orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'eventDay');
       const statusLoc = orderedStatus.indexOf(event);
       if (statusLoc > 0) {
         return (event.status.name === orderedStatus[statusLoc - 1].status.name);
@@ -166,7 +166,7 @@ const ListingEditComponent = {
     update(doNotUpdateListing) {
       this.listing.certificationEvents = this.listing.certificationEvents.map((ce) => ({
         ...ce,
-        eventDate: ce.statusDateObject.getTime(),
+        eventDay: this.DateUtil.getLocalDateFromJsDate(ce.statusDateObject),
       }));
       if (this.listing.chplProductNumber.length > 12) {
         const {
