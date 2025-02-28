@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -8,12 +8,10 @@ import {
   Container,
   Typography,
   makeStyles,
-  Slide,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -21,6 +19,7 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { ChplTextField } from 'components/util';
 import { utilStyles, palette } from 'themes';
 import usePostUrlChecker from 'api/url-checker';
+import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles((theme) => ({
   ...utilStyles,
@@ -75,6 +74,7 @@ const validationSchema = yup.object({
 });
 
 function ChplUrlChecker() {
+  const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const postUrlChecker = usePostUrlChecker();
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
@@ -154,111 +154,83 @@ function ChplUrlChecker() {
             <>
               <Typography className={classes.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
               <Box className={classes.resultsContainer}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={{ enter: 500 }}>
-                  <Card className={classes.resultsCardHalf} style={{ zIndex: 5 }}>
-                    <CardContent>
-                      <Typography variant="h6" style={{ fontWeight: 600 }}>
-                        Status:
-                      </Typography>
-                      <Typography variant='h6' className={classes.statusText}>
-                        {urlCheckResponse.passed.toString()}
-                        {urlCheckResponse.passed
-                          ? (
-                            <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                          ) : (
-                            <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                          )}
-                      </Typography>
-                      {urlCheckResponse.errorMessage
-                        && (
-                          <>
-                            <Typography variant='body2'>
-                              Error Message:
-                            </Typography>
-                            <Typography variant="body2">{urlCheckResponse.errorMessage}</Typography>
-                          </>
+                <Card className={classes.resultsCardHalf} style={{ zIndex: 5 }}>
+                  <CardContent>
+                    <Typography variant="h6" style={{ fontWeight: 600 }}>
+                      Status:
+                    </Typography>
+                    <Typography variant='h6' className={classes.statusText}>
+                      {urlCheckResponse.passed ? 'Passed' : 'Failure'}
+                      {urlCheckResponse.passed
+                        ? (
+                          <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                        ) : (
+                          <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
                         )}
-                    </CardContent>
-                  </Card>
-                </Slide>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={{ enter: 1000 }}>
-                  <Card className={classes.resultsCardHalf} style={{ zIndex: 4 }}>
-                    <CardContent>
-                      <Typography variant="h6" style={{ fontWeight: 600 }}>
-                        URL:
-                      </Typography>
-                      <Typography>
-                        {urlCheckResponse.url}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Slide>
-              </Box>
-              <Box className={classes.resultsContainer}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={{ enter: 1500 }}>
-                  <Card className={classes.resultsCard} style={{ zIndex: 3 }}>
-                    <CardContent>
-                      {urlCheckResponse.httpResponseAssertion?.actualValue ? (
+                    </Typography>
+                    {urlCheckResponse.errorMessage
+                      && (
                         <>
-                          <Typography variant="h6" style={{ fontWeight: 600 }}>
-                            HTTP Status Code:
+                          <Typography variant='body2'>
+                            Error Message:
                           </Typography>
-                          <Box className={classes.statusText}>
-                            <Typography>
-                              {urlCheckResponse.httpResponseAssertion.actualValue}
-                            </Typography>
-                            {urlCheckResponse.httpResponseAssertion.passed
-                              ? (
-                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                              ) : (
-                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                              )}
-                          </Box>
-                          <Typography variant="body2">
-                            <a
-                              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Reference for HTTP Status Codes
-                            </a>
-                          </Typography>
-                        </>
-                      ) : (
-                        <>
-                          <Typography variant="h6" style={{ fontWeight: 600 }}>
-                            No HTTP Status Code Available:
-                          </Typography>
-                          <Box className={classes.statusText}>
-                            <Typography>
-                              The HTTP response code could not be retrieved or is unavailable.
-                            </Typography>
-                            {urlCheckResponse.httpResponseAssertion.passed
-                              ? (
-                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                              ) : (
-                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                              )}
-                          </Box>
+                          <Typography variant="body2">{urlCheckResponse.errorMessage}</Typography>
                         </>
                       )}
-                    </CardContent>
-                  </Card>
-                </Slide>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={{ enter: 2000 }}>
-                  <Card className={classes.resultsCard} style={{ zIndex: 2 }}>
-                    <CardContent>
-                      {urlCheckResponse.responseTimeAssertion?.actualValue
-                        && (
+                  </CardContent>
+                </Card>
+                <Card className={classes.resultsCardHalf} style={{ zIndex: 4 }}>
+                  <CardContent>
+                    <Typography variant="h6" style={{ fontWeight: 600 }}>
+                      URL:
+                    </Typography>
+                    <Typography>
+                      {urlCheckResponse.url}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
+              { (hasAnyRole(['chpl-admin', 'chpl-onc']) || !urlCheckResponse.passed)
+                && (
+                  <Box className={classes.resultsContainer}>
+                    <Card className={classes.resultsCard} style={{ zIndex: 3 }}>
+                      <CardContent>
+                        {urlCheckResponse.httpResponseAssertion?.actualValue ? (
                           <>
-                            <Typography variant='h6' style={{ fontWeight: 600 }}>
-                              Response Time (in milliseconds):
+                            <Typography variant="h6" style={{ fontWeight: 600 }}>
+                              HTTP Status Code:
                             </Typography>
                             <Box className={classes.statusText}>
                               <Typography>
-                                {urlCheckResponse.responseTimeAssertion.actualValue}
+                                {urlCheckResponse.httpResponseAssertion.actualValue}
                               </Typography>
-                              {urlCheckResponse.responseTimeAssertion.passed
+                              {urlCheckResponse.httpResponseAssertion.passed
+                                ? (
+                                  <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                                ) : (
+                                  <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                                )}
+                            </Box>
+                            <Typography variant="body2">
+                              <a
+                                href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Reference for HTTP Status Codes
+                              </a>
+                            </Typography>
+                          </>
+                        ) : (
+                          <>
+                            <Typography variant="h6" style={{ fontWeight: 600 }}>
+                              No HTTP Status Code Available:
+                            </Typography>
+                            <Box className={classes.statusText}>
+                              <Typography>
+                                The HTTP response code could not be retrieved or is unavailable.
+                              </Typography>
+                              {urlCheckResponse.httpResponseAssertion.passed
                                 ? (
                                   <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
                                 ) : (
@@ -267,53 +239,88 @@ function ChplUrlChecker() {
                             </Box>
                           </>
                         )}
-                    </CardContent>
-                  </Card>
-                </Slide>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={{ enter: 2500 }}>
-                  <Card className={classes.resultsCard} style={{ zIndex: 1 }}>
-                    <CardContent>
-                      {urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
-                        <>
-                          <Typography variant="h6" style={{ fontWeight: 600 }}>
-                            Body Content:
-                          </Typography>
-                          <Box className={classes.statusText}>
-                            <Typography>
-                              {urlCheckResponse.bodyNotEmptyAssertion.actualValue
-                                ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
-                                : 'Empty body content'}
+                      </CardContent>
+                    </Card>
+                    <Card className={classes.resultsCard} style={{ zIndex: 2 }}>
+                      <CardContent>
+                        <Typography variant='h6' style={{ fontWeight: 600 }}>
+                          Response Time (in milliseconds):
+                        </Typography>
+                        {urlCheckResponse.responseTimeAssertion?.actualValue ?
+                          (
+                            <>
+                              <Box className={classes.statusText}>
+                                <Typography>
+                                  {urlCheckResponse.responseTimeAssertion.actualValue}
+                                </Typography>
+                                {urlCheckResponse.responseTimeAssertion.passed
+                                  ? (
+                                    <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                                  ) : (
+                                    <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                                  )}
+                              </Box>
+                            </>
+                          ) : (
+                            <>
+                              <Box className={classes.statusText}>
+                                <Typography>
+                                  The response time is empty or unavailable.
+                                </Typography>
+                                {urlCheckResponse.responseTimeAssertion.passed
+                                  ? (
+                                    <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                                  ) : (
+                                    <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                                  )}
+                              </Box>
+                            </>  
+                          )}
+                      </CardContent>
+                    </Card>
+                    <Card className={classes.resultsCard} style={{ zIndex: 1 }}>
+                      <CardContent>
+                        {urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
+                          <>
+                            <Typography variant="h6" style={{ fontWeight: 600 }}>
+                              Body Content:
                             </Typography>
-                            {urlCheckResponse.bodyNotEmptyAssertion.passed
-                              ? (
-                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                              ) : (
-                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                              )}
-                          </Box>
-                        </>
-                      ) : (
-                        <>
-                          <Typography variant="h6" style={{ fontWeight: 600 }}>
-                            No Content Available:
-                          </Typography>
-                          <Box className={classes.statusText}>
-                            <Typography>
-                              The body content is empty or unavailable.
+                            <Box className={classes.statusText}>
+                              <Typography>
+                                {urlCheckResponse.bodyNotEmptyAssertion.actualValue
+                                  ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
+                                  : 'Empty body content'}
+                              </Typography>
+                              {urlCheckResponse.bodyNotEmptyAssertion.passed
+                                ? (
+                                  <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                                ) : (
+                                  <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                                )}
+                            </Box>
+                          </>
+                        ) : (
+                          <>
+                            <Typography variant="h6" style={{ fontWeight: 600 }}>
+                              No Content Available:
                             </Typography>
-                            {urlCheckResponse.bodyNotEmptyAssertion.passed
-                              ? (
-                                <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                              ) : (
-                                <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                              )}
-                          </Box>
-                        </>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Slide>
-              </Box>
+                            <Box className={classes.statusText}>
+                              <Typography>
+                                The body content is empty or unavailable.
+                              </Typography>
+                              {urlCheckResponse.bodyNotEmptyAssertion.passed
+                                ? (
+                                  <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
+                                ) : (
+                                  <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
+                                )}
+                            </Box>
+                          </>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Box>
+                )}
             </>
           )}
       </Container>
