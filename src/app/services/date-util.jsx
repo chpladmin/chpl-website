@@ -39,6 +39,17 @@ const getDisplayDateFormat = (date, fallback = 'N/A') => {
   return fallback;
 };
 
+const isDateBetweenInclusive = (dateRangeStart, dateRangeEnd, dateToCheck) => {
+  const modifiedDateRangeStart = !dateRangeStart ? jsJoda.LocalDate.MIN : jsJoda.LocalDate.parse(dateRangeStart);
+  const modifiedDateRangeEnd = !dateRangeEnd ? jsJoda.LocalDate.MAX : jsJoda.LocalDate.parse(dateRangeEnd);
+  const modifiedDateToCheck = !dateToCheck ? jsJoda.LocalDate.now() : jsJoda.LocalDate.parse(dateToCheck);
+
+  return modifiedDateRangeStart.equals(modifiedDateToCheck)
+    || modifiedDateRangeEnd.equals(modifiedDateToCheck)
+    || (modifiedDateRangeStart.isBefore(modifiedDateToCheck)
+        && modifiedDateRangeEnd.isAfter(modifiedDateToCheck));
+};
+
 const localDateToTimestamp = (localDateString) => {
   const localDate = jsJoda.LocalDate.parse(localDateString);
   const localTime = jsJoda.LocalTime.MIDNIGHT;
@@ -69,6 +80,7 @@ const toTimestamp = (date) => {
 export {
   getDisplayDateFormat,
   jsJoda,
+  isDateBetweenInclusive,
   localDateToTimestamp,
   timestampToString,
   toTimestamp,

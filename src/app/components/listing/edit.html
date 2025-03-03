@@ -44,7 +44,7 @@
       <div class="data-label">Certification Status</div>
       <div class="data-label">Effective Date</div>
       <div class="data-label">Reason for status change</div>
-      <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
+      <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-eventDay' track by $index">
         {{ item.status.name }}
         <div class="text-danger" ng-if="!$last && $ctrl.matchesPreviousStatus(item)">Certification Status must differ from previous Status</div>
         <div class="text-danger" ng-if="$first && $ctrl.mayCauseSuspension($ctrl.certificationStatusWhenEditing($ctrl.listing))">Setting this product to this status may trigger a ban by ONC</div>
@@ -53,7 +53,7 @@
         <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
       </div>
       <div>
-        {{ item.eventDate | date : 'mediumDate' : 'GMT' }}
+        {{ $ctrl.DateUtil.getDisplayDateFormat(item.eventDay) }}
         <div class="text-danger" ng-if="$ctrl.matchesPreviousDate(item)">Only one change of status allowed per day</div>
       </div>
       <div>
