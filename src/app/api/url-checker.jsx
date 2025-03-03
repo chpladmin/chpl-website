@@ -4,7 +4,7 @@ import { useAxios } from './axios';
 
 const usePostUrlChecker = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('urls', data));
+  return useMutation(async (data) => axios.post('urls/validate', data));
 };
 
 export default usePostUrlChecker;
