@@ -96,15 +96,6 @@ export default class NetworkService {
     return this.apiGET('/code-sets');
   }
 
-  getCollection(type) {
-    switch (type) {
-      case 'surveillanceManagement':
-        return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
-      // no default
-    }
-    return null;
-  }
-
   getComplaintsWithSurveillance(surveillanceId) {
     return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
   }
@@ -209,6 +200,11 @@ export default class NetworkService {
     return this.apiGET('/standards');
   }
 
+  getSurveillanceActivityReport(range) {
+    const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
+    return this.apiGET(url);
+  }
+
   getSurveillanceLookups() {
     const data = {};
     this.apiGET('/data/surveillance_types')
@@ -292,10 +288,6 @@ export default class NetworkService {
 
   impersonateUser(user) {
     return this.apiGET(`/auth/impersonate?id=${user.userId}`);
-  }
-
-  initiateSurveillance(surveillance) {
-    return this.apiPOST('/surveillance', surveillance);
   }
 
   inviteCognitoUser(invitationObject) {
@@ -389,6 +381,7 @@ export default class NetworkService {
         if (angular.isObject(response.data)) {
           return response.data;
         }
+        return response;
       }, (response) => this.$q.reject(response));
   }
 
