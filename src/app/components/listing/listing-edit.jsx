@@ -381,7 +381,6 @@ function ChplListingEdit({
                       endIcon={<Close />}
                       className={classes.deleteButton}
                       variant="contained"
-                      disabled={!formik.isValid}
                     >
                       Cancel adding Certification Status
                     </Button>

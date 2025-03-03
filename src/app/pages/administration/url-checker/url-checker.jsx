@@ -76,19 +76,18 @@ const validationSchema = yup.object({
 function ChplUrlChecker() {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const postUrlChecker = usePostUrlChecker();
+  const { data, isLoading, isSuccess, mutate } = usePostUrlChecker();
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
-    if (postUrlChecker.isLoading || !postUrlChecker.isSuccess) { return; }
-    setUrlCheckResponse(postUrlChecker.data.data);
-    console.log(postUrlChecker.data.data);
-  }, [postUrlChecker.data, postUrlChecker.isLoading, postUrlChecker.isSuccess]);
+    if (isLoading || !isSuccess) { return; }
+    setUrlCheckResponse(data.data);
+  }, [data, isLoading, isSuccess]);
 
   const validate = (urlToValidate) => {
     setUrlCheckResponse(undefined);
-    postUrlChecker.mutate(urlToValidate, {
+    mutate(urlToValidate, {
       onError: () => {
         enqueueSnackbar('There was an error attempting to check the URL.', {
           variant: 'error',
@@ -144,7 +143,7 @@ function ChplUrlChecker() {
         </Container>
       </Box>
       <Container className={classes.pageBackground} maxWidth="lg">
-        {(postUrlChecker.isLoading || postUrlChecker.isLoading) && (
+        {(isLoading || isLoading) && (
           <Box py={4}>
             <CircularProgress />
           </Box>
