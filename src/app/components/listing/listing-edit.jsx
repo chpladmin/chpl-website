@@ -37,6 +37,8 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext, UserContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
+  acbCertificationId: yup.string()
+    .max(250, 'ONC-ACB Certification Id must be 250 characters or less'),
   certifyingBody: yup.string()
     .required('ONC-ACB is required'),
   productCode: yup.string()
@@ -180,6 +182,7 @@ function ChplListingEdit({
       payload: {
         listing: {
           ...listing,
+          acbCertificationId: formik.values.acbCertificationId,
           certificationEvents: selectedStatuses,
           certifyingBody: acbs.find((acb) => acb.name === formik.values.certifyingBody),
           testingLabs: selectedAtls.map((atl) => ({ testingLab: atl })),
@@ -198,6 +201,7 @@ function ChplListingEdit({
 
   formik = useFormik({
     initialValues: {
+      acbCertificationId: listing.acbCertificationId ?? '',
       certifyingBody: listing.certifyingBody.name ?? '',
       productCode: listing.chplProductNumber.split('.')[4],
       versionCode: listing.chplProductNumber.split('.')[5],
@@ -422,6 +426,16 @@ function ChplListingEdit({
                 && (
                   <Typography>{listing.certifyingBody.name}</Typography>
                 )}
+              <ChplTextField
+                id="acb-certification-id"
+                name="acbCertificationId"
+                label="ONC-ACB Certification Id"
+                value={formik.values.acbCertificationId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
+                helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
+              />
             </Box>
             <Divider />
             <Box pt={4} display="flex" gridGap={8} flexDirection="column">

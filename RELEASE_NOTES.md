@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 13.33.0
+_3 March 2025_
+
+### Features
+* Create shortcut page for Decision Support Interventions
+* Enable add/edit of surveillance in new UI
+
+### Bug Fixes
+* Restore "Surveillance Activity" download feature
+
+---
+
 ## Version 13.32.2
 _18 February 2025_
 
