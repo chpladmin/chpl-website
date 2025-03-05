@@ -16,12 +16,12 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
-import { ChplTextField } from 'components/util';
-import { utilStyles, palette } from 'themes';
 import usePostUrlChecker from 'api/url-checker';
+import { ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
+import { utilStyles, palette, theme } from 'themes';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   ...utilStyles,
   titlePadding: {
     paddingTop: '16px',
@@ -64,6 +64,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
+  },
+  greenIcon: {
+    color: 'green',
+    marginLeft: '8px',
+    marginTop: '4px',
+  },
+  redIcon: {
+    color: 'red',
+    marginLeft: '8px',
+    marginTop: '4px',
   },
 }));
 
@@ -109,6 +119,17 @@ function ChplUrlChecker() {
     validationSchema,
   });
 
+  const displayStatusIcon = (passed) => {
+    if (passed) {
+      return (
+        <CheckCircleIcon fontSize="large" className={classes.greenIcon} />
+      );
+    }
+    return (
+      <CancelIcon fontSize="large" className={classes.redIcon} />
+    );
+  };
+
   return (
     <>
       <Box className={classes.titleBackground}>
@@ -143,34 +164,30 @@ function ChplUrlChecker() {
         </Container>
       </Box>
       <Container className={classes.pageBackground} maxWidth="lg">
-        {(isLoading || isLoading) && (
-          <Box py={4}>
-            <CircularProgress />
-          </Box>
-        )}
+        { isLoading
+          && (
+            <Box py={4}>
+              <CircularProgress />
+            </Box>
+          )}
         {urlCheckResponse
           && (
             <>
               <Typography className={classes.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
               <Box className={classes.resultsContainer}>
-                <Card className={classes.resultsCardHalf} style={{ zIndex: 5 }}>
+                <Card className={classes.resultsCardHalf}>
                   <CardContent>
                     <Typography variant="h6" style={{ fontWeight: 600 }}>
                       Status:
                     </Typography>
-                    <Typography variant='h6' className={classes.statusText}>
+                    <Typography variant="h6" className={classes.statusText}>
                       {urlCheckResponse.passed ? 'Passed' : 'Failure'}
-                      {urlCheckResponse.passed
-                        ? (
-                          <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                        ) : (
-                          <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                        )}
+                      {displayStatusIcon(urlCheckResponse.passed)}
                     </Typography>
                     {urlCheckResponse.errorMessage
                       && (
                         <>
-                          <Typography variant='body2'>
+                          <Typography variant="body2">
                             Error Message:
                           </Typography>
                           <Typography variant="body2">{urlCheckResponse.errorMessage}</Typography>
@@ -178,7 +195,7 @@ function ChplUrlChecker() {
                       )}
                   </CardContent>
                 </Card>
-                <Card className={classes.resultsCardHalf} style={{ zIndex: 4 }}>
+                <Card className={classes.resultsCardHalf}>
                   <CardContent>
                     <Typography variant="h6" style={{ fontWeight: 600 }}>
                       URL:
@@ -194,7 +211,7 @@ function ChplUrlChecker() {
                   <>
                     <Typography className={classes.titlePadding} component="h3" variant="h6" style={{ fontWeight: 600 }}>Assertions</Typography>
                     <Box className={classes.resultsContainer}>
-                      <Card className={classes.resultsCard} style={{ zIndex: 3 }}>
+                      <Card className={classes.resultsCard}>
                         <CardContent>
                           {urlCheckResponse.httpResponseAssertion?.actualValue ? (
                             <>
@@ -205,12 +222,7 @@ function ChplUrlChecker() {
                                 <Typography>
                                   {urlCheckResponse.httpResponseAssertion.actualValue}
                                 </Typography>
-                                {urlCheckResponse.httpResponseAssertion.passed
-                                  ? (
-                                    <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                                  ) : (
-                                    <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                                  )}
+                                {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
                               </Box>
                               <Typography variant="body2">
                                 <a
@@ -231,20 +243,15 @@ function ChplUrlChecker() {
                                 <Typography>
                                   The HTTP response code could not be retrieved or is unavailable.
                                 </Typography>
-                                {urlCheckResponse.httpResponseAssertion.passed
-                                  ? (
-                                    <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                                  ) : (
-                                    <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                                  )}
+                                {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
                               </Box>
                             </>
                           )}
                         </CardContent>
                       </Card>
-                      <Card className={classes.resultsCard} style={{ zIndex: 2 }}>
+                      <Card className={classes.resultsCard}>
                         <CardContent>
-                          <Typography variant='h6' style={{ fontWeight: 600 }}>
+                          <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Response Time (in milliseconds):
                           </Typography>
                           {urlCheckResponse.responseTimeAssertion?.actualValue ?
@@ -254,12 +261,7 @@ function ChplUrlChecker() {
                                   <Typography>
                                     {urlCheckResponse.responseTimeAssertion.actualValue}
                                   </Typography>
-                                  {urlCheckResponse.responseTimeAssertion.passed
-                                    ? (
-                                      <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                                    ) : (
-                                      <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                                    )}
+                                  {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
                                 </Box>
                               </>
                             ) : (
@@ -268,18 +270,13 @@ function ChplUrlChecker() {
                                   <Typography>
                                     The response time is empty or unavailable.
                                   </Typography>
-                                  {urlCheckResponse.responseTimeAssertion.passed
-                                    ? (
-                                      <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                                    ) : (
-                                      <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                                    )}
+                                  {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
                                 </Box>
                               </>  
                             )}
                         </CardContent>
                       </Card>
-                      <Card className={classes.resultsCard} style={{ zIndex: 1 }}>
+                      <Card className={classes.resultsCard}>
                         <CardContent>
                           {urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
                             <>
@@ -292,12 +289,7 @@ function ChplUrlChecker() {
                                     ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
                                     : 'Empty body content'}
                                 </Typography>
-                                {urlCheckResponse.bodyNotEmptyAssertion.passed
-                                  ? (
-                                    <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                                  ) : (
-                                    <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                                  )}
+                                {displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed)}
                               </Box>
                             </>
                           ) : (
@@ -309,12 +301,7 @@ function ChplUrlChecker() {
                                 <Typography>
                                   The body content is empty or unavailable.
                                 </Typography>
-                                {urlCheckResponse.bodyNotEmptyAssertion.passed
-                                  ? (
-                                    <CheckCircleIcon fontSize="large" style={{ color: 'green', marginLeft: '8px', marginTop: '4px' }} />
-                                  ) : (
-                                    <CancelIcon fontSize="large" style={{ color: 'red', marginLeft: '8px', marginTop: '4px' }} />
-                                  )}
+                                {displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed)}
                               </Box>
                             </>
                           )}
