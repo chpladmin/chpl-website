@@ -151,6 +151,7 @@ function ChplDeveloperView({ dispatch }) {
               <ChplChangeRequests
                 disallowedFilters={['submittedDateTime', 'searchTerm']}
                 bonusQuery={`&developerId=${developer.id}`}
+                dispatch={dispatch}
               />
             )}
             <ChplDirectReviews developer={developer} />

@@ -30,7 +30,6 @@ import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirma
 import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
@@ -167,7 +166,6 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
 };
 
 function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch }) {
-  const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -292,7 +290,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
     });
     if (hasAnyRole(['chpl-developer'])
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
-      $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
+      dispatch('editAttestation', changeRequest);
     } else {
       setIsEditing(true);
     }

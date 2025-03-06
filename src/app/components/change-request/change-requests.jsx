@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
 
@@ -54,7 +54,7 @@ const staticFilters = [{
 }];
 
 function ChplChangeRequests(props) {
-  const { disallowedFilters, bonusQuery } = props;
+  const { disallowedFilters, bonusQuery, dispatch } = props;
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
@@ -102,6 +102,7 @@ function ChplChangeRequests(props) {
         <ChplChangeRequestsView
           disallowedFilters={disallowedFilters}
           bonusQuery={bonusQuery}
+          dispatch={dispatch}
         />
       </FilterProvider>
     </AnalyticsContext.Provider>
@@ -113,4 +114,9 @@ export default ChplChangeRequests;
 ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
+  dispatch: func,
+};
+
+ChplChangeRequests.defaultProps = {
+  dispatch: () => {},
 };
