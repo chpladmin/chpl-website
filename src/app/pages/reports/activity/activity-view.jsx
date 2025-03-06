@@ -151,6 +151,7 @@ function ChplActivityView() {
     if (![
       'CERTIFIED_PRODUCT',
       'DEVELOPER',
+      'VERSION',
     ].includes(activity.concept)) {
       return null;
     }
@@ -184,6 +185,22 @@ function ChplActivityView() {
             }}
             external={false}
             router={{ sref: 'organizations.developers.developer', options: { id: activity.objectId } }}
+          />
+        );
+      case 'VERSION':
+        if (before && after && before.id !== after.id) {
+          return null;
+        }
+        return (
+          <ChplLink
+            href={`#/organizations/developers/${after.developerId}`}
+            text={after.developerName}
+            analytics={{
+              event: 'Navigate to Developer',
+              category: 'Activity Search',
+            }}
+            external={false}
+            router={{ sref: 'organizations.developers.developer', options: { id: after.developerId } }}
           />
         );
       default:
