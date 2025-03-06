@@ -18,7 +18,7 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  editUser:{
+  focus: {
     display: 'flex',
     flexDirection: 'column-reverse',
     paddingTop: '16px',
@@ -121,7 +121,7 @@ function ChplDeveloperView({ dispatch }) {
   };
 
   return (
-    <Box className={`${state === 'editUser' ? classes.editUser : classes.mainContent}`}>
+    <Box className={`${state === 'view' ? classes.mainContent : classes.focus}`}>
       <Box className={classes.lefthandContainer}>
         { state === 'view'
           && (
@@ -154,8 +154,10 @@ function ChplDeveloperView({ dispatch }) {
               />
             )}
             <ChplDirectReviews developer={developer} />
-            <ChplProducts developer={developer} dispatch={handleProductDispatch} />
           </>
+        )}
+        {state === 'view' && (
+          <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
         {(state === 'view' || state === 'editUser') && (
           <ChplUsers
