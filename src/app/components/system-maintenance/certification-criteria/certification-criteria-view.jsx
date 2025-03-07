@@ -10,9 +10,15 @@ import {
 } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
 
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { ChplLink } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 import { criterion as criterionPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -62,10 +68,12 @@ const getDisplay = (key) => {
 };
 
 function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
+  const storageKey = 'storageKey-certificationCriteriaManagementView';
   const [certificationCriterias, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
+  const filterContext = useFilterContext();
 
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria
@@ -78,6 +86,12 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .sort((a, b) => (a < b ? -1 : 1))
           .join('; '),
       }))
+      .filter((item) => {
+        return filterContext.filters.reduce((f, acc) => {
+          if (!f.filterFn) { return acc; }
+          return f.filterFn(item, f) && acc;
+        }, true);
+      })
       .sort(sortComparator('value')));
   }, [initialCertificationCriteria]); // eslint-disable-line react/destructuring-assignment
 
@@ -91,6 +105,12 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by something..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Certification Criteria table"
