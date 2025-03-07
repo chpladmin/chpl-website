@@ -17,7 +17,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
 import usePostUrlChecker from 'api/url-checker';
-import { ChplTextField } from 'components/util';
+import { ChplLink, ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles, palette, theme } from 'themes';
 
@@ -225,13 +225,12 @@ function ChplUrlChecker() {
                                 {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
                               </Box>
                               <Typography variant="body2">
-                                <a
+                                <ChplLink
                                   href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  Reference for HTTP Status Codes
-                                </a>
+                                  text="Reference for HTTP Status Codes"
+                                  external
+                                  inline
+                                />
                               </Typography>
                             </>
                           ) : (
