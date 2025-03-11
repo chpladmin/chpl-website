@@ -93,16 +93,6 @@ const states = [
     url: '/versions/{versionId}',
     abstract: true,
   }, {
-    name: 'organizations.developers.developer.product.version.edit',
-    url: '/edit',
-    views: {
-      'view@^.^.^': 'chplVersionsEdit',
-    },
-    data: {
-      title: 'CHPL Developers - Edit Version',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-  }, {
     name: 'organizations.developers.developer.product.version.merge',
     url: '/merge',
     views: {
