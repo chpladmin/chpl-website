@@ -28,6 +28,7 @@ const staticFilters = [{
   ],
   filterFn: (item, filter) => {
     return filter.values.reduce((v, acc) => {
+      console.log(v, acc);
       if (v.value === 'Before') {
         return acc && item.startDay <= v.selected;
       } else if (v.value === 'After') {
@@ -46,6 +47,7 @@ const staticFilters = [{
     { value: 'Before', default: '' },
     { value: 'After', default: '' },
   ],
+  filterFn: () => true,
   getQuery: (value) => value.values
     .sort((a, b) => (a.value < b.value ? -1 : 1))
     .map((v) => `${v.value === 'After' ? 'creationDateTimeStart' : 'creationDateTimeEnd'}=${v.selected}`)
@@ -84,8 +86,13 @@ function ChplCertificationCriteria() {
     );
   }
 
+  const analytics = {
+    category: 'Certification Criteria Management',
+  };
+
   return (
     <FilterProvider
+      analytics={analytics}
       filters={staticFilters}
       storageKey="storageKey-certificationCriteriaManagement"
     >

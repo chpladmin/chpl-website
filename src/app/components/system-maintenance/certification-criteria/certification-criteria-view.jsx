@@ -88,12 +88,12 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
       }))
       .filter((item) => {
         return filterContext.filters.reduce((f, acc) => {
-          if (!f.filterFn) { return acc; }
+          console.log(item, f);
           return f.filterFn(item, f) && acc;
         }, true);
       })
       .sort(sortComparator('value')));
-  }, [initialCertificationCriteria]); // eslint-disable-line react/destructuring-assignment
+  }, [initialCertificationCriteria]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
