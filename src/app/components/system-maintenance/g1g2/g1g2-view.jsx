@@ -17,7 +17,7 @@ import { utilStyles } from 'themes';
 const headers = [
   { property: 'abbreviation', text: 'Abbreviation', sortable: true },
   { property: 'domainDisplay', text: 'Domain', sortable: true },
-  { property: 'requiredTest', text: 'Required Test', sortable: true },
+  { property: 'requiredTest', text: 'Required Test' },
   { property: 'name', text: 'Name', sortable: true },
   { text: 'Applicable Criteria' },
 ];
