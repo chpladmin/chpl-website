@@ -17,7 +17,7 @@ import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'name', text: 'Name', sortable: true },
-  { property: 'removalDate', text: 'Removal Date', sortable: true },
+  { property: 'removalDate', text: 'Removal Date' },
   { text: 'Applicable Criteria' },
 ];
 

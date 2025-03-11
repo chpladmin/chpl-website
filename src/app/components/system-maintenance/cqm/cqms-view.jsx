@@ -18,7 +18,7 @@ const headers = [
   { property: 'display', text: 'ID', sortable: true },
   { property: 'title', text: 'Title', sortable: true },
   { property: 'description', text: 'Description', sortable: true },
-  { property: 'domain', text: 'Domain', sortable: true },
+  { property: 'domain', text: 'Domain' },
   { text: 'Version(s)' },
 ];
 
