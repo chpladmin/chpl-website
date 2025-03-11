@@ -10,6 +10,7 @@ import ChplAttestationsView from 'components/attestation/attestations-view';
 import ChplChangeRequests from 'components/change-request/change-requests-wrapper'; // figure out how to not need breadcrumbs
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
+import ChplInsightsView from 'components/insights/insights-view';
 import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
 import ChplUsers from 'components/user/users';
@@ -57,7 +58,7 @@ const isActive = (statuses) => statuses.length === 0 || statuses.every((status) 
 
 function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { demographicChangeRequestIsOn } = useContext(FlagContext);
+  const { demographicChangeRequestIsOn, insightsIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
   const usersQuery = useFetchUsersAtDeveloper({
     developer,
@@ -134,6 +135,12 @@ function ChplDeveloperView({ dispatch }) {
                 canSplit={() => can('split-developer')}
                 isSplitting={false}
               />
+              { insightsIsOn
+                && (
+                  <ChplInsightsView
+                    developer={developer}
+                  />
+                )}
               <ChplRealWorldTestingView
                 developer={developer}
               />
