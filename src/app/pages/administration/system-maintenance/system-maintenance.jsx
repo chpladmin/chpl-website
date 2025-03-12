@@ -39,6 +39,7 @@ import ChplCqms from 'components/system-maintenance/cqm/cqms';
 import ChplFunctionalitiesTested from 'components/system-maintenance/functionality-tested/functionalities-tested';
 import ChplG1g2 from 'components/system-maintenance/g1g2/g1g2';
 import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
+import ChplOptionalStandards from 'components/system-maintenance/optional-standard/optional-standards';
 import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-standards';
 import ChplStandards from 'components/system-maintenance/standard/standards';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
@@ -160,6 +161,11 @@ const maintenanceItems = [{
   secondary: 'Table of G1/G2 Measures',
   icon: <AssessmentOutlinedIcon />,
 }, {
+  id: 'optionalStandards',
+  primary: 'Optional Standards',
+  secondary: 'View Optional Standards available to be applied to listings',
+  icon: <AssignmentTurnedInOutlinedIcon />,
+}, {
   id: 'qmsStandards',
   primary: 'QMS Standards',
   secondary: 'Add and update the QMS Standards available to be applied to listings',
@@ -272,6 +278,7 @@ function ChplSystemMaintenance() {
     hide('functionalitiesTested.edit.disabled');
     hide('g1g2.viewall.disabled');
     hide('manageSubscriptions.viewall.disabled');
+    hide('optionalStandards.viewall.disabled');
     hide('qmsStandards.viewall.disabled');
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
@@ -360,6 +367,7 @@ function ChplSystemMaintenance() {
           { active === 'cqms' && <ChplCqms /> }
           { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
           { active === 'g1g2' && <ChplG1g2 /> }
+          { active === 'optionalStandards' && <ChplOptionalStandards /> }
           { active === 'qmsStandards' && <ChplQmsStandards /> }
           { active === 'standards' && <ChplStandards /> }
           { active === 'subscriptions' && <ChplManageSubscriptions /> }

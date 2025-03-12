@@ -182,6 +182,14 @@ const useFetchG1g2 = () => {
   });
 };
 
+const useFetchOptionalStandards = () => {
+  const axios = useAxios();
+  return useQuery(['optional-standards'], async () => {
+    const response = await axios.get('optional-standards');
+    return response.data;
+  });
+};
+
 const useFetchQmsStandards = () => {
   const axios = useAxios();
   return useQuery(['qms-standards'], async () => {
@@ -403,6 +411,7 @@ export {
   useFetchCriteriaForTestTools,
   useFetchFunctionalitiesTested,
   useFetchG1g2,
+  useFetchOptionalStandards,
   useFetchQmsStandards,
   useFetchRules,
   useFetchStandards,
