@@ -177,7 +177,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
   const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
@@ -406,14 +406,14 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['chpl-developer']));
 
   save = (request) => {
-    setIsSaving(true);
+    setIsProcessing(true);
     mutate({
       acknowledgeWarnings,
       changeRequest: request,
     }, {
       onSuccess: () => {
         dispatch('close');
-        setIsSaving(false);
+        setIsProcessing(false);
         setWarnings([]);
       },
       onError: (error) => {
@@ -422,11 +422,11 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
             variant: 'info',
           });
           dispatch('close');
-          setIsSaving(false);
+          setIsProcessing(false);
           setWarnings([]);
         } else if (error.response.data.warningMessages?.length > 0) {
           setShowAcknowledgement(true);
-          setIsSaving(false);
+          setIsProcessing(false);
           setWarnings(error.response.data.warningMessages);
         } else {
           const message = error.response.data?.error
@@ -435,7 +435,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
             variant: 'error',
           });
           formik.resetForm();
-          setIsSaving(false);
+          setIsProcessing(false);
           setWarnings([]);
         }
       },
@@ -648,7 +648,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         canClose={!isEditing}
         canCancel={isEditing}
         canSave={isEditing}
-        isDisabled={isSaving}
+        isProcessing={isProcessing}
         showWarningAcknowledgement={showAcknowledgement}
         warnings={warnings}
       />
