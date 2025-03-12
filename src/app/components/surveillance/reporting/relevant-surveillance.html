@@ -111,6 +111,12 @@
       <input type="text" class="form-control" id="completed-cap-verification" name="completedCapVerification" ng-model="$ctrl.surveillance.completedCapVerification"
              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
+    <div class="form-group">
+      <label class="control-label" for="surveillance-findings">Surveillance Findings</label>
+      <p class="form-control-static">If the surveilled activity resulted in no non-conformity but the ONC-ACB surveilled prioritized elements, as identified by the ONC Certification Program, the ONC-ACB should use this field to report on any activity and findings related to that aspect of surveillance.</p>
+      <input type="text" class="form-control" id="surveillance-findings" name="surveillanceFindings" ng-model="$ctrl.surveillance.surveillanceFindings"
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
+    </div>
     <div class="pull-right">
       <button class="btn" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()" id="save-surveillance-data"
               ng-if="$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])">Save Surveillance Data</button>
