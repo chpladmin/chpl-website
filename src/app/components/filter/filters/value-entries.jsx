@@ -42,6 +42,14 @@ const getCriteriaValueEntry = (props) => (
   />
 );
 
+const getStandardValueEntry = (props) => (
+  <ChplTabbedValueEntry
+    retiredLabel="Expired"
+    isActive={(value, filter) => !filter.getValueDisplay(value).includes('(Expired)')}
+    {...props}
+  />
+);
+
 const generateDateEntry = ({ filter, handleFilterUpdate, type }) => (
   <>
     {filter.values
@@ -142,4 +150,5 @@ export {
   getDateEntry,
   getDateTimeEntry,
   getRadioValueEntry,
+  getStandardValueEntry,
 };
