@@ -19,8 +19,9 @@ import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedI
 import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
-import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
 import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
+import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
+import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
@@ -164,7 +165,7 @@ const maintenanceItems = [{
   id: 'optionalStandards',
   primary: 'Optional Standards',
   secondary: 'View Optional Standards available to be applied to listings',
-  icon: <AssignmentTurnedInOutlinedIcon />,
+  icon: <MoreOutlinedIcon />,
 }, {
   id: 'qmsStandards',
   primary: 'QMS Standards',
