@@ -225,8 +225,8 @@ const useFetchSvaps = () => {
 const useFetchTestData = () => {
   const axios = useAxios();
   return useQuery(['test-data'], async () => {
-    const response = await axios.get('data/test_data');
-    return response.data.data;
+    const response = await axios.get('test-data');
+    return response.data;
   });
 };
 

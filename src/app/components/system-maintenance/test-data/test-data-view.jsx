@@ -11,11 +11,11 @@ import {
 import { arrayOf, object } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
 const headers = [
-  { property: 'name', text: 'Name', sortable: true },
-  { property: 'description', text: 'Description', sortable: true },
+  { text: 'Name' },
   { text: 'Applicable Criteria' },
 ];
 
@@ -25,26 +25,19 @@ const useStyles = makeStyles({
 
 function ChplTestDataView({ testData: initialTestData }) {
   const [testData, setTestData] = useState([]);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
     setTestData(initialTestData
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria.number,
+        criteriaDisplay: item.criteria
+          .sort(sortCriteria)
+          .map((c) => c.number)
+          .join(', '),
       }))
       .sort(sortComparator('name')));
   }, [initialTestData]);
-
-  const handleTableSort = (event, property, orderDirection) => {
-    const descending = orderDirection === 'desc';
-    const updated = testData.sort(sortComparator(property, descending));
-    setOrderBy(property);
-    setOrder(orderDirection);
-    setTestData(updated);
-  };
 
   return (
     <>
@@ -54,9 +47,6 @@ function ChplTestDataView({ testData: initialTestData }) {
         >
           <ChplSortableHeaders
             headers={headers}
-            onTableSort={handleTableSort}
-            orderBy={orderBy}
-            order={order}
             stickyHeader
           />
           <TableBody>
@@ -64,16 +54,7 @@ function ChplTestDataView({ testData: initialTestData }) {
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
-                    { item.removed
-                      && (
-                        <>
-                          Removed |
-                        </>
-                      )}
                     { item.name }
-                  </TableCell>
-                  <TableCell>
-                    { item.description }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
