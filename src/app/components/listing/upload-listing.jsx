@@ -51,7 +51,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUploadListing({ id, setErrors, setWarnings }) {
+function ChplUploadListing({
+  id,
+  setErrors,
+  setWarnings,
+  setDiff,
+}) {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -75,6 +80,8 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
     setErrors([]);
     setWarnings([]);
     setIsProcessing(true);
+    setListing(undefined);
+    setDiff([]);
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
@@ -94,6 +101,8 @@ function ChplUploadListing({ id, setErrors, setWarnings }) {
         setIsProcessing(false);
         if (error?.data?.errorMessages) {
           setErrors(error.data.errorMessages);
+        } else {
+          setErrors(['An unexpected error occurred. Please check your file and try again.']);
         }
       })
       .finally(() => {
@@ -173,4 +182,5 @@ ChplUploadListing.propTypes = {
   id: number.isRequired,
   setErrors: func.isRequired,
   setWarnings: func.isRequired,
+  setDiff: func.isRequired,
 };

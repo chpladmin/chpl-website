@@ -4,7 +4,7 @@ import ChplListingsView from './listings-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCqms } from 'api/data';
-import { useFetchCriteria } from 'api/standards';
+import { useFetchCriteria, useFetchStandards } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
@@ -13,6 +13,7 @@ import {
   certificationStatuses,
   cqms,
   quickFilters,
+  standards,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, BrowserContext, useAnalyticsContext } from 'shared/contexts';
@@ -51,6 +52,7 @@ function ChplListingsPage() {
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
+  const standardsQuery = useFetchStandards();
 
   let getValueDisplay;
   let getQuery;
@@ -122,6 +124,25 @@ function ChplListingsPage() {
         values,
       }));
   }, [cqmQuery.data, cqmQuery.isLoading, cqmQuery.isSuccess]);
+
+  useEffect(() => {
+    if (standardsQuery.isLoading || !standardsQuery.isSuccess) {
+      return;
+    }
+    const values = standardsQuery.data
+      .map((standard) => ({
+        ...standard,
+        value: standard.id,
+        display: standard.regulatoryTextCitation + (standard.retired ? ' (Expired)' : ''),
+        longDisplay: standard.regulatoryTextCitation + ': ' + standard.value + (standard.retired ? ' (Expired)' : ''),
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'standards')
+      .concat({
+        ...standards,
+        values,
+      }));
+  }, [standardsQuery.data, standardsQuery.isLoading, standardsQuery.isSuccess]);
 
   getValueDisplay = (value) => `${value.value} (${value.value.includes('Compared') ? getPreviouslyCompared().length : getPreviouslyViewed().length})`;
 
