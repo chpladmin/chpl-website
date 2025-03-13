@@ -5,14 +5,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import {
-  object,
-} from 'prop-types';
+import { func, object } from 'prop-types';
 
 import ChplAttestationWizard from './attestation-wizard';
 
 import { usePutChangeRequest } from 'api/change-requests';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
@@ -22,8 +19,7 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationEdit(props) {
-  const $state = getAngularService('$state');
-  const { changeRequest } = props;
+  const { changeRequest, dispatch } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePutChangeRequest();
   const [form, setForm] = useState({});
@@ -46,7 +42,7 @@ function ChplAttestationEdit(props) {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'close':
-        $state.go('organizations.developers.developer', { id: developer.id });
+        dispatch('cancel');
         break;
       case 'stage':
         setStage(payload);
@@ -121,4 +117,5 @@ export default ChplAttestationEdit;
 
 ChplAttestationEdit.propTypes = {
   changeRequest: object.isRequired, // eslint-disable-line react/forbid-prop-types
+  dispatch: func.isRequired,
 };

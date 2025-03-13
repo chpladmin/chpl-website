@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 
 import ChplChangeRequest from './change-request';
 import ChplChangeRequestsDownload from './change-requests-download';
@@ -87,7 +87,7 @@ const useStyles = makeStyles({
 
 function ChplChangeRequestsView(props) {
   const storageKey = 'storageKey-changeRequestsView';
-  const { disallowedFilters, bonusQuery } = props;
+  const { disallowedFilters, bonusQuery, dispatch } = props;
   const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -165,7 +165,7 @@ function ChplChangeRequestsView(props) {
     { text: 'Actions', invisible: true },
   ];
 
-  handleDispatch = (action) => {
+  handleDispatch = (action, payload) => {
     switch (action) {
       case 'close':
         setChangeRequest(undefined);
@@ -174,6 +174,9 @@ function ChplChangeRequestsView(props) {
         hide('edit.disabled');
         hide('view');
         hide('view.disabled');
+        break;
+      case 'editAttestation':
+        dispatch('editAttestation', payload);
         break;
       // no default
     }
@@ -393,4 +396,5 @@ export default ChplChangeRequestsView;
 ChplChangeRequestsView.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
+  dispatch: func.isRequired,
 };

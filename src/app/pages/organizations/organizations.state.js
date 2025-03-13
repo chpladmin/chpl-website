@@ -18,29 +18,6 @@ const states = [
     component: 'chplDeveloperPage',
     data: { title: 'CHPL Developer' },
   }, {
-    name: 'organizations.developers.developer.attestation',
-    url: '/attestation',
-    abstract: true,
-  }, {
-    name: 'organizations.developers.developer.attestation.edit',
-    views: {
-      'view@^.^': 'chplAttestationEditWrapperBridge',
-    },
-    params: {
-      changeRequest: null,
-    },
-    resolve: {
-      changeRequest: ($transition$) => {
-        'ngInject';
-
-        return $transition$.params().changeRequest;
-      },
-    },
-    data: {
-      title: 'CHPL Developers - Attestation',
-      roles: ['chpl-developer'],
-    },
-  }, {
     name: 'organizations.developers.developer.product',
     url: '/products/{productId}',
     abstract: true,
