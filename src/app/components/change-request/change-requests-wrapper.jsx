@@ -1,5 +1,5 @@
 import React from 'react';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 
 import ChplChangeRequests from './change-requests';
 
@@ -10,6 +10,7 @@ function ChplChangeRequestsWrapper(props) {
   const {
     disallowedFilters,
     bonusQuery,
+    dispatch,
   } = props;
 
   return (
@@ -21,6 +22,7 @@ function ChplChangeRequestsWrapper(props) {
         <ChplChangeRequests
           disallowedFilters={disallowedFilters}
           bonusQuery={bonusQuery}
+          dispatch={dispatch}
         />
       </BreadcrumbWrapper>
     </AppWrapper>
@@ -32,9 +34,11 @@ export default ChplChangeRequestsWrapper;
 ChplChangeRequestsWrapper.propTypes = {
   disallowedFilters: arrayOf(string),
   bonusQuery: string,
+  dispatch: func,
 };
 
 ChplChangeRequestsWrapper.defaultProps = {
   disallowedFilters: [],
   bonusQuery: '',
+  dispatch: () => {},
 };

@@ -18,6 +18,7 @@ import ChplVersionEdit from './version-edit';
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
 import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
+import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -34,6 +35,7 @@ function ChplDeveloperPage({ id }) {
   const { mutate: deleteUserFromDeveloper } = useDeleteUserFromDeveloper();
   const { mutate: createInvitation } = usePostCreateInvitation();
   const { mutate: createOldInvitation } = usePostCreateOldInvitation();
+  const [changeRequest, setChangeRequest] = useState(undefined);
   const [developer, setDeveloper] = useState(undefined);
   const [version, setVersion] = useState(undefined);
   const [state, setState] = useState('view');
@@ -56,6 +58,10 @@ function ChplDeveloperPage({ id }) {
       case 'join':
       case 'split':
         setState(action);
+        break;
+      case 'editAttestation':
+        setState(action);
+        setChangeRequest(payload);
         break;
       case 'editVersion':
         setState(action);
@@ -209,6 +215,13 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplAttestationCreate
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'editAttestation'
+            && (
+              <ChplAttestationEdit
+                dispatch={handleDispatch}
+                changeRequest={changeRequest}
               />
             )}
         </Container>
