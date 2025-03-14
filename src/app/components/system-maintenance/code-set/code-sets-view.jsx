@@ -38,7 +38,7 @@ function ChplCodeSetsView({ codeSets: initialCodeSets }) {
         ...item,
         criteriaDisplay: item.criteria
           .sort(sortCriteria)
-          .map((c) => c.number)
+          .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       }))
       .sort(sortComparator('name')));

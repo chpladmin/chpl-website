@@ -39,7 +39,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
         domainDisplay: item.domain.name,
         criteriaDisplay: item.allowedCriteria
           .sort(sortCriteria)
-          .map((c) => c.number)
+          .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       }))
       .sort(sortComparator('abbreviation')));
