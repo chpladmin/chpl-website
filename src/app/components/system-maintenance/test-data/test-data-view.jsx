@@ -21,6 +21,9 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
+  widerColumn: {
+    minWidth: '200px',
+  },
 });
 
 function ChplTestDataView({ testData: initialTestData }) {
@@ -53,7 +56,7 @@ function ChplTestDataView({ testData: initialTestData }) {
             { testData
               .map((item) => (
                 <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
+                  <TableCell className={`${classes.firstColumn} ${classes.widerColumn}`}>
                     { item.name }
                   </TableCell>
                   <TableCell>
