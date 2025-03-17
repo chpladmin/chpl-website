@@ -18,7 +18,6 @@ const headers = [
   { property: 'display', text: 'ID', sortable: true },
   { property: 'title', text: 'Title', sortable: true },
   { property: 'description', text: 'Description', sortable: true },
-  { property: 'domain', text: 'Domain' },
   { text: 'Version(s)' },
 ];
 
@@ -72,7 +71,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
           <TableBody>
             { cqms
               .map((item) => (
-                <TableRow key={`${item.display}`}>
+                <TableRow key={item.display}>
                   <TableCell style={{ minWidth: '175px' }} className={classes.firstColumn}>
                     { item.display }
                   </TableCell>
@@ -81,9 +80,6 @@ function ChplCqmsView({ cqms: initialCqms }) {
                   </TableCell>
                   <TableCell>
                     { item.description }
-                  </TableCell>
-                  <TableCell>
-                    { item.domain }
                   </TableCell>
                   <TableCell>
                     { item.versionDisplay }

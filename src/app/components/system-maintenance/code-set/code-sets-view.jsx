@@ -16,7 +16,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
 
 const headers = [
-  { property: 'name', text: 'Name', sortable: true },
+  { property: 'name', text: 'CHPL Entry Value', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
   { property: 'requiredDay', text: 'Required Date', sortable: true },
   { text: 'Applicable Criteria' },
