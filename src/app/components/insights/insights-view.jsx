@@ -81,7 +81,7 @@ function ChplInsightsView({ developer }) {
                     .map((key) => (
                       <TableRow key={key}>
                         <TableCell>{ key }</TableCell>
-                        <TableCell>{`${insights[key]} evaluated`}</TableCell>
+                        <TableCell>Submitted</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>

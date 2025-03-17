@@ -353,8 +353,10 @@ function ChplActionBar(props) {
                   id="action-bar-withdraw"
                   variant="contained"
                   className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  disabled={isDisabled || isProcessing}
                   onClick={() => confirmWithdraw()}
                 >
+                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
                   Withdraw
                   <DeleteOutlinedIcon
                     className={classes.iconSpacing}
