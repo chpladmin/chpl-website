@@ -10,6 +10,7 @@ import {
 
 import { useFilterContext } from './filter-context';
 
+import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import theme from 'themes/theme';
 
@@ -42,6 +43,14 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
   },
 }));
+
+const truncate = (str, n, useWordBoundary) => {
+  if (str.length <= n) { return str; }
+  const subString = str.slice(0, n - 1);
+  return (useWordBoundary ? subString.slice(0, subString.lastIndexOf(" ")) : subString) + "...";
+};
+
+const maxLengthForChip = 40;
 
 function ChplFilterChips() {
   const [filters, setFilters] = useState([]);
@@ -126,14 +135,30 @@ function ChplFilterChips() {
             {f.values
               .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
               .map((v) => (
-                <Chip
-                  key={v.value}
-                  label={f.getValueDisplay(v)}
-                  onDelete={() => removeChip(f, v)}
-                  color="primary"
-                  variant="outlined"
-                  disabled={f.required && f.values.length === 1}
-                />
+                <React.Fragment key={v.value}>
+                  { f.getValueDisplay(v).length > maxLengthForChip
+                    ? (
+                      <ChplTooltip
+                        title={f.getLongValueDisplay(v)}
+                      >
+                        <Chip
+                          label={truncate(f.getValueDisplay(v), maxLengthForChip, true)}
+                          onDelete={() => removeChip(f, v)}
+                          color="primary"
+                          variant="outlined"
+                          disabled={f.required && f.values.length === 1}
+                        />
+                      </ChplTooltip>
+                    ) : (
+                      <Chip
+                        label={f.getValueDisplay(v)}
+                        onDelete={() => removeChip(f, v)}
+                        color="primary"
+                        variant="outlined"
+                        disabled={f.required && f.values.length === 1}
+                      />
+                    )}
+                </React.Fragment>
               ))}
             { f.values.length > DISPLAY_MAX
               && (

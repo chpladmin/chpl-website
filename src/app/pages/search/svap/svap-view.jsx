@@ -158,7 +158,7 @@ function ChplSvapSearchView() {
     pageNumber,
     pageSize,
     sortDescending,
-    query: `certificationCriteriaIds=52&${filterContext.queryString()}`,
+    query: filterContext.queryString(),
   });
   const svapQuery = useFetchSvaps();
 

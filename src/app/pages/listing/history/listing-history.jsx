@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   Paper,
@@ -278,6 +279,12 @@ function ChplListingHistory(props) {
           Listing History
         </ChplDialogTitle>
         <DialogContent dividers>
+          { (fetchListingActivityMetadata.isLoading
+             || fetchVersionActivitiesMetadata.isLoading
+             || fetchProductsActivitiesMetadata.isLoading
+             || fetchDeveloperActivitiesMetadata.isLoading
+             || (listingActivityIds.length + versionActivityIds.length + productActivityIds.length + developerActivityIds.length < evaluated.length))
+            && <CircularProgress /> }
           { activity.length > 0
             ? (
               <TableContainer component={Paper}>

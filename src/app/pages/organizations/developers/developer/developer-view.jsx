@@ -10,6 +10,7 @@ import ChplAttestationsView from 'components/attestation/attestations-view';
 import ChplChangeRequests from 'components/change-request/change-requests-wrapper'; // figure out how to not need breadcrumbs
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
+import ChplInsightsView from 'components/insights/insights-view';
 import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
 import ChplUsers from 'components/user/users';
@@ -18,7 +19,7 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  editUser:{
+  focus: {
     display: 'flex',
     flexDirection: 'column-reverse',
     paddingTop: '16px',
@@ -57,7 +58,7 @@ const isActive = (statuses) => statuses.length === 0 || statuses.every((status) 
 
 function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { demographicChangeRequestIsOn } = useContext(FlagContext);
+  const { demographicChangeRequestIsOn, insightsIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
   const usersQuery = useFetchUsersAtDeveloper({
     developer,
@@ -121,7 +122,7 @@ function ChplDeveloperView({ dispatch }) {
   };
 
   return (
-    <Box className={`${state === 'editUser' ? classes.editUser : classes.mainContent}`}>
+    <Box className={`${state === 'view' ? classes.mainContent : classes.focus}`}>
       <Box className={classes.lefthandContainer}>
         { state === 'view'
           && (
@@ -134,6 +135,12 @@ function ChplDeveloperView({ dispatch }) {
                 canSplit={() => can('split-developer')}
                 isSplitting={false}
               />
+              { insightsIsOn
+                && (
+                  <ChplInsightsView
+                    developer={developer}
+                  />
+                )}
               <ChplRealWorldTestingView
                 developer={developer}
               />
@@ -151,11 +158,14 @@ function ChplDeveloperView({ dispatch }) {
               <ChplChangeRequests
                 disallowedFilters={['submittedDateTime', 'searchTerm']}
                 bonusQuery={`&developerId=${developer.id}`}
+                dispatch={dispatch}
               />
             )}
             <ChplDirectReviews developer={developer} />
-            <ChplProducts developer={developer} dispatch={handleProductDispatch} />
           </>
+        )}
+        {state === 'view' && (
+          <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
         {(state === 'view' || state === 'editUser') && (
           <ChplUsers
