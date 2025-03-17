@@ -7,6 +7,7 @@ export const SurveillanceReportQuarterComponent = {
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
     surveillanceGroundsForInitiatingTypes: '<',
+    capStatusTypes: '<',
     onCancel: '&',
     onSave: '&',
     takeAction: '&',
@@ -51,6 +52,9 @@ export const SurveillanceReportQuarterComponent = {
       }
       if (changes.surveillanceGroundsForInitiatingTypes) {
         this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
+      }
+      if (changes.capStatusTypes) {
+        this.capStatusTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
       }
     }
 

@@ -5,6 +5,7 @@ const SurveillanceReportRelevantSurveillanceComponent = {
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
     surveillanceGroundsForInitiatingTypes: '<',
+    capStatusTypes: '<',
     onCancel: '&',
     onSave: '&',
   },
@@ -30,6 +31,9 @@ const SurveillanceReportRelevantSurveillanceComponent = {
       if (changes.surveillanceGroundsForInitiatingTypes) {
         this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
       }
+      if (changes.capStatusTypes) {
+        this.capStatusTypes = angular.copy(changes.capStatusTypes.currentValue);
+      }
       if (this.surveillanceOutcomes) {
         this.surveillanceOutcomes.sort((a, b) => (a.name < b.name ? -1 : 1));
       }
@@ -38,6 +42,9 @@ const SurveillanceReportRelevantSurveillanceComponent = {
       }
       if (this.surveillanceGroundsForInitiatingTypes) {
         this.surveillanceGroundsForInitiatingTypes.sort((a, b) => (a.name < b.name ? -1 : 1));
+      }
+      if (this.capStatusTypes) {
+        this.capStatusTypes.sort((a, b) => (a.name < b.name ? -1 : 1));
       }
     }
 
@@ -55,6 +62,10 @@ const SurveillanceReportRelevantSurveillanceComponent = {
 
     shouldShowOtherSurveillanceGroundsForInitiatingExplanation() {
       return this.surveillance.surveillanceGroundsForInitiating?.some((spt) => spt.name === 'Other');
+    }
+
+    shouldShowOtherCapStatus() {
+      return this.surveillance.capStatus?.some((spt) => spt.name === 'Other');
     }
   },
 };

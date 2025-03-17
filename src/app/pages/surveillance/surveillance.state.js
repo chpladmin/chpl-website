@@ -68,6 +68,11 @@ const states = [{
 
       return networkService.getSurveillanceGroundsForInitiatingTypes();
     },
+    capStatusTypes: (networkService) => {
+      'ngInject';
+
+      return networkService.getCapStatusTypes();
+    },
   },
   data: { title: 'CHPL Surveillance - Reporting' },
   ncyBreadcrumb: {

@@ -114,10 +114,18 @@
              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
     </div>
     <div class="form-group">
-      <label class="control-label" for="completed-cap-verification">Verification of Completed CAP</label>
-      <p class="form-control-static">If an approved Corrective Action Plan was received and completed, how did ONC-ACB verify that the developer has completed all requirements specified in the Plan?</p>
-      <input type="text" class="form-control" id="completed-cap-verification" name="completedCapVerification" ng-model="$ctrl.surveillance.completedCapVerification"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
+      <label class="control-label" for="cap-status">CAP Status</label>
+      <p class="form-control-static">Please provide the current status of this listing's CAP. If an  Corrective Action Plan was received, approved and completed, please select all actions to verify that the developer completed all requirements. If no CAP was provided, select &quot;No CAP&quot;.</p>
+      <select class="form-control" id="cap-status" name="capStatus" ng-model="$ctrl.surveillance.capStatus"
+              multiple
+              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
+              ng-options="type as type.name for type in $ctrl.capStatusTypes track by type.id"></select>
+    </div>
+    <div class="form-group" ng-if="$ctrl.shouldShowOtherCapStatus()">
+      <label class="control-label" for="cap-status-other">CAP Status - Other <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" id="cap-status-other" name="capStatusOther" ng-model="$ctrl.surveillance.capStatusOther"
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])" required></input>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.capStatusOther.$touched) && $ctrl.form.capStatusOther.$error.required">Value is required</div>
     </div>
     <div class="form-group">
       <label class="control-label" for="surveillance-findings">Surveillance Findings</label>

@@ -92,6 +92,10 @@ export default class NetworkService {
     return this.apiGET(`/atls?editable=${editable}`, { forceReload: true });
   }
 
+  getCapStatusTypes() {
+    return this.apiGET('/data/cap-status');
+  }
+
   getCodeSets() {
     return this.apiGET('/code-sets');
   }

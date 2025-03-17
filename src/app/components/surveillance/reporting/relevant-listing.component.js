@@ -14,7 +14,7 @@ const calculateCompletion = (surveillance) => {
         + (surveillance.limitationsEvaluation ? 1 : 0)
         + (surveillance.nondisclosureEvaluation ? 1 : 0)
         + (surveillance.directionDeveloperResolution ? 1 : 0)
-        + (surveillance.completedCapVerification ? 1 : 0)
+        + (surveillance.capStatus?.length > 0 ? 1 : 0)
     ) * 100 / 13), // eslint-disable-line no-mixed-operators
   };
   return updated;
@@ -28,6 +28,7 @@ const SurveillanceReportRelevantListingComponent = {
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
     surveillanceGroundsForInitiatingTypes: '<',
+    capStatusTypes: '<',
     onCancel: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
@@ -62,6 +63,9 @@ const SurveillanceReportRelevantListingComponent = {
       }
       if (changes.surveillanceGroundsForInitiatingTypes) {
         this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
+      }
+      if (changes.capStatusTypes) {
+        this.capStatusTypes = angular.copy(changes.capStatusTypes.currentValue);
       }
       if (this.listing.surveillances) {
         this.surveillances = this.listing.surveillances.map((s) => calculateCompletion(s));
