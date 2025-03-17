@@ -4,6 +4,7 @@ const SurveillanceReportRelevantSurveillanceComponent = {
     surveillance: '<',
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
+    surveillanceGroundsForInitiatingTypes: '<',
     onCancel: '&',
     onSave: '&',
   },
@@ -26,11 +27,17 @@ const SurveillanceReportRelevantSurveillanceComponent = {
       if (changes.surveillanceProcessTypes) {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
       }
+      if (changes.surveillanceGroundsForInitiatingTypes) {
+        this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
+      }
       if (this.surveillanceOutcomes) {
         this.surveillanceOutcomes.sort((a, b) => (a.name < b.name ? -1 : 1));
       }
       if (this.surveillanceProcessTypes) {
         this.surveillanceProcessTypes.sort((a, b) => (a.name < b.name ? -1 : 1));
+      }
+      if (this.surveillanceGroundsForInitiatingTypes) {
+        this.surveillanceGroundsForInitiatingTypes.sort((a, b) => (a.name < b.name ? -1 : 1));
       }
     }
 
@@ -44,6 +51,10 @@ const SurveillanceReportRelevantSurveillanceComponent = {
 
     shouldShowOtherSurveillanceProcessTypesExplanation() {
       return this.surveillance.surveillanceProcessTypes?.some((spt) => spt.name === 'Other');
+    }
+
+    shouldShowOtherSurveillanceGroundsForInitiatingExplanation() {
+      return this.surveillance.surveillanceGroundsForInitiating?.some((spt) => spt.name === 'Other');
     }
   },
 };

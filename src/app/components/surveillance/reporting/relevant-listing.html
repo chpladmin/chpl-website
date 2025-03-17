@@ -6,12 +6,13 @@
 <div class="row spaced-out">
   <div class="col-md-12">
     <chpl-surveillance-report-relevant-surveillance
-       surveillance="$ctrl.activeSurveillance"
-       surveillance-outcomes="$ctrl.surveillanceOutcomes"
-       surveillance-process-types="$ctrl.surveillanceProcessTypes"
-       on-cancel="$ctrl.cancelEdit()"
-       on-save="$ctrl.save(surveillance)"
-       ng-if="$ctrl.activeSurveillance">
+      surveillance="$ctrl.activeSurveillance"
+      surveillance-outcomes="$ctrl.surveillanceOutcomes"
+      surveillance-process-types="$ctrl.surveillanceProcessTypes"
+      surveillance-grounds-for-initiating-types="$ctrl.surveillanceGroundsForInitiatingTypes"
+      on-cancel="$ctrl.cancelEdit()"
+      on-save="$ctrl.save(surveillance)"
+      ng-if="$ctrl.activeSurveillance">
     </chpl-surveillance-report-relevant-surveillance>
     <div class="table-responsive" st-table="$ctrl.displaySurveillances" st-safe-src="$ctrl.surveillances" ng-show="!$ctrl.activeSurveillance">
       <table class="table table-condensed">

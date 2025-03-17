@@ -205,6 +205,10 @@ export default class NetworkService {
     return this.apiGET(url);
   }
 
+  getSurveillanceGroundsForInitiatingTypes() {
+    return this.apiGET('/data/surveillance-grounds-for-initiating');
+  }
+
   getSurveillanceLookups() {
     const data = {};
     this.apiGET('/data/surveillance_types')

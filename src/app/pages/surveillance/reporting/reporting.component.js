@@ -7,6 +7,7 @@ export const SurveillanceReportingComponent = {
     quarters: '<',
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
+    surveillanceGroundsForInitiatingTypes: '<',
   },
   controller: class SurveillanceReportingComponent {
     constructor ($log, $state, authService, networkService) {
@@ -48,6 +49,9 @@ export const SurveillanceReportingComponent = {
       }
       if (changes.surveillanceProcessTypes) {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
+      }
+      if (changes.surveillanceGroundsForInitiatingTypes) {
+        this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
       }
     }
 

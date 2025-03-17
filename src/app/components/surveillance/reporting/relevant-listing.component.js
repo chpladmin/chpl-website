@@ -5,7 +5,7 @@ const calculateCompletion = (surveillance) => {
       (surveillance.surveillanceOutcome ? 1 : 0)
         + (surveillance.surveillanceProcessTypes?.length > 0 ? 1 : 0)
         + (surveillance.k1Reviewed ? 1 : 0)
-        + (surveillance.groundsForInitiating ? 1 : 0)
+        + (surveillance.surveillanceGroundsForInitiating?.length > 0 ? 1 : 0)
         + (surveillance.nonconformityCauses ? 1 : 0)
         + (surveillance.nonconformityNature ? 1 : 0)
         + (surveillance.stepsToSurveil ? 1 : 0)
@@ -27,6 +27,7 @@ const SurveillanceReportRelevantListingComponent = {
     quarterlyReport: '<',
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
+    surveillanceGroundsForInitiatingTypes: '<',
     onCancel: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
@@ -58,6 +59,9 @@ const SurveillanceReportRelevantListingComponent = {
       }
       if (changes.surveillanceProcessTypes) {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
+      }
+      if (changes.surveillanceGroundsForInitiatingTypes) {
+        this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
       }
       if (this.listing.surveillances) {
         this.surveillances = this.listing.surveillances.map((s) => calculateCompletion(s));

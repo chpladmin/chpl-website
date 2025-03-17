@@ -1,12 +1,13 @@
 <div class="row">
   <div class="col-md-12">
     <chpl-surveillance-report-relevant-listing
-       listing="$ctrl.activeListing"
-       quarterly-report="$ctrl.quarterlyReport"
-       surveillance-outcomes="$ctrl.surveillanceOutcomes"
-       surveillance-process-types="$ctrl.surveillanceProcessTypes"
-       on-cancel="$ctrl.cancelEdit()"
-       ng-if="$ctrl.activeListing">
+      listing="$ctrl.activeListing"
+      quarterly-report="$ctrl.quarterlyReport"
+      surveillance-outcomes="$ctrl.surveillanceOutcomes"
+      surveillance-process-types="$ctrl.surveillanceProcessTypes"
+      surveillance-grounds-for-initiating-types="$ctrl.surveillanceGroundsForInitiatingTypes"
+      on-cancel="$ctrl.cancelEdit()"
+      ng-if="$ctrl.activeListing">
     </chpl-surveillance-report-relevant-listing>
     <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.listings" ng-if="!$ctrl.activeListing">
       <table class="table table-condensed">

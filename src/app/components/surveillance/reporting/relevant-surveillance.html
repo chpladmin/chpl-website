@@ -52,10 +52,18 @@
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.surveillanceProcessTypeOther.$touched) && $ctrl.form.surveillanceProcessTypeOther.$error.required">Value is required</div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="grounds-for-initiating">Grounds For Initiating Surveillance</label>
+      <label class="control-label" for="surveillance-grounds-for-initiating">Grounds For Initiating Surveillance</label>
       <p class="form-control-static">On what grounds did the ONC-ACB initiate surveillance (i.e., the particular facts and circumstances from which a reasonable person would have had grounds to question the continued conformity of the Health IT Module)? For randomized surveillance, it is acceptable to state it was chosen randomly.</p>
-      <input type="text" class="form-control" id="grounds-for-initiating" name="groundsForInitiating" ng-model="$ctrl.surveillance.groundsForInitiating"
-             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></input>
+      <select class="form-control" id="surveillance-grounds-for-initiating" name="surveillanceGroundsForInitiating" ng-model="$ctrl.surveillance.surveillanceGroundsForInitiating"
+              multiple
+              ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"
+              ng-options="type as type.name for type in $ctrl.surveillanceGroundsForInitiatingTypes track by type.id"></select>
+    </div>
+    <div class="form-group" ng-if="$ctrl.shouldShowOtherSurveillanceGroundsForInitiatingExplanation()">
+      <label class="control-label" for="surveillance-grounds-for-initiating-other">Grounds For Initiating Surveillance - Other Explanation <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" id="surveillance-grounds-for-initiating-other" name="surveillanceGroundsForInitiatingOther" ng-model="$ctrl.surveillance.surveillanceGroundsForInitiatingOther"
+             ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])" required></input>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.surveillanceProcessTypeOther.$touched) && $ctrl.form.surveillanceGroundsForInitiatingOther.$error.required">Value is required</div>
     </div>
     <div class="form-group">
       <label class="control-label" for="nonconformity-causes">Potential Causes of Non-Conformities or Suspected Non-Conformities</label>

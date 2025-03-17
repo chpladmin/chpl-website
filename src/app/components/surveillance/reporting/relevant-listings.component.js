@@ -6,6 +6,7 @@ const SurveillanceReportRelevantListingsComponent = {
     relevantListing: '<',
     surveillanceOutcomes: '<',
     surveillanceProcessTypes: '<',
+    surveillanceGroundsForInitiatingTypes: '<',
   },
   controller: class SurveillanceReportRelevantListingComponent {
     constructor($log, DateUtil) {
@@ -38,6 +39,9 @@ const SurveillanceReportRelevantListingsComponent = {
       }
       if (changes.surveillanceProcessTypes) {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
+      }
+      if (changes.surveillanceGroundsForInitiatingTypes) {
+        this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
       }
       if (this.listings && this.relevantListing) {
         this.activeListing = this.listings.find((l) => l.id === this.relevantListing.id);
