@@ -14,7 +14,7 @@ import {
   FilterProvider,
   defaultFilter,
   getDateDisplay,
-  getDateTimeEntry,
+  getDateEntry,
 } from 'components/filter';
 import { BreadcrumbContext } from 'shared/contexts';
 
@@ -24,36 +24,22 @@ const staticFilters = [{
   display: 'Start Date',
   values: [
     { value: 'Before', default: '' },
-    { value: 'After', default: '' },
+    { value: 'After', default: '2015-10-16' },
   ],
-  filterFn: (item, filter) => {
-    return filter.values.reduce((v, acc) => {
-      console.log(v, acc);
-      if (v.value === 'Before') {
-        return acc && item.startDay <= v.selected;
-      } else if (v.value === 'After') {
-        return acc && item.startDay >= v.selected;
-      }
-      return acc && true;
-    }, true);
-  },
+  filterFn: (item, filter) => filter.values.reduce((acc, v) => ((!!v.selected && !!item.startDay) ? acc && (v.value === 'Before' ? item.startDay <= v.selected : item.startDay >= v.selected) : acc), true),
   getValueDisplay: getDateDisplay,
-  getValueEntry: getDateTimeEntry,
+  getValueEntry: getDateEntry,
 }, {
   ...defaultFilter,
-  key: 'endDate',
-  display: 'End Day',
+  key: 'endDay',
+  display: 'End Date',
   values: [
     { value: 'Before', default: '' },
     { value: 'After', default: '' },
   ],
-  filterFn: () => true,
-  getQuery: (value) => value.values
-    .sort((a, b) => (a.value < b.value ? -1 : 1))
-    .map((v) => `${v.value === 'After' ? 'creationDateTimeStart' : 'creationDateTimeEnd'}=${v.selected}`)
-    .join('&'),
+  filterFn: (item, filter) => filter.values.reduce((acc, v) => ((!!v.selected && !!item.endDay) ? acc && (v.value === 'Before' ? item.endDay <= v.selected : item.endDay >= v.selected) : acc), true),
   getValueDisplay: getDateDisplay,
-  getValueEntry: getDateTimeEntry,
+  getValueEntry: getDateEntry,
 }];
 
 function ChplCertificationCriteria() {

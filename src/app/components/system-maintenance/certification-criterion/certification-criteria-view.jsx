@@ -18,7 +18,6 @@ import {
 import { ChplLink } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { criterion as criterionPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -33,7 +32,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  ...utilStyles
+  ...utilStyles,
 });
 
 const getDisplay = (key) => {
@@ -68,7 +67,6 @@ const getDisplay = (key) => {
 };
 
 function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
-  const storageKey = 'storageKey-certificationCriteriaManagementView';
   const [certificationCriterias, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
@@ -77,6 +75,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
 
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .map((item) => ({
         ...item,
         displayAttributes: Object
@@ -86,14 +85,8 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .sort((a, b) => (a < b ? -1 : 1))
           .join('; '),
       }))
-      .filter((item) => {
-        return filterContext.filters.reduce((f, acc) => {
-          console.log(item, f);
-          return f.filterFn(item, f) && acc;
-        }, true);
-      })
       .sort(sortComparator('value')));
-  }, [initialCertificationCriteria]);
+  }, [initialCertificationCriteria, filterContext.filters]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
