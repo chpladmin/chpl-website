@@ -11,29 +11,41 @@ import {
   Divider,
   ListItemText,
 } from '@material-ui/core';
-import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
-import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
+import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
+import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
+import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
+import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
+import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
+import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
 
 import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
 import ChplApiKeys from 'components/system-maintenance/api-key/api-keys';
-import ChplCertificationCriteria from 'components/system-maintenance/certification-criteria/certification-criteria';
+import ChplCertificationCriteria from 'components/system-maintenance/certification-criterion/certification-criteria';
+import ChplCodeSets from 'components/system-maintenance/code-set/code-sets';
+import ChplConformanceMethods from 'components/system-maintenance/conformance-method/conformance-methods';
+import ChplCqms from 'components/system-maintenance/cqm/cqms';
 import ChplFunctionalitiesTested from 'components/system-maintenance/functionality-tested/functionalities-tested';
+import ChplG1g2 from 'components/system-maintenance/g1g2/g1g2';
 import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
+import ChplOptionalStandards from 'components/system-maintenance/optional-standard/optional-standards';
 import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-standards';
 import ChplStandards from 'components/system-maintenance/standard/standards';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
+import ChplTestData from 'components/system-maintenance/test-data/test-data';
 import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
 import ChplUcdProcesses from 'components/system-maintenance/ucd-process/ucd-processes';
 import { eventTrack } from 'services/analytics.service';
@@ -125,15 +137,40 @@ const maintenanceItems = [{
   secondary: 'Table of the Certification Criteria values',
   icon: <BookOutlinedIcon />,
 }, {
+  id: 'codeSets',
+  primary: 'Code Sets',
+  secondary: 'Table of Code Sets',
+  icon: <SettingsEthernetIcon />,
+}, {
+  id: 'conformanceMethods',
+  primary: 'Conformance Methods',
+  secondary: 'Table of Conformance Methods',
+  icon: <AccountBalanceOutlinedIcon />,
+}, {
+  id: 'cqms',
+  primary: 'CQMs',
+  secondary: 'Table of the CQM values',
+  icon: <SpeedOutlinedIcon />,
+}, {
   id: 'functionalitiesTested',
   primary: 'Functionalities Tested',
   secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
   icon: <BeenhereOutlinedIcon />,
 }, {
+  id: 'g1g2',
+  primary: 'G1/G2 Measures',
+  secondary: 'Table of G1/G2 Measures',
+  icon: <AssessmentOutlinedIcon />,
+}, {
+  id: 'optionalStandards',
+  primary: 'Optional Standards',
+  secondary: 'View Optional Standards available to be applied to listings',
+  icon: <MoreOutlinedIcon />,
+}, {
   id: 'qmsStandards',
   primary: 'QMS Standards',
   secondary: 'Add and update the QMS Standards available to be applied to listings',
-  icon: <AssessmentOutlinedIcon />,
+  icon: <AssignmentTurnedInOutlinedIcon />,
 }, {
   id: 'standards',
   primary: 'Standards',
@@ -156,6 +193,11 @@ const maintenanceItems = [{
   secondary: 'View and schedule system-related jobs',
   roles: ['chpl-admin'],
   icon: <PlayArrowOutlinedIcon />,
+}, {
+  id: 'testData',
+  primary: 'Test Data',
+  secondary: 'Table of Test Data',
+  icon: <DataUsageOutlinedIcon />,
 }, {
   id: 'testTools',
   primary: 'Test Tools',
@@ -228,11 +270,16 @@ function ChplSystemMaintenance() {
     hide('announcements.edit.disabled');
     hide('apiKeys.viewall.disabled');
     hide('certificationCriteria.viewall.disabled');
+    hide('codeSets.viewall.disabled');
+    hide('conformanceMethods.viewall.disabled');
+    hide('cqms.viewall.disabled');
     hide('functionalitiesTested.viewall.disabled');
     hide('functionalitiesTested.viewall');
     hide('functionalitiesTested.add.disabled');
     hide('functionalitiesTested.edit.disabled');
+    hide('g1g2.viewall.disabled');
     hide('manageSubscriptions.viewall.disabled');
+    hide('optionalStandards.viewall.disabled');
     hide('qmsStandards.viewall.disabled');
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
@@ -241,6 +288,7 @@ function ChplSystemMaintenance() {
     hide('standards.viewall');
     hide('standards.add.disabled');
     hide('standards.edit.disabled');
+    hide('testData.viewall.disabled');
     hide('testTools.viewall.disabled');
     hide('testTools.viewall');
     hide('testTools.add.disabled');
@@ -315,12 +363,18 @@ function ChplSystemMaintenance() {
           { active === 'announcements' && <ChplAnnouncements /> }
           { active === 'apiKeys' && <ChplApiKeys /> }
           { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
-          { active === 'qmsStandards' && <ChplQmsStandards /> }
+          { active === 'codeSets' && <ChplCodeSets /> }
+          { active === 'conformanceMethods' && <ChplConformanceMethods /> }
+          { active === 'cqms' && <ChplCqms /> }
           { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
-          { active === 'subscriptions' && <ChplManageSubscriptions /> }
+          { active === 'g1g2' && <ChplG1g2 /> }
+          { active === 'optionalStandards' && <ChplOptionalStandards /> }
+          { active === 'qmsStandards' && <ChplQmsStandards /> }
           { active === 'standards' && <ChplStandards /> }
+          { active === 'subscriptions' && <ChplManageSubscriptions /> }
           { active === 'svaps' && <ChplSvaps /> }
           { active === 'systemJobs' && <ChplSystemJobs /> }
+          { active === 'testData' && <ChplTestData /> }
           { active === 'testTools' && <ChplTestTools /> }
           { active === 'ucdProcesses' && <ChplUcdProcesses /> }
         </Box>
