@@ -65,7 +65,7 @@ const SurveillanceReportRelevantSurveillanceComponent = {
     }
 
     shouldShowOtherCapStatus() {
-      return this.surveillance.capStatus?.some((spt) => spt.name === 'Other');
+      return this.surveillance.capStatuses?.some((spt) => spt.name === 'Other');
     }
   },
 };

@@ -93,7 +93,7 @@ export default class NetworkService {
   }
 
   getCapStatusTypes() {
-    return this.apiGET('/data/cap-status');
+    return this.apiGET('/data/cap-statuses');
   }
 
   getCodeSets() {

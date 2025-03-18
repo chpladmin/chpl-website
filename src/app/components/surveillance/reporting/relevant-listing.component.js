@@ -14,7 +14,7 @@ const calculateCompletion = (surveillance) => {
         + (surveillance.limitationsEvaluation ? 1 : 0)
         + (surveillance.nondisclosureEvaluation ? 1 : 0)
         + (surveillance.directionDeveloperResolution ? 1 : 0)
-        + (surveillance.capStatus?.length > 0 ? 1 : 0)
+        + (surveillance.capStatuses?.length > 0 ? 1 : 0)
     ) * 100 / 13), // eslint-disable-line no-mixed-operators
   };
   return updated;
