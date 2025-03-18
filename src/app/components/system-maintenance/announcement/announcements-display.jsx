@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
   Button,
@@ -17,15 +17,24 @@ const useStyles = makeStyles({
   announcementBox: {
     color: palette.white,
     display: 'flex',
-    flexDirection: 'row',
-    width: '90%',
+    flexDirection: 'row !important',
+    width: '95%',
     alignItems: 'center',
     gridGap: '8px',
+    padding: '0 !important',
   },
   nextButton: {
     display: 'flex',
     justifyContent: 'flex-end',
     gap: '4px',
+  },
+  nextButtonOutline: {
+    '&:focus': {
+      outline: 'solid 2px rgb(255, 255, 255)',
+    },
+    '&:focus-visible': {
+      outline: 'solid 2px rgb(255, 255, 255)',
+    },
   },
   footerAnnouncement: {
     display: 'flex !important',
@@ -52,6 +61,8 @@ function ChplAnnouncementsDisplay() {
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
   const $state = getAngularService('$state');
+  const announcementRef = useRef(null);
+  const nextButtonRef = useRef(null);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -66,6 +77,9 @@ function ChplAnnouncementsDisplay() {
   }
   const handleNext = () => {
     setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % announcements.length);
+    if (document.activeElement === nextButtonRef.current && announcementRef.current) {
+      announcementRef.current.focus();
+    }
   };
 
   return (
@@ -74,15 +88,19 @@ function ChplAnnouncementsDisplay() {
         <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg">
           {currentAnnouncement.id && (
             <>
-              <Box className={classes.announcementBox} key={currentAnnouncement.id}>
+              <Box
+                className={classes.announcementBox}
+                key={currentAnnouncement.id}
+                ref={announcementRef}
+                tabIndex="0"
+              >
                 <strong>
                   {currentAnnouncement.title.length > 25
-                    ? `${currentAnnouncement.title.substring(0, 25)}...`
+                    ? `${currentAnnouncement.title.substring(0, 25)}`
                     : currentAnnouncement.title}
                 </strong>
-                {`${currentAnnouncement.text.substring(0, 140)}...`}
+                {`${currentAnnouncement.text.substring(0, 200)}`}
               </Box>
-              <Button className={classes.readMore} variant="text" color="secondary" size="small" onClick={() => { $state.go('resources.overview'); window.scrollTo(0, 0); }}>Read more</Button>
             </>
           )}
           {announcements.length > 1 && (
@@ -96,7 +114,15 @@ function ChplAnnouncementsDisplay() {
                 </Typography>
               </Box>
               <Box className={classes.nextButton}>
-                <IconButton size="small" onClick={handleNext}>
+                <IconButton
+                  disableFocusRipple
+                  aria-label='Reveal the next announcement.'
+                  size="small"
+                  onClick={handleNext}
+                  ref={nextButtonRef}
+                  className={classes.nextButtonOutline}
+                  tabIndex="0"
+                >
                   <ArrowForwardIcon size="small" color="secondary" />
                 </IconButton>
               </Box>
