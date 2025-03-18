@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
-  Button,
   Container,
   IconButton,
   Typography,
@@ -11,7 +10,6 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import { palette } from 'themes';
 import { useFetchAnnouncements } from 'api/announcements';
-import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
   announcementBox: {
@@ -60,7 +58,6 @@ function ChplAnnouncementsDisplay() {
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
-  const $state = getAngularService('$state');
   const announcementRef = useRef(null);
   const nextButtonRef = useRef(null);
 
@@ -116,7 +113,7 @@ function ChplAnnouncementsDisplay() {
               <Box className={classes.nextButton}>
                 <IconButton
                   disableFocusRipple
-                  aria-label='Reveal the next announcement.'
+                  aria-label="Reveal the next announcement."
                   size="small"
                   onClick={handleNext}
                   ref={nextButtonRef}
