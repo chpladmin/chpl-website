@@ -101,6 +101,14 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
+  name: 'administration.url-checker',
+  url: '/url-checker',
+  component: 'chplUrlCheckerWrapperBridge',
+  data: {
+    title: 'CHPL Administration - URL Checker',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+  },
+}, {
   name: 'login',
   url: '/login',
   component: 'chplLoginPageBridge',
