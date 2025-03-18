@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 13.34.0
+_17 March 2025_
+
+### Features
+* Add the ability to search for Listings by Standards
+* Add ONC-ACB Certification ID to basic Listing edit page
+* Support updates to required surveillance reporting as of 2025
+
+### Bug Fixes
+* Re-enable editing of Attestation submissions
+* Show correct Listing results on SVAP page
+
+### User Interface Updates
+* Add "loading" indicator to Listing History modal
+* Update Version editing screen to use new format
+
+---
+
 ## Version 13.33.0
 _3 March 2025_
 
