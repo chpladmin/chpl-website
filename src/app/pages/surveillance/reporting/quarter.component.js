@@ -54,7 +54,7 @@ export const SurveillanceReportQuarterComponent = {
         this.surveillanceGroundsForInitiatingTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
       }
       if (changes.capStatusTypes) {
-        this.capStatusTypes = angular.copy(changes.surveillanceGroundsForInitiatingTypes.currentValue);
+        this.capStatusTypes = angular.copy(changes.capStatusTypes.currentValue);
       }
     }
 
