@@ -26,7 +26,10 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   title: yup.string()
-    .required('Field is required'),
+    .required('Field is required')
+    .max(25, 'Text cannot be more than 25 characters'),
+  text: yup.string()
+    .max(200, 'Text cannot be more than 200 characters'),
   startDateTime: yup.date()
     .required('Field is required'),
   endDateTime: yup.date()
@@ -81,29 +84,35 @@ function ChplAnnouncementEdit(props) {
 
   return (
     <>
-      <ChplTextField
-        id="title"
-        name="title"
-        label="Title"
-        className={classes.fullWidth}
-        required
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.title && !!formik.errors.title}
-        helperText={formik.touched.title && formik.errors.title}
-      />
-      <ChplTextField
-        id="text"
-        name="text"
-        label="Text"
-        className={classes.fullWidth}
-        value={formik.values.text}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.text && !!formik.errors.text}
-        helperText={formik.touched.text && formik.errors.text}
-      />
+      <div>
+        <ChplTextField
+          id="title"
+          name="title"
+          label="Title"
+          className={classes.fullWidth}
+          required
+          value={formik.values.title}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.title && !!formik.errors.title}
+          helperText={formik.touched.title && formik.errors.title}
+        />
+        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Title">Max Character Limit: 25</FormHelperText>
+      </div>
+      <div>
+        <ChplTextField
+          id="text"
+          name="text"
+          label="Text"
+          className={classes.fullWidth}
+          value={formik.values.text}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.text && !!formik.errors.text}
+          helperText={formik.touched.text && formik.errors.text}
+        />
+        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Text">Max Character Limit: 200</FormHelperText>
+      </div>
       <div>
         <ChplTextField
           id="start-date-time"
