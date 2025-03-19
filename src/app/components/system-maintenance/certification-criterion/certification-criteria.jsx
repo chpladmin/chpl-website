@@ -16,6 +16,7 @@ import {
   getDateDisplay,
   getDateEntry,
 } from 'components/filter';
+import { certificationCriteriaIds } from 'components/filter/filters';
 import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
@@ -46,6 +47,7 @@ function ChplCertificationCriteria() {
   const { append, display } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchCriteria({ active: false });
   const [certificationCriteria, setCertificationCriteria] = useState([]);
+  const [filters, setFilters] = useState(staticFilters);
 
   useEffect(() => {
     append(
@@ -64,6 +66,23 @@ function ChplCertificationCriteria() {
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setCertificationCriteria(data);
+    const values = data
+      .map((cc) => ({
+        ...cc,
+        value: cc.id,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}`,
+        longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}: ${cc.title}`,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationCriteriaIds')
+      .concat({
+        ...certificationCriteriaIds,
+        filterFn: (item, filter) => {
+          console.log('criteriaids filterFn', item, filter);
+          return filter.values.reduce((acc, v) => (v.selected ? acc && v.id === item.id : acc), true);
+        },
+        values,
+      }));
   }, [data, isLoading, isSuccess]);
 
   if (isLoading) {
@@ -79,7 +98,7 @@ function ChplCertificationCriteria() {
   return (
     <FilterProvider
       analytics={analytics}
-      filters={staticFilters}
+      filters={filters}
       storageKey="storageKey-certificationCriteriaManagement"
     >
       <Card>
