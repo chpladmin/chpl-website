@@ -27,9 +27,9 @@ const useStyles = makeStyles({
 const validationSchema = yup.object({
   title: yup.string()
     .required('Field is required')
-    .max(25, 'Text cannot be more than 25 characters'),
+    .max(30, 'Text cannot be more than 30 characters'),
   text: yup.string()
-    .max(200, 'Text cannot be more than 200 characters'),
+    .max(150, 'Text cannot be more than 150 characters'),
   startDateTime: yup.date()
     .required('Field is required'),
   endDateTime: yup.date()
@@ -97,7 +97,7 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.title && !!formik.errors.title}
           helperText={formik.touched.title && formik.errors.title}
         />
-        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Title">Max Character Limit: 25</FormHelperText>
+        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Title">Max Character Limit: 30</FormHelperText>
       </div>
       <div>
         <ChplTextField
@@ -111,7 +111,7 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.text && !!formik.errors.text}
           helperText={formik.touched.text && formik.errors.text}
         />
-        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Text">Max Character Limit: 200</FormHelperText>
+        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Text">Max Character Limit: 150</FormHelperText>
       </div>
       <div>
         <ChplTextField
