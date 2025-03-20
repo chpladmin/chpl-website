@@ -20,6 +20,12 @@ const useStyles = makeStyles({
     alignItems: 'center',
     gridGap: '8px',
     padding: '0 !important',
+    '&:focus': {
+      outline: 'none !important',
+    },
+    '&:focus-visible': {
+      outline: 'none !important',
+    },
   },
   nextButton: {
     display: 'flex',
@@ -68,16 +74,22 @@ function ChplAnnouncementsDisplay() {
     setAnnouncements(data.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
   }, [data, isLoading, isSuccess]);
 
-  let currentAnnouncement = {};
-  if (announcements.length > 0) {
-    currentAnnouncement = announcements[currentAnnouncementIndex];
-  }
+  // Ensure currentAnnouncement is properly assigned
+  const currentAnnouncement = announcements.length > 0 ? announcements[currentAnnouncementIndex] : {};
+
+  // Function to update the announcement index
   const handleNext = () => {
     setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % announcements.length);
-    if (document.activeElement === nextButtonRef.current && announcementRef.current) {
-      announcementRef.current.focus();
-    }
   };
+
+  // Move focus when currentAnnouncement updates
+  useEffect(() => {
+    if (announcementRef.current) {
+      setTimeout(() => {
+        announcementRef.current.focus();
+      }, 50);
+    }
+  }, [currentAnnouncement]); // Runs when `currentAnnouncement` updates
 
   return (
     <>
@@ -89,21 +101,30 @@ function ChplAnnouncementsDisplay() {
                 className={classes.announcementBox}
                 key={currentAnnouncement.id}
                 ref={announcementRef}
-                tabIndex="0"
+                tabIndex="-1"
+                aria-live="assertive"
+                aria-relevant="additions text"
               >
                 <strong>
-                  {currentAnnouncement.title.length > 25
-                    ? `${currentAnnouncement.title.substring(0, 25)}`
+                  {currentAnnouncement.title.length > 30
+                    ? `${currentAnnouncement.title.substring(0, 30)}`
                     : currentAnnouncement.title}
                 </strong>
-                {`${currentAnnouncement.text.substring(0, 200)}`}
+                {`${currentAnnouncement.text.substring(0, 150)}`}
               </Box>
             </>
           )}
           {announcements.length > 1 && (
             <>
-              <Box className={classes.counter}>
-                <Typography color="secondary" variant="body2">
+              <Box
+                className={classes.counter}
+              >
+                <Typography
+                  aria-live="assertive"
+                  aria-label={`Announcement ${currentAnnouncementIndex + 1} of ${announcements.length}`}
+                  color="secondary"
+                  variant="body2"
+                >
                   {currentAnnouncementIndex + 1}
                   {' '}
                   /
