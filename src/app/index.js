@@ -13,7 +13,6 @@ import /* angularticsGoogleTagManager from */ 'angulartics-google-tag-manager';
 import 'angular-feature-flags';
 import /* ngAnimate from */ 'angular-animate';
 import /* ngAria from */ 'angular-aria';
-import /* ngCsv from */ 'ng-csv';
 import /* ngIdle from */ 'ng-idle';
 import /* cytoscape from */ 'cytoscape';
 import /* ngCytoscape from */ './lib/ngCytoscape.min';
