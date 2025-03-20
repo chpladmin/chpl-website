@@ -55,11 +55,6 @@ const InspectListingComponent = {
       }
     }
 
-    editCertifiedProduct() {
-      this.isEditing = true;
-      this.onChange({ action: 'edit' });
-    }
-
     handleCancel() {
       this.isEditing = false;
       this.onChange({ action: 'cancel' });
