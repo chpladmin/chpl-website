@@ -102,6 +102,7 @@ function ChplAnnouncementsDisplay() {
                 key={currentAnnouncement.id}
                 ref={announcementRef}
                 tabIndex="-1"
+                role="presentation"
                 aria-live="assertive"
                 aria-relevant="additions text"
               >
@@ -120,7 +121,8 @@ function ChplAnnouncementsDisplay() {
                 className={classes.counter}
               >
                 <Typography
-                  aria-live="assertive"
+                  role="presentation"
+                  aria-live="status"
                   aria-label={`Announcement ${currentAnnouncementIndex + 1} of ${announcements.length}`}
                   color="secondary"
                   variant="body2"

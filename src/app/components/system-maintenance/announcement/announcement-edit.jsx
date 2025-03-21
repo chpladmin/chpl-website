@@ -97,7 +97,7 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.title && !!formik.errors.title}
           helperText={formik.touched.title && formik.errors.title}
         />
-        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Title">Max Character Limit: 30</FormHelperText>
+        <FormHelperText className={classes.helperTextSpacing} id="max-character-limit-title">Max Character Limit: 30</FormHelperText>
       </div>
       <div>
         <ChplTextField
@@ -111,7 +111,7 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.text && !!formik.errors.text}
           helperText={formik.touched.text && formik.errors.text}
         />
-        <FormHelperText className={classes.helperTextSpacing} id="Max-Character-Limit-Text">Max Character Limit: 150</FormHelperText>
+        <FormHelperText className={classes.helperTextSpacing} id="max-character-limit-title">Max Character Limit: 150</FormHelperText>
       </div>
       <div>
         <ChplTextField
