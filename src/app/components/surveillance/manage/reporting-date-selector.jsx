@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     padding: '8px 8px 35vh 8px',
   },
+  fixFooterSpacing: {  
+    minHeight: 'calc(100vh - 440px)',
+  },
   fullWidth: {
     gridColumn: '1 / -1',
   },
@@ -109,67 +112,69 @@ function ChplSurveillanceActivityReportingDateSelector() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.apiRegistrationLayout}>
-        <div className={classes.fullWidth}>
-          <Typography variant="subtitle1">
-            Select a Date Range to Download Reports
-          </Typography>
-        </div>
-        <ChplTextField
-          select
-          required
-          id="year"
-          name="year"
-          label="Year"
-          value={formik.values.year}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.year && Boolean(formik.errors.year)}
-          helperText={formik.touched.year && formik.errors.year}
-          inputProps={{ 'data-testid': 'year-input' }}
-          FormHelperTextProps={{ 'data-testid': 'year-error-text' }}
-        >
-          <MenuItem value="" />
-          {getYears().map((year) => (
-            <MenuItem key={year} value={year}>
-              {year}
-            </MenuItem>
-          ))}
-        </ChplTextField>
-        <ChplTextField
-          select
-          required
-          id="quarter"
-          name="quarter"
-          label="Quarter"
-          value={formik.values.quarter}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.quarter && Boolean(formik.errors.quarter)}
-          helperText={formik.touched.quarter && formik.errors.quarter}
-          inputProps={{ 'data-testid': 'quarter-input' }}
-          FormHelperTextProps={{ 'data-testid': 'quarter-error-text' }}
-        >
-          <MenuItem value="" />
-          <MenuItem value="all">All</MenuItem>
-          <MenuItem value="q1">Q1</MenuItem>
-          <MenuItem value="q2">Q2</MenuItem>
-          <MenuItem value="q3">Q3</MenuItem>
-          <MenuItem value="q4">Q4</MenuItem>
-        </ChplTextField>
-        <div className={classes.fullWidth}>
-          <Button
-            color="primary"
-            variant="contained"
-            name="downloadResults"
-            id="download-results"
-            onClick={formik.handleSubmit}
+      <div className={classes.fixFooterSpacing}>
+        <div className={classes.apiRegistrationLayout}>
+          <div className={classes.fullWidth}>
+            <Typography variant="subtitle1">
+              Select a Date Range to Download Reports
+            </Typography>
+          </div>
+          <ChplTextField
+            select
+            required
+            id="year"
+            name="year"
+            label="Year"
+            value={formik.values.year}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.year && Boolean(formik.errors.year)}
+            helperText={formik.touched.year && formik.errors.year}
+            inputProps={{ 'data-testid': 'year-input' }}
+            FormHelperTextProps={{ 'data-testid': 'year-error-text' }}
           >
-            Download Results
-            <ArrowForwardOutlinedIcon
-              className={classes.iconSpacing}
-            />
-          </Button>
+            <MenuItem value="" />
+            {getYears().map((year) => (
+              <MenuItem key={year} value={year}>
+                {year}
+              </MenuItem>
+            ))}
+          </ChplTextField>
+          <ChplTextField
+            select
+            required
+            id="quarter"
+            name="quarter"
+            label="Quarter"
+            value={formik.values.quarter}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.quarter && Boolean(formik.errors.quarter)}
+            helperText={formik.touched.quarter && formik.errors.quarter}
+            inputProps={{ 'data-testid': 'quarter-input' }}
+            FormHelperTextProps={{ 'data-testid': 'quarter-error-text' }}
+          >
+            <MenuItem value="" />
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="q1">Q1</MenuItem>
+            <MenuItem value="q2">Q2</MenuItem>
+            <MenuItem value="q3">Q3</MenuItem>
+            <MenuItem value="q4">Q4</MenuItem>
+          </ChplTextField>
+          <div className={classes.fullWidth}>
+            <Button
+              color="primary"
+              variant="contained"
+              name="downloadResults"
+              id="download-results"
+              onClick={formik.handleSubmit}
+            >
+              Download Results
+              <ArrowForwardOutlinedIcon
+                className={classes.iconSpacing}
+              />
+            </Button>
+          </div>
         </div>
       </div>
     </ThemeProvider>
