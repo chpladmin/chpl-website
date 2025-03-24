@@ -1,4 +1,4 @@
-import Page from './page.es6.js';
+import Page from './page.es6';
 
 class SearchPage extends Page {
   constructor() {
