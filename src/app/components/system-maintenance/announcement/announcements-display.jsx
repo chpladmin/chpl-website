@@ -2,23 +2,23 @@ import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
   Container,
-  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import { palette } from 'themes';
+import { palette, theme } from 'themes';
 import { useFetchAnnouncements } from 'api/announcements';
 
 const useStyles = makeStyles({
   announcementBox: {
     color: palette.white,
     display: 'flex',
-    flexDirection: 'row !important',
-    width: '95%',
-    alignItems: 'center',
+    flexDirection: 'column',
+    width: '100%',
+    alignItems: 'flex-start',
     gridGap: '8px',
+    overflowY: 'auto',
+    maxHeight: '18px',
     padding: '0 !important',
     '&:focus': {
       outline: 'none !important',
@@ -26,18 +26,19 @@ const useStyles = makeStyles({
     '&:focus-visible': {
       outline: 'none !important',
     },
-  },
-  nextButton: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '4px',
-  },
-  nextButtonOutline: {
-    '&:focus': {
-      outline: 'solid 2px rgb(255, 255, 255)',
+    '&::-webkit-scrollbar': {
+      width: '2px',
     },
-    '&:focus-visible': {
-      outline: 'solid 2px rgb(255, 255, 255)',
+    '&::-webkit-scrollbar-track': {
+      background: '#f1f1f1',
+      borderRadius: '8px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: palette.primary,
+      borderRadius: '8px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: theme.palette.primary.dark,
     },
   },
   footerAnnouncement: {
@@ -50,22 +51,12 @@ const useStyles = makeStyles({
     zIndex: 999,
     paddingBottom: '4px',
   },
-  counter: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  readMore: {
-    fontSize: '1.2rem',
-  },
 });
 
 function ChplAnnouncementsDisplay() {
   const classes = useStyles();
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
-  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
-  const announcementRef = useRef(null);
-  const nextButtonRef = useRef(null);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -74,80 +65,27 @@ function ChplAnnouncementsDisplay() {
     setAnnouncements(data.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
   }, [data, isLoading, isSuccess]);
 
-  // Ensure currentAnnouncement is properly assigned
-  const currentAnnouncement = announcements.length > 0 ? announcements[currentAnnouncementIndex] : {};
-
-  // Function to update the announcement index
-  const handleNext = () => {
-    setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % announcements.length);
-  };
-
-  // Move focus when currentAnnouncement updates
-  useEffect(() => {
-    if (announcementRef.current) {
-      setTimeout(() => {
-        announcementRef.current.focus();
-      }, 50);
-    }
-  }, [currentAnnouncement]); // Runs when `currentAnnouncement` updates
-
   return (
     <>
       {announcements.length > 0 && (
-        <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg">
-          {currentAnnouncement.id && (
-            <>
-              <Box
-                className={classes.announcementBox}
-                key={currentAnnouncement.id}
-                ref={announcementRef}
-                tabIndex="-1"
-                role="presentation"
-                aria-live="assertive"
-                aria-relevant="additions text"
-              >
-                <strong>
-                  {currentAnnouncement.title.length > 30
-                    ? `${currentAnnouncement.title.substring(0, 30)}`
-                    : currentAnnouncement.title}
-                </strong>
-                {`${currentAnnouncement.text.substring(0, 150)}`}
-              </Box>
-            </>
-          )}
-          {announcements.length > 1 && (
-            <>
-              <Box
-                className={classes.counter}
-              >
-                <Typography
-                  role="presentation"
-                  aria-live="status"
-                  aria-label={`Announcement ${currentAnnouncementIndex + 1} of ${announcements.length}`}
-                  color="secondary"
-                  variant="body2"
-                >
-                  {currentAnnouncementIndex + 1}
-                  {' '}
-                  /
-                  {announcements.length}
+        <Container disableGutters className={classes.footerAnnouncement} maxWidth="lg" role="region" aria-live="polite" aria-label="Announcements">
+          <Box className={classes.announcementBox}>
+            {announcements.map((announcement, index) => (
+              <Box justifyContent="space-between" display="flex" flexDirection="row" minWidth="99%" key={announcement.id}>
+                <Box gridGap="8px" display="flex" flexDirection="row">
+                  <Typography style={{ fontWeight: 600 }} role="heading" aria-level="2">
+                    {announcement.title}
+                  </Typography>
+                  <Typography role="text">
+                    {announcement.text}
+                  </Typography>
+                </Box>
+                <Typography variant="body2" role="text">
+                  {`${index + 1} / ${announcements.length}`}
                 </Typography>
               </Box>
-              <Box className={classes.nextButton}>
-                <IconButton
-                  disableFocusRipple
-                  aria-label="Reveal the next announcement."
-                  size="small"
-                  onClick={handleNext}
-                  ref={nextButtonRef}
-                  className={classes.nextButtonOutline}
-                  tabIndex="0"
-                >
-                  <ArrowForwardIcon size="small" color="secondary" />
-                </IconButton>
-              </Box>
-            </>
-          )}
+            ))}
+          </Box>
         </Container>
       )}
     </>
