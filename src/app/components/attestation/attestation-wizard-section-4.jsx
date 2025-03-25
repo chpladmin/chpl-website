@@ -13,7 +13,7 @@ import { utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   fixFooterSpacing: {
-    minHeight: 'calc(100vh - 600px)',
+    minHeight: 'calc(100vh - 400px)',
   },
 });
 
