@@ -38,7 +38,16 @@ const staticFilters = [{
     { value: 'Before', default: '' },
     { value: 'After', default: '' },
   ],
-  filterFn: (item, filter) => filter.values.reduce((acc, v) => ((!!v.selected && !!item.endDay) ? acc && (v.value === 'Before' ? item.endDay <= v.selected : item.endDay >= v.selected) : acc), true),
+  filterFn: (item, filter) => filter.values.reduce((acc, v) => {
+    if ((!!v.selected && !!item.endDay)) { // selected and item has a value
+      return acc && (v.value === 'Before' ? item.endDay <= v.selected : item.endDay >= v.selected);
+    }
+    if (!v.selected) { // not selected
+      return acc;
+    }
+    // selected but no item value
+    return acc && (v.value !== 'Before');
+  }, true),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateEntry,
 }];
@@ -78,7 +87,6 @@ function ChplCertificationCriteria() {
       .concat({
         ...certificationCriteriaIds,
         filterFn: (item, filter) => {
-          console.log('criteriaids filterFn', item, filter);
           if (!filter.values.some((v) => v.selected)) { return true; }
           if (filter.operator === 'or') {
             return filter.values.some((v) => (v.selected && v.id === item.id));
