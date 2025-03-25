@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     marginLeft: '14px',
   },
   warningText: {
-    color: 'orange',
+    color: '#cb8c19',
   },
   warningBorder: {
     '& .MuiOutlinedInput-root': {
