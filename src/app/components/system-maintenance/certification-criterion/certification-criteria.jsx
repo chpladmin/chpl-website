@@ -79,6 +79,10 @@ function ChplCertificationCriteria() {
         ...certificationCriteriaIds,
         filterFn: (item, filter) => {
           console.log('criteriaids filterFn', item, filter);
+          if (!filter.values.some((v) => v.selected)) { return true; }
+          if (filter.operator === 'or') {
+            return filter.values.some((v) => (v.selected && v.id === item.id));
+          }
           return filter.values.reduce((acc, v) => (v.selected ? acc && v.id === item.id : acc), true);
         },
         values,
