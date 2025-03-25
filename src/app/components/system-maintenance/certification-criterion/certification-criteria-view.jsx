@@ -6,6 +6,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
@@ -67,7 +68,7 @@ const getDisplay = (key) => {
 };
 
 function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
-  const [certificationCriterias, setCertificationCriteria] = useState([]);
+  const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
@@ -90,7 +91,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = certificationCriterias.sort(sortComparator(property, descending));
+    const updated = certificationCriteria.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
     setCertificationCriteria(updated);
@@ -104,6 +105,9 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
       <div>
         <ChplFilterChips />
       </div>
+      <Typography variant="body2">
+        {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
+      </Typography>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Certification Criteria table"
@@ -116,7 +120,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
             stickyHeader
           />
           <TableBody>
-            { certificationCriterias
+            { certificationCriteria
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
