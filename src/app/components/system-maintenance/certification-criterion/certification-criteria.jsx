@@ -17,6 +17,7 @@ import {
   getDateEntry,
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
@@ -50,6 +51,18 @@ const staticFilters = [{
   }, true),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateEntry,
+}, {
+  ...defaultFilter,
+  key: 'removedRetired',
+  display: 'Removed / Retired',
+  getValueEntry: getRadioValueEntry,
+  singular: true,
+  values: [
+    { value: 'ACTIVE', display: 'Active' },
+    { value: 'REMOVED', display: 'Removed' },
+    { value: 'RETIRED', display: 'Retired' },
+  ],
+  filterFn: (item, filter) => filter.values.reduce((acc, v) => (v.selected ? (acc && v.value === item.status) : acc), true),
 }];
 
 function ChplCertificationCriteria() {
