@@ -14,9 +14,9 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
-    height: '1200px',
     padding: theme.spacing(8),
     backgroundColor: palette.greyLight,
+    minHeight: 'calc(100vh - 238px)',
   },
   stickyCard: {
     position: 'sticky',

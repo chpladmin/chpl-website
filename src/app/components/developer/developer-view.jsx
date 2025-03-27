@@ -44,13 +44,15 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '16px',
   },
-  historyContent: {
-    display: 'grid',
-    padding: '4px',
-  },
   developerHeader: {
     margin: '0',
     fontSize: '1.25em',
+  },
+  developerHeaderContainer: {
+    maxWidth: '75%',
+  },
+  fullWidth: {
+    gridColumn: '1 / -1',
   },
   headerContainer: {
     display: 'flex',
@@ -59,6 +61,15 @@ const useStyles = makeStyles({
   },
   headerTitle: {
     margin: 0,
+  },
+  historyContent: {
+    display: 'grid',
+    padding: '4px',
+  },
+  MuiAccordionroot: {
+    '&.MuiAccordion-root:before': {
+      backgroundColor: 'transparent',
+    },
   },
   statusHistorySummary: {
     backgroundColor: '#fff',
@@ -71,14 +82,6 @@ const useStyles = makeStyles({
     border: '.5px solid #c2c6ca',
     fontWeight: 'bold',
     marginTop: '8px',
-  },
-  fullWidth: {
-    gridColumn: '1 / -1',
-  },
-  MuiAccordionroot: {
-    '&.MuiAccordion-root:before': {
-      backgroundColor: 'transparent',
-    },
   },
 });
 
@@ -252,7 +255,7 @@ function ChplDeveloperView(props) {
       <CardHeader
         title={(
           <div className={classes.headerContainer}>
-            {isSplitting ? 'Original Developer' : developer.name}
+            <div className={classes.developerHeaderContainer}>{isSplitting ? 'Original Developer' : developer.name}</div>
             { can('edit') && !hasAnyRole(['chpl-developer'])
               && (
                 <ChplOrganizationActivity

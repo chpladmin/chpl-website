@@ -36,6 +36,7 @@ const useStyles = makeStyles({
   container: {
     padding: '32px 0',
     backgroundColor: palette.background,
+    minHeight: 'calc(100vh - 259px)', 
   },
   pageHeader: {
     padding: '32px',

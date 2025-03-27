@@ -126,7 +126,7 @@ const useStyles = makeStyles({
     backgroundRepeat: 'no-repeat',
     background: `rgba(2,23,60,1) url(${Image})`,
     backgroundBlendMode: 'soft-light',
-    minHeight: '100vh',
+    minHeight: '75vh',
   },
   subHeaders: {
     color: '#fff',

@@ -29,6 +29,9 @@ const useStyles = makeStyles({
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 500px)',
+  },
   nameContainer: {
     gridColumn: '1 / 3',
   },
@@ -73,100 +76,102 @@ function ChplAttestationWizardSection3({ developer, isSubmitting, dispatch }) {
   };
 
   return (
-    <Container maxWidth="md" className={classes.attestationContainer}>
-      <Typography variant="h2" className={classes.fullWidthGridRow}>
-        Section 3 &mdash; Electronic Signature
-      </Typography>
-      <Card className={classes.fullWidthGridRow}>
-        <CardContent>
-          <Typography gutterBottom variant="body1">
-            As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
-          </Typography>
-          <Typography gutterBottom variant="body1">
-            I understand that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. This may result in corrective action and enforcement procedures under the Certification Program as necessary.
-          </Typography>
-          <Typography variant="body1">
-            I also understand that submitting a false attestation may subject my company and me to liability under Federal law.
-          </Typography>
-        </CardContent>
-      </Card>
-      <Typography className={classes.fullWidthGridRow}>
-        Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the “Sign Electronically” button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
-      </Typography>
-      <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
-        <CardContent>
-          <div>
-            <Typography gutterBottom variant="subtitle1">
-              Name:
+    <div className={classes.fixFooterSpacing}>
+      <Container maxWidth="md" className={classes.attestationContainer}>
+        <Typography variant="h2" className={classes.fullWidthGridRow}>
+          Section 3 &mdash; Electronic Signature
+        </Typography>
+        <Card className={classes.fullWidthGridRow}>
+          <CardContent>
+            <Typography gutterBottom variant="body1">
+              As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
             </Typography>
-            <Typography variant="body1">{user.fullName}</Typography>
-          </div>
-        </CardContent>
-      </Card>
-      { user.title && (
-        <Card className={classes.titleContainer}>
+            <Typography gutterBottom variant="body1">
+              I understand that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. This may result in corrective action and enforcement procedures under the Certification Program as necessary.
+            </Typography>
+            <Typography variant="body1">
+              I also understand that submitting a false attestation may subject my company and me to liability under Federal law.
+            </Typography>
+          </CardContent>
+        </Card>
+        <Typography className={classes.fullWidthGridRow}>
+          Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the “Sign Electronically” button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
+        </Typography>
+        <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
-                Title:
+                Name:
               </Typography>
-              <Typography variant="body1">{user.title}</Typography>
+              <Typography variant="body1">{user.fullName}</Typography>
             </div>
           </CardContent>
         </Card>
-      )}
-      <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
-        <CardContent>
-          <div>
-            <Typography gutterBottom variant="subtitle1">
-              Health IT Developer:
-            </Typography>
-            <Typography variant="body1">{developer.name}</Typography>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className={classes.signatureContainer}>
-        <CardContent>
-          <ChplTextField
-            id="signature"
-            name="signature"
-            label="Electronic Signature"
-            required
-            value={signature}
-            onChange={handleSignature}
-            helperText="Enter your name as it appears above"
-          />
-        </CardContent>
-      </Card>
-      <Card className={classes.dateContainer}>
-        <CardContent>
-          <Typography gutterBottom variant="subtitle1">
-            Date:
-          </Typography>
-          <Typography variant="body1">
-            <Moment
-              date={Date.now()}
-              format="DD MMM yyyy"
+        { user.title && (
+          <Card className={classes.titleContainer}>
+            <CardContent>
+              <div>
+                <Typography gutterBottom variant="subtitle1">
+                  Title:
+                </Typography>
+                <Typography variant="body1">{user.title}</Typography>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
+          <CardContent>
+            <div>
+              <Typography gutterBottom variant="subtitle1">
+                Health IT Developer:
+              </Typography>
+              <Typography variant="body1">{developer.name}</Typography>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className={classes.signatureContainer}>
+          <CardContent>
+            <ChplTextField
+              id="signature"
+              name="signature"
+              label="Electronic Signature"
+              required
+              value={signature}
+              onChange={handleSignature}
+              helperText="Enter your name as it appears above"
             />
-          </Typography>
-        </CardContent>
-      </Card>
-      <div className={classes.fullWidthGridRow}>
-        <Button
-          fullWidth
-          id="sign-electronically"
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          disabled={isSubmitDisabled()}
-        >
-          Sign Electronically
-          <BorderColorIcon
-            className={classes.iconSpacing}
-          />
-        </Button>
-      </div>
-    </Container>
+          </CardContent>
+        </Card>
+        <Card className={classes.dateContainer}>
+          <CardContent>
+            <Typography gutterBottom variant="subtitle1">
+              Date:
+            </Typography>
+            <Typography variant="body1">
+              <Moment
+                date={Date.now()}
+                format="DD MMM yyyy"
+              />
+            </Typography>
+          </CardContent>
+        </Card>
+        <div className={classes.fullWidthGridRow}>
+          <Button
+            fullWidth
+            id="sign-electronically"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled()}
+          >
+            Sign Electronically
+            <BorderColorIcon
+              className={classes.iconSpacing}
+            />
+          </Button>
+        </div>
+      </Container>
+    </div>
   );
 }
 

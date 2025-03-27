@@ -46,6 +46,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     gridGap: '16px',
+    minHeight: 'calc(100vh - 188px)',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
     },

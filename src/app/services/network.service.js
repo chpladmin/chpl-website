@@ -92,6 +92,10 @@ export default class NetworkService {
     return this.apiGET(`/atls?editable=${editable}`, { forceReload: true });
   }
 
+  getCapStatusTypes() {
+    return this.apiGET('/data/cap-statuses');
+  }
+
   getCodeSets() {
     return this.apiGET('/code-sets');
   }
@@ -203,6 +207,10 @@ export default class NetworkService {
   getSurveillanceActivityReport(range) {
     const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
     return this.apiGET(url);
+  }
+
+  getSurveillanceGroundsForInitiatingTypes() {
+    return this.apiGET('/data/surveillance-grounds-for-initiating');
   }
 
   getSurveillanceLookups() {
