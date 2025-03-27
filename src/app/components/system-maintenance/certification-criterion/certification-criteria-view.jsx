@@ -77,6 +77,10 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTerm === ''
+              || item.number.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
+              || item.title.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
+              || item.rule?.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
       .map((item) => ({
         ...item,
         displayAttributes: Object
@@ -87,7 +91,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .join('; '),
       }))
       .sort(sortComparator('value')));
-  }, [initialCertificationCriteria, filterContext.filters]);
+  }, [initialCertificationCriteria, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -100,7 +104,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
   return (
     <>
       <ChplFilterSearchBar
-        placeholder="Search by something..."
+        placeholder="Search by Number, Title, or Rule..."
       />
       <div>
         <ChplFilterChips />
