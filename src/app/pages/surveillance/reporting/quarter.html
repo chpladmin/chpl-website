@@ -35,14 +35,14 @@
       </div>
       <div class="form-group">
         <label class="control-label" for="ics-surveillance-summary">ICS Surveillance Summary</label>
-        <p class="form-control-static">To fulfill requirements  to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance activities. Please detail the number of ICS-related surveillances conducted, the method used to surveil these products and the approach taken to incorporate prioritized elements as outlined in the Surveillance Resource.</p>
+        <p class="form-control-static">In order to meet requirements to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance. Please outline the number of ICS-related surveillances conducted, the method to surveil these products and the approach to include prioritized elements as outlined in the Surveillance Resource.</p>
         <textarea class="form-control" id="ics-surveillance-summary" name="icsSurveillanceSummary" ng-model="$ctrl.report.icsSurveillanceSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <h3>Prioritized Surveillance</h3>
-      <p>The ONC-ACB undertook the following activities and implemented specific measures to evaluate and address the prioritized elements of surveillance as outlined in Program Policy Resource #18-03 (October 5, 2018).</p>
+      <p>The ONC-ACB undertook the following activities and implemented the following measures to evaluate and address the prioritized elements of surveillance referred to in Program Policy Resource #18-03 (October 5, 2018).</p>
       <div class="form-group">
         <label class="control-label" for="prioritized-element">Prioritized Criteria</label>
-        <p class="form-control-static">Please describe which prioritized criteria were surveilled, how and with what frequency. Provide the approach taken to conduct surveillance on these prioritized criteria.</p>
+        <p class="form-control-static">Please describe which prioritized criteria were surveilled, how and with what frequency. Summarize the approach taken to conduct surveillance on these prioritized criteria.</p>
         <textarea class="form-control" id="prioritized-element" name="prioritizedElement" ng-model="$ctrl.report.prioritizedElementSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <div class="form-group">
@@ -52,17 +52,17 @@
       </div>
       <div class="form-group">
         <label class="control-label" for="developer-complaints-log-review">Developer Complaints Log Review</label>
-        <p class="form-control-static">Describe the activities conducted in the past quarter related to the review of developers' complaints logs. In your description, include an assessment of the extent to which the developer followed its internal complaints process and any deficiencies in that process. Additionally, specify the frequency of complaints received that relate to each prioritized elements outlined in the Surveillance Resource. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under "Surveillance Findings"</p>
+        <p class="form-control-static">Describe the activities conducted in the past quarter related to the review of developers&apos; complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC/ASTP. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under &quot;Surveillance Findings&quot;.</p>
         <textarea class="form-control" id="developer-complaints-log-review" name="developerComplaintsLogReview" ng-model="$ctrl.report.developerComplaintsLogReview" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="post-certification-performance-of-certified-capabilities">Post-certification Performance of Certified Capabilities</label>
-        <p class="form-control-static">The assessment of potential non-conformities resulting from a developer’s implementation or business practices that may impact the performance of certified capabilities in the field.</p>
+        <p class="form-control-static">The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.</p>
         <textarea class="form-control" id="post-certification-performance-of-certified-capabilities" name="postCertificationPerformanceOfCertifiedCapabilities" ng-model="$ctrl.report.postCertificationPerformanceOfCertifiedCapabilities" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="appropriate-use-of-mark">Appropriate Use of Mark</label>
-        <p class="form-control-static">Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials, if applicable.</p>
+        <p class="form-control-static">Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.</p>
         <textarea class="form-control" id="appropriate-use-of-mark" name="appropriateUseOfMark" ng-model="$ctrl.report.appropriateUseOfMark" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
       </div>
       <h3>Complaints Reported to ONC-ACB</h3>
@@ -88,7 +88,9 @@
             quarterly-report="$ctrl.report"
             relevant-listing="$ctrl.relevantListing"
             surveillance-outcomes="$ctrl.surveillanceOutcomes"
-            surveillance-process-types="$ctrl.surveillanceProcessTypes">
+            surveillance-process-types="$ctrl.surveillanceProcessTypes"
+            surveillance-grounds-for-initiating-types="$ctrl.surveillanceGroundsForInitiatingTypes"
+            cap-status-types="$ctrl.capStatusTypes">
           </chpl-surveillance-report-relevant-listings>
         </div>
       </div>
