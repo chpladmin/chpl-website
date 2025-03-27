@@ -12,6 +12,9 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 400px)',
+  },
 });
 
 function ChplAttestationWizardSection4(props) {
@@ -19,7 +22,7 @@ function ChplAttestationWizardSection4(props) {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md">
+    <Container className={classes.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2" className={classes.fullWidthGridRow}>
         Section 4 &mdash; Confirmation
       </Typography>

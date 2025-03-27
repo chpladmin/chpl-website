@@ -42,6 +42,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     paddingTop: '16px',
     gap: '32px',
+    minHeight: 'calc(100vh - 290px)',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },

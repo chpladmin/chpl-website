@@ -21,10 +21,13 @@ import ChplReportJobTypesView from 'components/jobs/report-job-types-view';
 import ChplUserTriggersView from 'components/jobs/user-triggers-view';
 
 const useStyles = makeStyles({
-  container: {
+  containerTrigger: {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
+  },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 188px)',
   },
   titlePadding: {
     paddingTop: '16px',
@@ -115,11 +118,11 @@ function ChplReports() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.fixFooterSpacing} maxWidth="lg">
       <Typography className={classes.titlePadding} variant="h1">Scheduled Reports</Typography>
       { !job
         && (
-          <div className={classes.container}>
+          <div className={classes.containerTrigger}>
             <div>
               { (userQuery.isLoading || !userQuery.isSuccess)
                 && (

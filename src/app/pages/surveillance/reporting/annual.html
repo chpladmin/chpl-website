@@ -5,28 +5,30 @@
       <div ncy-breadcrumb></div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <span class="pull-right">
-        <button class="btn btn-secondary" id="surveillance-report-download" ng-click="$ctrl.generateReport()">
-          <i class="fa fa-download"></i> Download Annual Surveillance Report
-        </button>
-      </span>
-      <p><strong>{{ $ctrl.report.acb.name }} Annual Surveillance Reporting</strong></p>
-      <p><strong>{{ $ctrl.report.year }}</strong></p>
-      <p>The titles and descriptions used in this module’s user interface reflect the most recent version of the report and may appear differently for historical reports in the downloads</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <label class="control-label" for="obstacle">Obstacle Summary</label>
-        <p class="form-control-static">Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.</p>
-        <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+  <div style="min-height: calc(100vh - 283px);">
+    <div class="row">
+      <div class="col-sm-12">
+        <span class="pull-right">
+          <button class="btn btn-secondary" id="surveillance-report-download" ng-click="$ctrl.generateReport()">
+            <i class="fa fa-download"></i> Download Annual Surveillance Report
+          </button>
+        </span>
+        <p><strong>{{ $ctrl.report.acb.name }} Annual Surveillance Reporting</strong></p>
+        <p><strong>{{ $ctrl.report.year }}</strong></p>
+        <p>The titles and descriptions used in this module’s user interface reflect the most recent version of the report and may appear differently for historical reports in the downloads</p>
       </div>
-      <div class="form-group">
-        <label class="control-label" for="priority">Priority Changes From Findings Summary</label>
-        <textarea class="form-control" id="priority" name="priority" ng-model="$ctrl.report.priorityChangesFromFindingsSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="control-label" for="obstacle">Obstacle Summary</label>
+          <p class="form-control-static">Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.</p>
+          <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="priority">Priority Changes From Findings Summary</label>
+          <textarea class="form-control" id="priority" name="priority" ng-model="$ctrl.report.priorityChangesFromFindingsSummary" ng-disabled="!$ctrl.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"></textarea>
+        </div>
       </div>
     </div>
   </div>

@@ -17,11 +17,11 @@ import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../../themes/theme';
-import { product as productProp } from '../../../shared/prop-types';
-import { ChplTextField } from '../../util';
+import theme from 'themes/theme';
+import { product as productProp } from 'shared/prop-types';
+import { ChplTextField } from 'components/util';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   buttonCard: {
     padding: '32px',
     display: 'flex',
@@ -40,6 +40,9 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     flexDirection: 'column',
     whiteSpace: 'pre-wrap',
+  },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 257px)',
   },
   developerConfirm: {
     display: 'grid',
@@ -96,7 +99,7 @@ const useStyles = makeStyles(() => ({
   verticalDivider: {
     height: '25%',
   },
-}));
+});
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -162,7 +165,7 @@ function ChplConfirmProduct(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="md">
+      <Container maxWidth="md" className={classes.fixFooterSpacing}>
         <div className={classes.developerConfirm}>
           <div className={classes.developerSubContainer}>
             <Button
