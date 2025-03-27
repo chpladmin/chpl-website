@@ -67,7 +67,7 @@ const staticFilters = [{
 
 function ChplCertificationCriteria() {
   const { append, display } = useContext(BreadcrumbContext);
-  const { data, isLoading, isSuccess } = useFetchCriteria({ active: false });
+  const { data, isLoading, isSuccess } = useFetchCriteria();
   const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
 

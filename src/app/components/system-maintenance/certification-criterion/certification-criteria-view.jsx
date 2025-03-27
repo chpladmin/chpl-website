@@ -71,8 +71,8 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
   const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
-  const classes = useStyles();
   const filterContext = useFilterContext();
+  const classes = useStyles();
 
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria

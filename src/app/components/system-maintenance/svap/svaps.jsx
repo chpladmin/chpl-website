@@ -18,7 +18,26 @@ import {
   usePostSvap,
   usePutSvap,
 } from 'api/standards';
+import {
+  FilterProvider,
+  defaultFilter,
+} from 'components/filter';
+import { certificationCriteriaIds } from 'components/filter/filters';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { BreadcrumbContext } from 'shared/contexts';
+
+const staticFilters = [{
+  ...defaultFilter,
+  key: 'replaced',
+  display: 'Replaced',
+  getValueEntry: getRadioValueEntry,
+  singular: true,
+  values: [
+    { value: 'active', display: 'Active' },
+    { value: 'replaced', display: 'Replaced' },
+  ],
+  filterFn: (item, filter) => filter.values.reduce((acc, v) => (v.selected ? (acc && (v.value === 'active' ? !item.replaced : item.replaced)) : acc), true),
+}];
 
 function ChplSvaps() {
   const { append, display, hide } = useContext(BreadcrumbContext);
@@ -32,6 +51,7 @@ function ChplSvaps() {
   const [criterionOptions, setCriterionOptions] = useState([]);
   const [errors, setErrors] = useState([]);
   const [svaps, setSvaps] = useState([]);
+  const [filters, setFilters] = useState(staticFilters);
   let handleDispatch;
 
   useEffect(() => {
@@ -66,6 +86,26 @@ function ChplSvaps() {
   useEffect(() => {
     if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
     setCriterionOptions(criterionOptionsQuery.data);
+    const values = criterionOptionsQuery.data
+      .map((cc) => ({
+        ...cc,
+        value: cc.id,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}`,
+        longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}: ${cc.title}`,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationCriteriaIds')
+      .concat({
+        ...certificationCriteriaIds,
+        filterFn: (item, filter) => {
+          if (!filter.values.some((v) => v.selected)) { return true; }
+          if (filter.operator === 'or') {
+            return filter.values.some((v) => (v.selected && item.criteria.some((cc) => cc.id === v.id)));
+          }
+          return filter.values.reduce((acc, v) => (v.selected ? acc && item.criteria.some((cc) => cc.id === v.id) : acc), true);
+        },
+        values,
+      }));
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
 
   handleDispatch = ({ action, payload }) => {
@@ -157,20 +197,30 @@ function ChplSvaps() {
     );
   }
 
+  const analytics = {
+    category: 'SVAP Management',
+  };
+
   return (
-    <Card>
-      <CardHeader title="SVAP" />
-      <CardContent>
-        { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
-          && (
-            <CircularProgress />
-          )}
-        <ChplSvapsView
-          svaps={svaps}
-          dispatch={handleDispatch}
-        />
-      </CardContent>
-    </Card>
+    <FilterProvider
+      analytics={analytics}
+      filters={filters}
+      storageKey="storageKey-svapManagement"
+    >
+      <Card>
+        <CardHeader title="SVAP" />
+        <CardContent>
+          { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
+            && (
+              <CircularProgress />
+            )}
+          <ChplSvapsView
+            svaps={svaps}
+            dispatch={handleDispatch}
+          />
+        </CardContent>
+      </Card>
+    </FilterProvider>
   );
 }
 
