@@ -17,6 +17,9 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     paddingBottom: '16px',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 167px)',
+  },
 });
 
 function ChplCms() {
@@ -41,7 +44,7 @@ function ChplCms() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.fixFooterSpacing} maxWidth="lg">
       <Typography className={classes.titlePadding} variant="h1">CMS Management</Typography>
       <Typography className={classes.titlePadding} variant="h2">Download the latest CMS listing</Typography>
       <Button

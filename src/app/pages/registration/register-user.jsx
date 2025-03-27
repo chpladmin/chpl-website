@@ -37,6 +37,9 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '8px 16px',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 136px)',
+  },
 });
 
 function ChplRegisterUser({ hash }) {
@@ -178,7 +181,7 @@ function ChplRegisterUser({ hash }) {
   };
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <Container maxWidth="xs" className={classes.content}>
         <Typography variant="h1">
           User Registration
@@ -189,7 +192,7 @@ function ChplRegisterUser({ hash }) {
           { getState() }
         </Container>
       </Box>
-    </>
+    </div>
   );
 }
 

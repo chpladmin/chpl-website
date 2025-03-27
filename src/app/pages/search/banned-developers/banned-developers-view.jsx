@@ -30,6 +30,9 @@ import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 158px)',
+  },
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -145,7 +148,7 @@ function ChplBannedDevelopersSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">
           Developers Under Certification Ban
@@ -272,7 +275,7 @@ function ChplBannedDevelopersSearchView() {
               )}
           </>
         )}
-    </>
+    </div>
   );
 }
 

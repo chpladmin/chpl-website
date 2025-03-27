@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   Container,
@@ -28,9 +29,12 @@ import {
   InternalScrollButton,
 } from 'components/util';
 import { useAnalyticsContext } from 'shared/contexts';
-import theme from 'themes/theme';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
+  announcement: { 
+    marginBottom: '8px',
+  },
   content: {
     display: 'grid',
     gap: '16px',
@@ -39,11 +43,20 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
+  infoBox: {
+    padding: '16px',
+    backgroundColor: palette.secondary,
+    border: `1px solid ${palette.primary}`,
+    borderRadius: '8px',
+    display: 'flex',
+    flexDirection: 'column',
+   },
   pageBody: {
     display: 'grid',
     gap: '16px',
     paddingTop: '32px',
     paddingBottom: '32px',
+    minHeight: 'calc(100vh - 100px)',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 1fr',
@@ -199,11 +212,11 @@ function ChplResourcesOverview() {
           <div className={classes.content}>
             {announcements.length > 0
               && (
-                <>
+                <Box className={classes.infoBox}>  
                   <span className="anchor-element">
                     <span id="announcements" className="page-anchor" />
                   </span>
-                  <Typography variant="h2">
+                  <Typography className={classes.announcement} variant="h2">
                     Announcement
                     {announcements.length > 1 ? 's' : ''}
                   </Typography>
@@ -222,7 +235,7 @@ function ChplResourcesOverview() {
                       </li>
                     ))}
                   </ul>
-                </>
+                </Box>
               )}
             <Card>
               <CardContent>

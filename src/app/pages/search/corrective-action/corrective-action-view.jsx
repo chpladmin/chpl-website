@@ -45,6 +45,9 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 158px)',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -156,7 +159,7 @@ function ChplCorrectiveActionSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Products: Corrective Action Status</Typography>
       </div>
@@ -306,7 +309,7 @@ function ChplCorrectiveActionSearchView() {
               )}
           </>
         )}
-    </>
+    </div>
   );
 }
 

@@ -15,6 +15,9 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     padding: '16px',
   },
+  fixFooterSpacing:{
+    minHeight: 'calc(100vh - 136px)',
+  }
 });
 
 function ChplForgotPassword({ uuid }) {
@@ -22,7 +25,7 @@ function ChplForgotPassword({ uuid }) {
   const classes = useStyles();
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <Container maxWidth="xs" className={classes.content}>
         <Typography variant="h1">
           Forgot Password
@@ -35,7 +38,7 @@ function ChplForgotPassword({ uuid }) {
           uuid={uuid}
         />
       </Container>
-    </>
+    </div>
   );
 }
 
