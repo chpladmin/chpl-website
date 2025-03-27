@@ -72,6 +72,9 @@ const useStyles = makeStyles({
     paddingRight: '16px',
     minWidth: 'auto',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 137px)',
+  },
   wrap: {
     flexFlow: 'wrap',
   },
@@ -141,7 +144,7 @@ function ChplCmsLookup() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.fixFooterSpacing} maxWidth="lg">
       <div className={classes.pageHeader}>
         <Typography variant="h1">CMS ID Reverse Lookup</Typography>
       </div>

@@ -34,6 +34,9 @@ const useStyles = makeStyles({
     margin: '0',
     fontSize: '1.25em',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 335px)',
+  },
 });
 
 const validationSchema = yup.object({
@@ -107,7 +110,7 @@ function ChplVersionEdit(props) {
   });
 
   return (
-    <Container disableGutters maxWidth="lg">
+    <Container className={classes.fixFooterSpacing} disableGutters maxWidth="lg">
       <Card>
         { isSplitting
           && (

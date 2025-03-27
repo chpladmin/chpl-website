@@ -22,11 +22,28 @@ const useStyles = makeStyles({
   helperTextSpacing: {
     marginLeft: '14px',
   },
+  warningText: {
+    color: '#cb8c19',
+  },
+  warningBorder: {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#cb8c19',
+      },
+      '&:hover fieldset': {
+        borderColor: '#cb8c19',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#cb8c19',
+      },
+    },
+  },
 });
 
 const validationSchema = yup.object({
   title: yup.string()
     .required('Field is required'),
+  text: yup.string(),
   startDateTime: yup.date()
     .required('Field is required'),
   endDateTime: yup.date()
@@ -81,29 +98,39 @@ function ChplAnnouncementEdit(props) {
 
   return (
     <>
-      <ChplTextField
-        id="title"
-        name="title"
-        label="Title"
-        className={classes.fullWidth}
-        required
-        value={formik.values.title}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.title && !!formik.errors.title}
-        helperText={formik.touched.title && formik.errors.title}
-      />
-      <ChplTextField
-        id="text"
-        name="text"
-        label="Text"
-        className={classes.fullWidth}
-        value={formik.values.text}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.text && !!formik.errors.text}
-        helperText={formik.touched.text && formik.errors.text}
-      />
+      <div>
+        <ChplTextField
+          id="title"
+          name="title"
+          label="Title"
+          className={`${classes.fullWidth} ${formik.values.title.length > 30 ? classes.warningBorder : ''}`}
+          required
+          value={formik.values.title}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.title && !!formik.errors.title}
+          helperText={(formik.touched.title && formik.errors.title) || (formik.values.title.length > 30 && <span className={classes.warningText}>Warning: Text exceeds 30 characters</span>)}
+        />
+        {!(formik.touched.title && formik.errors.title) && !(formik.values.title.length > 30) && (
+          <FormHelperText className={classes.helperTextSpacing} id="max-character-limit-title">Max Character Limit: 30</FormHelperText>
+        )}
+      </div>
+      <div>
+        <ChplTextField
+          id="text"
+          name="text"
+          label="Text"
+          className={`${classes.fullWidth} ${formik.values.text.length > 150 ? classes.warningBorder : ''}`}
+          value={formik.values.text}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.text && !!formik.errors.text}
+          helperText={(formik.touched.text && formik.errors.text) || (formik.values.text.length > 150 && <span className={classes.warningText}>Warning: Text exceeds 150 characters</span>)}
+        />
+        {!(formik.touched.text && formik.errors.text) && !(formik.values.text.length > 150) && (
+          <FormHelperText className={classes.helperTextSpacing} id="max-character-limit-title">Max Character Limit: 150</FormHelperText>
+        )}
+      </div>
       <div>
         <ChplTextField
           id="start-date-time"

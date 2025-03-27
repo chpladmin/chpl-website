@@ -31,6 +31,9 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '8px',
   },
+  fixFooterSpacing: { 
+    minHeight : 'calc(100vh - 188px)',
+  },
 });
 
 const validationSchema = yup.object({
@@ -83,7 +86,7 @@ function ChplCognitoUserEdit({
   });
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <Card>
         <CardHeader
           title="Edit User"
@@ -128,7 +131,7 @@ function ChplCognitoUserEdit({
         errors={errors}
         isDisabled={!formik.isValid}
       />
-    </>
+    </div>
   );
 }
 

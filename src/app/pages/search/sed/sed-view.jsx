@@ -33,6 +33,9 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 158px)',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -163,7 +166,7 @@ function ChplSedSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">SED Information</Typography>
       </div>
@@ -303,7 +306,7 @@ function ChplSedSearchView() {
               )}
           </>
         )}
-    </>
+    </div>
   );
 }
 

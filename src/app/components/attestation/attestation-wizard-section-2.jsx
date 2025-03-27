@@ -21,6 +21,9 @@ import { array, func, string } from 'prop-types';
 import { interpretEmphatic, interpretLink } from './attestation-util';
 
 const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 450px)',
+  },
   nonCaps: {
     textTransform: 'none',
   },
@@ -187,7 +190,7 @@ function ChplAttestationWizardSection2(props) {
   );
 
   return (
-    <Container maxWidth="md">
+    <Container className={classes.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2">
         Section 2 &mdash; Attestations
       </Typography>

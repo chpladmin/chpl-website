@@ -35,6 +35,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
+    minHeight: 'calc(100vh - 188px)',
   },
   header: {
     padding: '16px',

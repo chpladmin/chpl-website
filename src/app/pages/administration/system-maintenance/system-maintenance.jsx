@@ -64,6 +64,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '16px',
+    minHeight: 'calc(100vh - 283px)',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       alignItems: 'start',
@@ -113,6 +114,7 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
+  
 });
 
 const maintenanceItems = [{
@@ -335,7 +337,7 @@ function ChplSystemMaintenance() {
               .map((item) => getNavigationItem(item))}
           </Card>
         </div>
-        <Box width="100%">
+        <Box width="100%" >
           { active === ''
             && (
               <Card>
