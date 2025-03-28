@@ -7,6 +7,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -14,6 +15,11 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -43,10 +49,15 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const [testTools, setTestTools] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
     setTestTools(initialTestTools
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTerm === ''
+              || item.value.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
+              || item.regulatoryTextCitation?.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -55,7 +66,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialTestTools]); // eslint-disable-line react/destructuring-assignment
+  }, [initialTestTools, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -67,6 +78,15 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Value or Citation..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
+      </Typography>
       { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
         <div className={classes.tableResultsHeaderContainer}>
           <Button

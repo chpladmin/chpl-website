@@ -9,12 +9,16 @@ import {
 
 import ChplOptionalStandardsView from './optional-standards-view';
 
-import { useFetchOptionalStandards } from 'api/standards';
+import { useFetchCriteria, useFetchOptionalStandards } from 'api/standards';
+import { FilterProvider } from 'components/filter';
+import { certificationCriteriaIds } from 'components/filter/filters';
 import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplOptionalStandards() {
   const { append, display } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchOptionalStandards();
+  const criteriaQuery = useFetchCriteria();
+  const [filters, setFilters] = useState([]);
   const [optionalStandards, setOptionalStandards] = useState([]);
 
   useEffect(() => {
@@ -36,21 +40,55 @@ function ChplOptionalStandards() {
     setOptionalStandards(data);
   }, [data, isLoading, isSuccess]);
 
+  useEffect(() => {
+    if (criteriaQuery.isLoading || !criteriaQuery.isSuccess) { return; }
+    const values = criteriaQuery.data
+      .map((cc) => ({
+        ...cc,
+        value: cc.id,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}`,
+        longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}: ${cc.title}`,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationCriteriaIds')
+      .concat({
+        ...certificationCriteriaIds,
+        filterFn: (item, filter) => {
+          if (!filter.values.some((v) => v.selected)) { return true; }
+          if (filter.operator === 'or') {
+            return filter.values.some((v) => (v.selected && item.criteria.some((cc) => cc.id === v.id)));
+          }
+          return filter.values.reduce((acc, v) => (v.selected ? acc && item.criteria.some((cc) => cc.id === v.id) : acc), true);
+        },
+        values,
+      }));
+  }, [criteriaQuery.data, criteriaQuery.isLoading, criteriaQuery.isSuccess]);
+
   if (isLoading) {
     return (
       <CircularProgress />
     );
   }
 
+  const analytics = {
+    category: 'Optional Standards Management',
+  };
+
   return (
-    <Card>
-      <CardHeader title="Optional Standards" />
-      <CardContent>
-        <ChplOptionalStandardsView
-          optionalStandards={optionalStandards}
-        />
-      </CardContent>
-    </Card>
+    <FilterProvider
+      analytics={analytics}
+      filters={filters}
+      storageKey="storageKey-optionalStandardsManagement"
+    >
+      <Card>
+        <CardHeader title="Optional Standards" />
+        <CardContent>
+          <ChplOptionalStandardsView
+            optionalStandards={optionalStandards}
+          />
+        </CardContent>
+      </Card>
+    </FilterProvider>
   );
 }
 
