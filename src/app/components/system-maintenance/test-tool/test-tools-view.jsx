@@ -28,10 +28,8 @@ import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'value', text: 'Value', sortable: true },
-  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
-  { text: 'Rule' },
   { text: 'Applicable Criteria' },
   { text: 'Action', invisible: true },
 ];
@@ -56,8 +54,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
     setTestTools(initialTestTools
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTerm === ''
-              || item.value.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.regulatoryTextCitation?.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+              || item.value.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -79,7 +76,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   return (
     <>
       <ChplFilterSearchBar
-        placeholder="Search by Value or Citation..."
+        placeholder="Search by Value..."
       />
       <div>
         <ChplFilterChips />
@@ -120,16 +117,10 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                     { item.retired && ' (Retired)'}
                   </TableCell>
                   <TableCell>
-                    { item.regulatoryTextCitation }
-                  </TableCell>
-                  <TableCell>
                     { getDisplayDateFormat(item.startDay) }
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }
-                  </TableCell>
-                  <TableCell>
-                    { item.rule?.name ?? '' }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
