@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 13.35.0
+_31 March 2025_
+
+### Features
+* Add Service Base URL real-time validator
+* Enable view/edit of updated Surveillance Reporting field
+* Display additional criteria/system maintenance data
+
+### UI changes
+* Create new footer in more modern style
+
+---
+
 ## Version 13.34.0
 _17 March 2025_
 
