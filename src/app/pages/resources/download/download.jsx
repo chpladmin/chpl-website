@@ -19,7 +19,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -103,6 +103,7 @@ function ChplResourcesDownload() {
     ...useAnalyticsContext().analytics,
     category: 'Download the CHPL',
   };
+  const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
@@ -277,7 +278,7 @@ function ChplResourcesDownload() {
                     The Service Base URL List Report provides information on the public availability of Service Base URL Lists for certified Health IT Modules. For more details, visit the
                     {' '}
                     <ChplLink
-                      href="https://www.healthit.gov/topic/certification-ehrs/program-resources/api-service-base-url-availability"
+                      href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/program-resources/api-service-base-url-availability`}
                       text="API Service Base URL Availability"
                       analytics={{
                         ...analytics,
@@ -286,9 +287,7 @@ function ChplResourcesDownload() {
                       external={false}
                       inline
                     />
-                    {' '}
-                    page on HealthIT.gov.
-                    {' '}
+                    {` page on ${domainIsOn ? 'astp.hhs.gov' : 'HealthIT.gov'}`}
                   </li>
                   <li>
                     <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>

@@ -25,10 +25,10 @@ import ChplAttestationCreateException from './attestation-create-exception';
 import ChplAttestationView from './attestation-view';
 
 import { useFetchAttestations } from 'api/developer';
-import { ChplDialogTitle } from 'components/util';
+import { ChplDialogTitle, ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -40,6 +40,7 @@ const useStyles = makeStyles({
 
 function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const { analytics } = useAnalyticsContext();
+  const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsOpen, setAttestationsOpen] = useState(false);
@@ -99,11 +100,29 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
             <Typography variant="body1">
               Attestations information is displayed here if a health IT developer’s attestation of compliance with the
               {' '}
-              <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
+              <ChplLink
+                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/conditions-maintenance-certification`}
+                text="Conditions and Maintenance of Certification requirements"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Conditions and Maintenance of Certification requirements',
+                }}
+                external={false}
+                inline
+              />
               {' '}
               was submitted. For more information, please visit the
               {' '}
-              <a href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf">Attestations Resource Guide</a>
+              <ChplLink
+                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf`}
+                text="Attestations Resource Guide"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Attestations Resource Guide',
+                }}
+                external={false}
+                inline
+              />
               .
             </Typography>
             { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
