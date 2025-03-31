@@ -15,11 +15,11 @@ describe('the Banned Developers Search page', () => {
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
   });
 
-  it('should be able to Browse', async () => {
+  it('should be able to Browse after searching for text', async () => {
     await page.searchForText('e');
-    const initialResultCount = await page.getTotalResultCount();
+    const searchedForTextResultCount = await page.getTotalResultCount();
     await page.browse();
-    await expect(await page.getTotalResultCount()).not.toBe(initialResultCount);
+    await expect(await page.getTotalResultCount()).toBeGreaterThan(searchedForTextResultCount);
   });
 
   it('should be able to search for text', async () => {

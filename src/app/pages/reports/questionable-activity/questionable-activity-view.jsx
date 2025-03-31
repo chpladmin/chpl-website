@@ -31,6 +31,9 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
+  fixFooterSpacing: {  
+    minHeight: 'calc(100vh - 188px)',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -167,7 +170,7 @@ function ChplQuestionableActivityView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
+    <div className={classes.fixFooterSpacing}>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Questionable Activity</Typography>
       </div>
@@ -307,7 +310,7 @@ function ChplQuestionableActivityView() {
               )}
           </>
         )}
-    </>
+    </div>
   );
 }
 

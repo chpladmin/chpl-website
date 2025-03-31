@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { arrayOf, bool, string } from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 
 import ChplComplaintsView from './complaints-view';
 
@@ -14,6 +15,12 @@ import {
   certificationBodies,
 } from 'components/filter/filters';
 import { AnalyticsContext, useAnalyticsContext, UserContext } from 'shared/contexts';
+
+const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 283px)',
+  },
+});
 
 const staticFilters = [{
   ...defaultFilter,
@@ -116,6 +123,7 @@ function ChplComplaints(props) {
   const [disallowedFilters, setDisallowedFilters] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
+  const classes = useStyles();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -173,10 +181,12 @@ function ChplComplaints(props) {
         filters={filters}
         storageKey="storageKey-complaintsComponent"
       >
-        <ChplComplaintsView
-          bonusQuery={bonusQuery}
-          canAdd={canAdd}
-        />
+        <div className={classes.fixFooterSpacing}>
+          <ChplComplaintsView
+            bonusQuery={bonusQuery}
+            canAdd={canAdd}
+          />
+        </div>
       </FilterProvider>
     </AnalyticsContext.Provider>
   );

@@ -78,6 +78,9 @@ const useStyles = makeStyles({
     gap: '16px',
     flexDirection: 'column',
   },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 257px)',
+  },
   formSubContainer: {
     display: 'grid',
     gap: '16px',
@@ -232,7 +235,7 @@ function ChplConfirmDeveloper(props) {
   });
 
   return (
-    <Container maxWidth="md">
+    <Container className={classes.fixFooterSpacing} maxWidth="md">
       <div className={classes.developerConfirm}>
         <div className={classes.developerSubContainer}>
           <Button

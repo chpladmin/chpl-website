@@ -203,29 +203,6 @@
             min-width: $screen-xs * 4 / 5;
         }
     }
-
-}
-
-footer {
-    margin-top: 150px;
-
-    .navbar-default {
-        background-color: #ebebeb;
-        background-image: none;
-
-        p {
-            color: #363636;
-
-            a {
-                color: #214e75;
-            }
-        }
-
-        .badge {
-            color: #fff;
-        }
-    }
-
     .spaced-out {
         margin: 10px 40px;
     }

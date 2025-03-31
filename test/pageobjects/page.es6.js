@@ -1,5 +1,3 @@
-const { browser } = require('@wdio/globals'); // eslint-disable-line import/no-extraneous-dependencies
-
 /**
  * main page object containing all methods, selectors and functionality
  * that is shared across all page objects

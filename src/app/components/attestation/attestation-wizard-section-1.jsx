@@ -12,6 +12,9 @@ const useStyles = makeStyles({
   attestationContainerList: {
     fontSize: '0.875em',
   },
+  fixFooterSpacing:{
+    minHeight: 'calc(100vh - 500px)',
+  },
   forAssistanceContainer: {
     marginTop: '16px',
   },
@@ -21,7 +24,7 @@ function ChplAttestationWizardSection1() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md">
+    <Container  className={classes.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2">
         Section 1 &mdash; Introduction
       </Typography>
