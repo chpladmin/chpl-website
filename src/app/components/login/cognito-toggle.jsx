@@ -13,7 +13,7 @@ import ChplCognitoLogin from './cognito-login';
 
 import { usePostRefreshToken } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -34,8 +34,7 @@ const useStyles = makeStyles({
 function ChplCognitoToggle({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const { user, impersonating, setUser } = useContext(UserContext);
-  const { ssoIsOn } = useContext(FlagContext);
+  const { user, setUser } = useContext(UserContext);
   const [cookies] = useCookies(['cognito_id', 'refresh_token']);
   const { mutate } = usePostRefreshToken();
   const [anchor, setAnchor] = useState(null);
@@ -94,13 +93,11 @@ function ChplCognitoToggle({ dispatch }) {
 
   useEffect(() => {
     if (user?.fullName) {
-      setTitle(`${impersonating ? 'Impersonating ' : ''}${user.fullName}`);
+      setTitle(user.fullName);
     } else {
       setTitle('Administrator login');
     }
-  }, [user, impersonating]);
-
-  if (!ssoIsOn) { return null; }
+  }, [user]);
 
   return (
     <>

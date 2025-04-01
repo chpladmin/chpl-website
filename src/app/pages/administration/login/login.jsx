@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core';
+import React from 'react';
 import {
   Box,
   Container,
+  makeStyles,
 } from '@material-ui/core';
 import { func, shape } from 'prop-types';
 
-import { ChplCognitoLogin, ChplLogin } from 'components/login';
+import ChplCognitoLogin from 'components/login/cognito-login';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -18,9 +17,8 @@ const useStyles = makeStyles({
 });
 
 function ChplLoginPage(props) {
-  const { ssoIsOn } = useContext(FlagContext);
-  /* eslint-disable react/destructuring-assignment */
   const $state = getAngularService('$state');
+  /* eslint-disable react/destructuring-assignment */
   const state = props.returnTo.state();
   const params = props.returnTo.params();
   const options = { ...props.returnTo.options(), reload: true };
@@ -33,22 +31,10 @@ function ChplLoginPage(props) {
     }
   };
 
-  if (ssoIsOn) {
-    return (
-      <Box py="4vh" bgcolor={palette.background}>
-        <Container className={classes.fixFooterSpacing} maxWidth="xs">
-          <ChplCognitoLogin
-            dispatch={handleLogin}
-          />
-        </Container>
-      </Box>
-    );
-  }
-
   return (
     <Box py="4vh" bgcolor={palette.background}>
-      <Container maxWidth="xs">
-        <ChplLogin
+      <Container className={classes.fixFooterSpacing} maxWidth="xs">
+        <ChplCognitoLogin
           dispatch={handleLogin}
         />
       </Container>

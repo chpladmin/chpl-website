@@ -102,8 +102,6 @@ function ChplDeveloperPage({ id }) {
           },
         });
         break;
-      case 'impersonate':
-        break;
       case 'delete':
         deleteUserFromDeveloper({ userId: payload, id: developer.id }, {
           onSuccess: () => {

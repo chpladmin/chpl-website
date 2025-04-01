@@ -294,10 +294,6 @@ export default class NetworkService {
     return this.apiGET(`/versions?productId=${productId}`);
   }
 
-  impersonateUser(user) {
-    return this.apiGET(`/auth/impersonate?id=${user.userId}`);
-  }
-
   inviteCognitoUser(invitationObject) {
     return this.apiPOST('/users/invitation', invitationObject);
   }
@@ -324,10 +320,6 @@ export default class NetworkService {
 
   splitVersion(versionObject) {
     return this.apiPOST(`/versions/${versionObject.oldVersion.id}/split`, versionObject);
-  }
-
-  unimpersonateUser() {
-    return this.apiGET('/auth/unimpersonate');
   }
 
   updateAnnualSurveillanceReport(report) {

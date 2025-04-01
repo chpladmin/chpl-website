@@ -4,7 +4,6 @@ const FlagContext = createContext({
   cmsA9GracePeriodEndIsOn: false,
   demographicChangeRequestIsOn: false,
   insightsIsOn: false,
-  ssoIsOn: false,
 });
 FlagContext.displayName = 'ff4j-flags';
 

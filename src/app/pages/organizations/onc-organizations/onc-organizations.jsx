@@ -17,7 +17,6 @@ import {
   useDeleteUserFromAcb,
   useFetchAcbs,
   useFetchUsersAtAcb,
-  usePostUserInvitation,
   usePostCognitoUserInvitation,
 } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
@@ -75,7 +74,6 @@ function ChplOncOrganizations() {
   const [orgType, setOrgType] = useState('');
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
-  const { mutate: invite } = usePostUserInvitation();
   const { mutate: cognitoInvite } = usePostCognitoUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
@@ -163,20 +161,6 @@ function ChplOncOrganizations() {
           },
         });
         break;
-      case 'invite': // TODO: remove when ssoIsOn is turned on
-        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
-          onSuccess: () => {
-            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
-              variant: 'success',
-            });
-          },
-          onError: () => {
-            enqueueSnackbar('Email was not sent', {
-              variant: 'error',
-            });
-          },
-        });
-        break;
       case 'refresh':
         setIsEditing('');
         break;
@@ -235,7 +219,6 @@ function ChplOncOrganizations() {
                   && (
                     <ChplUsers
                       users={users}
-                      roles={roles}
                       groupNames={roles}
                       dispatch={handleDispatch}
                       organizationId={activeId}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { string } from 'prop-types';
 
-import ChplRegisterUserSwitch from './register-user-switch';
+import ChplRegisterUser from './register-user';
 
 import AppWrapper from 'app-wrapper';
 
@@ -9,7 +9,7 @@ function ChplRegisterUserWrapper(props) {
   const { hash } = props;
   return (
     <AppWrapper>
-      <ChplRegisterUserSwitch
+      <ChplRegisterUser
         hash={hash}
       />
     </AppWrapper>
