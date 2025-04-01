@@ -6,7 +6,6 @@ const FlagContext = createContext({
   domainIsOn: false,
   insightsIsOn: false,
   ssoIsOn: false,
-  uploadToUpdateIsOn: false,
 });
 FlagContext.displayName = 'ff4j-flags';
 

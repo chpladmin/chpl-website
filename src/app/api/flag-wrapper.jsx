@@ -19,7 +19,6 @@ function FlagWrapper({ children }) {
   const domainIsOn = isOn('domain');
   const insightsIsOn = isOn('insights');
   const ssoIsOn = isOn('sso');
-  const uploadToUpdateIsOn = isOn('upload-to-update');
 
   const flagState = {
     cmsA9GracePeriodEndIsOn,
@@ -27,7 +26,6 @@ function FlagWrapper({ children }) {
     domainIsOn,
     insightsIsOn,
     ssoIsOn,
-    uploadToUpdateIsOn,
   };
 
   return (
