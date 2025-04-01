@@ -153,13 +153,6 @@ function ChplFunctionalitiesTested() {
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
       .concat({
         ...certificationCriteriaIds,
-        filterFn: (item, filter) => {
-          if (!filter.values.some((v) => v.selected)) { return true; }
-          if (filter.operator === 'or') {
-            return filter.values.some((v) => (v.selected && item.criteria.some((cc) => cc.id === v.id)));
-          }
-          return filter.values.reduce((acc, v) => (v.selected ? acc && item.criteria.some((cc) => cc.id === v.id) : acc), true);
-        },
         values,
       }));
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
