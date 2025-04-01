@@ -6,7 +6,7 @@ const states = [{
 }, {
   name: 'listing.edit',
   url: '/edit',
-  component: 'chplListingEditPage',
+  component: 'chplListingEditBridge',
   data: {
     title: 'CHPL Listing Details - Edit',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
