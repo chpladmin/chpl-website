@@ -22,7 +22,6 @@ import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import {
   AnalyticsContext,
-  FlagContext,
   ListingContext,
   UserContext,
   useAnalyticsContext,
@@ -71,7 +70,6 @@ function ChplListingPage({ id }) {
   const { getApiKey, getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole, user } = useContext(UserContext);
-  const { uploadToUpdateIsOn } = useContext(FlagContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
@@ -86,16 +84,10 @@ function ChplListingPage({ id }) {
   }, [data, isLoading, isSuccess]);
 
   const canEdit = () => {
-    if (uploadToUpdateIsOn) {
-      if (hasAnyRole(['chpl-admin'])) { return true; }
-      if (!['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(listing.currentStatus.status.name)) { return false; }
-      if (hasAnyRole(['chpl-onc'])) { return true; }
-      if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
-    } else {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; }
-      if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
-      if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
-    }
+    if (hasAnyRole(['chpl-admin'])) { return true; }
+    if (!['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(listing.currentStatus.status.name)) { return false; }
+    if (hasAnyRole(['chpl-onc'])) { return true; }
+    if (hasAnyRole(['chpl-onc-acb']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
   };
 

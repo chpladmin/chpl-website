@@ -15,7 +15,6 @@ angular
     'chpl.constants',
     'chpl.services',
     'feature-flags',
-    'ngCsv',
     'ngFileUpload',
     'ngIdle',
     'ngSanitize',
