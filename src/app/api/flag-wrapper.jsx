@@ -18,14 +18,12 @@ function FlagWrapper({ children }) {
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
   const insightsIsOn = isOn('insights');
   const ssoIsOn = isOn('sso');
-  const uploadToUpdateIsOn = isOn('upload-to-update');
 
   const flagState = {
     cmsA9GracePeriodEndIsOn,
     demographicChangeRequestIsOn,
     insightsIsOn,
     ssoIsOn,
-    uploadToUpdateIsOn,
   };
 
   return (

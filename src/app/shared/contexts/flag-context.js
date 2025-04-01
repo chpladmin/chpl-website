@@ -5,7 +5,6 @@ const FlagContext = createContext({
   demographicChangeRequestIsOn: false,
   insightsIsOn: false,
   ssoIsOn: false,
-  uploadToUpdateIsOn: false,
 });
 FlagContext.displayName = 'ff4j-flags';
 
