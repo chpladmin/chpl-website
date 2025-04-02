@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '8px',
   },
-  fixFooterSpacing: { 
+  fixFooterSpacing: {
     minHeight : 'calc(100vh - 188px)',
   },
 });
@@ -41,7 +41,7 @@ const validationSchema = yup.object({
     .required('Full Name is required'),
 });
 
-function ChplCognitoUserEdit({
+function ChplUserEdit({
   user, dispatch, errors, organizationId,
 }) {
   const classes = useStyles();
@@ -58,7 +58,7 @@ function ChplCognitoUserEdit({
       organizations: formik.values.accountEnabled ? user.organizations : user.organizations.filter((org) => org.id !== organizationId),
       accountEnabled: formik.values.accountEnabled || user.organizations.length > 1,
     };
-    dispatch('cognito-save', updatedUser);
+    dispatch('save', updatedUser);
   };
 
   const handleDispatch = (action) => {
@@ -135,16 +135,16 @@ function ChplCognitoUserEdit({
   );
 }
 
-export default ChplCognitoUserEdit;
+export default ChplUserEdit;
 
-ChplCognitoUserEdit.propTypes = {
+ChplUserEdit.propTypes = {
   user: userPropType.isRequired,
   errors: arrayOf(string),
   dispatch: func,
   organizationId: number,
 };
 
-ChplCognitoUserEdit.defaultProps = {
+ChplUserEdit.defaultProps = {
   errors: [],
   dispatch: () => {},
   organizationId: undefined,

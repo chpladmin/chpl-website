@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoUserView({ user, dispatch }) {
+function ChplUserView({ user, dispatch }) {
   const classes = useStyles();
 
   const edit = () => {
@@ -89,13 +89,13 @@ function ChplCognitoUserView({ user, dispatch }) {
   );
 }
 
-export default ChplCognitoUserView;
+export default ChplUserView;
 
-ChplCognitoUserView.propTypes = {
+ChplUserView.propTypes = {
   user: userPropType.isRequired,
   dispatch: func,
 };
 
-ChplCognitoUserView.defaultProps = {
+ChplUserView.defaultProps = {
   dispatch: () => {},
 };

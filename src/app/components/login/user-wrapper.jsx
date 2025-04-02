@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
 
-import ChplLogin from './cognito-login';
+import ChplLogin from './login';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';

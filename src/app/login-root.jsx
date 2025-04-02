@@ -1,10 +1,10 @@
 import React from 'react';
 
-import ChplCognitoToggle from 'components/login/cognito-toggle';
+import ChplToggle from 'components/login/toggle';
 
 function ChplLoginRoot() {
   return (
-    <ChplCognitoToggle />
+    <ChplToggle />
   );
 }
 

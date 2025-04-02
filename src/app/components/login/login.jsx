@@ -10,7 +10,7 @@ import ChplSignin from './components/signin';
 
 import { UserContext } from 'shared/contexts';
 
-function ChplCognitoLogin({
+function ChplLogin({
   dispatch,
   setState,
   state,
@@ -98,16 +98,16 @@ function ChplCognitoLogin({
   }
 }
 
-export default ChplCognitoLogin;
+export default ChplLogin;
 
-ChplCognitoLogin.propTypes = {
+ChplLogin.propTypes = {
   dispatch: func,
   setState: func,
   state: string,
   uuid: string,
 };
 
-ChplCognitoLogin.defaultProps = {
+ChplLogin.defaultProps = {
   dispatch: () => {},
   setState: () => {},
   state: 'SIGNIN',

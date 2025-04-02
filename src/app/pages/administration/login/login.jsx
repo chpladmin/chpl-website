@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { func, shape } from 'prop-types';
 
-import ChplCognitoLogin from 'components/login/cognito-login';
+import ChplLogin from 'components/login/login';
 import { getAngularService } from 'services/angular-react-helper';
 import { palette } from 'themes';
 
@@ -34,7 +34,7 @@ function ChplLoginPage(props) {
   return (
     <Box py="4vh" bgcolor={palette.background}>
       <Container className={classes.fixFooterSpacing} maxWidth="xs">
-        <ChplCognitoLogin
+        <ChplLogin
           dispatch={handleLogin}
         />
       </Container>

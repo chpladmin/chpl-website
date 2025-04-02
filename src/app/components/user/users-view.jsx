@@ -12,14 +12,11 @@ import {
   arrayOf, bool, func, number, string,
 } from 'prop-types';
 
-import ChplCognitoUserInvite from './cognito-user-invite';
-import ChplCognitoUserView from './cognito-user-view';
-import ChplCognitoUserEdit from './cognito-user-edit';
+import ChplUserInvite from './user-invite';
+import ChplUserView from './user-view';
+import ChplUserEdit from './user-edit';
 
-import {
-  usePutUser,
-  usePutCognitoUser,
-} from 'api/users';
+import { usePutUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { user as userPropType } from 'shared/prop-types';
@@ -67,7 +64,6 @@ function ChplUsersView({
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { mutate } = usePutUser();
-  const cognitoMutate = usePutCognitoUser().mutate;
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [users, setUsers] = useState([]);
@@ -126,34 +122,8 @@ function ChplUsersView({
         });
         dispatch('invite', data);
         break;
-      case 'cognito-invite':
-        eventTrack({
-          ...analytics,
-          event: 'Send Invite',
-        });
-        dispatch('cognito-invite', data);
-        break;
       case 'save':
         mutate(data, {
-          onSuccess: () => {
-            setActiveUser(undefined);
-            eventTrack({
-              ...analytics,
-              event: 'Save User',
-            });
-            dispatch('refresh');
-          },
-          onError: (error) => {
-            if (error.data.error) {
-              setErrors([error.data.error]);
-            } else if (error.data?.errorMessages?.length > 0) {
-              setErrors(error.data.errorMessages);
-            }
-          },
-        });
-        break;
-      case 'cognito-save':
-        cognitoMutate(data, {
           onSuccess: () => {
             setActiveUser(undefined);
             eventTrack({
@@ -176,7 +146,7 @@ function ChplUsersView({
   };
 
   const displayUser = (userToDisplay) => (
-    <ChplCognitoUserView
+    <ChplUserView
       key={userToDisplay.cognitoId}
       user={userToDisplay}
       dispatch={handleDispatch}
@@ -184,7 +154,7 @@ function ChplUsersView({
   );
 
   const displayUserEdit = (userToEdit) => (
-    <ChplCognitoUserEdit
+    <ChplUserEdit
       user={userToEdit}
       errors={errors}
       dispatch={handleDispatch}
@@ -232,7 +202,7 @@ function ChplUsersView({
                     label="Search by Name or Email"
                     onChange={handleFilter}
                   />
-                  <ChplCognitoUserInvite
+                  <ChplUserInvite
                     groupNames={groupNames}
                     dispatch={handleDispatch}
                   />

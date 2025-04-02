@@ -35,7 +35,7 @@ const validationSchema = yup.object({
     .required('A ROLE must be selected'),
 });
 
-function ChplCognitoUserInvite({ dispatch, groupNames }) {
+function ChplUserInvite({ dispatch, groupNames }) {
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -63,7 +63,7 @@ function ChplCognitoUserInvite({ dispatch, groupNames }) {
       email: formik.values.email,
       groupName: formik.values.groupName,
     };
-    dispatch('cognito-invite', invitation);
+    dispatch('invite', invitation);
     handleClose();
   };
 
@@ -157,9 +157,9 @@ function ChplCognitoUserInvite({ dispatch, groupNames }) {
   );
 }
 
-export default ChplCognitoUserInvite;
+export default ChplUserInvite;
 
-ChplCognitoUserInvite.propTypes = {
+ChplUserInvite.propTypes = {
   groupNames: arrayOf(string).isRequired,
   dispatch: func.isRequired,
 };

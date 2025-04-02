@@ -1,7 +1,7 @@
-import ChplCognitoLogin from './cognito-login';
+import ChplLogin from './login';
 import UserWrapper from './user-wrapper';
 
 export {
-  ChplCognitoLogin,
+  ChplLogin,
   UserWrapper,
 };

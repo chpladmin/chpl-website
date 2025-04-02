@@ -294,12 +294,8 @@ export default class NetworkService {
     return this.apiGET(`/versions?productId=${productId}`);
   }
 
-  inviteCognitoUser(invitationObject) {
-    return this.apiPOST('/users/invitation', invitationObject);
-  }
-
   inviteUser(invitationObject) {
-    return this.apiPOST('/users/invite', invitationObject);
+    return this.apiPOST('/users/invitation', invitationObject);
   }
 
   logout(logoutRequest) {

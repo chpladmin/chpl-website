@@ -9,7 +9,7 @@ import { func } from 'prop-types';
 import { getAccessToken, setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
-import ChplCognitoLogin from './cognito-login';
+import ChplLogin from './login';
 
 import { usePostRefreshToken } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCognitoToggle({ dispatch }) {
+function ChplToggle({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
@@ -128,7 +128,7 @@ function ChplCognitoToggle({ dispatch }) {
         className={classes.popoverSpacing}
       >
         <div className={classes.loginCard}>
-          <ChplCognitoLogin
+          <ChplLogin
             dispatch={handleDispatch}
             setState={setState}
             state={state}
@@ -139,12 +139,12 @@ function ChplCognitoToggle({ dispatch }) {
   );
 }
 
-export default ChplCognitoToggle;
+export default ChplToggle;
 
-ChplCognitoToggle.propTypes = {
+ChplToggle.propTypes = {
   dispatch: func,
 };
 
-ChplCognitoToggle.defaultProps = {
+ChplToggle.defaultProps = {
   dispatch: () => {},
 };
