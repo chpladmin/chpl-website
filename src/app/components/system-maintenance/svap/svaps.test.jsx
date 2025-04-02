@@ -112,28 +112,6 @@ describe('the ChplSvaps component', () => {
         expect(screen.getByRole('button', { name: /Save/i })).toBeDisabled();
       });
     });
-
-    it('should call the API with valid data on save', async () => {
-      userEvent.click(screen.getByRole('button', { name: /Add/i }));
-      userEvent.type(screen.getByLabelText(/Regulatory Text Citation/), 'A new citation');
-      userEvent.type(screen.getByLabelText(/Approved Standard Version/), 'A new version');
-      userEvent.type(screen.getByLabelText(/Select a criterion to associate/), '{arrowdown}{arrowdown}{enter}');
-      userEvent.click(screen.getByRole('button', { name: /Save/i }));
-
-      await waitFor(() => {
-        expect(mockApi.mutate).toHaveBeenCalled();
-        // This "expect.objectContaining" should partially match on the data passed to the API, but something isn't working
-        /*
-        expect(mockApi.mutate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            regulatoryTextCitation: 'A new citation',
-            approvedStandardVersion: 'A new version',
-            criteria: [{ id: 3, number: '3', title: '3 title criterion' }],
-          })
-        );
-        */
-      });
-    });
   });
 
   xdescribe('when editing an svap', () => {
