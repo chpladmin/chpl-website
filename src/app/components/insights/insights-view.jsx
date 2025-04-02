@@ -34,17 +34,13 @@ function ChplInsightsView({ developer }) {
     isError,
     isLoading,
   } = useFetchInsights({ developer });
-  const [insights, setInsights] = useState({});
+  const [insights, setInsights] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    if (isError || !data) { return; }
-    setInsights(data.reduce((acc, val) => {
-      if (!acc[val.year]) { acc[val.year] = 0; }
-      acc[val.year] += 1;
-      return acc;
-    }, {}));
-  }, [data, isError]);
+    if (isError || isLoading || !data) { return; }
+    setInsights(data);
+  }, [data, isError, isLoading]);
 
   return (
     <Card>
@@ -76,12 +72,12 @@ function ChplInsightsView({ developer }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  { insights && Object.keys(insights)
-                    .sort((a, b) => (a < b ? 1 : -1))
-                    .map((key) => (
-                      <TableRow key={key}>
-                        <TableCell>{ key }</TableCell>
-                        <TableCell>Submitted</TableCell>
+                  { insights
+                    .sort((a, b) => (a.year < b.year ? 1 : -1))
+                    .map((item) => (
+                      <TableRow key={item.year}>
+                        <TableCell>{ item.year }</TableCell>
+                        <TableCell>{ item.status }</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
