@@ -26,7 +26,7 @@ const UserManagementComponent = {
     $onChanges(changes) {
       if (changes.users.currentValue) {
         this.users = changes.users.currentValue.users
-          .filter((user) => !['Schpl-onc-acb', 'chpl-developer'].includes(user.role));
+          .filter((user) => !['chpl-onc-acb', 'chpl-developer'].includes(user.role));
       }
     }
 
