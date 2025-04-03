@@ -180,65 +180,69 @@ function ChplDeveloperSplit({ dispatch }) {
           <Card>
             <CardHeader title="Products staying with original developer" />
             <CardContent>
-              <List className={classes.productList}>
-                {products.map((product) => (
-                  <ListItem divider className={classes.listItem} dense key={product.id}>
-                    <Box className={classes.productName}>
-                      {product.name}
-                    </Box>
-                    <ChplTooltip
-                      placement="top"
-                      title="Move product to new developer"
-                    >
-                      <Button
-                        endIcon={<ArrowForward />}
-                        size="small"
-                        color="secondary"
-                        variant="contained"
-                        onClick={() => moveProduct(product, true)}
+              { products.length === 0 ? (
+                <Typography variant="body1" color="textSecondary" align="left">
+                  No products selected. At least one product must remain with the Developer.
+                </Typography>
+              ) : (
+                <List className={classes.productList}>
+                  {products.map((product) => (
+                    <ListItem divider className={classes.listItem} dense key={product.id}>
+                      <Box className={classes.productName}>
+                        {product.name}
+                      </Box>
+                      <ChplTooltip
+                        placement="top"
+                        title="Move product to new developer"
                       >
-                        Move
-                      </Button>
-                    </ChplTooltip>
-                  </ListItem>
-                ))}
-              </List>
+                        <Button
+                          endIcon={<ArrowForward />}
+                          size="small"
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => moveProduct(product, true)}
+                        >
+                          Move
+                        </Button>
+                      </ChplTooltip>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardHeader title="Products moving to new developer" />
             <CardContent>
-              <div>
-                {movingProducts.length === 0 ? (
-                  <Typography variant="body1" color="textSecondary" align="left">
-                    No products selected. At least one product must be selected to move.
-                  </Typography>
-                ) : (
-                  <List className={classes.productList}>
-                    {movingProducts.map((product) => (
-                      <ListItem divider className={classes.listItem} dense key={product.id}>
-                        <Box className={classes.productName}>
-                          {product.name}
-                        </Box>
-                        <ChplTooltip
-                          placement="top"
-                          title="Move product to original developer"
+              { movingProducts.length === 0 ? (
+                <Typography variant="body1" color="textSecondary" align="left">
+                  No products selected. At least one product must be selected to move.
+                </Typography>
+              ) : (
+                <List className={classes.productList}>
+                  {movingProducts.map((product) => (
+                    <ListItem divider className={classes.listItem} dense key={product.id}>
+                      <Box className={classes.productName}>
+                        {product.name}
+                      </Box>
+                      <ChplTooltip
+                        placement="top"
+                        title="Move product to original developer"
+                      >
+                        <Button
+                          endIcon={<ArrowBack />}
+                          size="small"
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => moveProduct(product, false)}
                         >
-                          <Button
-                            endIcon={<ArrowBack />}
-                            size="small"
-                            color="secondary"
-                            variant="contained"
-                            onClick={() => moveProduct(product, false)}
-                          >
-                            Move
-                          </Button>
-                        </ChplTooltip>
-                      </ListItem>
-                    ))}
-                  </List>
-                )}
-              </div>
+                          Move
+                        </Button>
+                      </ChplTooltip>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
             </CardContent>
           </Card>
         </Box>
