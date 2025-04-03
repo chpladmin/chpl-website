@@ -275,7 +275,7 @@ function ChplResourcesDownload() {
                   <li>
                     <Typography gutterBottom><strong>Service Base URL List Availability:</strong></Typography>
                     {' '}
-                    The Service Base URL List Report provides information on the public availability of Service Base URL Lists for certified Health IT Modules. For more details, visit the
+                    The Service Base URL List Report provides information on the public availability of Service Base URL Lists for certified Health IT Modules. For more details, visit
                     {' '}
                     <ChplLink
                       href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/program-resources/api-service-base-url-availability`}
@@ -287,7 +287,7 @@ function ChplResourcesDownload() {
                       external={false}
                       inline
                     />
-                    {` page on ${domainIsOn ? 'astp.hhs.gov' : 'HealthIT.gov'}`}
+                    .
                   </li>
                   <li>
                     <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
