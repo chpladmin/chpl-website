@@ -25,7 +25,7 @@ const staticFilters = [{
   getValueEntry: getRadioValueEntry,
   singular: true,
   values: [
-    { value: 'active', display: 'Active' },
+    { value: 'active', display: 'Active', default: true },
     { value: 'removed', display: 'Removed' },
   ],
   filterFn: (item, filter) => filter.values.reduce((acc, v) => (v.selected ? (acc && (v.value === 'active' ? !item.removed : item.removed)) : acc), true),
