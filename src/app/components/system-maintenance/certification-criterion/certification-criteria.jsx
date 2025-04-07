@@ -116,13 +116,8 @@ function ChplCertificationCriteria() {
     );
   }
 
-  const analytics = {
-    category: 'Certification Criteria Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-certificationCriteriaManagement"
     >

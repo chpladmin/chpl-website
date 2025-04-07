@@ -63,13 +63,8 @@ function ChplOptionalStandards() {
     );
   }
 
-  const analytics = {
-    category: 'Optional Standards Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-optionalStandardsManagement"
     >

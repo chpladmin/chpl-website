@@ -190,13 +190,8 @@ function ChplSvaps() {
     );
   }
 
-  const analytics = {
-    category: 'SVAP Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-svapManagement"
     >

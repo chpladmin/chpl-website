@@ -232,13 +232,8 @@ function ChplTestTools() {
     );
   }
 
-  const analytics = {
-    category: 'Test Tools Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-testToolsManagement"
     >

@@ -252,13 +252,8 @@ function ChplStandards() {
     );
   }
 
-  const analytics = {
-    category: 'Standards Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-standardsManagement"
     >

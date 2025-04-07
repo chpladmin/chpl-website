@@ -252,13 +252,8 @@ function ChplFunctionalitiesTested() {
     );
   }
 
-  const analytics = {
-    category: 'Functionalities Tested Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-functionalitiesTestedManagement"
     >

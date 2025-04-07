@@ -11,7 +11,8 @@ import { getDefaultValueEntry, getDateEntry, getDateTimeEntry } from './filters/
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { filter as filterPropType, analyticsConfig } from 'shared/prop-types';
+import { useAnalyticsContext } from 'shared/contexts';
+import { filter as filterPropType } from 'shared/prop-types';
 
 const FilterContext = createContext();
 
@@ -152,11 +153,12 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
 
 function FilterProvider(props) {
   const {
-    analytics, storageKey,
+    storageKey,
   } = props;
   const [filters, setFilters] = useState([]);
   const [hasSearched, setHasSearched] = useStorage(`${storageKey}-hasSearched`, false);
   const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
+  const { analytics } = useAnalyticsContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
   const [values, setValues] = useStorage(`${storageKey}-values`, {});
@@ -310,12 +312,10 @@ function FilterProvider(props) {
 
 FilterProvider.propTypes = {
   filters: arrayOf(filterPropType).isRequired,
-  analytics: analyticsConfig,
   storageKey: string,
 };
 
 FilterProvider.defaultProps = {
-  analytics: false,
   storageKey: '',
 };
 

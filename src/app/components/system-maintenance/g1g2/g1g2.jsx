@@ -87,13 +87,8 @@ function ChplG1g2() {
     );
   }
 
-  const analytics = {
-    category: 'G1/G2 Management',
-  };
-
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-g1g2Management"
     >
