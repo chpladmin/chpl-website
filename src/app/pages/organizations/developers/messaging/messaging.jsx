@@ -116,15 +116,18 @@ const validationSchema = yup.object({
   subject: yup
     .string()
     .required('Subject is required'),
+  additionalRecipients: yup
+    .string(),
   body: yup
     .string()
     .required('Message body is required'),
 });
 
 const templateOptions = [
-  { key: '<blank>', subject: '', body: '' },
   {
-    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', body: `Hello |DEVELOPERNAME|,
+    key: '<blank>', subject: '', additionalRecipients: '', body: '',
+  }, {
+    key: 'Semi-Annual Attestations Not Submitted', additionalRecipients: 'sharon.jankosky@hhs.gov', subject: 'Semi-Annual Attestations Not Submitted', body: `Hello |DEVELOPERNAME|,
 
 According to our records, the [Attestations Condition and Maintenance of Certification](https://www.healthit.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
 
@@ -174,6 +177,7 @@ function ChplMessaging({ dispatch }) {
 
   const applyTemplate = () => {
     formik.setFieldValue('subject', selectedOption.subject);
+    formik.setFieldValue('additionalRecipients', selectedOption.additionalRecipients);
     formik.setFieldValue('body', selectedOption.body);
   };
 
@@ -185,6 +189,7 @@ function ChplMessaging({ dispatch }) {
     });
     postMessage.mutate({
       subject: formik.values.subject,
+      additionalRecipients: formik.values.additionalRecipients,
       body: formik.values.body,
       query: queryParams(),
     }, {
@@ -227,6 +232,7 @@ function ChplMessaging({ dispatch }) {
     validationSchema,
     initialValues: {
       subject: '',
+      additionalRecipients: '',
       body: '',
     },
     onSubmit: () => {
@@ -295,6 +301,16 @@ function ChplMessaging({ dispatch }) {
                 onBlur={formik.handleBlur}
                 error={formik.touched.subject && !!formik.errors.subject}
                 helperText={formik.touched.subject && formik.errors.subject}
+              />
+              <ChplTextField
+                id="additional-recipients"
+                name="additionalRecipients"
+                label="Additional Recipient(s)"
+                value={formik.values.additionalRecipients}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.additionalRecipients && !!formik.errors.additionalRecipients}
+                helperText={formik.touched.additionalRecipients && formik.errors.additionalRecipients}
               />
               <ChplTextField
                 id="body"
