@@ -14,6 +14,7 @@ import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplVersionEdit from './version-edit';
+import ChplVersionSplit from './version-split';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
 import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
@@ -140,10 +141,8 @@ function ChplDeveloperPage({ id }) {
         });
         break;
       case 'splitVersion':
-        $state.go('organizations.developers.developer.product.version.split', {
-          productId: payload.product.id,
-          versionId: payload.version,
-        });
+        setState(action);
+        setVersion(payload.product.versions.find((v) => v.id === payload.version));
         break;
       default:
         console.error(`Unknown action: ${action} with payload: ${JSON.stringify(payload)}`);
@@ -209,6 +208,13 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperSplit
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'splitVersion'
+            && (
+              <ChplVersionSplit
+                dispatch={handleDispatch}
+                version={version}
               />
             )}
           { state === 'createAttestation'

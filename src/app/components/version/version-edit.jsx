@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -30,12 +30,9 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
-  developerHeader: {
+  header: {
     margin: '0',
     fontSize: '1.25em',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 335px)',
   },
 });
 
@@ -54,9 +51,7 @@ function ChplVersionEdit(props) {
     version,
   } = props;
   const { analytics } = useAnalyticsContext();
-  const { developer } = useContext(DeveloperContext);
   const [errorMessages, setErrorMessages] = useState([]);
-  const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const classes = useStyles();
   let formik;
@@ -115,16 +110,16 @@ function ChplVersionEdit(props) {
         { isSplitting
           && (
             <CardHeader
-              title="New Developer"
+              title="New Version"
               component="h5"
-              className={classes.developerHeader}
+              className={classes.header}
             />
           )}
         { !isSplitting
           && (
             <CardHeader
-              title={developer.name}
-              className={classes.developerHeader}
+              title={version.version}
+              className={classes.header}
               component="h2"
             />
           )}
@@ -147,7 +142,6 @@ function ChplVersionEdit(props) {
         isDisabled={isActionDisabled()}
         isProcessing={isProcessing}
         errors={errorMessages}
-        warnings={warnings}
       />
     </Container>
   );

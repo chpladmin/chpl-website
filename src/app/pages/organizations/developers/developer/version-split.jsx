@@ -19,6 +19,7 @@ import { func, object } from 'prop-types';
 
 import { usePostVersionSplit } from 'api/version';
 import { ChplTooltip } from 'components/util';
+import ChplVersion from 'components/version/version';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -152,29 +153,39 @@ function ChplVersionSplit({ dispatch, version }) {
     }
   };
 
-  if (listings.length === 0) { return <CircularProgress />; }
+  if (!version) { return <CircularProgress />; }
 
   return (
     <>
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
           <Box className={classes.columnContainer}>
-            Original Version
+            <ChplVersion
+              version={version}
+              isSplitting
+            />
           </Box>
           <Box>
-            New Version
+            <ChplVersion
+              version={{}}
+              dispatch={handleDispatch}
+              isEditing
+              isSplitting
+              isInvalid={listings?.length === 0 || movingListings?.length === 0}
+              isProcessing={isProcessing}
+            />
           </Box>
           <Divider className={classes.fullWidthGridRow} />
           <Card>
             <CardHeader title="Listings staying with original version" />
             <CardContent>
-              { listings.length === 0 ? (
+              { listings?.length === 0 ? (
                 <Typography variant="body1" color="textSecondary" align="left">
                   No listings selected. At least one listing must remain with the Version.
                 </Typography>
               ) : (
                 <List className={classes.productList}>
-                  {listings.map((item) => (
+                  { listings?.map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.productName}>
                         {item.chplProductNumber}
@@ -202,16 +213,16 @@ function ChplVersionSplit({ dispatch, version }) {
           <Card>
             <CardHeader title="Listings moving to new version" />
             <CardContent>
-              { movingListings.length === 0 ? (
+              { movingListings?.length === 0 ? (
                 <Typography variant="body1" color="textSecondary" align="left">
                   No listings selected. At least one listing must be selected to move.
                 </Typography>
               ) : (
                 <List className={classes.listingList}>
-                  {movingListings.map((listing) => (
-                    <ListItem divider className={classes.listItem} dense key={listing.id}>
+                  { movingListings?.map((item) => (
+                    <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.listingName}>
-                        {listing.chplProductNumber}
+                        {item.chplProductNumber}
                       </Box>
                       <ChplTooltip
                         placement="top"
@@ -222,7 +233,7 @@ function ChplVersionSplit({ dispatch, version }) {
                           size="small"
                           color="secondary"
                           variant="contained"
-                          onClick={() => moveListing(listing, false)}
+                          onClick={() => moveListing(item, false)}
                         >
                           Move
                         </Button>
