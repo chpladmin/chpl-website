@@ -60,11 +60,12 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
   useEffect(() => {
     setFunctionalitiesTested(initialFunctionalitiesTested
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.value.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.regulatoryTextCitation.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.rule?.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.practiceType?.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.value,
+        item.regulatoryTextCitation,
+                               item.rule?.name,
+                               item.practiceType?.name,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria

@@ -50,6 +50,8 @@ const resetFilter = (filter, category, setFilters) => {
   }));
 };
 
+const searchTermFilter = (searchTerm, values) => searchTerm === '' || values.some((v) => v?.toLowerCase().includes(decodeURI(searchTerm.toLowerCase())));
+
 const setFilterDisability = (filters, category, disabled, setFilters) => {
   const filter = filters.find((f) => f.key === category);
   const updatedFilter = {
@@ -298,7 +300,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    analytics, dispatch, filters, hasSearched, queryParams, queryString, searchTerm, setSearchTerm,
+    analytics, dispatch, filters, hasSearched, queryParams, queryString, searchTerm, searchTermFilter, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */

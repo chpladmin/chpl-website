@@ -42,11 +42,12 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
   useEffect(() => {
     setG1g2(initialG1g2
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.abbreviation.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.domain.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.requiredTest.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.abbreviation,
+        item.domain.name,
+        item.requiredTest,
+        item.name,
+      ]))
       .map((item) => ({
         ...item,
         domainDisplay: item.domain.name,

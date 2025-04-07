@@ -53,8 +53,9 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   useEffect(() => {
     setTestTools(initialTestTools
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.value.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.value,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria

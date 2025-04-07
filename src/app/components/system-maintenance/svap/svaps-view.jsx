@@ -54,9 +54,10 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   useEffect(() => {
     setSvaps(initialSvaps
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.regulatoryTextCitation.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.approvedStandardVersion.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.regulatoryTextCitation,
+        item.approvedStandardVersion,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria

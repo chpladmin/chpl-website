@@ -77,10 +77,11 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.number.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.title.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.rule?.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.number,
+        item.title,
+        item.rule?.name,
+      ]))
       .map((item) => ({
         ...item,
         displayAttributes: Object

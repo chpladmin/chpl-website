@@ -60,11 +60,12 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
   useEffect(() => {
     setStandards(initialStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.value.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.regulatoryTextCitation.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.rule?.name.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.groupName?.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.value,
+        item.regulatoryTextCitation,
+                     item.rule?.name,
+                     item.groupName,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria

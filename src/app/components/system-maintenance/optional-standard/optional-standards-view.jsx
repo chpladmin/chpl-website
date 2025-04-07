@@ -41,10 +41,11 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
   useEffect(() => {
     setOptionalStandards(initialOptionalStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
-      .filter((item) => filterContext.searchTerm === ''
-              || item.displayValue.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.citation?.toLowerCase().includes(filterContext.searchTerm.toLowerCase())
-              || item.description?.toLowerCase().includes(filterContext.searchTerm.toLowerCase()))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.displayValue,
+        item.citation,
+        item.description,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
