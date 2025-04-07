@@ -189,7 +189,7 @@ function ChplMessaging({ dispatch }) {
     });
     postMessage.mutate({
       subject: formik.values.subject,
-      additionalRecipients: formik.values.additionalRecipients,
+      additionalRecipients: formik.values.additionalRecipients.split(';'),
       body: formik.values.body,
       query: queryParams(),
     }, {
