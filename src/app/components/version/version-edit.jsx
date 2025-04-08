@@ -39,6 +39,7 @@ const useStyles = makeStyles({
 const validationSchema = yup.object({
   version: yup.string()
     .required('Version is required'),
+  code: yup.string(),
 });
 
 function ChplVersionEdit(props) {
@@ -76,6 +77,7 @@ function ChplVersionEdit(props) {
     const updatedVersion = {
       ...version,
       version: formik.values.version,
+      code: formik.values.code,
     };
     dispatch('save', updatedVersion);
   };
@@ -97,6 +99,7 @@ function ChplVersionEdit(props) {
   formik = useFormik({
     initialValues: {
       version: version.version || '',
+      code: '',
     },
     onSubmit: () => {
       save();
@@ -135,6 +138,20 @@ function ChplVersionEdit(props) {
             error={formik.touched.version && !!formik.errors.version}
             helperText={formik.touched.version && formik.errors.version}
           />
+          { isSplitting
+            && (
+              <ChplTextField
+                id="code"
+                name="code"
+                label="Version Code"
+                required
+                value={formik.values.code}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.code && !!formik.errors.code}
+                helperText={formik.touched.code && formik.errors.code}
+              />
+            )}
         </CardContent>
       </Card>
       <ChplActionBar

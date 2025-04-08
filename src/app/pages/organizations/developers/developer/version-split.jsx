@@ -92,30 +92,17 @@ function ChplVersionSplit({ dispatch, version }) {
         });
         mutate({
           oldVersion: version,
-          newVersion: payload,
+          newVersionVersion: payload.version,
+          newVersionCode: payload.code,
           oldListings: listings,
           newListings: movingListings,
         }, {
-          onSuccess: (response) => {
+          onSuccess: () => {
             setIsProcessing(false);
-            let body;
-            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-              enqueueSnackbar(`Split submitted. Your action has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
-                variant: 'success',
-              });
-              dispatch('cancel');
-            } else if (response.data.errorMessages) {
-              body = response.data.errorMessages.join(', ');
-            } else if (response.data.error) {
-              body = response.data.error;
-            } else {
-              body = 'An unexpected error has occurred.';
-            }
-            if (body) {
-              enqueueSnackbar(body, {
-                variant: 'error',
-              });
-            }
+            enqueueSnackbar('The split was successful', {
+              variant: 'success',
+            });
+            dispatch('cancel');
           },
           onError: (error) => {
             setIsProcessing(false);
