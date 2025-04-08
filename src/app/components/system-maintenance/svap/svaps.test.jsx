@@ -113,16 +113,4 @@ describe('the ChplSvaps component', () => {
       });
     });
   });
-
-  xdescribe('when editing an svap', () => {
-    it('should allow removal of criteria', async () => {
-      const rows = within(screen.getByRole('table')).getAllByRole('row');
-      userEvent.click(within(rows[1]).getByRole('button', { name: /Edit/i }));
-      userEvent.click(screen.getByRole('button', { name: /number 2/i })); // onDelete doesn't fire on click
-
-      await waitFor(() => {
-        expect(screen.queryByText(/number 2/)).not.toBeInTheDocument();
-      });
-    });
-  });
 });
