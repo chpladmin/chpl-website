@@ -5,7 +5,7 @@ const filter = {
   key: 'subscriptionType',
   display: 'Subscription Type',
   values: [
-    { value: 'Listing', default: true },
+    { value: 'Listing' },
     { value: 'Developer' },
   ],
 };

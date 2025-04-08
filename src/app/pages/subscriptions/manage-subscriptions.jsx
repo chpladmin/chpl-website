@@ -45,7 +45,6 @@ function ChplManageSubscriptionsPage() {
 
   return (
     <FilterProvider
-      analytics={analytics}
       filters={filters}
       storageKey="storageKey-manageSubscriptionsPage"
     >
