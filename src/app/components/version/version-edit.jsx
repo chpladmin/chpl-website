@@ -38,8 +38,11 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   version: yup.string()
-    .required('Version is required'),
-  code: yup.string(),
+    .required('Version is required')
+    .max(300, 'Version is too long'),
+  code: yup.string()
+    .length(2, 'Version Code must be exactly two characters')
+    .matches(/^[A-Za-z0-9_]*$/, 'Version Code must contain only the characters A-Z, a-z, 0-9, and _'),
 });
 
 function ChplVersionEdit(props) {
