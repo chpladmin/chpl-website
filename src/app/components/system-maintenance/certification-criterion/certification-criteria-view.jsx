@@ -6,10 +6,16 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
 
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { ChplLink } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -27,7 +33,7 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  ...utilStyles
+  ...utilStyles,
 });
 
 const getDisplay = (key) => {
@@ -62,13 +68,20 @@ const getDisplay = (key) => {
 };
 
 function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
-  const [certificationCriterias, setCertificationCriteria] = useState([]);
+  const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.number,
+        item.title,
+        item.rule?.name,
+      ]))
       .map((item) => ({
         ...item,
         displayAttributes: Object
@@ -79,11 +92,11 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .join('; '),
       }))
       .sort(sortComparator('value')));
-  }, [initialCertificationCriteria]); // eslint-disable-line react/destructuring-assignment
+  }, [initialCertificationCriteria, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = certificationCriterias.sort(sortComparator(property, descending));
+    const updated = certificationCriteria.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
     setCertificationCriteria(updated);
@@ -91,6 +104,15 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Number, Title, or Rule..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
+      </Typography>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Certification Criteria table"
@@ -103,7 +125,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
             stickyHeader
           />
           <TableBody>
-            { certificationCriterias
+            { certificationCriteria
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>

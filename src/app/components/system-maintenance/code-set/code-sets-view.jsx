@@ -10,15 +10,15 @@ import {
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
 
 const headers = [
-  { property: 'name', text: 'CHPL Entry Value', sortable: true },
-  { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'requiredDay', text: 'Required Date', sortable: true },
+  { text: 'CHPL Entry Value' },
+  { text: 'Start Date' },
+  { text: 'Required Date' },
   { text: 'Applicable Criteria' },
 ];
 
@@ -28,8 +28,6 @@ const useStyles = makeStyles({
 
 function ChplCodeSetsView({ codeSets: initialCodeSets }) {
   const [codeSets, setCodeSets] = useState([]);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
@@ -40,17 +38,8 @@ function ChplCodeSetsView({ codeSets: initialCodeSets }) {
           .sort(sortCriteria)
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
-      }))
-      .sort(sortComparator('name')));
+      })));
   }, [initialCodeSets]);
-
-  const handleTableSort = (event, property, orderDirection) => {
-    const descending = orderDirection === 'desc';
-    const updated = codeSets.sort(sortComparator(property, descending));
-    setOrderBy(property);
-    setOrder(orderDirection);
-    setCodeSets(updated);
-  };
 
   return (
     <>
@@ -60,15 +49,12 @@ function ChplCodeSetsView({ codeSets: initialCodeSets }) {
         >
           <ChplSortableHeaders
             headers={headers}
-            onTableSort={handleTableSort}
-            orderBy={orderBy}
-            order={order}
             stickyHeader
           />
           <TableBody>
             { codeSets
               .map((item) => (
-                <TableRow key={`${item.id}`}>
+                <TableRow key={item.id}>
                   <TableCell className={classes.firstColumn}>
                     { item.name }
                   </TableCell>
