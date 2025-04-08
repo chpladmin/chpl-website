@@ -6,11 +6,17 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
@@ -30,10 +36,18 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
   const [g1g2, setG1g2] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('abbreviation');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
     setG1g2(initialG1g2
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.abbreviation,
+        item.domain.name,
+        item.requiredTest,
+        item.name,
+      ]))
       .map((item) => ({
         ...item,
         domainDisplay: item.domain.name,
@@ -43,7 +57,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           .join(', '),
       }))
       .sort(sortComparator('abbreviation')));
-  }, [initialG1g2]);
+  }, [initialG1g2, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -55,6 +69,15 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Abbreviation, Domain, Required Test, or Name..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
+      </Typography>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="G1/G2 Measure table"

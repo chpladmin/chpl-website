@@ -6,18 +6,24 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
 const headers = [
   { property: 'displayValue', text: 'Display Value', sortable: true },
-  { property: 'citation', text: 'Citation' },
-  { property: 'description', text: 'Description' },
+  { text: 'Citation' },
+  { text: 'Description' },
   { text: 'Applicable Criteria' },
 ];
 
@@ -29,10 +35,17 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
   const [optionalStandards, setOptionalStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('displayValue');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
     setOptionalStandards(initialOptionalStandards
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.displayValue,
+        item.citation,
+        item.description,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -41,7 +54,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           .join(', '),
       }))
       .sort(sortComparator('displayValue')));
-  }, [initialOptionalStandards]);
+  }, [initialOptionalStandards, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -53,6 +66,15 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Display Value, Citation, or Description..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
+      </Typography>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Optional Standards table"

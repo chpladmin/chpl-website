@@ -7,6 +7,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -15,6 +16,11 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
@@ -48,10 +54,18 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
     setFunctionalitiesTested(initialFunctionalitiesTested
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.value,
+        item.regulatoryTextCitation,
+                               item.rule?.name,
+                               item.practiceType?.name,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -60,7 +74,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialFunctionalitiesTested]); // eslint-disable-line react/destructuring-assignment
+  }, [initialFunctionalitiesTested, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -72,6 +86,15 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Value, Citation, Rule, or Practice Type..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
+      </Typography>
       <div className={classes.tableResultsHeaderContainer}>
         <ChplSystemMaintenanceActivity
           fetch={useFetchFunctionalitiesTestedActivity}
