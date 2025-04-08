@@ -198,7 +198,14 @@ function ChplMessaging({ dispatch }) {
         dispatch();
       },
       onError: (error) => {
-        const body = `An error occurred: ${error.response?.data?.error}`;
+        let body;
+        if (error.response?.data?.errorMessages?.length > 0) {
+          body = `An error occurred: ${error.response?.data?.errorMessages.join(' ')}`;
+        } else if (error.response?.data?.error) {
+          body = `An error occurred: ${error.response?.data?.error}`;
+        } else {
+          body = 'An error occurred. Please check your input and try again';
+        }
         enqueueSnackbar(body, { variant: 'error' });
       },
     });
@@ -238,7 +245,6 @@ function ChplMessaging({ dispatch }) {
     onSubmit: () => {
       sendMessage();
     },
-    validateOnMount: true,
   });
 
   const minRows = window.outerWidth >= 1200 ? 16 : 8;
