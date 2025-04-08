@@ -7,6 +7,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -15,6 +16,11 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
@@ -48,10 +54,18 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
     setStandards(initialStandards
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.value,
+        item.regulatoryTextCitation,
+                     item.rule?.name,
+                     item.groupName,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -60,7 +74,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialStandards]);
+  }, [initialStandards, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -72,6 +86,15 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Value, Citation, Rule, or Group..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
+      </Typography>
       <div className={classes.tableResultsHeaderContainer}>
         <ChplSystemMaintenanceActivity
           fetch={useFetchStandardsActivity}
