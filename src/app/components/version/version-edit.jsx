@@ -30,6 +30,9 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
+  fixFooterSpacing:{
+    minHeight: 'calc(100vh - 350px)',
+  },
   header: {
     margin: '0',
     fontSize: '1.25em',
