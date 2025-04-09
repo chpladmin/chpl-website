@@ -31,6 +31,13 @@ const states = [{
 }, {
   name: 'surveillance.reporting',
   url: '/reporting',
+  component: 'chplSurveillanceReportingBridge',
+  data: {
+    title: 'CHPL Surveillance - Complaints Reporting',
+  },
+}, {
+  name: 'surveillance.reporting-old',
+  url: '/reporting-old',
   component: 'chplSurveillanceReporting',
   resolve: {
     acbs: (networkService) => {
@@ -79,7 +86,7 @@ const states = [{
     label: 'Reporting',
   },
 }, {
-  name: 'surveillance.reporting.annual',
+  name: 'surveillance.reporting-old.annual',
   url: '/annual/{reportId}',
   component: 'chplSurveillanceReportAnnual',
   resolve: {
@@ -94,7 +101,7 @@ const states = [{
     label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }}',
   },
 }, {
-  name: 'surveillance.reporting.quarterly',
+  name: 'surveillance.reporting-old.quarterly',
   url: '/quarterly/{reportId}',
   params: {
     relevantListing: { squash: true, value: null },
