@@ -33,6 +33,9 @@ const useStyles = makeStyles({
   fixFooterSpacing:{
     minHeight: 'calc(100vh - 350px)',
   },
+  splittingMode: {
+    minHeight: '100%',
+  },
   header: {
     margin: '0',
     fontSize: '1.25em',
@@ -114,7 +117,11 @@ function ChplVersionEdit(props) {
   });
 
   return (
-    <Container className={classes.fixFooterSpacing} disableGutters maxWidth="lg">
+    <Container
+      className={`${classes.fixFooterSpacing} ${isSplitting ? classes.splittingMode : ''}`}
+      disableGutters
+      maxWidth="lg"
+    >
       <Card>
         { isSplitting
           && (
