@@ -40,9 +40,17 @@ function ChplQuarter({
     <CardHeader title={`${quarter.name} ${year}`} />
       <CardContent>
         { quarter.description }
-        <Button>Edit</Button>
-        <Button>Download</Button>
-        <Button>Initiate</Button>
+        { report.id &&
+          (
+            <>
+              <Button>Edit</Button>
+              <Button>Download</Button>
+            </>
+          )}
+        { !report.id &&
+          (
+            <Button>Initiate</Button>
+          )}
       </CardContent>
     </Card>
   );
