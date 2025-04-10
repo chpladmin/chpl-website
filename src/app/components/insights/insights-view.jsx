@@ -16,7 +16,8 @@ import {
 } from '@material-ui/core';
 
 import { useFetchInsights } from 'api/developer';
-import { UserContext } from 'shared/contexts';
+import { ChplLink } from 'components/util';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
 });
 
 function ChplInsightsView({ developer }) {
+  const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const {
     data,
@@ -49,7 +51,12 @@ function ChplInsightsView({ developer }) {
         <Typography variant="body1">
           Insights information is displayed here. For more information, please visit the
           {' '}
-          <a href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf">Insights Guide</a>
+          <ChplLink
+            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdftopic/certification-ehrs/program`}
+            text="Insights Guite"
+            external={false}
+            inline
+          />
           .
         </Typography>
         { isLoading && <CircularProgress /> }
