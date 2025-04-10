@@ -35,6 +35,7 @@ function ChplReport({
   const quarterQuery = useFetchQuarters();
   const quarterlyQuery = useFetchQuarterly();
   const [activeYear, setActiveYear] = useState(new Date().getYear() + 1900);
+  const [filteredQuarterly, setFilteredQuarterly] = useState([]);
   const [quarters, setQuarters] = useState([]);
   const [quarterly, setQuarterly] = useState([]);
   const classes = useStyles();
@@ -49,8 +50,12 @@ function ChplReport({
 
   useEffect(() => {
     if (quarterlyQuery.isLoading || !quarterlyQuery.isSuccess) { return; }
-    setQuarterly(quarterlyQuery.data.filter((r) => r.acb.id === acb.id));
+    setQuarterly(quarterlyQuery.data);
   }, [quarterlyQuery.data, quarterlyQuery.isLoading, quarterlyQuery.isSuccess]);
+
+  useEffect(() => {
+    setFilteredQuarterly((quarterly).filter((r) => r.acb.id === acb.id && r.year === activeYear));
+  }, [quarterly, acb, activeYear]);
 
   if (quarters.length === 0 || quarterly.length === 0) { return <CircularProgress /> }
 
@@ -76,7 +81,7 @@ function ChplReport({
             dispatch={dispatch}
             key={q.id}
             quarter={q}
-            report={quarterly.find((r) => r.quarter === q.name && r.year === activeYear)}
+            report={filteredQuarterly.find((r) => r.quarter === q.name)}
             year={activeYear}
           />
         ))}
