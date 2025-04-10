@@ -118,7 +118,7 @@ function ChplVersionEdit(props) {
 
   return (
     <Container
-      className={`${classes.fixFooterSpacing} ${isSplitting ? classes.splittingMode : ''}`}
+      className={ isSplitting ? classes.splittingMode : classes.fixFooterSpacing}
       disableGutters
       maxWidth="lg"
     >
