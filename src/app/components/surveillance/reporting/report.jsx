@@ -15,9 +15,10 @@ import {
   string,
 } from 'prop-types';
 
+import ChplAnnual from './annual';
 import ChplQuarter from './quarter';
 
-import { useFetchQuarters, useFetchQuarterly } from 'api/surveillance';
+import { useFetchAnnual, useFetchQuarters, useFetchQuarterly } from 'api/surveillance';
 import { ChplTextField } from 'components/util';
 import { acb as acbPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
@@ -32,9 +33,12 @@ function ChplReport({
   errorMessages,
   isProcessing,
 }) {
+  const annualQuery = useFetchAnnual();
   const quarterQuery = useFetchQuarters();
   const quarterlyQuery = useFetchQuarterly();
   const [activeYear, setActiveYear] = useState(new Date().getYear() + 1900);
+  const [annual, setAnnual] = useState([]);
+  const [filteredAnnual, setFilteredAnnual] = useState([]);
   const [filteredQuarterly, setFilteredQuarterly] = useState([]);
   const [quarters, setQuarters] = useState([]);
   const [quarterly, setQuarterly] = useState([]);
@@ -42,6 +46,11 @@ function ChplReport({
   const availableYears = [...Array(new Date().getYear() + 1900 - 2019 + 1)]
         .map((_, i) => 2019 + i)
         .sort((a, b) => b - a);
+
+  useEffect(() => {
+    if (annualQuery.isLoading || !annualQuery.isSuccess) { return; }
+    setAnnual(annualQuery.data);
+  }, [annualQuery.data, annualQuery.isLoading, annualQuery.isSuccess]);
 
   useEffect(() => {
     if (quarterQuery.isLoading || !quarterQuery.isSuccess) { return; }
@@ -54,10 +63,11 @@ function ChplReport({
   }, [quarterlyQuery.data, quarterlyQuery.isLoading, quarterlyQuery.isSuccess]);
 
   useEffect(() => {
+    setFilteredAnnual((annual).find((r) => r.acb.id === acb.id && r.year === activeYear));
     setFilteredQuarterly((quarterly).filter((r) => r.acb.id === acb.id && r.year === activeYear));
-  }, [quarterly, acb, activeYear]);
+  }, [annual, quarterly, acb, activeYear]);
 
-  if (quarters.length === 0 || quarterly.length === 0) { return <CircularProgress /> }
+  if (quarters.length === 0 || quarterly.length === 0 || annual.length === 0) { return <CircularProgress /> }
 
   return (
     <Card>
@@ -85,6 +95,11 @@ function ChplReport({
             year={activeYear}
           />
         ))}
+          <ChplAnnual
+            dispatch={dispatch}
+            report={filteredAnnual}
+            year={activeYear}
+          />
       </CardContent>
     </Card>
   );
