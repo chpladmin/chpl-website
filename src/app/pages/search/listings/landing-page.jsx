@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Card,
@@ -21,6 +21,7 @@ import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
 import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
+import { FlagContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -139,6 +140,7 @@ const useStyles = makeStyles({
 
 function ChplLandingPage() {
   const classes = useStyles();
+  const { domainIsOn } = useContext(FlagContext);
 
   return (
     <>
@@ -333,7 +335,7 @@ function ChplLandingPage() {
                         <Box display="flex" gridGap={4}>
                           <Typography align="center">
                             <ChplLink
-                              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+                              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
                               text="Training Guide"
                               external={false}
                               analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'Training Guide' }}

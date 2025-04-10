@@ -115,7 +115,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
-  const { cmsA9GracePeriodEndIsOn } = useContext(FlagContext);
+  const { cmsA9GracePeriodEndIsOn, domainIsOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
@@ -182,7 +182,7 @@ function ChplCmsDisplay() {
           must meet 100% of the Base Criteria. For assistance, view the
           {' '}
           <ChplLink
-            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
             text="CHPL Public User Guide"
             analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
             external={false}
@@ -192,7 +192,7 @@ function ChplCmsDisplay() {
           or
           {' '}
           <ChplLink
-            href="http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
+            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
             text="Base Criteria"
             analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
             external={false}
@@ -251,7 +251,7 @@ function ChplCmsDisplay() {
             must meet 100% of the Base Criteria. For assistance, view the
             {' '}
             <ChplLink
-              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
               text="CHPL Public User Guide"
               analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
               external={false}
@@ -261,7 +261,7 @@ function ChplCmsDisplay() {
             or
             {' '}
             <ChplLink
-              href="http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
               text="Base Criteria"
               analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
               external={false}
