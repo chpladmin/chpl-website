@@ -30,7 +30,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -142,6 +142,7 @@ function ChplSvapSearchView() {
   const storageKey = 'storageKey-svapView';
   const API = getAngularService('API');
   const authService = getAngularService('authService');
+  const { domainIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [downloadLink, setDownloadLink] = useState('');
@@ -219,7 +220,7 @@ function ChplSvapSearchView() {
             This search features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
             {' '}
             <ChplLink
-              href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/standards-version-advancement-process-svap`}
               text="Standards Version Advancement Process (SVAP)"
               analytics={{
                 ...analytics,
@@ -231,7 +232,7 @@ function ChplSvapSearchView() {
             . The SVAP, introduced in the ONC&apos;s
             {' '}
             <ChplLink
-              href="https://www.healthit.gov/topic/information-blocking"
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/information-blocking`}
               text="Cures Act Final Rule"
               analytics={{
                 ...analytics,
@@ -246,7 +247,7 @@ function ChplSvapSearchView() {
             Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
             {' '}
             <ChplLink
-              href="https://www.healthit.gov/topic/information-blocking"
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/information-blocking`}
               text="Cures Act Final Rule"
               analytics={{
                 ...analytics,
@@ -275,7 +276,7 @@ function ChplSvapSearchView() {
             page. For more details, please visit the
             {' '}
             <ChplLink
-              href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/standards-version-advancement-process-svap`}
               text="SVAP Resources"
               analytics={{
                 ...analytics,
