@@ -1,0 +1,34 @@
+import { useQuery } from 'react-query';
+
+import { useAxios } from './axios';
+import options from './options';
+
+const useFetchAnnual = () => {
+  const axios = useAxios();
+  return useQuery(['annual'], async () => {
+    const response = await axios.get('surveillance-report/annual');
+    return response.data;
+  });
+};
+
+const useFetchQuarters = () => {
+  const axios = useAxios();
+  return useQuery(['quarters'], async () => {
+    const response = await axios.get('data/quarters');
+    return response.data;
+  }, options.daily);
+};
+
+const useFetchQuarterly = () => {
+  const axios = useAxios();
+  return useQuery(['quarterly'], async () => {
+    const response = await axios.get('surveillance-report/quarterly');
+    return response.data;
+  });
+};
+
+export {
+  useFetchAnnual,
+  useFetchQuarters,
+  useFetchQuarterly,
+};

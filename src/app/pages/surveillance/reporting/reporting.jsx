@@ -13,17 +13,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { useSnackbar } from 'notistack';
 
 import { useFetchAcbs } from 'api/acbs';
-import {
-  useDeleteTrigger,
-  useFetchJobTypes,
-  useFetchUserTriggers,
-  usePostTrigger,
-  usePutJob,
-  usePutTrigger,
-} from 'api/jobs';
-import ChplJobEdit from 'components/jobs/job-edit';
-import ChplReportJobTypesView from 'components/jobs/report-job-types-view';
-import ChplUserTriggersView from 'components/jobs/user-triggers-view';
+import ChplReport from 'components/surveillance/reporting/report';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -74,7 +64,6 @@ function ChplSurveillanceReporting() {
   };
 
   const navigate = (acb) => {
-    console.log(`Navigating to ${acb}`);
     setActiveAcb(acb);
   };
 
@@ -112,9 +101,10 @@ function ChplSurveillanceReporting() {
           )}
         { activeAcb
           && (
-            <Card>
-              <Typography>{activeAcb.name}</Typography>
-            </Card>
+            <ChplReport
+              acb={activeAcb}
+              dispatch={handleDispatch}
+            />
           )}
       </div>
     </Container>
