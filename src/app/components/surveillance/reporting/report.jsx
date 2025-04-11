@@ -40,6 +40,7 @@ function ChplReport({
   const [annual, setAnnual] = useState([]);
   const [filteredAnnual, setFilteredAnnual] = useState([]);
   const [filteredQuarterly, setFilteredQuarterly] = useState([]);
+  const [state, setState] = useState('');
   const [quarters, setQuarters] = useState([]);
   const [quarterly, setQuarterly] = useState([]);
   const classes = useStyles();
@@ -69,6 +70,19 @@ function ChplReport({
 
   if (quarters.length === 0 || quarterly.length === 0 || annual.length === 0) { return <CircularProgress /> }
 
+  const handleDispatch = ({ action, payload }) => {
+    switch (action) {
+      case 'cancel':
+        setState('');
+        break;
+      case 'focus-annual':
+        setState('focus-annual');
+        break;
+      default:
+        dispatch({action, payload});
+    }
+  };
+
   return (
     <Card>
       <CardHeader title={acb.name} />
@@ -88,18 +102,18 @@ function ChplReport({
         </ChplTextField>
         { quarters.map((q) => (
           <ChplQuarter
-            dispatch={dispatch}
+            dispatch={handleDispatch}
             key={q.id}
             quarter={q}
             report={filteredQuarterly.find((r) => r.quarter === q.name)}
             year={activeYear}
           />
         ))}
-          <ChplAnnual
-            dispatch={dispatch}
-            report={filteredAnnual}
-            year={activeYear}
-          />
+        <ChplAnnual
+          dispatch={handleDispatch}
+          report={filteredAnnual}
+          year={activeYear}
+        />
       </CardContent>
     </Card>
   );

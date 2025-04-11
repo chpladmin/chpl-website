@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
   MenuItem,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -16,7 +17,10 @@ import {
   string,
 } from 'prop-types';
 
+import ChplAnnualView from './annual-view';
+
 import { ChplTextField } from 'components/util';
+import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -28,26 +32,67 @@ function ChplAnnual({
   dispatch,
   report,
 }) {
+  const { hasAnyRole } = useContext(UserContext);
+  const [state, setState] = useState('summary');
   const classes = useStyles();
 
   useEffect(() => {
     console.log('annual', report, year);
   }, [report, year]);
 
+  const handleDispatch = ({action, payload}) => {
+    switch (action) {
+      case 'cancel':
+        setState('summary');
+        dispatch({ action: 'cancel' });
+        break;
+      default:
+        dispatch({action, payload});
+    }
+  };
+
+  const viewAnnual = () => {
+    setState('view');
+    dispatch({ action: 'focus-annual' });
+  };
+
   return (
     <Card>
-    <CardHeader title={`${year} Summary`} />
+      <CardHeader title={`${year} Summary`} />
       <CardContent>
-        { report.id &&
-          (
-            <>
-              <Button>Edit</Button>
-              <Button>Download</Button>
-            </>
+        { state === 'view'
+          && (
+            <ChplAnnualView
+              report={report}
+              dispatch={handleDispatch}
+            />
           )}
-        { !report.id &&
-          (
-            <Button>Initiate</Button>
+        { state === 'summary'
+          && (
+            <>
+              { report.id &&
+                (
+                  <>
+                    { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                      && (
+                        <Button>Edit</Button>
+                      )}
+                    { hasAnyRole(['chpl-admin', 'chpl-onc']) // remove admin before deployment
+                      && (
+                        <Button
+                          onClick={viewAnnual}
+                        >
+                          View
+                        </Button>
+                      )}
+                    <Button>Download</Button>
+                  </>
+                )}
+              { !report.id &&
+                (
+                  <Button>Initiate</Button>
+                )}
+            </>
           )}
       </CardContent>
     </Card>
