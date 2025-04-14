@@ -37,7 +37,7 @@ function ChplAnnualView({
   return (
     <>
       <Typography>
-        { report.acb.name }
+        { report.acb?.name }
         {' '}
         Annual Surveillance Reporting
       </Typography>

@@ -78,6 +78,18 @@ function ChplReport({
       case 'focus-annual':
         setState('focus-annual');
         break;
+      case 'focus-quarter-Q1':
+        setState('focus-quarter-Q1');
+        break;
+      case 'focus-quarter-Q2':
+        setState('focus-quarter-Q2');
+        break;
+      case 'focus-quarter-Q3':
+        setState('focus-quarter-Q3');
+        break;
+      case 'focus-quarter-Q4':
+        setState('focus-quarter-Q4');
+        break;
       default:
         dispatch({action, payload});
     }
@@ -87,33 +99,40 @@ function ChplReport({
     <Card>
       <CardHeader title={acb.name} />
       <CardContent>
-        <ChplTextField
-          select
-          id="active-year"
-          name="activeYear"
-          label="Active Year"
-          value={activeYear}
-          onChange={(event) => setActiveYear(event.target.value)}
-        >
-          { availableYears
-            .map((item) => (
-              <MenuItem value={item} key={item}>{item}</MenuItem>
-            ))}
-        </ChplTextField>
-        { quarters.map((q) => (
-          <ChplQuarter
-            dispatch={handleDispatch}
-            key={q.id}
-            quarter={q}
-            report={filteredQuarterly.find((r) => r.quarter === q.name)}
-            year={activeYear}
-          />
-        ))}
-        <ChplAnnual
-          dispatch={handleDispatch}
-          report={filteredAnnual}
-          year={activeYear}
-        />
+        { state === ''
+          && (
+            <ChplTextField
+              select
+              id="active-year"
+              name="activeYear"
+              label="Active Year"
+              value={activeYear}
+              onChange={(event) => setActiveYear(event.target.value)}
+            >
+              { availableYears
+                .map((item) => (
+                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                ))}
+            </ChplTextField>
+          )}
+        { quarters.filter((q) => state === '' || state === `focus-quarter-${q.name}`)
+          .map((q) => (
+            <ChplQuarter
+              dispatch={handleDispatch}
+              key={q.id}
+              quarter={q}
+              report={filteredQuarterly.find((r) => r.quarter === q.name)}
+              year={activeYear}
+            />
+          ))}
+        { (state === '' || state === 'focus-annual')
+          && (
+            <ChplAnnual
+              dispatch={handleDispatch}
+              report={filteredAnnual}
+              year={activeYear}
+            />
+          )}
       </CardContent>
     </Card>
   );
