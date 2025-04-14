@@ -7,6 +7,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -15,6 +16,11 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
+import {
+  ChplFilterChips,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
@@ -37,16 +43,21 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapsView(props) {
-  const { dispatch } = props;
+function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   const [svaps, setSvaps] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
+  const filterContext = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
-    setSvaps(props.svaps
+    setSvaps(initialSvaps
+      .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
+      .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
+        item.regulatoryTextCitation,
+        item.approvedStandardVersion,
+      ]))
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -55,7 +66,7 @@ function ChplSvapsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, [props.svaps]); // eslint-disable-line react/destructuring-assignment
+  }, [initialSvaps, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -67,6 +78,15 @@ function ChplSvapsView(props) {
 
   return (
     <>
+      <ChplFilterSearchBar
+        placeholder="Search by Citation or Version..."
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      <Typography variant="body2">
+        {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
+      </Typography>
       <div className={classes.tableResultsHeaderContainer}>
         <ChplSystemMaintenanceActivity
           fetch={useFetchSvapsActivity}

@@ -16,16 +16,16 @@ function FlagWrapper({ children }) {
 
   const cmsA9GracePeriodEndIsOn = isOn('cms-a9-grace-period-end');
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
+  const domainIsOn = isOn('domain');
   const insightsIsOn = isOn('insights');
   const ssoIsOn = isOn('sso');
-  const uploadToUpdateIsOn = isOn('upload-to-update');
 
   const flagState = {
     cmsA9GracePeriodEndIsOn,
     demographicChangeRequestIsOn,
+    domainIsOn,
     insightsIsOn,
     ssoIsOn,
-    uploadToUpdateIsOn,
   };
 
   return (
