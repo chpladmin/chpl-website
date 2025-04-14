@@ -45,6 +45,7 @@ function ChplSurveillanceReporting() {
   const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
   const [activeAcb, setActiveAcb] = useState(undefined);
+  const [state, setState] = useState('');
   const classes = useStyles();
 
   useEffect(() => {
@@ -57,6 +58,12 @@ function ChplSurveillanceReporting() {
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
+      case 'cancel':
+        setState('');
+        break;
+      case 'focus':
+        setState('focus');
+        break;
       default:
         console.error(`No action found for ${action} with payload ${payload}`);
         // no default
@@ -69,8 +76,8 @@ function ChplSurveillanceReporting() {
 
   return (
     <Container maxWidth="lg">
-      <div className={acbs.length > 1 ? classes.container : ''}>
-        { acbs.length > 1
+      <div className={(acbs.length > 1 && state === '') ? classes.container : ''}>
+        { acbs.length > 1 && state === ''
           && (
             <Card>
               { acbs.map((acb) => (

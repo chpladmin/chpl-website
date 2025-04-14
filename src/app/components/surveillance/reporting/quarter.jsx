@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -16,7 +16,10 @@ import {
   string,
 } from 'prop-types';
 
+import ChplQuarterView from './quarter-view';
+
 import { ChplTextField } from 'components/util';
+import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -29,27 +32,68 @@ function ChplQuarter({
   dispatch,
   report,
 }) {
+  const { hasAnyRole } = useContext(UserContext);
+  const [state, setState] = useState('summary');
   const classes = useStyles();
 
   useEffect(() => {
     console.log(report, year);
   }, [report, year]);
 
+  const handleDispatch = ({action, payload}) => {
+    switch (action) {
+      case 'cancel':
+        setState('summary');
+        dispatch({ action: 'cancel' });
+        break;
+      default:
+        dispatch({action, payload});
+    }
+  };
+
+  const viewQuarter = () => {
+    setState('view');
+    dispatch({ action: `focus-quarter-${quarter.name}` });
+  };
+
   return (
     <Card>
     <CardHeader title={`${quarter.name} ${year}`} />
       <CardContent>
-        { quarter.description }
-        { report.id &&
-          (
-            <>
-              <Button>Edit</Button>
-              <Button>Download</Button>
-            </>
+        { state === 'view'
+          && (
+            <ChplQuarterView
+              report={report}
+              dispatch={handleDispatch}
+            />
           )}
-        { !report.id &&
-          (
-            <Button>Initiate</Button>
+        { state === 'summary'
+          && (
+            <>
+              { quarter.description }
+              { report.id
+                && (
+                  <>
+                    { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                      && (
+                        <Button>Edit</Button>
+                      )}
+                    { hasAnyRole(['chpl-admin', 'chpl-onc']) // remove admin before deployment
+                      && (
+                        <Button
+                          onClick={viewQuarter}
+                        >
+                          View
+                        </Button>
+                      )}
+                    <Button>Download</Button>
+                  </>
+                )}
+              { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                && (
+                  <Button>Initiate</Button>
+                )}
+            </>
           )}
       </CardContent>
     </Card>

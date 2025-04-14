@@ -70,8 +70,8 @@ function ChplAnnual({
         { state === 'summary'
           && (
             <>
-              { report.id &&
-                (
+              { report.id
+                && (
                   <>
                     { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                       && (
@@ -88,8 +88,8 @@ function ChplAnnual({
                     <Button>Download</Button>
                   </>
                 )}
-              { !report.id &&
-                (
+              { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                && (
                   <Button>Initiate</Button>
                 )}
             </>

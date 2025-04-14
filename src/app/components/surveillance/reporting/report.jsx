@@ -74,21 +74,27 @@ function ChplReport({
     switch (action) {
       case 'cancel':
         setState('');
+        dispatch({ action: 'cancel' });
         break;
       case 'focus-annual':
         setState('focus-annual');
+        dispatch({ action: 'focus' });
         break;
       case 'focus-quarter-Q1':
         setState('focus-quarter-Q1');
+        dispatch({ action: 'focus' });
         break;
       case 'focus-quarter-Q2':
         setState('focus-quarter-Q2');
+        dispatch({ action: 'focus' });
         break;
       case 'focus-quarter-Q3':
         setState('focus-quarter-Q3');
+        dispatch({ action: 'focus' });
         break;
       case 'focus-quarter-Q4':
         setState('focus-quarter-Q4');
+        dispatch({ action: 'focus' });
         break;
       default:
         dispatch({action, payload});
