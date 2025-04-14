@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.36.0
+_14 April 2025_
+
+### Features
+* Enable search/filter on system maintenance pages
+
+### Flagged Feature
+* Update URLs to match new ASTP scheme
+
+---
+
 ## Version 13.35.0
 _31 March 2025_
 
