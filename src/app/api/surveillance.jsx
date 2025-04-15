@@ -27,8 +27,17 @@ const useFetchQuarterly = () => {
   });
 };
 
+const useFetchRelevantListings = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['relevant-listings', id], async () => {
+    const response = await axios.get(`surveillance-report/quarterly/${id}/listings`);
+    return response.data;
+  });
+};
+
 export {
   useFetchAnnual,
   useFetchQuarters,
   useFetchQuarterly,
+  useFetchRelevantListings,
 };

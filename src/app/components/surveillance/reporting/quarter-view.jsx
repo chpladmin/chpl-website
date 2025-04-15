@@ -5,6 +5,11 @@ import {
   CardContent,
   CardHeader,
   MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -17,7 +22,9 @@ import {
   string,
 } from 'prop-types';
 
+import { useFetchRelevantListings } from 'api/surveillance';
 import { ChplActionBar } from 'components/action-bar';
+import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -28,7 +35,14 @@ function ChplQuarterView({
   dispatch,
   report,
 }) {
+  const relevantListingsQuery = useFetchRelevantListings({ id: report.id });
+  const [listings, setListings] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (relevantListingsQuery.isLoading || !relevantListingsQuery.isSuccess) { return; }
+    setListings(relevantListingsQuery.data);
+  }, [relevantListingsQuery.data, relevantListingsQuery.isLoading, relevantListingsQuery.isSuccess]);
 
   const handleDispatch = (action) => {
     dispatch({ action });
@@ -71,6 +85,25 @@ function ChplQuarterView({
       <Typography>{ report.appropriateUseOfMark }</Typography>
       <Typography>Complaints Reported to ONC-ACB</Typography>
       <Typography>Please log the complaints and any actions to the "Complaints" sheet of this workbook.</Typography>
+      <Typography>{`Listings with relevant surveillance for ${report.year} - ${report.quarter}`}</Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>CHPL Product Number</TableCell>
+            <TableCell>Certification Date</TableCell>
+            <TableCell># Relevant Surveillances</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          { listings.map((l) => (
+            <TableRow key={l.chplProductNumber}>
+              <TableCell>{ l.chplProductNumber }</TableCell>
+              <TableCell>{ getDisplayDateFormat(l.certificationDay) }</TableCell>
+              <TableCell>{ l.surveillances.length }</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <ChplActionBar
         canCancel={false}
         canClose
