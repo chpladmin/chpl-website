@@ -266,7 +266,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
   }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
 
   const canEdit = () => {
-    if (hasAnyRole(['chpl-developer'])) {
+    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-developer'])) {
       return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester';
