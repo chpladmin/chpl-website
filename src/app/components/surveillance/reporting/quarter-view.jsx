@@ -23,6 +23,7 @@ import {
 } from 'prop-types';
 
 import { useFetchRelevantListings } from 'api/surveillance';
+import ChplComplaints from 'components/surveillance/complaints/complaints';
 import { ChplActionBar } from 'components/action-bar';
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
@@ -36,8 +37,16 @@ function ChplQuarterView({
   report,
 }) {
   const relevantListingsQuery = useFetchRelevantListings({ id: report.id });
+  const [bonusQuery, setBonusQuery] = useState('');
   const [listings, setListings] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    setBonusQuery([
+          `certificationBodies=${report.acb.name}`,
+          `openDuringDateRange=${report.startDay},${report.endDay}`,
+    ].sort((a, b) => a < b ? -1 : 1).join('&'));
+  }, [report]);
 
   useEffect(() => {
     if (relevantListingsQuery.isLoading || !relevantListingsQuery.isSuccess) { return; }
@@ -104,6 +113,11 @@ function ChplQuarterView({
           ))}
         </TableBody>
       </Table>
+      <ChplComplaints
+        disallowedFilters={['certificationBodies', 'receivedDate', 'closedDate']}
+        bonusQuery={bonusQuery}
+        canAdd={false}
+      />
       <ChplActionBar
         canCancel={false}
         canClose
