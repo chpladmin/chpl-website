@@ -127,7 +127,7 @@ const templateOptions = [
   {
     key: '<blank>', subject: '', additionalRecipients: '', body: '',
   }, {
-    key: 'Semi-Annual Attestations Not Submitted', additionalRecipients: 'sharon.jankosky@hhs.gov', subject: 'Semi-Annual Attestations Not Submitted', body: `Hello |DEVELOPERNAME|,
+    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', additionalRecipients: 'sharon.jankosky@hhs.gov', body: `Hello |DEVELOPERNAME|,
 
 According to our records, the [Attestations Condition and Maintenance of Certification](https://www.astp.hhs.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
 
@@ -141,9 +141,10 @@ The Office of the National Coordinator for Health IT`,
 ];
 
 const templateOptionsOld = [
-  { key: '<blank>', subject: '', body: '' },
   {
-    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', body: `Hello |DEVELOPERNAME|,
+    key: '<blank>', subject: '', additionalRecipients: '', body: '',
+  }, {
+    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', additionalRecipients: 'sharon.jankosky@hhs.gov', body: `Hello |DEVELOPERNAME|,
 
 According to our records, the [Attestations Condition and Maintenance of Certification](https://www.healthit.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
 
@@ -162,7 +163,7 @@ function ChplMessaging({ dispatch }) {
   const { domainIsOn } = useContext(FlagContext);
   const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(templateOptionsOld[0]);
+  const [selectedOption, setSelectedOption] = useState('<blank>');
   const [undeliverable, setUndeliverable] = useState([]);
   const [undeliverableTotalCount, setUndeliverableTotalCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
@@ -193,9 +194,10 @@ function ChplMessaging({ dispatch }) {
   }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 
   const applyTemplate = () => {
-    formik.setFieldValue('subject', selectedOption.subject);
-    formik.setFieldValue('additionalRecipients', selectedOption.additionalRecipients);
-    formik.setFieldValue('body', selectedOption.body);
+    const selected = domainIsOn ? templateOptions.find((o) => o.key === selectedOption) : templateOptionsOld.find((o) => o.key === selectedOption);
+    formik.setFieldValue('subject', selected.subject);
+    formik.setFieldValue('additionalRecipients', selected.additionalRecipients);
+    formik.setFieldValue('body', selected.body);
   };
 
   const sendMessage = () => {
@@ -206,7 +208,7 @@ function ChplMessaging({ dispatch }) {
     });
     postMessage.mutate({
       subject: formik.values.subject,
-      additionalRecipients: formik.values.additionalRecipients.split(';'),
+      additionalRecipients: formik.values.additionalRecipients ? formik.values.additionalRecipients.split(';') : '',
       body: formik.values.body,
       query: queryParams(),
     }, {
@@ -301,8 +303,8 @@ function ChplMessaging({ dispatch }) {
                   value={selectedOption}
                   onChange={(event) => setSelectedOption(event.target.value)}
                 >
-                  { (domainIsOn ? templateOptions : templateOptionsOld).map((item) => (
-                    <MenuItem value={item} key={item.key}>{item.key}</MenuItem>
+                  { templateOptions.map((item) => (
+                    <MenuItem value={item.key} key={item.key}>{item.key}</MenuItem>
                   ))}
                 </ChplTextField>
                 <Button
