@@ -12,23 +12,16 @@ import {
   arrayOf, bool, func, number, string,
 } from 'prop-types';
 
-import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
-import ChplCognitoUserInvite from './cognito-user-invite';
 import ChplUserView from './user-view';
-import ChplCognitoUserView from './cognito-user-view';
-import ChplCognitoUserEdit from './cognito-user-edit';
+import ChplUserEdit from './user-edit';
 
-import {
-  usePutUser,
-  usePutCognitoUser,
-} from 'api/users';
+import { usePutUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -66,16 +59,11 @@ const useStyles = makeStyles({
 });
 
 function ChplUsersView({
-  dispatch, roles, groupNames, users: initialUsers, organizationId, isLoading,
+  dispatch, groupNames, users: initialUsers, organizationId, isLoading,
 }) {
-  const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
-  const networkService = getAngularService('networkService');
   const { analytics } = useAnalyticsContext();
-  const { ssoIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const { mutate } = usePutUser();
-  const cognitoMutate = usePutCognitoUser().mutate;
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [users, setUsers] = useState([]);
@@ -127,22 +115,6 @@ function ChplUsersView({
         });
         dispatch('edit', 'user');
         break;
-      case 'impersonate':
-        networkService.impersonateUser(data)
-          .then((token) => {
-            eventTrack({
-              ...analytics,
-              event: 'Impersonate User',
-            });
-            authService.saveToken(token.token);
-            networkService.getUserById(authService.getUserId())
-              .then((u) => {
-                authService.saveCurrentUser(u);
-                $rootScope.$broadcast('impersonating');
-                dispatch('impersonate');
-              });
-          });
-        break;
       case 'invite':
         eventTrack({
           ...analytics,
@@ -150,34 +122,8 @@ function ChplUsersView({
         });
         dispatch('invite', data);
         break;
-      case 'cognito-invite':
-        eventTrack({
-          ...analytics,
-          event: 'Send Invite',
-        });
-        dispatch('cognito-invite', data);
-        break;
       case 'save':
         mutate(data, {
-          onSuccess: () => {
-            setActiveUser(undefined);
-            eventTrack({
-              ...analytics,
-              event: 'Save User',
-            });
-            dispatch('refresh');
-          },
-          onError: (error) => {
-            if (error.data.error) {
-              setErrors([error.data.error]);
-            } else if (error.data?.errorMessages?.length > 0) {
-              setErrors(error.data.errorMessages);
-            }
-          },
-        });
-        break;
-      case 'cognito-save':
-        cognitoMutate(data, {
           onSuccess: () => {
             setActiveUser(undefined);
             eventTrack({
@@ -199,44 +145,22 @@ function ChplUsersView({
     }
   };
 
-  const displayUser = (userToDisplay) => {
-    if (ssoIsOn) {
-      return (
-        <ChplCognitoUserView
-          key={userToDisplay.cognitoId}
-          user={userToDisplay}
-          dispatch={handleDispatch}
-        />
-      );
-    }
-    return (
-      <ChplUserView
-        key={userToDisplay.userId}
-        user={userToDisplay}
-        dispatch={handleDispatch}
-      />
-    );
-  };
+  const displayUser = (userToDisplay) => (
+    <ChplUserView
+      key={userToDisplay.cognitoId}
+      user={userToDisplay}
+      dispatch={handleDispatch}
+    />
+  );
 
-  const displayUserEdit = (userToEdit) => {
-    if (ssoIsOn) {
-      return (
-        <ChplCognitoUserEdit
-          user={userToEdit}
-          errors={errors}
-          dispatch={handleDispatch}
-          organizationId={organizationId}
-        />
-      );
-    }
-    return (
-      <ChplUserEdit
-        user={userToEdit}
-        errors={errors}
-        dispatch={handleDispatch}
-      />
-    );
-  };
+  const displayUserEdit = (userToEdit) => (
+    <ChplUserEdit
+      user={userToEdit}
+      errors={errors}
+      dispatch={handleDispatch}
+      organizationId={organizationId}
+    />
+  );
 
   if (!hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'])) {
     return null;
@@ -278,20 +202,10 @@ function ChplUsersView({
                     label="Search by Name or Email"
                     onChange={handleFilter}
                   />
-                  { !ssoIsOn
-                    && (
-                      <ChplUserInvite
-                        roles={roles}
-                        dispatch={handleDispatch}
-                      />
-                    )}
-                  { ssoIsOn
-                    && (
-                      <ChplCognitoUserInvite
-                        groupNames={groupNames}
-                        dispatch={handleDispatch}
-                      />
-                    )}
+                  <ChplUserInvite
+                    groupNames={groupNames}
+                    dispatch={handleDispatch}
+                  />
                 </div>
                 <div className={classes.users}>
                   { users
@@ -311,7 +225,6 @@ export default ChplUsersView;
 ChplUsersView.propTypes = {
   users: arrayOf(userPropType).isRequired,
   dispatch: func.isRequired,
-  roles: arrayOf(string).isRequired,
   groupNames: arrayOf(string).isRequired,
   organizationId: number,
   isLoading: bool,

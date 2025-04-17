@@ -172,7 +172,6 @@ function ChplDeveloperView({ dispatch }) {
           <ChplUsers
             users={users}
             dispatch={handleUserDispatch}
-            roles={['ROLE_DEVELOPER']}
             groupNames={['chpl-developer']}
             organizationId={developer.id}
             isLoading={usersQuery.isLoading}
