@@ -77,7 +77,11 @@ function ChplChangeRequestHistory(props) {
             {items
               .map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.actingOrganization}</TableCell>
+                  <TableCell>
+                    {item.actingOrganization}
+                    <br />
+                    {item.actingUser}
+                  </TableCell>
                   <TableCell>{getDisplayDateFormat(item.statusChangeDateTime)}</TableCell>
                   <TableCell>{item.changeRequestStatusType.name}</TableCell>
                   <TableCell>{item.comment}</TableCell>
