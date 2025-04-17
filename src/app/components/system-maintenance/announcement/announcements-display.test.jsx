@@ -38,7 +38,8 @@ describe('the ChplAnnouncementsDisplay component', () => {
 
     it('should display those announcements', async () => {
       await waitFor(() => {
-        expect(screen.queryByText(/^a title: some text$/)).toBeInTheDocument();
+        expect(screen.queryByText(/^a title$/)).toBeInTheDocument();
+        expect(screen.queryByText(/^some text$/)).toBeInTheDocument();
         expect(screen.queryByText(/^second title$/)).toBeInTheDocument();
       });
     });

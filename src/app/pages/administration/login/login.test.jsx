@@ -5,8 +5,9 @@ import {
 import '@testing-library/jest-dom';
 import { when } from 'jest-when';
 
-import * as angularReactHelper from '../../../services/angular-react-helper';
 import ChplLoginPage from './login';
+
+import * as angularReactHelper from 'services/angular-react-helper';
 
 const $stateMock = {
   go: jest.fn(() => {}),
@@ -14,7 +15,6 @@ const $stateMock = {
 
 const authServiceMock = {
   getCurrentUser: jest.fn(() => {}),
-  isImpersonating: jest.fn(() => false),
 };
 
 const returnToMock = {

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { string } from 'prop-types';
 
-import ChplCognitoLogin from 'components/login/cognito-login';
+import ChplLogin from 'components/login/login';
 
 const useStyles = makeStyles({
   content: {
@@ -15,9 +15,9 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     padding: '16px',
   },
-  fixFooterSpacing:{
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 136px)',
-  }
+  },
 });
 
 function ChplForgotPassword({ uuid }) {
@@ -32,7 +32,7 @@ function ChplForgotPassword({ uuid }) {
         </Typography>
       </Container>
       <Container maxWidth="xs">
-        <ChplCognitoLogin
+        <ChplLogin
           setState={setState}
           state={state}
           uuid={uuid}

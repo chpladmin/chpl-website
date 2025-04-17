@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
-import { usePostCognitoChangePassword } from 'api/auth';
+import { usePostChangePassword } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
@@ -57,7 +57,7 @@ function ChplChangePassword({ dispatch }) {
   const { user } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePostCognitoChangePassword();
+  const { mutate } = usePostChangePassword();
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
