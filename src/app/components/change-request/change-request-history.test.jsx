@@ -10,26 +10,26 @@ const mock = {
   changeRequest: {
     statuses: [{
       id: 1,
-      userGroupName: 'ROLE_ONC',
+      userGroupName: 'chpl-onc',
       statusChangeDateTime: '2022-03-21T04:25:32.000',
       changeRequestStatusType: { name: 'status by onc' },
       comment: 'onc comment',
     }, {
       id: 2,
-      userGroupName: 'ROLE_ADMIN',
+      userGroupName: 'chpl-admin',
       statusChangeDateTime: '2022-03-21T04:20:32.000',
       changeRequestStatusType: { name: 'admin status' },
       comment: 'comment by admin',
     }, {
       id: 3,
-      userGroupName: 'ROLE_ACB',
+      userGroupName: 'chpl-onc-acb',
       statusChangeDateTime: '2022-03-21T04:30:32.000',
       changeRequestStatusType: { name: 'status done by ACB' },
       certificationBody: { name: 'an ACB' },
       comment: 'an acb comment',
     }, {
       id: 4,
-      userGroupName: 'ROLE_DEVELOPER',
+      userGroupName: 'chpl-developer',
       statusChangeDateTime: '2022-03-21T04:23:32.000',
       changeRequestStatusType: { name: 'dev status' },
       comment: 'developers have comments too',

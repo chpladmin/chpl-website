@@ -49,6 +49,7 @@ describe('the ChplAttestationEdit component', () => {
     render(
       <ChplAttestationEdit
         changeRequest={changeRequestMock}
+        dispatch={() => {}}
       />,
     );
   });

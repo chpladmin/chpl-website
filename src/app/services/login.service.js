@@ -8,7 +8,6 @@ import { clearAuthTokens } from 'axios-jwt';
   /** @ngInject */
   function authService($injector, $localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
     const service = {
-      canImpersonate,
       canManageAcb,
       canManageDeveloper,
       getApiKey,
@@ -17,7 +16,6 @@ import { clearAuthTokens } from 'axios-jwt';
       getToken,
       getUserId,
       hasAnyRole,
-      isImpersonating,
       logout,
       parseJwt,
       saveCurrentUser,
@@ -27,15 +25,6 @@ import { clearAuthTokens } from 'axios-jwt';
     return service;
 
     /// /////////////////////////////////////////////////////////////////////
-
-    function canImpersonate(target) { // TODO: remove when ssoIsOn is turned on
-      const userRole = parseJwt(getToken())?.Authority;
-      const targetRole = target.role;
-
-      return !isImpersonating()
-        && (((userRole === 'ROLE_ADMIN') && (targetRole !== 'ROLE_ADMIN'))
-                 || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
-    }
 
     function canManageAcb(acb) {
       if (hasAnyRole(['chpl-admin', 'chpl-onc'])) {
@@ -71,10 +60,7 @@ import { clearAuthTokens } from 'axios-jwt';
       if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
-        if (identity.length === 3) {
-          return identity[2];
-        }
-        return `Impersonating ${identity[2]}`;
+        return identity[2];
       }
       logout();
       return '';
@@ -108,22 +94,6 @@ import { clearAuthTokens } from 'axios-jwt';
         return false;
       }
 
-      // TODO: remove when ssoIsOn is turned on
-      if (roles.includes('chpl-admin')) {
-        roles.push('ROLE_ADMIN');
-      }
-      if (roles.includes('chpl-onc-acb')) {
-        roles.push('ROLE_ACB');
-      }
-      if (roles.includes('chpl-developer')) {
-        roles.push('ROLE_DEVELOPER');
-      }
-      if (roles.includes('chpl-onc')) {
-        roles.push('ROLE_ONC');
-      }
-      if (roles.includes('chpl-cms-staff')) {
-        roles.push('ROLE_CMS_STAFF');
-      }
       const user = getCurrentUser();
       if (user) {
         const userRole = user.role;
@@ -136,12 +106,6 @@ import { clearAuthTokens } from 'axios-jwt';
         return true; // logged in, no role required
       }
       return false; // not logged in
-    }
-
-    function isImpersonating() {
-      const token = getToken();
-      const identity = parseJwt(token)?.Identity;
-      return identity && identity.length !== 3;
     }
 
     function logout() {

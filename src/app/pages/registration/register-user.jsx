@@ -9,9 +9,9 @@ import {
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { usePostAuthorizeUser, usePostCreateCognitoInvitedUser } from 'api/users';
-import ChplCognitoLogin from 'components/login/cognito-login';
-import { ChplCognitoUserCreate } from 'components/registration';
+import { usePostAuthorizeUser, usePostCreateInvitedUser } from 'api/users';
+import ChplLogin from 'components/login/login';
+import ChplUserCreate from 'components/registration/user-create';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -49,9 +49,9 @@ function ChplRegisterUser({ hash }) {
   const { hasAnyRole, setUser } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState('create');
-  const [cognitoLoginComponentState, setCognitoLoginComponentState] = useState('SIGNIN');
+  const [loginComponentState, setLoginComponentState] = useState('SIGNIN');
   const { mutate: authorizeSsoUser } = usePostAuthorizeUser();
-  const { mutate: createCognitoInvited } = usePostCreateCognitoInvitedUser();
+  const { mutate: createInvited } = usePostCreateInvitedUser();
   const classes = useStyles();
   let handleDispatch;
 
@@ -92,7 +92,7 @@ function ChplRegisterUser({ hash }) {
           hash,
           user: payload,
         };
-        createCognitoInvited(packet, {
+        createInvited(packet, {
           onSuccess: () => {
             eventTrack({
               ...analytics,
@@ -135,10 +135,10 @@ function ChplRegisterUser({ hash }) {
       case 'login':
         return (
           <>
-            <ChplCognitoLogin
+            <ChplLogin
               dispatch={handleDispatch}
-              state={cognitoLoginComponentState}
-              setState={setCognitoLoginComponentState}
+              state={loginComponentState}
+              setState={setLoginComponentState}
             />
             <Box className={classes.cardFooter}>
               <Typography variant="body2">
@@ -158,7 +158,7 @@ function ChplRegisterUser({ hash }) {
       case 'create':
         return (
           <>
-            <ChplCognitoUserCreate dispatch={handleDispatch} />
+            <ChplUserCreate dispatch={handleDispatch} />
             <Box className={classes.cardFooter}>
               <Typography>
                 Have an account?

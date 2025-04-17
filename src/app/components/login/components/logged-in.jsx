@@ -11,7 +11,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { func } from 'prop-types';
 import { useCookies } from 'react-cookie';
 
-import { usePostCognitoLogout } from 'api/auth';
+import { usePostLogout } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -35,7 +35,7 @@ function ChplLoggedIn({ dispatch }) {
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { user, setUser } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
-  const postLogout = usePostCognitoLogout();
+  const postLogout = usePostLogout();
   const classes = useStyles();
 
   const changePassword = (e) => {
