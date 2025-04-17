@@ -4,30 +4,7 @@ import { useAxios } from './axios';
 
 const usePostChangePassword = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('auth/change-password', data)
-    .then((response) => response.data));
-};
-
-const usePostCognitoChangePassword = () => {
-  const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/password', data)
-    .then((response) => response.data));
-};
-
-const usePostCognitoLogin = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('auth', data)
-    .then((response) => response.data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('listing');
-    },
-  });
-};
-
-const usePostCognitoLogout = () => {
-  const axios = useAxios();
-  return useMutation(async (data) => axios.post('auth/logout', data)
     .then((response) => response.data));
 };
 
@@ -46,12 +23,18 @@ const usePostForgotPassword = () => {
 const usePostLogin = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('auth/authenticate', data)
+  return useMutation(async (data) => axios.post('auth', data)
     .then((response) => response.data), {
     onSuccess: () => {
       queryClient.invalidateQueries('listing');
     },
   });
+};
+
+const usePostLogout = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('auth/logout', data)
+    .then((response) => response.data));
 };
 
 const usePostNewPasswordRequired = () => {
@@ -80,12 +63,10 @@ const usePostSetForgottenPassword = () => {
 
 export {
   usePostChangePassword,
-  usePostCognitoChangePassword,
-  usePostCognitoLogin,
-  usePostCognitoLogout,
   usePostEmailResetPassword,
   usePostForgotPassword,
   usePostLogin,
+  usePostLogout,
   usePostNewPasswordRequired,
   usePostRefreshToken,
   usePostResetPassword,

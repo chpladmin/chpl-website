@@ -17,7 +17,7 @@ import ChplVersionEdit from './version-edit';
 import ChplVersionSplit from './version-split';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
-import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
+import { usePostCreateInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import { getAngularService } from 'services/angular-react-helper';
@@ -35,7 +35,6 @@ function ChplDeveloperPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
   const { mutate: deleteUserFromDeveloper } = useDeleteUserFromDeveloper();
   const { mutate: createInvitation } = usePostCreateInvitation();
-  const { mutate: createOldInvitation } = usePostCreateOldInvitation();
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [developer, setDeveloper] = useState(undefined);
   const [version, setVersion] = useState(undefined);
@@ -68,7 +67,7 @@ function ChplDeveloperPage({ id }) {
         setState(action);
         setVersion({ version: payload.version, productId: payload.productId });
         break;
-      case 'cognito-invite':
+      case 'invite':
         createInvitation({
           ...payload,
           organizationId: developer.id,
@@ -84,26 +83,6 @@ function ChplDeveloperPage({ id }) {
             });
           },
         });
-        break;
-      case 'invite':
-        createOldInvitation({
-          ...payload,
-          emailAddress: payload.email,
-          permissionObjectId: developer.id,
-        }, {
-          onSuccess: () => {
-            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
-              variant: 'success',
-            });
-          },
-          onError: (error) => {
-            enqueueSnackbar(error.data?.error ?? 'An unexpected error has occurred.', {
-              variant: 'error',
-            });
-          },
-        });
-        break;
-      case 'impersonate':
         break;
       case 'delete':
         deleteUserFromDeveloper({ userId: payload, id: developer.id }, {

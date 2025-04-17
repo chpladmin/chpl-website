@@ -7,11 +7,6 @@ const usePostAuthorizeUser = () => {
   return useMutation(async (data) => axios.post(`users/authorize/${data}`, {}));
 };
 
-const usePostCreateCognitoInvitedUser = () => {
-  const axios = useAxios();
-  return useMutation(async (data) => axios.post('users', data));
-};
-
 const usePostCreateInvitation = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('users/invitation', data));
@@ -19,25 +14,10 @@ const usePostCreateInvitation = () => {
 
 const usePostCreateInvitedUser = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('users/create', data));
-};
-
-const usePostCreateOldInvitation = () => {
-  const axios = useAxios();
-  return useMutation(async (data) => axios.post('users/invite', data));
+  return useMutation(async (data) => axios.post('users', data));
 };
 
 const usePutUser = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put(`users/${data.userId}`, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['acbs', 'users']);
-    },
-  });
-};
-
-const usePutCognitoUser = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`users/${data.cognitoId}`, data), {
@@ -49,10 +29,7 @@ const usePutCognitoUser = () => {
 
 export {
   usePostAuthorizeUser,
-  usePostCreateCognitoInvitedUser,
   usePostCreateInvitation,
   usePostCreateInvitedUser,
-  usePostCreateOldInvitation,
-  usePutCognitoUser,
   usePutUser,
 };

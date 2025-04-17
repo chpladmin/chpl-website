@@ -36,7 +36,6 @@ angular
     'feature-flags',
     'ngCytoscape',
     'ngFileUpload',
-    'ngIdle',
     'ngResource',
     'ngStorage',
     'smart-table',
