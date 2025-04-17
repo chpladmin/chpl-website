@@ -31,11 +31,11 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Enter a valid Email'),
-  role: yup.string()
+  groupName: yup.string()
     .required('A ROLE must be selected'),
 });
 
-function ChplUserInvite({ dispatch, roles }) {
+function ChplUserInvite({ dispatch, groupNames }) {
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -61,7 +61,7 @@ function ChplUserInvite({ dispatch, roles }) {
   const invite = () => {
     const invitation = {
       email: formik.values.email,
-      role: formik.values.role,
+      groupName: formik.values.groupName,
     };
     dispatch('invite', invitation);
     handleClose();
@@ -70,7 +70,7 @@ function ChplUserInvite({ dispatch, roles }) {
   formik = useFormik({
     initialValues: {
       email: '',
-      role: roles.length > 1 ? '' : roles[0],
+      groupName: groupNames.length > 1 ? '' : groupNames[0],
     },
     onSubmit: () => {
       invite();
@@ -119,21 +119,21 @@ function ChplUserInvite({ dispatch, roles }) {
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
-          { roles.length > 1
+          { groupNames.length > 1
             && (
               <ChplTextField
                 select
-                id="role"
-                name="role"
-                label="ROLE"
+                id="group-name"
+                name="groupName"
+                label="Group Name"
                 required
-                value={formik.values.role}
+                value={formik.values.groupName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.role && !!formik.errors.role}
-                helperText={formik.touched.role && formik.errors.role}
+                error={formik.touched.groupName && !!formik.errors.groupName}
+                helperText={formik.touched.groupName && formik.errors.groupName}
               >
-                { roles
+                { groupNames
                   .sort((a, b) => (a < b ? -1 : 1))
                   .map((item) => (
                     <MenuItem value={item} key={item}>{item}</MenuItem>
@@ -160,6 +160,6 @@ function ChplUserInvite({ dispatch, roles }) {
 export default ChplUserInvite;
 
 ChplUserInvite.propTypes = {
-  roles: arrayOf(string).isRequired,
+  groupNames: arrayOf(string).isRequired,
   dispatch: func.isRequired,
 };

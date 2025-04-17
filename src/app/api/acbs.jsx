@@ -42,14 +42,9 @@ const usePostAcb = () => {
   });
 };
 
-const usePostCognitoUserInvitation = () => {
-  const axios = useAxios();
-  return useMutation(async (data) => axios.post('users/invitation', data));
-};
-
 const usePostUserInvitation = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('users/invite', data));
+  return useMutation(async (data) => axios.post('users/invitation', data));
 };
 
 const usePutAcb = () => {
@@ -67,7 +62,6 @@ export {
   useFetchAcbs,
   useFetchUsersAtAcb,
   usePostAcb,
-  usePostCognitoUserInvitation,
   usePostUserInvitation,
   usePutAcb,
 };

@@ -9,7 +9,7 @@ import { user as userPropType } from 'shared/prop-types';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 function ChplUsers({
-  dispatch, roles, groupNames, users, organizationId, isLoading,
+  dispatch, groupNames, users, organizationId, isLoading,
 }) {
   const { analytics } = useAnalyticsContext();
 
@@ -25,7 +25,6 @@ function ChplUsers({
       <ChplUsersView
         users={users}
         dispatch={dispatch}
-        roles={roles}
         groupNames={groupNames}
         organizationId={organizationId}
         isLoading={isLoading}
@@ -39,7 +38,6 @@ export default ChplUsers;
 ChplUsers.propTypes = {
   users: arrayOf(userPropType).isRequired,
   dispatch: func.isRequired,
-  roles: arrayOf(string).isRequired,
   groupNames: arrayOf(string).isRequired,
   organizationId: number,
   isLoading: bool,

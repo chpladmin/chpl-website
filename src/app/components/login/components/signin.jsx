@@ -17,7 +17,7 @@ import { useSnackbar } from 'notistack';
 import { setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
-import { usePostCognitoLogin } from 'api/auth';
+import { usePostLogin } from 'api/auth';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -57,7 +57,7 @@ function ChplSignin({ dispatch }) {
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePostCognitoLogin();
+  const { mutate } = usePostLogin();
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
