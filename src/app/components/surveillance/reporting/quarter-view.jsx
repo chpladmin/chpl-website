@@ -24,6 +24,8 @@ import {
   string,
 } from 'prop-types';
 
+import ChplQuarterViewListing from './quarter-view-listing';
+
 import { useFetchRelevantListings } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
 import { ChplActionBar } from 'components/action-bar';
@@ -91,7 +93,9 @@ function ChplQuarterView({
     <>
       { activeListing
         && (
-          <Typography>Listing</Typography>
+          <ChplQuarterViewListing
+            listing={activeListing}
+          />
         )}
       { !activeListing
         && (
