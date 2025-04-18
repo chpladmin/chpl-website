@@ -87,23 +87,6 @@ const states = [
       },
     },
   }, {
-    name: 'organizations.developers.developer.product.version.split',
-    url: '/split',
-    views: {
-      'view@^.^.^': 'chplVersionsSplit',
-    },
-    data: {
-      title: 'CHPL Developers - Split Version',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-    resolve: {
-      developer: (networkService, $transition$) => {
-        'ngInject';
-
-        return networkService.getDeveloperHierarchy($transition$.params().id);
-      },
-    },
-  }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizationsBridge',

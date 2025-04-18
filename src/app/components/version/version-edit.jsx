@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -30,18 +30,25 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
-  developerHeader: {
+  fixFooterSpacing:{
+    minHeight: 'calc(100vh - 350px)',
+  },
+  splittingMode: {
+    minHeight: '100%',
+  },
+  header: {
     margin: '0',
     fontSize: '1.25em',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 335px)',
   },
 });
 
 const validationSchema = yup.object({
   version: yup.string()
-    .required('Version is required'),
+    .required('Version is required')
+    .max(300, 'Version is too long'),
+  code: yup.string()
+    .length(2, 'Version Code must be exactly two characters')
+    .matches(/^[A-Za-z0-9_]*$/, 'Version Code must contain only the characters A-Z, a-z, 0-9, and _'),
 });
 
 function ChplVersionEdit(props) {
@@ -54,9 +61,7 @@ function ChplVersionEdit(props) {
     version,
   } = props;
   const { analytics } = useAnalyticsContext();
-  const { developer } = useContext(DeveloperContext);
   const [errorMessages, setErrorMessages] = useState([]);
-  const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const classes = useStyles();
   let formik;
@@ -81,6 +86,7 @@ function ChplVersionEdit(props) {
     const updatedVersion = {
       ...version,
       version: formik.values.version,
+      code: formik.values.code,
     };
     dispatch('save', updatedVersion);
   };
@@ -102,6 +108,7 @@ function ChplVersionEdit(props) {
   formik = useFormik({
     initialValues: {
       version: version.version || '',
+      code: '',
     },
     onSubmit: () => {
       save();
@@ -110,21 +117,25 @@ function ChplVersionEdit(props) {
   });
 
   return (
-    <Container className={classes.fixFooterSpacing} disableGutters maxWidth="lg">
+    <Container
+      className={ isSplitting ? classes.splittingMode : classes.fixFooterSpacing}
+      disableGutters
+      maxWidth="lg"
+    >
       <Card>
         { isSplitting
           && (
             <CardHeader
-              title="New Developer"
+              title="New Version"
               component="h5"
-              className={classes.developerHeader}
+              className={classes.header}
             />
           )}
         { !isSplitting
           && (
             <CardHeader
-              title={developer.name}
-              className={classes.developerHeader}
+              title={version.version}
+              className={classes.header}
               component="h2"
             />
           )}
@@ -140,6 +151,20 @@ function ChplVersionEdit(props) {
             error={formik.touched.version && !!formik.errors.version}
             helperText={formik.touched.version && formik.errors.version}
           />
+          { isSplitting
+            && (
+              <ChplTextField
+                id="code"
+                name="code"
+                label="Version Code"
+                required
+                value={formik.values.code}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.code && !!formik.errors.code}
+                helperText={formik.touched.code && formik.errors.code}
+              />
+            )}
         </CardContent>
       </Card>
       <ChplActionBar
@@ -147,7 +172,6 @@ function ChplVersionEdit(props) {
         isDisabled={isActionDisabled()}
         isProcessing={isProcessing}
         errors={errorMessages}
-        warnings={warnings}
       />
     </Container>
   );
