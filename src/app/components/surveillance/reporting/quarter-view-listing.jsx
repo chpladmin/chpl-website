@@ -24,6 +24,8 @@ import {
   string,
 } from 'prop-types';
 
+import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveillance';
+
 import { useFetchRelevantListings } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
 import { ChplActionBar } from 'components/action-bar';
@@ -61,7 +63,15 @@ function ChplQuarterViewListing({
 
   return (
     <>
-      <Typography>Listing</Typography>
+      <Typography>{ listing.chplProductNumber }</Typography>
+      <Typography>{ getDisplayDateFormat(listing.certificationDay) }</Typography>
+      <Typography>{ listing.certificationStatus }</Typography>
+      { listing.surveillances.map((surv) => (
+        <ChplQuarterViewListingSurveillance
+          key={surv.id}
+          surveillance={surv}
+        />
+      ))}
     </>
   );
 }
