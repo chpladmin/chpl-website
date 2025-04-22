@@ -49,21 +49,15 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
-  developerChips: {
-    margin: '4px',
-  },
-  developerHeader: {
+  header: {
     margin: '0',
     fontSize: '1.25em',
   },
-  developerStatus: {
+  statuses: {
     display: 'flex',
     flexDirection: 'column',
     padding: ' 8px',
     gap: '8px',
-  },
-  fullWidth: {
-    gridColumn: '1 / -1',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -346,20 +340,20 @@ function ChplDeveloperEdit(props) {
             <CardHeader
               title="New Developer"
               component="h5"
-              className={classes.developerHeader}
+              className={classes.header}
             />
           )}
         { !isSplitting
           && (
             <CardHeader
               title={developer.name}
-              className={classes.developerHeader}
+              className={classes.header}
               component="h2"
             />
           )}
         <CardContent className={classes.content}>
           { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-            && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth })}
+            && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidthGridRow })}
           <FormControlLabel
             control={(
               <Switch
@@ -368,15 +362,15 @@ function ChplDeveloperEdit(props) {
                 color="primary"
                 checked={formik.values.selfDeveloper}
                 onChange={formik.handleChange}
-                className={classes.fullWidth}
+                className={classes.fullWidthGridRow}
               />
             )}
             label="Self-Developer"
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
-              <Box className={classes.fullWidth}>
-                <TableContainer className={classes.fullWidth}>
+              <Box className={classes.fullWidthGridRow}>
+                <TableContainer className={classes.fullWidthGridRow}>
                   <Table className={classes.table}>
                     <TableHead>
                       <TableRow>
@@ -443,7 +437,7 @@ function ChplDeveloperEdit(props) {
                 </TableContainer>
                   { formik.values.isAdding
                     && (
-                      <Card className={classes.developerStatus}>
+                      <Card className={classes.statuses}>
                         <ChplTextField
                           select
                           id="status"
@@ -483,7 +477,7 @@ function ChplDeveloperEdit(props) {
                           helperText={formik.touched.endDate && formik.errors.endDate}
                         />
                         <ChplTextField
-                          className={classes.fullWidth}
+                          className={classes.fullWidthGridRow}
                           id="reason"
                           name="reason"
                           label="Reason"
@@ -495,7 +489,7 @@ function ChplDeveloperEdit(props) {
                           helperText={formik.touched.reason && formik.errors.reason}
                         />
                         <ButtonGroup
-                          className={classes.fullWidth}
+                          className={classes.fullWidthGridRow}
                           variant="outlined"
                         >
                           <Button
@@ -521,20 +515,20 @@ function ChplDeveloperEdit(props) {
                     )}
               </Box>
             )}
-          <Divider className={classes.fullWidth} />
+          <Divider className={classes.fullWidthGridRow} />
           { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
           { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
           { getEnhancedEditField({ key: 'email', display: 'Email' }) }
           { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
-          <Divider className={classes.fullWidth} />
+          <Divider className={classes.fullWidthGridRow} />
           { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
           { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
           { getEnhancedEditField({ key: 'city', display: 'City' }) }
           { getEnhancedEditField({ key: 'state', display: 'State' }) }
           { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
           { getEnhancedEditField({ key: 'country', display: 'Country' }) }
-          <Divider className={classes.fullWidth} />
-          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
+          <Divider className={classes.fullWidthGridRow} />
+          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidthGridRow }) }
         </CardContent>
       </Card>
       <ChplActionBar

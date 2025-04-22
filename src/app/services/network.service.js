@@ -314,10 +314,6 @@ export default class NetworkService {
     return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
 
-  splitVersion(versionObject) {
-    return this.apiPOST(`/versions/${versionObject.oldVersion.id}/split`, versionObject);
-  }
-
   updateAnnualSurveillanceReport(report) {
     return this.apiPUT('/surveillance-report/annual', report);
   }
