@@ -11,7 +11,6 @@ import {
   arrayOf,
   bool,
   func,
-  object,
   string,
 } from 'prop-types';
 
@@ -30,8 +29,6 @@ const useStyles = makeStyles({
 function ChplReport({
   acb,
   dispatch,
-  errorMessages,
-  isProcessing,
 }) {
   const annualQuery = useFetchAnnual();
   const quarterQuery = useFetchQuarters();
@@ -45,8 +42,8 @@ function ChplReport({
   const [quarterly, setQuarterly] = useState([]);
   const classes = useStyles();
   const availableYears = [...Array(new Date().getYear() + 1900 - 2019 + 1)]
-        .map((_, i) => 2019 + i)
-        .sort((a, b) => b - a);
+    .map((_, i) => 2019 + i)
+    .sort((a, b) => b - a);
 
   useEffect(() => {
     if (annualQuery.isLoading || !annualQuery.isSuccess) { return; }
@@ -68,7 +65,7 @@ function ChplReport({
     setFilteredQuarterly((quarterly).filter((r) => r.acb.id === acb.id && r.year === activeYear));
   }, [annual, quarterly, acb, activeYear]);
 
-  if (quarters.length === 0 || quarterly.length === 0 || annual.length === 0) { return <CircularProgress /> }
+  if (quarters.length === 0 || quarterly.length === 0 || annual.length === 0) { return <CircularProgress />; }
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
@@ -97,7 +94,7 @@ function ChplReport({
         dispatch({ action: 'focus' });
         break;
       default:
-        dispatch({action, payload});
+        dispatch({ action, payload });
     }
   };
 

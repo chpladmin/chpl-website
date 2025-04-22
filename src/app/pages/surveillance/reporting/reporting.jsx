@@ -4,13 +4,11 @@ import {
   Button,
   Card,
   Chip,
-  CircularProgress,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { useSnackbar } from 'notistack';
 
 import { useFetchAcbs } from 'api/acbs';
 import ChplReport from 'components/surveillance/reporting/report';
@@ -42,7 +40,6 @@ const useStyles = makeStyles({
 
 function ChplSurveillanceReporting() {
   const acbQuery = useFetchAcbs(true);
-  const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
   const [activeAcb, setActiveAcb] = useState(undefined);
   const [state, setState] = useState('');

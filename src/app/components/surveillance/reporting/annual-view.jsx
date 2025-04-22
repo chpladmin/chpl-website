@@ -1,20 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
-  arrayOf,
-  bool,
   func,
-  number,
   object,
-  string,
 } from 'prop-types';
 
 import { ChplActionBar } from 'components/action-bar';

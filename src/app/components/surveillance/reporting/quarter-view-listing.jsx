@@ -1,34 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import {
-  arrayOf,
-  bool,
-  func,
-  number,
-  object,
-  string,
-} from 'prop-types';
+import { object } from 'prop-types';
 
 import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveillance';
 
-import { useFetchRelevantListings } from 'api/surveillance';
-import ChplComplaints from 'components/surveillance/complaints/complaints';
-import { ChplActionBar } from 'components/action-bar';
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
 

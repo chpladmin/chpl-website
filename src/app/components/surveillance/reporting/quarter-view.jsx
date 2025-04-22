@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
   Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -16,12 +13,8 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {
-  arrayOf,
-  bool,
   func,
-  number,
   object,
-  string,
 } from 'prop-types';
 
 import ChplQuarterViewListing from './quarter-view-listing';
@@ -71,9 +64,9 @@ function ChplQuarterView({
 
   useEffect(() => {
     setBonusQuery([
-          `certificationBodies=${report.acb.name}`,
-          `openDuringDateRange=${report.startDay},${report.endDay}`,
-    ].sort((a, b) => a < b ? -1 : 1).join('&'));
+      `certificationBodies=${report.acb.name}`,
+      `openDuringDateRange=${report.startDay},${report.endDay}`,
+    ].sort((a, b) => (a < b ? -1 : 1)).join('&'));
   }, [report]);
 
   useEffect(() => {
@@ -85,7 +78,7 @@ function ChplQuarterView({
     if (activeListing) {
       setActiveListing(undefined);
     } else {
-    dispatch({ action });
+      dispatch({ action });
     }
   };
 
@@ -131,7 +124,7 @@ function ChplQuarterView({
                     <Typography>The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.</Typography>
                     <Typography>{ report.surveillanceActivitiesAndOutcomes }</Typography>
                     <Typography>All Surveillance Activities and Outcomes</Typography>
-                    <Typography>Please log the surveillance activities and their outcomes to the "Activities and Outcomes" sheet of this workbook.</Typography>
+                    <Typography>Please log the surveillance activities and their outcomes to the &quot;Activities and Outcomes&quot; sheet of this workbook.</Typography>
                     <Typography>Sampling and Selecting</Typography>
                     <Typography>Reactive Surveillance Summary</Typography>
                     <Typography>In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.</Typography>
@@ -148,7 +141,7 @@ function ChplQuarterView({
                     <Typography>The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):</Typography>
                     <Typography>{ report.disclosureRequirementsSummary }</Typography>
                     <Typography>Developer Complaints Log Review</Typography>
-                    <Typography>Describe the activities conducted in the past quarter related to the review of developers' complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC/ASTP. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under "Surveillance Findings".</Typography>
+                    <Typography>Describe the activities conducted in the past quarter related to the review of developers' complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC/ASTP. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under &quot;Surveillance Findings&quot;.</Typography>
                     <Typography>{ report.developerComplaintsLogReview }</Typography>
                     <Typography>Post-certification Performance of Certified Capabilities</Typography>
                     <Typography>The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.</Typography>
@@ -157,7 +150,7 @@ function ChplQuarterView({
                     <Typography>Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.</Typography>
                     <Typography>{ report.appropriateUseOfMark }</Typography>
                     <Typography>Complaints Reported to ONC-ACB</Typography>
-                    <Typography>Please log the complaints and any actions to the "Complaints" sheet of this workbook.</Typography>
+                    <Typography>Please log the complaints and any actions to the &quot;Complaints&quot; sheet of this workbook.</Typography>
                     <Typography>{`Listings with relevant surveillance for ${report.year} - ${report.quarter}`}</Typography>
                   </>
                 )}

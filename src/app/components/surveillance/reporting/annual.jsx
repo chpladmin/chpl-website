@@ -1,27 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
-  MenuItem,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
-  arrayOf,
-  bool,
   func,
   number,
   object,
-  string,
 } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import ChplAnnualView from './annual-view';
 
 import { usePostAnnualReportRequest } from 'api/surveillance';
-import { ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -36,7 +30,7 @@ function ChplAnnual({
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePostAnnualReportRequest()
+  const { mutate } = usePostAnnualReportRequest();
   const [state, setState] = useState('summary');
   const classes = useStyles();
 
@@ -56,14 +50,14 @@ function ChplAnnual({
     });
   };
 
-  const handleDispatch = ({action, payload}) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
         setState('summary');
         dispatch({ action: 'cancel' });
         break;
       default:
-        dispatch({action, payload});
+        dispatch({ action, payload });
     }
   };
 
@@ -129,4 +123,4 @@ ChplAnnual.propTypes = {
 
 ChplAnnual.defaultProps = {
   report: {},
-}
+};
