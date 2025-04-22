@@ -104,6 +104,7 @@ function ChplStandards() {
   const { enqueueSnackbar } = useSnackbar();
   const [activeStandard, setActiveStandard] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [rules, setRules] = useState([]);
   const [errors, setErrors] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
@@ -166,6 +167,7 @@ function ChplStandards() {
     switch (action) {
       case 'cancel':
         setActiveStandard(undefined);
+        setIsProcessing(false);
         display('standards.viewall.disabled');
         hide('standards.viewall');
         hide('standards.add.disabled');
@@ -173,16 +175,19 @@ function ChplStandards() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteStandard.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('Standard Deleted', {
               variant: 'success',
             });
             setActiveStandard(undefined);
+            setIsProcessing(false);
             display('standards.viewall.disabled');
             hide('standards.viewall');
           },
           onError: (error) => {
+            setIsProcessing(false);
             setErrors(error.response.data.errorMessages);
           },
         });
@@ -195,6 +200,7 @@ function ChplStandards() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.id) {
           putStandard.mutate(payload, {
             onSuccess: () => {
@@ -202,11 +208,13 @@ function ChplStandards() {
                 variant: 'success',
               });
               setActiveStandard(undefined);
+              setIsProcessing(false);
               display('standards.viewall.disabled');
               hide('standards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
+              setIsProcessing(false);
             },
           });
         } else {
@@ -216,10 +224,12 @@ function ChplStandards() {
                 variant: 'success',
               });
               setActiveStandard(undefined);
+              setIsProcessing(false);
               display('standards.viewall.disabled');
               hide('standards.viewall');
             },
             onError: (error) => {
+              setIsProcessing(false);
               setErrors(error.response.data?.errorMessages);
             },
           });
@@ -238,6 +248,7 @@ function ChplStandards() {
             standard={activeStandard}
             dispatch={handleDispatch}
             criterionOptions={criterionOptions}
+            isProcessing={isProcessing}
             rules={rules}
             errors={errors}
           />
