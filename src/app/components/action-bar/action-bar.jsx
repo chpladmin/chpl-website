@@ -325,8 +325,9 @@ function ChplActionBar(props) {
                   variant="contained"
                   className={`${classes.actionBarButton} ${classes.deleteButton}`}
                   onClick={() => confirmDelete()}
-                  disabled={isDeleteDisabled}
+                  disabled={isDeleteDisabled || isProcessing}
                 >
+                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
                   Delete
                   <DeleteOutlinedIcon
                     className={classes.iconSpacing}
