@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -35,9 +35,21 @@ const useFetchRelevantListings = ({ id }) => {
   });
 };
 
+const usePostAnnualReportRequest = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post(`surveillance-report/export/annual/${data.id}`, {}));
+};
+
+const usePostQuarterReportRequest = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post(`surveillance-report/export/quarter/${data.id}`, {}));
+};
+
 export {
   useFetchAnnual,
   useFetchQuarters,
   useFetchQuarterly,
   useFetchRelevantListings,
+  usePostAnnualReportRequest,
+  usePostQuarterReportRequest,
 };

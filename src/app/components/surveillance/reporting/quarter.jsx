@@ -15,9 +15,11 @@ import {
   object,
   string,
 } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import ChplQuarterView from './quarter-view';
 
+import { usePostQuarterReportRequest } from 'api/surveillance';
 import { ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -33,12 +35,30 @@ function ChplQuarter({
   report,
 }) {
   const { hasAnyRole } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = usePostQuarterReportRequest()
   const [state, setState] = useState('summary');
   const classes = useStyles();
 
   useEffect(() => {
     console.log(report, year);
   }, [report, year]);
+
+  const download = () => {
+    mutate(report, {
+      onSuccess: (response) => {
+        enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
+          variant: 'success',
+        });
+      },
+      onError: (error) => {
+        const message = error.response.data.error;
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
+  };
 
   const handleDispatch = ({action, payload}) => {
     switch (action) {
@@ -51,7 +71,7 @@ function ChplQuarter({
     }
   };
 
-  const viewQuarter = () => {
+  const view = () => {
     setState('view');
     dispatch({ action: `focus-quarter-${quarter.name}` });
   };
@@ -81,12 +101,16 @@ function ChplQuarter({
                     { hasAnyRole(['chpl-admin', 'chpl-onc']) // remove admin before deployment
                       && (
                         <Button
-                          onClick={viewQuarter}
+                          onClick={view}
                         >
                           View
                         </Button>
                       )}
-                    <Button>Download</Button>
+                    <Button
+                      onClick={download}
+                    >
+                      Download
+                    </Button>
                   </>
                 )}
               { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
