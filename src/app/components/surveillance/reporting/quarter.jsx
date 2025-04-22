@@ -19,7 +19,7 @@ import { useSnackbar } from 'notistack';
 
 import ChplQuarterView from './quarter-view';
 
-import { usePostQuarterReportRequest } from 'api/surveillance';
+import { usePostQuarterlyReportRequest } from 'api/surveillance';
 import { ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -36,7 +36,7 @@ function ChplQuarter({
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePostQuarterReportRequest()
+  const { mutate } = usePostQuarterlyReportRequest()
   const [state, setState] = useState('summary');
   const classes = useStyles();
 

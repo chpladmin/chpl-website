@@ -40,9 +40,9 @@ const usePostAnnualReportRequest = () => {
   return useMutation(async (data) => axios.post(`surveillance-report/export/annual/${data.id}`, {}));
 };
 
-const usePostQuarterReportRequest = () => {
+const usePostQuarterlyReportRequest = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post(`surveillance-report/export/quarter/${data.id}`, {}));
+  return useMutation(async (data) => axios.post(`surveillance-report/export/quarterly/${data.id}`, {}));
 };
 
 export {
@@ -51,5 +51,5 @@ export {
   useFetchQuarterly,
   useFetchRelevantListings,
   usePostAnnualReportRequest,
-  usePostQuarterReportRequest,
+  usePostQuarterlyReportRequest,
 };
