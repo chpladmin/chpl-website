@@ -40,10 +40,6 @@ function ChplAnnual({
   const [state, setState] = useState('summary');
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log('annual', report, year);
-  }, [report, year]);
-
   const download = () => {
     mutate(report, {
       onSuccess: (response) => {
@@ -97,7 +93,7 @@ function ChplAnnual({
                       && (
                         <Button>Edit</Button>
                       )}
-                    { hasAnyRole(['chpl-admin', 'chpl-onc']) // remove admin before deployment
+                    { hasAnyRole(['chpl-onc'])
                       && (
                         <Button
                           onClick={view}

@@ -30,14 +30,14 @@ const states = [{
   },
 }, {
   name: 'surveillance.reporting',
-  url: '/reporting',
+  url: '/reporting-v2',
   component: 'chplSurveillanceReportingBridge',
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
   },
 }, {
   name: 'surveillance.reporting-old',
-  url: '/reporting-old',
+  url: '/reporting',
   component: 'chplSurveillanceReporting',
   resolve: {
     acbs: (networkService) => {

@@ -40,10 +40,6 @@ function ChplQuarter({
   const [state, setState] = useState('summary');
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log(report, year);
-  }, [report, year]);
-
   const download = () => {
     mutate(report, {
       onSuccess: (response) => {
@@ -98,7 +94,7 @@ function ChplQuarter({
                       && (
                         <Button>Edit</Button>
                       )}
-                    { hasAnyRole(['chpl-admin', 'chpl-onc']) // remove admin before deployment
+                    { hasAnyRole(['chpl-onc'])
                       && (
                         <Button
                           onClick={view}
