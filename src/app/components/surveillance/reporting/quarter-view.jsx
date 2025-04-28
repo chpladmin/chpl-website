@@ -66,6 +66,12 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
+  responseBox: {
+    padding: '16px',
+    backgroundColor: '#eee',
+    border: '1px solid #afafaf',
+    borderRadius: '4px',
+  },
   reportInfoCard: {
     padding: '8px',
     marginBottom: '16px',
@@ -156,7 +162,7 @@ function ChplQuarterView({
                 <Box className={classes.summaryGroup}>
                   <Typography style={{ fontWeight: 'bold' }} variant="h6">Randomized Surveillance – Selection Methods</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.</Typography>
-                  <Typography>{report.surveillanceActivitiesAndOutcomes}</Typography>
+                  <Typography className={classes.responseBox}>{report.surveillanceActivitiesAndOutcomes}</Typography>
                   <Typography style={{ paddingTop: '4px' }} variant="body2" gutterbottom>
                     All Surveillance Activities and Outcomes, please log the surveillance activities and their outcomes to the &quot; Activities and Outcomes&quot; sheet of this workbook.
                   </Typography>
@@ -166,12 +172,12 @@ function ChplQuarterView({
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Reactive Surveillance Summary</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.</Typography>
-                  <Typography>{report.reactiveSurveillanceSummary}</Typography>
+                  <Typography className={classes.responseBox}>{report.reactiveSurveillanceSummary}</Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>ICS Surveillance Summary</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>In order to meet requirements to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance. Please outline the number of ICS-related surveillances conducted, the method to surveil these products and the approach to include prioritized elements as outlined in the Surveillance Resource.</Typography>
-                  <Typography style={{ maxHeight: '500px', overflowY: 'auto' }}>{report.icsSurveillanceSummary}</Typography>
+                  <Typography className={classes.responseBox} style={{ maxHeight: '500px', overflowY: 'auto' }}>{report.icsSurveillanceSummary}</Typography>
                 </Box>
                 <Divider />
                 <Box className={classes.summaryGroup}>
@@ -181,36 +187,36 @@ function ChplQuarterView({
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Prioritized Criteria</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>Please describe which prioritized criteria were surveilled, how and with what frequency. Summarize the approach taken to conduct surveillance on these prioritized criteria.</Typography>
-                  <Typography>{report.prioritizedElementSummary}</Typography>
+                  <Typography className={classes.responseBox}>{report.prioritizedElementSummary}</Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Disclosure Requirements Summary</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):</Typography>
-                  <Typography>{report.disclosureRequirementsSummary}</Typography>
+                  <Typography className={classes.responseBox}>{report.disclosureRequirementsSummary}</Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Developer Complaints Log Review</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>
                     Describe the activities conducted in the past quarter related to the review of developers&lsquo; complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC/ASTP. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under &quot;Surveillance Findings&quot;.
                   </Typography>
-                  <Typography>{report.developerComplaintsLogReview}</Typography>
+                  <Typography className={classes.responseBox}>{report.developerComplaintsLogReview}</Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Post-certification Performance of Certified Capabilities</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.</Typography>
-                  <Typography>{report.postCertificationPerformanceOfCertifiedCapabilities}</Typography>
+                  <Typography className={classes.responseBox}>{report.postCertificationPerformanceOfCertifiedCapabilities}</Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Appropriate Use of Mark</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.</Typography>
-                  <Typography>{report.appropriateUseOfMark}</Typography>
+                  <Typography className={classes.responseBox}>{report.appropriateUseOfMark}</Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterbottom>Complaints Reported to ONC-ACB</Typography>
                   <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>
                     Please log the complaints and any actions to the &quot;Complaints&quot; sheet of this workbook.
                   </Typography>
-                  <Typography>{`Listings with relevant surveillance for ${report.year} - ${report.quarter}`}</Typography>
+                  <Typography className={classes.responseBox}>{`Listings with relevant surveillance for ${report.year} - ${report.quarter}`}</Typography>
                 </Box>
                 <Divider />
                 <Typography variant="body2">
