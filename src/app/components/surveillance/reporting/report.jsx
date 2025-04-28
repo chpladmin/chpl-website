@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -20,10 +21,17 @@ import ChplQuarter from './quarter';
 import { useFetchAnnual, useFetchQuarters, useFetchQuarterly } from 'api/surveillance';
 import { ChplTextField } from 'components/util';
 import { acb as acbPropType } from 'shared/prop-types';
-import { theme, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  reportCardContainer: {
+    marginTop: '-32px',
+    zIndex: 1,
+  },
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 100px)',
+  },
 });
 
 function ChplReport({
@@ -99,26 +107,37 @@ function ChplReport({
   };
 
   return (
-    <Card>
-      <CardHeader title={acb.name} />
-      <CardContent>
-        { state === ''
-          && (
-            <ChplTextField
-              select
-              id="active-year"
-              name="activeYear"
-              label="Active Year"
-              value={activeYear}
-              onChange={(event) => setActiveYear(event.target.value)}
-            >
-              { availableYears
-                .map((item) => (
-                  <MenuItem value={item} key={item}>{item}</MenuItem>
-                ))}
-            </ChplTextField>
-          )}
-        { quarters.filter((q) => state === '' || state === `focus-quarter-${q.name}`)
+    <Box className={classes.fixFooterSpacing}>
+      {state === ''
+        && (
+          <Card>
+            <CardHeader title={acb.name} />
+            <CardContent>
+              <ChplTextField
+                select
+                id="active-year"
+                name="activeYear"
+                label="Active Year"
+                value={activeYear}
+                onChange={(event) => setActiveYear(event.target.value)}
+              >
+                {availableYears
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                  ))}
+              </ChplTextField>
+            </CardContent>
+          </Card>
+        )}
+      <Box
+        display="grid"
+        gridTemplateColumns={state === '' ? `repeat(auto-fill, minmax(200px, 1fr))` : `repeat(1, 1fr)`}
+        gridGap={8}
+        alignItems="stretch"
+        justifyItems="stretch"
+        mt={4}
+      >
+        {quarters.filter((q) => state === '' || state === `focus-quarter-${q.name}`)
           .map((q) => (
             <ChplQuarter
               dispatch={handleDispatch}
@@ -126,18 +145,19 @@ function ChplReport({
               quarter={q}
               report={filteredQuarterly.find((r) => r.quarter === q.name)}
               year={activeYear}
+              style={{ minWidth: '200px', minHeight: '100px' }}
             />
           ))}
-        { (state === '' || state === 'focus-annual')
+        {(state === '' || state === 'focus-annual')
           && (
             <ChplAnnual
               dispatch={handleDispatch}
               report={filteredAnnual}
               year={activeYear}
-            />
+              style={{ minWidth: '200px', minHeight: '100px' }} />
           )}
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 }
 
