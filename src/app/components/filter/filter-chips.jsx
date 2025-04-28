@@ -93,7 +93,7 @@ function ChplFilterChips() {
     filterContext.dispatch('toggleOperator', f);
   };
 
-  const toggleDevelopersListingsOperatorOption = (f) => {
+  const toggleDevelopersListingsCriteriaOption = (f) => {
     if (filterContext.analytics) {
       eventTrack({
         ...filterContext.analytics,
@@ -101,7 +101,7 @@ function ChplFilterChips() {
         label: f.getFilterDisplay(f),
       });
     }
-    filterContext.dispatch('toggleDevelopersListingsOperatorOption', f);
+    filterContext.dispatch('toggleDevelopersListingsCriteriaOption', f);
   };
 
   const toggleShowAll = (f) => {
@@ -148,10 +148,10 @@ function ChplFilterChips() {
                 <FormControlLabel
                   control={(
                     <Switch
-                      id={`${f.key}-developer-operator-chips-toggle`}
+                      id={`${f.key}-developers-listings-criteria-option-chips-toggle`}
                       color="primary"
                       checked={f.developersListingsCriteriaOption === 'all'}
-                      onChange={() => toggleDevelopersListingsOperatorOption(f)}
+                      onChange={() => toggleDevelopersListingsCriteriaOption(f)}
                     />
                   )}
                   label={f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}

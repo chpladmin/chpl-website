@@ -95,7 +95,7 @@ const toggleFilterOperator = (category, setFilters) => {
   });
 };
 
-const toggleFilterDevelopersListingsOperatorOption = (category, setFilters) => {
+const toggleFilterDevelopersListingsCriteriaOption = (category, setFilters) => {
   setFilters((prev) => {
     const filter = prev.find((f) => f.key === category.key);
     const updatedFilter = {
@@ -172,7 +172,7 @@ function FilterProvider(props) {
   const [filters, setFilters] = useState([]);
   const [hasSearched, setHasSearched] = useStorage(`${storageKey}-hasSearched`, false);
   const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
-  const [developersListingsCriteriaOptions, setDevelopersListingsOperatorOptions] = useStorage(`${storageKey}-developersListingsCriteriaOptions`, {});
+  const [developersListingsCriteriaOptions, setDevelopersListingsCriteriaOptions] = useStorage(`${storageKey}-developersListingsCriteriaOptions`, {});
   const { analytics } = useAnalyticsContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
@@ -205,7 +205,7 @@ function FilterProvider(props) {
         ...o,
         [filter.operatorKey]: filter.operator,
       }), previous));
-    setDevelopersListingsOperatorOptions((previous) => filters
+    setDevelopersListingsCriteriaOptions((previous) => filters
       .filter((filter) => filter.developersListingsCriteriaOptionKey)
       .reduce((o, filter) => ({
         ...o,
@@ -278,8 +278,8 @@ function FilterProvider(props) {
       case 'toggleOperator':
         toggleFilterOperator(category, setFilters);
         break;
-      case 'toggleDevelopersListingsOperatorOption':
-        toggleFilterDevelopersListingsOperatorOption(category, setFilters);
+      case 'toggleDevelopersListingsCriteriaOption':
+        toggleFilterDevelopersListingsCriteriaOption(category, setFilters);
         break;
       case 'toggleShowAll':
         toggleShowAll(filters, category, setFilters);

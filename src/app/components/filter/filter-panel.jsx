@@ -200,7 +200,7 @@ function ChplFilterPanel() {
     filterContext.dispatch('toggleOperator', f);
   };
 
-  const toggleDevelopersListingsOperatorOption = (f) => {
+  const toggleDevelopersListingsCriteriaOption = (f) => {
     if (filterContext.analytics) {
       eventTrack({
         ...filterContext.analytics,
@@ -208,7 +208,7 @@ function ChplFilterPanel() {
         label: f.getFilterDisplay(f),
       });
     }
-    filterContext.dispatch('toggleDevelopersListingsOperatorOption', f);
+    filterContext.dispatch('toggleDevelopersListingsCriteriaOption', f);
   };
 
   return (
@@ -333,10 +333,10 @@ function ChplFilterPanel() {
                           <FormControlLabel
                             control={(
                               <Switch
-                                id={`${activeCategory.key}-developer-operator-panel-toggle`}
+                                id={`${activeCategory.key}-developers-listings-criteria-option-panel-toggle`}
                                 color="primary"
                                 checked={activeCategory.developersListingsCriteriaOption === 'all'}
-                                onChange={() => toggleDevelopersListingsOperatorOption(activeCategory)}
+                                onChange={() => toggleDevelopersListingsCriteriaOption(activeCategory)}
                               />
                             )}
                             label={activeCategory.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}
