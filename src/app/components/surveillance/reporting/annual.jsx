@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
-  CardHeader,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
 import {
   func,
@@ -12,16 +12,14 @@ import {
   object,
 } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import {
+  ArrowDownwardSharp, Edit, RemoveRedEye,
+} from '@material-ui/icons';
 
 import ChplAnnualView from './annual-view';
 
 import { usePostAnnualReportRequest } from 'api/surveillance';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-});
 
 function ChplAnnual({
   year,
@@ -32,7 +30,6 @@ function ChplAnnual({
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostAnnualReportRequest();
   const [state, setState] = useState('summary');
-  const classes = useStyles();
 
   const download = () => {
     mutate(report, {
@@ -68,45 +65,62 @@ function ChplAnnual({
 
   return (
     <Card>
-      <CardHeader title={`${year} Summary`} />
-      <CardContent>
-        { state === 'view'
+      <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography fontWeight="bold" variant="h4"> Annual Summary</Typography>
+        <Typography style={{ padding: 2 }} variant="body2">{year}</Typography>
+        {state === 'view'
           && (
             <ChplAnnualView
               report={report}
               dispatch={handleDispatch}
             />
           )}
-        { state === 'summary'
+        {state === 'summary'
           && (
-            <>
-              { report.id
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {report.id
                 && (
-                  <>
-                    { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-                      && (
-                        <Button>Edit</Button>
-                      )}
-                    { hasAnyRole(['chpl-onc'])
+                  <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
+                    {hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                       && (
                         <Button
+                          color="primary"
+                          size="small"
+                          endIcon={<Edit />}
+                        >
+                          Edit
+                        </Button>
+                      )}
+                    {hasAnyRole(['chpl-onc'])
+                      && (
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          size="small"
+                          style={{ marginRight: '4px' }}
                           onClick={view}
+                          endIcon={<RemoveRedEye />}
+
                         >
                           View
                         </Button>
                       )}
                     <Button
+                      color="primary"
+                      size="small"
                       onClick={download}
+                      endIcon={<ArrowDownwardSharp />}
+
                     >
                       Download
                     </Button>
-                  </>
+                  </Box>
                 )}
-              { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+              {!report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                 && (
                   <Button>Initiate</Button>
                 )}
-            </>
+            </Box>
           )}
       </CardContent>
     </Card>
