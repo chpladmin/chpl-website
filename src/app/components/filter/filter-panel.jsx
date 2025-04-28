@@ -204,7 +204,7 @@ function ChplFilterPanel() {
     if (filterContext.analytics) {
       eventTrack({
         ...filterContext.analytics,
-        event: `Set Active/All Listings Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'Any Listings'}`,
+        event: `Set Active/All Listings Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}`,
         label: f.getFilterDisplay(f),
       });
     }
@@ -335,7 +335,7 @@ function ChplFilterPanel() {
                               <Switch
                                 id={`${activeCategory.key}-developer-operator-panel-toggle`}
                                 color="primary"
-                                checked={activeCategory.developersListingsCriteriaOption === 'active'}
+                                checked={activeCategory.developersListingsCriteriaOption === 'all'}
                                 onChange={() => toggleDevelopersListingsOperatorOption(activeCategory)}
                               />
                             )}

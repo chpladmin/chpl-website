@@ -97,7 +97,7 @@ function ChplFilterChips() {
     if (filterContext.analytics) {
       eventTrack({
         ...filterContext.analytics,
-        event: `Set Active/All Listing Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'Any Listings'}`,
+        event: `Set Active/All Listing Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}`,
         label: f.getFilterDisplay(f),
       });
     }

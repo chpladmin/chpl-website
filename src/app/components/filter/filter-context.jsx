@@ -100,7 +100,7 @@ const toggleFilterDevelopersListingsOperatorOption = (category, setFilters) => {
     const filter = prev.find((f) => f.key === category.key);
     const updatedFilter = {
       ...filter,
-      developersListingsCriteriaOption: filter.developersListingsCriteriaOption === 'active' ? 'any' : 'active',
+      developersListingsCriteriaOption: filter.developersListingsCriteriaOption === 'active' ? 'all' : 'active',
     };
     return prev.filter((f) => f.key !== category.key).concat(updatedFilter);
   });
