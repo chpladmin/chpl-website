@@ -19,7 +19,7 @@ const FilterContext = createContext();
 const getDateDisplay = (value) => `${value.value}: ${value.selected ? getDisplayDateFormat(value.selected) : 'No date selected'}`;
 
 const defaultFilter = {
-  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}${filter.operatorKey ? `&${filter.operatorKey}=${filter.operator}` : ''}`,
+  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}${filter.operatorKey ? `&${filter.operatorKey}=${filter.operator}` : ''}${filter.developerOperatorKey ? `&${filter.developerOperatorKey}=${filter.developerOperator}` : ''}`,
   getFilterDisplay: (filter) => filter.display,
   getValueDisplay: (value) => value.display,
   getLongValueDisplay: (value) => value.longDisplay || value.display,
@@ -33,6 +33,7 @@ const clearFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
     operator: filter.operatorKey ? 'or' : undefined,
+    developerOperator: filter.developerOperatorKey ? 'or' : undefined,
     values: filter.values.map((v) => ({
       ...v,
       selected: false,
@@ -44,6 +45,7 @@ const resetFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
     operator: filter.operatorKey ? 'or' : undefined,
+    developerOperator: filter.developerOperatorKey ? 'or' : undefined,
     values: filter.values.map((v) => ({
       ...v,
       selected: v.default,
@@ -93,6 +95,17 @@ const toggleFilterOperator = (category, setFilters) => {
   });
 };
 
+const toggleFilterDeveloperOperator = (category, setFilters) => {
+  setFilters((prev) => {
+    const filter = prev.find((f) => f.key === category.key);
+    const updatedFilter = {
+      ...filter,
+      developerOperator: filter.developerOperator === 'active' ? 'any' : 'active',
+    };
+    return prev.filter((f) => f.key !== category.key).concat(updatedFilter);
+  });
+};
+
 const toggleShowAll = (filters, category, setFilters) => {
   const filter = filters.find((f) => f.key === category.key);
   const updatedFilter = {
@@ -120,6 +133,7 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
         updatedFilters = prev.map((f) => ({
           ...f,
           operator: f.operatorKey ? 'or' : undefined,
+          developerOperator: f.developerOperatorKey ? 'or' : undefined,
           values: f.values.map((v) => ({
             ...v,
             selected: false,
@@ -158,6 +172,7 @@ function FilterProvider(props) {
   const [filters, setFilters] = useState([]);
   const [hasSearched, setHasSearched] = useStorage(`${storageKey}-hasSearched`, false);
   const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
+  const [developerOperators, setDeveloperOperators] = useStorage(`${storageKey}-developerOperators`, {});
   const { analytics } = useAnalyticsContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
@@ -173,6 +188,7 @@ function FilterProvider(props) {
       ...filter,
       required: !!filter.required,
       operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
+      developerOperator: filter.developerOperatorKey ? (storageKey && developerOperators[filter.developerOperatorKey] ? developerOperators[filter.developerOperatorKey] : 'or') : undefined,
       values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,
@@ -188,6 +204,12 @@ function FilterProvider(props) {
       .reduce((o, filter) => ({
         ...o,
         [filter.operatorKey]: filter.operator,
+      }), previous));
+    setDeveloperOperators((previous) => filters
+      .filter((filter) => filter.developerOperatorKey)
+      .reduce((o, filter) => ({
+        ...o,
+        [filter.developerOperatorKey]: filter.developerOperator,
       }), previous));
     setValues((previous) => filters
       .reduce((v, filter) => ({
@@ -235,6 +257,7 @@ function FilterProvider(props) {
         setFilters((prev) => prev.map((f) => ({
           ...f,
           operator: f.operatorKey ? 'or' : undefined,
+          developerOperator: f.developerOperatorKey ? 'or' : undefined,
           values: f.values.map((v) => ({
             ...v,
             selected: v.default,
@@ -254,6 +277,9 @@ function FilterProvider(props) {
         break;
       case 'toggleOperator':
         toggleFilterOperator(category, setFilters);
+        break;
+      case 'toggleDeveloperOperator':
+        toggleFilterDeveloperOperator(category, setFilters);
         break;
       case 'toggleShowAll':
         toggleShowAll(filters, category, setFilters);

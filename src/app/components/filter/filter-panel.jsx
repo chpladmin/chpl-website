@@ -200,6 +200,17 @@ function ChplFilterPanel() {
     filterContext.dispatch('toggleOperator', f);
   };
 
+  const toggleDeveloperOperator = (f) => {
+    if (filterContext.analytics) {
+      eventTrack({
+        ...filterContext.analytics,
+        event: `Set Active/All Listings Filter to ${f.developerOperator === 'active' ? 'Active Listings' : 'Any Listings'}`,
+        label: f.getFilterDisplay(f),
+      });
+    }
+    filterContext.dispatch('toggleDeveloperOperator', f);
+  };
+
   return (
     <>
       <Button
@@ -315,6 +326,20 @@ function ChplFilterPanel() {
                               />
                             )}
                             label={activeCategory.operator === 'and' ? 'All' : 'Any'}
+                          />
+                        )}
+                      { activeCategory.developerOperatorKey
+                        && (
+                          <FormControlLabel
+                            control={(
+                              <Switch
+                                id={`${activeCategory.key}-developer-operator-panel-toggle`}
+                                color="primary"
+                                checked={activeCategory.developerOperator === 'active'}
+                                onChange={() => toggleDeveloperOperator(activeCategory)}
+                              />
+                            )}
+                            label={activeCategory.developerOperator === 'active' ? 'Active Listings' : 'All Listings'}
                           />
                         )}
                       <ButtonGroup

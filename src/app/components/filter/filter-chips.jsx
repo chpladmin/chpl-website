@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
 const truncate = (str, n, useWordBoundary) => {
   if (str.length <= n) { return str; }
   const subString = str.slice(0, n - 1);
-  return (useWordBoundary ? subString.slice(0, subString.lastIndexOf(" ")) : subString) + "...";
+  return `${useWordBoundary ? subString.slice(0, subString.lastIndexOf(' ')) : subString}...`;
 };
 
 const maxLengthForChip = 40;
@@ -93,6 +93,17 @@ function ChplFilterChips() {
     filterContext.dispatch('toggleOperator', f);
   };
 
+  const toggleDeveloperOperator = (f) => {
+    if (filterContext.analytics) {
+      eventTrack({
+        ...filterContext.analytics,
+        event: `Set Active/All Listing Filter to ${f.developerOperator === 'active' ? 'Active Listings' : 'Any Listings'}`,
+        label: f.getFilterDisplay(f),
+      });
+    }
+    filterContext.dispatch('toggleDeveloperOperator', f);
+  };
+
   const toggleShowAll = (f) => {
     if (filterContext.analytics) {
       eventTrack({
@@ -130,6 +141,20 @@ function ChplFilterChips() {
                     />
                   )}
                   label={f.operator === 'and' ? 'All' : 'Any'}
+                />
+              )}
+            { f.developerOperatorKey
+              && (
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      id={`${f.key}-developer-operator-chips-toggle`}
+                      color="primary"
+                      checked={f.developerOperator === 'active'}
+                      onChange={() => toggleDeveloperOperator(f)}
+                    />
+                  )}
+                  label={f.developerOperator === 'active' ? 'Active Listings' : 'All Listings'}
                 />
               )}
             {f.values
