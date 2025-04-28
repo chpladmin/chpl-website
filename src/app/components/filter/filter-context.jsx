@@ -33,7 +33,7 @@ const clearFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
     operator: filter.operatorKey ? 'or' : undefined,
-    developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? 'or' : undefined,
+    developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? 'active' : undefined,
     values: filter.values.map((v) => ({
       ...v,
       selected: false,
@@ -45,7 +45,7 @@ const resetFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
     operator: filter.operatorKey ? 'or' : undefined,
-    developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? 'or' : undefined,
+    developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? 'active' : undefined,
     values: filter.values.map((v) => ({
       ...v,
       selected: v.default,
@@ -133,7 +133,7 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
         updatedFilters = prev.map((f) => ({
           ...f,
           operator: f.operatorKey ? 'or' : undefined,
-          developersListingsCriteriaOption: f.developersListingsCriteriaOptionKey ? 'or' : undefined,
+          developersListingsCriteriaOption: f.developersListingsCriteriaOptionKey ? 'active' : undefined,
           values: f.values.map((v) => ({
             ...v,
             selected: false,
@@ -188,7 +188,7 @@ function FilterProvider(props) {
       ...filter,
       required: !!filter.required,
       operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
-      developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? (storageKey && developersListingsCriteriaOptions[filter.developersListingsCriteriaOptionKey] ? developersListingsCriteriaOptions[filter.developersListingsCriteriaOptionKey] : 'or') : undefined,
+      developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? (storageKey && developersListingsCriteriaOptions[filter.developersListingsCriteriaOptionKey] ? developersListingsCriteriaOptions[filter.developersListingsCriteriaOptionKey] : 'active') : undefined,
       values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,
@@ -257,7 +257,7 @@ function FilterProvider(props) {
         setFilters((prev) => prev.map((f) => ({
           ...f,
           operator: f.operatorKey ? 'or' : undefined,
-          developersListingsCriteriaOption: f.developersListingsCriteriaOptionKey ? 'or' : undefined,
+          developersListingsCriteriaOption: f.developersListingsCriteriaOptionKey ? 'active' : undefined,
           values: f.values.map((v) => ({
             ...v,
             selected: v.default,

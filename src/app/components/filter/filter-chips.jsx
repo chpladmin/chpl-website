@@ -150,7 +150,7 @@ function ChplFilterChips() {
                     <Switch
                       id={`${f.key}-developer-operator-chips-toggle`}
                       color="primary"
-                      checked={f.developersListingsCriteriaOption === 'active'}
+                      checked={f.developersListingsCriteriaOption === 'all'}
                       onChange={() => toggleDevelopersListingsOperatorOption(f)}
                     />
                   )}
