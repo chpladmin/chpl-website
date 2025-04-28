@@ -108,7 +108,7 @@ function ChplDevelopersPage() {
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
       .concat({
         ...certificationCriteriaIds,
-        developerOperatorKey: 'developerOperatorKey',
+        developersListingsCriteriaOptionKey: 'developersListingsCriteriaOption',
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);

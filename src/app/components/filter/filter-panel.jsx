@@ -200,15 +200,15 @@ function ChplFilterPanel() {
     filterContext.dispatch('toggleOperator', f);
   };
 
-  const toggleDeveloperOperator = (f) => {
+  const toggleDevelopersListingsOperatorOption = (f) => {
     if (filterContext.analytics) {
       eventTrack({
         ...filterContext.analytics,
-        event: `Set Active/All Listings Filter to ${f.developerOperator === 'active' ? 'Active Listings' : 'Any Listings'}`,
+        event: `Set Active/All Listings Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'Any Listings'}`,
         label: f.getFilterDisplay(f),
       });
     }
-    filterContext.dispatch('toggleDeveloperOperator', f);
+    filterContext.dispatch('toggleDevelopersListingsOperatorOption', f);
   };
 
   return (
@@ -328,18 +328,18 @@ function ChplFilterPanel() {
                             label={activeCategory.operator === 'and' ? 'All' : 'Any'}
                           />
                         )}
-                      { activeCategory.developerOperatorKey
+                      { activeCategory.developersListingsCriteriaOptionKey
                         && (
                           <FormControlLabel
                             control={(
                               <Switch
                                 id={`${activeCategory.key}-developer-operator-panel-toggle`}
                                 color="primary"
-                                checked={activeCategory.developerOperator === 'active'}
-                                onChange={() => toggleDeveloperOperator(activeCategory)}
+                                checked={activeCategory.developersListingsCriteriaOption === 'active'}
+                                onChange={() => toggleDevelopersListingsOperatorOption(activeCategory)}
                               />
                             )}
-                            label={activeCategory.developerOperator === 'active' ? 'Active Listings' : 'All Listings'}
+                            label={activeCategory.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}
                           />
                         )}
                       <ButtonGroup

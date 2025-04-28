@@ -93,15 +93,15 @@ function ChplFilterChips() {
     filterContext.dispatch('toggleOperator', f);
   };
 
-  const toggleDeveloperOperator = (f) => {
+  const toggleDevelopersListingsOperatorOption = (f) => {
     if (filterContext.analytics) {
       eventTrack({
         ...filterContext.analytics,
-        event: `Set Active/All Listing Filter to ${f.developerOperator === 'active' ? 'Active Listings' : 'Any Listings'}`,
+        event: `Set Active/All Listing Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'Any Listings'}`,
         label: f.getFilterDisplay(f),
       });
     }
-    filterContext.dispatch('toggleDeveloperOperator', f);
+    filterContext.dispatch('toggleDevelopersListingsOperatorOption', f);
   };
 
   const toggleShowAll = (f) => {
@@ -143,18 +143,18 @@ function ChplFilterChips() {
                   label={f.operator === 'and' ? 'All' : 'Any'}
                 />
               )}
-            { f.developerOperatorKey
+            { f.developersListingsCriteriaOptionKey
               && (
                 <FormControlLabel
                   control={(
                     <Switch
                       id={`${f.key}-developer-operator-chips-toggle`}
                       color="primary"
-                      checked={f.developerOperator === 'active'}
-                      onChange={() => toggleDeveloperOperator(f)}
+                      checked={f.developersListingsCriteriaOption === 'active'}
+                      onChange={() => toggleDevelopersListingsOperatorOption(f)}
                     />
                   )}
-                  label={f.developerOperator === 'active' ? 'Active Listings' : 'All Listings'}
+                  label={f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}
                 />
               )}
             {f.values
