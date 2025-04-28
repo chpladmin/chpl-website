@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 13.37.0
+_28 April 2025_
+
+### Features
+* Allow ASTP to edit Change Requests pending Developer action
+* Enable sending messaging report to "additional recipients"
+* Update Developer Attestations report with a details chart to show status for individual Developers
+ 
+### User Interface Updates
+* Add user email to 'Acting Organization' Change Request details
+* Update Version split to modern UX
+
+### Bug Fixes
+* Update Developer users on edit immediately
+
+---
+
 ## Version 13.36.0
 _14 April 2025_
 

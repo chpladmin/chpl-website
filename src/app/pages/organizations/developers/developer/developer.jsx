@@ -14,9 +14,10 @@ import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplVersionEdit from './version-edit';
+import ChplVersionSplit from './version-split';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
-import { usePostCreateInvitation, usePostCreateOldInvitation } from 'api/users';
+import { usePostCreateInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import { getAngularService } from 'services/angular-react-helper';
@@ -34,7 +35,6 @@ function ChplDeveloperPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
   const { mutate: deleteUserFromDeveloper } = useDeleteUserFromDeveloper();
   const { mutate: createInvitation } = usePostCreateInvitation();
-  const { mutate: createOldInvitation } = usePostCreateOldInvitation();
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [developer, setDeveloper] = useState(undefined);
   const [version, setVersion] = useState(undefined);
@@ -67,7 +67,7 @@ function ChplDeveloperPage({ id }) {
         setState(action);
         setVersion({ version: payload.version, productId: payload.productId });
         break;
-      case 'cognito-invite':
+      case 'invite':
         createInvitation({
           ...payload,
           organizationId: developer.id,
@@ -83,26 +83,6 @@ function ChplDeveloperPage({ id }) {
             });
           },
         });
-        break;
-      case 'invite':
-        createOldInvitation({
-          ...payload,
-          emailAddress: payload.email,
-          permissionObjectId: developer.id,
-        }, {
-          onSuccess: () => {
-            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
-              variant: 'success',
-            });
-          },
-          onError: (error) => {
-            enqueueSnackbar(error.data?.error ?? 'An unexpected error has occurred.', {
-              variant: 'error',
-            });
-          },
-        });
-        break;
-      case 'impersonate':
         break;
       case 'delete':
         deleteUserFromDeveloper({ userId: payload, id: developer.id }, {
@@ -140,10 +120,8 @@ function ChplDeveloperPage({ id }) {
         });
         break;
       case 'splitVersion':
-        $state.go('organizations.developers.developer.product.version.split', {
-          productId: payload.product.id,
-          versionId: payload.version,
-        });
+        setState(action);
+        setVersion(payload.product.versions.find((v) => v.id === payload.version));
         break;
       default:
         console.error(`Unknown action: ${action} with payload: ${JSON.stringify(payload)}`);
@@ -209,6 +187,13 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperSplit
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'splitVersion'
+            && (
+              <ChplVersionSplit
+                dispatch={handleDispatch}
+                version={version}
               />
             )}
           { state === 'createAttestation'
