@@ -131,7 +131,7 @@ function ChplReport({
         )}
       <Box
         display="grid"
-        gridTemplateColumns={state === '' ? `repeat(auto-fill, minmax(200px, 1fr))` : `repeat(1, 1fr)`}
+        gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
         gridGap={8}
         alignItems="stretch"
         justifyItems="stretch"
@@ -154,7 +154,8 @@ function ChplReport({
               dispatch={handleDispatch}
               report={filteredAnnual}
               year={activeYear}
-              style={{ minWidth: '200px', minHeight: '100px' }} />
+              style={{ minWidth: '200px', minHeight: '100px' }}
+            />
           )}
       </Box>
     </Box>
