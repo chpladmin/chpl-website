@@ -106,6 +106,7 @@ function ChplFunctionalitiesTested() {
   const [criterionOptions, setCriterionOptions] = useState([]);
   const [rules, setRules] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   let handleDispatch;
@@ -166,6 +167,7 @@ function ChplFunctionalitiesTested() {
     switch (action) {
       case 'cancel':
         setActiveFunctionalityTested(undefined);
+        setIsProcessing(false);
         display('functionalitiesTested.viewall.disabled');
         hide('functionalitiesTested.viewall');
         hide('functionalitiesTested.add.disabled');
@@ -173,16 +175,19 @@ function ChplFunctionalitiesTested() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteFunctionalityTested.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('Functionality Tested Deleted', {
               variant: 'success',
             });
             setActiveFunctionalityTested(undefined);
+            setIsProcessing(false);
             display('functionalitiesTested.viewall.disabled');
             hide('functionalitiesTested.viewall');
           },
           onError: (error) => {
+            setIsProcessing(false);
             setErrors(error.response.data.errorMessages);
           },
         });
@@ -195,6 +200,7 @@ function ChplFunctionalitiesTested() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.id) {
           putFunctionalityTested.mutate(payload, {
             onSuccess: () => {
@@ -202,10 +208,12 @@ function ChplFunctionalitiesTested() {
                 variant: 'success',
               });
               setActiveFunctionalityTested(undefined);
+              setIsProcessing(false);
               display('functionalitiesTested.viewall.disabled');
               hide('functionalitiesTested.viewall');
             },
             onError: (error) => {
+              setIsProcessing(false);
               setErrors(error.response.data.errorMessages);
             },
           });
@@ -216,10 +224,12 @@ function ChplFunctionalitiesTested() {
                 variant: 'success',
               });
               setActiveFunctionalityTested(undefined);
+              setIsProcessing(false);
               display('functionalitiesTested.viewall.disabled');
               hide('functionalitiesTested.viewall');
             },
             onError: (error) => {
+              setIsProcessing(false);
               setErrors(error.response.data?.errorMessages);
             },
           });
@@ -238,6 +248,7 @@ function ChplFunctionalitiesTested() {
             functionalityTested={activeFunctionalityTested}
             dispatch={handleDispatch}
             criterionOptions={criterionOptions}
+            isProcessing={isProcessing}
             rules={rules}
             errors={errors}
           />

@@ -28,6 +28,7 @@ function ChplQmsStandards() {
   const { enqueueSnackbar } = useSnackbar();
   const [activeQmsStandard, setActiveQmsStandard] = useState(undefined);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [qmsStandards, setQmsStandards] = useState([]);
   let handleDispatch;
 
@@ -64,6 +65,7 @@ function ChplQmsStandards() {
     switch (action) {
       case 'cancel':
         setActiveQmsStandard(undefined);
+        setIsProcessing(false);
         display('qmsStandards.viewall.disabled');
         hide('qmsStandards.viewall');
         hide('qmsStandards.add.disabled');
@@ -71,17 +73,20 @@ function ChplQmsStandards() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteQmsStandard.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('QMS Standard Deleted', {
               variant: 'success',
             });
             setActiveQmsStandard(undefined);
+            setIsProcessing(false);
             display('qmsStandards.viewall.disabled');
             hide('qmsStandards.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
+            setIsProcessing(false);
           },
         });
         break;
@@ -93,6 +98,7 @@ function ChplQmsStandards() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.id) {
           putQmsStandard.mutate(payload, {
             onSuccess: () => {
@@ -100,11 +106,13 @@ function ChplQmsStandards() {
                 variant: 'success',
               });
               setActiveQmsStandard(undefined);
+              setIsProcessing(false);
               display('qmsStandards.viewall.disabled');
               hide('qmsStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
+              setIsProcessing(false);
             },
           });
         } else {
@@ -114,11 +122,13 @@ function ChplQmsStandards() {
                 variant: 'success',
               });
               setActiveQmsStandard(undefined);
+              setIsProcessing(false);
               display('qmsStandards.viewall.disabled');
               hide('qmsStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
+              setIsProcessing(false);
             },
           });
         }
@@ -136,6 +146,7 @@ function ChplQmsStandards() {
             qmsStandard={activeQmsStandard}
             dispatch={handleDispatch}
             errors={errors}
+            isProcessing={isProcessing}
           />
         </CardContent>
       </Card>
