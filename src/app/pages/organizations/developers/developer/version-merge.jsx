@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -10,14 +10,13 @@ import {
   Divider,
   List,
   ListItem,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 
-import { usePostVersionSplit } from 'api/version';
+import { usePutVersion } from 'api/version';
 import { ChplTooltip } from 'components/util';
 import ChplVersion from 'components/version/version';
 import { eventTrack } from 'services/analytics.service';
@@ -56,7 +55,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexDirection: 'column',
   },
-  productName: {
+  itemName: {
     width: '64%',
   },
   rowContainer: {
@@ -66,18 +65,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplVersionSplit({ dispatch, version }) {
+function ChplVersionMerge({ dispatch, product, version }) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePostVersionSplit();
-  const [listings, setListings] = useState([]);
-  const [movingListings, setMovingListings] = useState([]);
+  const { mutate } = usePutVersion();
+  const [mergingVersions, setMergingVersions] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    setListings(version.listings);
-  }, [version]);
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -88,18 +82,16 @@ function ChplVersionSplit({ dispatch, version }) {
         setIsProcessing(true);
         eventTrack({
           ...analytics,
-          event: 'Split Version',
+          event: 'Merge Versions',
         });
         mutate({
-          oldVersion: version,
-          newVersionVersion: payload.version,
-          newVersionCode: payload.code,
-          oldListings: listings,
-          newListings: movingListings,
+          version: payload,
+          versionIds: [...mergingVersions.map((v) => v.id), version.id],
+          newProductId: product.id,
         }, {
           onSuccess: () => {
             setIsProcessing(false);
-            enqueueSnackbar('The split was successful', {
+            enqueueSnackbar('The merge was successful', {
               variant: 'success',
             });
             dispatch('cancel');
@@ -130,105 +122,88 @@ function ChplVersionSplit({ dispatch, version }) {
     }
   };
 
-  const moveListing = (listing, toNew) => {
+  const moveVersion = (v, toNew) => {
     if (toNew) {
-      setListings((prev) => prev.filter((p) => p.id !== listing.id));
-      setMovingListings((prev) => [...prev, listing]);
+      setMergingVersions((prev) => [...prev, v]);
     } else {
-      setListings((prev) => [...prev, listing]);
-      setMovingListings((prev) => prev.filter((p) => p.id !== listing.id));
+      setMergingVersions((prev) => prev.filter((p) => p.id !== v.id));
     }
   };
 
-  if (!version) { return <CircularProgress />; }
+  if (!product) { return <CircularProgress />; }
 
   return (
     <>
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
-          <Box className={classes.columnContainer}>
-            <ChplVersion
-              version={version}
-              isSplitting
-            />
-          </Box>
           <Box>
             <ChplVersion
-              version={{}}
+              version={version}
               dispatch={handleDispatch}
               isEditing
-              isSplitting
-              isInvalid={listings?.length === 0 || movingListings?.length === 0}
+              isInvalid={mergingVersions.length < 1}
               isProcessing={isProcessing}
             />
           </Box>
           <Divider className={classes.fullWidthGridRow} />
           <Card>
-            <CardHeader title="Listings staying with original version" />
+            <CardHeader title="Add Versions to merge" />
             <CardContent>
-              { listings?.length === 0 ? (
-                <Typography variant="body1" color="textSecondary" align="left">
-                  No listings selected. At least one listing must remain with the Version.
-                </Typography>
-              ) : (
-                <List className={classes.productList}>
-                  { listings?.map((item) => (
+              <List className={classes.productList}>
+                { product.versions
+                  .filter((ver) => mergingVersions.every((v) => v.id !== ver.id))
+                  .filter((ver) => ver.id !== version.id)
+                  .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
-                      <Box className={classes.productName}>
-                        {item.chplProductNumber}
+                      <Box className={classes.itemName}>
+                        {item.version}
                       </Box>
                       <ChplTooltip
                         placement="top"
-                        title="Move listing to new version"
+                        title="Merge into new version"
                       >
                         <Button
                           endIcon={<ArrowForward />}
                           size="small"
                           color="secondary"
                           variant="contained"
-                          onClick={() => moveListing(item, true)}
+                          onClick={() => moveVersion(item, true)}
                         >
                           Move
                         </Button>
                       </ChplTooltip>
                     </ListItem>
                   ))}
-                </List>
-              )}
+              </List>
             </CardContent>
           </Card>
           <Card>
-            <CardHeader title="Listings moving to new version" />
+            <CardHeader title="Versions to Merge" />
             <CardContent>
-              { movingListings?.length === 0 ? (
-                <Typography variant="body1" color="textSecondary" align="left">
-                  No listings selected. At least one listing must be selected to move.
-                </Typography>
-              ) : (
-                <List className={classes.listingList}>
-                  { movingListings?.map((item) => (
-                    <ListItem divider className={classes.listItem} dense key={item.id}>
-                      <Box className={classes.listingName}>
-                        {item.chplProductNumber}
-                      </Box>
-                      <ChplTooltip
-                        placement="top"
-                        title="Move listing to original version"
+              <List className={classes.listingList}>
+                <ListItem>{ version.version }</ListItem>
+                { mergingVersions.map((item) => (
+                  <ListItem divider className={classes.listItem} dense key={item.id}>
+                    <Box className={classes.itemName}>
+                      {item.version}
+                    </Box>
+                    <ChplTooltip
+                      placement="top"
+                      title="Remove version from merge"
+                    >
+                      <Button
+                        endIcon={<ArrowBack />}
+                        size="small"
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => moveVersion(item, false)}
                       >
-                        <Button
-                          endIcon={<ArrowBack />}
-                          size="small"
-                          color="secondary"
-                          variant="contained"
-                          onClick={() => moveListing(item, false)}
-                        >
-                          Move
-                        </Button>
-                      </ChplTooltip>
-                    </ListItem>
-                  ))}
-                </List>
-              )}
+                        Move
+                      </Button>
+                    </ChplTooltip>
+                  </ListItem>
+                ))}
+              </List>
             </CardContent>
           </Card>
         </Box>
@@ -237,9 +212,10 @@ function ChplVersionSplit({ dispatch, version }) {
   );
 }
 
-export default ChplVersionSplit;
+export default ChplVersionMerge;
 
-ChplVersionSplit.propTypes = {
+ChplVersionMerge.propTypes = {
   dispatch: func.isRequired,
+  product: object.isRequired,
   version: object.isRequired,
 };
