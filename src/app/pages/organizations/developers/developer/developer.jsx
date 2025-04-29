@@ -14,6 +14,7 @@ import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplVersionEdit from './version-edit';
+import ChplVersionMerge from './version-merge';
 import ChplVersionSplit from './version-split';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
@@ -37,6 +38,7 @@ function ChplDeveloperPage({ id }) {
   const { mutate: createInvitation } = usePostCreateInvitation();
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [developer, setDeveloper] = useState(undefined);
+  const [product, setProduct] = useState(undefined);
   const [version, setVersion] = useState(undefined);
   const [state, setState] = useState('view');
   const classes = useStyles();
@@ -114,10 +116,15 @@ function ChplDeveloperPage({ id }) {
         });
         break;
       case 'mergeVersion':
+        setState(action);
+        setProduct(payload.product);
+        setVersion(payload.product.versions.find((v) => v.id === payload.version));
+        /*
         $state.go('organizations.developers.developer.product.version.merge', {
           productId: payload.product.id,
           versionId: payload.version,
         });
+        */
         break;
       case 'splitVersion':
         setState(action);
@@ -181,6 +188,14 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperJoin
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'mergeVersion'
+            && (
+              <ChplVersionMerge
+                dispatch={handleDispatch}
+                product={product}
+                version={version}
               />
             )}
           { state === 'split'
