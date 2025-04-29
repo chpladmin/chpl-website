@@ -64,66 +64,60 @@ function ChplAnnual({
   };
 
   return (
-    <Card>
-      <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography fontWeight="bold" variant="h4"> Annual Summary</Typography>
-        <Typography style={{ padding: 2 }} variant="body2">{year}</Typography>
-        {state === 'view'
-          && (
-            <ChplAnnualView
-              report={report}
-              dispatch={handleDispatch}
-            />
-          )}
-        {state === 'summary'
-          && (
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              {report.id
-                && (
-                  <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
-                    {hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-                      && (
-                        <Button
-                          color="primary"
-                          size="small"
-                          endIcon={<Edit />}
-                        >
-                          Edit
-                        </Button>
-                      )}
-                    {hasAnyRole(['chpl-onc'])
-                      && (
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginRight: '4px' }}
-                          onClick={view}
-                          endIcon={<RemoveRedEye />}
-
-                        >
-                          View
-                        </Button>
-                      )}
+    <>
+      {state === 'summary' ? (
+        <Card>
+          <CardContent>
+            <Typography variant="h4" fontWeight="bold">Annual Summary</Typography>
+            <Typography variant="body2" style={{ padding: 2 }}>{year}</Typography>
+            <Box>
+              {report.id && (
+                <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
+                  {hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && (
                     <Button
                       color="primary"
                       size="small"
-                      onClick={download}
-                      endIcon={<ArrowDownwardSharp />}
-
+                      endIcon={<Edit />}
                     >
-                      Download
+                      Edit
                     </Button>
-                  </Box>
-                )}
-              {!report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-                && (
-                  <Button>Initiate</Button>
-                )}
+                  )}
+                  {hasAnyRole(['chpl-onc']) && (
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      size="small"
+                      style={{ marginRight: '4px' }}
+                      onClick={view}
+                      endIcon={<RemoveRedEye />}
+                    >
+                      View
+                    </Button>
+                  )}
+                  <Button
+                    color="primary"
+                    size="small"
+                    onClick={download}
+                    endIcon={<ArrowDownwardSharp />}
+                  >
+                    Download
+                  </Button>
+                </Box>
+              )}
+              {!report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && (
+                <Button>Initiate</Button>
+              )}
             </Box>
-          )}
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <ChplAnnualView
+          report={report}
+          dispatch={handleDispatch}
+        />
+      )}
+
+    </>
   );
 }
 
