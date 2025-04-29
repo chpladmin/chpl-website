@@ -7,7 +7,7 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -57,6 +57,7 @@ function ChplFunctionalityTestedEdit(props) {
   const {
     criterionOptions,
     dispatch,
+    isProcessing,
     rules,
     functionalityTested: initialFunctionalityTested,
   } = props;
@@ -68,7 +69,6 @@ function ChplFunctionalityTestedEdit(props) {
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [functionalityTested, setFunctionalityTested] = useState({});
-  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -142,7 +142,6 @@ function ChplFunctionalityTestedEdit(props) {
         hide('functionalitiesTested.edit.disabled');
         break;
       case 'save':
-        setIsProcessing(true);
         formik.submitForm();
         hide('functionalitiesTested.add.disabled');
         hide('functionalitiesTested.edit.disabled');
@@ -337,6 +336,7 @@ ChplFunctionalityTestedEdit.propTypes = {
   criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
   errors: arrayOf(string).isRequired,
+  isProcessing: bool.isRequired,
   rules: arrayOf(rulePropType).isRequired,
   functionalityTested: functionalityTestedPropType.isRequired,
 };
