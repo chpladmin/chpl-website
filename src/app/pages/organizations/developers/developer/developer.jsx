@@ -119,12 +119,6 @@ function ChplDeveloperPage({ id }) {
         setState(action);
         setProduct(payload.product);
         setVersion(payload.product.versions.find((v) => v.id === payload.version));
-        /*
-        $state.go('organizations.developers.developer.product.version.merge', {
-          productId: payload.product.id,
-          versionId: payload.version,
-        });
-        */
         break;
       case 'splitVersion':
         setState(action);

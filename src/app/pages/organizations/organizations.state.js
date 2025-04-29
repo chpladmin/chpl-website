@@ -70,23 +70,6 @@ const states = [
     url: '/versions/{versionId}',
     abstract: true,
   }, {
-    name: 'organizations.developers.developer.product.version.merge',
-    url: '/merge',
-    views: {
-      'view@^.^.^': 'chplVersionsMerge',
-    },
-    data: {
-      title: 'CHPL Developers - Merge Version',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-    resolve: {
-      developer: (networkService, $transition$) => {
-        'ngInject';
-
-        return networkService.getDeveloperHierarchy($transition$.params().id);
-      },
-    },
-  }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizationsBridge',
