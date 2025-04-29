@@ -3,7 +3,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -32,10 +32,9 @@ const useStyles = makeStyles({
 });
 
 function ChplUcdProcessEdit(props) {
-  const { dispatch } = props;
+  const { dispatch, isProcessing } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
@@ -90,7 +89,6 @@ function ChplUcdProcessEdit(props) {
         hide('ucdProcesses.edit.disabled');
         break;
       case 'save':
-        setIsProcessing(true);
         formik.submitForm();
         hide('ucdProcesses.add.disabled');
         hide('ucdProcesses.edit.disabled');
@@ -106,7 +104,7 @@ function ChplUcdProcessEdit(props) {
       name: props.ucdProcess?.name || '', // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });
@@ -141,4 +139,5 @@ ChplUcdProcessEdit.propTypes = {
   dispatch: func.isRequired,
   ucdProcess: ucdProcessType.isRequired,
   errors: arrayOf(string).isRequired,
+  isProcessing: bool.isRequired,
 };
