@@ -117,7 +117,7 @@ function ChplDeveloperPage({ id }) {
         break;
       case 'mergeVersion':
         setState(action);
-        setProduct(payload.product);
+        setProduct(developer.products.find((p) => p.id === payload.product.id));
         setVersion(payload.product.versions.find((v) => v.id === payload.version));
         break;
       case 'splitVersion':
