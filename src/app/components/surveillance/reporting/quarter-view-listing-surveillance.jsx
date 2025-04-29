@@ -33,6 +33,9 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
+  dialogActions: {
+    padding: '8px 32px',
+  },
   idContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -250,7 +253,7 @@ function ChplQuarterViewListingSurveillance({
             </Typography>
           </div>
         </DialogContent>
-        <div>
+        <div className={classes.dialogActions}>
           <Button onClick={handleClose} variant="outlined" color="primary">
             Close
           </Button>
