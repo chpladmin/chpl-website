@@ -153,6 +153,7 @@ function ChplVersionMerge({ dispatch, product, version }) {
                 { product.versions
                   .filter((ver) => mergingVersions.every((v) => v.id !== ver.id))
                   .filter((ver) => ver.id !== version.id)
+                  .sort((a, b) => (a.version < b.version ? -1 : 1))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.itemName}>
@@ -182,27 +183,29 @@ function ChplVersionMerge({ dispatch, product, version }) {
             <CardContent>
               <List className={classes.listingList}>
                 <ListItem>{ version.version }</ListItem>
-                { mergingVersions.map((item) => (
-                  <ListItem divider className={classes.listItem} dense key={item.id}>
-                    <Box className={classes.itemName}>
-                      {item.version}
-                    </Box>
-                    <ChplTooltip
-                      placement="top"
-                      title="Remove version from merge"
-                    >
-                      <Button
-                        endIcon={<ArrowBack />}
-                        size="small"
-                        color="secondary"
-                        variant="contained"
-                        onClick={() => moveVersion(item, false)}
+                { mergingVersions
+                  .sort((a, b) => (a.version < b.version ? -1 : 1))
+                  .map((item) => (
+                    <ListItem divider className={classes.listItem} dense key={item.id}>
+                      <Box className={classes.itemName}>
+                        {item.version}
+                      </Box>
+                      <ChplTooltip
+                        placement="top"
+                        title="Remove version from merge"
                       >
-                        Move
-                      </Button>
-                    </ChplTooltip>
-                  </ListItem>
-                ))}
+                        <Button
+                          endIcon={<ArrowBack />}
+                          size="small"
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => moveVersion(item, false)}
+                        >
+                          Move
+                        </Button>
+                      </ChplTooltip>
+                    </ListItem>
+                  ))}
               </List>
             </CardContent>
           </Card>
