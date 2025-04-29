@@ -7,7 +7,7 @@ import {
   Switch,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -39,11 +39,10 @@ const useStyles = makeStyles({
 });
 
 function ChplSvapEdit(props) {
-  const { criterionOptions, dispatch } = props;
+  const { criterionOptions, dispatch, isProcessing } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
   const classes = useStyles();
@@ -110,7 +109,6 @@ function ChplSvapEdit(props) {
         hide('svaps.edit.disabled');
         break;
       case 'save':
-        setIsProcessing(true);
         formik.submitForm();
         hide('svaps.add.disabled');
         hide('svaps.edit.disabled');
@@ -226,6 +224,7 @@ export default ChplSvapEdit;
 ChplSvapEdit.propTypes = {
   criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
+  isProcessing: bool.isRequired,
   svap: svapPropType.isRequired,
   errors: arrayOf(string).isRequired,
 };

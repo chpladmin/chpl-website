@@ -27,8 +27,9 @@ function ChplAccessibilityStandards() {
   const putAccessibilityStandard = usePutAccessibilityStandard();
   const { enqueueSnackbar } = useSnackbar();
   const [activeAccessibilityStandard, setActiveAccessibilityStandard] = useState(undefined);
-  const [errors, setErrors] = useState([]);
   const [accessibilityStandards, setAccessibilityStandards] = useState([]);
+  const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   let handleDispatch;
 
   useEffect(() => {
@@ -64,6 +65,7 @@ function ChplAccessibilityStandards() {
     switch (action) {
       case 'cancel':
         setActiveAccessibilityStandard(undefined);
+        setIsProcessing(false);
         display('accessibilityStandards.viewall.disabled');
         hide('accessibilityStandards.viewall');
         hide('accessibilityStandards.add.disabled');
@@ -71,17 +73,20 @@ function ChplAccessibilityStandards() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteAccessibilityStandard.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('Accessibility Standard Deleted', {
               variant: 'success',
             });
             setActiveAccessibilityStandard(undefined);
+            setIsProcessing(false);
             display('accessibilityStandards.viewall.disabled');
             hide('accessibilityStandards.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
+            setIsProcessing(false);
           },
         });
         break;
@@ -93,6 +98,7 @@ function ChplAccessibilityStandards() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.id) {
           putAccessibilityStandard.mutate(payload, {
             onSuccess: () => {
@@ -100,10 +106,12 @@ function ChplAccessibilityStandards() {
                 variant: 'success',
               });
               setActiveAccessibilityStandard(undefined);
+              setIsProcessing(false);
               display('accessibilityStandards.viewall.disabled');
               hide('accessibilityStandards.viewall');
             },
             onError: (error) => {
+              setIsProcessing(false);
               setErrors(error.response.data.errorMessages);
             },
           });
@@ -114,11 +122,13 @@ function ChplAccessibilityStandards() {
                 variant: 'success',
               });
               setActiveAccessibilityStandard(undefined);
+              setIsProcessing(false);
               display('accessibilityStandards.viewall.disabled');
               hide('accessibilityStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
+              setIsProcessing(false);
             },
           });
         }
@@ -136,6 +146,7 @@ function ChplAccessibilityStandards() {
             accessibilityStandard={activeAccessibilityStandard}
             dispatch={handleDispatch}
             errors={errors}
+            isProcessing={isProcessing}
           />
         </CardContent>
       </Card>

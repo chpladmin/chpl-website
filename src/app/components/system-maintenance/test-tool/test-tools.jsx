@@ -88,6 +88,7 @@ function ChplTestTools() {
   const [errors, setErrors] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
   const [testTools, setTestTools] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   let handleDispatch;
 
   useEffect(() => {
@@ -146,6 +147,7 @@ function ChplTestTools() {
     switch (action) {
       case 'cancel':
         setActiveTestTool(undefined);
+        setIsProcessing(false);
         display('testTools.viewall.disabled');
         hide('testTools.viewall');
         hide('testTools.add.disabled');
@@ -153,17 +155,20 @@ function ChplTestTools() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteTestTool.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('Test Tool Deleted', {
               variant: 'success',
             });
             setActiveTestTool(undefined);
+            setIsProcessing(false);
             display('testTools.viewall.disabled');
             hide('testTools.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
+            setIsProcessing(false);
           },
         });
         break;
@@ -175,6 +180,7 @@ function ChplTestTools() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.id) {
           putTestTool.mutate(payload, {
             onSuccess: () => {
@@ -182,11 +188,13 @@ function ChplTestTools() {
                 variant: 'success',
               });
               setActiveTestTool(undefined);
+              setIsProcessing(false);
               display('testTools.viewall.disabled');
               hide('testTools.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
+              setIsProcessing(false);
             },
           });
         } else {
@@ -196,11 +204,13 @@ function ChplTestTools() {
                 variant: 'success',
               });
               setActiveTestTool(undefined);
+              setIsProcessing(false);
               display('testTools.viewall.disabled');
               hide('testTools.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
+              setIsProcessing(false);
             },
           });
         }
@@ -220,6 +230,7 @@ function ChplTestTools() {
             criterionOptions={criterionOptions}
             rules={rules}
             errors={errors}
+            isProcessing={isProcessing}
           />
         </CardContent>
       </Card>
