@@ -43,7 +43,6 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     gridGap: '32px',
     alignItems: 'stretch',
-    paddingBottom: '60vh',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
