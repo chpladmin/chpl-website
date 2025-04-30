@@ -85,6 +85,14 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
+  name: 'administration.sbul',
+  url: '/sbul',
+  component: 'chplSbulBridge',
+  data: {
+    title: 'Service Base URL List',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
+  },
+}, {
   name: 'administration.system-maintenance',
   url: '/system-maintenance',
   component: 'chplSystemMaintenanceWrapperBridge',

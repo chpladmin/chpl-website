@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import {
   Box,
+  Button,
   Card,
   IconButton,
   List,
@@ -26,6 +27,7 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext, UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
@@ -50,12 +52,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCriterionDetailsView(props) {
-  const {
+function ChplCriterionDetailsView({
     criterion,
     qmsStandards,
     accessibilityStandards,
-  } = props;
+}) {
+  const $state = getAngularService('$state');
   const { hasAnyRole, user } = useContext(UserContext);
   const { listing } = useContext(ListingContext);
   const classes = useStyles();
@@ -70,6 +72,11 @@ function ChplCriterionDetailsView(props) {
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
             || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
+
+  const submitSBULChange = () => {
+    console.log('submit');
+    $state.go('administration.sbul', { listingId: listing.id });
+  };
 
   return (
     <>
@@ -713,6 +720,11 @@ function ChplCriterionDetailsView(props) {
                         </IconButton>
                       </ChplTooltip>
                       Service Base URL List
+                      <Button
+                        onClick={() => submitSBULChange()}
+                      >
+                        Submit change
+                      </Button>
                     </TableCell>
                     <TableCell>
                       { criterion.serviceBaseUrlList
