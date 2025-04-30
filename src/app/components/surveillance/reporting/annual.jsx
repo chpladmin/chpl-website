@@ -6,26 +6,18 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-import {
-  func,
-  number,
-  object,
-} from 'prop-types';
 import { useSnackbar } from 'notistack';
-import {
-  ArrowDownwardSharp, Edit, RemoveRedEye,
-} from '@material-ui/icons';
+import { func, number, object } from 'prop-types';
+import ArrowDownwardSharp from '@material-ui/icons/ArrowDownwardSharp';
+import Edit from '@material-ui/icons/Edit';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 import ChplAnnualView from './annual-view';
 
 import { usePostAnnualReportRequest } from 'api/surveillance';
 import { UserContext } from 'shared/contexts';
 
-function ChplAnnual({
-  year,
-  dispatch,
-  report,
-}) {
+function ChplAnnual({ year, dispatch, report }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostAnnualReportRequest();
@@ -68,45 +60,53 @@ function ChplAnnual({
       {state === 'summary' ? (
         <Card>
           <CardContent>
-            <Typography variant="h4" fontWeight="bold">Annual Summary</Typography>
-            <Typography variant="body2" style={{ padding: 2 }}>{year}</Typography>
+            <Typography variant="h4" fontWeight="bold">
+              Annual Summary
+            </Typography>
+            <Typography variant="body2" style={{ padding: 2 }}>
+              {year}
+            </Typography>
             <Box>
-              {report.id && (
-                <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
-                  {hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && (
+              { report.id
+                && (
+                  <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
+                    { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                      && (
+                        <Button
+                          color="primary"
+                          size="small"
+                          endIcon={<Edit />}
+                        >
+                          Edit
+                        </Button>
+                      )}
+                    { hasAnyRole(['chpl-onc'])
+                      && (
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          size="small"
+                          style={{ marginRight: '4px' }}
+                          onClick={view}
+                          endIcon={<RemoveRedEye />}
+                        >
+                          View
+                        </Button>
+                      )}
                     <Button
                       color="primary"
                       size="small"
-                      endIcon={<Edit />}
+                      onClick={download}
+                      endIcon={<ArrowDownwardSharp />}
                     >
-                      Edit
+                      Download
                     </Button>
-                  )}
-                  {hasAnyRole(['chpl-onc']) && (
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginRight: '4px' }}
-                      onClick={view}
-                      endIcon={<RemoveRedEye />}
-                    >
-                      View
-                    </Button>
-                  )}
-                  <Button
-                    color="primary"
-                    size="small"
-                    onClick={download}
-                    endIcon={<ArrowDownwardSharp />}
-                  >
-                    Download
-                  </Button>
-                </Box>
-              )}
-              {!report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && (
-                <Button>Initiate</Button>
-              )}
+                  </Box>
+                )}
+              { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                && (
+                  <Button>Initiate</Button>
+                )}
             </Box>
           </CardContent>
         </Card>
@@ -116,7 +116,6 @@ function ChplAnnual({
           dispatch={handleDispatch}
         />
       )}
-
     </>
   );
 }

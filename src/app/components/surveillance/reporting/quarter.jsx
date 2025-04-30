@@ -6,13 +6,11 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
-import {
-  func,
-  number,
-  object,
-} from 'prop-types';
+import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import { ArrowDownwardSharp, Edit, RemoveRedEye } from '@material-ui/icons';
+import ArrowDownwardSharp from '@material-ui/icons/ArrowDownwardSharp';
+import Edit from '@material-ui/icons/Edit';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 import ChplQuarterView from './quarter-view';
 
@@ -20,10 +18,7 @@ import { usePostQuarterlyReportRequest } from 'api/surveillance';
 import { UserContext } from 'shared/contexts';
 
 function ChplQuarter({
-  quarter,
-  year,
-  dispatch,
-  report,
+  quarter, year, dispatch, report,
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -64,7 +59,7 @@ function ChplQuarter({
 
   return (
     <>
-      {state === 'view'
+      { state === 'view'
         && (
           <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
             <ChplQuarterView
@@ -73,25 +68,31 @@ function ChplQuarter({
             />
           </CardContent>
         )}
-      {state === 'summary'
+      { state === 'summary'
         && (
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Card>
               <CardContent>
                 <Typography fontWeight="bold" variant="h4">
-                  {quarter.name}
+                  { quarter.name }
                   {' '}
-                  {year}
+                  { year }
                 </Typography>
                 <Typography style={{ padding: 2 }} variant="body2">{quarter.description}</Typography>
                 {report.id
                   && (
                     <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
-                      {hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                      { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                         && (
-                          <Button color="primary" size="small" endIcon={<Edit />}>Edit</Button>
+                          <Button
+                            color="primary"
+                            size="small"
+                            endIcon={<Edit />}
+                          >
+                            Edit
+                          </Button>
                         )}
-                      {hasAnyRole(['chpl-onc'])
+                      { hasAnyRole(['chpl-onc'])
                         && (
                           <Button
                             color="primary"
@@ -114,7 +115,7 @@ function ChplQuarter({
                       </Button>
                     </Box>
                   )}
-                {!report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                   && (
                     <Button size="small">Initiate</Button>
                   )}

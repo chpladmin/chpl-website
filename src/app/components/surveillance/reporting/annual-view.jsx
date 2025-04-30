@@ -65,8 +65,12 @@ function ChplAnnualView({
       <Box className={classes.stickyColumn}>
         <Card className={classes.reportInfoCard}>
           <CardContent>
-            <Typography variant="h6" component="h2"><strong>{`${report.acb?.name} Annual Surveillance Reporting`}</strong></Typography>
-            <Typography variant="body1">{report.year}</Typography>
+            <Typography style={{ fontWeight: 'bold' }} variant="h6" component="h2">
+              {`${report.acb?.name} Annual Surveillance Reporting`}
+            </Typography>
+            <Typography variant="body1">
+              { report.year }
+            </Typography>
           </CardContent>
         </Card>
       </Box>
@@ -76,11 +80,11 @@ function ChplAnnualView({
             <Typography style={{ fontWeight: 'bold' }} variant="h6" component="h2">
               Obstacle Summary
             </Typography>
-            <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterbottom>
+            <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterBottom>
               Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.
             </Typography>
-            <Typography className={report.obstacleSummary ? classes.responseBox : ''}>
-              {report.obstacleSummary}
+            <Typography className={classes.responseBox}>
+              { report.obstacleSummary }
             </Typography>
           </Box>
           <Box className={classes.summaryGroup}>
@@ -89,7 +93,7 @@ function ChplAnnualView({
             </Typography>
           </Box>
           <Typography className={classes.responseBox}>
-            {report.priorityChangesFromFindingsSummary}
+            { report.priorityChangesFromFindingsSummary }
           </Typography>
           <Divider />
           <Typography variant="body2">
@@ -97,7 +101,6 @@ function ChplAnnualView({
           </Typography>
         </CardContent>
       </Card>
-
       <ChplActionBar
         canCancel={false}
         canClose
