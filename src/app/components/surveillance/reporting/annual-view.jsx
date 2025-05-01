@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   },
   stickyColumn: {
     position: 'sticky',
-    top: 124,
+    top: '124px',
     zIndex: 1,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
   },
@@ -65,8 +65,8 @@ function ChplAnnualView({
       <Box className={classes.stickyColumn}>
         <Card className={classes.reportInfoCard}>
           <CardContent>
-            <Typography style={{ fontWeight: 'bold' }} variant="h6" component="h2">
-              {`${report.acb?.name} Annual Surveillance Reporting`}
+            <Typography variant="h6" component="h2">
+              <strong>{`${report.acb?.name} Annual Surveillance Reporting`}</strong>
             </Typography>
             <Typography variant="body1">
               { report.year }
@@ -77,8 +77,8 @@ function ChplAnnualView({
       <Card>
         <CardContent>
           <Box>
-            <Typography style={{ fontWeight: 'bold' }} variant="h6" component="h2">
-              Obstacle Summary
+            <Typography variant="h6" component="h2">
+              <strong>Obstacle Summary</strong>
             </Typography>
             <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterBottom>
               Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.
@@ -88,8 +88,8 @@ function ChplAnnualView({
             </Typography>
           </Box>
           <Box className={classes.summaryGroup}>
-            <Typography style={{ fontWeight: 'bold' }} variant="h6" component="h2">
-              Priority Changes From Findings Summary
+            <Typography variant="h6" component="h2">
+              <strong>Priority Changes From Findings Summary</strong>
             </Typography>
           </Box>
           <Typography className={classes.responseBox}>

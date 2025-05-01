@@ -105,7 +105,7 @@ function ChplQuarterView({ dispatch, report }) {
           <Card className={classes.reportInfoCard}>
             <CardContent>
               <Typography variant="h6" component="h2">
-                <strong>{`${report.acb?.name} Quarterly Surveillance Reporting`}</strong>
+                {`${report.acb?.name} Quarterly Surveillance Reporting`}
               </Typography>
               <Typography variant="body1">
                 {`${report.year} - ${report.quarter}`}
@@ -141,8 +141,8 @@ function ChplQuarterView({ dispatch, report }) {
               <CardContent>
                 <Typography variant="h5" gutterBottom><strong>Surveillance Activities and Outcomes</strong></Typography>
                 <Box className={classes.summaryGroup}>
-                  <Typography style={{ fontWeight: 'bold' }} variant="h6">
-                    Randomized Surveillance – Selection Methods
+                  <Typography variant="h6">
+                    <strong>Randomized Surveillance – Selection Methods</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.
@@ -159,8 +159,8 @@ function ChplQuarterView({ dispatch, report }) {
                   <strong>Sampling and Selecting</strong>
                 </Typography>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Reactive Surveillance Summary
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Reactive Surveillance Summary</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.
@@ -170,8 +170,8 @@ function ChplQuarterView({ dispatch, report }) {
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    ICS Surveillance Summary
+                  <Typography variant="h6" gutterBottom>
+                    <strong>ICS Surveillance Summary</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     In order to meet requirements to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance. Please outline the number of ICS-related surveillances conducted, the method to surveil these products and the approach to include prioritized elements as outlined in the Surveillance Resource.
@@ -182,16 +182,16 @@ function ChplQuarterView({ dispatch, report }) {
                 </Box>
                 <Divider />
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h5" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Prioritized Surveillance
+                  <Typography variant="h5" gutterBottom>
+                    <strong>Prioritized Surveillance</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     The ONC-ACB undertook the following activities and implemented the following measures to evaluate and address the prioritized elements of surveillance referred to in Program Policy Resource #18-03 (October 5, 2018).
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Prioritized Criteria
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Prioritized Criteria</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     Please describe which prioritized criteria were surveilled, how and with what frequency. Summarize the approach taken to conduct surveillance on these prioritized criteria.
@@ -201,8 +201,8 @@ function ChplQuarterView({ dispatch, report }) {
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Disclosure Requirements Summary
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Disclosure Requirements Summary</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):
@@ -212,8 +212,8 @@ function ChplQuarterView({ dispatch, report }) {
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Developer Complaints Log Review
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Developer Complaints Log Review</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     Describe the activities conducted in the past quarter related to the review of developers&lsquo; complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC/ASTP. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under &quot;Surveillance Findings&quot;.
@@ -223,8 +223,8 @@ function ChplQuarterView({ dispatch, report }) {
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Post-certification Performance of Certified Capabilities
+                  <Typography variant="h6" gutterBottom>
+                    <strong> Post-certification Performance of Certified Capabilities</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.
@@ -234,8 +234,8 @@ function ChplQuarterView({ dispatch, report }) {
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Appropriate Use of Mark
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Appropriate Use of Mark</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.
@@ -245,8 +245,8 @@ function ChplQuarterView({ dispatch, report }) {
                   </Typography>
                 </Box>
                 <Box className={classes.summaryGroup}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }} gutterBottom>
-                    Complaints Reported to ONC-ACB
+                  <Typography variant="h6" gutterBottom>
+                    <strong>Complaints Reported to ONC-ACB</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     Please log the complaints and any actions to the &quot;Complaints&quot; sheet of this workbook.

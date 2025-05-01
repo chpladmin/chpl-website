@@ -73,12 +73,14 @@ function ChplQuarter({
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Card>
               <CardContent>
-                <Typography fontWeight="bold" variant="h4">
-                  { quarter.name }
-                  {' '}
-                  { year }
+                <Typography variant="h4">
+                  <strong>
+                    { quarter.name }
+                    {' '}
+                    { year }
+                  </strong>
                 </Typography>
-                <Typography style={{ padding: 2 }} variant="body2">{quarter.description}</Typography>
+                <Typography style={{ padding: '4px' }} variant="body2">{quarter.description}</Typography>
                 {report.id
                   && (
                     <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>

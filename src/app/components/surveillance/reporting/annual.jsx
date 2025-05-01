@@ -60,10 +60,10 @@ function ChplAnnual({ year, dispatch, report }) {
       {state === 'summary' ? (
         <Card>
           <CardContent>
-            <Typography variant="h4" fontWeight="bold">
-              Annual Summary
+            <Typography variant="h4" component="h2">
+              <strong>Annual Summary</strong>
             </Typography>
-            <Typography variant="body2" style={{ padding: 2 }}>
+            <Typography variant="body2" style={{ padding: '4px' }}>
               {year}
             </Typography>
             <Box>
