@@ -3,37 +3,27 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
-  makeStyles,
+  Typography,
+  Box,
 } from '@material-ui/core';
-import {
-  func,
-  number,
-  object,
-} from 'prop-types';
+import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import Edit from '@material-ui/icons/Edit';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 import ChplQuarterView from './quarter-view';
 
 import { usePostQuarterlyReportRequest } from 'api/surveillance';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-});
 
 function ChplQuarter({
-  quarter,
-  year,
-  dispatch,
-  report,
+  quarter, year, dispatch, report,
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostQuarterlyReportRequest();
   const [state, setState] = useState('summary');
-  const classes = useStyles();
 
   const download = () => {
     mutate(report, {
@@ -68,50 +58,74 @@ function ChplQuarter({
   };
 
   return (
-    <Card>
-      <CardHeader title={`${quarter.name} ${year}`} />
-      <CardContent>
-        { state === 'view'
-          && (
+    <>
+      { state === 'view'
+        && (
+          <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
             <ChplQuarterView
               report={report}
               dispatch={handleDispatch}
             />
-          )}
-        { state === 'summary'
-          && (
-            <>
-              { quarter.description }
-              { report.id
-                && (
-                  <>
-                    { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-                      && (
-                        <Button>Edit</Button>
-                      )}
-                    { hasAnyRole(['chpl-onc'])
-                      && (
-                        <Button
-                          onClick={view}
-                        >
-                          View
-                        </Button>
-                      )}
-                    <Button
-                      onClick={download}
-                    >
-                      Download
-                    </Button>
-                  </>
-                )}
-              { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-                && (
-                  <Button>Initiate</Button>
-                )}
-            </>
-          )}
-      </CardContent>
-    </Card>
+          </CardContent>
+        )}
+      { state === 'summary'
+        && (
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Card>
+              <CardContent>
+                <Typography variant="h4">
+                  <strong>
+                    { quarter.name }
+                    {' '}
+                    { year }
+                  </strong>
+                </Typography>
+                <Typography style={{ padding: '4px' }} variant="body2">{quarter.description}</Typography>
+                {report.id
+                  && (
+                    <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
+                      { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                        && (
+                          <Button
+                            color="primary"
+                            size="small"
+                            endIcon={<Edit />}
+                          >
+                            Edit
+                          </Button>
+                        )}
+                      { hasAnyRole(['chpl-onc'])
+                        && (
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            style={{ marginRight: '4px' }}
+                            size="small"
+                            onClick={view}
+                            endIcon={<RemoveRedEye />}
+                          >
+                            View
+                          </Button>
+                        )}
+                      <Button
+                        color="primary"
+                        size="small"
+                        onClick={download}
+                        endIcon={<CloudDownloadOutlinedIcon />}
+                      >
+                        Download
+                      </Button>
+                    </Box>
+                  )}
+                { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+                  && (
+                    <Button size="small">Initiate</Button>
+                  )}
+              </CardContent>
+            </Card>
+          </Box>
+        )}
+    </>
   );
 }
 

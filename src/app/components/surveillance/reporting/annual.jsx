@@ -1,38 +1,27 @@
 import React, { useContext, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
-  CardHeader,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
-import {
-  func,
-  number,
-  object,
-} from 'prop-types';
 import { useSnackbar } from 'notistack';
+import { func, number, object } from 'prop-types';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import Edit from '@material-ui/icons/Edit';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 import ChplAnnualView from './annual-view';
 
 import { usePostAnnualReportRequest } from 'api/surveillance';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
-});
-
-function ChplAnnual({
-  year,
-  dispatch,
-  report,
-}) {
+function ChplAnnual({ year, dispatch, report }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostAnnualReportRequest();
   const [state, setState] = useState('summary');
-  const classes = useStyles();
 
   const download = () => {
     mutate(report, {
@@ -67,49 +56,67 @@ function ChplAnnual({
   };
 
   return (
-    <Card>
-      <CardHeader title={`${year} Summary`} />
-      <CardContent>
-        { state === 'view'
-          && (
-            <ChplAnnualView
-              report={report}
-              dispatch={handleDispatch}
-            />
-          )}
-        { state === 'summary'
-          && (
-            <>
+    <>
+      {state === 'summary' ? (
+        <Card>
+          <CardContent>
+            <Typography variant="h4" component="h2">
+              <strong>Annual Summary</strong>
+            </Typography>
+            <Typography variant="body2" style={{ padding: '4px' }}>
+              {year}
+            </Typography>
+            <Box>
               { report.id
                 && (
-                  <>
+                  <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
                     { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                       && (
-                        <Button>Edit</Button>
+                        <Button
+                          color="primary"
+                          size="small"
+                          endIcon={<Edit />}
+                        >
+                          Edit
+                        </Button>
                       )}
                     { hasAnyRole(['chpl-onc'])
                       && (
                         <Button
+                          color="primary"
+                          variant="outlined"
+                          size="small"
+                          style={{ marginRight: '4px' }}
                           onClick={view}
+                          endIcon={<RemoveRedEye />}
                         >
                           View
                         </Button>
                       )}
                     <Button
+                      color="primary"
+                      size="small"
                       onClick={download}
+                      endIcon={<CloudDownloadOutlinedIcon />}
                     >
                       Download
                     </Button>
-                  </>
+                  </Box>
                 )}
               { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
                 && (
                   <Button>Initiate</Button>
                 )}
-            </>
-          )}
-      </CardContent>
-    </Card>
+            </Box>
+          </CardContent>
+        </Card>
+      ) : (
+        <ChplAnnualView
+          report={report}
+          dispatch={handleDispatch}
+        />
+      )}
+    </>
   );
 }
 

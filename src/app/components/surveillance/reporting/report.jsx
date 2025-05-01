@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
   MenuItem,
-  makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf,
-  bool,
-  func,
-  string,
-} from 'prop-types';
+import { func } from 'prop-types';
 
 import ChplAnnual from './annual';
 import ChplQuarter from './quarter';
@@ -20,16 +15,8 @@ import ChplQuarter from './quarter';
 import { useFetchAnnual, useFetchQuarters, useFetchQuarterly } from 'api/surveillance';
 import { ChplTextField } from 'components/util';
 import { acb as acbPropType } from 'shared/prop-types';
-import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
-});
-
-function ChplReport({
-  acb,
-  dispatch,
-}) {
+function ChplReport({ acb, dispatch }) {
   const annualQuery = useFetchAnnual();
   const quarterQuery = useFetchQuarters();
   const quarterlyQuery = useFetchQuarterly();
@@ -40,7 +27,6 @@ function ChplReport({
   const [state, setState] = useState('');
   const [quarters, setQuarters] = useState([]);
   const [quarterly, setQuarterly] = useState([]);
-  const classes = useStyles();
   const availableYears = [...Array(new Date().getYear() + 1900 - 2019 + 1)]
     .map((_, i) => 2019 + i)
     .sort((a, b) => b - a);
@@ -99,25 +85,35 @@ function ChplReport({
   };
 
   return (
-    <Card>
-      <CardHeader title={acb.name} />
-      <CardContent>
-        { state === ''
-          && (
-            <ChplTextField
-              select
-              id="active-year"
-              name="activeYear"
-              label="Active Year"
-              value={activeYear}
-              onChange={(event) => setActiveYear(event.target.value)}
-            >
-              { availableYears
-                .map((item) => (
-                  <MenuItem value={item} key={item}>{item}</MenuItem>
-                ))}
-            </ChplTextField>
-          )}
+    <Box display="flex" flexDirection="column" gridGap="16px">
+      { state === ''
+        && (
+          <Card>
+            <CardHeader title={acb.name} />
+            <CardContent>
+              <ChplTextField
+                select
+                id="active-year"
+                name="activeYear"
+                label="Active Year"
+                value={activeYear}
+                onChange={(event) => setActiveYear(event.target.value)}
+              >
+                { availableYears
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                  ))}
+              </ChplTextField>
+            </CardContent>
+          </Card>
+        )}
+      <Box
+        display="grid"
+        gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
+        gridGap={8}
+        alignItems="stretch"
+        justifyItems="stretch"
+      >
         { quarters.filter((q) => state === '' || state === `focus-quarter-${q.name}`)
           .map((q) => (
             <ChplQuarter
@@ -126,6 +122,7 @@ function ChplReport({
               quarter={q}
               report={filteredQuarterly.find((r) => r.quarter === q.name)}
               year={activeYear}
+              style={{ minWidth: '200px', minHeight: '100px' }}
             />
           ))}
         { (state === '' || state === 'focus-annual')
@@ -134,10 +131,11 @@ function ChplReport({
               dispatch={handleDispatch}
               report={filteredAnnual}
               year={activeYear}
+              style={{ minWidth: '200px', minHeight: '100px' }}
             />
           )}
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 }
 
@@ -146,11 +144,4 @@ export default ChplReport;
 ChplReport.propTypes = {
   acb: acbPropType.isRequired,
   dispatch: func.isRequired,
-  errorMessages: arrayOf(string),
-  isProcessing: bool,
-};
-
-ChplReport.defaultProps = {
-  errorMessages: [],
-  isProcessing: false,
 };
