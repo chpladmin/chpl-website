@@ -30,12 +30,6 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
-  fixFooterSpacing:{
-    minHeight: 'calc(100vh - 350px)',
-  },
-  splittingMode: {
-    minHeight: '100%',
-  },
   header: {
     margin: '0',
     fontSize: '1.25em',
@@ -118,7 +112,6 @@ function ChplVersionEdit(props) {
 
   return (
     <Container
-      className={ isSplitting ? classes.splittingMode : classes.fixFooterSpacing}
       disableGutters
       maxWidth="lg"
     >

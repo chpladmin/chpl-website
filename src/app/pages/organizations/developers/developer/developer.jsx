@@ -27,6 +27,9 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh)',
+  },
 });
 
 function ChplDeveloperPage({ id }) {
@@ -157,7 +160,7 @@ function ChplDeveloperPage({ id }) {
             </Typography>
           </Container>
         </Box>
-        <Container maxWidth="lg" id="main-content" tabIndex="-1">
+        <Container className={classes.fixFooterSpacing} maxWidth="lg" id="main-content" tabIndex="-1">
           { state === 'view'
             && (
               <ChplDeveloperView
