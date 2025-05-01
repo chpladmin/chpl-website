@@ -85,7 +85,7 @@ function ChplReport({ acb, dispatch }) {
   };
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" gridGap="16px">
       { state === ''
         && (
           <Card>
@@ -136,7 +136,7 @@ function ChplReport({ acb, dispatch }) {
             />
           )}
       </Box>
-    </>
+    </Box>
   );
 }
 
