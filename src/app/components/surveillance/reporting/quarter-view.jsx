@@ -105,7 +105,7 @@ function ChplQuarterView({ dispatch, report }) {
           <Card className={classes.reportInfoCard}>
             <CardContent>
               <Typography variant="h6" component="h2">
-                {`${report.acb?.name} Quarterly Surveillance Reporting`}
+                <strong>{`${report.acb?.name} Quarterly Surveillance Reporting`}</strong>
               </Typography>
               <Typography variant="body1">
                 {`${report.year} - ${report.quarter}`}

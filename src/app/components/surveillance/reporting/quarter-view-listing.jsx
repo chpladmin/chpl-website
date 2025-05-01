@@ -8,8 +8,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
-import ArrowUpwardRounded from '@material-ui/icons/ArrowUpwardRounded';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import { object } from 'prop-types';
 
 import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveillance';
@@ -48,7 +48,7 @@ function ChplQuarterViewListing({ listing }) {
             variant="outlined"
             color="primary"
             size="small"
-            endIcon={isExpanded ? <ArrowUpwardRounded /> : <ArrowDropDown />}
+            endIcon={isExpanded ? <ArrowUpward /> : <ArrowDownward />}
           >
             {isExpanded ? 'Hide Surveillance Group' : 'Show Surveillance Group'}
           </Button>

@@ -113,7 +113,6 @@ function ChplReport({ acb, dispatch }) {
         gridGap={8}
         alignItems="stretch"
         justifyItems="stretch"
-        mt={4}
       >
         { quarters.filter((q) => state === '' || state === `focus-quarter-${q.name}`)
           .map((q) => (

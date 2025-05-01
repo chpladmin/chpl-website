@@ -22,7 +22,10 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    padding: '0 16px 16px 16px',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    paddingTop: '0px',
+    paddingBottom: '16px',
     width: '100%',
     gap: '9px',
     margin: '8px 0',
@@ -33,12 +36,12 @@ const useStyles = makeStyles({
     },
   },
   dialogActions: {
-    padding: '8px 32px',
+    padding: '16px',
   },
   idContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    padding: '16px 16px 0 16px',
+    padding: '16px',
   },
   menuItems: {
     padding: '8px',

@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { func, number, object } from 'prop-types';
-import ArrowDownwardSharp from '@material-ui/icons/ArrowDownwardSharp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import Edit from '@material-ui/icons/Edit';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
@@ -97,7 +97,7 @@ function ChplAnnual({ year, dispatch, report }) {
                       color="primary"
                       size="small"
                       onClick={download}
-                      endIcon={<ArrowDownwardSharp />}
+                      endIcon={<CloudDownloadOutlinedIcon />}
                     >
                       Download
                     </Button>
