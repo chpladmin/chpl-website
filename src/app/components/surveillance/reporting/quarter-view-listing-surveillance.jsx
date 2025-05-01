@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
-  DialogContent,
-  Dialog,
   Card,
+  CardHeader,
+  CircularProgress,
+  Dialog,
+  DialogContent,
   Typography,
   makeStyles,
-  CardActionArea,
-  CircularProgress,
-  CardHeader,
 } from '@material-ui/core';
 import { object } from 'prop-types';
-import { RemoveRedEye } from '@material-ui/icons';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
@@ -52,30 +51,36 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQuarterViewListingSurveillance({
-  surveillance,
-}) {
+function ChplQuarterViewListingSurveillance({ surveillance }) {
+  const [open, setOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    setProgress(Math.round(((
+      (surveillance.surveillanceOutcome ? 1 : 0)
+        + (surveillance.surveillanceProcessTypes?.length > 0 ? 1 : 0)
+        + (surveillance.k1Reviewed ? 1 : 0)
+        + (surveillance.surveillanceGroundsForInitiating?.length > 0 ? 1 : 0)
+        + (surveillance.nonconformityCauses ? 1 : 0)
+        + (surveillance.nonconformityNature ? 1 : 0)
+        + (surveillance.stepsToSurveil ? 1 : 0)
+        + (surveillance.stepsToEngage ? 1 : 0)
+        + (surveillance.additionalCostsEvaluation ? 1 : 0)
+        + (surveillance.limitationsEvaluation ? 1 : 0)
+        + (surveillance.nondisclosureEvaluation ? 1 : 0)
+        + (surveillance.directionDeveloperResolution ? 1 : 0)
+        + (surveillance.capStatuses?.length > 0 ? 1 : 0)
+    ) * 100) / 13));
+  }, [surveillance]);
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [progress, setProgress] = React.useState(1);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev < 100 ? prev + 1 : 100));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>
@@ -84,7 +89,7 @@ function ChplQuarterViewListingSurveillance({
           <Typography>
             <strong>Friendly ID:</strong>
             {' '}
-            {surveillance.friendlyId}
+            { surveillance.friendlyId }
           </Typography>
           <Box display="flex" flexDirection="row" alignItems="center" gridGap="4px">
             <Box position="relative" display="inline-flex">
@@ -100,7 +105,7 @@ function ChplQuarterViewListingSurveillance({
                 justifyContent="center"
               >
                 <Typography variant="caption" component="div" color="textSecondary">
-                  {`${Math.round(progress)}%`}
+                  {`${progress} %`}
                 </Typography>
               </Box>
             </Box>
@@ -111,145 +116,145 @@ function ChplQuarterViewListingSurveillance({
           <Typography>
             <strong>Start Day:</strong>
             {' '}
-            {getDisplayDateFormat(surveillance.startDay)}
+            { getDisplayDateFormat(surveillance.startDay) }
           </Typography>
           <Typography>
             <strong>End Day:</strong>
             {' '}
-            {getDisplayDateFormat(surveillance.endDay)}
+            { getDisplayDateFormat(surveillance.endDay) }
           </Typography>
           <Typography>
             <strong>Number of Closed Nonconformities:</strong>
             {' '}
-            {surveillance.numClosedNonconformities}
+            { surveillance.numClosedNonconformities }
           </Typography>
           <Typography>
             <strong>Number of Open Nonconformities:</strong>
             {' '}
-            {surveillance.numOpenNonconformities}
+            { surveillance.numOpenNonconformities }
           </Typography>
         </div>
-        <CardActionArea style={{ padding: '8px' }}>
+        <Box style={{ padding: '8px' }}>
           <Button
             variant="outlined"
             color="primary"
             size="small"
             style={{ margin: '8px 0' }}
             endIcon={<RemoveRedEye />}
-            onClick={handleClickOpen}
+            onClick={handleOpen}
           >
-            View Surveillance Data Questionnaire
+            View Surveillance Data
           </Button>
-        </CardActionArea>
+        </Box>
       </Card>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <CardHeader title="Surveillance Data Questionnaire" />
+        <CardHeader title="Surveillance Data" />
         <DialogContent>
           <div className={classes.container}>
             <Typography>
               <strong>Surveillance Type:</strong>
               {' '}
-              {surveillance.surveillanceType?.name}
+              { surveillance.surveillanceType?.name }
             </Typography>
             <Typography>
               <strong>k1 Reviewed:</strong>
               {' '}
-              {surveillance.k1Reviewed}
+              { surveillance.k1Reviewed ? 'Yes' : 'No' }
             </Typography>
             <Typography>
               <strong>Surveillance Outcome:</strong>
               {' '}
-              {surveillance.surveillanceOutcome?.name}
+              { surveillance.surveillanceOutcome?.name }
             </Typography>
             <Typography>
               <strong>Surveillance Outcome Other:</strong>
               {' '}
-              {surveillance.surveillanceOutcomeOther}
+              { surveillance.surveillanceOutcomeOther }
             </Typography>
             <Typography>
               <strong>Surveillance Process Type Other:</strong>
               {' '}
-              {surveillance.surveillanceProcessTypeOther}
+              { surveillance.surveillanceProcessTypeOther }
             </Typography>
             <Typography>
               <strong>Surveillance Process Types:</strong>
               {' '}
-              {surveillance.surveillanceProcessTypes.map((s) => s.name).join('; ')}
+              { surveillance.surveillanceProcessTypes.map((s) => s.name).join('; ') }
             </Typography>
             <Typography>
               <strong>Grounds For Initiating:</strong>
               {' '}
-              {surveillance.groundsForInitiating}
+              { surveillance.groundsForInitiating }
             </Typography>
             <Typography>
               <strong>Surveillance Grounds For Initiating:</strong>
               {' '}
-              {surveillance.surveillanceGroundsForInitiating.map((s) => s.name).join('; ')}
+              { surveillance.surveillanceGroundsForInitiating.map((s) => s.name).join('; ') }
             </Typography>
             <Typography>
               <strong>Surveillance Grounds For Initiating Other:</strong>
               {' '}
-              {surveillance.surveillanceGroundsForInitiatingOther}
+              { surveillance.surveillanceGroundsForInitiatingOther }
             </Typography>
             <Typography>
               <strong>Nonconformity Causes:</strong>
               {' '}
-              {surveillance.nonconformityCauses}
+              { surveillance.nonconformityCauses }
             </Typography>
             <Typography>
               <strong>Nonconformity Nature:</strong>
               {' '}
-              {surveillance.nonconformityNature}
+              { surveillance.nonconformityNature }
             </Typography>
             <Typography>
               <strong>Steps To Surveil:</strong>
               {' '}
-              {surveillance.stepsToSurveil}
+              { surveillance.stepsToSurveil }
             </Typography>
             <Typography>
               <strong>Steps To Engage:</strong>
               {' '}
-              {surveillance.stepsToEngage}
+              { surveillance.stepsToEngage }
             </Typography>
             <Typography>
               <strong>Additional Costs Evaluation:</strong>
               {' '}
-              {surveillance.additioanlCostsEvaluation}
+              { surveillance.additioanlCostsEvaluation }
             </Typography>
             <Typography>
               <strong>Limitations Evaluation:</strong>
               {' '}
-              {surveillance.limitationsEvaluation}
+              { surveillance.limitationsEvaluation }
             </Typography>
             <Typography>
               <strong>Nondisclosure Evaluation:</strong>
               {' '}
-              {surveillance.nondisclosureEvaluation}
+              { surveillance.nondisclosureEvaluation }
             </Typography>
             <Typography>
               <strong>Direction Developer Resolution:</strong>
               {' '}
-              {surveillance.directionDeveloperResolution}
+              { surveillance.directionDeveloperResolution }
             </Typography>
             <Typography>
               <strong>CAP Statuses:</strong>
               {' '}
-              {surveillance.capStatuses.map((s) => s.name).join('; ')}
+              { surveillance.capStatuses.map((s) => s.name).join('; ') }
             </Typography>
             <Typography>
               <strong>CAP Status Other:</strong>
               {' '}
-              {surveillance.capStatusOther}
+              { surveillance.capStatusOther }
             </Typography>
             <Typography>
               <strong>Completed CAP Verification:</strong>
               {' '}
-              {surveillance.completedCapVerification}
+              { surveillance.completedCapVerification }
             </Typography>
             <Typography>
               <strong>Surveillance Findings:</strong>
               {' '}
-              {surveillance.surveillanceFindings}
+              { surveillance.surveillanceFindings }
             </Typography>
           </div>
         </DialogContent>

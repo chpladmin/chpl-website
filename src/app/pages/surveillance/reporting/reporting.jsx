@@ -103,28 +103,28 @@ function ChplSurveillanceReporting() {
               </Card>
             )}
         { !activeAcb
-            && (
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" gutterBottom component="h2">
-                    <strong>Quarterly and Annual Surveillance Reports</strong>
-                  </Typography>
-                  <Typography gutterBottom>
-                    To view detailed quarterly and annual reports, start by selecting an ABC from the menu on the left.
-                  </Typography>
-                  <Typography>
-                    Once selected, the corresponding reports will appear here, giving you access to key performance data and year-end summaries.
-                  </Typography>
-                </CardContent>
-              </Card>
-            )}
+          && (
+            <Card>
+              <CardContent>
+                <Typography variant="h5" gutterBottom component="h2">
+                  <strong>Quarterly and Annual Surveillance Reporting</strong>
+                </Typography>
+                <Typography gutterBottom>
+                  To view detailed quarterly and annual reports, start by selecting an ONC-ABC from the menu on the left.
+                </Typography>
+                <Typography>
+                  Once selected, the corresponding reports will appear here, giving you access to key performance data and year-end summaries.
+                </Typography>
+              </CardContent>
+            </Card>
+          )}
         { activeAcb
-            && (
-              <ChplReport
-                acb={activeAcb}
-                dispatch={handleDispatch}
-              />
-            )}
+          && (
+            <ChplReport
+              acb={activeAcb}
+              dispatch={handleDispatch}
+            />
+          )}
       </div>
     </Container>
   );
