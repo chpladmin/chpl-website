@@ -50,6 +50,7 @@ function ChplSvaps() {
   const [activeSvap, setActiveSvap] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [svaps, setSvaps] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
   let handleDispatch;
@@ -105,6 +106,7 @@ function ChplSvaps() {
     switch (action) {
       case 'cancel':
         setActiveSvap(undefined);
+        setIsProcessing(false);
         display('svaps.viewall.disabled');
         hide('svaps.viewall');
         hide('svaps.add.disabled');
@@ -112,16 +114,19 @@ function ChplSvaps() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteSvap.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('SVAP Deleted', {
               variant: 'success',
             });
+            setIsProcessing(false);
             setActiveSvap(undefined);
             display('svaps.viewall.disabled');
             hide('svaps.viewall');
           },
           onError: (error) => {
+            setIsProcessing(false);
             setErrors(error.response.data.errorMessages);
           },
         });
@@ -134,17 +139,20 @@ function ChplSvaps() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.svapId) {
           putSvap.mutate(payload, {
             onSuccess: () => {
               enqueueSnackbar('SVAP Updated', {
                 variant: 'success',
               });
+              setIsProcessing(false);
               setActiveSvap(undefined);
               display('svaps.viewall.disabled');
               hide('svaps.viewall');
             },
             onError: (error) => {
+              setIsProcessing(false);
               setErrors(error.response.data.errorMessages);
             },
           });
@@ -154,11 +162,13 @@ function ChplSvaps() {
               enqueueSnackbar('SVAP Created', {
                 variant: 'success',
               });
+              setIsProcessing(false);
               setActiveSvap(undefined);
               display('svaps.viewall.disabled');
               hide('svaps.viewall');
             },
             onError: (error) => {
+              setIsProcessing(false);
               setErrors(error.response.data?.errorMessages);
             },
           });
@@ -178,6 +188,7 @@ function ChplSvaps() {
             dispatch={handleDispatch}
             criterionOptions={criterionOptions}
             errors={errors}
+            isProcessing={isProcessing}
           />
         </CardContent>
       </Card>

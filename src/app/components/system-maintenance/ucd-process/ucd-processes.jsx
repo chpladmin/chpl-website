@@ -29,6 +29,7 @@ function ChplUcdProcesses() {
   const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [ucdProcesses, setUcdProcesses] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   let handleDispatch;
 
   useEffect(() => {
@@ -64,6 +65,7 @@ function ChplUcdProcesses() {
     switch (action) {
       case 'cancel':
         setActiveUcdProcess(undefined);
+        setIsProcessing(false);
         display('ucdProcesses.viewall.disabled');
         hide('ucdProcesses.viewall');
         hide('ucdProcesses.add.disabled');
@@ -71,17 +73,20 @@ function ChplUcdProcesses() {
         break;
       case 'delete':
         setErrors([]);
+        setIsProcessing(true);
         deleteUcdProcess.mutate(payload, {
           onSuccess: () => {
             enqueueSnackbar('UCD Process Deleted', {
               variant: 'success',
             });
             setActiveUcdProcess(undefined);
+            setIsProcessing(false);
             display('ucdProcesses.viewall.disabled');
             hide('ucdProcesses.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
+            setIsProcessing(false);
           },
         });
         break;
@@ -93,6 +98,7 @@ function ChplUcdProcesses() {
         break;
       case 'save':
         setErrors([]);
+        setIsProcessing(true);
         if (payload.id) {
           putUcdProcess.mutate(payload, {
             onSuccess: () => {
@@ -100,11 +106,13 @@ function ChplUcdProcesses() {
                 variant: 'success',
               });
               setActiveUcdProcess(undefined);
+              setIsProcessing(false);
               display('ucdProcesses.viewall.disabled');
               hide('ucdProcesses.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
+              setIsProcessing(false);
             },
           });
         } else {
@@ -114,11 +122,13 @@ function ChplUcdProcesses() {
                 variant: 'success',
               });
               setActiveUcdProcess(undefined);
+              setIsProcessing(false);
               display('ucdProcesses.viewall.disabled');
               hide('ucdProcesses.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
+              setIsProcessing(false);
             },
           });
         }
@@ -136,6 +146,7 @@ function ChplUcdProcesses() {
             ucdProcess={activeUcdProcess}
             dispatch={handleDispatch}
             errors={errors}
+            isProcessing={isProcessing}
           />
         </CardContent>
       </Card>

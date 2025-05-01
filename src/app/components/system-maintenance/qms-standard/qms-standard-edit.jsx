@@ -3,7 +3,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -32,11 +32,10 @@ const useStyles = makeStyles({
 });
 
 function ChplQmsStandardEdit(props) {
-  const { dispatch } = props;
+  const { dispatch, isProcessing } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
   const [qmsStandard, setQmsStandard] = useState({});
-  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -90,7 +89,6 @@ function ChplQmsStandardEdit(props) {
         hide('qmsStandards.edit.disabled');
         break;
       case 'save':
-        setIsProcessing(true);
         formik.submitForm();
         hide('qmsStandards.add.disabled');
         hide('qmsStandards.edit.disabled');
@@ -141,4 +139,5 @@ ChplQmsStandardEdit.propTypes = {
   dispatch: func.isRequired,
   qmsStandard: qmsStandardType.isRequired,
   errors: arrayOf(string).isRequired,
+  isProcessing: bool.isRequired,
 };

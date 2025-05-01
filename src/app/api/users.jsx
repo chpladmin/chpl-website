@@ -23,6 +23,7 @@ const usePutUser = () => {
   return useMutation(async (data) => axios.put(`users/${data.cognitoId}`, data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['acbs', 'users']);
+      queryClient.invalidateQueries(['developers', 'users']);
     },
   });
 };
