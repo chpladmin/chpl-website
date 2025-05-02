@@ -56,15 +56,21 @@ function ChplQuarterViewListing({ listing }) {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className={classes.accordionSummaryContent}>
-          <Typography><strong>Product Number</strong></Typography>
-          <Typography><strong>Certification Date:</strong></Typography>
-          <Typography><strong># Relevant Surveillances:</strong></Typography>
-          <Typography>{ listing.chplProductNumber }</Typography>
-          <Typography>{ getDisplayDateFormat(listing.certificationDay) }</Typography>
-          <Typography>{ listing.surveillances.length }</Typography>
+          <div>
+            <Typography gutterBottom><strong>Product Number</strong></Typography>
+            <Typography>{ listing.chplProductNumber }</Typography>
+          </div>
+          <div>
+            <Typography gutterBottom><strong>Certification Date:</strong></Typography>
+            <Typography>{ getDisplayDateFormat(listing.certificationDay) }</Typography>
+          </div>
+          <div>
+            <Typography gutterBottom><strong># Relevant Surveillances:</strong></Typography>
+            <Typography>{ listing.surveillances.length }</Typography>
+          </div>
         </div>
       </AccordionSummary>
-      <AccordionDetails style={{ display: 'flex' }}>
+      <AccordionDetails gutterBottom style={{ display: 'flex' }}>
         <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
           { listing.surveillances.map((surv) => (
             <ChplQuarterViewListingSurveillance
