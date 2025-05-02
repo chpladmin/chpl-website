@@ -70,7 +70,7 @@ function ChplQuarterViewListing({ listing }) {
           </div>
         </div>
       </AccordionSummary>
-      <AccordionDetails gutterBottom style={{ display: 'flex' }}>
+      <AccordionDetails style={{ display: 'flex' }}>
         <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
           { listing.surveillances.map((surv) => (
             <ChplQuarterViewListingSurveillance
