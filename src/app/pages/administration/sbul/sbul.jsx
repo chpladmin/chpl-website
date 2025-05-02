@@ -15,7 +15,7 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { number } from 'prop-types';
+import { string } from 'prop-types';
 
 import usePostUrlChecker from 'api/url-checker';
 import { ChplLink, ChplTextField } from 'components/util';
@@ -320,5 +320,5 @@ function ChplSbul({ listingId }) {
 export default ChplSbul;
 
 ChplSbul.propTypes = {
-  listingId: number.isRequired,
+  listingId: string.isRequired,
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { number } from 'prop-types';
+import { string } from 'prop-types';
 
 import ChplSbul from './sbul';
 
@@ -18,5 +18,5 @@ function ChplSbulWrapper({ listingId }) {
 export default ChplSbulWrapper;
 
 ChplSbulWrapper.propTypes = {
-  listingId: number.isRequired,
+  listingId: string.isRequired,
 };
