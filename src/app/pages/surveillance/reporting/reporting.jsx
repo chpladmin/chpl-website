@@ -110,7 +110,7 @@ function ChplSurveillanceReporting() {
                   <strong>Quarterly and Annual Surveillance Reporting</strong>
                 </Typography>
                 <Typography gutterBottom>
-                  To view detailed quarterly and annual reports, start by selecting an ONC-ABC from the menu on the left.
+                  To view detailed quarterly and annual reports, start by selecting an ONC-ACB from the menu on the left.
                 </Typography>
                 <Typography>
                   Once selected, the corresponding reports will appear here, giving you access to key performance data and year-end summaries.
