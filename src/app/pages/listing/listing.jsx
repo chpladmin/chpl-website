@@ -16,6 +16,7 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
+import ChplSbul from 'components/change-request/types/sbul';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
@@ -60,7 +61,7 @@ const useStyles = makeStyles({
     },
   },
   loadingScreen: {
-    height: '100vh', 
+    height: '100vh',
   },
 });
 
@@ -73,6 +74,7 @@ function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
+  const [sbulChange, setSbulChange] = useState(false);
   const classes = useStyles();
   let analyticsData;
 
@@ -147,6 +149,7 @@ function ChplListingPage({ id }) {
   const listingState = {
     listing,
     setListing,
+    setSbulChange,
   };
 
   analyticsData = {
@@ -166,6 +169,16 @@ function ChplListingPage({ id }) {
             surveillance={activeSurveillance}
             dispatch={handleDispatch}
           />
+        </ListingContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  }
+
+  if (sbulChange) {
+    return (
+      <AnalyticsContext.Provider value={analyticsData}>
+        <ListingContext.Provider value={listingState}>
+          <ChplSbul />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );

@@ -27,7 +27,6 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext, UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
@@ -53,13 +52,12 @@ const useStyles = makeStyles({
 });
 
 function ChplCriterionDetailsView({
-    criterion,
-    qmsStandards,
-    accessibilityStandards,
+  criterion,
+  qmsStandards,
+  accessibilityStandards,
 }) {
-  const $state = getAngularService('$state');
   const { hasAnyRole, user } = useContext(UserContext);
-  const { listing } = useContext(ListingContext);
+  const { listing, setSbulChange } = useContext(ListingContext);
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -74,8 +72,7 @@ function ChplCriterionDetailsView({
             || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
 
   const submitSBULChange = () => {
-    console.log('submit');
-    $state.go('administration.sbul', { listingId: listing.id });
+    setSbulChange(true);
   };
 
   return (

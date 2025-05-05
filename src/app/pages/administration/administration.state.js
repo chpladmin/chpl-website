@@ -85,21 +85,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
 }, {
-  name: 'administration.sbul',
-  url: '/sbul/{listingId}',
-  component: 'chplSbulBridge',
-  data: {
-    title: 'Service Base URL List',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
-  },
-  resolve: {
-    listingId: ($transition$) => {
-      'ngInject';
-
-      return $transition$.params().listingId;
-    },
-  },
-}, {
   name: 'administration.system-maintenance',
   url: '/system-maintenance',
   component: 'chplSystemMaintenanceWrapperBridge',

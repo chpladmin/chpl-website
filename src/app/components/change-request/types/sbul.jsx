@@ -17,9 +17,11 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { string } from 'prop-types';
 
+import { usePostChangeRequest } from 'api/change-requests';
 import usePostUrlChecker from 'api/url-checker';
+import { ChplActionBar } from 'components/action-bar';
 import { ChplLink, ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { utilStyles, palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -84,21 +86,66 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplSbul({ listingId }) {
+function ChplSbul() {
   const { hasAnyRole } = useContext(UserContext);
+  const { listing, setSbulChange } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
+  const { mutate: submitCR } = usePostChangeRequest();
   const { data, isLoading, isSuccess, mutate } = usePostUrlChecker();
+  const [errorMessages, setErrorMessages] = useState([]);
+  const [hasValidated, setHasValidated] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
+  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
+  let formik;
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setUrlCheckResponse(data.data);
   }, [data, isLoading, isSuccess]);
 
+  useEffect(() => {
+    formik.setFieldValue('url', listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList);
+  }, [listing]);
+
+  const handleDispatch = (action) => {
+    switch (action) {
+      case 'cancel':
+        setSbulChange(false);
+        break;
+      case 'save':
+        submitCR({
+          url: formik.values.url,
+          changeRequestType: { id: 7 },
+        }, {
+          onSuccess: (response) => {
+            console.log({response});
+            enqueueSnackbar('URL change request has been submitted successfully.', {
+              variant: 'success',
+            });
+            setSbulChange(false);
+          },
+          onError: (error) => {
+            console.log({error});
+            enqueueSnackbar('There was an error in the submission. Please try again or contact your ONC-ACB for support.', {
+              variant: 'error',
+            });
+          },
+        });
+        break;
+        // no default
+    }
+  };
+
+  const isActionDisabled = () => !formik.isValid || !hasValidated;
+
   const validate = (urlToValidate) => {
     setUrlCheckResponse(undefined);
     mutate(urlToValidate, {
+      onSuccess: () => {
+        setHasValidated(true);
+      },
       onError: () => {
         enqueueSnackbar('There was an error attempting to check the URL.', {
           variant: 'error',
@@ -107,7 +154,7 @@ function ChplSbul({ listingId }) {
     });
   }
 
-  const formik = useFormik({
+  formik = useFormik({
     initialValues: {
       url: '',
     },
@@ -135,13 +182,17 @@ function ChplSbul({ listingId }) {
     <>
       <Box className={classes.titleBackground}>
         <Container maxWidth="lg">
-          <Typography className={classes.titlePadding} variant="h1">URL Checker</Typography>
-          <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
+          <Typography className={classes.titlePadding} variant="h1">Service Base URL List Update</Typography>
+          <Typography>
+            Current URL:
+            {' '}
+            { listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList ?? 'None' }
+          </Typography>
           <Box display="flex" alignItems="flex-start">
             <ChplTextField
               id="url"
               name="url"
-              label="URL to check"
+              label="New URL"
               value={formik.values.url}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -272,7 +323,7 @@ function ChplSbul({ listingId }) {
                                   </Typography>
                                   {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
                                 </Box>
-                              </>  
+                              </>
                             )}
                         </CardContent>
                       </Card>
@@ -312,6 +363,13 @@ function ChplSbul({ listingId }) {
                 )}
             </>
           )}
+        <ChplActionBar
+          dispatch={handleDispatch}
+          isDisabled={isActionDisabled()}
+          isProcessing={isProcessing}
+          errors={errorMessages}
+          warnings={warnings}
+        />
       </Container>
     </>
   );
@@ -320,5 +378,4 @@ function ChplSbul({ listingId }) {
 export default ChplSbul;
 
 ChplSbul.propTypes = {
-  listingId: string.isRequired,
 };
