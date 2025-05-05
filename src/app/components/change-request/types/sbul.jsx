@@ -91,7 +91,9 @@ function ChplSbul() {
   const { listing, setSbulChange } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: submitCR } = usePostChangeRequest();
-  const { data, isLoading, isSuccess, mutate } = usePostUrlChecker();
+  const {
+    data, isLoading, isSuccess, mutate,
+  } = usePostUrlChecker();
   const [errorMessages, setErrorMessages] = useState([]);
   const [hasValidated, setHasValidated] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -116,18 +118,22 @@ function ChplSbul() {
         break;
       case 'save':
         submitCR({
-          url: formik.values.url,
-          changeRequestType: { id: 7 },
+          developer: listing.developer,
+          details: {
+            url: formik.values.url,
+            listingId: listing.id,
+            changeRequestListingURLType: 1,
+          },
         }, {
           onSuccess: (response) => {
-            console.log({response});
+            console.log({ response });
             enqueueSnackbar('URL change request has been submitted successfully.', {
               variant: 'success',
             });
             setSbulChange(false);
           },
           onError: (error) => {
-            console.log({error});
+            console.log({ error });
             enqueueSnackbar('There was an error in the submission. Please try again or contact your ONC-ACB for support.', {
               variant: 'error',
             });
@@ -152,7 +158,7 @@ function ChplSbul() {
         });
       },
     });
-  }
+  };
 
   formik = useFormik({
     initialValues: {
@@ -305,8 +311,8 @@ function ChplSbul() {
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Response Time (in milliseconds):
                           </Typography>
-                          {urlCheckResponse.responseTimeAssertion?.actualValue ?
-                            (
+                          {urlCheckResponse.responseTimeAssertion?.actualValue
+                            ? (
                               <>
                                 <Box className={classes.statusText}>
                                   <Typography>
