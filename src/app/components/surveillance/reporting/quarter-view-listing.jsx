@@ -50,7 +50,7 @@ function ChplQuarterViewListing({ listing }) {
             size="small"
             endIcon={isExpanded ? <ArrowUpward /> : <ArrowDownward />}
           >
-            {isExpanded ? 'Hide Surveillance Group' : 'Show Surveillance Group'}
+            { isExpanded ? 'Hide Surveillance' : 'Show Surveillance' }
           </Button>
         )}
         onClick={() => setIsExpanded(!isExpanded)}
