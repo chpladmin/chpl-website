@@ -15,7 +15,6 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { string } from 'prop-types';
 
 import { usePostChangeRequest } from 'api/change-requests';
 import usePostUrlChecker from 'api/url-checker';
@@ -98,7 +97,6 @@ function ChplSbul() {
   const [hasValidated, setHasValidated] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
-  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
   let formik;
 
@@ -117,26 +115,27 @@ function ChplSbul() {
         setSbulChange(false);
         break;
       case 'save':
+        setIsProcessing(true);
         submitCR({
           developer: listing.developer,
           details: {
             url: formik.values.url,
             listingId: listing.id,
-            changeRequestListingURLType: 1,
+            changeRequestListingUrlType: {
+              id: 1,
+            },
           },
         }, {
           onSuccess: (response) => {
-            console.log({ response });
+            setIsProcessing(false);
             enqueueSnackbar('URL change request has been submitted successfully.', {
               variant: 'success',
             });
             setSbulChange(false);
           },
           onError: (error) => {
-            console.log({ error });
-            enqueueSnackbar('There was an error in the submission. Please try again or contact your ONC-ACB for support.', {
-              variant: 'error',
-            });
+            setIsProcessing(false);
+            setErrorMessages([error.response.data.error]);
           },
         });
         break;
@@ -144,7 +143,7 @@ function ChplSbul() {
     }
   };
 
-  const isActionDisabled = () => !formik.isValid || !hasValidated;
+  const isActionDisabled = () => !formik.isValid;// || !hasValidated;
 
   const validate = (urlToValidate) => {
     setUrlCheckResponse(undefined);
@@ -374,7 +373,6 @@ function ChplSbul() {
           isDisabled={isActionDisabled()}
           isProcessing={isProcessing}
           errors={errorMessages}
-          warnings={warnings}
         />
       </Container>
     </>
