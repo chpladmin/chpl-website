@@ -27,7 +27,7 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
   certificationResult,
@@ -56,8 +56,9 @@ function ChplCriterionDetailsView({
   qmsStandards,
   accessibilityStandards,
 }) {
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole, hasAuthorityOn, user } = useContext(UserContext);
   const { listing, setSbulChange } = useContext(ListingContext);
+  const { sbulChangeRequestIsOn } = useContext(FlagContext);
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -717,11 +718,14 @@ function ChplCriterionDetailsView({
                         </IconButton>
                       </ChplTooltip>
                       Service Base URL List
-                      <Button
-                        onClick={() => submitSBULChange()}
-                      >
-                        Submit change
-                      </Button>
+                      { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: listing.developer.id }) && sbulChangeRequestIsOn
+                        && (
+                          <Button
+                            onClick={() => submitSBULChange()}
+                          >
+                            Submit change
+                          </Button>
+                        )}
                     </TableCell>
                     <TableCell>
                       { criterion.serviceBaseUrlList
