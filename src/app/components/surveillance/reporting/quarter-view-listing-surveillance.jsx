@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     paddingLeft: '16px',
     paddingRight: '16px',
     paddingTop: '0px',
-    paddingBottom: '16px',
+    paddingBottom: '8px',
     width: '100%',
     gap: '9px',
     margin: '8px 0',
@@ -36,12 +36,12 @@ const useStyles = makeStyles({
     },
   },
   dialogActions: {
-    padding: '16px',
+    padding: '16px 32px',
   },
   idContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    padding: '16px',
+    padding: '32px 16px 0px 16px',
   },
   menuItems: {
     padding: '8px',
@@ -137,7 +137,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             { surveillance.numOpenNonconformities }
           </Typography>
         </div>
-        <Box style={{ padding: '8px' }}>
+        <Box style={{ padding: '8px 16px' }}>
           <Button
             variant="outlined"
             color="primary"
