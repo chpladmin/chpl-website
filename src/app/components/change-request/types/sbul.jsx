@@ -119,14 +119,14 @@ function ChplSbul() {
         submitCR({
           developer: listing.developer,
           details: {
+            listing,
             url: formik.values.url,
-            listingId: listing.id,
             changeRequestListingUrlType: {
               id: 1,
             },
           },
         }, {
-          onSuccess: (response) => {
+          onSuccess: () => {
             setIsProcessing(false);
             enqueueSnackbar('URL change request has been submitted successfully.', {
               variant: 'success',

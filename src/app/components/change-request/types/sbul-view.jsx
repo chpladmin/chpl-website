@@ -26,10 +26,10 @@ function ChplChangeRequestSBULView({ changeRequest }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current Service Base URL List</Typography>
         <Typography>
-          TBD
+          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
         </Typography>
         <Typography>
-          CHPL Product Number
+          { changeRequest.details.listing.chplProductNumber }
         </Typography>
       </div>
       <div className={classes.detailsContainer}>

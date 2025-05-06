@@ -57,13 +57,10 @@ function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          URL
-          {' '}
-          TBD
+          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
         </Typography>
         <Typography>
-          CHPL Product Number ?
-          {/* changeRequest.developer.website */}
+          { changeRequest.details.listing.chplProductNumber }
         </Typography>
       </div>
       <Divider />
