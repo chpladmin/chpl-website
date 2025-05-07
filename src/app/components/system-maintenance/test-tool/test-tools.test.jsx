@@ -16,9 +16,9 @@ import { BreadcrumbContext, UserContext } from 'shared/contexts';
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
   testTools: [
-    { id: 1, value: 'value 1', regulatoryTextCitation: 'citation 1', criteria: [{ id: 1, number: 'number 1', title: '1 title criterion' }] },
-    { id: 2, value: 'a value', regulatoryTextCitation: 'a citation 2', criteria: [{ id: 2, number: 'number 2', title: '2 title criterion' }] },
-    { id: 3, value: 'no value', regulatoryTextCitation: 'last citation 3', criteria: [{ id: 3, number: 'number 3', title: '3 title criterion' }] },
+    { id: 1, value: 'value 1', criteria: [{ id: 1, number: 'number 1', title: '1 title criterion' }] },
+    { id: 2, value: 'a value', criteria: [{ id: 2, number: 'number 2', title: '2 title criterion' }] },
+    { id: 3, value: 'no value', criteria: [{ id: 3, number: 'number 3', title: '3 title criterion' }] },
   ],
   certificationCriteria: [
     { id: 1, number: '1', title: '1 title criterion' },
@@ -55,10 +55,6 @@ jest.mock('api/standards', () => ({
   __esModule: true,
   useDeleteTestTool: () => ({
     ...mockApi,
-  }),
-  useFetchRules: () => ({
-    ...mockApi,
-    data: [{ name: 'fake rule' }],
   }),
   useFetchTestTools: () => ({
     ...mockApi,
@@ -120,7 +116,6 @@ xdescribe('the ChplTestTools component', () => {
     it('should call the API with valid data on save', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add/i }));
       userEvent.type(screen.getByLabelText(/Value/), 'A new value');
-      userEvent.type(screen.getByLabelText(/Regulatory Text Citation/), 'A new citation');
       userEvent.type(screen.getByLabelText(/Select a criterion to associate/), '{arrowdown}{arrowdown}{enter}');
       userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
