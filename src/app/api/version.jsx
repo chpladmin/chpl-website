@@ -9,6 +9,7 @@ const usePostVersionSplit = () => {
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
+      queryClient.invalidateQueries('developers/hierarchy');
       queryClient.invalidateQueries('developers/search/v3');
     },
   });
@@ -22,6 +23,7 @@ const usePutVersion = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
       queryClient.invalidateQueries('developers/hierarchy');
+      queryClient.invalidateQueries('developers/search/v3');
     },
   });
 };
