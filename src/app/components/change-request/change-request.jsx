@@ -133,7 +133,7 @@ const getChangeRequestViewDetails = (cr) => {
           changeRequest={cr}
         />
       );
-    case 'Listing Service Base URL List Change Request':
+    case 'Listing URL Change Request':
       return (
         <ChplChangeRequestSBULView
           changeRequest={cr}
@@ -164,7 +164,7 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
           dispatch={handleDispatch}
         />
       );
-    case 'Listing Service Base URL List Change Request':
+    case 'Listing URL Change Request':
       return (
         <ChplChangeRequestSBULEdit
           changeRequest={cr}
@@ -377,7 +377,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
           website: payload.website,
         });
         break;
-      case 'Listing Service Base URL List Change Request':
+      case 'Listing URL Change Request':
         setDetails({
           ...details,
           url: payload.url,
