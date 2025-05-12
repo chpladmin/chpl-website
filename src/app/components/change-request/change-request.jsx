@@ -33,7 +33,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { BreadcrumbContext, ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -148,7 +148,7 @@ const getChangeRequestViewDetails = (cr) => {
   }
 };
 
-const getChangeRequestEditDetails = (cr, handleDispatch) => {
+const getChangeRequestEditDetails = (cr, handleDispatch, crContext) => {
   switch (cr.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return (
@@ -166,10 +166,12 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
       );
     case 'Listing URL Change Request':
       return (
-        <ChplChangeRequestSBULEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
+        <ChangeRequestContext.Provider value={crContext}>
+          <ChplChangeRequestSBULEdit
+            changeRequest={cr}
+            dispatch={handleDispatch}
+          />
+        </ChangeRequestContext.Provider>
       );
     default:
       return (
@@ -378,6 +380,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         });
         break;
       case 'Listing URL Change Request':
+        console.log({ id: 1, payload });
         setDetails({
           ...details,
           url: payload.url,
@@ -401,6 +404,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         editCr();
         break;
       case 'update':
+        console.log({id: 2, payload});
         handleUpdate(payload);
         break;
       case 'save':
@@ -428,6 +432,8 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
 
   save = (request) => {
     setIsProcessing(true);
+    console.log({id: 3, request});
+    /*
     mutate({
       acknowledgeWarnings,
       changeRequest: request,
@@ -461,6 +467,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         }
       },
     });
+    */
   };
 
   formik = useFormik({
@@ -469,6 +476,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
       changeRequestStatusType: '',
     },
     onSubmit: () => {
+      console.log({id: 4, details});
       const updated = {
         ...changeRequest,
         details,
@@ -490,6 +498,11 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
   if (!changeRequest) {
     return <CircularProgress />;
   }
+
+  const changeRequestContext = {
+    details,
+    setDetails,
+  };
 
   return (
     <>
@@ -566,7 +579,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
             && (
               <div className={classes.cardContentChangeRequest}>
                 <div>
-                  { getChangeRequestEditDetails(changeRequest, handleDispatch) }
+                  { getChangeRequestEditDetails(changeRequest, handleDispatch, changeRequestContext) }
                 </div>
                 <div className={classes.actionsContainer}>
                   <div className={classes.actionSubContainer}>
