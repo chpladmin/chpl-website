@@ -12,6 +12,7 @@ const filter = {
   values: [
     { value: 'Previously Compared' },
     { value: 'Previously Viewed' },
+    { value: 'Favorites' },
   ],
 };
 
