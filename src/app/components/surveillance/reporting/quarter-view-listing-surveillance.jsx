@@ -226,7 +226,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             <Typography>
               <strong>Additional Costs Evaluation:</strong>
               {' '}
-              { surveillance.additioanlCostsEvaluation }
+              { surveillance.additionalCostsEvaluation }
             </Typography>
             <Typography>
               <strong>Limitations Evaluation:</strong>
