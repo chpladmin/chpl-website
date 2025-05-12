@@ -91,7 +91,7 @@ function ChplActivityDetails({
         { getDescription(activity, title) }
         <Typography variant="body2" className={classes.dateText}>
           { getDisplayDateFormat(activity.date) }
-          {` (${activity.responsibleUser.fullName})` }
+          { activity.responsibleUser?.fullName ? ` (${activity.responsibleUser.fullName})` : '' }
         </Typography>
         { activity.id && details?.length > 0
           && (

@@ -143,6 +143,59 @@ function ChplJoinDevelopers({ dispatch }) {
     <>
       <Container disableGutters maxWidth="xl">
         <Box className={classes.pageContainer}>
+          <Card className={classes.cardContainer}>
+            <CardHeader title={`Select Developers joining ${activeDeveloper.name}`} />
+            <CardContent>
+              <Box display="flex" flexDirection="column" gridGap={16}>
+                { /* eslint-disable react/jsx-props-no-spreading */}
+                <Autocomplete
+                  id="developers"
+                  name="developers"
+                  options={developers.filter((d) => canAdd(d))}
+                  onChange={addDeveloper}
+                  inputValue={developerValueToLoad}
+                  onInputChange={(event, newValue) => {
+                    setDeveloperValueToLoad(newValue);
+                  }}
+                  getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
+                  renderInput={(params) => <ChplTextField {...params} label={`Select Developers joining ${activeDeveloper.name}`} />}
+                />
+                { /* eslint-enable react/jsx-props-no-spreading */}
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Code</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell><span className="sr-only">Action</span></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {developers.map((developer) => (
+                        <TableRow key={developer.id}>
+                          <TableCell>{developer.developerCode}</TableCell>
+                          <TableCell>{developer.name}</TableCell>
+                          <TableCell>{getStatus(developer)}</TableCell>
+                          <TableCell>
+                            <Button
+                              onClick={() => addDeveloper(undefined, developer)}
+                              disabled={!canAdd(developer)}
+                              color="secondary"
+                              variant="contained"
+                              endIcon={<AddIcon fontSize="small" />}
+                            >
+                              Add
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </CardContent>
+          </Card>
           <Card className={classes.stickyCardContainer}>
             <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
             <CardContent>
@@ -196,59 +249,6 @@ function ChplJoinDevelopers({ dispatch }) {
                      </Table>
                    </TableContainer>
                  )}
-              </Box>
-            </CardContent>
-          </Card>
-          <Card className={classes.cardContainer}>
-            <CardHeader title={`Select Developers joining ${activeDeveloper.name}`} />
-            <CardContent>
-              <Box display="flex" flexDirection="column" gridGap={16}>
-                { /* eslint-disable react/jsx-props-no-spreading */}
-                <Autocomplete
-                  id="developers"
-                  name="developers"
-                  options={developers.filter((d) => canAdd(d))}
-                  onChange={addDeveloper}
-                  inputValue={developerValueToLoad}
-                  onInputChange={(event, newValue) => {
-                    setDeveloperValueToLoad(newValue);
-                  }}
-                  getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
-                  renderInput={(params) => <ChplTextField {...params} label={`Select Developers joining ${activeDeveloper.name}`} />}
-                />
-                { /* eslint-enable react/jsx-props-no-spreading */}
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Code</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell><span className="sr-only">Action</span></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {developers.map((developer) => (
-                        <TableRow key={developer.id}>
-                          <TableCell>{developer.developerCode}</TableCell>
-                          <TableCell>{developer.name}</TableCell>
-                          <TableCell>{getStatus(developer)}</TableCell>
-                          <TableCell>
-                            <Button
-                              onClick={() => addDeveloper(undefined, developer)}
-                              disabled={!canAdd(developer)}
-                              color="secondary"
-                              variant="contained"
-                              endIcon={<AddIcon fontSize="small" />}
-                            >
-                              Add
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
               </Box>
             </CardContent>
           </Card>
