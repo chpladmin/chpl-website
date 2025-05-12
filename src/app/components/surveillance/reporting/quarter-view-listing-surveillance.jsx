@@ -169,36 +169,40 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
               {' '}
               { surveillance.surveillanceOutcome?.name }
             </Typography>
-            <Typography>
-              <strong>Surveillance Outcome Other:</strong>
-              {' '}
-              { surveillance.surveillanceOutcomeOther }
-            </Typography>
-            <Typography>
-              <strong>Surveillance Process Type Other:</strong>
-              {' '}
-              { surveillance.surveillanceProcessTypeOther }
-            </Typography>
+            { surveillance.surveillanceOutcome?.name === 'Other'
+              && (
+                <Typography>
+                  <strong>Surveillance Outcome Other:</strong>
+                  {' '}
+                  { surveillance.surveillanceOutcomeOther }
+                </Typography>
+              )}
             <Typography>
               <strong>Surveillance Process Types:</strong>
               {' '}
               { surveillance.surveillanceProcessTypes.map((s) => s.name).join('; ') }
             </Typography>
-            <Typography>
-              <strong>Grounds For Initiating:</strong>
-              {' '}
-              { surveillance.groundsForInitiating }
-            </Typography>
+            { surveillance.surveillanceProcessTypes.some((s) => s.name === 'Other')
+              && (
+                <Typography>
+                  <strong>Surveillance Process Type Other:</strong>
+                  {' '}
+                  { surveillance.surveillanceProcessTypeOther }
+                </Typography>
+              )}
             <Typography>
               <strong>Surveillance Grounds For Initiating:</strong>
               {' '}
               { surveillance.surveillanceGroundsForInitiating.map((s) => s.name).join('; ') }
             </Typography>
-            <Typography>
-              <strong>Surveillance Grounds For Initiating Other:</strong>
-              {' '}
-              { surveillance.surveillanceGroundsForInitiatingOther }
-            </Typography>
+            { surveillance.surveillanceGroundsForInitiating.some((s) => s.name === 'Other')
+              && (
+                <Typography>
+                  <strong>Surveillance Grounds For Initiating Other:</strong>
+                  {' '}
+                  { surveillance.surveillanceGroundsForInitiatingOther }
+                </Typography>
+              )}
             <Typography>
               <strong>Nonconformity Causes:</strong>
               {' '}
@@ -244,16 +248,14 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
               {' '}
               { surveillance.capStatuses.map((s) => s.name).join('; ') }
             </Typography>
-            <Typography>
-              <strong>CAP Status Other:</strong>
-              {' '}
-              { surveillance.capStatusOther }
-            </Typography>
-            <Typography>
-              <strong>Completed CAP Verification:</strong>
-              {' '}
-              { surveillance.completedCapVerification }
-            </Typography>
+            { surveillance.capStatuses.some((s) => s.name === 'Other')
+              && (
+                <Typography>
+                  <strong>CAP Status Other:</strong>
+                  {' '}
+                  { surveillance.capStatusOther }
+                </Typography>
+              )}
             <Typography>
               <strong>Surveillance Findings:</strong>
               {' '}
