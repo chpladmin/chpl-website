@@ -17,6 +17,7 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, BrowserContext, useAnalyticsContext } from 'shared/contexts';
+import { useLocalStorage } from 'services/storage.service'; // Import useLocalStorage
 
 const staticFilters = [
   certificationDate,
@@ -49,6 +50,7 @@ function ChplListingsPage() {
   const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
+  const [favorites] = useLocalStorage('favorites', []); // Access favorites from local storage
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
@@ -66,7 +68,7 @@ function ChplListingsPage() {
         getValueDisplay,
         getLongValueDisplay: getValueDisplay,
       }));
-  }, [getPreviouslyCompared, getPreviouslyViewed]);
+  }, [getPreviouslyCompared, getPreviouslyViewed, favorites]); // Add favorites to dependencies
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -144,7 +146,18 @@ function ChplListingsPage() {
       }));
   }, [standardsQuery.data, standardsQuery.isLoading, standardsQuery.isSuccess]);
 
-  getValueDisplay = (value) => `${value.value} (${value.value.includes('Compared') ? getPreviouslyCompared().length : getPreviouslyViewed().length})`;
+  getValueDisplay = (value) => {
+    if (value.value === 'Previously Compared') {
+      return `${value.value} (${getPreviouslyCompared().length})`;
+    }
+    if (value.value === 'Previously Viewed') {
+      return `${value.value} (${getPreviouslyViewed().length})`;
+    }
+    if (value.value === 'Favorites') {
+      return `${value.value} (${favorites.length})`; // Display count of favorites
+    }
+    return value.value;
+  };
 
   getQuery = (state) => {
     const value = state.values[0]?.value;
@@ -153,6 +166,9 @@ function ChplListingsPage() {
     }
     if (value === 'Previously Viewed' && getPreviouslyViewed().length > 0) {
       return `listingIds=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+    }
+    if (value === 'Favorites' && favorites.length > 0) {
+      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`; // Query for favorites
     }
     return null;
   };
