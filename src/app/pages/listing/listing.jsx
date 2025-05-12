@@ -5,14 +5,17 @@ import {
   CircularProgress,
   Container,
   Typography,
+  IconButton,
   makeStyles,
+  Fade,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import EditIcon from '@material-ui/icons/Edit';
+import { Star, StarOutline } from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingHistory from './history/listing-history';
-
+import ChplTooltip from 'components/util/chpl-tooltip';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
@@ -20,6 +23,7 @@ import ChplSurveillanceEdit from 'components/listing/details/compliance/surveill
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
+import { useLocalStorage } from 'services/storage.service';
 import {
   AnalyticsContext,
   ListingContext,
@@ -60,7 +64,11 @@ const useStyles = makeStyles({
     },
   },
   loadingScreen: {
-    height: '100vh', 
+    height: '100vh',
+  },
+  favoriteContainer: {
+    display: 'flex',
+    alignItems: 'baseline',
   },
 });
 
@@ -73,6 +81,7 @@ function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
+  const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const classes = useStyles();
   let analyticsData;
 
@@ -136,6 +145,18 @@ function ChplListingPage({ id }) {
     }
   };
 
+  const toggleFavorite = () => {
+    setFavorites((prevFavorites) => {
+      const isFavorited = prevFavorites.some((fav) => fav && fav.id === listing?.id); // Add null/undefined checks
+      if (isFavorited) {
+        return prevFavorites.filter((fav) => fav && fav.id !== listing?.id); // Add null/undefined checks
+      }
+      return [...prevFavorites, listing]; // Add listing to favorites
+    });
+  };
+
+  const isFavorited = favorites.some((fav) => fav && fav.id === listing?.id); // Add null/undefined checks
+
   if (isLoading || !isSuccess || !listing) {
     return (
       <div className={classes.loadingScreen}>
@@ -180,12 +201,31 @@ function ChplListingPage({ id }) {
         <div className={classes.pageHeader}>
           <Container maxWidth="lg">
             <Box className={classes.listingHeaderBox}>
-              <Box>
+              <Box display="flex" alignItems="center" gridGap="4px">
                 <Typography
                   variant="h1"
                 >
                   {listing.product.name}
                 </Typography>
+                <Box className={classes.favoriteContainer}>
+                  <ChplTooltip
+                    title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+                    placement="top"
+                  >
+                    <IconButton
+                      onClick={toggleFavorite}
+                      style={{ color: '#e3bf00' }}
+                      aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
+                    >
+                      {isFavorited ? <Star /> : <StarOutline />}
+                    </IconButton>
+                  </ChplTooltip>
+                  <Fade in={isFavorited} timeout={{ enter: 500, exit: 500 }}>
+                    <Typography variant="body1">
+                      {isFavorited ? 'This listing is in your favorites!' : ''}
+                    </Typography>
+                  </Fade>
+                </Box>
               </Box>
               <Box>
                 <ChplActionButton
