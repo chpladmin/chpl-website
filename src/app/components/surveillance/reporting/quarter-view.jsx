@@ -254,9 +254,6 @@ function ChplQuarterView({ dispatch, report }) {
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     Please log the complaints and any actions to the &quot;Complaints&quot; sheet of this workbook.
                   </Typography>
-                  <Typography className={classes.responseBox}>
-                    { report.complaintsReportedToOncAcb }
-                  </Typography>
                 </Box>
                 <Divider />
                 <Typography variant="body2">
