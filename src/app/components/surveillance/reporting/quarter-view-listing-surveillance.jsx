@@ -90,7 +90,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
       <Card style={{ width: '100%' }}>
         <div className={classes.idContainer}>
           <Typography>
-            <strong>Friendly ID:</strong>
+            <strong>Surveillance ID:</strong>
             {' '}
             { surveillance.friendlyId }
           </Typography>
