@@ -4,9 +4,11 @@ import { Box, makeStyles } from '@material-ui/core';
 import ChplDevelopersView from './developers-view';
 
 import { useFetchAcbs } from 'api/acbs';
+import { useFetchCriteria } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
+  certificationCriteriaIds,
   decertificationDate,
   quickFilters,
 } from 'components/filter/filters';
@@ -58,6 +60,7 @@ const staticFilters = [
 function ChplDevelopersPage() {
   const classes = useStyles();
   const [filters, setFilters] = useState(staticFilters);
+  const ccQuery = useFetchCriteria();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const acbQuery = useFetchAcbs();
@@ -89,6 +92,26 @@ function ChplDevelopersPage() {
         values,
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
+
+  useEffect(() => {
+    if (ccQuery.isLoading || !ccQuery.isSuccess) {
+      return;
+    }
+    const values = ccQuery.data
+      .map((cc) => ({
+        ...cc,
+        value: cc.id,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}`,
+        longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.status === 'RETIRED' ? 'Retired | ' : ''}${cc.number}: ${cc.title}`,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationCriteriaIds')
+      .concat({
+        ...certificationCriteriaIds,
+        developersListingsCriteriaOptionKey: 'developersListingsCriteriaOption',
+        values,
+      }));
+  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   useEffect(() => {
     if (hasAnyRole(['chpl-admin', 'chpl-onc'])) {
@@ -123,7 +146,7 @@ function ChplDevelopersPage() {
           filters={filters}
           storageKey="storageKey-developersPage"
         >
-        <ChplDevelopersView />
+          <ChplDevelopersView />
         </FilterProvider>
       </Box>
     </AnalyticsContext.Provider>
