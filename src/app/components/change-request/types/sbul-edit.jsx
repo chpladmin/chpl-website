@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   Divider,
   Typography,
@@ -9,7 +9,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { ChangeRequestContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -35,23 +35,19 @@ const validationSchema = yup.object({
     .required('URL is required'),
 });
 
-function ChplChangeRequestSBULEdit() {
-  const { details, setDetails } = useContext(ChangeRequestContext);
+function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
 
-  useEffect(() => {
-    if (!formik) { return; }
-    console.log({id: 5, v: formik.values });
-    setDetails({
-      url: formik.values.url,
-    });
-  }, [formik?.values]);
+  const handleChange = (...args) => {
+    formik.handleChange(...args);
+    dispatch('update', formik.values);
+  };
 
   formik = useFormik({
     initialValues: {
-      url: details.url || '',
+      url: changeRequest.details.url || '',
     },
     validationSchema,
   });
@@ -61,10 +57,10 @@ function ChplChangeRequestSBULEdit() {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
+          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
         </Typography>
         <Typography>
-          { details.listing.chplProductNumber }
+          { changeRequest.details.listing.chplProductNumber }
         </Typography>
       </div>
       <Divider />
@@ -77,7 +73,7 @@ function ChplChangeRequestSBULEdit() {
           required
           disabled={!hasAnyRole(['chpl-developer'])}
           value={formik.values.url}
-          onChange={formik.handleChange}
+          onChange={handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.url && !!formik.errors.url}
           helperText={formik.touched.url && formik.errors.url}
@@ -90,4 +86,6 @@ function ChplChangeRequestSBULEdit() {
 export default ChplChangeRequestSBULEdit;
 
 ChplChangeRequestSBULEdit.propTypes = {
+  changeRequest: changeRequestProp.isRequired,
+  dispatch: func.isRequired,
 };
