@@ -14,7 +14,6 @@ import ChplTestToolsView from './test-tools-view';
 import {
   useDeleteTestTool,
   useFetchCriteriaForTestTools,
-  useFetchRules,
   useFetchTestTools,
   usePostTestTool,
   usePutTestTool,
@@ -80,11 +79,9 @@ function ChplTestTools() {
   const postTestTool = usePostTestTool();
   const putTestTool = usePutTestTool();
   const criterionOptionsQuery = useFetchCriteriaForTestTools();
-  const rulesQuery = useFetchRules();
   const { enqueueSnackbar } = useSnackbar();
   const [activeTestTool, setActiveTestTool] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
-  const [rules, setRules] = useState([]);
   const [errors, setErrors] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
   const [testTools, setTestTools] = useState([]);
@@ -137,11 +134,6 @@ function ChplTestTools() {
         values,
       }));
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
-
-  useEffect(() => {
-    if (rulesQuery.isLoading || !rulesQuery.isSuccess) { return; }
-    setRules(rulesQuery.data);
-  }, [rulesQuery.data, rulesQuery.isLoading, rulesQuery.isSuccess]);
 
   handleDispatch = ({ action, payload }) => {
     switch (action) {
@@ -228,7 +220,6 @@ function ChplTestTools() {
             testTool={activeTestTool}
             dispatch={handleDispatch}
             criterionOptions={criterionOptions}
-            rules={rules}
             errors={errors}
             isProcessing={isProcessing}
           />
