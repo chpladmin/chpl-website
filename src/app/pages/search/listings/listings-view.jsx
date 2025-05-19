@@ -141,7 +141,7 @@ function ChplListingsView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const [favorites] = useLocalStorage('favorites', []); // Keep the favorites state
+  const [favorites] = useLocalStorage('favorites', []);
   const { dispatch, hasSearched, queryString, filters } = useFilterContext();
   const classes = useStyles();
 
