@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 13.38.0
+_19 May 2025_
+
+### Features
+* Remove regtext and rule from test tool add/edit ui
+* Support Certification Criteria search for Developers
+
+### Bug Fixes
+* Handle issue with user activity in non-PROD environments due to SSO
+
+### User Interface Updates
+* Update UX for Version merging to modern standards
+* Update Developer Attestations report with the ability to view previous Attestation Periods for which report data exists
+* Last Modified Date for PowerBI reports uses a new CHPL endpoint
+
+---
+
 ## Version 13.37.0
 _28 April 2025_
 
