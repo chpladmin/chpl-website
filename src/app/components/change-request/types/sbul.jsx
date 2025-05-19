@@ -93,6 +93,7 @@ function ChplSbul() {
   const {
     data, isLoading, isSuccess, mutate,
   } = usePostUrlChecker();
+  const [currentUrl, setCurrentUrl] = useState(undefined);
   const [errorMessages, setErrorMessages] = useState([]);
   const [hasValidated, setHasValidated] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -106,7 +107,9 @@ function ChplSbul() {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    formik.setFieldValue('url', listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList);
+    const url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+    formik.setFieldValue('url', url);
+    setCurrentUrl(url);
   }, [listing]);
 
   const handleDispatch = (action) => {
@@ -143,7 +146,7 @@ function ChplSbul() {
     }
   };
 
-  const isActionDisabled = () => !formik.isValid;// || !hasValidated;
+  const isActionDisabled = () => !formik.isValid || !hasValidated || formik.values.url === currentUrl;
 
   const validate = (urlToValidate) => {
     setUrlCheckResponse(undefined);
@@ -152,6 +155,7 @@ function ChplSbul() {
         setHasValidated(true);
       },
       onError: () => {
+        setHasValidated(true);
         enqueueSnackbar('There was an error attempting to check the URL.', {
           variant: 'error',
         });
@@ -191,7 +195,7 @@ function ChplSbul() {
           <Typography>
             Current URL:
             {' '}
-            { listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList ?? 'None' }
+            { currentUrl ?? 'None' }
           </Typography>
           <Box display="flex" alignItems="flex-start">
             <ChplTextField
