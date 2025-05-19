@@ -7,7 +7,7 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -17,15 +17,12 @@ import { sortCriteria } from 'services/criteria.service';
 import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
-  rule as rulePropType,
   testTool as testToolPropType,
 } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   value: yup.string()
     .required('Field is required'),
-  regulatoryTextCitation: yup.string(),
-  rule: yup.string(),
   endDay: yup.date(),
   startDay: yup.date(),
 });
@@ -53,14 +50,12 @@ function ChplTestToolEdit(props) {
   const {
     criterionOptions,
     dispatch,
-    rules,
     testTool: initialTestTool,
+    isProcessing,
   } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [testTool, setTestTool] = useState({});
   const classes = useStyles();
@@ -98,10 +93,6 @@ function ChplTestToolEdit(props) {
   }, [initialTestTool]);
 
   useEffect(() => {
-    setRuleOptions(rules.map((rule) => rule.name).sort((a, b) => (a < b ? -1 : 1)));
-  }, [rules]);
-
-  useEffect(() => {
     setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
   }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
@@ -113,8 +104,6 @@ function ChplTestToolEdit(props) {
   const buildPayload = () => ({
     ...testTool,
     value: formik.values.value,
-    regulatoryTextCitation: formik.values.regulatoryTextCitation,
-    rule: rules.find((rule) => rule.name === formik.values.rule),
     criteria,
     endDay: formik.values.endDay,
     startDay: formik.values.startDay,
@@ -133,7 +122,6 @@ function ChplTestToolEdit(props) {
         hide('testTools.edit.disabled');
         break;
       case 'save':
-        setIsProcessing(true);
         formik.submitForm();
         hide('testTools.add.disabled');
         hide('testTools.edit.disabled');
@@ -153,8 +141,6 @@ function ChplTestToolEdit(props) {
   formik = useFormik({
     initialValues: {
       value: initialTestTool?.value ?? '',
-      regulatoryTextCitation: initialTestTool?.regulatoryTextCitation ?? '',
-      rule: initialTestTool?.rule?.name ?? '',
       endDay: initialTestTool?.endDay ?? '',
       startDay: initialTestTool?.startDay ?? '',
     },
@@ -163,8 +149,6 @@ function ChplTestToolEdit(props) {
     },
     validationSchema,
   });
-
-  if (ruleOptions.length === 0) { return null; }
 
   return (
     <div className={classes.container}>
@@ -179,16 +163,6 @@ function ChplTestToolEdit(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.value && !!formik.errors.value}
           helperText={formik.touched.value && formik.errors.value}
-        />
-        <ChplTextField
-          id="regulatory-text-citation"
-          name="regulatoryTextCitation"
-          label="Regulatory Text Citation"
-          value={formik.values.regulatoryTextCitation}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
-          helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
         />
       </Box>
       <Box className={classes.horizontalInput}>
@@ -216,25 +190,6 @@ function ChplTestToolEdit(props) {
         />
       </Box>
       <Divider />
-      <ChplTextField
-        select
-        id="rule"
-        name="rule"
-        label="Select a Rule"
-        value={formik.values.rule}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      >
-        { ruleOptions
-          .map((item) => (
-            <MenuItem
-              value={item}
-              key={item}
-            >
-              { item }
-            </MenuItem>
-          ))}
-      </ChplTextField>
       <ChplTextField
         select
         id="criteria-select"
@@ -286,6 +241,6 @@ ChplTestToolEdit.propTypes = {
   criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
   errors: arrayOf(string).isRequired,
-  rules: arrayOf(rulePropType).isRequired,
   testTool: testToolPropType.isRequired,
+  isProcessing: bool.isRequired,
 };

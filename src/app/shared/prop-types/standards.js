@@ -95,8 +95,6 @@ const testTool = shape({
   endDay: string,
   id: number,
   name: string,
-  regulatoryTextCitation: string,
-  rule,
   startDay: string,
   value: string,
 });

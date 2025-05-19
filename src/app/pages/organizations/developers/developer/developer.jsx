@@ -14,6 +14,7 @@ import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplVersionEdit from './version-edit';
+import ChplVersionMerge from './version-merge';
 import ChplVersionSplit from './version-split';
 
 import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/developer';
@@ -26,6 +27,9 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh)',
+  },
 });
 
 function ChplDeveloperPage({ id }) {
@@ -37,6 +41,7 @@ function ChplDeveloperPage({ id }) {
   const { mutate: createInvitation } = usePostCreateInvitation();
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [developer, setDeveloper] = useState(undefined);
+  const [product, setProduct] = useState(undefined);
   const [version, setVersion] = useState(undefined);
   const [state, setState] = useState('view');
   const classes = useStyles();
@@ -114,10 +119,9 @@ function ChplDeveloperPage({ id }) {
         });
         break;
       case 'mergeVersion':
-        $state.go('organizations.developers.developer.product.version.merge', {
-          productId: payload.product.id,
-          versionId: payload.version,
-        });
+        setState(action);
+        setProduct(developer.products.find((p) => p.id === payload.product.id));
+        setVersion(payload.product.versions.find((v) => v.id === payload.version));
         break;
       case 'splitVersion':
         setState(action);
@@ -156,7 +160,7 @@ function ChplDeveloperPage({ id }) {
             </Typography>
           </Container>
         </Box>
-        <Container maxWidth="lg" id="main-content" tabIndex="-1">
+        <Container className={classes.fixFooterSpacing} maxWidth="lg" id="main-content" tabIndex="-1">
           { state === 'view'
             && (
               <ChplDeveloperView
@@ -181,6 +185,14 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperJoin
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'mergeVersion'
+            && (
+              <ChplVersionMerge
+                dispatch={handleDispatch}
+                product={product}
+                version={version}
               />
             )}
           { state === 'split'

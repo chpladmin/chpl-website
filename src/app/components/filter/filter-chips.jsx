@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
 const truncate = (str, n, useWordBoundary) => {
   if (str.length <= n) { return str; }
   const subString = str.slice(0, n - 1);
-  return (useWordBoundary ? subString.slice(0, subString.lastIndexOf(" ")) : subString) + "...";
+  return `${useWordBoundary ? subString.slice(0, subString.lastIndexOf(' ')) : subString}...`;
 };
 
 const maxLengthForChip = 40;
@@ -93,6 +93,17 @@ function ChplFilterChips() {
     filterContext.dispatch('toggleOperator', f);
   };
 
+  const toggleDevelopersListingsCriteriaOption = (f) => {
+    if (filterContext.analytics) {
+      eventTrack({
+        ...filterContext.analytics,
+        event: `Set Active/All Listing Filter to ${f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}`,
+        label: f.getFilterDisplay(f),
+      });
+    }
+    filterContext.dispatch('toggleDevelopersListingsCriteriaOption', f);
+  };
+
   const toggleShowAll = (f) => {
     if (filterContext.analytics) {
       eventTrack({
@@ -130,6 +141,20 @@ function ChplFilterChips() {
                     />
                   )}
                   label={f.operator === 'and' ? 'All' : 'Any'}
+                />
+              )}
+            { f.developersListingsCriteriaOptionKey
+              && (
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      id={`${f.key}-developers-listings-criteria-option-chips-toggle`}
+                      color="primary"
+                      checked={f.developersListingsCriteriaOption === 'all'}
+                      onChange={() => toggleDevelopersListingsCriteriaOption(f)}
+                    />
+                  )}
+                  label={f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}
                 />
               )}
             {f.values

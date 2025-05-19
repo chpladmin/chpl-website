@@ -7,7 +7,7 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -58,12 +58,12 @@ function ChplStandardEdit(props) {
     criterionOptions,
     dispatch,
     rules,
+    isProcessing,
     standard: initialStandard,
   } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [standard, setStandard] = useState({});
@@ -140,7 +140,6 @@ function ChplStandardEdit(props) {
         hide('standards.edit.disabled');
         break;
       case 'save':
-        setIsProcessing(true);
         formik.submitForm();
         hide('standards.add.disabled');
         hide('standards.edit.disabled');
@@ -324,6 +323,7 @@ ChplStandardEdit.propTypes = {
   criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
   errors: arrayOf(string).isRequired,
+  isProcessing: bool.isRequired,
   rules: arrayOf(rulePropType).isRequired,
   standard: standardPropType.isRequired,
 };
