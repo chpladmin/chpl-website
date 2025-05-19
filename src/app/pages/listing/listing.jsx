@@ -4,17 +4,16 @@ import {
   Button,
   CircularProgress,
   Container,
-  Typography,
-  IconButton,
-  makeStyles,
   Fade,
+  IconButton,
+  Typography,
+  makeStyles,
 } from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import EditIcon from '@material-ui/icons/Edit';
-import { Star, StarOutline } from '@material-ui/icons';
+import { Star, StarOutline, Edit, CloudDownload } from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingHistory from './history/listing-history';
+
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -145,17 +144,16 @@ function ChplListingPage({ id }) {
     }
   };
 
+  const isFavorited = favorites.some((fav) => fav && fav.id === listing?.id);
+
   const toggleFavorite = () => {
     setFavorites((prevFavorites) => {
-      const isFavorited = prevFavorites.some((fav) => fav && fav.id === listing?.id); // Add null/undefined checks
       if (isFavorited) {
-        return prevFavorites.filter((fav) => fav && fav.id !== listing?.id); // Add null/undefined checks
+        return prevFavorites.filter((fav) => fav && fav.id !== listing?.id);
       }
-      return [...prevFavorites, listing]; // Add listing to favorites
+      return [...prevFavorites, listing];
     });
   };
-
-  const isFavorited = favorites.some((fav) => fav && fav.id === listing?.id); // Add null/undefined checks
 
   if (isLoading || !isSuccess || !listing) {
     return (
@@ -235,7 +233,7 @@ function ChplListingPage({ id }) {
                   { canEdit()
                     && (
                       <Button
-                        endIcon={<EditIcon />}
+                        endIcon={<Edit />}
                         size="small"
                         variant="contained"
                         color="primary"
@@ -255,7 +253,7 @@ function ChplListingPage({ id }) {
                         size="small"
                         id={`download-original-csv-${listing.id}`}
                         onClick={downloadOriginalCsv}
-                        endIcon={<CloudDownloadIcon />}
+                        endIcon={<CloudDownload />}
                       >
                         Original CSV
                       </Button>
@@ -268,7 +266,7 @@ function ChplListingPage({ id }) {
                         size="small"
                         id={`download-current-csv-${listing.id}`}
                         onClick={downloadCurrentCsv}
-                        endIcon={<CloudDownloadIcon />}
+                        endIcon={<CloudDownload />}
                       >
                         Current CSV
                       </Button>
