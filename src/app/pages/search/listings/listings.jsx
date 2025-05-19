@@ -147,16 +147,16 @@ function ChplListingsPage() {
   }, [standardsQuery.data, standardsQuery.isLoading, standardsQuery.isSuccess]);
 
   getValueDisplay = (value) => {
-    if (value.value === 'Previously Compared') {
-      return `${value.value} (${getPreviouslyCompared().length})`;
+    switch (value.value) {
+      case 'Previously Compared':
+        return `${value.value} (${getPreviouslyCompared().length})`;
+      case 'Previously Viewed':
+        return `${value.value} (${getPreviouslyViewed().length})`;
+      case 'Favorites':
+        return `${value.value} (${favorites.length})`; // Display count of favorites
+      default:
+        return value.value;
     }
-    if (value.value === 'Previously Viewed') {
-      return `${value.value} (${getPreviouslyViewed().length})`;
-    }
-    if (value.value === 'Favorites') {
-      return `${value.value} (${favorites.length})`; // Display count of favorites
-    }
-    return value.value;
   };
 
   getQuery = (state) => {
