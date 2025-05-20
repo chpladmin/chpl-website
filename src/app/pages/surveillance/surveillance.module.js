@@ -1,6 +1,9 @@
 import 'ng-file-upload';
+import ChplSurveillanceReporting from './reporting/reporting-wrapper';
 
-export default angular
+import { reactToAngularComponent } from 'services/angular-react-helper';
+
+angular
   .module('chpl.surveillance', [
     'chpl.components',
     'chpl.services',
@@ -10,4 +13,5 @@ export default angular
     'smart-table',
     'ui.bootstrap',
     'ui.router',
-  ]);
+  ])
+  .component('chplSurveillanceReportingBridge', reactToAngularComponent(ChplSurveillanceReporting));

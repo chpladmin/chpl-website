@@ -40,8 +40,6 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  orgContainer: {
-  },
   navigation: {
     display: 'flex',
     flexDirection: 'column',
@@ -177,7 +175,7 @@ function ChplOncOrganizations() {
 
   return (
     <AnalyticsContext.Provider value={analyticsData}>
-      <div className={orgs.length > 1 ? classes.container : classes.orgContainer}>
+      <div className={orgs.length > 1 ? classes.container : ''}>
         { orgs.length > 1
           && (
             <div className={classes.navigation}>
