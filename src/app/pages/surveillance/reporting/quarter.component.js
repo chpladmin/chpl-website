@@ -73,16 +73,16 @@ export const SurveillanceReportQuarterComponent = {
 
     takeActionBarAction (action) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'delete':
-        this.delete();
-        break;
-      case 'save':
-        this.save();
-        break;
-      //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'delete':
+          this.delete();
+          break;
+        case 'save':
+          this.save();
+          break;
+          //no default
       }
     }
 

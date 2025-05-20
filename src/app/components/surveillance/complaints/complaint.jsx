@@ -58,16 +58,16 @@ function ChplComplaint(props) {
 
   useEffect(() => {
     if (isEditing) {
-      display('view');
-      display('edit.disabled');
-      hide('view.disabled');
+      display && display('view');
+      display && display('edit.disabled');
+      hide && hide('view.disabled');
     } else if (complaint.id) {
-      display('view.disabled');
-      hide('add.disabled');
-      hide('edit.disabled');
-      hide('view');
+      display && display('view.disabled');
+      hide && hide('add.disabled');
+      hide && hide('edit.disabled');
+      hide && hide('view');
     } else {
-      display('add.disabled');
+      display && display('add.disabled');
     }
   }, [complaint, isEditing]);
 
