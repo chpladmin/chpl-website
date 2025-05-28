@@ -32,7 +32,7 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage, useLocalStorage } from 'services/storage.service'; // Keep the useLocalStorage import
+import { useSessionStorage as useStorage, useLocalStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 

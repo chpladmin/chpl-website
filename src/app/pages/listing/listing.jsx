@@ -12,14 +12,13 @@ import {
 import { Star, StarOutline, Edit, CloudDownload } from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
-import ChplListingHistory from './history/listing-history';
-
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
+import ChplListingHistory from './history/listing-history';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage } from 'services/storage.service';
