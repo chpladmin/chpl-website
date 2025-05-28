@@ -17,7 +17,7 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, BrowserContext, useAnalyticsContext } from 'shared/contexts';
-import { useLocalStorage } from 'services/storage.service'; // Import useLocalStorage
+import { useLocalStorage } from 'services/storage.service';
 
 const staticFilters = [
   certificationDate,
@@ -136,7 +136,7 @@ function ChplListingsPage() {
         ...standard,
         value: standard.id,
         display: standard.regulatoryTextCitation + (standard.retired ? ' (Expired)' : ''),
-        longDisplay: standard.regulatoryTextCitation + ': ' + standard.value + (standard.retired ? ' (Expired)' : ''),
+        longDisplay: `${standard.regulatoryTextCitation}: ${standard.value}${standard.retired ? ' (Expired)' : ''}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'standards')

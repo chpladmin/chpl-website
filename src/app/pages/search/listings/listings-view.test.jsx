@@ -22,7 +22,7 @@ const mockContext = {
   dispatch: jest.fn(() => 'dispatch'),
   hasSearched: true,
   queryString: jest.fn(() => 'queryString'),
-  filters: { quickFilters: 'Favorites' }, // Ensure quickFilters is properly mocked
+  filters: { quickFilters: 'Favorites' },
 };
 
 const mockApi = {

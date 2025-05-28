@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     margin: '0 32px',
     border: `1px solid ${palette.greyMain}`,
   },
-  fixFooterSpacing: { 
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 159px)',
   },
   linkWrap: {
@@ -134,7 +134,7 @@ function ChplListingsView() {
   const { analytics } = useAnalyticsContext();
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
-  const [filteredListings, setFilteredListings] = useState([]); // Keep the filteredListings state
+  const [setFilteredListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -182,9 +182,7 @@ function ChplListingsView() {
     const applyFilters = () => {
       if (filters.quickFilters === 'Favorites') {
         setFilteredListings(
-          listings.filter((listing) => 
-            listing && favorites.some((fav) => fav && fav.id === listing.id) // Keep the favorites filtering logic
-          )
+          listings.filter((listing) => listing && favorites.some((fav) => fav && fav.id === listing.id)),
         );
       } else {
         setFilteredListings(listings);
@@ -203,8 +201,8 @@ function ChplListingsView() {
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
-  
-const seeAllResults = () => {
+
+  const seeAllResults = () => {
     dispatch('seeAllTextSearchResults');
   };
 

@@ -9,16 +9,18 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { Star, StarOutline, Edit, CloudDownload } from '@material-ui/icons';
+import {
+  Star, StarOutline, Edit, CloudDownload,
+} from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
-import ChplTooltip from 'components/util/chpl-tooltip';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
-import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
-import ChplListingHistory from './history/listing-history';
+import ChplListingHistory from 'pages/listing/history/listing-history';
+import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
+import ChplTooltip from 'components/util/chpl-tooltip';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage } from 'services/storage.service';
@@ -45,9 +47,9 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  pageHeader: {
-    padding: '32px 0',
-    backgroundColor: palette.white,
+  favoriteContainer: {
+    display: 'flex',
+    alignItems: 'baseline',
   },
   listingHeaderBox: {
     display: 'flex',
@@ -64,9 +66,9 @@ const useStyles = makeStyles({
   loadingScreen: {
     height: '100vh',
   },
-  favoriteContainer: {
-    display: 'flex',
-    alignItems: 'baseline',
+  pageHeader: {
+    padding: '32px 0',
+    backgroundColor: palette.white,
   },
 });
 
