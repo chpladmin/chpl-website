@@ -50,7 +50,7 @@ function ChplListingsPage() {
   const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
-  const [favorites] = useLocalStorage('favorites', []); // Access favorites from local storage
+  const [favorites] = useLocalStorage('favorites', []);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
@@ -68,7 +68,7 @@ function ChplListingsPage() {
         getValueDisplay,
         getLongValueDisplay: getValueDisplay,
       }));
-  }, [getPreviouslyCompared, getPreviouslyViewed, favorites]); // Add favorites to dependencies
+  }, [getPreviouslyCompared, getPreviouslyViewed, favorites]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -153,7 +153,7 @@ function ChplListingsPage() {
       case 'Previously Viewed':
         return `${value.value} (${getPreviouslyViewed().length})`;
       case 'Favorites':
-        return `${value.value} (${favorites.length})`; // Display count of favorites
+        return `${value.value} (${favorites.length})`;
       default:
         return value.value;
     }
@@ -168,7 +168,7 @@ function ChplListingsPage() {
       return `listingIds=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     if (value === 'Favorites' && favorites.length > 0) {
-      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`; // Query for favorites
+      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`; 
     }
     return null;
   };

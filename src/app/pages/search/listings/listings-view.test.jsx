@@ -28,7 +28,7 @@ const mockContext = {
 const mockApi = {
   isLoading: true,
   data: {
-    results: [], // Mock empty results to avoid undefined errors
+    results: [],
     recordCount: 0,
   },
 };

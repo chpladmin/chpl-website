@@ -134,7 +134,7 @@ function ChplListingsView() {
   const { analytics } = useAnalyticsContext();
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
-  const [setFilteredListings] = useState([]);
+  const [filteredListings, setFilteredListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
