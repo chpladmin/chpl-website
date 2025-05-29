@@ -22,16 +22,6 @@ const states = [
     url: '/products/{productId}',
     abstract: true,
   }, {
-    name: 'organizations.developers.developer.product.edit',
-    url: '/edit',
-    views: {
-      'view@^.^': 'chplProductsEdit',
-    },
-    data: {
-      title: 'CHPL Developers - Edit Product',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-  }, {
     name: 'organizations.developers.developer.product.merge',
     url: '/merge',
     views: {

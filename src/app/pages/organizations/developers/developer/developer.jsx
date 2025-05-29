@@ -13,6 +13,7 @@ import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
+import ChplProductEdit from './product-edit';
 import ChplVersionEdit from './version-edit';
 import ChplVersionMerge from './version-merge';
 import ChplVersionSplit from './version-split';
@@ -68,6 +69,10 @@ function ChplDeveloperPage({ id }) {
         setState(action);
         setChangeRequest(payload);
         break;
+      case 'editProduct':
+        setState(action);
+        setProduct(payload);
+        break;
       case 'editVersion':
         setState(action);
         setVersion({ version: payload.version, productId: payload.productId });
@@ -101,11 +106,6 @@ function ChplDeveloperPage({ id }) {
               variant: 'error',
             });
           },
-        });
-        break;
-      case 'editProduct':
-        $state.go('organizations.developers.developer.product.edit', {
-          productId: payload.id,
         });
         break;
       case 'mergeProduct':
@@ -171,6 +171,14 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperEdit
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'editProduct'
+            && (
+              <ChplProductEdit
+                dispatch={handleDispatch}
+                productId={product.productId}
+                product={product}
               />
             )}
           { state === 'editVersion'

@@ -221,7 +221,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                       className={classes.buttonGroupMenu}
                     >
                       <MenuItem
-                        onClick={handleAction('edit', product)}
+                        onClick={handleAction('editProduct', product)}
                       >
                         Edit Product
                       </MenuItem>
