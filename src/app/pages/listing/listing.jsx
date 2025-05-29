@@ -17,11 +17,12 @@ import {
 } from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
+import ChplListingHistory from './history/listing-history';
+
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
-import ChplListingHistory from './history/listing-history';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { getAngularService } from 'services/angular-react-helper';
