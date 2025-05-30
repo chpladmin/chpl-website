@@ -4,11 +4,17 @@ import {
   Button,
   CircularProgress,
   Container,
+  Fade,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import EditIcon from '@material-ui/icons/Edit';
+import {
+  CloudDownload,
+  Edit, 
+  Star, 
+  StarOutline, 
+} from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingHistory from './history/listing-history';
@@ -16,10 +22,12 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
-import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
+import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
+import ChplTooltip from 'components/util/chpl-tooltip';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
+import { useLocalStorage } from 'services/storage.service';
 import {
   AnalyticsContext,
   ListingContext,
@@ -43,9 +51,9 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  pageHeader: {
-    padding: '32px 0',
-    backgroundColor: palette.white,
+  favoriteContainer: {
+    display: 'flex',
+    alignItems: 'baseline',
   },
   listingHeaderBox: {
     display: 'flex',
@@ -60,7 +68,11 @@ const useStyles = makeStyles({
     },
   },
   loadingScreen: {
-    height: '100vh', 
+    height: '100vh',
+  },
+  pageHeader: {
+    padding: '32px 0',
+    backgroundColor: palette.white,
   },
 });
 
@@ -73,6 +85,7 @@ function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
+  const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const classes = useStyles();
   let analyticsData;
 
@@ -136,6 +149,17 @@ function ChplListingPage({ id }) {
     }
   };
 
+  const isFavorited = favorites.some((fav) => fav && fav.id === listing?.id);
+
+  const toggleFavorite = () => {
+    setFavorites((prevFavorites) => {
+      if (isFavorited) {
+        return prevFavorites.filter((fav) => fav && fav.id !== listing?.id);
+      }
+      return [...prevFavorites, listing];
+    });
+  };
+
   if (isLoading || !isSuccess || !listing) {
     return (
       <div className={classes.loadingScreen}>
@@ -180,12 +204,31 @@ function ChplListingPage({ id }) {
         <div className={classes.pageHeader}>
           <Container maxWidth="lg">
             <Box className={classes.listingHeaderBox}>
-              <Box>
+              <Box display="flex" alignItems="center" gridGap="4px">
                 <Typography
                   variant="h1"
                 >
                   {listing.product.name}
                 </Typography>
+                <Box className={classes.favoriteContainer}>
+                  <ChplTooltip
+                    title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+                    placement="top"
+                  >
+                    <IconButton
+                      onClick={toggleFavorite}
+                      style={{ color: '#e3bf00' }}
+                      aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
+                    >
+                      {isFavorited ? <Star /> : <StarOutline />}
+                    </IconButton>
+                  </ChplTooltip>
+                  <Fade in={isFavorited} timeout={{ enter: 500, exit: 500 }}>
+                    <Typography variant="body1">
+                      {isFavorited ? 'This listing is in your favorites!' : ''}
+                    </Typography>
+                  </Fade>
+                </Box>
               </Box>
               <Box>
                 <ChplActionButton
@@ -195,7 +238,7 @@ function ChplListingPage({ id }) {
                   { canEdit()
                     && (
                       <Button
-                        endIcon={<EditIcon />}
+                        endIcon={<Edit />}
                         size="small"
                         variant="contained"
                         color="primary"
@@ -215,7 +258,7 @@ function ChplListingPage({ id }) {
                         size="small"
                         id={`download-original-csv-${listing.id}`}
                         onClick={downloadOriginalCsv}
-                        endIcon={<CloudDownloadIcon />}
+                        endIcon={<CloudDownload />}
                       >
                         Original CSV
                       </Button>
@@ -228,7 +271,7 @@ function ChplListingPage({ id }) {
                         size="small"
                         id={`download-current-csv-${listing.id}`}
                         onClick={downloadCurrentCsv}
-                        endIcon={<CloudDownloadIcon />}
+                        endIcon={<CloudDownload />}
                       >
                         Current CSV
                       </Button>
