@@ -22,11 +22,15 @@ const mockContext = {
   dispatch: jest.fn(() => 'dispatch'),
   hasSearched: true,
   queryString: jest.fn(() => 'queryString'),
+  filters: { quickFilters: 'Favorites' },
 };
 
 const mockApi = {
   isLoading: true,
-  data: {},
+  data: {
+    results: [],
+    recordCount: 0,
+  },
 };
 
 /* eslint-disable react/display-name */
