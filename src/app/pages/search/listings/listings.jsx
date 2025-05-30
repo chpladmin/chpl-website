@@ -17,6 +17,7 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, BrowserContext, useAnalyticsContext } from 'shared/contexts';
+import { useLocalStorage } from 'services/storage.service';
 
 const staticFilters = [
   certificationDate,
@@ -49,6 +50,7 @@ function ChplListingsPage() {
   const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
+  const [favorites] = useLocalStorage('favorites', []);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
@@ -66,7 +68,7 @@ function ChplListingsPage() {
         getValueDisplay,
         getLongValueDisplay: getValueDisplay,
       }));
-  }, [getPreviouslyCompared, getPreviouslyViewed]);
+  }, [getPreviouslyCompared, getPreviouslyViewed, favorites]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -134,7 +136,7 @@ function ChplListingsPage() {
         ...standard,
         value: standard.id,
         display: standard.regulatoryTextCitation + (standard.retired ? ' (Expired)' : ''),
-        longDisplay: standard.regulatoryTextCitation + ': ' + standard.value + (standard.retired ? ' (Expired)' : ''),
+        longDisplay: `${standard.regulatoryTextCitation}: ${standard.value}${standard.retired ? ' (Expired)' : ''}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'standards')
@@ -144,7 +146,18 @@ function ChplListingsPage() {
       }));
   }, [standardsQuery.data, standardsQuery.isLoading, standardsQuery.isSuccess]);
 
-  getValueDisplay = (value) => `${value.value} (${value.value.includes('Compared') ? getPreviouslyCompared().length : getPreviouslyViewed().length})`;
+  getValueDisplay = (value) => {
+    switch (value.value) {
+      case 'Previously Compared':
+        return `${value.value} (${getPreviouslyCompared().length})`;
+      case 'Previously Viewed':
+        return `${value.value} (${getPreviouslyViewed().length})`;
+      case 'Favorites':
+        return `${value.value} (${favorites.length})`;
+      default:
+        return value.value;
+    }
+  };
 
   getQuery = (state) => {
     const value = state.values[0]?.value;
@@ -153,6 +166,9 @@ function ChplListingsPage() {
     }
     if (value === 'Previously Viewed' && getPreviouslyViewed().length > 0) {
       return `listingIds=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+    }
+    if (value === 'Favorites' && favorites.length > 0) {
+      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`; 
     }
     return null;
   };
