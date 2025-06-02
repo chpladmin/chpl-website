@@ -138,7 +138,13 @@ function ChplSbul() {
           },
           onError: (error) => {
             setIsProcessing(false);
-            setErrorMessages([error.response.data.error]);
+            if (error.response.data.error) {
+              setErrorMessages([error.response.data.error]);
+            } else if (error.response.data.errorMessages) {
+              setErrorMessages(error.response.data.errorMessages);
+            } else {
+              setErrorMessages(['An error occurred. Please try again, or contact your ONC-ACB for assistance']);
+            }
           },
         });
         break;
