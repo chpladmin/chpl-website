@@ -1,11 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton,
   Card,
   CardHeader,
   CardContent,
   Container,
+  Divider,
+  FormControlLabel,
+  MenuItem,
+  Switch,
+  Table,
+  TableContainer,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  TableFooter,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   arrayOf,
   bool,
@@ -19,7 +38,8 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { useAnalyticsContext } from 'shared/contexts';
+import { getDisplayDateFormat } from 'services/date-util';
+import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -34,31 +54,102 @@ const useStyles = makeStyles({
     margin: '0',
     fontSize: '1.25em',
   },
+  owners: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: ' 8px',
+    gap: '8px',
+  },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+  table: {
+    border: '.5px solid #c2c6ca',
+  },
+  tableFooterButton: {
+    margin: '0 -4px',
+    textTransform: 'none',
+    fontSize: '1.5em',
+  },
+  errorColor: {
+    color: '#c44f65',
+  },
 });
 
 const validationSchema = yup.object({
   name: yup.string()
-    .required('Product is required')
-    .max(300, 'Product is too long'),
-  code: yup.string()
-    .length(2, 'Product Code must be exactly two characters')
-    .matches(/^[A-Za-z0-9_]*$/, 'Product Code must contain only the characters A-Z, a-z, 0-9, and _'),
+    .required('Name is required')
+    .max(300, 'Name is too long'),
+  isAdding: yup.boolean()
+    .required()
+    .oneOf([false]),
+  owner: yup.string()
+    .when('isAdding', {
+      is: true,
+      then: yup.string()
+        .required('Developer is required'),
+    }),
+  transferDate: yup.date()
+    .when('isAdding', {
+      is: true,
+      then: yup.date()
+        .required('Transfer Date is required'),
+    }),
+  fullName: yup.string()
+    .required('Full Name is required')
+    .max(500, 'Full Name is too long'),
+  email: yup.string()
+    .email('Improper format (sample@example.com)')
+    .required('Email is required')
+    .max(250, 'Email is too long'),
+  phoneNumber: yup.string()
+    .required('Phone is required')
+    .max(100, 'Phone is too long'),
 });
+
+const getEditField = ({
+  key,
+  display,
+  formik,
+  required = false,
+  className,
+}) => (
+  <div className={className}>
+    <ChplTextField
+      id={key}
+      name={key}
+      label={display}
+      required={required}
+      value={formik.values[key]}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched[key] && !!formik.errors[key]}
+      helperText={formik.touched[key] && formik.errors[key]}
+    />
+  </div>
+);
 
 function ChplProductEdit(props) {
   const {
+    product,
     dispatch,
     errorMessages: initialErrorMessages,
     isInvalid: initialIsInvalid,
     isProcessing,
     isSplitting,
-    product,
   } = props;
   const { analytics } = useAnalyticsContext();
+  const { hasAnyRole } = useContext(UserContext);
   const [errorMessages, setErrorMessages] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
+  const [owners, setOwners] = useState([]);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    setOwners(product.ownerHistory);
+  }, [product]);
 
   useEffect(() => {
     setIsInvalid(initialIsInvalid);
@@ -76,11 +167,22 @@ function ChplProductEdit(props) {
     dispatch('cancel');
   };
 
+  const getEnhancedEditField = (editProps) => getEditField({
+    ...editProps,
+    formik,
+  });
+
   const save = () => {
     const updatedProduct = {
       ...product,
       name: formik.values.name,
-      code: formik.values.code,
+      ownerHistory: owners,
+      contact: {
+        ...product.contact,
+        fullName: formik.values.fullName,
+        email: formik.values.email,
+        phoneNumber: formik.values.phoneNumber,
+      },
     };
     dispatch('save', updatedProduct);
   };
@@ -97,12 +199,46 @@ function ChplProductEdit(props) {
     }
   };
 
+  const cancelAdd = () => {
+    formik.setValues({
+      ...formik.values,
+      isAdding: false,
+      owner: '',
+      transferDate: '',
+    });
+  };
+
+  const addOwner = () => {
+    setOwners([
+      ...owners,
+      {
+        owner: { name: formik.values.owner },
+        transferDate: formik.values.transferDate,
+      },
+    ]);
+    cancelAdd();
+  };
+
+  const getKey = (owner) => `${owner.id}-${owner.transferDate}`;
+
   const isActionDisabled = () => isInvalid || !formik.isValid;
+
+  const isAddDisabled = () => !!formik.errors.owner || !!formik.errors.transferDate;
+
+  const removeOwner = (owner) => {
+    setOwners(owners.filter((item) => item.transferDate !== item.transferDate
+      || item.owner.name !== status.owner.name));
+  };
 
   formik = useFormik({
     initialValues: {
       name: product.name || '',
-      code: '',
+      owner: '',
+      transferDate: '',
+      isAdding: false,
+      fullName: product.contact?.fullName || '',
+      email: product.contact?.email || '',
+      phoneNumber: product.contact?.phoneNumber || '',
     },
     onSubmit: () => {
       save();
@@ -111,10 +247,7 @@ function ChplProductEdit(props) {
   });
 
   return (
-    <Container
-      disableGutters
-      maxWidth="lg"
-    >
+    <Container disableGutters maxWidth="lg">
       <Card>
         { isSplitting
           && (
@@ -133,31 +266,129 @@ function ChplProductEdit(props) {
             />
           )}
         <CardContent className={classes.content}>
-          <ChplTextField
-            id="name"
-            name="name"
-            label="Name"
-            required
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.name && !!formik.errors.name}
-            helperText={formik.touched.name && formik.errors.name}
-          />
-          { isSplitting
+          { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+            && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidthGridRow, required: true })}
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
-              <ChplTextField
-                id="code"
-                name="code"
-                label="Product Code"
-                required
-                value={formik.values.code}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.code && !!formik.errors.code}
-                helperText={formik.touched.code && formik.errors.code}
-              />
+              <Box className={classes.fullWidthGridRow}>
+                <TableContainer className={classes.fullWidthGridRow}>
+                  <Table className={classes.table}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell><Typography variant="body2">Developer</Typography></TableCell>
+                        <TableCell><Typography variant="body2">Transfer Date</Typography></TableCell>
+                        <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {owners
+                          ?.sort((a, b) => (a.transferDate < b.transferDate ? 1 : -1))
+                          .map((item) => (
+                            <TableRow key={getKey(item)}>
+                              <TableCell>
+                                <Typography variant="body2">{item.name}</Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography variant="body2">{getDisplayDateFormat(item.transferDate)}</Typography>
+                              </TableCell>
+                              <TableCell align="right">
+                                <IconButton
+                                  onClick={() => removeOwner(item)}
+                                  aria-label="Remove owner"
+                                  disabled={formik.values.isAdding}
+                                >
+                                  <CloseIcon
+                                    color="error"
+                                    size="small"
+                                  />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                    </TableBody>
+                    { !formik.values.isAdding
+                        && (
+                          <TableFooter>
+                            <TableRow>
+                              <TableCell colSpan={4} align="right">
+                                <Button
+                                  className={classes.tableFooterButton}
+                                  color="secondary"
+                                  variant="contained"
+                                  onClick={() => formik.setFieldValue('isAdding', true)}
+                                  id="owner-add-item"
+                                >
+                                  Add item
+                                  {' '}
+                                  <AddIcon className={classes.iconSpacing} />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          </TableFooter>
+                        )}
+                  </Table>
+                </TableContainer>
+                  { formik.values.isAdding
+                    && (
+                      <Card className={classes.owners}>
+                        <ChplTextField
+                          select
+                          id="owner"
+                          name="owner"
+                          label="Developer"
+                          required
+                          value={formik.values.owner}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.owner && !!formik.errors.owner}
+                          helperText={formik.touched.owner && formik.errors.owner}
+                        >
+                          <MenuItem key="Suspended by ONC" value="Suspended by ONC">Suspended by ONC</MenuItem>
+                          <MenuItem key="Under certification ban by ONC" value="Under certification ban by ONC">Under certification ban by ONC</MenuItem>
+                        </ChplTextField>
+                        <ChplTextField
+                          type="date"
+                          id="transfer-day"
+                          name="transferDate"
+                          label="Transfer Date"
+                          required
+                          value={formik.values.transferDate}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.transferDate && !!formik.errors.transferDate}
+                          helperText={formik.touched.transferDate && formik.errors.transferDate}
+                        />
+                        <ButtonGroup
+                          className={classes.fullWidthGridRow}
+                          variant="outlined"
+                        >
+                          <Button
+                            onClick={addOwner}
+                            color="primary"
+                            variant="contained"
+                            aria-label="Confirm adding item"
+                            id="owner-add-item"
+                            disabled={isAddDisabled()}
+                          >
+                            <CheckIcon />
+                          </Button>
+                          <Button
+                            className={classes.deleteButtonOutlined}
+                            onClick={cancelAdd}
+                            aria-label="Cancel adding item"
+                            id="owner-close-item"
+                          >
+                            <CloseIcon />
+                          </Button>
+                        </ButtonGroup>
+                      </Card>
+                    )}
+              </Box>
             )}
+          <Divider className={classes.fullWidthGridRow} />
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
+          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
         </CardContent>
       </Card>
       <ChplActionBar
@@ -165,6 +396,7 @@ function ChplProductEdit(props) {
         isDisabled={isActionDisabled()}
         isProcessing={isProcessing}
         errors={errorMessages}
+        warnings={warnings}
       />
     </Container>
   );
@@ -173,12 +405,12 @@ function ChplProductEdit(props) {
 export default ChplProductEdit;
 
 ChplProductEdit.propTypes = {
+  product: object.isRequired,
   dispatch: func.isRequired,
   errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,
   isProcessing: bool,
   isSplitting: bool.isRequired,
-  product: object.isRequired,
 };
 
 ChplProductEdit.defaultProps = {
