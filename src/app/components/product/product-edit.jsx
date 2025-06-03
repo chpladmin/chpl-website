@@ -89,7 +89,7 @@ const validationSchema = yup.object({
       then: yup.string()
         .required('Developer is required'),
     }),
-  transferDate: yup.date()
+  transferDay: yup.date()
     .when('isAdding', {
       is: true,
       then: yup.date()
@@ -204,7 +204,7 @@ function ChplProductEdit(props) {
       ...formik.values,
       isAdding: false,
       owner: '',
-      transferDate: '',
+      transferDay: '',
     });
   };
 
@@ -212,21 +212,21 @@ function ChplProductEdit(props) {
     setOwners([
       ...owners,
       {
-        owner: { name: formik.values.owner },
-        transferDate: formik.values.transferDate,
+        developer: { name: formik.values.owner },
+        transferDay: formik.values.transferDay,
       },
     ]);
     cancelAdd();
   };
 
-  const getKey = (owner) => `${owner.id}-${owner.transferDate}`;
+  const getKey = (owner) => `${owner.id}-${owner.transferDay}`;
 
   const isActionDisabled = () => isInvalid || !formik.isValid;
 
-  const isAddDisabled = () => !!formik.errors.owner || !!formik.errors.transferDate;
+  const isAddDisabled = () => !!formik.errors.owner || !!formik.errors.transferDay;
 
   const removeOwner = (owner) => {
-    setOwners(owners.filter((item) => item.transferDate !== item.transferDate
+    setOwners(owners.filter((item) => item.transferDay !== item.transferDay
       || item.owner.name !== status.owner.name));
   };
 
@@ -234,7 +234,7 @@ function ChplProductEdit(props) {
     initialValues: {
       name: product.name || '',
       owner: '',
-      transferDate: '',
+      transferDay: '',
       isAdding: false,
       fullName: product.contact?.fullName || '',
       email: product.contact?.email || '',
@@ -282,14 +282,14 @@ function ChplProductEdit(props) {
                     </TableHead>
                     <TableBody>
                       {owners
-                          ?.sort((a, b) => (a.transferDate < b.transferDate ? 1 : -1))
+                          ?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
                           .map((item) => (
                             <TableRow key={getKey(item)}>
                               <TableCell>
-                                <Typography variant="body2">{item.name}</Typography>
+                                <Typography variant="body2">{item.developer.name}</Typography>
                               </TableCell>
                               <TableCell>
-                                <Typography variant="body2">{getDisplayDateFormat(item.transferDate)}</Typography>
+                                <Typography variant="body2">{getDisplayDateFormat(item.transferDay)}</Typography>
                               </TableCell>
                               <TableCell align="right">
                                 <IconButton
@@ -349,14 +349,14 @@ function ChplProductEdit(props) {
                         <ChplTextField
                           type="date"
                           id="transfer-day"
-                          name="transferDate"
+                          name="transferDay"
                           label="Transfer Date"
                           required
-                          value={formik.values.transferDate}
+                          value={formik.values.transferDay}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          error={formik.touched.transferDate && !!formik.errors.transferDate}
-                          helperText={formik.touched.transferDate && formik.errors.transferDate}
+                          error={formik.touched.transferDay && !!formik.errors.transferDay}
+                          helperText={formik.touched.transferDay && formik.errors.transferDay}
                         />
                         <ButtonGroup
                           className={classes.fullWidthGridRow}
