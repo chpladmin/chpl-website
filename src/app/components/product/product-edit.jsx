@@ -96,14 +96,11 @@ const validationSchema = yup.object({
         .required('Transfer Date is required'),
     }),
   fullName: yup.string()
-    .required('Full Name is required')
     .max(500, 'Full Name is too long'),
   email: yup.string()
     .email('Improper format (sample@example.com)')
-    .required('Email is required')
     .max(250, 'Email is too long'),
   phoneNumber: yup.string()
-    .required('Phone is required')
     .max(100, 'Phone is too long'),
 });
 
