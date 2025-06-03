@@ -14,6 +14,7 @@ import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplProductEdit from './product-edit';
+import ChplProductMerge from './product-merge';
 import ChplVersionEdit from './version-edit';
 import ChplVersionMerge from './version-merge';
 import ChplVersionSplit from './version-split';
@@ -109,9 +110,8 @@ function ChplDeveloperPage({ id }) {
         });
         break;
       case 'mergeProduct':
-        $state.go('organizations.developers.developer.product.merge', {
-          productId: payload.id,
-        });
+        setState(action);
+        setProduct(payload);
         break;
       case 'splitProduct':
         $state.go('organizations.developers.developer.product.split', {
@@ -193,6 +193,14 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperJoin
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'mergeProduct'
+            && (
+              <ChplProductMerge
+                dispatch={handleDispatch}
+                developer={developer}
+                product={product}
               />
             )}
           { state === 'mergeVersion'

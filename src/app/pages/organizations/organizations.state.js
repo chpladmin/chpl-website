@@ -22,23 +22,6 @@ const states = [
     url: '/products/{productId}',
     abstract: true,
   }, {
-    name: 'organizations.developers.developer.product.merge',
-    url: '/merge',
-    views: {
-      'view@^.^': 'chplProductsMerge',
-    },
-    data: {
-      title: 'CHPL Developers - Merge Product',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-    resolve: {
-      developer: (networkService, $transition$) => {
-        'ngInject';
-
-        return networkService.getDeveloperHierarchy($transition$.params().id);
-      },
-    },
-  }, {
     name: 'organizations.developers.developer.product.split',
     url: '/split',
     views: {
