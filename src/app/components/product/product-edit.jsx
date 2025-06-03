@@ -35,6 +35,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useFetchDevelopers } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
@@ -137,12 +138,19 @@ function ChplProductEdit(props) {
   } = props;
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
+  const { data, isLoading } = useFetchDevelopers();
+  const [developers, setDevelopers] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const [owners, setOwners] = useState([]);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    if (isLoading) { return; }
+    setDevelopers(data);
+  }, [data, isLoading]);
 
   useEffect(() => {
     setOwners(product.ownerHistory);
@@ -209,7 +217,7 @@ function ChplProductEdit(props) {
     setOwners([
       ...owners,
       {
-        developer: { name: formik.values.owner },
+        developer: developers.find((d) => d.id === formik.values.owner),
         transferDay: formik.values.transferDay,
       },
     ]);
@@ -340,8 +348,11 @@ function ChplProductEdit(props) {
                           error={formik.touched.owner && !!formik.errors.owner}
                           helperText={formik.touched.owner && formik.errors.owner}
                         >
-                          <MenuItem key="Suspended by ONC" value="Suspended by ONC">Suspended by ONC</MenuItem>
-                          <MenuItem key="Under certification ban by ONC" value="Under certification ban by ONC">Under certification ban by ONC</MenuItem>
+                          { developers
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map((d) => (
+                              <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
+                          ))}
                         </ChplTextField>
                         <ChplTextField
                           type="date"
