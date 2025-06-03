@@ -9,9 +9,7 @@ import {
   CardContent,
   Container,
   Divider,
-  FormControlLabel,
   MenuItem,
-  Switch,
   Table,
   TableContainer,
   TableRow,
@@ -40,7 +38,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -141,7 +139,6 @@ function ChplProductEdit(props) {
   const { data, isLoading } = useFetchDevelopers();
   const [developers, setDevelopers] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
-  const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const [owners, setOwners] = useState([]);
   const classes = useStyles();
@@ -231,8 +228,8 @@ function ChplProductEdit(props) {
   const isAddDisabled = () => !!formik.errors.owner || !!formik.errors.transferDay;
 
   const removeOwner = (owner) => {
-    setOwners(owners.filter((item) => item.transferDay !== item.transferDay
-      || item.owner.name !== status.owner.name));
+    setOwners(owners.filter((item) => item.transferDay !== owner.transferDay
+      || item.developer.name !== owner.developer.name));
   };
 
   formik = useFormik({
@@ -272,7 +269,9 @@ function ChplProductEdit(props) {
           )}
         <CardContent className={classes.content}>
           { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-            && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidthGridRow, required: true })}
+            && getEnhancedEditField({
+              key: 'name', display: 'Name', className: classes.fullWidthGridRow, required: true,
+            })}
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
               <Box className={classes.fullWidthGridRow}>
@@ -352,7 +351,7 @@ function ChplProductEdit(props) {
                             .sort((a, b) => a.name.localeCompare(b.name))
                             .map((d) => (
                               <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
-                          ))}
+                            ))}
                         </ChplTextField>
                         <ChplTextField
                           type="date"
@@ -404,7 +403,6 @@ function ChplProductEdit(props) {
         isDisabled={isActionDisabled()}
         isProcessing={isProcessing}
         errors={errorMessages}
-        warnings={warnings}
       />
     </Container>
   );
