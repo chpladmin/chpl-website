@@ -15,6 +15,7 @@ import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplProductEdit from './product-edit';
 import ChplProductMerge from './product-merge';
+import ChplProductSplit from './product-split';
 import ChplVersionEdit from './version-edit';
 import ChplVersionMerge from './version-merge';
 import ChplVersionSplit from './version-split';
@@ -23,7 +24,6 @@ import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/deve
 import { usePostCreateInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import ChplAttestationEdit from 'components/attestation/attestation-edit';
-import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -35,7 +35,6 @@ const useStyles = makeStyles({
 });
 
 function ChplDeveloperPage({ id }) {
-  const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
@@ -114,9 +113,8 @@ function ChplDeveloperPage({ id }) {
         setProduct(payload);
         break;
       case 'splitProduct':
-        $state.go('organizations.developers.developer.product.split', {
-          productId: payload.id,
-        });
+        setState(action);
+        setProduct(payload);
         break;
       case 'mergeVersion':
         setState(action);
@@ -215,6 +213,13 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperSplit
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'splitProduct'
+            && (
+              <ChplProductSplit
+                dispatch={handleDispatch}
+                product={product}
               />
             )}
           { state === 'splitVersion'

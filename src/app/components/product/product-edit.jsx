@@ -101,6 +101,9 @@ const validationSchema = yup.object({
     .max(250, 'Email is too long'),
   phoneNumber: yup.string()
     .max(100, 'Phone is too long'),
+  code: yup.string()
+    .length(4, 'Product Code must be exactly four characters')
+    .matches(/^[A-Za-z0-9_]*$/, 'Product Code must contain only the characters A-Z, a-z, 0-9, and _'),
 });
 
 const getEditField = ({
@@ -178,6 +181,7 @@ function ChplProductEdit(props) {
     const updatedProduct = {
       ...product,
       name: formik.values.name,
+      code: formik.values.code,
       ownerHistory: owners,
       contact: {
         ...product.contact,
@@ -237,6 +241,7 @@ function ChplProductEdit(props) {
       name: product.name || '',
       owner: '',
       transferDay: '',
+      code: '',
       isAdding: false,
       fullName: product.contact?.fullName || '',
       email: product.contact?.email || '',
@@ -270,7 +275,11 @@ function ChplProductEdit(props) {
         <CardContent className={classes.content}>
           { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
             && getEnhancedEditField({
-              key: 'name', display: 'Name', className: classes.fullWidthGridRow, required: true,
+              key: 'name', display: 'Name', className: isSplitting ? '' : classes.fullWidthGridRow, required: true,
+            })}
+          { isSplitting
+            && getEnhancedEditField({
+              key: 'code', display: 'Product Code', required: true,
             })}
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
@@ -392,10 +401,14 @@ function ChplProductEdit(props) {
                     )}
               </Box>
             )}
-          <Divider className={classes.fullWidthGridRow} />
-          { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
-          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
-          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
+          { !isSplitting && (
+            <>
+              <Divider className={classes.fullWidthGridRow} />
+              { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
+              { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+              { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
+            </>
+          )}
         </CardContent>
       </Card>
       <ChplActionBar

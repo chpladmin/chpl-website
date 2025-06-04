@@ -18,31 +18,6 @@ const states = [
     component: 'chplDeveloperPage',
     data: { title: 'CHPL Developer' },
   }, {
-    name: 'organizations.developers.developer.product',
-    url: '/products/{productId}',
-    abstract: true,
-  }, {
-    name: 'organizations.developers.developer.product.split',
-    url: '/split',
-    views: {
-      'view@^.^': 'chplProductsSplit',
-    },
-    data: {
-      title: 'CHPL Developers - Split Product',
-      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    },
-    resolve: {
-      developer: (networkService, $transition$) => {
-        'ngInject';
-
-        return networkService.getDeveloperHierarchy($transition$.params().id);
-      },
-    },
-  }, {
-    name: 'organizations.developers.developer.product.version',
-    url: '/versions/{versionId}',
-    abstract: true,
-  }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizationsBridge',
