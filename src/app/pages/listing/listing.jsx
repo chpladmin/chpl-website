@@ -11,9 +11,9 @@ import {
 } from '@material-ui/core';
 import {
   CloudDownload,
-  Edit, 
-  Star, 
-  StarOutline, 
+  Edit,
+  Star,
+  StarOutline,
 } from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
@@ -22,8 +22,9 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
-import ChplListingView from 'components/listing/listing-view';
+import ChplSbul from 'components/change-request/types/sbul';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
+import ChplListingView from 'components/listing/listing-view';
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -85,6 +86,7 @@ function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
+  const [sbulChange, setSbulChange] = useState(false);
   const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const classes = useStyles();
   let analyticsData;
@@ -171,6 +173,7 @@ function ChplListingPage({ id }) {
   const listingState = {
     listing,
     setListing,
+    setSbulChange,
   };
 
   analyticsData = {
@@ -190,6 +193,16 @@ function ChplListingPage({ id }) {
             surveillance={activeSurveillance}
             dispatch={handleDispatch}
           />
+        </ListingContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  }
+
+  if (sbulChange) {
+    return (
+      <AnalyticsContext.Provider value={analyticsData}>
+        <ListingContext.Provider value={listingState}>
+          <ChplSbul />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );
