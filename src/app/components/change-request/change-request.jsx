@@ -15,11 +15,13 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 
-import ChplChangeRequestHistory from './change-request-history';
-import ChplChangeRequestAttestationView from './types/attestation-view';
-import ChplChangeRequestDemographicsView from './types/demographics-view';
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
+import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
+import ChplChangeRequestDemographicsView from './types/demographics-view';
+import ChplChangeRequestHistory from './change-request-history';
+import ChplChangeRequestSBULEdit from './types/sbul-edit';
+import ChplChangeRequestSBULView from './types/sbul-view';
 
 import {
   useFetchChangeRequest,
@@ -131,6 +133,12 @@ const getChangeRequestViewDetails = (cr) => {
           changeRequest={cr}
         />
       );
+    case 'Listing URL Change Request':
+      return (
+        <ChplChangeRequestSBULView
+          changeRequest={cr}
+        />
+      );
     default:
       return (
         <>
@@ -152,6 +160,13 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
     case 'Developer Demographics Change Request':
       return (
         <ChplChangeRequestDemographicsEdit
+          changeRequest={cr}
+          dispatch={handleDispatch}
+        />
+      );
+    case 'Listing URL Change Request':
+      return (
+        <ChplChangeRequestSBULEdit
           changeRequest={cr}
           dispatch={handleDispatch}
         />
@@ -266,6 +281,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
   }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
 
   const canEdit = () => {
+    if (changeRequest.changeRequestType.name === 'Listing URL Change Request') { return false; }
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-developer'])) {
       return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
@@ -360,6 +376,12 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
           },
           selfDeveloper: payload.selfDeveloper,
           website: payload.website,
+        });
+        break;
+      case 'Listing URL Change Request':
+        setDetails({
+          ...details,
+          url: payload.url,
         });
         break;
         // no default
