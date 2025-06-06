@@ -12,31 +12,35 @@ import {
 import { useFetchReportGroupMetadata } from 'api/reports';
 import { palette, theme } from 'themes';
 
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
+
 const useStyles = makeStyles({
   container: {
     padding: theme.spacing(8),
     backgroundColor: palette.greyLight,
     minHeight: 'calc(100vh - 238px)',
+    alignItems: 'flex-start',
   },
   stickyCard: {
     position: 'sticky',
     top: '116px',
   },
   card: {
-    width: '46%',
+    width: '48%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'transform 0.3s ease, all 0.2s ease-in-out',
     cursor: 'pointer',
     '&:hover': {
-      transform: 'scale(1.05)',
+      transform: 'scale(1.02)',
     },
   },
   cardContent: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     padding: '32px !important',
     gap: theme.spacing(1),
@@ -44,11 +48,25 @@ const useStyles = makeStyles({
   cardButtons: {
     display: 'flex',
     flexDirection: 'column',
+     
+  },
+  menuButton: {
+    '&:hover': {
+      backgroundColor: palette.white,
+      color: palette.black,
+    },
+    '&:focus': {
+      backgroundColor: palette.secondary,
+      color: palette.black,
+      fontWeight: 900,
+    },
   },
 });
 
 function ChplDashboard() {
   const classes = useStyles();
+  const { analytics } = useAnalyticsContext();
+
   const [activeReport, setActiveReport] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportGroupMetadata('dashboard');
@@ -60,6 +78,12 @@ function ChplDashboard() {
 
   const handleReportChange = (reportKey) => {
     setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
+    eventTrack({
+      ...analytics,
+      event: 'Open PowerBI Dashboard Tab',
+      label: reportKey || 'Dashboard',
+    });
+    console.log('eventTrack fired');
   };
 
   return (
@@ -71,7 +95,7 @@ function ChplDashboard() {
       </Box>
       <Box className={classes.container}>
         <Container maxWidth="lg">
-          <Box display="flex" flexDirection="row" gridGap={32} width="100%">
+          <Box display="flex" alignItems="flex-start" flexDirection="row" gridGap={32} width="100%">
             <Box maxWidth="350px">
               <Card className={classes.stickyCard}>
                 <CardContent>
@@ -90,6 +114,7 @@ function ChplDashboard() {
                           key={`${report.reportKey}-button`}
                           style={{ justifyContent: 'flex-start' }}
                           color="primary"
+                          className={classes.menuButton}
                           onClick={() => handleReportChange(report.reportKey)}
                         >
                           { report.title }
