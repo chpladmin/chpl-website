@@ -9,11 +9,10 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { useFetchReportGroupMetadata } from 'api/reports';
-import { palette, theme } from 'themes';
-
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
+import { useFetchReportGroupMetadata } from 'api/reports';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
@@ -48,7 +47,7 @@ const useStyles = makeStyles({
   cardButtons: {
     display: 'flex',
     flexDirection: 'column',
-     
+
   },
   menuButton: {
     '&:hover': {
@@ -56,6 +55,11 @@ const useStyles = makeStyles({
       color: palette.black,
     },
     '&:focus': {
+      backgroundColor: palette.secondary,
+      color: palette.black,
+      fontWeight: 900,
+    },
+    '&.active': {
       backgroundColor: palette.secondary,
       color: palette.black,
       fontWeight: 900,
@@ -68,6 +72,7 @@ function ChplDashboard() {
   const { analytics } = useAnalyticsContext();
 
   const [activeReport, setActiveReport] = useState(undefined);
+  const [activeReportKey, setActiveReportKey] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportGroupMetadata('dashboard');
 
@@ -77,13 +82,13 @@ function ChplDashboard() {
   }, [data, isLoading, isSuccess]);
 
   const handleReportChange = (reportKey) => {
+    setActiveReportKey(reportKey);
     setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
     eventTrack({
       ...analytics,
-      event: 'Open PowerBI Dashboard Tab',
-      label: reportKey || 'Dashboard',
+      category: 'Dashboard',
+      event: `Navigate to ${reportKey}`,
     });
-    console.log('eventTrack fired');
   };
 
   return (
@@ -103,6 +108,7 @@ function ChplDashboard() {
                     <Button
                       style={{ justifyContent: 'flex-start' }}
                       color="primary"
+                      className={activeReportKey === undefined ? `${classes.menuButton} active` : classes.menuButton}
                       onClick={() => handleReportChange(undefined)}
                     >
                       Dashboard
@@ -114,10 +120,13 @@ function ChplDashboard() {
                           key={`${report.reportKey}-button`}
                           style={{ justifyContent: 'flex-start' }}
                           color="primary"
-                          className={classes.menuButton}
+                          className={`${classes.menuButton} ${activeReportKey === report.reportKey ? 'active' : ''}`}
                           onClick={() => handleReportChange(report.reportKey)}
+                          id={`report-${report.reportKey}`}
+                          fullWidth
+                          variant="text"
                         >
-                          { report.title }
+                          {report.title}
                         </Button>
                       ))}
                   </Box>
