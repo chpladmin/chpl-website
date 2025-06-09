@@ -1,0 +1,147 @@
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  MenuItem,
+} from '@material-ui/core';
+import { func } from 'prop-types';
+
+import ChplAnnual from './annual';
+import ChplQuarter from './quarter';
+
+import { useFetchAnnual, useFetchQuarters, useFetchQuarterly } from 'api/surveillance';
+import { ChplTextField } from 'components/util';
+import { acb as acbPropType } from 'shared/prop-types';
+
+function ChplReport({ acb, dispatch }) {
+  const annualQuery = useFetchAnnual();
+  const quarterQuery = useFetchQuarters();
+  const quarterlyQuery = useFetchQuarterly();
+  const [activeYear, setActiveYear] = useState(new Date().getYear() + 1900);
+  const [annual, setAnnual] = useState([]);
+  const [filteredAnnual, setFilteredAnnual] = useState([]);
+  const [filteredQuarterly, setFilteredQuarterly] = useState([]);
+  const [state, setState] = useState('');
+  const [quarters, setQuarters] = useState([]);
+  const [quarterly, setQuarterly] = useState([]);
+  const availableYears = [...Array(new Date().getYear() + 1900 - 2019 + 1)]
+    .map((_, i) => 2019 + i)
+    .sort((a, b) => b - a);
+
+  useEffect(() => {
+    if (annualQuery.isLoading || !annualQuery.isSuccess) { return; }
+    setAnnual(annualQuery.data);
+  }, [annualQuery.data, annualQuery.isLoading, annualQuery.isSuccess]);
+
+  useEffect(() => {
+    if (quarterQuery.isLoading || !quarterQuery.isSuccess) { return; }
+    setQuarters(quarterQuery.data);
+  }, [quarterQuery.data, quarterQuery.isLoading, quarterQuery.isSuccess]);
+
+  useEffect(() => {
+    if (quarterlyQuery.isLoading || !quarterlyQuery.isSuccess) { return; }
+    setQuarterly(quarterlyQuery.data);
+  }, [quarterlyQuery.data, quarterlyQuery.isLoading, quarterlyQuery.isSuccess]);
+
+  useEffect(() => {
+    setFilteredAnnual((annual).find((r) => r.acb.id === acb.id && r.year === activeYear));
+    setFilteredQuarterly((quarterly).filter((r) => r.acb.id === acb.id && r.year === activeYear));
+  }, [annual, quarterly, acb, activeYear]);
+
+  if (quarters.length === 0 || quarterly.length === 0 || annual.length === 0) { return <CircularProgress />; }
+
+  const handleDispatch = ({ action, payload }) => {
+    switch (action) {
+      case 'cancel':
+        setState('');
+        dispatch({ action: 'cancel' });
+        break;
+      case 'focus-annual':
+        setState('focus-annual');
+        dispatch({ action: 'focus' });
+        break;
+      case 'focus-quarter-Q1':
+        setState('focus-quarter-Q1');
+        dispatch({ action: 'focus' });
+        break;
+      case 'focus-quarter-Q2':
+        setState('focus-quarter-Q2');
+        dispatch({ action: 'focus' });
+        break;
+      case 'focus-quarter-Q3':
+        setState('focus-quarter-Q3');
+        dispatch({ action: 'focus' });
+        break;
+      case 'focus-quarter-Q4':
+        setState('focus-quarter-Q4');
+        dispatch({ action: 'focus' });
+        break;
+      default:
+        dispatch({ action, payload });
+    }
+  };
+
+  return (
+    <Box display="flex" flexDirection="column" gridGap="16px">
+      { state === ''
+        && (
+          <Card>
+            <CardHeader title={acb.name} />
+            <CardContent>
+              <ChplTextField
+                select
+                id="active-year"
+                name="activeYear"
+                label="Active Year"
+                value={activeYear}
+                onChange={(event) => setActiveYear(event.target.value)}
+              >
+                { availableYears
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
+                  ))}
+              </ChplTextField>
+            </CardContent>
+          </Card>
+        )}
+      <Box
+        display="grid"
+        gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
+        gridGap={8}
+        alignItems="stretch"
+        justifyItems="stretch"
+      >
+        { quarters.filter((q) => state === '' || state === `focus-quarter-${q.name}`)
+          .map((q) => (
+            <ChplQuarter
+              dispatch={handleDispatch}
+              key={q.id}
+              quarter={q}
+              report={filteredQuarterly.find((r) => r.quarter === q.name)}
+              year={activeYear}
+              style={{ minWidth: '200px', minHeight: '100px' }}
+            />
+          ))}
+        { (state === '' || state === 'focus-annual')
+          && (
+            <ChplAnnual
+              dispatch={handleDispatch}
+              report={filteredAnnual}
+              year={activeYear}
+              style={{ minWidth: '200px', minHeight: '100px' }}
+            />
+          )}
+      </Box>
+    </Box>
+  );
+}
+
+export default ChplReport;
+
+ChplReport.propTypes = {
+  acb: acbPropType.isRequired,
+  dispatch: func.isRequired,
+};

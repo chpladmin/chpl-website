@@ -126,8 +126,8 @@ function ChplComplaintsView(props) {
         Complaints Reporting
       </Button>,
     );
-    display('surveillance.disabled');
-    display('viewall.disabled');
+    display && display('surveillance.disabled');
+    display && display('viewall.disabled');
   }, []);
 
   useEffect(() => {
@@ -195,17 +195,17 @@ function ChplComplaintsView(props) {
           event: 'Add New Complaint',
         });
         setActiveComplaint({});
-        display('viewall');
-        hide('viewall.disabled');
+        display && display('viewall');
+        hide && hide('viewall.disabled');
         break;
       case 'close':
         setActiveComplaint(undefined);
-        display('viewall.disabled');
-        hide('viewall');
-        hide('add.disabled');
-        hide('edit.disabled');
-        hide('view');
-        hide('view.disabled');
+        display && display('viewall.disabled');
+        hide && hide('viewall');
+        hide && hide('add.disabled');
+        hide && hide('edit.disabled');
+        hide && hide('view');
+        hide && hide('view.disabled');
         break;
       case 'view':
         eventTrack({
@@ -214,8 +214,8 @@ function ChplComplaintsView(props) {
           label: payload.complainantType.name,
         });
         setActiveComplaint(payload);
-        display('viewall');
-        hide('viewall.disabled');
+        display && display('viewall');
+        hide && hide('viewall.disabled');
         break;
       // no default
     }

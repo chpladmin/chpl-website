@@ -65,16 +65,16 @@ export const SurveillanceReportingComponent = {
 
     findAnnualReport (acb, year) {
       let report = this.annual
-        .find(report => report.acb.name === acb.name
-                      && report.year === year);
+          .find(report => report.acb.name === acb.name
+                && report.year === year);
       return report;
     }
 
     findQuarterReport (acb, year, quarter) {
       let report = this.quarters
-        .find(report => report.acb.name === acb.name
-                      && report.year === year
-                      && report.quarter === quarter);
+          .find(report => report.acb.name === acb.name
+                && report.year === year
+                && report.quarter === quarter);
       return report;
     }
 
@@ -111,13 +111,13 @@ export const SurveillanceReportingComponent = {
 
     takeAction (report, action) {
       switch (this.$state.current.name) {
-      case 'surveillance.reporting.annual':
-        this.takeAnnualAction(report, action);
-        break;
-      case 'surveillance.reporting.quarterly':
-        this.takeQuarterAction(report, action);
-        break;
-                //no default
+        case 'surveillance.reporting-old.annual':
+          this.takeAnnualAction(report, action);
+          break;
+        case 'surveillance.reporting-old.quarterly':
+          this.takeQuarterAction(report, action);
+          break;
+          //no default
       }
     }
 
@@ -147,13 +147,13 @@ export const SurveillanceReportingComponent = {
 
     save (report) {
       switch (this.$state.current.name) {
-      case 'surveillance.reporting.annual':
-        this.saveAnnual(report);
-        break;
-      case 'surveillance.reporting.quarterly':
-        this.saveQuarter(report);
-        break;
-                //no default
+        case 'surveillance.reporting-old.annual':
+          this.saveAnnual(report);
+          break;
+        case 'surveillance.reporting-old.quarterly':
+          this.saveQuarter(report);
+          break;
+          //no default
       }
     }
 
@@ -202,7 +202,7 @@ export const SurveillanceReportingComponent = {
     }
 
     cancel () {
-      this.$state.go('surveillance.reporting', {}, {
+      this.$state.go('surveillance.reporting-old', {}, {
         reload: true,
       });
     }

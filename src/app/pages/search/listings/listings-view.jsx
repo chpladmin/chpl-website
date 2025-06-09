@@ -32,7 +32,7 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useSessionStorage as useStorage, useLocalStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     margin: '0 32px',
     border: `1px solid ${palette.greyMain}`,
   },
-  fixFooterSpacing: { 
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 159px)',
   },
   linkWrap: {
@@ -134,15 +134,17 @@ function ChplListingsView() {
   const { analytics } = useAnalyticsContext();
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
+  const [filteredListings, setFilteredListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
+  const [favorites] = useLocalStorage('favorites', []);
+  const { dispatch, hasSearched, queryString, filters } = useFilterContext();
   const classes = useStyles();
 
-  const { dispatch, hasSearched, queryString } = useFilterContext();
   const { data, isError, isLoading } = useFetchListings({
     orderBy,
     pageNumber,
@@ -163,7 +165,7 @@ function ChplListingsView() {
     })));
     setRecordCount(data.recordCount);
     setSearchTermRecordCount(data.searchTermRecordCount);
-  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTeramRecordCount, isError, isLoading]);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, data?.searchTermRecordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -175,6 +177,20 @@ function ChplListingsView() {
     dispatch('setFilterDisability', 'hasHadComplianceActivity', !directReviewsAvailable);
     dispatch('setFilterDisability', 'nonConformityOptions', !directReviewsAvailable);
   }, [directReviewsAvailable]);
+
+  useEffect(() => {
+    const applyFilters = () => {
+      if (filters.quickFilters === 'Favorites') {
+        setFilteredListings(
+          listings.filter((listing) => listing && favorites.some((fav) => fav && fav.id === listing.id)),
+        );
+      } else {
+        setFilteredListings(listings);
+      }
+    };
+
+    applyFilters();
+  }, [filters.quickFilters, listings, favorites]);
 
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
