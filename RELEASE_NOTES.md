@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 13.39.0
+_9 June 2025_
+
+### Features
+* Allow users to "favorite" listings and view them in Quick Filters
+* Add Listing Statistics reports to the Dashboard providing insight into listing-level attribute usage 
+
+### User Interface Updates
+* Display Surveillance Reporting in modern UI for ASTP users
+* Add ability to filter by listing status, including inactive statuses, in the SVAP reports on the Dashboard
+
+### Flagged Features
+* Support submitting Service Base URL List Change Requests
+
+---
+
 ## Version 13.38.0
 _19 May 2025_
 
