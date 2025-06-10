@@ -88,11 +88,7 @@ const allOptions = [
 
 function ChplResourcesApi() {
   const API = getAngularService('API');
-  const {
-    getApiKey,
-    getToken,
-    hasAnyRole,
-  } = getAngularService('authService');
+  const { getApiKey, getToken } = getAngularService('authService');
   const analytics = {
     ...useAnalyticsContext().analytics,
     category: 'CHPL API',
@@ -273,20 +269,11 @@ function ChplResourcesApi() {
             <div
               className={classes.fullWidth}
             >
-              { hasAnyRole(['chpl-api'])
-                ? (
-                  <SwaggerUI
-                    url={url}
-                    docExpansion="none"
-                  />
-                )
-                : (
-                  <SwaggerUI
-                    url={url}
-                    docExpansion="none"
-                    supportedSubmitMethods={[]}
-                  />
-                )}
+              <SwaggerUI
+                url={url}
+                docExpansion="none"
+                supportedSubmitMethods={[]}
+              />
             </div>
           </div>
         </Container>
