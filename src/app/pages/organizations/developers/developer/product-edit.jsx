@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -6,12 +6,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { func, object } from 'prop-types';
-import { useSnackbar } from 'notistack';
 
 import { usePutProduct } from 'api/product';
 import ChplProduct from 'components/product/product';
 import { eventTrack } from 'services/analytics.service';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -30,7 +29,6 @@ const useStyles = makeStyles({
 
 function ChplEditProduct({ dispatch, product }) {
   const { analytics } = useAnalyticsContext();
-  const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePutProduct();
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -59,9 +57,9 @@ function ChplEditProduct({ dispatch, product }) {
           onError: (error) => {
             setIsProcessing(false);
             if (error?.response?.data?.error) {
-              setErrorMessages([error.response.data.error])
+              setErrorMessages([error.response.data.error]);
             } else if (error?.response?.data?.errorMessages) {
-              setErrorMessages(error.response.data.errorMessages)
+              setErrorMessages(error.response.data.errorMessages);
             }
           },
         });
