@@ -225,7 +225,7 @@ function ChplProductEdit(props) {
     cancelAdd();
   };
 
-  const getKey = (owner) => `${owner.id}-${owner.transferDay}`;
+  const getKey = (owner) => `${owner.developer.id}-${owner.transferDay}`;
 
   const isActionDisabled = () => isInvalid || !formik.isValid;
 
