@@ -203,7 +203,7 @@ export default class NetworkService {
 
   getSurveillanceLookups() {
     const data = {};
-    this.apiGET('/data/surveillance_types')
+    this.apiGET('/surveillance/types')
       .then((response) => {
         data.surveillanceTypes = response;
       });
@@ -211,7 +211,7 @@ export default class NetworkService {
       .then((response) => {
         data.requirementGroupTypes = response;
       });
-    this.apiGET('/data/surveillance_result_types')
+    this.apiGET('/surveillance/result-types')
       .then((response) => {
         data.surveillanceResultTypes = response;
       });

@@ -77,16 +77,16 @@ const useFetchRequirementTypes = () => {
 
 const useFetchSurveillanceResultTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/surveillance_result_types'], async () => {
-    const response = await axios.get('data/surveillance_result_types');
+  return useQuery(['surveillance/result-types'], async () => {
+    const response = await axios.get('surveillance/result-types');
     return response.data.data;
   }, options.daily);
 };
 
 const useFetchSurveillanceTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/surveillance_types'], async () => {
-    const response = await axios.get('data/surveillance_types');
+  return useQuery(['surveillance/types'], async () => {
+    const response = await axios.get('surveillance/types');
     return response.data.data;
   }, options.daily);
 };
