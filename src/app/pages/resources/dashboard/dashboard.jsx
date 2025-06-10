@@ -9,9 +9,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { useFetchReportGroupMetadata } from 'api/reports';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { useFetchReportGroupMetadata } from 'api/reports';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
