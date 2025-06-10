@@ -58,11 +58,10 @@ function ChplEditProduct({ dispatch, product }) {
           },
           onError: (error) => {
             setIsProcessing(false);
-            const body = error?.response?.data?.error;
-            if (body) {
-              enqueueSnackbar(body, {
-                variant: 'error',
-              });
+            if (error?.response?.data?.error) {
+              setErrorMessages([error.response.data.error])
+            } else if (error?.response?.data?.errorMessages) {
+              setErrorMessages(error.response.data.errorMessages)
             }
           },
         });
