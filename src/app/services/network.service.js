@@ -65,10 +65,6 @@ export default class NetworkService {
     return this.apiGET('/accessibility-standards');
   }
 
-  getAgeRanges() {
-    return this.apiGET('/data/age_ranges');
-  }
-
   getAllCriteria(props) {
     const params = Object
       .entries(props)
@@ -120,10 +116,6 @@ export default class NetworkService {
     return this.apiGET('/developers');
   }
 
-  getEducation() {
-    return this.apiGET('/data/education_types');
-  }
-
   getFunctionalitiesTested() {
     return this.apiGET('/functionalities-tested');
   }
@@ -134,10 +126,6 @@ export default class NetworkService {
 
   getListingBasic(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
-  }
-
-  getMeasureTypes() {
-    return this.apiGET('/data/measure-types');
   }
 
   getMeasures() {
@@ -254,20 +242,8 @@ export default class NetworkService {
     return this.$http.get('/rest/system-status');
   }
 
-  getTargetedUsers() {
-    return this.apiGET('/data/targeted_users');
-  }
-
   getTestData() {
     return this.apiGET('/data/test_data');
-  }
-
-  getTestProcedures() {
-    return this.apiGET('/data/test_procedures');
-  }
-
-  getTestStandards() {
-    return this.apiGET('/data/test_standards');
   }
 
   getTestTools() {

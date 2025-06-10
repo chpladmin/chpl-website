@@ -177,8 +177,8 @@ const useFetchFunctionalitiesTested = () => {
 const useFetchG1g2 = () => {
   const axios = useAxios();
   return useQuery(['g1g2'], async () => {
-    const response = await axios.get('data/measures');
-    return response.data.data;
+    const response = await axios.get('measures');
+    return response.data;
   });
 };
 

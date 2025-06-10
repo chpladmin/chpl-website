@@ -43,22 +43,6 @@ const useFetchCqms = () => {
   }, options.daily);
 };
 
-const useFetchMeasureTypes = () => {
-  const axios = useAxios();
-  return useQuery(['data/measure-types'], async () => {
-    const response = await axios.get('data/measure-types');
-    return response.data;
-  }, options.daily);
-};
-
-const useFetchMeasures = () => {
-  const axios = useAxios();
-  return useQuery(['data/measures'], async () => {
-    const response = await axios.get('data/measures');
-    return response.data;
-  }, options.daily);
-};
-
 const useFetchNonConformityTypes = () => {
   const axios = useAxios();
   return useQuery(['data/nonconformity-types'], async () => {
@@ -107,27 +91,16 @@ const useFetchSurveillanceTypes = () => {
   }, options.daily);
 };
 
-const useFetchTargetedUsers = () => {
-  const axios = useAxios();
-  return useQuery(['/data/targeted_users'], async () => {
-    const response = await axios.get('/data/targeted_users');
-    return response.data;
-  }, options.daily);
-};
-
 export {
   useFetchCertificationStatuses,
   useFetchClassificationTypes,
   useFetchComplainantTypes,
   useFetchComplaintTypes,
   useFetchCqms,
-  useFetchMeasureTypes,
-  useFetchMeasures,
   useFetchNonConformityTypes,
   useFetchPracticeTypes,
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,
   useFetchSurveillanceResultTypes,
   useFetchSurveillanceTypes,
-  useFetchTargetedUsers,
 };
