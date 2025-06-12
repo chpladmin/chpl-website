@@ -18,6 +18,7 @@ function FlagWrapper({ children }) {
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
   const domainIsOn = isOn('domain');
   const insightsIsOn = isOn('insights');
+  const rwtChangeRequestIsOn = isOn('rwt-change-request');
   const sbulChangeRequestIsOn = isOn('sbul-change-request');
 
   const flagState = {
@@ -25,6 +26,7 @@ function FlagWrapper({ children }) {
     demographicChangeRequestIsOn,
     domainIsOn,
     insightsIsOn,
+    rwtChangeRequestIsOn,
     sbulChangeRequestIsOn,
   };
 
