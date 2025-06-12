@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Divider,
   Typography,
@@ -9,7 +9,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -36,7 +35,6 @@ const validationSchema = yup.object({
 });
 
 function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
-  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
 
@@ -71,7 +69,7 @@ function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
           name="url"
           label="url"
           required
-          disabled={!hasAnyRole(['chpl-developer'])}
+          disabled
           value={formik.values.url}
           onChange={handleChange}
           onBlur={formik.handleBlur}
