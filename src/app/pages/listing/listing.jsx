@@ -22,7 +22,7 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
-import ChplSbul from 'components/change-request/types/sbul';
+import ChplListingUrl from 'components/change-request/types/listing-url';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
 import ChplTooltip from 'components/util/chpl-tooltip';
@@ -202,7 +202,7 @@ function ChplListingPage({ id }) {
     return (
       <AnalyticsContext.Provider value={analyticsData}>
         <ListingContext.Provider value={listingState}>
-          <ChplSbul />
+          <ChplListingUrl />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );

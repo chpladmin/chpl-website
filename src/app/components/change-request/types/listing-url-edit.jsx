@@ -34,9 +34,18 @@ const validationSchema = yup.object({
     .required('URL is required'),
 });
 
-function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
+function ChplChangeRequestListingUrlEdit({ changeRequest, dispatch }) {
   const classes = useStyles();
   let formik;
+
+  const getCurrent = () => {
+    switch (changeRequest.details.changeRequestListingUrlType.name) {
+      case 'Service Base URL List':
+        return changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+      default:
+          return 'Unknown type';
+    }
+  }
 
   const handleChange = (...args) => {
     formik.handleChange(...args);
@@ -55,7 +64,7 @@ function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
+          { getCurrent() }
         </Typography>
         <Typography>
           { changeRequest.details.listing.chplProductNumber }
@@ -81,9 +90,9 @@ function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
   );
 }
 
-export default ChplChangeRequestSBULEdit;
+export default ChplChangeRequestListingUrlEdit;
 
-ChplChangeRequestSBULEdit.propTypes = {
+ChplChangeRequestListingUrlEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
 };

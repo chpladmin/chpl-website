@@ -20,8 +20,8 @@ import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 import ChplChangeRequestHistory from './change-request-history';
-import ChplChangeRequestSBULEdit from './types/sbul-edit';
-import ChplChangeRequestSBULView from './types/sbul-view';
+import ChplChangeRequestListingUrlEdit from './types/listing-url-edit';
+import ChplChangeRequestListingUrlView from './types/listing-url-view';
 
 import {
   useFetchChangeRequest,
@@ -135,7 +135,7 @@ const getChangeRequestViewDetails = (cr) => {
       );
     case 'Listing URL Change Request':
       return (
-        <ChplChangeRequestSBULView
+        <ChplChangeRequestListingUrlView
           changeRequest={cr}
         />
       );
@@ -166,7 +166,7 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
       );
     case 'Listing URL Change Request':
       return (
-        <ChplChangeRequestSBULEdit
+        <ChplChangeRequestListingUrlEdit
           changeRequest={cr}
           dispatch={handleDispatch}
         />
