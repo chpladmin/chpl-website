@@ -12,7 +12,7 @@ function FlagWrapper({ children }) {
     setFlags(data);
   }, [data]);
 
-  const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag).active;
+  const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag)?.active;
 
   const cmsA9GracePeriodEndIsOn = isOn('cms-a9-grace-period-end');
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
