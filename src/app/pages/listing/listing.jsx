@@ -86,6 +86,8 @@ function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [listing, setListing] = useState(undefined);
+  const [rwtPlansChange, setRwtPlansChange] = useState(false);
+  const [rwtResultsChange, setRwtResultsChange] = useState(false);
   const [sbulChange, setSbulChange] = useState(false);
   const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const classes = useStyles();
@@ -173,6 +175,8 @@ function ChplListingPage({ id }) {
   const listingState = {
     listing,
     setListing,
+    setRwtPlansChange,
+    setRwtResultsChange,
     setSbulChange,
   };
 
@@ -198,11 +202,37 @@ function ChplListingPage({ id }) {
     );
   }
 
+  if (rwtPlansChange) {
+    return (
+      <AnalyticsContext.Provider value={analyticsData}>
+        <ListingContext.Provider value={listingState}>
+          <ChplListingUrl
+            type={{ id: 3, name: 'RWT Plans URL' }}
+          />
+        </ListingContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  }
+
+  if (rwtResultsChange) {
+    return (
+      <AnalyticsContext.Provider value={analyticsData}>
+        <ListingContext.Provider value={listingState}>
+          <ChplListingUrl
+            type={{ id: 3, name: 'RWT Results URL' }}
+          />
+        </ListingContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  }
+
   if (sbulChange) {
     return (
       <AnalyticsContext.Provider value={analyticsData}>
         <ListingContext.Provider value={listingState}>
-          <ChplListingUrl />
+          <ChplListingUrl
+            type={{ id: 1, name: 'Service Base URL List' }}
+          />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );
