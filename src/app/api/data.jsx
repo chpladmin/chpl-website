@@ -5,16 +5,8 @@ import options from './options';
 
 const useFetchCertificationStatuses = () => {
   const axios = useAxios();
-  return useQuery(['data/certification_statuses'], async () => {
-    const response = await axios.get('data/certification_statuses');
-    return response.data;
-  }, options.daily);
-};
-
-const useFetchClassificationTypes = () => {
-  const axios = useAxios();
-  return useQuery(['data/classification_types'], async () => {
-    const response = await axios.get('data/classification_types');
+  return useQuery(['certified_products/certification_statuses'], async () => {
+    const response = await axios.get('certified_products/certification_statuses');
     return response.data;
   }, options.daily);
 };
@@ -45,32 +37,24 @@ const useFetchCqms = () => {
 
 const useFetchNonConformityTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/nonconformity-types'], async () => {
-    const response = await axios.get('data/nonconformity-types/v2');
+  return useQuery(['surveillance/nonconformity-types'], async () => {
+    const response = await axios.get('surveillance/nonconformity-types');
     return response.data.data;
-  }, options.daily);
-};
-
-const useFetchPracticeTypes = () => {
-  const axios = useAxios();
-  return useQuery(['data/practice_types'], async () => {
-    const response = await axios.get('data/practice_types');
-    return response.data;
   }, options.daily);
 };
 
 const useFetchRequirementGroupTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/requirement-group-types'], async () => {
-    const response = await axios.get('data/requirement-group-types');
+  return useQuery(['surveillance/requirement-group-types'], async () => {
+    const response = await axios.get('surveillance/requirement-group-types');
     return response.data.data;
   }, options.daily);
 };
 
 const useFetchRequirementTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/requirement-types'], async () => {
-    const response = await axios.get('data/requirement-types');
+  return useQuery(['surveillance/requirement-types'], async () => {
+    const response = await axios.get('surveillance/requirement-types');
     return response.data.data;
   }, options.daily);
 };
@@ -93,12 +77,10 @@ const useFetchSurveillanceTypes = () => {
 
 export {
   useFetchCertificationStatuses,
-  useFetchClassificationTypes,
   useFetchComplainantTypes,
   useFetchComplaintTypes,
   useFetchCqms,
   useFetchNonConformityTypes,
-  useFetchPracticeTypes,
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,
   useFetchSurveillanceResultTypes,

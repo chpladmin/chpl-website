@@ -89,7 +89,7 @@ export default class NetworkService {
   }
 
   getCapStatusTypes() {
-    return this.apiGET('/data/cap-statuses');
+    return this.apiGET('/surveillance-report/cap-statuses');
   }
 
   getCodeSets() {
@@ -198,7 +198,7 @@ export default class NetworkService {
   }
 
   getSurveillanceGroundsForInitiatingTypes() {
-    return this.apiGET('/data/surveillance-grounds-for-initiating');
+    return this.apiGET('/surveillance-report/surveillance-grounds-for-initiating');
   }
 
   getSurveillanceLookups() {
@@ -207,7 +207,7 @@ export default class NetworkService {
       .then((response) => {
         data.surveillanceTypes = response;
       });
-    this.apiGET('/data/requirement-group-types')
+    this.apiGET('/surveillance/requirement-group-types')
       .then((response) => {
         data.requirementGroupTypes = response;
       });
@@ -215,11 +215,11 @@ export default class NetworkService {
       .then((response) => {
         data.surveillanceResultTypes = response;
       });
-    this.apiGET('/data/nonconformity-types/v2')
+    this.apiGET('/surveillance/nonconformity-types')
       .then((response) => {
         data.nonconformityTypes = response;
       });
-    this.apiGET('/data/requirement-types')
+    this.apiGET('/surveillance/requirement-types')
       .then((response) => {
         data.surveillanceRequirements = response;
       });
@@ -227,11 +227,11 @@ export default class NetworkService {
   }
 
   getSurveillanceOutcomes() {
-    return this.apiGET('/data/surveillance-outcomes');
+    return this.apiGET('/surveillance-report/surveillance-outcomes');
   }
 
   getSurveillanceProcessTypes() {
-    return this.apiGET('/data/surveillance-process-types');
+    return this.apiGET('/surveillance-report/surveillance-process-types');
   }
 
   getSvaps() {
