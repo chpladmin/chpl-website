@@ -38,30 +38,6 @@ const ConfirmListingComponent = {
       this.acknowledgeWarnings = false;
       this.showAcknowledgement = false;
       this.loadDeveloper();
-      const pending = {};
-      this.$q.all([
-        this.networkService.getSearchOptions()
-          .then((response) => {
-            pending.bodies = response.acbs;
-            pending.classifications = response.productClassifications;
-            pending.editions = response.editions;
-            pending.practices = response.practiceTypes;
-            pending.statuses = response.certificationStatuses;
-          }),
-        this.networkService.getAccessibilityStandards().then((response) => { pending.accessibilityStandards = response; }),
-        this.networkService.getAtls(false).then((response) => { pending.testingLabs = response.atls; }),
-        this.networkService.getCodeSets().then((response) => { pending.codeSets = response; }),
-        this.networkService.getConformanceMethods().then((response) => { pending.conformanceMethods = response; }),
-        this.networkService.getFunctionalitiesTested().then((response) => { pending.functionalitiesTested = response; }),
-        this.networkService.getMeasures().then((response) => { pending.measures = response; }),
-        this.networkService.getOptionalStandards().then((response) => { pending.optionalStandards = response; }),
-        this.networkService.getQmsStandards().then((response) => { pending.qmsStandards = response; }),
-        this.networkService.getStandards().then((response) => { pending.standards = response; }),
-        this.networkService.getSvaps().then((response) => { pending.svaps = response; }),
-        this.networkService.getTestData().then((response) => { pending.testData = response; }),
-        this.networkService.getTestTools().then((response) => { pending.testTools = response; }),
-        this.networkService.getUcdProcesses().then((response) => { pending.ucdProcesses = response; }),
-      ]).then(() => { this.resources = pending; });
     }
 
     $onChanges(changes) {

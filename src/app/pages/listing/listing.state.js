@@ -17,34 +17,6 @@ const states = [{
 
       return networkService.getListing($transition$.params().id);
     },
-    resources: ($q, networkService) => {
-      'ngInject';
-
-      const resources = {};
-      return $q.all([
-        networkService.getSearchOptions()
-          .then((response) => {
-            resources.bodies = response.acbs;
-            resources.classifications = response.productClassifications;
-            resources.editions = response.editions;
-            resources.practices = response.practiceTypes;
-            resources.statuses = response.certificationStatuses;
-          }),
-        networkService.getAccessibilityStandards().then((response) => { resources.accessibilityStandards = response; }),
-        networkService.getAtls(false).then((response) => { resources.testingLabs = response.atls; }),
-        networkService.getCodeSets().then((response) => { resources.codeSets = response; }),
-        networkService.getConformanceMethods().then((response) => { resources.conformanceMethods = response; }),
-        networkService.getFunctionalitiesTested().then((response) => { resources.functionalitiesTested = response; }),
-        networkService.getMeasures().then((response) => { resources.measures = response; }),
-        networkService.getOptionalStandards().then((response) => { resources.optionalStandards = response; }),
-        networkService.getQmsStandards().then((response) => { resources.qmsStandards = response; }),
-        networkService.getStandards().then((response) => { resources.standards = response; }),
-        networkService.getSvaps().then((response) => { resources.svaps = response; }),
-        networkService.getTestData().then((response) => { resources.testData = response; }),
-        networkService.getTestTools().then((response) => { resources.testTools = response; }),
-        networkService.getUcdProcesses().then((response) => { resources.ucdProcesses = response; }),
-      ]).then(() => resources);
-    },
   },
 }, {
   name: 'product',

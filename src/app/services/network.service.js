@@ -61,10 +61,6 @@ export default class NetworkService {
     return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
   }
 
-  getAccessibilityStandards() {
-    return this.apiGET('/accessibility-standards');
-  }
-
   getAllCriteria(props) {
     const params = Object
       .entries(props)
@@ -84,24 +80,12 @@ export default class NetworkService {
     return this.apiGET(`/surveillance-report/annual/${reportId}`);
   }
 
-  getAtls(editable) {
-    return this.apiGET(`/atls?editable=${editable}`, { forceReload: true });
-  }
-
   getCapStatusTypes() {
     return this.apiGET('/surveillance-report/cap-statuses');
   }
 
-  getCodeSets() {
-    return this.apiGET('/code-sets');
-  }
-
   getComplaintsWithSurveillance(surveillanceId) {
     return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
-  }
-
-  getConformanceMethods() {
-    return this.apiGET('/conformance-methods');
   }
 
   getDeveloper(id) {
@@ -116,10 +100,6 @@ export default class NetworkService {
     return this.apiGET('/developers');
   }
 
-  getFunctionalitiesTested() {
-    return this.apiGET('/functionalities-tested');
-  }
-
   getListing(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}/details`, { forceReload });
   }
@@ -128,16 +108,8 @@ export default class NetworkService {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
   }
 
-  getMeasures() {
-    return this.apiGET('/data/measures');
-  }
-
   getNonconformityStatisticsCount() {
     return this.apiGET('/statistics/nonconformity_criteria_count');
-  }
-
-  getOptionalStandards() {
-    return this.apiGET('/optional-standards');
   }
 
   getPendingListingById(id) {
@@ -150,10 +122,6 @@ export default class NetworkService {
 
   getProductsByDeveloper(developerId) {
     return this.apiGET(`/products?developerId=${developerId}`);
-  }
-
-  getQmsStandards() {
-    return this.apiGET('/qms-standards');
   }
 
   getQuarterlySurveillanceQuarters() {
@@ -180,16 +148,8 @@ export default class NetworkService {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
   }
 
-  getSearchOptions() {
-    return this.apiGET('/data/search-options');
-  }
-
   getSimpleProduct(id) {
     return this.apiGET(`/products/${id}`);
-  }
-
-  getStandards() {
-    return this.apiGET('/standards');
   }
 
   getSurveillanceActivityReport(range) {
@@ -234,24 +194,8 @@ export default class NetworkService {
     return this.apiGET('/surveillance-report/surveillance-process-types');
   }
 
-  getSvaps() {
-    return this.apiGET('/svaps');
-  }
-
   getSystemStatus() {
     return this.$http.get('/rest/system-status');
-  }
-
-  getTestData() {
-    return this.apiGET('/data/test_data');
-  }
-
-  getTestTools() {
-    return this.apiGET('/test-tools');
-  }
-
-  getUcdProcesses() {
-    return this.apiGET('/ucd-processes');
   }
 
   getUserById(id) {
