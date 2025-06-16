@@ -47,7 +47,6 @@ const useStyles = makeStyles({
   cardButtons: {
     display: 'flex',
     flexDirection: 'column',
-
   },
   menuButton: {
     '&:hover': {
@@ -70,7 +69,6 @@ const useStyles = makeStyles({
 function ChplDashboard() {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
-
   const [activeReport, setActiveReport] = useState(undefined);
   const [activeReportKey, setActiveReportKey] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
@@ -126,7 +124,7 @@ function ChplDashboard() {
                           fullWidth
                           variant="text"
                         >
-                          {report.title}
+                          { report.title }
                         </Button>
                       ))}
                   </Box>
@@ -152,7 +150,7 @@ function ChplDashboard() {
                         >
                           <CardContent className={classes.cardContent}>
                             {report.icon}
-                            <Typography>{report.title}</Typography>
+                            <Typography>{ report.title }</Typography>
                           </CardContent>
                         </Card>
                       ))}
