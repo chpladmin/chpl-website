@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -38,7 +38,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -138,7 +138,6 @@ function ChplProductEdit(props) {
     isSplitting,
   } = props;
   const { analytics } = useAnalyticsContext();
-  const { hasAnyRole } = useContext(UserContext);
   const { data, isLoading } = useFetchDevelopers();
   const [developers, setDevelopers] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -273,15 +272,14 @@ function ChplProductEdit(props) {
             />
           )}
         <CardContent className={classes.content}>
-          { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-            && getEnhancedEditField({
-              key: 'name', display: 'Name', className: isSplitting ? '' : classes.fullWidthGridRow, required: true,
-            })}
+          { getEnhancedEditField({
+            key: 'name', display: 'Name', className: isSplitting ? '' : classes.fullWidthGridRow, required: true,
+          })}
           { isSplitting
             && getEnhancedEditField({
               key: 'code', display: 'Product Code', required: true,
             })}
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
+          { !isSplitting
             && (
               <Box className={classes.fullWidthGridRow}>
                 <TableContainer className={classes.fullWidthGridRow}>
