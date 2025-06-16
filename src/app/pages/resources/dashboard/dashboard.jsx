@@ -87,7 +87,7 @@ function ChplDashboard() {
     eventTrack({
       ...analytics,
       category: 'Dashboard',
-      event: `Navigate to ${reportKey}`,
+      event: `Navigate to ${reportMetadata.find((metadata) => metadata.reportKey === reportKey)?.title || 'Dashboard'}`,
     });
   };
 
