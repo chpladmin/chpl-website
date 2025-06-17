@@ -114,9 +114,9 @@ function ChplListingsPage() {
     const values = cqmQuery.data
       .map((cqm) => ({
         ...cqm,
-        value: cqm.cmsId,
-        display: cqm.cmsId.substring(0, 3) === 'CMS' ? `${cqm.cmsId}` : `Retired | NQF-${cqm.cmsId}`,
-        longDisplay: `${cqm.cmsId.substring(0, 3) === 'CMS' ? `${cqm.cmsId}` : `Retired | NQF-${cqm.cmsId}`}: ${cqm.title}`,
+        value: cqm.cmsId ? cqm.cmsId : cqm.nqfNumber,
+        display: cqm.cmsId ? cqm.cmsId : `Retired | NQF-${cqm.nqfNumber}`,
+        longDisplay: `${cqm.cmsId ? cqm.cmsId : `Retired | NQF-${cqm.nqfNumber}`}: ${cqm.title}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'cqms')
