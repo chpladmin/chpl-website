@@ -5,8 +5,8 @@ import options from './options';
 
 const useFetchCertificationStatuses = () => {
   const axios = useAxios();
-  return useQuery(['certified_products/certification_statuses'], async () => {
-    const response = await axios.get('certified_products/certification_statuses');
+  return useQuery(['certified_products/certification-statuses'], async () => {
+    const response = await axios.get('certified_products/certification-statuses');
     return response.data;
   }, options.daily);
 };
