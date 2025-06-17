@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplListingsView from './listings-view';
 
 import { useFetchAcbs } from 'api/acbs';
-import { useFetchCqms } from 'api/data';
-import { useFetchCriteria, useFetchStandards } from 'api/standards';
+import { useFetchCqms, useFetchCriteria, useFetchStandards } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
@@ -115,9 +114,9 @@ function ChplListingsPage() {
     const values = cqmQuery.data
       .map((cqm) => ({
         ...cqm,
-        value: cqm.name,
-        display: cqm.name.substring(0, 3) === 'CMS' ? `${cqm.name}` : `Retired | NQF-${cqm.name}`,
-        longDisplay: `${cqm.name.substring(0, 3) === 'CMS' ? `${cqm.name}` : `Retired | NQF-${cqm.name}`}: ${cqm.title}`,
+        value: cqm.cmsId,
+        display: cqm.cmsId.substring(0, 3) === 'CMS' ? `${cqm.cmsId}` : `Retired | NQF-${cqm.cmsId}`,
+        longDisplay: `${cqm.cmsId.substring(0, 3) === 'CMS' ? `${cqm.cmsId}` : `Retired | NQF-${cqm.cmsId}`}: ${cqm.title}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'cqms')
@@ -168,7 +167,7 @@ function ChplListingsPage() {
       return `listingIds=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     if (value === 'Favorites' && favorites.length > 0) {
-      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`; 
+      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     return null;
   };

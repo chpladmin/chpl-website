@@ -27,14 +27,6 @@ const useFetchComplaintTypes = () => {
   }, options.daily);
 };
 
-const useFetchCqms = () => {
-  const axios = useAxios();
-  return useQuery(['data/search-options'], async () => {
-    const response = await axios.get('data/search-options');
-    return response.data.cqms;
-  }, options.daily);
-};
-
 const useFetchNonConformityTypes = () => {
   const axios = useAxios();
   return useQuery(['surveillance/nonconformity-types'], async () => {
@@ -79,7 +71,6 @@ export {
   useFetchCertificationStatuses,
   useFetchComplainantTypes,
   useFetchComplaintTypes,
-  useFetchCqms,
   useFetchNonConformityTypes,
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,
