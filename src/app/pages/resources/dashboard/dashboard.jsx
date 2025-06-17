@@ -48,28 +48,11 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
-  menuButton: {
-    '&:hover': {
-      backgroundColor: palette.white,
-      color: palette.black,
-    },
-    '&:focus': {
-      backgroundColor: palette.secondary,
-      color: palette.black,
-      fontWeight: 900,
-    },
-    '&.active': {
-      backgroundColor: palette.secondary,
-      color: palette.black,
-      fontWeight: 900,
-    },
-  },
 });
 
 function ChplDashboard() {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
-  const [activeReport, setActiveReport] = useState(undefined);
   const [activeReportKey, setActiveReportKey] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportGroupMetadata('dashboard');
@@ -81,13 +64,14 @@ function ChplDashboard() {
 
   const handleReportChange = (reportKey) => {
     setActiveReportKey(reportKey);
-    setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
     eventTrack({
       ...analytics,
       category: 'Dashboard',
       event: `Navigate to ${reportMetadata.find((metadata) => metadata.reportKey === reportKey)?.title || 'Dashboard'}`,
     });
   };
+
+  const activeReport = reportMetadata.find((metadata) => metadata.reportKey === activeReportKey);
 
   return (
     <>
