@@ -181,6 +181,7 @@ function ChplProductEdit(props) {
       ...product,
       name: formik.values.name,
       code: formik.values.code,
+      owner: owners.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))[0]?.developer ?? product.owner,
       ownerHistory: owners,
       contact: {
         ...product.contact,
