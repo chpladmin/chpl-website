@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 function ChplDashboard() {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
-  const [activeReportKey, setActiveReportKey] = useState(undefined);
+  const [activeReport, setActiveReport] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportGroupMetadata('dashboard');
 
@@ -63,15 +63,13 @@ function ChplDashboard() {
   }, [data, isLoading, isSuccess]);
 
   const handleReportChange = (reportKey) => {
-    setActiveReportKey(reportKey);
+    setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
     eventTrack({
       ...analytics,
       category: 'Dashboard',
       event: `Navigate to ${reportMetadata.find((metadata) => metadata.reportKey === reportKey)?.title || 'Dashboard'}`,
     });
   };
-
-  const activeReport = reportMetadata.find((metadata) => metadata.reportKey === activeReportKey);
 
   return (
     <>
@@ -90,7 +88,7 @@ function ChplDashboard() {
                     <Button
                       style={{ justifyContent: 'flex-start' }}
                       color="primary"
-                      className={activeReportKey === undefined ? `${classes.menuButton} active` : classes.menuButton}
+                      className={activeReport === undefined ? `${classes.menuButton} active` : classes.menuButton}
                       onClick={() => handleReportChange(undefined)}
                     >
                       Dashboard
@@ -102,7 +100,7 @@ function ChplDashboard() {
                           key={`${report.reportKey}-button`}
                           style={{ justifyContent: 'flex-start' }}
                           color="primary"
-                          className={`${classes.menuButton} ${activeReportKey === report.reportKey ? 'active' : ''}`}
+                          className={`${classes.menuButton} ${activeReport === report.reportKey ? 'active' : ''}`}
                           onClick={() => handleReportChange(report.reportKey)}
                           id={`report-${report.reportKey}`}
                           fullWidth
