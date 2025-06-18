@@ -334,7 +334,7 @@ function ChplProductView({ product, productCount, dispatch }) {
           && (
             <Card>
               <TableContainer>
-                <Table aria-label="Ownershipt History table">
+                <Table aria-label="Ownership History table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Previous Owner</TableCell>
