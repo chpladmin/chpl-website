@@ -152,7 +152,10 @@ function ChplProductEdit(props) {
   }, [data, isLoading]);
 
   useEffect(() => {
-    setOwners(product.ownerHistory);
+    setOwners([
+      ...product.ownerHistory,
+      { developer: product.owner },
+    ]);
   }, [product]);
 
   useEffect(() => {
