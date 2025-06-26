@@ -21,9 +21,10 @@ import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
 import { UserContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   actionBar: {
     backgroundColor: palette.white,
     position: 'fixed',
@@ -68,13 +69,6 @@ const useStyles = makeStyles({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
-  },
-  deleteButton: {
-    backgroundColor: palette.error,
-    color: palette.white,
-    '&:hover': {
-      backgroundColor: palette.errorDark,
-    },
   },
   errorCheckbox: {
     color: palette.white,
@@ -245,7 +239,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-cancel"
-                  variant="outlined"
+                  color="secondary"
+                  variant="contained"
                   onClick={() => confirmCancel()}
                   className={classes.actionBarButton}
                 >
@@ -322,8 +317,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-delete"
-                  variant="contained"
-                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  variant="outlined"
+                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
                   onClick={() => confirmDelete()}
                   disabled={isDeleteDisabled || isProcessing}
                 >
@@ -338,8 +333,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-reject"
-                  variant="contained"
-                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  variant="outlined"
+                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
                   onClick={() => confirmReject()}
                 >
                   Reject
@@ -352,8 +347,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-withdraw"
-                  variant="contained"
-                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  variant="outlined"
+                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
                   disabled={isDisabled || isProcessing}
                   onClick={() => confirmWithdraw()}
                 >
