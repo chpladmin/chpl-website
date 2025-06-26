@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   ButtonGroup,
   FormControlLabel,
@@ -20,6 +21,9 @@ import { palette, theme } from 'themes';
 const useStyles = makeStyles({
   advancedSearchButton: {
     color: '#000',
+  },
+  directionText: {
+    marginBottom: '8px',
   },
   filterPanelContainer: {
     background: '#fff',
@@ -300,6 +304,13 @@ function ChplFilterPanel() {
             </div>
           </div>
           <div className={classes.filterPanelSecondary}>
+            {activeCategoryKey === '' && (
+              <Box mt={2}>
+              <Typography className={classes.directionText} variant="subtitle1" gutterBottom> Select a filter to begin </Typography>
+              <Typography variant="body1"> To narrow down your search results, choose a filter category from the left-hand panel. </Typography>
+              <Typography variant="body1"> Then, select one or more filter options to apply to your search. </Typography>
+              </Box>
+            )}
             { activeCategory?.values.length > 0 && (
               <List
                 dense
@@ -365,7 +376,7 @@ function ChplFilterPanel() {
                 )}
               >
                 <div className={classes.filterGroupTwoContainer}>
-                  { activeCategory.disabled
+                  {activeCategory.disabled
                     && (
                       <>
                         <Typography variant="body1" gutterBottom>
@@ -378,7 +389,7 @@ function ChplFilterPanel() {
                         </Typography>
                       </>
                     )}
-                  { !activeCategory.disabled && activeCategory.getValueEntry({
+                  {!activeCategory.disabled && activeCategory.getValueEntry({
                     filter: activeCategory,
                     handleFilterToggle,
                     handleFilterUpdate,
