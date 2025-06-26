@@ -248,7 +248,7 @@ function ChplComplaintsView(props) {
       return (
         <Button
           onClick={downloadFile}
-          color="primary"
+          color="secondary"
           variant="contained"
           id="download-results"
           endIcon={<GetAppIcon />}
@@ -290,7 +290,7 @@ function ChplComplaintsView(props) {
           </Button>
           <Button
             onClick={downloadFile}
-            color="primary"
+            color="secondary"
             variant="contained"
             id="download-results"
             endIcon={<GetAppIcon />}
@@ -304,7 +304,7 @@ function ChplComplaintsView(props) {
     return (
       <Button
         onClick={downloadFile}
-        color="primary"
+        color="secondary"
         variant="contained"
         id="download-results"
         endIcon={<GetAppIcon />}
@@ -398,7 +398,7 @@ function ChplComplaintsView(props) {
                                   <Button
                                     onClick={() => handleDispatch({ action: 'view', payload: complaint })}
                                     variant="contained"
-                                    color="primary"
+                                    color="secondary"
                                     id={`view-complaint-${complaint.id}`}
                                     endIcon={<VisibilityIcon />}
                                   >
