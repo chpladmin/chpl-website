@@ -359,7 +359,7 @@ function ChplChangeRequestsView(props) {
                                       <TableCell align="right">
                                         <Button
                                           onClick={() => viewChangeRequest(item)}
-                                          variant="contained"
+                                          variant="outlined"
                                           color="primary"
                                         >
                                           View
