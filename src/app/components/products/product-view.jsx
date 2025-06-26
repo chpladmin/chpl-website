@@ -332,7 +332,7 @@ function ChplProductView({ product, productCount, dispatch }) {
           )}
         { product.ownerHistory?.length > 0
           && (
-            <Card>
+            <Card style={{ marginBottom: '16px' }}>
               <TableContainer>
                 <Table aria-label="Ownership History table">
                   <TableHead>
