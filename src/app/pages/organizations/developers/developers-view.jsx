@@ -244,6 +244,7 @@ function ChplDevelopersView() {
                         id="download-developers"
                         variant="outlined"
                         color="primary"
+                        style={{ marginRight: '8px' }}
                       >
                         Download information for
                         {' '}
