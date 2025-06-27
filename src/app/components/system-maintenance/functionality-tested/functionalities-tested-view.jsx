@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -45,7 +46,9 @@ const useStyles = makeStyles({
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 32px',
   },
 });
 
@@ -92,25 +95,30 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
-      </Typography>
       <div className={classes.tableResultsHeaderContainer}>
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchFunctionalitiesTestedActivity}
-          title="Functionalities Tested"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-functionality-tested"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        )}
+        <Box display="flex" flexDirection="row" gridGap={1}>
+        <Typography variant="subtitle2">Search Results:</Typography>
+        <Typography variant="body2">
+          {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
+        </Typography>
+        </Box>
+        <div>
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchFunctionalitiesTestedActivity}
+            title="Functionalities Tested"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-functionality-tested"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
+        </div>
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
