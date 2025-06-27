@@ -13,7 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
-import { theme, utilStyles, palette } from 'themes';
+import { utilStyles, } from 'themes';
 
 const useStyles = makeStyles({
     ...utilStyles,
