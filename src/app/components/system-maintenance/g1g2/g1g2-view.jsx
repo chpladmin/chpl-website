@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -30,6 +31,12 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
+    tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 32px',
+  },
 });
 
 function ChplG1g2View({ g1g2: initialG1g2 }) {
@@ -75,9 +82,14 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
+      <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+        <Typography variant="subtitle2">Search Results:</Typography>
+        <Typography variant="body2">
         {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
-      </Typography>
+        </Typography>
+        </Box>
+      </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="G1/G2 Measure table"

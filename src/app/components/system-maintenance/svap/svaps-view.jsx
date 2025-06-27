@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -39,7 +40,9 @@ const useStyles = makeStyles({
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 32px',
   },
 });
 
@@ -84,10 +87,14 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
-      </Typography>
-      <div className={classes.tableResultsHeaderContainer}>
+       <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+          <Typography variant="subtitle2">Search Results:</Typography>
+          <Typography variant="body2">
+            {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <div>
         <ChplSystemMaintenanceActivity
           fetch={useFetchSvapsActivity}
           title="SVAP"
@@ -103,6 +110,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             Add
           </Button>
         )}
+        </div>
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table

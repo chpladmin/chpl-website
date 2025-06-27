@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -36,10 +37,12 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
+    tableResultsHeaderContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '8px 32px',
+    },
 });
 
 function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
@@ -82,11 +85,15 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
-      </Typography>
+      <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+        <Typography variant="subtitle2">Search Results:</Typography>
+        <Typography variant="body2">
+          {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
+        </Typography>
+      </Box>
       { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-        <div className={classes.tableResultsHeaderContainer}>
+        <div>
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-test-tool"
@@ -98,6 +105,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
           </Button>
         </div>
       )}
+      </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Test Tools table"
