@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import {
   Button,
+  makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -8,8 +9,14 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import { eventTrack } from 'services/analytics.service';
 import { CmsContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
+
+const useStyles = makeStyles({
+    ...utilStyles,
+  });
 
 function ChplCmsButton({ listing }) {
+  const classes = useStyles();
   const { analytics } = useAnalyticsContext();
   const {
     addListing,
@@ -39,8 +46,8 @@ function ChplCmsButton({ listing }) {
   return (
     <Button
       color="secondary"
+      className={isInWidget(listing) ? classes.deleteButtonOutlined : ''}
       variant="contained"
-      size="small"
       id={`toggle-cms-${listing.id}`}
       onClick={handleClick}
       endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
