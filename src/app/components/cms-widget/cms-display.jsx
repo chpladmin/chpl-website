@@ -28,7 +28,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
 
 const ProgressBar = (props) => {
-  const { value } = props;
+  const { value, year } = props;
   return (
     <Box
       pt={2}
@@ -58,6 +58,14 @@ const ProgressBar = (props) => {
           </strong>
           {' '}
           Base Criteria Met
+          {year !== '2015'
+           && (
+             <>
+               {' '}
+               for CY
+               {year}
+             </>
+           )}
         </Typography>
       </Box>
     </Box>
@@ -274,6 +282,7 @@ function ChplCmsDisplay() {
         && (
           <ProgressBar
             value={idAnalysis.metPercentages.criteriaMet}
+            year={idAnalysis.year}
           />
         )}
       { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
