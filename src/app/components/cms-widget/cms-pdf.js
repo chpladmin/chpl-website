@@ -37,22 +37,22 @@ const checkCriterionIsMet = (key, criteriaMet) => {
   return [(criteriaMet.findIndex((criterion) => criterion.number === keys[0]) > -1)];
 };
 
-const getPdfCriteria = (cmsA9GracePeriodEndIsOn) => {
+const getPdfCriteria = (year) => {
   /* eslint-disable object-curly-spacing */
-  if (cmsA9GracePeriodEndIsOn) {
+  if (year === '2025') {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
       {key: null, description: 'Implantable Device List'},
       {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
-      {key: null, description: 'Decision Support Interventions'},
-      {key: '170.315 (b)(11)', description: '#170.315 (b)(11)'},
       {key: null, description: 'Computerized Provider Order Entry'},
       {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
       {key: null, description: 'Clinical Quality Measures-Record and Export'},
       {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
       {key: null, description: 'Transitions of Care'},
       {key: '170.315 (b)(1)', description: '#170.315(b)(1)'},
+      {key: null, description: 'Decision Support Interventions'},
+      {key: '170.315 (b)(11)', description: '#170.315 (b)(11)'},
       {key: null, description: 'Application Access-Patient Selection'},
       {key: '170.315 (g)(7)', description: '#170.315(g)(7)'},
       {key: null, description: 'Application Access-Data Category Request'},
@@ -88,7 +88,7 @@ const getPdfCriteria = (cmsA9GracePeriodEndIsOn) => {
   /* eslint-enable object-curly-spacing */
 };
 
-const createPdf = (data, cmsA9GracePeriodIsOn) => {
+const createPdf = (data) => {
   if (!data || data === 'undefined') {
     return;
   }
@@ -119,7 +119,7 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
   const checkImages = [];
   const criteria = {
     head: [['2015 CMS EHR Base Criteria Met']],
-    body: getPdfCriteria(cmsA9GracePeriodIsOn),
+    body: getPdfCriteria(data.year),
   };
 
   // Start the PDF document

@@ -115,7 +115,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
-  const { cmsA9GracePeriodEndIsOn, domainIsOn } = useContext(FlagContext);
+  const { domainIsOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
@@ -131,7 +131,7 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
-    createPdf(pdfData, cmsA9GracePeriodEndIsOn);
+    createPdf(pdfData);
     setIsDownloading(false);
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
 
