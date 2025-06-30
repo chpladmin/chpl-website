@@ -3,20 +3,21 @@ import {
   Box,
   Button,
   ButtonGroup,
-  IconButton,
   Card,
-  CardHeader,
   CardContent,
+  CardHeader,
+  CircularProgress,
   Container,
   Divider,
+  IconButton,
   MenuItem,
   Table,
-  TableContainer,
-  TableRow,
-  TableHead,
-  TableCell,
   TableBody,
+  TableCell,
+  TableContainer,
   TableFooter,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -37,7 +38,7 @@ import { useFetchDevelopers } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getDisplayDateFormat } from 'services/date-util';
+import { getDisplayDateFormat, jsJoda } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -154,7 +155,6 @@ function ChplProductEdit(props) {
   useEffect(() => {
     setOwners([
       ...product.ownerHistory,
-      { developer: product.owner },
     ]);
   }, [product]);
 
@@ -184,7 +184,7 @@ function ChplProductEdit(props) {
       ...product,
       name: formik.values.name,
       code: formik.values.code,
-      owner: owners?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))[0]?.developer ?? product.owner,
+      owner: developers.find((d) => d.id === formik.values.currentOwner),
       ownerHistory: owners,
       contact: {
         ...product.contact,
@@ -230,6 +230,20 @@ function ChplProductEdit(props) {
 
   const getKey = (owner) => `${owner.developer.id}-${owner.transferDay}`;
 
+  const handleOwnerChange = (event) => {
+    setOwners((prev) => {
+      const next = [
+        ...prev,
+        {
+          developer: developers.find((d) => d.id === formik.values.currentOwner),
+          transferDay: jsJoda.LocalDate.now().toString(),
+        },
+      ];
+      formik.setFieldValue('currentOwner', event.target.value);
+      return next;
+    });
+  };
+
   const isActionDisabled = () => isInvalid || !formik.isValid;
 
   const isAddDisabled = () => !!formik.errors.owner || !!formik.errors.transferDay;
@@ -242,6 +256,7 @@ function ChplProductEdit(props) {
   formik = useFormik({
     initialValues: {
       name: product.name || '',
+      currentOwner: product.owner.id,
       owner: '',
       transferDay: '',
       code: '',
@@ -255,6 +270,8 @@ function ChplProductEdit(props) {
     },
     validationSchema,
   });
+
+  if (developers.length === 0) { return <CircularProgress />; }
 
   return (
     <Container disableGutters maxWidth="lg">
@@ -286,7 +303,25 @@ function ChplProductEdit(props) {
           { !isSplitting
             && (
               <Box className={classes.fullWidthGridRow}>
-                <TableContainer className={classes.fullWidthGridRow}>
+                <Card className={classes.owners}>
+                  <ChplTextField
+                    select
+                    id="current-owner"
+                    name="currentOwner"
+                    label="Current Developer"
+                    required
+                    value={formik.values.currentOwner}
+                    onChange={handleOwnerChange}
+                    onBlur={formik.handleBlur}
+                  >
+                    { developers
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((d) => (
+                        <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
+                      ))}
+                  </ChplTextField>
+                </Card>
+                <TableContainer>
                   <Table className={classes.table}>
                     <TableHead>
                       <TableRow>
@@ -297,110 +332,110 @@ function ChplProductEdit(props) {
                     </TableHead>
                     <TableBody>
                       {owners
-                          ?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
-                          .map((item) => (
-                            <TableRow key={getKey(item)}>
-                              <TableCell>
-                                <Typography variant="body2">{item.developer.name}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="body2">{getDisplayDateFormat(item.transferDay)}</Typography>
-                              </TableCell>
-                              <TableCell align="right">
-                                <IconButton
-                                  onClick={() => removeOwner(item)}
-                                  aria-label="Remove owner"
-                                  disabled={formik.values.isAdding}
-                                >
-                                  <CloseIcon
-                                    color="error"
-                                    size="small"
-                                  />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
+                       ?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
+                       .map((item) => (
+                         <TableRow key={getKey(item)}>
+                           <TableCell>
+                             <Typography variant="body2">{item.developer.name}</Typography>
+                           </TableCell>
+                           <TableCell>
+                             <Typography variant="body2">{getDisplayDateFormat(item.transferDay)}</Typography>
+                           </TableCell>
+                           <TableCell align="right">
+                             <IconButton
+                               onClick={() => removeOwner(item)}
+                               aria-label="Remove owner"
+                               disabled={formik.values.isAdding}
+                             >
+                               <CloseIcon
+                                 color="error"
+                                 size="small"
+                               />
+                             </IconButton>
+                           </TableCell>
+                         </TableRow>
+                       ))}
                     </TableBody>
                     { !formik.values.isAdding
-                        && (
-                          <TableFooter>
-                            <TableRow>
-                              <TableCell colSpan={4} align="right">
-                                <Button
-                                  className={classes.tableFooterButton}
-                                  color="secondary"
-                                  variant="contained"
-                                  onClick={() => formik.setFieldValue('isAdding', true)}
-                                  id="owner-add-item"
-                                >
-                                  Add item
-                                  {' '}
-                                  <AddIcon className={classes.iconSpacing} />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          </TableFooter>
-                        )}
+                      && (
+                        <TableFooter>
+                          <TableRow>
+                            <TableCell colSpan={4} align="right">
+                              <Button
+                                className={classes.tableFooterButton}
+                                color="secondary"
+                                variant="contained"
+                                onClick={() => formik.setFieldValue('isAdding', true)}
+                                id="owner-add-item"
+                              >
+                                Add item
+                                {' '}
+                                <AddIcon className={classes.iconSpacing} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        </TableFooter>
+                      )}
                   </Table>
                 </TableContainer>
-                  { formik.values.isAdding
-                    && (
-                      <Card className={classes.owners}>
-                        <ChplTextField
-                          select
-                          id="owner"
-                          name="owner"
-                          label="Developer"
-                          required
-                          value={formik.values.owner}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          error={formik.touched.owner && !!formik.errors.owner}
-                          helperText={formik.touched.owner && formik.errors.owner}
+                { formik.values.isAdding
+                  && (
+                    <Card className={classes.owners}>
+                      <ChplTextField
+                        select
+                        id="owner"
+                        name="owner"
+                        label="Developer"
+                        required
+                        value={formik.values.owner}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.owner && !!formik.errors.owner}
+                        helperText={formik.touched.owner && formik.errors.owner}
+                      >
+                        { developers
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((d) => (
+                            <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
+                          ))}
+                      </ChplTextField>
+                      <ChplTextField
+                        type="date"
+                        id="transfer-day"
+                        name="transferDay"
+                        label="Transfer Date"
+                        required
+                        value={formik.values.transferDay}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.transferDay && !!formik.errors.transferDay}
+                        helperText={formik.touched.transferDay && formik.errors.transferDay}
+                      />
+                      <ButtonGroup
+                        className={classes.fullWidthGridRow}
+                        variant="outlined"
+                      >
+                        <Button
+                          onClick={addOwner}
+                          color="primary"
+                          variant="contained"
+                          aria-label="Confirm adding item"
+                          id="owner-add-item"
+                          disabled={isAddDisabled()}
                         >
-                          { developers
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((d) => (
-                              <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
-                            ))}
-                        </ChplTextField>
-                        <ChplTextField
-                          type="date"
-                          id="transfer-day"
-                          name="transferDay"
-                          label="Transfer Date"
-                          required
-                          value={formik.values.transferDay}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          error={formik.touched.transferDay && !!formik.errors.transferDay}
-                          helperText={formik.touched.transferDay && formik.errors.transferDay}
-                        />
-                        <ButtonGroup
-                          className={classes.fullWidthGridRow}
-                          variant="outlined"
+                          <CheckIcon />
+                        </Button>
+                        <Button
+                          className={classes.deleteButtonOutlined}
+                          onClick={cancelAdd}
+                          aria-label="Cancel adding item"
+                          id="owner-close-item"
                         >
-                          <Button
-                            onClick={addOwner}
-                            color="primary"
-                            variant="contained"
-                            aria-label="Confirm adding item"
-                            id="owner-add-item"
-                            disabled={isAddDisabled()}
-                          >
-                            <CheckIcon />
-                          </Button>
-                          <Button
-                            className={classes.deleteButtonOutlined}
-                            onClick={cancelAdd}
-                            aria-label="Cancel adding item"
-                            id="owner-close-item"
-                          >
-                            <CloseIcon />
-                          </Button>
-                        </ButtonGroup>
-                      </Card>
-                    )}
+                          <CloseIcon />
+                        </Button>
+                      </ButtonGroup>
+                    </Card>
+                  )}
               </Box>
             )}
           { !isSplitting && (
