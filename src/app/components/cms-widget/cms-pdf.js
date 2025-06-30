@@ -246,7 +246,7 @@ const createPdf = (data) => {
           }
         }
       },
-      afterPageContent() {
+      didDrawPage() {
         const total = checkImages.length;
         for (let index = 0; index < total; index += 1) {
           const img = checkImages.shift();
