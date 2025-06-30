@@ -16,6 +16,7 @@ import ChplQuestionableActivityDetails from 'components/activity/questionable-ac
 import {
   ChplLink,
   ChplPagination,
+  ChplLoadingTable,
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
@@ -187,7 +188,7 @@ function ChplQuestionableActivityView() {
       </div>
       { isLoading
         && (
-          <>Loading</>
+          <ChplLoadingTable className={classes.tableContainer} />
         )}
       { !isLoading
         && (

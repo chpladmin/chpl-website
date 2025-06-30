@@ -17,6 +17,7 @@ import ChplDownloadListings from 'components/download-listings/download-listings
 import {
   ChplLink,
   ChplPagination,
+  ChplLoadingTable,
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
@@ -203,7 +204,7 @@ function ChplCorrectiveActionSearchView() {
             </div>
             { isLoading
               && (
-                <>Loading</>
+                <ChplLoadingTable className={classes.tableContainer} />
               )}
             { !isLoading
               && (

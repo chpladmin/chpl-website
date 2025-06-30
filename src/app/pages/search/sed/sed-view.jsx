@@ -18,6 +18,7 @@ import ChplSedPopup from 'components/listing/details/sed/sed-popup';
 import {
   ChplLink,
   ChplPagination,
+  ChplLoadingTable,
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
@@ -201,7 +202,7 @@ function ChplSedSearchView() {
       </div>
       { isLoading
         && (
-          <>Loading</>
+          <ChplLoadingTable className={classes.tableContainer} />
         )}
       { !isLoading
         && (

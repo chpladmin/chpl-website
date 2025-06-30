@@ -16,7 +16,8 @@ import {
 } from 'api/search';
 import {
   ChplLink,
-  ChplPagination,
+  ChplPagination, 
+  ChplLoadingTable,
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
@@ -196,7 +197,7 @@ function ChplBannedDevelopersSearchView() {
       </div>
       { isLoading
         && (
-          <>Loading</>
+          <ChplLoadingTable className={classes.tableContainer} />
         )}
       { !isLoading
         && (

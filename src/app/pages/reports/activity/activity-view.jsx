@@ -13,7 +13,7 @@ import {
 import ChplActivityDetails from './activity-details';
 
 import { useFetchActivity } from 'api/questionable-activity';
-import { ChplLink, ChplPagination } from 'components/util';
+import { ChplLink, ChplPagination, ChplLoadingTable } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
@@ -235,7 +235,7 @@ function ChplActivityView() {
         </div>
         { isLoading
           && (
-            <>Loading</>
+            <ChplLoadingTable className={classes.tableContainer} />
           )}
         { !isLoading
           && (
