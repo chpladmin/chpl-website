@@ -26,7 +26,7 @@ import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
-import {utilStyles} from 'themes';
+import { utilStyles } from 'themes';
 
 const ProgressBar = (props) => {
   const { value } = props;
