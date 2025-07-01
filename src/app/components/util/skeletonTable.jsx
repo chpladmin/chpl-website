@@ -23,7 +23,11 @@ function ChplLoadingTable({ rows = 10, className }) {
   ];
 
   return (
-    <Box mt={2} mb={2}>
+    <Box my={2}>
+      <Box my={2} mx={8} display="flex" justifyContent="space-between" alignItems="center">
+        <Skeleton variant="text" width="30%" height={32} />
+        <Skeleton variant="text" width="20%" height={24} />
+      </Box>
       <TableContainer className={className} component={Paper}>
         <Table>
           <TableBody>
