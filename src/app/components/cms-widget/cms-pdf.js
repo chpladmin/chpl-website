@@ -118,7 +118,7 @@ const createPdf = (data) => {
   ];
   const checkImages = [];
   const criteria = {
-    head: [['2015 CMS EHR Base Criteria Met']],
+    head: data.year === '2015' ? [['Base EHR Definition Criteria Met']] : [[`Base EHR Definition Criteria Met (CY${data.year})`]],
     body: getPdfCriteria(data.year),
   };
 
@@ -137,7 +137,7 @@ const createPdf = (data) => {
   // Add header text
   doc.setFontSize(36);
   doc.setFont('helvetica', 'bold');
-  doc.text(40, 80, 'Certified Health IT Product List');
+  doc.text(40, 80, 'Certified Health IT Product List (CHPL)');
 
   // Add body text to PDF
   doc.setFontSize(10);
@@ -146,7 +146,7 @@ const createPdf = (data) => {
     40,
     bodyStartY,
     doc.splitTextToSize(
-      'The CMS EHR Certification ID shown corresponds to the collection of products listed below. Submit this ID as part of the attestation process for the CMS EHR Incentive Programs.',
+      'The CMS EHR Certification ID shown represents the certified health IT products (Modules) listed below that collectively meet 100% of the Base EHR Definition for the specified CMS reporting year. Submit this ID where required when participating in applicable programs (e.g., Quality Payment Program, Medicare Promoting Interoperability Program).',
       775,
     ),
   );
@@ -154,7 +154,7 @@ const createPdf = (data) => {
     40,
     bodyStartY + 30,
     doc.splitTextToSize(
-      '* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.',
+      '* Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
       775,
     ),
   );
@@ -162,7 +162,7 @@ const createPdf = (data) => {
   // Add Certification ID to PDF
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text(300, bodyStartY + 70, `CMS EHR ID: ${data.ehrCertificationId}`);
+  doc.text(200, bodyStartY + 70, `CMS EHR Certification ID: ${data.ehrCertificationId}`);
 
   // Add products table to PDF
   doc.setFontSize(10);
