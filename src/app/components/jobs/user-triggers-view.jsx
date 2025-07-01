@@ -16,7 +16,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import { arrayOf, func } from 'prop-types';
 
-import { ChplSortableHeaders } from 'components/util';
+import { ChplSortableHeaders, ChplTooltip } from 'components/util';
 import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
 
 const headers = [
@@ -106,6 +106,10 @@ function ChplUserTriggersView(props) {
                           </ul>
                         </TableCell>
                         <TableCell align="right">
+                          <ChplTooltip
+                            title="Edit Report"
+                            placement="top"
+                          >  
                           <IconButton
                             onClick={() => dispatch({ action: 'edit', payload: item })}
                             color="primary"
@@ -113,6 +117,7 @@ function ChplUserTriggersView(props) {
                           >
                             <EditIcon />
                           </IconButton>
+                          </ChplTooltip>
                         </TableCell>
                       </TableRow>
                     ))}
