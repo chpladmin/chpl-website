@@ -153,9 +153,7 @@ function ChplProductEdit(props) {
   }, [data, isLoading]);
 
   useEffect(() => {
-    setOwners([
-      ...product.ownerHistory,
-    ]);
+    setOwners(product.ownerHistory);
   }, [product]);
 
   useEffect(() => {
@@ -256,7 +254,7 @@ function ChplProductEdit(props) {
   formik = useFormik({
     initialValues: {
       name: product.name || '',
-      currentOwner: product.owner.id,
+      currentOwner: product.owner?.id || '',
       owner: '',
       transferDay: '',
       code: '',
@@ -333,7 +331,7 @@ function ChplProductEdit(props) {
                     <TableBody>
                       {owners
                        ?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
-                       .map((item) => (
+                       ?.map((item) => (
                          <TableRow key={getKey(item)}>
                            <TableCell>
                              <Typography variant="body2">{item.developer.name}</Typography>
