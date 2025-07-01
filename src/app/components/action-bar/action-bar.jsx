@@ -183,14 +183,14 @@ function ChplActionBar(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.actionBar}>
-        { isConfirming
+        {isConfirming
           && (
-          <ChplActionBarConfirmation
-            dispatch={handleConfirmation}
-            pendingMessage={pendingMessage}
-          />
+            <ChplActionBarConfirmation
+              dispatch={handleConfirmation}
+              pendingMessage={pendingMessage}
+            />
           )}
-        { showErrorAcknowledgement
+        {showErrorAcknowledgement
           && (
             <div
               className={classes.actionBarErrorAcknowledgement}
@@ -199,7 +199,7 @@ function ChplActionBar(props) {
               <FormControlLabel
                 label={
                   <Typography className={classes.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
-}
+                }
                 control={(
                   <Checkbox
                     value="errorAcknowledge"
@@ -212,7 +212,7 @@ function ChplActionBar(props) {
               />
             </div>
           )}
-        { showWarningAcknowledgement
+        {showWarningAcknowledgement
           && (
             <div
               className={classes.actionBarWarningAcknowledgement}
@@ -255,7 +255,7 @@ function ChplActionBar(props) {
                 <Button
                   id="action-bar-close"
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={() => act('cancel')}
                   className={classes.actionBarButton}
                 >
@@ -270,11 +270,12 @@ function ChplActionBar(props) {
                 <Button
                   id="action-bar-confirm"
                   variant="contained"
+                  color="primary"
                   onClick={() => act('confirm')}
                   disabled={isDisabled || isProcessing}
                   className={classes.actionBarButton}
                 >
-                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+                  {isProcessing && <CircularProgress size={24} className={classes.buttonProgress} />}
                   Confirm
                   <SaveIcon
                     className={classes.iconSpacing}
@@ -300,7 +301,7 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-save"
-                  variant="contained"
+                  variant="primary"
                   onClick={() => act('save')}
                   disabled={isDisabled || isProcessing}
                   onMouseOver={() => act('mouseover')}
@@ -313,7 +314,7 @@ function ChplActionBar(props) {
                   />
                 </Button>
               )}
-            { canDelete
+             { canDelete
               && (
                 <Button
                   id="action-bar-delete"
