@@ -1,44 +1,248 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-P9B8823D');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y854Z9M6F"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'G-8Y854Z9M6F');
-    </script>
-    <meta charset="utf-8">
-    <title>Certified Health IT Product List (CHPL) Error Page</title>
-    <meta name="description" content="Certified Health IT Product List (CHPL) Error Page">
-    <meta name="viewport" content="width=device-width">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
-    <!--<link rel="manifest" href="assets/favicons/site.webmanifest">-->
-    <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="assets/favicons/favicon.ico">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="assets/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-  </head>
-  <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9B8823D"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="container">
-      <div class="jumbotron text-center">
-        <h1>The system is down for regularly scheduled maintenance. Please check back later.</h1>
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-P9B8823D');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y854Z9M6F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8Y854Z9M6F');
+  </script>
+  <meta charset="utf-8">
+  <title>Certified Health IT Product List (CHPL) Error Page</title>
+  <meta name="description" content="Certified Health IT Product List (CHPL) Error Page">
+  <meta name="viewport" content="width=device-width">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+  <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="assets/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="assets/favicons/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      color: #0c0c0c;
+      overflow-x: hidden;
+    }
+
+    .bg {
+      width: 100%;
+      min-height: 85vh;
+      background: #021435;
+      position: relative;
+    }
+
+    .bgHeader {
+      width: 100%;
+      min-height: 400px;
+      background: #ffffff;
+      position: relative;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+    }
+
+    .header {
+      text-align: center;
+      padding: 132px 2rem;
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      padding: 8px 16px;
+      border-radius: 50px;
+      margin-bottom: 2rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #e3bf00;
+      border-radius: 50%;
+    }
+
+    .status-text {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #9c9f0c;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #4a5568;
+      max-width: 700px;
+      line-height: 1.7;
+    }
+
+    .feature-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 700px;
+      margin-top: -12rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    .feature-section h3 {
+      color: #021435;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-section h3::before {
+      content: '⚡';
+      font-size: 1.5rem;
+    }
+
+    .feature-text {
+      color: #2d3748;
+      font-size: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .footer-info {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, #000b1f 0%, #001439 100%);
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+      z-index: 5;
+    }
+
+    .footer-info::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #156dac, #3498db);
+      border-radius: 2px;
+    }
+
+    .footer-info p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .header {
+        padding: 2rem 1rem;
+      }
+
+      .feature-section {
+        padding: 2rem;
+        margin-top: 1.5rem;
+      }
+
+      .footer-info {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9B8823D" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div style="display: flex; flex-direction: column;">
+    <div class="bgHeader">
+      <div class="header">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span class="status-text">Under Maintenance</span>
+        </div>
+        <h1>CHPL System Maintenance</h1>
+        <p>The Certified Health IT Product List (CHPL) is temporarily unavailable due to scheduled maintenance. We're
+          working to enhance your experience and will be back online shortly.</p>
       </div>
     </div>
-  </body>
+
+    <div class="bg">
+      <div class="container">
+        <div class="feature-section">
+          <h3>We'll Be Back Soon</h3>
+          <p class="feature-text">We're working hard to bring the system back online as quickly as possible. Our team is
+            committed to providing you with the best possible experience. If the page doesn't automatically update,
+            please try refreshing your browser. For any urgent matters, our support team is ready to assist you.</p>
+          <p class="feature-text">Once maintenance is complete, you'll have access to the comprehensive and
+            authoritative listing of all certified health information technology products.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-info">
+      <p>Thank you for your patience as we work to improve your experience. We appreciate your understanding during this
+        maintenance period.</p>
+    </div>
+  </div>
+</body>
+
 </html>
