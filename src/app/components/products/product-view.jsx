@@ -221,7 +221,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                       className={classes.buttonGroupMenu}
                     >
                       <MenuItem
-                        onClick={handleAction('edit', product)}
+                        onClick={handleAction('editProduct', product)}
                       >
                         Edit Product
                       </MenuItem>
@@ -334,7 +334,7 @@ function ChplProductView({ product, productCount, dispatch }) {
           && (
             <Card style={{ marginBottom: '16px' }}>
               <TableContainer>
-                <Table aria-label="Ownershipt History table">
+                <Table aria-label="Ownership History table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Previous Owner</TableCell>

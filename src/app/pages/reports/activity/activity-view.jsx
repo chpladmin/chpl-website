@@ -27,7 +27,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {  
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
   },
   linkWrap: {
@@ -151,11 +151,11 @@ function ChplActivityView() {
     if (![
       'CERTIFIED_PRODUCT',
       'DEVELOPER',
+      'PRODUCT',
       'VERSION',
     ].includes(activity.concept)) {
       return null;
     }
-    const before = JSON.parse(activity.before);
     const after = JSON.parse(activity.after);
     switch (activity.concept) {
       case 'CERTIFIED_PRODUCT':
@@ -172,7 +172,7 @@ function ChplActivityView() {
           />
         );
       case 'DEVELOPER':
-        if (before && after && before.id !== after.id) {
+        if (!after?.id) {
           return null;
         }
         return (
@@ -187,8 +187,24 @@ function ChplActivityView() {
             router={{ sref: 'organizations.developers.developer', options: { id: activity.objectId } }}
           />
         );
+      case 'PRODUCT':
+        if (!after?.id) {
+          return null;
+        }
+        return (
+          <ChplLink
+            href={`#/organizations/developers/${after.owner.id}`}
+            text={after.owner.name}
+            analytics={{
+              event: 'Navigate to Developer',
+              category: 'Activity Search',
+            }}
+            external={false}
+            router={{ sref: 'organizations.developers.developer', options: { id: after.owner.id } }}
+          />
+        );
       case 'VERSION':
-        if (before && after && before.id !== after.id) {
+        if (!after?.id) {
           return null;
         }
         return (
