@@ -60,6 +60,16 @@ function ChplActionBarConfirmation(props) {
       </DialogContent>
       <Divider />
       <DialogActions className={classes.dialogActions}>
+         <Button
+          onClick={() => act('no')}
+          color="secondary"
+          variant="contained"
+          id="action-confirmation-no"
+        >
+          No
+          {' '}
+          <CloseIcon className={classes.iconSpacing} />
+        </Button>
         <Button
           onClick={() => act('yes')}
           color="primary"
@@ -70,16 +80,6 @@ function ChplActionBarConfirmation(props) {
           Yes
           {' '}
           <CheckIcon className={classes.iconSpacing} />
-        </Button>
-        <Button
-          onClick={() => act('no')}
-          color="default"
-          variant="contained"
-          id="action-confirmation-no"
-        >
-          No
-          {' '}
-          <CloseIcon className={classes.iconSpacing} />
         </Button>
       </DialogActions>
     </Dialog>

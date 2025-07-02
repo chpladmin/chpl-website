@@ -44,6 +44,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     padding: '16px 0',
+    gap: '16px',
   },
   actionBarErrorAcknowledgement: {
     color: palette.white,
@@ -232,9 +233,7 @@ function ChplActionBar(props) {
             </div>
           )}
         <div className={classes.actionBarButtons}>
-          <ButtonGroup
-            color="primary"
-          >
+          <>
             { canCancel
               && (
                 <Button
@@ -301,7 +300,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-save"
-                  variant="primary"
+                  color="primary"
+                  variant="contained"
                   onClick={() => act('save')}
                   disabled={isDisabled || isProcessing}
                   onMouseOver={() => act('mouseover')}
@@ -360,7 +360,7 @@ function ChplActionBar(props) {
                   />
                 </Button>
               )}
-          </ButtonGroup>
+          </>
         </div>
       </div>
       <ChplActionBarMessages
