@@ -27,38 +27,36 @@ import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
 
-const ProgressBar = (props) => {
-  const { value, year } = props;
-  return (
-    <Box
-      pt={2}
-      gridGap={8}
-      pb={2}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      id="progress-bar"
-    >
-      <Box width="56%">
-        <LinearProgress
-          id="progress-bar-bar"
-          variant="determinate"
-          {...props}
-        />
-      </Box>
-      <Box>
-        <Typography
-          variant="body2"
-          color="textPrimary"
-          id="progress-bar-text"
-        >
-          <strong>
-            { value }
-            %
-          </strong>
-          {' '}
-          Base Criteria Met
-          {year !== '2015'
+const ProgressBar = ({ value, year }) => (
+  <Box
+    pt={2}
+    gridGap={8}
+    pb={2}
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+    id="progress-bar"
+  >
+    <Box width="56%">
+      <LinearProgress
+        id="progress-bar-bar"
+        variant="determinate"
+        value={value}
+      />
+    </Box>
+    <Box>
+      <Typography
+        variant="body2"
+        color="textPrimary"
+        id="progress-bar-text"
+      >
+        <strong>
+          { value }
+          %
+        </strong>
+        {' '}
+        Base Criteria Met
+        {year !== '2015'
            && (
              <>
                {' '}
@@ -66,11 +64,10 @@ const ProgressBar = (props) => {
                {year}
              </>
            )}
-        </Typography>
-      </Box>
+      </Typography>
     </Box>
-  );
-};
+  </Box>
+);
 
 const useStyles = makeStyles({
   buttonContainer: {
