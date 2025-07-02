@@ -3,7 +3,8 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import { node, string } from 'prop-types';
+import PropTypes, { node, string } from 'prop-types';
+import clsx from 'clsx';
 
 import { eventTrack } from 'services/analytics.service';
 import { analyticsConfig } from 'shared/prop-types';
@@ -29,9 +30,30 @@ const useStyles = makeStyles({
       fontWeight: 900,
     },
   },
+  button: {
+    whiteSpace: 'nowrap',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: palette.white,
+    color: palette.primary,
+    padding: '8px 16px',
+    minWidth: 'min-content',
+    '&:hover': {
+      backgroundColor: palette.white,
+      color: palette.black,
+    },
+  },
+  active: {
+    backgroundColor: palette.secondary,
+    color: palette.black,
+    fontWeight: 900,
+  },
 });
 
-const InternalScrollButton = ({ analytics, children, id }) => {
+const InternalScrollButton = ({
+  analytics, children, id, active,
+}) => {
   const [target, setTarget] = useState('');
   const classes = useStyles();
 
@@ -51,7 +73,7 @@ const InternalScrollButton = ({ analytics, children, id }) => {
     <Button
       onClick={handleClick}
       color="primary"
-      className={classes.noButtonWrap}
+      className={clsx(classes.noButtonWrap, { [classes.active]: active })}
       id={`${id}-navigation-button`}
     >
       {children}
@@ -65,8 +87,10 @@ InternalScrollButton.propTypes = {
   id: string.isRequired,
   children: node.isRequired,
   analytics: analyticsConfig,
+  active: PropTypes.bool,
 };
 
 InternalScrollButton.defaultProps = {
   analytics: {},
+  active: false,
 };
