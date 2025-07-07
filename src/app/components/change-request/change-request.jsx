@@ -265,7 +265,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
     if (crstQuery.isLoading || !crstQuery.isSuccess) {
       return;
     }
-    const types = crstQuery.data.data
+    const types = crstQuery.data
       .filter((type) => {
         if (hasAnyRole(['chpl-developer'])) {
           return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
