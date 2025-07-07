@@ -13,6 +13,9 @@ import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperJoin from './developer-join';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
+import ChplProductEdit from './product-edit';
+import ChplProductMerge from './product-merge';
+import ChplProductSplit from './product-split';
 import ChplVersionEdit from './version-edit';
 import ChplVersionMerge from './version-merge';
 import ChplVersionSplit from './version-split';
@@ -21,7 +24,6 @@ import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/deve
 import { usePostCreateInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import ChplAttestationEdit from 'components/attestation/attestation-edit';
-import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -33,7 +35,6 @@ const useStyles = makeStyles({
 });
 
 function ChplDeveloperPage({ id }) {
-  const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading, isSuccess } = useFetchDeveloperHierarchy({ id });
@@ -67,6 +68,10 @@ function ChplDeveloperPage({ id }) {
       case 'editAttestation':
         setState(action);
         setChangeRequest(payload);
+        break;
+      case 'editProduct':
+        setState(action);
+        setProduct(payload);
         break;
       case 'editVersion':
         setState(action);
@@ -103,20 +108,13 @@ function ChplDeveloperPage({ id }) {
           },
         });
         break;
-      case 'editProduct':
-        $state.go('organizations.developers.developer.product.edit', {
-          productId: payload.id,
-        });
-        break;
       case 'mergeProduct':
-        $state.go('organizations.developers.developer.product.merge', {
-          productId: payload.id,
-        });
+        setState(action);
+        setProduct(payload);
         break;
       case 'splitProduct':
-        $state.go('organizations.developers.developer.product.split', {
-          productId: payload.id,
-        });
+        setState(action);
+        setProduct(payload);
         break;
       case 'mergeVersion':
         setState(action);
@@ -173,6 +171,14 @@ function ChplDeveloperPage({ id }) {
                 dispatch={handleDispatch}
               />
             )}
+          { state === 'editProduct'
+            && (
+              <ChplProductEdit
+                dispatch={handleDispatch}
+                productId={product.productId}
+                product={product}
+              />
+            )}
           { state === 'editVersion'
             && (
               <ChplVersionEdit
@@ -187,6 +193,14 @@ function ChplDeveloperPage({ id }) {
                 dispatch={handleDispatch}
               />
             )}
+          { state === 'mergeProduct'
+            && (
+              <ChplProductMerge
+                dispatch={handleDispatch}
+                developer={developer}
+                product={product}
+              />
+            )}
           { state === 'mergeVersion'
             && (
               <ChplVersionMerge
@@ -199,6 +213,13 @@ function ChplDeveloperPage({ id }) {
             && (
               <ChplDeveloperSplit
                 dispatch={handleDispatch}
+              />
+            )}
+          { state === 'splitProduct'
+            && (
+              <ChplProductSplit
+                dispatch={handleDispatch}
+                product={product}
               />
             )}
           { state === 'splitVersion'
