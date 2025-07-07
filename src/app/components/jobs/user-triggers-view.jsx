@@ -109,14 +109,14 @@ function ChplUserTriggersView(props) {
                           <ChplTooltip
                             title="Edit Report"
                             placement="top"
-                          >  
-                          <IconButton
-                            onClick={() => dispatch({ action: 'edit', payload: item })}
-                            color="primary"
-                            aria-label={`Edit Report ${item.name}`}
                           >
-                            <EditIcon />
-                          </IconButton>
+                            <IconButton
+                              onClick={() => dispatch({ action: 'edit', payload: item })}
+                              color="primary"
+                              aria-label={`Edit Report ${item.name}`}
+                            >
+                              <EditIcon />
+                            </IconButton>
                           </ChplTooltip>
                         </TableCell>
                       </TableRow>

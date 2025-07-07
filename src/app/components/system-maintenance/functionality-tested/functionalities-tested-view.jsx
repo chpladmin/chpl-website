@@ -96,11 +96,13 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
         <ChplFilterChips />
       </div>
       <div className={classes.tableResultsHeaderContainer}>
-        <Box display="flex" flexDirection="row" gridGap={1}>
-        <Typography variant="subtitle2">Search Results:</Typography>
-        <Typography variant="body2">
-          {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
-        </Typography>
+        <Box display="flex" flexDirection="row" gap={1}>
+          <Typography variant="subtitle2">
+            Search Results:
+          </Typography>
+          <Typography variant="body2">
+            {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
+          </Typography>
         </Box>
         <div>
           <ChplSystemMaintenanceActivity

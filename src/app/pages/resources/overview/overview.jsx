@@ -167,7 +167,7 @@ function ChplResourcesOverview() {
       <div className={classes.pageBackground} id="main-content" tabIndex="-1">
         <Container maxWidth="lg" className={classes.pageBody}>
           <Card className={classes.pageNavigation}>
-            {announcements.length > 0 && (
+            { announcements.length > 0 && (
               <InternalScrollButton
                 id="announcements"
                 active={activeSection === 'announcements'}
@@ -248,7 +248,7 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
           </Card>
           <div className={classes.content}>
-            {announcements.length > 0
+            { announcements.length > 0
               && (
                 <Box className={classes.infoBox}>
                   <span className="anchor-element">
@@ -256,18 +256,18 @@ function ChplResourcesOverview() {
                   </span>
                   <Typography className={classes.announcement} variant="h2">
                     Announcement
-                    {announcements.length > 1 ? 's' : ''}
+                    { announcements.length > 1 ? 's' : '' }
                   </Typography>
                   <ul>
-                    {announcements.map((announcement) => (
+                    { announcements.map((announcement) => (
                       <li key={announcement.id}>
-                        <strong>{announcement.title}</strong>
-                        {announcement.text
+                        <strong>{ announcement.title }</strong>
+                        { announcement.text
                           && (
                             <>
                               :
                               {' '}
-                              {announcement.text}
+                              { announcement.text }
                             </>
                           )}
                       </li>

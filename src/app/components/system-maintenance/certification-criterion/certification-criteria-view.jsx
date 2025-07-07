@@ -35,7 +35,7 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-    tableResultsHeaderContainer: {
+  tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -119,9 +119,11 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
       </div>
       <div className={classes.tableResultsHeaderContainer}>
         <Box display="flex" flexDirection="row" gridGap={1}>
-          <Typography variant="subtitle2">Search Results:</Typography>
+          <Typography variant="subtitle2">
+            Search Results:
+          </Typography>
           <Typography variant="body2">
-          {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
+            {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
       </div>
