@@ -112,8 +112,6 @@ const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required')
     .max(500, 'Full Name is too long'),
-  title: yup.string()
-    .max(250, 'Title is too long'),
   email: yup.string()
     .email('Improper format (sample@example.com)')
     .required('Email is required')
@@ -233,7 +231,6 @@ function ChplDeveloperEdit(props) {
       contact: {
         ...developer.contact,
         fullName: formik.values.fullName,
-        title: formik.values.title,
         email: formik.values.email,
         phoneNumber: formik.values.phoneNumber,
       },
@@ -315,7 +312,6 @@ function ChplDeveloperEdit(props) {
       reason: '',
       isAdding: false,
       fullName: developer.contact?.fullName || '',
-      title: developer.contact?.title || '',
       email: developer.contact?.email || '',
       phoneNumber: developer.contact?.phoneNumber || '',
       line1: developer.address?.line1 || '',
@@ -516,8 +512,7 @@ function ChplDeveloperEdit(props) {
               </Box>
             )}
           <Divider className={classes.fullWidthGridRow} />
-          { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
-          { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
           { getEnhancedEditField({ key: 'email', display: 'Email' }) }
           { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
           <Divider className={classes.fullWidthGridRow} />
