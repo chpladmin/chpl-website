@@ -100,19 +100,11 @@ const useFetchConformanceMethods = () => {
   });
 };
 
-const useFetchCqms = (props = { active: true }) => {
-  const params = Object
-    .entries(props)
-    .filter(([key, value]) => key !== 'active' && value)
-    .filter(([key]) => (key !== 'active'))
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&');
-  let query = 'cqms';
-  if (params.length > 0) { query += `?${params}`; }
+const useFetchCqms = () => {
   const axios = useAxios();
-  return useQuery(['cqms', params], async () => {
-    const response = await axios.get(query);
-    return response.data.filter((cc) => !props.active || cc.startDay < jsJoda.LocalDate.now());
+  return useQuery(['cqms'], async () => {
+    const response = await axios.get('cqms');
+    return response.data;
   });
 };
 
@@ -177,8 +169,8 @@ const useFetchFunctionalitiesTested = () => {
 const useFetchG1g2 = () => {
   const axios = useAxios();
   return useQuery(['g1g2'], async () => {
-    const response = await axios.get('data/measures');
-    return response.data.data;
+    const response = await axios.get('measures');
+    return response.data;
   });
 };
 

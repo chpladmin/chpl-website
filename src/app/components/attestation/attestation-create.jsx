@@ -53,7 +53,7 @@ function ChplAttestationCreate({ dispatch }) {
     if (crData.isLoading) {
       return;
     }
-    setChangeRequestType(crData.data.data.find((type) => type.name === 'Developer Attestation Change Request'));
+    setChangeRequestType(crData.data.find((type) => type.name === 'Developer Attestation Change Request'));
   }, [crData.data, crData.isLoading]);
 
   const handleDispatch = (action, payload) => {
