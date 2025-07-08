@@ -224,7 +224,7 @@ function ChplFilterPanel() {
         onClick={handleClick}
       >
         Advanced Search
-        {' ' }
+        {' '}
         <FilterListIcon className={classes.iconSpacing} />
       </Button>
       <Popover
@@ -304,11 +304,11 @@ function ChplFilterPanel() {
             </div>
           </div>
           <div className={classes.filterPanelSecondary}>
-            {activeCategoryKey === '' && (
+            {!activeCategory && (
               <Box mt={2}>
-              <Typography className={classes.directionText} variant="subtitle1" gutterBottom> Select a filter to begin </Typography>
-              <Typography variant="body1"> To narrow down your search results, choose a filter category from the left-hand panel. </Typography>
-              <Typography variant="body1"> Then, select one or more filter options to apply to your search. </Typography>
+                <Typography className={classes.directionText} variant="subtitle1" gutterBottom>Select a filter to begin</Typography>
+                <Typography variant="body1">To narrow down your search results, choose a filter category from the left-hand panel.</Typography>
+                <Typography variant="body1">Then, select one or more filter options to apply to your search.</Typography>
               </Box>
             )}
             { activeCategory?.values.length > 0 && (
@@ -376,7 +376,7 @@ function ChplFilterPanel() {
                 )}
               >
                 <div className={classes.filterGroupTwoContainer}>
-                  {activeCategory.disabled
+                  { activeCategory.disabled
                     && (
                       <>
                         <Typography variant="body1" gutterBottom>
@@ -389,7 +389,7 @@ function ChplFilterPanel() {
                         </Typography>
                       </>
                     )}
-                  {!activeCategory.disabled && activeCategory.getValueEntry({
+                  { !activeCategory.disabled && activeCategory.getValueEntry({
                     filter: activeCategory,
                     handleFilterToggle,
                     handleFilterUpdate,
