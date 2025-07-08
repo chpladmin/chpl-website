@@ -14,7 +14,7 @@ import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplCqms() {
   const { append, display } = useContext(BreadcrumbContext);
-  const { data, isLoading, isSuccess } = useFetchCqms({ active: false });
+  const { data, isLoading, isSuccess } = useFetchCqms();
   const [cqms, setCqms] = useState([]);
 
   useEffect(() => {

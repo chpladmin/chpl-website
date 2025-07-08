@@ -61,14 +61,6 @@ export default class NetworkService {
     return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
   }
 
-  getAccessibilityStandards() {
-    return this.apiGET('/accessibility-standards');
-  }
-
-  getAgeRanges() {
-    return this.apiGET('/data/age_ranges');
-  }
-
   getAllCriteria(props) {
     const params = Object
       .entries(props)
@@ -88,24 +80,12 @@ export default class NetworkService {
     return this.apiGET(`/surveillance-report/annual/${reportId}`);
   }
 
-  getAtls(editable) {
-    return this.apiGET(`/atls?editable=${editable}`, { forceReload: true });
-  }
-
   getCapStatusTypes() {
-    return this.apiGET('/data/cap-statuses');
-  }
-
-  getCodeSets() {
-    return this.apiGET('/code-sets');
+    return this.apiGET('/surveillance-report/cap-statuses');
   }
 
   getComplaintsWithSurveillance(surveillanceId) {
     return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
-  }
-
-  getConformanceMethods() {
-    return this.apiGET('/conformance-methods');
   }
 
   getDeveloper(id) {
@@ -120,14 +100,6 @@ export default class NetworkService {
     return this.apiGET('/developers');
   }
 
-  getEducation() {
-    return this.apiGET('/data/education_types');
-  }
-
-  getFunctionalitiesTested() {
-    return this.apiGET('/functionalities-tested');
-  }
-
   getListing(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}/details`, { forceReload });
   }
@@ -136,20 +108,8 @@ export default class NetworkService {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
   }
 
-  getMeasureTypes() {
-    return this.apiGET('/data/measure-types');
-  }
-
-  getMeasures() {
-    return this.apiGET('/data/measures');
-  }
-
   getNonconformityStatisticsCount() {
     return this.apiGET('/statistics/nonconformity_criteria_count');
-  }
-
-  getOptionalStandards() {
-    return this.apiGET('/optional-standards');
   }
 
   getPendingListingById(id) {
@@ -162,10 +122,6 @@ export default class NetworkService {
 
   getProductsByDeveloper(developerId) {
     return this.apiGET(`/products?developerId=${developerId}`);
-  }
-
-  getQmsStandards() {
-    return this.apiGET('/qms-standards');
   }
 
   getQuarterlySurveillanceQuarters() {
@@ -192,16 +148,8 @@ export default class NetworkService {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
   }
 
-  getSearchOptions() {
-    return this.apiGET('/data/search-options');
-  }
-
   getSimpleProduct(id) {
     return this.apiGET(`/products/${id}`);
-  }
-
-  getStandards() {
-    return this.apiGET('/standards');
   }
 
   getSurveillanceActivityReport(range) {
@@ -210,28 +158,28 @@ export default class NetworkService {
   }
 
   getSurveillanceGroundsForInitiatingTypes() {
-    return this.apiGET('/data/surveillance-grounds-for-initiating');
+    return this.apiGET('/surveillance-report/surveillance-grounds-for-initiating');
   }
 
   getSurveillanceLookups() {
     const data = {};
-    this.apiGET('/data/surveillance_types')
+    this.apiGET('/surveillance/types')
       .then((response) => {
         data.surveillanceTypes = response;
       });
-    this.apiGET('/data/requirement-group-types')
+    this.apiGET('/surveillance/requirement-group-types')
       .then((response) => {
         data.requirementGroupTypes = response;
       });
-    this.apiGET('/data/surveillance_result_types')
+    this.apiGET('/surveillance/result-types')
       .then((response) => {
         data.surveillanceResultTypes = response;
       });
-    this.apiGET('/data/nonconformity-types/v2')
+    this.apiGET('/surveillance/nonconformity-types')
       .then((response) => {
         data.nonconformityTypes = response;
       });
-    this.apiGET('/data/requirement-types')
+    this.apiGET('/surveillance/requirement-types')
       .then((response) => {
         data.surveillanceRequirements = response;
       });
@@ -239,43 +187,15 @@ export default class NetworkService {
   }
 
   getSurveillanceOutcomes() {
-    return this.apiGET('/data/surveillance-outcomes');
+    return this.apiGET('/surveillance-report/surveillance-outcomes');
   }
 
   getSurveillanceProcessTypes() {
-    return this.apiGET('/data/surveillance-process-types');
-  }
-
-  getSvaps() {
-    return this.apiGET('/svaps');
+    return this.apiGET('/surveillance-report/surveillance-process-types');
   }
 
   getSystemStatus() {
     return this.$http.get('/rest/system-status');
-  }
-
-  getTargetedUsers() {
-    return this.apiGET('/data/targeted_users');
-  }
-
-  getTestData() {
-    return this.apiGET('/data/test_data');
-  }
-
-  getTestProcedures() {
-    return this.apiGET('/data/test_procedures');
-  }
-
-  getTestStandards() {
-    return this.apiGET('/data/test_standards');
-  }
-
-  getTestTools() {
-    return this.apiGET('/test-tools');
-  }
-
-  getUcdProcesses() {
-    return this.apiGET('/ucd-processes');
   }
 
   getUserById(id) {
