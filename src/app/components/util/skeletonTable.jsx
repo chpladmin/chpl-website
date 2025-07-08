@@ -6,6 +6,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TableRow,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -30,6 +31,17 @@ function ChplLoadingTable({ rows = 10, className }) {
       </Box>
       <TableContainer className={className} component={Paper}>
         <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ width: columnWidths[0] }}><Skeleton /></TableCell>
+              <TableCell style={{ width: columnWidths[1] }}><Skeleton /></TableCell>
+              <TableCell style={{ width: columnWidths[2] }}><Skeleton /></TableCell>
+              <TableCell style={{ width: columnWidths[3] }}><Skeleton /></TableCell>
+              <TableCell style={{ width: columnWidths[4] }}><Skeleton /></TableCell>
+              <TableCell style={{ width: columnWidths[5] }}><Skeleton /></TableCell>
+              <TableCell style={{ width: columnWidths[6] }}><Skeleton /></TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {[...Array(rows)].map((_, rowIdx) => (
               <TableRow key={rowIdx}>
