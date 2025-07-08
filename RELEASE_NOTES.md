@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 13.39.1
+_7 July 2025_
+
+### User Interface Updates
+* Support Product split in new UI
+* Enable Product merge in modern UI
+* Handle Product editing in modern UI
+
+---
+
 ## Version 13.39.0
 _9 June 2025_
 
