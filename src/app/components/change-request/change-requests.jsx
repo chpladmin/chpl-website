@@ -75,7 +75,7 @@ function ChplChangeRequests(props) {
     if (crtQuery.isLoading || !crtQuery.isSuccess) {
       return;
     }
-    const values = crtQuery.data.data
+    const values = crtQuery.data
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map((type) => ({
         value: type.name,
@@ -112,7 +112,7 @@ function ChplChangeRequests(props) {
             disallowedFilters={disallowedFilters}
             bonusQuery={bonusQuery}
             dispatch={dispatch}
-        />
+          />
         </div>
       </FilterProvider>
     </AnalyticsContext.Provider>

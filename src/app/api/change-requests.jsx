@@ -38,16 +38,16 @@ const useFetchChangeRequests = ({
 
 const useFetchChangeRequestStatusTypes = () => {
   const axios = useAxios();
-  return useQuery(['change-request-status-types'], async () => {
-    const response = await axios.get('data/change-request-status-types');
+  return useQuery(['change-requests/status-types'], async () => {
+    const response = await axios.get('change-requests/status-types');
     return response.data;
   }, options.daily);
 };
 
 const useFetchChangeRequestTypes = () => {
   const axios = useAxios();
-  return useQuery(['change-request-types'], async () => {
-    const response = await axios.get('data/change-request-types');
+  return useQuery(['change-requests/types'], async () => {
+    const response = await axios.get('change-requests/types');
     return response.data;
   }, options.daily);
 };

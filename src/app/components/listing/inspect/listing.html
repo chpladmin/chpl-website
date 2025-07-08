@@ -10,23 +10,11 @@
       <div class="panel-heading">
         <span>{{ $ctrl.listing.chplProductNumber }}</span>
       </div>
-      <div class="panel-body" ng-if="!$ctrl.isEditing">
+      <div class="panel-body">
         <chpl-listing-view-bridge
           is-confirming="true"
           listing="$ctrl.listing"
           ></chpl-listing-view-bridge>
-      </div>
-      <div class="panel-body" ng-if="$ctrl.isEditing">
-        <chpl-listing-edit-page
-          is-confirming="true"
-          listing="$ctrl.listing"
-          on-cancel="$ctrl.handleCancel()"
-          on-change="$ctrl.handleChange(listing)"
-          resources="$ctrl.resources"
-          errors="$ctrl.errors"
-          warnings="$ctrl.warnings"
-          >
-        </chpl-listing-edit-page>
       </div>
     </div>
   </div>
