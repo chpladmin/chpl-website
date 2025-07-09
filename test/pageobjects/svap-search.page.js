@@ -13,7 +13,7 @@ class SvapSearchPage extends SearchPage {
 
   async open() {
     await super.open('svap');
-    await (browser.waitUntil(async () => !(await this.isLoading())));
+    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
   }
 
   get downloadListingsButton() {

@@ -13,7 +13,7 @@ class RealWorldTestingSearchPage extends SearchPage {
 
   async open() {
     await super.open('real-world-testing');
-    await (browser.waitUntil(async () => !(await this.isLoading())));
+    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
   }
 
   get downloadListingsButton() {

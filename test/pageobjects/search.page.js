@@ -40,6 +40,14 @@ class SearchPage extends Page {
     ).isDisplayed();
   }
 
+ get skeletonElement() {
+    return $('span.MuiSkeleton-root.MuiSkeleton-text.MuiSkeleton-pulse');
+  }
+ 
+   async isSkeletonVisible() {
+    return await this.skeletonElement.isExisting();
+  }
+ 
   async getTableHeaders() {
     return (await
     (await
