@@ -20,8 +20,8 @@ import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 import ChplChangeRequestHistory from './change-request-history';
-import ChplChangeRequestListingUrlEdit from './types/listing-url-edit';
-import ChplChangeRequestListingUrlView from './types/listing-url-view';
+import ChplChangeRequestListingSbulEdit from './types/listing-sbul-edit';
+import ChplChangeRequestListingSbulView from './types/listing-sbul-view';
 
 import {
   useFetchChangeRequest,
@@ -133,9 +133,9 @@ const getChangeRequestViewDetails = (cr) => {
           changeRequest={cr}
         />
       );
-    case 'Listing URL Change Request':
+    case 'Service Base URL List Change Request':
       return (
-        <ChplChangeRequestListingUrlView
+        <ChplChangeRequestListingSbulView
           changeRequest={cr}
         />
       );
@@ -164,9 +164,9 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
           dispatch={handleDispatch}
         />
       );
-    case 'Listing URL Change Request':
+    case 'Service Base URL List Change Request':
       return (
-        <ChplChangeRequestListingUrlEdit
+        <ChplChangeRequestListingSbulEdit
           changeRequest={cr}
           dispatch={handleDispatch}
         />
@@ -377,7 +377,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
           website: payload.website,
         });
         break;
-      case 'Listing URL Change Request':
+      case 'Service Base URL List Change Request':
         setDetails({
           ...details,
           url: payload.url,

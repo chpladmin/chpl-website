@@ -18,23 +18,16 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestListingUrlView({ changeRequest }) {
+function ChplChangeRequestListingSbulView({ changeRequest }) {
   const classes = useStyles();
 
-  const getCurrent = () => {
-    switch (changeRequest.details.changeRequestListingUrlType.name) {
-      case 'Service Base URL List':
-        return changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
-      default:
-          return 'Unknown type';
-    }
-  }
+  const getCurrent = () => changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
 
   return (
     <div className={classes.container}>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          { `Current ${changeRequest.details.changeRequestListingUrlType.name} `}
+          Current Service Base URL List
         </Typography>
         <Typography>
           { getCurrent() }
@@ -45,7 +38,7 @@ function ChplChangeRequestListingUrlView({ changeRequest }) {
       </div>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          { `Submitted ${changeRequest.details.changeRequestListingUrlType.name} `}
+          Submitted Service Base URL List
         </Typography>
         <Typography>
           { changeRequest.details.url }
@@ -55,8 +48,8 @@ function ChplChangeRequestListingUrlView({ changeRequest }) {
   );
 }
 
-export default ChplChangeRequestListingUrlView;
+export default ChplChangeRequestListingSbulView;
 
-ChplChangeRequestListingUrlView.propTypes = {
+ChplChangeRequestListingSbulView.propTypes = {
   changeRequest: changeRequestProp.isRequired,
 };

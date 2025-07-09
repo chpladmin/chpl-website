@@ -86,12 +86,10 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplListingUrl({ type }) {
+function ChplListingSbul() {
   const { hasAnyRole } = useContext(UserContext);
   const {
     listing,
-    setRwtPlansChange,
-    setRwtResultsChange,
     setSbulChange,
   } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -113,40 +111,27 @@ function ChplListingUrl({ type }) {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    let url;
-    switch (type.name) {
-      case 'RWT Plans URL':
-        url = listing.rwtPlansUrl;
-        break;
-      case 'RWT Results URL':
-        url = listing.rwtResultsUrl;
-        break;
-      case 'Service Base URL List':
-        url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
-        break;
-        // no default
-    }
+    let url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
     formik.setFieldValue('url', url ?? '');
     setCurrentUrl(url);
-  }, [listing, type]);
+  }, [listing]);
 
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        setRwtPlansChange(false);
-        setRwtResultsChange(false);
         setSbulChange(false);
         break;
       case 'save':
         setIsProcessing(true);
         submitCR({
           developer: listing.developer,
+          changeRequestType: {
+            id: 4,
+            name: 'Service Base URL List Change Request',
+          },
           details: {
             listing,
             url: formik.values.url,
-            changeRequestListingUrlType: {
-              id: type.id,
-            },
           },
         }, {
           onSuccess: () => {
@@ -154,8 +139,6 @@ function ChplListingUrl({ type }) {
             enqueueSnackbar('URL change request has been submitted successfully.', {
               variant: 'success',
             });
-            setRwtPlansChange(false);
-            setRwtResultsChange(false);
             setSbulChange(false);
           },
           onError: (error) => {
@@ -220,7 +203,7 @@ function ChplListingUrl({ type }) {
       <Box className={classes.titleBackground}>
         <Container maxWidth="lg">
           <Typography className={classes.titlePadding} variant="h1">
-            {`${type.name} Update`}
+            Service Base URL List Update
           </Typography>
           <Typography>
             Current URL:
@@ -415,11 +398,7 @@ function ChplListingUrl({ type }) {
   );
 }
 
-export default ChplListingUrl;
+export default ChplListingSbul;
 
-ChplListingUrl.propTypes = {
-  type: shape({
-    id: number,
-    name: string,
-  }).isRequired,
+ChplListingSbul.propTypes = {
 };
