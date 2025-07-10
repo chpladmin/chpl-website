@@ -22,6 +22,8 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
+import ChplListingRwtPlans from 'components/change-request/types/listing-rwt-plans';
+import ChplListingRwtResults from 'components/change-request/types/listing-rwt-results';
 import ChplListingSbul from 'components/change-request/types/listing-sbul';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
@@ -206,9 +208,7 @@ function ChplListingPage({ id }) {
     return (
       <AnalyticsContext.Provider value={analyticsData}>
         <ListingContext.Provider value={listingState}>
-          <ChplListingSbul
-            type={{ id: 3, name: 'RWT Plans URL' }}
-          />
+          <ChplListingRwtPlans />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );
@@ -218,9 +218,7 @@ function ChplListingPage({ id }) {
     return (
       <AnalyticsContext.Provider value={analyticsData}>
         <ListingContext.Provider value={listingState}>
-          <ChplListingSbul
-            type={{ id: 3, name: 'RWT Results URL' }}
-          />
+          <ChplListingRwtResults />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );

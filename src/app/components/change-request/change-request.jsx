@@ -20,6 +20,10 @@ import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 import ChplChangeRequestHistory from './change-request-history';
+import ChplChangeRequestListingRwtPlansEdit from './types/listing-rwt-plans-edit';
+import ChplChangeRequestListingRwtPlansView from './types/listing-rwt-plans-view';
+import ChplChangeRequestListingRwtResultsEdit from './types/listing-rwt-results-edit';
+import ChplChangeRequestListingRwtResultsView from './types/listing-rwt-results-view';
 import ChplChangeRequestListingSbulEdit from './types/listing-sbul-edit';
 import ChplChangeRequestListingSbulView from './types/listing-sbul-view';
 
@@ -133,6 +137,18 @@ const getChangeRequestViewDetails = (cr) => {
           changeRequest={cr}
         />
       );
+    case 'RWT Plans URL Change Request':
+      return (
+        <ChplChangeRequestListingRwtPlansView
+          changeRequest={cr}
+        />
+      );
+    case 'RWT Results URL Change Request':
+      return (
+        <ChplChangeRequestListingRwtResultsView
+          changeRequest={cr}
+        />
+      );
     case 'Service Base URL List Change Request':
       return (
         <ChplChangeRequestListingSbulView
@@ -160,6 +176,20 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
     case 'Developer Demographics Change Request':
       return (
         <ChplChangeRequestDemographicsEdit
+          changeRequest={cr}
+          dispatch={handleDispatch}
+        />
+      );
+    case 'RWT Plans URL Change Request':
+      return (
+        <ChplChangeRequestListingRwtPlansEdit
+          changeRequest={cr}
+          dispatch={handleDispatch}
+        />
+      );
+    case 'RWT Results URL Change Request':
+      return (
+        <ChplChangeRequestListingRwtResultsEdit
           changeRequest={cr}
           dispatch={handleDispatch}
         />

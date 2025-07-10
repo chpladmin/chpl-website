@@ -34,7 +34,7 @@ const validationSchema = yup.object({
     .required('URL is required'),
 });
 
-function ChplChangeRequestListingSbulEdit({ changeRequest, dispatch }) {
+function ChplChangeRequestListingRwtResultsEdit({ changeRequest, dispatch }) {
   const classes = useStyles();
   let formik;
 
@@ -55,7 +55,7 @@ function ChplChangeRequestListingSbulEdit({ changeRequest, dispatch }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
+          { changeRequest.details.listing.rwtResultsUrl }
         </Typography>
         <Typography>
           { changeRequest.details.listing.chplProductNumber }
@@ -81,9 +81,9 @@ function ChplChangeRequestListingSbulEdit({ changeRequest, dispatch }) {
   );
 }
 
-export default ChplChangeRequestListingSbulEdit;
+export default ChplChangeRequestListingRwtResultsEdit;
 
-ChplChangeRequestListingSbulEdit.propTypes = {
+ChplChangeRequestListingRwtResultsEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
 };
