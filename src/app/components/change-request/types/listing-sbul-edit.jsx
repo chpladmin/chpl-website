@@ -38,15 +38,6 @@ function ChplChangeRequestListingUrlEdit({ changeRequest, dispatch }) {
   const classes = useStyles();
   let formik;
 
-  const getCurrent = () => {
-    switch (changeRequest.details.changeRequestListingUrlType.name) {
-      case 'Service Base URL List':
-        return changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
-      default:
-          return 'Unknown type';
-    }
-  }
-
   const handleChange = (...args) => {
     formik.handleChange(...args);
     dispatch('update', formik.values);
@@ -64,7 +55,7 @@ function ChplChangeRequestListingUrlEdit({ changeRequest, dispatch }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { getCurrent() }
+          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
         </Typography>
         <Typography>
           { changeRequest.details.listing.chplProductNumber }

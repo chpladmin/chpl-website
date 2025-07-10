@@ -12,7 +12,6 @@ import {
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import { number, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -111,7 +110,7 @@ function ChplListingSbul() {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    let url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+    const url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
     formik.setFieldValue('url', url ?? '');
     setCurrentUrl(url);
   }, [listing]);
