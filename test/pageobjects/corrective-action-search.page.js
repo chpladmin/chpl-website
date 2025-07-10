@@ -14,7 +14,6 @@ class CorrectiveActionSearchPage extends SearchPage {
   async open() {
     await super.open('corrective-action');
     await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
-    await (browser.waitUntil(async () => !(await this.isLoading())));
   }
 
   get downloadListingsButton() {

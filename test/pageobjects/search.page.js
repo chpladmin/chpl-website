@@ -17,6 +17,7 @@ class SearchPage extends Page {
       filterBrowse: '#filter-browse',
       filterChipsSection: '#filter-chips',
       clearSearchTermButton: 'button[aria-label="Clear search"]',
+      skeletonElement: 'span.MuiSkeleton-root.MuiSkeleton-text.MuiSkeleton-pulse',
     };
   }
 
@@ -34,18 +35,10 @@ class SearchPage extends Page {
     ).getText();
   }
 
-  async isLoading() {
-    return (await
-    $(this.elements.loading)
-    ).isDisplayed();
-  }
-
- get skeletonElement() {
-    return $('span.MuiSkeleton-root.MuiSkeleton-text.MuiSkeleton-pulse');
-  }
- 
-   async isSkeletonVisible() {
-    return await this.skeletonElement.isExisting();
+  async isSkeletonVisible() {
+    return (await 
+     $(this.elements.skeletonElement)
+    ).isExisting();
   }
  
   async getTableHeaders() {
