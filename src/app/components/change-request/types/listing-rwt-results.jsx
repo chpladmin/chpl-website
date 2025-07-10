@@ -125,7 +125,7 @@ function ChplListingRwtResults() {
         submitCR({
           developer: listing.developer,
           changeRequestType: {
-            id: 5,
+            id: 6,
             name: 'RWT Results URL Change Request',
           },
           details: {
