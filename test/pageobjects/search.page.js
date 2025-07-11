@@ -6,7 +6,6 @@ class SearchPage extends Page {
     this.name = 'SearchPage';
     this.elements = {
       ...this.elements,
-      loading: 'body*=Loading',
       header: 'h1',
       table: 'table',
       searchResultsHeader: 'h6=Search Results:',
