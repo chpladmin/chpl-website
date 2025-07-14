@@ -103,21 +103,21 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           </Typography>
         </Box>
         <div>
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchStandardsActivity}
-          title="Standards"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-standard"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        )}
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchStandardsActivity}
+            title="Standards"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-standard"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
         </div>
       </div>
       <TableContainer className={classes.container} component={Paper}>

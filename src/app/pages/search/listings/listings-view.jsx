@@ -12,16 +12,17 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import FindReplaceIcon from '@material-ui/icons/FindReplace';
+
 import ChplLandingPage from './landing-page';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
-import { ChplLoadingTable } from 'components/util';
-import {
+import { 
+  ChplLoadingTable,
   ChplLink,
-  ChplPagination,
+  ChplPagination, 
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
@@ -227,8 +228,9 @@ function ChplListingsView() {
       <div>
         <ChplFilterChips />
       </div>
-      { isLoading && (
-        <ChplLoadingTable className={classes.tableContainer} />
+      { isLoading 
+        && (
+          <ChplLoadingTable className={classes.tableContainer} />
       )}
       { !isLoading
         && (

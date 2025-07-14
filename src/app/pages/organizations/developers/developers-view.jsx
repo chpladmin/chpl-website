@@ -20,8 +20,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplLink, ChplPagination, ChplLoadingTable } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
+import { ChplLink, ChplPagination, ChplLoadingTable,  ChplSortableHeaders } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
