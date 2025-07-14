@@ -7,7 +7,7 @@ import ChplLink from './chpl-link';
 import ChplNonProdIndicator from './non-prod-indicator';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
-import ChplLoadingTable from './skeletonTable';
+import ChplLoadingTable from './loading-table';
 import ChplSortableHeaders from './chpl-sortable-headers';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
