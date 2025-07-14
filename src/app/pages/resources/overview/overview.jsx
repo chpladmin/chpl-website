@@ -167,19 +167,20 @@ function ChplResourcesOverview() {
       <div className={classes.pageBackground} id="main-content" tabIndex="-1">
         <Container maxWidth="lg" className={classes.pageBody}>
           <Card className={classes.pageNavigation}>
-            { announcements.length > 0 && (
-              <InternalScrollButton
-                id="announcements"
-                active={activeSection === 'announcements'}
-                analytics={{
-                  ...analytics,
-                  event: 'Navigate to Announcements',
-                }}
-              >
-                Announcements
-                <AnnouncementOutlinedIcon className={classes.iconSpacing} />
-              </InternalScrollButton>
-            )}
+            { announcements.length > 0 
+              && (
+                <InternalScrollButton
+                  id="announcements"
+                  active={activeSection === 'announcements'}
+                  analytics={{
+                    ...analytics,
+                    event: 'Navigate to Announcements',
+                  }}
+                >
+                  Announcements
+                  <AnnouncementOutlinedIcon className={classes.iconSpacing} />
+                </InternalScrollButton>
+              )}
             <InternalScrollButton
               id="whatIsTheChpl"
               active={activeSection === 'whatIsTheChpl'}
