@@ -37,7 +37,12 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  BreadcrumbContext,
+  ChangeRequestContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -139,9 +144,7 @@ const getChangeRequestViewDetails = (cr) => {
       );
     case 'RWT Plans URL Change Request':
       return (
-        <ChplChangeRequestListingRwtPlansView
-          changeRequest={cr}
-        />
+        <ChplChangeRequestListingRwtPlansView />
       );
     case 'RWT Results URL Change Request':
       return (
@@ -521,8 +524,13 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
     return <CircularProgress />;
   }
 
+  const changeRequestState = {
+    changeRequest,
+    setChangeRequest,
+  };
+
   return (
-    <>
+    <ChangeRequestContext.Provider value={changeRequestState}>
       { isConfirming
         && (
           <ChplActionBarConfirmation
@@ -703,7 +711,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         showWarningAcknowledgement={showAcknowledgement}
         warnings={warnings}
       />
-    </>
+    </ChangeRequestContext.Provider>
   );
 }
 

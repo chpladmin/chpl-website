@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { ChangeRequestContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -18,7 +18,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestListingRwtPlansView({ changeRequest }) {
+function ChplChangeRequestListingRwtPlansView() {
+  const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
   const getCurrent = () => changeRequest.details.listing.rwtPlansUrl;
@@ -51,5 +52,4 @@ function ChplChangeRequestListingRwtPlansView({ changeRequest }) {
 export default ChplChangeRequestListingRwtPlansView;
 
 ChplChangeRequestListingRwtPlansView.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
 };
