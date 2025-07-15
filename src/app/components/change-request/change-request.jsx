@@ -186,7 +186,6 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
     case 'RWT Plans URL Change Request':
       return (
         <ChplChangeRequestListingRwtPlansEdit
-          changeRequest={cr}
           dispatch={handleDispatch}
         />
       );

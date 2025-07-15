@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Divider,
   Typography,
@@ -9,7 +9,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { jsJoda } from 'services/date-util';
+import { ChangeRequestContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -34,7 +35,9 @@ const validationSchema = yup.object({
     .required('URL is required'),
 });
 
-function ChplChangeRequestListingRwtPlansEdit({ changeRequest, dispatch }) {
+function ChplChangeRequestListingRwtPlansEdit({ dispatch }) {
+  const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
 
@@ -84,6 +87,5 @@ function ChplChangeRequestListingRwtPlansEdit({ changeRequest, dispatch }) {
 export default ChplChangeRequestListingRwtPlansEdit;
 
 ChplChangeRequestListingRwtPlansEdit.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
 };
