@@ -86,7 +86,7 @@ function ChplChangeRequestListingRwtPlansEdit() {
           name="url"
           label="url"
           required
-          disabled
+          disabled={!hasAnyRole(['chpl-developer'])}
           value={formik.values.url}
           onChange={handleChange}
           onBlur={formik.handleBlur}
