@@ -28,42 +28,47 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const ProgressBar = (props) => {
-  const { value } = props;
-  return (
-    <Box
-      pt={2}
-      gridGap={8}
-      pb={2}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      id="progress-bar"
-    >
-      <Box width="56%">
-        <LinearProgress
-          id="progress-bar-bar"
-          variant="determinate"
-          {...props}
-        />
-      </Box>
-      <Box>
-        <Typography
-          variant="body2"
-          color="textPrimary"
-          id="progress-bar-text"
-        >
-          <strong>
-            { value }
-            %
-          </strong>
-          {' '}
-          Base Criteria Met
-        </Typography>
-      </Box>
+const ProgressBar = ({ value, year }) => (
+  <Box
+    pt={2}
+    gridGap={8}
+    pb={2}
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+    id="progress-bar"
+  >
+    <Box width="56%">
+      <LinearProgress
+        id="progress-bar-bar"
+        variant="determinate"
+        value={value}
+      />
     </Box>
-  );
-};
+    <Box>
+      <Typography
+        variant="body2"
+        color="textPrimary"
+        id="progress-bar-text"
+      >
+        <strong>
+          { value }
+          %
+        </strong>
+        {' '}
+        Base Criteria Met
+        {year !== '2015'
+           && (
+             <>
+               {' '}
+               for CY
+               {year}
+             </>
+           )}
+      </Typography>
+    </Box>
+  </Box>
+);
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -110,7 +115,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
-  const { cmsA9GracePeriodEndIsOn, domainIsOn } = useContext(FlagContext);
+  const { domainIsOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
@@ -126,7 +131,7 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
-    createPdf(pdfData, cmsA9GracePeriodEndIsOn);
+    createPdf(pdfData);
     setIsDownloading(false);
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
 
@@ -269,6 +274,7 @@ function ChplCmsDisplay() {
         && (
           <ProgressBar
             value={idAnalysis.metPercentages.criteriaMet}
+            year={idAnalysis.year}
           />
         )}
       { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
