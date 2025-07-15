@@ -148,9 +148,7 @@ const getChangeRequestViewDetails = (cr) => {
       );
     case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestListingRwtResultsView
-          changeRequest={cr}
-        />
+        <ChplChangeRequestListingRwtResultsView />
       );
     case 'Service Base URL List Change Request':
       return (
@@ -185,16 +183,11 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
       );
     case 'RWT Plans URL Change Request':
       return (
-        <ChplChangeRequestListingRwtPlansEdit
-          dispatch={handleDispatch}
-        />
+        <ChplChangeRequestListingRwtPlansEdit />
       );
     case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestListingRwtResultsEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
+        <ChplChangeRequestListingRwtResultsEdit />
       );
     case 'Service Base URL List Change Request':
       return (
@@ -501,7 +494,8 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
       changeRequestStatusType: '',
     },
     onSubmit: () => {
-      if (changeRequest.changeRequestType.name === 'RWT Plans URL Change Request') {
+      if (changeRequest.changeRequestType.name === 'RWT Plans URL Change Request'
+         || changeRequest.changeRequestType.name === 'RWT Results URL Change Request') {
         const updated = {
           ...changeRequest,
           currentStatus: {

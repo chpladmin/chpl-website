@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { jsJoda } from 'services/date-util';
+import { ChangeRequestContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -32,20 +32,37 @@ const validationSchema = yup.object({
   url: yup.string()
     .url('URL is not in a valid format')
     .required('URL is required'),
+  checkDate: yup.date()
+    .when('mustHaveDate', {
+      is: (mustHaveDate) => mustHaveDate,
+      then: yup.date().required('Check Date is required'),
+      otherwise: yup.date(),
+    }),
 });
 
-function ChplChangeRequestListingRwtResultsEdit({ changeRequest, dispatch }) {
+function ChplChangeRequestListingRwtResultsEdit() {
+  const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
 
   const handleChange = (...args) => {
+    const event = args[0];
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        [event.target.name]: event.target.value,
+      },
+    }));
     formik.handleChange(...args);
-    dispatch('update', formik.values);
   };
 
   formik = useFormik({
     initialValues: {
       url: changeRequest.details.url || '',
+      checkDate: changeRequest.details.checkDate || jsJoda.LocalDate.now(),
+      mustHaveDate: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']),
     },
     validationSchema,
   });
@@ -69,13 +86,28 @@ function ChplChangeRequestListingRwtResultsEdit({ changeRequest, dispatch }) {
           name="url"
           label="url"
           required
-          disabled
+          disabled={!hasAnyRole(['chpl-developer'])}
           value={formik.values.url}
           onChange={handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.url && !!formik.errors.url}
           helperText={formik.touched.url && formik.errors.url}
         />
+        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+          && (
+            <ChplTextField
+              id="check-date"
+              name="checkDate"
+              label="Check Date"
+              type="date"
+              required
+              value={formik.values.checkDate}
+              onChange={handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.checkDate && !!formik.errors.checkDate}
+              helperText={formik.touched.checkDate && formik.errors.checkDate}
+            />
+          )}
       </div>
     </div>
   );
@@ -84,6 +116,4 @@ function ChplChangeRequestListingRwtResultsEdit({ changeRequest, dispatch }) {
 export default ChplChangeRequestListingRwtResultsEdit;
 
 ChplChangeRequestListingRwtResultsEdit.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
-  dispatch: func.isRequired,
 };
