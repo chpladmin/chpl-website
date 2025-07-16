@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { ChangeRequestContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -18,7 +18,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestListingSbulView({ changeRequest }) {
+function ChplChangeRequestListingSbulView() {
+  const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
   const getCurrent = () => changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
@@ -51,5 +52,4 @@ function ChplChangeRequestListingSbulView({ changeRequest }) {
 export default ChplChangeRequestListingSbulView;
 
 ChplChangeRequestListingSbulView.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
 };

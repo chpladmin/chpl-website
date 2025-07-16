@@ -495,7 +495,8 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
     },
     onSubmit: () => {
       if (changeRequest.changeRequestType.name === 'RWT Plans URL Change Request'
-         || changeRequest.changeRequestType.name === 'RWT Results URL Change Request') {
+         || changeRequest.changeRequestType.name === 'RWT Results URL Change Request'
+         || changeRequest.changeRequestType.name === 'Service Base URL List Change Request') {
         const updated = {
           ...changeRequest,
           currentStatus: {

@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { ChangeRequestContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -34,13 +33,22 @@ const validationSchema = yup.object({
     .required('URL is required'),
 });
 
-function ChplChangeRequestListingSbulEdit({ changeRequest, dispatch }) {
+function ChplChangeRequestListingSbulEdit() {
+  const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
 
   const handleChange = (...args) => {
+    const event = args[0];
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        [event.target.name]: event.target.value,
+      },
+    }));
     formik.handleChange(...args);
-    dispatch('update', formik.values);
   };
 
   formik = useFormik({
@@ -69,7 +77,7 @@ function ChplChangeRequestListingSbulEdit({ changeRequest, dispatch }) {
           name="url"
           label="url"
           required
-          disabled
+          disabled={!hasAnyRole(['chpl-developer'])}
           value={formik.values.url}
           onChange={handleChange}
           onBlur={formik.handleBlur}
@@ -84,6 +92,4 @@ function ChplChangeRequestListingSbulEdit({ changeRequest, dispatch }) {
 export default ChplChangeRequestListingSbulEdit;
 
 ChplChangeRequestListingSbulEdit.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
-  dispatch: func.isRequired,
 };
