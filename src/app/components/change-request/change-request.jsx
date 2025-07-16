@@ -494,38 +494,19 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
       changeRequestStatusType: '',
     },
     onSubmit: () => {
-      if (changeRequest.changeRequestType.name === 'RWT Plans URL Change Request'
-         || changeRequest.changeRequestType.name === 'RWT Results URL Change Request'
-         || changeRequest.changeRequestType.name === 'Service Base URL List Change Request') {
-        const updated = {
-          ...changeRequest,
-          currentStatus: {
-            comment: formik.values.comment,
-            changeRequestStatusType: formik.values.changeRequestStatusType,
-          },
-        };
-        eventTrack({
-          ...analytics,
-          event: 'Save Change Request',
-          label: changeRequest.developer.name,
-        });
-        save(updated);
-      } else {
-        const updated = {
-          ...changeRequest,
-          details,
-          currentStatus: {
-            comment: formik.values.comment,
-            changeRequestStatusType: formik.values.changeRequestStatusType,
-          },
-        };
-        eventTrack({
-          ...analytics,
-          event: 'Save Change Request',
-          label: changeRequest.developer.name,
-        });
-        save(updated);
-      }
+      const updated = {
+        ...changeRequest,
+        currentStatus: {
+          comment: formik.values.comment,
+          changeRequestStatusType: formik.values.changeRequestStatusType,
+        },
+      };
+      eventTrack({
+        ...analytics,
+        event: 'Save Change Request',
+        label: changeRequest.developer.name,
+      });
+      save(updated);
     },
     validationSchema,
   });

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { ChangeRequestContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -23,8 +23,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestDemographicsView(props) {
-  const { changeRequest } = props;
+function ChplChangeRequestDemographicsView() {
+  const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
   return (
@@ -174,5 +174,4 @@ function ChplChangeRequestDemographicsView(props) {
 export default ChplChangeRequestDemographicsView;
 
 ChplChangeRequestDemographicsView.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
 };
