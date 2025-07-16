@@ -8,7 +8,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { jsJoda } from 'services/date-util';
 import { ChangeRequestContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
@@ -61,7 +60,7 @@ function ChplChangeRequestListingRwtPlansEdit() {
   formik = useFormik({
     initialValues: {
       url: changeRequest.details.url || '',
-      checkDate: changeRequest.details.checkDate || jsJoda.LocalDate.now(),
+      checkDate: changeRequest.details.checkDate || '',
       mustHaveDate: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']),
     },
     validationSchema,
