@@ -3,6 +3,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { string } from 'prop-types';
 
 import { ChangeRequestContext } from 'shared/contexts';
 
@@ -18,17 +19,17 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestListingRwtPlansView() {
+function ChplChangeRequestListingRwtView({ key, title }) {
   const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
-  const getCurrent = () => changeRequest.details.listing.rwtPlansUrl;
+  const getCurrent = () => changeRequest.details.listing[key];
 
   return (
     <div className={classes.container}>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          Current RWT Plans URL
+          Current RWT { title } URL
         </Typography>
         <Typography>
           { getCurrent() }
@@ -39,7 +40,7 @@ function ChplChangeRequestListingRwtPlansView() {
       </div>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          Submitted RWT Plans URL
+          Submitted RWT { title } URL
         </Typography>
         <Typography>
           { changeRequest.details.url }
@@ -49,7 +50,9 @@ function ChplChangeRequestListingRwtPlansView() {
   );
 }
 
-export default ChplChangeRequestListingRwtPlansView;
+export default ChplChangeRequestListingRwtView;
 
-ChplChangeRequestListingRwtPlansView.propTypes = {
+ChplChangeRequestListingRwtView.propTypes = {
+  key: string.isRequired,
+  title: string.isRequired,
 };

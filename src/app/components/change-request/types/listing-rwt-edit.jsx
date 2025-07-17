@@ -4,7 +4,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { bool } from 'prop-types';
+import { bool, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -40,7 +40,7 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtPlansEdit({ isAccepting }) {
+function ChplChangeRequestListingRwtEdit({ isAccepting, key }) {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
@@ -76,7 +76,7 @@ function ChplChangeRequestListingRwtPlansEdit({ isAccepting }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing.rwtPlansUrl }
+          { changeRequest.details.listing[key] }
         </Typography>
         <Typography>
           { changeRequest.details.listing.chplProductNumber }
@@ -118,12 +118,13 @@ function ChplChangeRequestListingRwtPlansEdit({ isAccepting }) {
   );
 }
 
-export default ChplChangeRequestListingRwtPlansEdit;
+export default ChplChangeRequestListingRwtEdit;
 
-ChplChangeRequestListingRwtPlansEdit.propTypes = {
+ChplChangeRequestListingRwtEdit.propTypes = {
   isAccepting: bool,
+  key: string.isRequired,
 };
 
-ChplChangeRequestListingRwtPlansEdit.defaultProps = {
+ChplChangeRequestListingRwtEdit.defaultProps = {
   isAccepting: false,
 };

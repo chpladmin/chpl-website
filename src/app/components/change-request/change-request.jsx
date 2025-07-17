@@ -20,10 +20,8 @@ import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 import ChplChangeRequestHistory from './change-request-history';
-import ChplChangeRequestListingRwtPlansEdit from './types/listing-rwt-plans-edit';
-import ChplChangeRequestListingRwtPlansView from './types/listing-rwt-plans-view';
-import ChplChangeRequestListingRwtResultsEdit from './types/listing-rwt-results-edit';
-import ChplChangeRequestListingRwtResultsView from './types/listing-rwt-results-view';
+import ChplChangeRequestListingRwtEdit from './types/listing-rwt-edit';
+import ChplChangeRequestListingRwtView from './types/listing-rwt-view';
 import ChplChangeRequestListingSbulEdit from './types/listing-sbul-edit';
 import ChplChangeRequestListingSbulView from './types/listing-sbul-view';
 
@@ -144,11 +142,17 @@ const getChangeRequestViewDetails = (cr) => {
       );
     case 'RWT Plans URL Change Request':
       return (
-        <ChplChangeRequestListingRwtPlansView />
+        <ChplChangeRequestListingRwtView
+          key="rwtPlansUrl"
+          title="Plans"
+        />
       );
     case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestListingRwtResultsView />
+        <ChplChangeRequestListingRwtView
+          key="rwtResultsUrl"
+          title="Results"
+        />
       );
     case 'Service Base URL List Change Request':
       return (
@@ -183,14 +187,16 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
       );
     case 'RWT Plans URL Change Request':
       return (
-        <ChplChangeRequestListingRwtPlansEdit
+        <ChplChangeRequestListingRwtEdit
           isAccepting={isAccepting}
+          key="rwtPlansUrl"
         />
       );
     case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestListingRwtResultsEdit
-          isAccepting
+        <ChplChangeRequestListingRwtEdit
+          isAccepting={isAccepting}
+          key="rwtResultsUrl"
         />
       );
     case 'Service Base URL List Change Request':
