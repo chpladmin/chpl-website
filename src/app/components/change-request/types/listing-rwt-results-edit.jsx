@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -39,11 +40,15 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtResultsEdit() {
+function ChplChangeRequestListingRwtResultsEdit({ isAccepting }) {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    formik.setFieldValue('mustHaveDate', hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && isAccepting);
+  }, [hasAnyRole, isAccepting]);
 
   const handleChange = (...args) => {
     const event = args[0];
@@ -115,4 +120,9 @@ function ChplChangeRequestListingRwtResultsEdit() {
 export default ChplChangeRequestListingRwtResultsEdit;
 
 ChplChangeRequestListingRwtResultsEdit.propTypes = {
+  isAccepting: bool,
+};
+
+ChplChangeRequestListingRwtResultsEdit.defaultProps = {
+  isAccepting: false,
 };

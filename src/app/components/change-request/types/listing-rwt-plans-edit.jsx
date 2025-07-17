@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -39,11 +40,15 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtPlansEdit() {
+function ChplChangeRequestListingRwtPlansEdit({ isAccepting }) {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    formik.setFieldValue('mustHaveDate', hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && isAccepting);
+  }, [hasAnyRole, isAccepting]);
 
   const handleChange = (...args) => {
     const event = args[0];
@@ -61,7 +66,7 @@ function ChplChangeRequestListingRwtPlansEdit() {
     initialValues: {
       url: changeRequest.details.url || '',
       checkDate: changeRequest.details.checkDate || '',
-      mustHaveDate: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']),
+      mustHaveDate: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && isAccepting,
     },
     validationSchema,
   });
@@ -99,7 +104,8 @@ function ChplChangeRequestListingRwtPlansEdit() {
               name="checkDate"
               label="Check Date"
               type="date"
-              required
+              required={isAccepting}
+              disabled={!isAccepting}
               value={formik.values.checkDate}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -115,4 +121,9 @@ function ChplChangeRequestListingRwtPlansEdit() {
 export default ChplChangeRequestListingRwtPlansEdit;
 
 ChplChangeRequestListingRwtPlansEdit.propTypes = {
+  isAccepting: bool,
+};
+
+ChplChangeRequestListingRwtPlansEdit.defaultProps = {
+  isAccepting: false,
 };
