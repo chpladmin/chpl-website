@@ -44,12 +44,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '8px 32px',
-  },
 });
 
 function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {

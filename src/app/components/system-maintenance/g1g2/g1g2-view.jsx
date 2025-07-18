@@ -31,12 +31,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-    tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '8px 32px',
-  },
 });
 
 function ChplG1g2View({ g1g2: initialG1g2 }) {

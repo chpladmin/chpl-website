@@ -60,6 +60,12 @@ const util = {
     backgroundColor: '#FFF',
     padding: '32px',
   },
+  tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 32px',
+  },
 };
 
 export default util;
