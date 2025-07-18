@@ -3,7 +3,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import PropTypes, { node, string } from 'prop-types';
+import { bool, node, string } from 'prop-types';
 import clsx from 'clsx';
 
 import { eventTrack } from 'services/analytics.service';
@@ -87,7 +87,7 @@ InternalScrollButton.propTypes = {
   id: string.isRequired,
   children: node.isRequired,
   analytics: analyticsConfig,
-  active: PropTypes.bool,
+  active: bool,
 };
 
 InternalScrollButton.defaultProps = {
