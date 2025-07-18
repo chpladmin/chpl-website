@@ -692,7 +692,6 @@ function ChplResourcesOverview() {
               </CardContent>
             </Card>
           </div>
-          <div style={{ height: '100px' }} />
         </Container>
       </div>
     </>

@@ -3,8 +3,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import { bool, node, string } from 'prop-types';
-import clsx from 'clsx';
+import { node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { analyticsConfig } from 'shared/prop-types';
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
 });
 
 const InternalScrollButton = ({
-  analytics, children, id, active,
+  analytics, children, id,
 }) => {
   const [target, setTarget] = useState('');
   const classes = useStyles();
@@ -73,7 +72,7 @@ const InternalScrollButton = ({
     <Button
       onClick={handleClick}
       color="primary"
-      className={clsx(classes.noButtonWrap, { [classes.active]: active })}
+      className={classes.noButtonWrap}
       id={`${id}-navigation-button`}
     >
       {children}
@@ -87,10 +86,8 @@ InternalScrollButton.propTypes = {
   id: string.isRequired,
   children: node.isRequired,
   analytics: analyticsConfig,
-  active: bool,
 };
 
 InternalScrollButton.defaultProps = {
   analytics: {},
-  active: false,
 };
