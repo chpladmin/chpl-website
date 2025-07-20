@@ -13,6 +13,17 @@ const useDeleteAccessibilityStandard = () => {
   });
 };
 
+const useDeleteConformanceMethod = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`conformance-methods/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['conformance-methods']);
+      queryClient.invalidateQueries(['activity/metadata/conformance-methods']);
+    },
+  });
+};
+
 const useDeleteFunctionalityTested = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -123,6 +134,14 @@ const useFetchCriteria = (props = { enabled: true, active: true }) => {
     return response.data.filter((cc) => !props.active || cc.startDay < jsJoda.LocalDate.now());
   }, {
     enabled: props.enabled,
+  });
+};
+
+const useFetchCriteriaForConformanceMethods = () => {
+  const axios = useAxios();
+  return useQuery(['conformance-methods/criteria'], async () => {
+    const response = await axios.get('conformance-methods/criteria');
+    return response.data;
   });
 };
 
@@ -248,6 +267,17 @@ const usePostAccessibilityStandard = () => {
   });
 };
 
+const usePostConformanceMethod = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('conformance-methods', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['conformance-methods']);
+      queryClient.invalidateQueries(['activity/metadata/conformance-methods']);
+    },
+  });
+};
+
 const usePostFunctionalityTested = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -321,6 +351,17 @@ const usePutAccessibilityStandard = () => {
   });
 };
 
+const usePutConformanceMethod = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('conformance-methods', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['conformance-methods']);
+      queryClient.invalidateQueries(['activity/metadata/conformance-methods']);
+    },
+  });
+};
+
 const usePutFunctionalityTested = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -386,6 +427,7 @@ const usePutUcdProcess = () => {
 
 export {
   useDeleteAccessibilityStandard,
+  useDeleteConformanceMethod,
   useDeleteFunctionalityTested,
   useDeleteQmsStandard,
   useDeleteStandard,
@@ -397,6 +439,7 @@ export {
   useFetchConformanceMethods,
   useFetchCqms,
   useFetchCriteria,
+  useFetchCriteriaForConformanceMethods,
   useFetchCriteriaForFunctionalitiesTested,
   useFetchCriteriaForStandards,
   useFetchCriteriaForSvaps,
@@ -412,6 +455,7 @@ export {
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,
+  usePostConformanceMethod,
   usePostFunctionalityTested,
   usePostQmsStandard,
   usePostStandard,
@@ -419,6 +463,7 @@ export {
   usePostTestTool,
   usePostUcdProcess,
   usePutAccessibilityStandard,
+  usePutConformanceMethod,
   usePutFunctionalityTested,
   usePutQmsStandard,
   usePutStandard,
