@@ -113,7 +113,6 @@ function ChplResourcesOverview() {
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
   const [announcements, setAnnouncements] = useState([]);
-  const [activeSection, setActiveSection] = useState('whatIsTheChpl');
   const classes = useStyles();
 
   useEffect(() => {
@@ -122,36 +121,6 @@ function ChplResourcesOverview() {
     }
     setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
-
-  // List of section IDs in order
-  const sectionIds = [
-    ...(announcements.length > 0 ? ['announcements'] : []),
-    'whatIsTheChpl',
-    'recommendedWebBrowsers',
-    'usingTheChplWebsite',
-    'oncCertificationProgram',
-    'forEhrDevelopers',
-    'oncacbAndAtlInformation',
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      let found = sectionIds[0];
-      sectionIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 120) { // adjust offset as needed
-            found = id;
-          }
-        }
-      });
-      setActiveSection(found);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [announcements.length]);
 
   return (
     <>
@@ -167,11 +136,10 @@ function ChplResourcesOverview() {
       <div className={classes.pageBackground} id="main-content" tabIndex="-1">
         <Container maxWidth="lg" className={classes.pageBody}>
           <Card className={classes.pageNavigation}>
-            { announcements.length > 0 
+            {announcements.length > 0
               && (
                 <InternalScrollButton
                   id="announcements"
-                  active={activeSection === 'announcements'}
                   analytics={{
                     ...analytics,
                     event: 'Navigate to Announcements',
@@ -183,7 +151,6 @@ function ChplResourcesOverview() {
               )}
             <InternalScrollButton
               id="whatIsTheChpl"
-              active={activeSection === 'whatIsTheChpl'}
               analytics={{
                 ...analytics,
                 event: 'Navigate to What is the CHPL',
@@ -194,7 +161,6 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
             <InternalScrollButton
               id="recommendedWebBrowsers"
-              active={activeSection === 'recommendedWebBrowsers'}
               analytics={{
                 ...analytics,
                 event: 'Navigate to Recommended Web Browsers',
@@ -205,7 +171,6 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
             <InternalScrollButton
               id="usingTheChplWebsite"
-              active={activeSection === 'usingTheChplWebsite'}
               analytics={{
                 ...analytics,
                 event: 'Navigate to Using the CHPL Website',
@@ -216,7 +181,6 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
             <InternalScrollButton
               id="oncCertificationProgram"
-              active={activeSection === 'oncCertificationProgram'}
               analytics={{
                 ...analytics,
                 event: 'Navigate to ONC Certification Program',
@@ -227,7 +191,6 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
             <InternalScrollButton
               id="forEhrDevelopers"
-              active={activeSection === 'forEhrDevelopers'}
               analytics={{
                 ...analytics,
                 event: 'Navigate to For EHR Developers',
@@ -238,7 +201,6 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
             <InternalScrollButton
               id="oncacbAndAtlInformation"
-              active={activeSection === 'oncacbAndAtlInformation'}
               analytics={{
                 ...analytics,
                 event: 'Navigate to ONC-ACB and ONC-ATL Information',
@@ -249,7 +211,7 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
           </Card>
           <div className={classes.content}>
-            { announcements.length > 0
+            {announcements.length > 0
               && (
                 <Box className={classes.infoBox}>
                   <span className="anchor-element">
@@ -257,18 +219,18 @@ function ChplResourcesOverview() {
                   </span>
                   <Typography className={classes.announcement} variant="h2">
                     Announcement
-                    { announcements.length > 1 ? 's' : '' }
+                    {announcements.length > 1 ? 's' : ''}
                   </Typography>
                   <ul>
-                    { announcements.map((announcement) => (
+                    {announcements.map((announcement) => (
                       <li key={announcement.id}>
-                        <strong>{ announcement.title }</strong>
-                        { announcement.text
+                        <strong>{announcement.title}</strong>
+                        {announcement.text
                           && (
                             <>
                               :
                               {' '}
-                              { announcement.text }
+                              {announcement.text}
                             </>
                           )}
                       </li>
