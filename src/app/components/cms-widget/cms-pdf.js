@@ -37,28 +37,28 @@ const checkCriterionIsMet = (key, criteriaMet) => {
   return [(criteriaMet.findIndex((criterion) => criterion.number === keys[0]) > -1)];
 };
 
-const getPdfCriteria = (cmsA9GracePeriodEndIsOn) => {
+const getPdfCriteria = (year) => {
   /* eslint-disable object-curly-spacing */
-  if (cmsA9GracePeriodEndIsOn) {
+  if (year === '2025') {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
       {key: null, description: 'Implantable Device List'},
       {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
-      {key: null, description: 'Decision Support Interventions'},
-      {key: '170.315 (b)(11)', description: '#170.315 (b)(11)'},
       {key: null, description: 'Computerized Provider Order Entry'},
       {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
-      {key: null, description: 'Clinical Quality Measures-Record and Export'},
-      {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
       {key: null, description: 'Transitions of Care'},
       {key: '170.315 (b)(1)', description: '#170.315(b)(1)'},
+      {key: null, description: 'Decision Support Interventions'},
+      {key: '170.315 (b)(11)', description: '#170.315 (b)(11)'},
+      {key: null, description: 'Clinical Quality Measures-Record and Export'},
+      {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
       {key: null, description: 'Application Access-Patient Selection'},
       {key: '170.315 (g)(7)', description: '#170.315(g)(7)'},
-      {key: null, description: 'Application Access-Data Category Request'},
-      {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
       {key: null, description: 'Application Access-All Data Request'},
       {key: '170.315 (g)(9)', description: '#170.315(g)(9)'},
+      {key: null, description: 'Application Access-Data Category Request'},
+      {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
       {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
       {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
     ];
@@ -72,23 +72,23 @@ const getPdfCriteria = (cmsA9GracePeriodEndIsOn) => {
     {key: '|,170.315 (a)(9),170.315 (b)(11)', description: '#170.315(a)(9) or #170.315 (b)(11)'},
     {key: null, description: 'Computerized Provider Order Entry'},
     {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
-    {key: null, description: 'Clinical Quality Measures-Record and Export'},
-    {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
     {key: null, description: 'Transitions of Care'},
     {key: '170.315 (b)(1)', description: '#170.315(b)(1)'},
+    {key: null, description: 'Clinical Quality Measures-Record and Export'},
+    {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
     {key: null, description: 'Application Access-Patient Selection'},
     {key: '170.315 (g)(7)', description: '#170.315(g)(7)'},
-    {key: null, description: 'Application Access-Data Category Request'},
-    {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
     {key: null, description: 'Application Access-All Data Request'},
     {key: '170.315 (g)(9)', description: '#170.315(g)(9)'},
+    {key: null, description: 'Application Access-Data Category Request'},
+    {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
     {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
     {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
   ];
   /* eslint-enable object-curly-spacing */
 };
 
-const createPdf = (data, cmsA9GracePeriodIsOn) => {
+const createPdf = (data) => {
   if (!data || data === 'undefined') {
     return;
   }
@@ -118,8 +118,8 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
   ];
   const checkImages = [];
   const criteria = {
-    head: [['2015 CMS EHR Base Criteria Met']],
-    body: getPdfCriteria(cmsA9GracePeriodIsOn),
+    head: data.year === '2015' ? [['Base EHR Definition Criteria Met']] : [[`Base EHR Definition Criteria Met (CY${data.year})`]],
+    body: getPdfCriteria(data.year),
   };
 
   // Start the PDF document
@@ -137,7 +137,7 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
   // Add header text
   doc.setFontSize(36);
   doc.setFont('helvetica', 'bold');
-  doc.text(40, 80, 'Certified Health IT Product List');
+  doc.text(40, 80, 'Certified Health IT Product List (CHPL)');
 
   // Add body text to PDF
   doc.setFontSize(10);
@@ -146,7 +146,7 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
     40,
     bodyStartY,
     doc.splitTextToSize(
-      'The CMS EHR Certification ID shown corresponds to the collection of products listed below. Submit this ID as part of the attestation process for the CMS EHR Incentive Programs.',
+      'The CMS EHR Certification ID shown represents the certified health IT products (Modules) listed below that collectively meet 100% of the Base EHR Definition for the specified CMS reporting year. Submit this ID where required when participating in applicable programs (e.g., Quality Payment Program, Medicare Promoting Interoperability Program).',
       775,
     ),
   );
@@ -154,7 +154,7 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
     40,
     bodyStartY + 30,
     doc.splitTextToSize(
-      '* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.',
+      '* Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
       775,
     ),
   );
@@ -162,7 +162,7 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
   // Add Certification ID to PDF
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text(300, bodyStartY + 70, `CMS EHR ID: ${data.ehrCertificationId}`);
+  doc.text(200, bodyStartY + 70, `CMS EHR Certification ID: ${data.ehrCertificationId}`);
 
   // Add products table to PDF
   doc.setFontSize(10);
@@ -246,7 +246,7 @@ const createPdf = (data, cmsA9GracePeriodIsOn) => {
           }
         }
       },
-      afterPageContent() {
+      didDrawPage() {
         const total = checkImages.length;
         for (let index = 0; index < total; index += 1) {
           const img = checkImages.shift();

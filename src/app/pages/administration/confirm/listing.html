@@ -45,10 +45,6 @@
     <div ng-switch-when="listing">
       <chpl-inspect-listing
         listing="$ctrl.pending"
-        on-change="$ctrl.handleListing(action, data)"
-        resources="$ctrl.resources"
-        errors="$ctrl.errorMessages"
-        warnings="$ctrl.warningMessages"
         ></chpl-inspect-listing>
     </div>
   </div>

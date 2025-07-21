@@ -35,7 +35,6 @@ const csvOptions = {
   showLabels: true,
   headers: [
     { headerName: 'CMS EHR Certification ID', objectKey: 'certificationId' },
-    { headerName: 'CMS EHR Certification ID Edition', objectKey: 'certificationIdEdition' },
     { headerName: 'Product Name', objectKey: 'name' },
     { headerName: 'Version', objectKey: 'version' },
     { headerName: 'Developer', objectKey: 'vendor' },
@@ -100,8 +99,6 @@ function ChplCmsLookup() {
       .reduce((items, query) => items.concat(query.data.products.map((listing) => ({
         ...listing,
         certificationId: query.data.ehrCertificationId,
-        certificationIdEdition: query.data.year,
-        edition: listing.year !== null ? `${listing.year}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
       }))), []));
     setErrors(() => queries
       .filter((query) => query.isError)
@@ -209,7 +206,6 @@ function ChplCmsLookup() {
                     .map((item) => (
                       <TableRow key={`${item.certificationId}-${item.id}`}>
                         <TableCell>{ item.certificationId }</TableCell>
-                        <TableCell>{ item.certificationIdEdition }</TableCell>
                         <TableCell>{ item.name }</TableCell>
                         <TableCell>{ item.version }</TableCell>
                         <TableCell>{ item.vendor }</TableCell>
