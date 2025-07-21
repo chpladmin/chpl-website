@@ -16,7 +16,7 @@ import {
 } from 'api/search';
 import {
   ChplLink,
-  ChplPagination, 
+  ChplPagination,
   ChplLoadingTable,
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';

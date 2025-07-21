@@ -18,8 +18,8 @@ import {
   ChplLink,
   ChplPagination,
   ChplLoadingTable,
+  ChplSortableHeaders,
 } from 'components/util';
-import { ChplSortableHeaders} from 'components/util';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,

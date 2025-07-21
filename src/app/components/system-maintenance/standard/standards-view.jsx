@@ -89,7 +89,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       <div>
         <ChplFilterChips />
       </div>
-       <div className={classes.tableResultsHeaderContainer}>
+      <div className={classes.tableResultsHeaderContainer}>
         <Box display="flex" flexDirection="row" gridGap={1}>
           <Typography variant="subtitle2">Search Results:</Typography>
           <Typography variant="body2">

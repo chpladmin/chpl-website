@@ -98,7 +98,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
             {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <div>
+        <>
           <ChplSystemMaintenanceActivity
             fetch={useFetchFunctionalitiesTestedActivity}
             title="Functionalities Tested"
@@ -114,7 +114,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
               Add
             </Button>
           )}
-        </div>
+        </>
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table

@@ -43,11 +43,6 @@ const useStyles = makeStyles({
       color: palette.black,
     },
   },
-  active: {
-    backgroundColor: palette.secondary,
-    color: palette.black,
-    fontWeight: 900,
-  },
 });
 
 const InternalScrollButton = ({
