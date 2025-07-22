@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.39.2
+_21 July 2025_
+
+### User Interface Updates
+* Remove "CMS EHR Certification ID Edition" field from CMS ID reverse lookup
+
+---
+
 ## Version 13.39.1
 _7 July 2025_
 
