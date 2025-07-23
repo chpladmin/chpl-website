@@ -88,23 +88,21 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <div>
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchSvapsActivity}
-            title="SVAP"
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-svap"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-          )}
-        </div>
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchSvapsActivity}
+          title="SVAP"
+        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+        <Button
+          onClick={() => dispatch({ action: 'edit', payload: {} })}
+          id="add-new-svap"
+          variant="contained"
+          color="primary"
+          endIcon={<AddIcon />}
+        >
+          Add
+        </Button>
+        )}
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
