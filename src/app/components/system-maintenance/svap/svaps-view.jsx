@@ -81,7 +81,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       <div>
         <ChplFilterChips />
       </div>
-       <div className={classes.tableResultsHeaderContainer}>
+      <div className={classes.tableResultsHeaderContainer}>
         <Box display="flex" flexDirection="row" gridGap={1}>
           <Typography variant="subtitle2">Search Results:</Typography>
           <Typography variant="body2">
@@ -89,11 +89,11 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           </Typography>
         </Box>
         <div>
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchSvapsActivity}
-          title="SVAP"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchSvapsActivity}
+            title="SVAP"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-svap"
@@ -103,7 +103,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           >
             Add
           </Button>
-        )}
+          )}
         </div>
       </div>
       <TableContainer className={classes.container} component={Paper}>
