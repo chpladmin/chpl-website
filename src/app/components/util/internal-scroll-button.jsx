@@ -29,20 +29,6 @@ const useStyles = makeStyles({
       fontWeight: 900,
     },
   },
-  button: {
-    whiteSpace: 'nowrap',
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    backgroundColor: palette.white,
-    color: palette.primary,
-    padding: '8px 16px',
-    minWidth: 'min-content',
-    '&:hover': {
-      backgroundColor: palette.white,
-      color: palette.black,
-    },
-  },
 });
 
 const InternalScrollButton = ({
