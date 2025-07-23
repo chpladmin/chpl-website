@@ -19,17 +19,21 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestListingRwtView({ key, title }) {
+function ChplChangeRequestListingRwtView({ title, value }) {
   const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
-  const getCurrent = () => changeRequest.details.listing[key];
+  const getCurrent = () => changeRequest.details.listing[value];
 
   return (
     <div className={classes.container}>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          Current RWT { title } URL
+          Current RWT
+          {' '}
+          { title }
+          {' '}
+          URL
         </Typography>
         <Typography>
           { getCurrent() }
@@ -40,7 +44,11 @@ function ChplChangeRequestListingRwtView({ key, title }) {
       </div>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          Submitted RWT { title } URL
+          Submitted RWT
+          {' '}
+          { title }
+          {' '}
+          URL
         </Typography>
         <Typography>
           { changeRequest.details.url }
@@ -53,6 +61,6 @@ function ChplChangeRequestListingRwtView({ key, title }) {
 export default ChplChangeRequestListingRwtView;
 
 ChplChangeRequestListingRwtView.propTypes = {
-  key: string.isRequired,
   title: string.isRequired,
+  value: string.isRequired,
 };

@@ -40,7 +40,7 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtEdit({ isAccepting, key }) {
+function ChplChangeRequestListingRwtEdit({ isAccepting, value }) {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
@@ -76,7 +76,7 @@ function ChplChangeRequestListingRwtEdit({ isAccepting, key }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing[key] }
+          { changeRequest.details.listing[value] }
         </Typography>
         <Typography>
           { changeRequest.details.listing.chplProductNumber }
@@ -122,7 +122,7 @@ export default ChplChangeRequestListingRwtEdit;
 
 ChplChangeRequestListingRwtEdit.propTypes = {
   isAccepting: bool,
-  key: string.isRequired,
+  value: string.isRequired,
 };
 
 ChplChangeRequestListingRwtEdit.defaultProps = {

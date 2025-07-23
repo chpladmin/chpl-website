@@ -85,9 +85,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestsView(props) {
+function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
   const storageKey = 'storageKey-changeRequestsView';
-  const { disallowedFilters, bonusQuery, dispatch } = props;
   const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);

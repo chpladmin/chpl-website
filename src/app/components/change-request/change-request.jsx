@@ -136,29 +136,25 @@ const getChangeRequestViewDetails = (cr) => {
       );
     case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDemographicsView
-          changeRequest={cr}
-        />
+        <ChplChangeRequestDemographicsView />
       );
     case 'RWT Plans URL Change Request':
       return (
         <ChplChangeRequestListingRwtView
-          key="rwtPlansUrl"
+          value="rwtPlansUrl"
           title="Plans"
         />
       );
     case 'RWT Results URL Change Request':
       return (
         <ChplChangeRequestListingRwtView
-          key="rwtResultsUrl"
+          value="rwtResultsUrl"
           title="Results"
         />
       );
     case 'Service Base URL List Change Request':
       return (
-        <ChplChangeRequestListingSbulView
-          changeRequest={cr}
-        />
+        <ChplChangeRequestListingSbulView />
       );
     default:
       return (
@@ -180,31 +176,25 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
       );
     case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDemographicsEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
+        <ChplChangeRequestDemographicsEdit />
       );
     case 'RWT Plans URL Change Request':
       return (
         <ChplChangeRequestListingRwtEdit
           isAccepting={isAccepting}
-          key="rwtPlansUrl"
+          value="rwtPlansUrl"
         />
       );
     case 'RWT Results URL Change Request':
       return (
         <ChplChangeRequestListingRwtEdit
           isAccepting={isAccepting}
-          key="rwtResultsUrl"
+          value="rwtResultsUrl"
         />
       );
     case 'Service Base URL List Change Request':
       return (
-        <ChplChangeRequestListingSbulEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
+        <ChplChangeRequestListingSbulEdit />
       );
     default:
       return (
