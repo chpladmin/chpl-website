@@ -14,13 +14,13 @@ import Skeleton from '@material-ui/lab/Skeleton';
 function ChplLoadingTable({ rows = 10, className }) {
   // Match your real table's column widths
   const columnWidths = [
-    '18%',   // CHPL ID
-    '18%',   // Developer
-    '18%',   // Product
-    '10%',   // Version
-    '14%',   // Certification Date
-    '7%',    // Status
-    '15%',   // Actions
+    '18%', // CHPL ID
+    '18%', // Developer
+    '18%', // Product
+    '10%', // Version
+    '14%', // Certification Date
+    '7%', // Status
+    '15%', // Actions
   ];
 
   return (

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Checkbox,
   CircularProgress,
   FormControlLabel,
@@ -314,7 +313,7 @@ function ChplActionBar(props) {
                   />
                 </Button>
               )}
-             { canDelete
+            { canDelete
               && (
                 <Button
                   id="action-bar-delete"

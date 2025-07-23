@@ -12,8 +12,8 @@ import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-    ...utilStyles,
-  });
+  ...utilStyles,
+});
 
 function ChplCmsButton({ listing }) {
   const classes = useStyles();

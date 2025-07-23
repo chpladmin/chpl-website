@@ -60,7 +60,7 @@ function ChplActionBarConfirmation(props) {
       </DialogContent>
       <Divider />
       <DialogActions className={classes.dialogActions}>
-         <Button
+        <Button
           onClick={() => act('no')}
           color="secondary"
           variant="contained"
