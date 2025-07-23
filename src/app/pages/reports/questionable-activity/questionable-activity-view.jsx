@@ -32,7 +32,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {  
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
   },
   linkWrap: {

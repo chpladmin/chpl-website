@@ -13,12 +13,11 @@ import {
 import ChplActivityDetails from './activity-details';
 
 import { useFetchActivity } from 'api/questionable-activity';
-import { 
-  ChplLink, 
-  ChplPagination, 
-  ChplLoadingTable, 
-  ChplSortableHeaders } 
-from 'components/util';
+import { ChplLink,
+  ChplPagination,
+  ChplLoadingTable,
+  ChplSortableHeaders }
+  from 'components/util';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
