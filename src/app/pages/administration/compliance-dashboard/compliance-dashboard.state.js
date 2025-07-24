@@ -4,7 +4,7 @@ const states = [{
   component: 'chplComplianceDashboardWrapperBridge',
   data: {
     title: 'CHPL Compliance Dashboard',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
   },
 }];
 
