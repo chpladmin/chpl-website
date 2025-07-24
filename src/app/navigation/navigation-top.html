@@ -126,6 +126,9 @@
               <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc-acb'])"><a ui-sref="surveillance.reporting-old()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting-old')"></i>Reporting</a></li>
             </ul>
           </li>
+          <li ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'])">
+            <button class="btn btn-lg btn-link navbar-btn" ng-class="{'admin-active' : vm.isActive('compliance-dashboard')}" ui-sref="compliance-dashboard">Compliance Dashboard</button>
+          </li>
           <li ng-if="vm.hasAnyRole(['chpl-developer'])" class="dropdown" uib-dropdown is-open="vm.developersIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="developers-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.developersIsOpen">Developers</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="developers-toggle" id="developers-dropdown-menu">
