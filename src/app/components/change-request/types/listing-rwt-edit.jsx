@@ -8,8 +8,8 @@ import { bool, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from 'components/util';
-import { ChangeRequestContext, UserContext } from 'shared/contexts';
+import { ChplLink, ChplTextField } from 'components/util';
+import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -40,7 +40,8 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtEdit({ isAccepting, value }) {
+function ChplChangeRequestListingRwtEdit({ isAccepting, title, value }) {
+  const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
@@ -49,6 +50,22 @@ function ChplChangeRequestListingRwtEdit({ isAccepting, value }) {
   useEffect(() => {
     formik.setFieldValue('mustHaveDate', hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && isAccepting);
   }, [hasAnyRole, isAccepting]);
+
+  const getCurrent = () => {
+    if (changeRequest.details.listing[value]) {
+      return (
+        <ChplLink
+          href={changeRequest.details.listing[value]}
+          analytics={{
+            ...analytics,
+            event: `Navigate to Current RWT ${title} URL`,
+            label: changeRequest.details.listing[value],
+          }}
+        />
+      );
+    }
+    return 'No current URL';
+  };
 
   const handleChange = (...args) => {
     const event = args[0];
@@ -76,10 +93,21 @@ function ChplChangeRequestListingRwtEdit({ isAccepting, value }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing[value] }
+          { getCurrent() }
         </Typography>
         <Typography>
-          { changeRequest.details.listing.chplProductNumber }
+          <ChplLink
+            href={`#/listing/${changeRequest.details.listing.id}`}
+            text={changeRequest.details.listing.chplProductNumber}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Listing Details Page',
+              label: changeRequest.details.listing.chplProductNumber,
+              aggregationName: changeRequest.details.listing.product.name,
+            }}
+            external={false}
+            router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+          />
         </Typography>
       </div>
       <Divider />
@@ -122,6 +150,7 @@ export default ChplChangeRequestListingRwtEdit;
 
 ChplChangeRequestListingRwtEdit.propTypes = {
   isAccepting: bool,
+  title: string.isRequired,
   value: string.isRequired,
 };
 

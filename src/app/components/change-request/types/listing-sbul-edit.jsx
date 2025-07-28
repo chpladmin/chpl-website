@@ -7,8 +7,8 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from 'components/util';
-import { ChangeRequestContext, UserContext } from 'shared/contexts';
+import { ChplLink, ChplTextField } from 'components/util';
+import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -34,10 +34,28 @@ const validationSchema = yup.object({
 });
 
 function ChplChangeRequestListingSbulEdit() {
+  const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
+
+  const getCurrent = () => {
+    if (changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList) {
+      const url = changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+      return (
+        <ChplLink
+          href={url}
+          analytics={{
+            ...analytics,
+            event: 'Navigate to Current SBUL',
+            label: url,
+          }}
+        />
+      );
+    }
+    return 'No current URL';
+  };
 
   const handleChange = (...args) => {
     const event = args[0];
@@ -63,10 +81,21 @@ function ChplChangeRequestListingSbulEdit() {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
+          { getCurrent() }
         </Typography>
         <Typography>
-          { changeRequest.details.listing.chplProductNumber }
+          <ChplLink
+            href={`#/listing/${changeRequest.details.listing.id}`}
+            text={changeRequest.details.listing.chplProductNumber}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Listing Details Page',
+              label: changeRequest.details.listing.chplProductNumber,
+              aggregationName: changeRequest.details.listing.product.name,
+            }}
+            external={false}
+            router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+          />
         </Typography>
       </div>
       <Divider />

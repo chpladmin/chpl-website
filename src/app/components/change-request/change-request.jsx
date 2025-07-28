@@ -182,6 +182,7 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
       return (
         <ChplChangeRequestListingRwtEdit
           isAccepting={isAccepting}
+          title="Plans"
           value="rwtPlansUrl"
         />
       );
@@ -189,6 +190,7 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
       return (
         <ChplChangeRequestListingRwtEdit
           isAccepting={isAccepting}
+          title="Results"
           value="rwtResultsUrl"
         />
       );

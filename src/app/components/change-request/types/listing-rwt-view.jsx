@@ -5,7 +5,8 @@ import {
 } from '@material-ui/core';
 import { string } from 'prop-types';
 
-import { ChangeRequestContext } from 'shared/contexts';
+import { ChplLink } from 'components/util';
+import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -20,10 +21,25 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestListingRwtView({ title, value }) {
+  const { analytics } = useAnalyticsContext();
   const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
-  const getCurrent = () => changeRequest.details.listing[value];
+  const getCurrent = () => {
+    if (changeRequest.details.listing[value]) {
+      return (
+        <ChplLink
+          href={changeRequest.details.listing[value]}
+          analytics={{
+            ...analytics,
+            event: `Navigate to Current RWT ${title} URL`,
+            label: changeRequest.details.listing[value],
+          }}
+        />
+      );
+    }
+    return 'No current URL';
+  };
 
   return (
     <div className={classes.container}>
@@ -38,8 +54,22 @@ function ChplChangeRequestListingRwtView({ title, value }) {
         <Typography>
           { getCurrent() }
         </Typography>
+        <Typography variant="subtitle2">
+          CHPL Product Number
+        </Typography>
         <Typography>
-          { changeRequest.details.listing.chplProductNumber }
+          <ChplLink
+            href={`#/listing/${changeRequest.details.listing.id}`}
+            text={changeRequest.details.listing.chplProductNumber}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Listing Details Page',
+              label: changeRequest.details.listing.chplProductNumber,
+              aggregationName: changeRequest.details.listing.product.name,
+            }}
+            external={false}
+            router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+          />
         </Typography>
       </div>
       <div className={classes.detailsContainer}>
@@ -51,7 +81,14 @@ function ChplChangeRequestListingRwtView({ title, value }) {
           URL
         </Typography>
         <Typography>
-          { changeRequest.details.url }
+          <ChplLink
+            href={changeRequest.details.url}
+            analytics={{
+              ...analytics,
+              event: `Navigate to Submitted RWT ${title} URL`,
+              label: changeRequest.details.url,
+            }}
+          />
         </Typography>
       </div>
     </div>

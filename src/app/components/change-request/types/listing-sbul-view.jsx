@@ -4,7 +4,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { ChangeRequestContext } from 'shared/contexts';
+import { ChplLink } from 'components/util';
+import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -19,10 +20,26 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestListingSbulView() {
+  const { analytics } = useAnalyticsContext();
   const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
-  const getCurrent = () => changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+  const getCurrent = () => {
+    if (changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList) {
+      const url = changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+      return (
+        <ChplLink
+          href={url}
+          analytics={{
+            ...analytics,
+            event: 'Navigate to Current SBUL',
+            label: url,
+          }}
+        />
+      );
+    }
+    return 'No current URL';
+  };
 
   return (
     <div className={classes.container}>
@@ -33,8 +50,22 @@ function ChplChangeRequestListingSbulView() {
         <Typography>
           { getCurrent() }
         </Typography>
+        <Typography variant="subtitle2">
+          CHPL Product Number
+        </Typography>
         <Typography>
-          { changeRequest.details.listing.chplProductNumber }
+          <ChplLink
+            href={`#/listing/${changeRequest.details.listing.id}`}
+            text={changeRequest.details.listing.chplProductNumber}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Listing Details Page',
+              label: changeRequest.details.listing.chplProductNumber,
+              aggregationName: changeRequest.details.listing.product.name,
+            }}
+            external={false}
+            router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+          />
         </Typography>
       </div>
       <div className={classes.detailsContainer}>
@@ -42,7 +73,14 @@ function ChplChangeRequestListingSbulView() {
           Submitted Service Base URL List
         </Typography>
         <Typography>
-          { changeRequest.details.url }
+          <ChplLink
+            href={changeRequest.details.url}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Submitted SBUL',
+              label: changeRequest.details.url,
+            }}
+          />
         </Typography>
       </div>
     </div>
