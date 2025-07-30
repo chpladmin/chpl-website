@@ -14,12 +14,16 @@ import { ChangeRequestContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRight: '1px solid #DDD',
+    paddingRight: '16px',
+    marginRight: '8px',
     gap: '16px',
   },
   detailsContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '8px',
   },
   detailsSubContainer: {

@@ -15,7 +15,8 @@ const useStyles = makeStyles({
     gap: '16px',
   },
   detailsContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '8px',
   },
 });
