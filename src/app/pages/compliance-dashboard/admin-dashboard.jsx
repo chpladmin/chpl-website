@@ -22,7 +22,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { 
+import {
   Add as AddIcon,
   Visibility as VisibilityIcon,
   Search as SearchIcon,
@@ -30,6 +30,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Warning as WarningIcon,
   TrendingUp as TrendingUpIcon,
+  Send,
 } from '@material-ui/icons';
 
 import { UserContext } from 'shared/contexts';
@@ -163,47 +164,73 @@ function ChplAdminDashboard() {
     <div className={classes.fixFooterSpacing}>
       <Container maxWidth="lg">
         <div className={classes.containerDashboard}>
-          <Card>
-          <Typography variant="h1" className={classes.titlePadding}>
-            Welcome Epic Systems Corporation to the CHPL Compliance Dashboard
-          </Typography>
-          
-          <Typography variant="body2">
-            This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you'll be able to easily take action, review content, and stay updated with minimal effort.
-          </Typography>
-          <Box className={classes.laptopGraphic}>
-            <img src="assets/images/CHPL_Logo-01.png" alt="Laptop Graphic" style={{ width: '100%', height: '100%' }} />
-          </Box>
-        </Card>
-          <Grid container spacing={3}>
+          <Grid container alignItems='flex-end' spacing={4}>
+            <Grid item xs={8}>
+              <Card>
+                <CardContent>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Box display="flex" flexDirection="column" alignItems="center">
+                      <Typography variant="h4" className={classes.titlePadding}>
+                        Welcome Epic Systems Corporation to the CHPL Compliance Dashboard
+                      </Typography>
+                      <Typography variant="body2">
+                        This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you'll be able to easily take action, review content, and stay updated with minimal effort.
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <img src="assets/images/CHPL_Logo-01.png" alt="Laptop Graphic" style={{ width: '100%', height: '100%' }} />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={4}>
+              {/* High Level Buttons */}
+              <Button
+                variant="contained"
+                color="secondary"
+              >
+                History
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+              >
+                Info
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container wrap='nowrap' lg={12} spacing={4}>
             {/* Left Column */}
-            <Grid item xs={12} md={8}>
+            <Grid item xs={8}>
               {/* Action Cards */}
-              <Grid container spacing={2} style={{ marginBottom: '24px' }}>
+              <Grid container spacing={4}>
                 <Grid item xs={4}>
                   <Card className={classes.actionCard}>
-                    <CardContent>
-                      <Typography variant="h6" color="primary">
-                        Submit A Service Plan URL List Change
-                      </Typography>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        style={{ marginTop: '8px' }}
-                      >
-                        URL Status Past
-                      </Button>
-                    </CardContent>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <Box display="flex" flexDirection="column" alignItems="flex-start">
+                        <Typography variant="h6">
+                          Submit A Service Plan URL List Change
+                        </Typography>
+                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
+                          URL Status Past
+                        </Typography>
+                        <Chip label="URL Status Past" color="primary" size="small" />
+                      </Box>
+                      <IconButton color='primary' style={{ marginTop: '16px' }}>
+                        <Send />
+                      </IconButton>
+                    </Box>
                   </Card>
                 </Grid>
                 <Grid item xs={4}>
                   <Card className={classes.actionCard}>
                     <CardContent>
                       <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <Typography variant="h6">
-                        Pending Change Request
-                      </Typography>
-                      <Typography className={classes.blueNumber}>2</Typography>
+                        <Typography variant="h6">
+                          Pending Change Request
+                        </Typography>
+                        <Typography className={classes.blueNumber}>2</Typography>
                       </Box>
                       <Button
                         variant="text"
@@ -233,172 +260,183 @@ function ChplAdminDashboard() {
                   </Card>
                 </Grid>
               </Grid>
-
-              {/* Products Under Epic Systems Corporation */}
-              <Card style={{ marginBottom: '24px' }}>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6">
-                      Products Under Epic Systems Corporation
-                    </Typography>
-                    <Typography className={classes.blueNumber}>6</Typography>
-                  </Box>
-                  <Button variant="text" color="primary" size="small">
-                    View All
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Real World Testing */}
-              <Card style={{ marginBottom: '24px' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Real World Testing
-                  </Typography>
-                  <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                    Plans OBLs outline the testing approach and criteria upon against while RWT Results provide the outcomes and assess whether the system meets performance requirements under real-world conditions to validate the system's readiness for real-world healthcare use.
-                  </Typography>
-                  
-                  <Typography variant="subtitle2" gutterBottom>
-                    RWT Plans URLs
-                  </Typography>
-                  <Typography variant="body2" color="primary" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-                    https://products.demo.myhealth-world-test-url-plans-host-listview-liaw...
-                  </Typography>
-                  
-                  <Typography variant="subtitle2" gutterBottom style={{ marginTop: '12px' }}>
-                    RWT Plans
-                  </Typography>
-                  <Typography variant="body2" color="primary" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-                    https://demo.products-my-world-test-url-plans-host-analytics-liaw...
-                  </Typography>
-                </CardContent>
-              </Card>
-
-              {/* Attestations */}
-              <Card style={{ marginBottom: '24px' }}>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                    <Typography variant="h6">Attestations</Typography>
-                    <Button variant="outlined" size="small">Status</Button>
-                  </Box>
-                  <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                    Attestations information is displayed here if a health IT developer's attestation of compliance with ONC's Conditions of Certification requirements.
-                  </Typography>
-                  
-                  <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
-                    <Typography variant="subtitle2">Attestations Period</Typography>
-                    <Typography variant="subtitle2">Status</Typography>
-                  </Box>
-
-                  {mockAttestations.map((attestation, index) => (
-                    <Box key={index} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                      <Typography variant="body2">{attestation.date}</Typography>
-                      <Box display="flex" alignItems="center">
-                        <Typography variant="body2" style={{ marginRight: '8px' }}>
-                          {attestation.status}
+              <Grid wrap='nowrap' container spacing={4}>
+                <Grid item xs={12}>
+                  <Grid item>
+                    <Card style={{ marginBottom: '24px' }}>
+                      <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <Typography variant="h6">
+                            Products Under Epic Systems Corporation
+                          </Typography>
+                          <Typography className={classes.blueNumber}>6</Typography>
+                        </Box>
+                        <Button variant="text" color="primary" size="small">
+                          View All
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item>
+                    {/* Attestations */}
+                    <Card style={{ marginBottom: '24px' }}>
+                      <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
+                          <Typography variant="h6">Attestations</Typography>
+                          <Button variant="outlined" size="small">Status</Button>
+                        </Box>
+                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
+                          Attestations information is displayed here if a health IT developer's attestation of compliance with ONC's Conditions of Certification requirements.
                         </Typography>
-                        {attestation.status === 'No Attestations submitted' ? (
-                          <AddIcon color="primary" />
-                        ) : (
-                          <VisibilityIcon color="action" />
-                        )}
-                      </Box>
-                    </Box>
-                  ))}
-                  
-                  <Typography variant="body2" color="primary" style={{ marginTop: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
-                    For more information, please visit the Attestations Resource Guide.
-                  </Typography>
-                </CardContent>
-              </Card>
 
-              {/* Direct Reviews Activities */}
-              <Card style={{ marginBottom: '24px' }}>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6">Direct Reviews Activities</Typography>
-                    <Typography variant="body2">(1 Found)</Typography>
-                  </Box>
-                  <Typography variant="body2" style={{ margin: '12px 0' }}>
-                    Direct Reviews information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
-                  </Typography>
-                  <Typography variant="body2">1 open / 1 non-conformity found</Typography>
-                  <VisibilityIcon color="action" style={{ marginTop: '8px' }} />
-                </CardContent>
-              </Card>
+                        <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
+                          <Typography variant="subtitle2">Attestations Period</Typography>
+                          <Typography variant="subtitle2">Status</Typography>
+                        </Box>
 
-              {/* Surveillance Activities */}
-              <Card style={{ marginBottom: '24px' }}>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                    <Typography variant="h6">Surveillance Activities</Typography>
-                    <Typography variant="body2">(5 Found)</Typography>
-                  </Box>
-                  <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                    Relevant surveillance information that pertains to this listing under this developer can be found here.
-                  </Typography>
-                  
-                  <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
-                    <Typography variant="subtitle2">Period</Typography>
-                    <Typography variant="subtitle2">Status</Typography>
-                  </Box>
+                        {mockAttestations.map((attestation, index) => (
+                          <Box key={index} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
+                            <Typography variant="body2">{attestation.date}</Typography>
+                            <Box display="flex" alignItems="center">
+                              <Typography variant="body2" style={{ marginRight: '8px' }}>
+                                {attestation.status}
+                              </Typography>
+                              {attestation.status === 'No Attestations submitted' ? (
+                                <AddIcon color="primary" />
+                              ) : (
+                                <VisibilityIcon color="action" />
+                              )}
+                            </Box>
+                          </Box>
+                        ))}
 
-                  {mockSurveillance.map((item, index) => (
-                    <Box key={index} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                      <Typography variant="body2">{item.period}</Typography>
-                      <Box display="flex" alignItems="center">
-                        <Typography 
-                          variant="body2" 
-                          className={item.status === 'Open' ? classes.statusOpen : classes.statusClosed}
-                          style={{ marginRight: '8px' }}
-                        >
-                          {item.status}
+                        <Typography variant="body2" color="primary" style={{ marginTop: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
+                          For more information, please visit the Attestations Resource Guide.
                         </Typography>
-                        <VisibilityIcon color="action" />
-                      </Box>
-                    </Box>
-                  ))}
-                </CardContent>
-              </Card>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item>
+                    {/* Access Insights */}
+                    <Card>
+                      <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <Typography variant="h6">Access Insights</Typography>
+                          <Typography variant="body2">(2 Found)</Typography>
+                        </Box>
+                        <Typography variant="body2" style={{ margin: '12px 0' }}>
+                          Insights information is displayed here. For more information, please visit the Insights Hub.
+                        </Typography>
 
-              {/* Access Insights */}
-              <Card>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6">Access Insights</Typography>
-                    <Typography variant="body2">(2 Found)</Typography>
-                  </Box>
-                  <Typography variant="body2" style={{ margin: '12px 0' }}>
-                    Insights information is displayed here. For more information, please visit the Insights Hub.
-                  </Typography>
-                  
-                  <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
-                    <Typography variant="subtitle2">Period</Typography>
-                    <Typography variant="subtitle2">Status</Typography>
-                  </Box>
+                        <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
+                          <Typography variant="subtitle2">Period</Typography>
+                          <Typography variant="subtitle2">Status</Typography>
+                        </Box>
 
-                  <Box display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                    <Typography variant="body2">2027</Typography>
-                    <Typography variant="body2">Submitted</Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
-                    <Typography variant="body2">2024</Typography>
-                    <Typography variant="body2">Submitted</Typography>
-                  </Box>
-                </CardContent>
-              </Card>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
+                          <Typography variant="body2">2027</Typography>
+                          <Typography variant="body2">Submitted</Typography>
+                        </Box>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
+                          <Typography variant="body2">2024</Typography>
+                          <Typography variant="body2">Submitted</Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  {/* Real World Testing */}
+                  <Grid item>
+                    <Card style={{ marginBottom: '24px' }}>
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                          Real World Testing
+                        </Typography>
+                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
+                          Plans OBLs outline the testing approach and criteria upon against while RWT Results provide the outcomes and assess whether the system meets performance requirements under real-world conditions to validate the system's readiness for real-world healthcare use.
+                        </Typography>
+
+                        <Typography variant="subtitle2" gutterBottom>
+                          RWT Plans URLs
+                        </Typography>
+                        <Typography variant="body2" color="primary" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+                          https://products.demo.myhealth-world-test-url-plans-host-listview-liaw...
+                        </Typography>
+
+                        <Typography variant="subtitle2" gutterBottom style={{ marginTop: '12px' }}>
+                          RWT Plans
+                        </Typography>
+                        <Typography variant="body2" color="primary" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+                          https://demo.products-my-world-test-url-plans-host-analytics-liaw...
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item>
+                    {/* Direct Reviews Activities */}
+                    <Card style={{ marginBottom: '24px' }}>
+                      <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <Typography variant="h6">Direct Reviews Activities</Typography>
+                          <Typography variant="body2">(1 Found)</Typography>
+                        </Box>
+                        <Typography variant="body2" style={{ margin: '12px 0' }}>
+                          Direct Reviews information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
+                        </Typography>
+                        <Typography variant="body2">1 open / 1 non-conformity found</Typography>
+                        <VisibilityIcon color="action" style={{ marginTop: '8px' }} />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item>
+
+                    {/* Surveillance Activities */}
+                    <Card style={{ marginBottom: '24px' }}>
+                      <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
+                          <Typography variant="h6">Surveillance Activities</Typography>
+                          <Typography variant="body2">(5 Found)</Typography>
+                        </Box>
+                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
+                          Relevant surveillance information that pertains to this listing under this developer can be found here.
+                        </Typography>
+
+                        <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
+                          <Typography variant="subtitle2">Period</Typography>
+                          <Typography variant="subtitle2">Status</Typography>
+                        </Box>
+
+                        {mockSurveillance.map((item, index) => (
+                          <Box key={index} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
+                            <Typography variant="body2">{item.period}</Typography>
+                            <Box display="flex" alignItems="center">
+                              <Typography
+                                variant="body2"
+                                className={item.status === 'Open' ? classes.statusOpen : classes.statusClosed}
+                                style={{ marginRight: '8px' }}
+                              >
+                                {item.status}
+                              </Typography>
+                              <VisibilityIcon color="action" />
+                            </Box>
+                          </Box>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
-
             {/* Right Column */}
-            <Grid item xs={12} md={4}>
+            <Grid item xs={4}>
               {/* Announcements */}
               <Card style={{ marginBottom: '24px' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Your Announcements
                   </Typography>
-                  
+
                   <Box style={{ marginBottom: '16px' }}>
                     <Typography variant="subtitle2" gutterBottom>
                       • Service Base URL Change Request Window Now Open
@@ -435,9 +473,9 @@ function ChplAdminDashboard() {
                     </Typography>
                   </Box>
 
-                  <Button 
-                    variant="outlined" 
-                    size="small" 
+                  <Button
+                    variant="outlined"
+                    size="small"
                     style={{ marginTop: '16px', width: '100%' }}
                   >
                     SEE MORE
@@ -452,7 +490,7 @@ function ChplAdminDashboard() {
                     <Typography variant="h6">Manage User</Typography>
                     <Typography variant="body2">Users (4)</Typography>
                   </Box>
-                  
+
                   <Typography variant="body2" style={{ marginBottom: '16px', fontSize: '12px' }}>
                     You can view all registered users along with the developer they are associated with in the Manage Users Dashboard.
                   </Typography>
@@ -482,7 +520,7 @@ function ChplAdminDashboard() {
                   {mockUsers.map((user) => (
                     <Box key={user.id} className={classes.userRow}>
                       <Box display="flex" alignItems="center">
-                        <Avatar 
+                        <Avatar
                           className={classes.userAvatar}
                           style={{ backgroundColor: user.color, marginRight: '12px' }}
                         >
