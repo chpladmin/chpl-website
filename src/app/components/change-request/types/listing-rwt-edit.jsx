@@ -95,23 +95,6 @@ function ChplChangeRequestListingRwtEdit({ isAccepting, title, value }) {
         <Typography>
           { getCurrent() }
         </Typography>
-        <Typography variant="subtitle2">
-          CHPL Product Number
-        </Typography>
-        <Typography>
-          <ChplLink
-            href={`#/listing/${changeRequest.details.listing.id}`}
-            text={changeRequest.details.listing.chplProductNumber}
-            analytics={{
-              ...analytics,
-              event: 'Navigate to Listing Details Page',
-              label: changeRequest.details.listing.chplProductNumber,
-              aggregationName: changeRequest.details.listing.product.name,
-            }}
-            external={false}
-            router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
-          />
-        </Typography>
       </div>
       <Divider />
       <div className={classes.detailsContainer}>

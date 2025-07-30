@@ -32,7 +32,7 @@ import {
 } from 'api/change-requests';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
-import { ChplAvatar, ChplTextField } from 'components/util';
+import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import {
@@ -587,6 +587,26 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
                   </Typography>
                 )}
             </div>
+            { changeRequest.details.listing.id
+              && (
+                <div>
+                  <Typography gutterBottom variant="subtitle2">CHPL Product Number:</Typography>
+                  <Typography>
+                    <ChplLink
+                      href={`#/listing/${changeRequest.details.listing.id}`}
+                      text={changeRequest.details.listing.chplProductNumber}
+                      analytics={{
+                        ...analytics,
+                        event: 'Navigate to Listing Details Page',
+                        label: changeRequest.details.listing.chplProductNumber,
+                        aggregationName: changeRequest.details.listing.product.name,
+                      }}
+                      external={false}
+                      router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+                    />
+                  </Typography>
+                </div>
+              )}
           </div>
           <Divider />
           { !isEditing
@@ -690,6 +710,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
                 </div>
               </div>
             )}
+          <Divider />
           <ChplChangeRequestHistory
             changeRequest={changeRequest}
           />
