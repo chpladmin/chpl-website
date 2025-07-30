@@ -95,6 +95,9 @@ function ChplChangeRequestListingRwtEdit({ isAccepting, title, value }) {
         <Typography>
           { getCurrent() }
         </Typography>
+        <Typography variant="subtitle2">
+          CHPL Product Number
+        </Typography>
         <Typography>
           <ChplLink
             href={`#/listing/${changeRequest.details.listing.id}`}
