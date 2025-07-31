@@ -11,14 +11,14 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y854Z9M6F"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {dataLayer.push(arguments);}
+      function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
       gtag('config', 'G-8Y854Z9M6F');
     </script>
     <meta charset="utf-8">
     <title>Certified Health IT Product List (CHPL) Error Page</title>
     <meta name="description" content="Certified Health IT Product List (CHPL) Error Page">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
@@ -50,7 +50,7 @@
       }
       .bgHeader {
         width: 100%;
-        min-height: 400px;
+        min-height: 200px;
         background: #ffffff;
         position: relative;
       }
@@ -65,45 +65,22 @@
       }
       .header {
         text-align: center;
-        padding: 132px 2rem;
+        padding: 150px 2rem;
         display: flex;
         width: 100%;
         flex-direction: column;
         align-items: center;
       }
-      .status-indicator {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(255, 193, 7, 0.1);
-        border: 1px solid rgba(255, 193, 7, 0.3);
-        padding: 8px 16px;
-        border-radius: 50px;
-        margin-bottom: 2rem;
-      }
-      .status-dot {
-        width: 8px;
-        height: 8px;
-        background: #e3bf00;
-        border-radius: 50%;
-      }
-      .status-text {
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: #9c9f0c;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
       .header h1 {
-        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-size: 4rem;
         font-weight: 700;
         color: #000;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
         line-height: 1.2;
       }
       .header p {
         font-size: 1.2rem;
-        color: #4a5568;
+        color: #000000;
         max-width: 700px;
         line-height: 1.7;
       }
@@ -117,6 +94,9 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         border: 1px solid rgba(255, 255, 255, 0.2);
         position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
       }
       .feature-section h3 {
         color: #021435;
@@ -144,6 +124,10 @@
         bottom: 0;
         width: 100%;
         z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
       }
       .footer-info::before {
         content: '';
@@ -190,30 +174,48 @@
     <div style="display: flex; flex-direction: column;">
       <div class="bgHeader">
         <div class="header">
-          <div class="status-indicator">
-            <div class="status-dot"></div>
-            <span class="status-text">Under Maintenance</span>
-          </div>
           <h1>CHPL System Maintenance</h1>
-          <p>The Certified Health IT Product List (CHPL) is temporarily unavailable due to scheduled maintenance. We're
-            working to enhance your experience and will be back online shortly.</p>
         </div>
       </div>
       <div class="bg">
         <div class="container">
           <div class="feature-section">
             <h3>We'll Be Back Soon</h3>
-            <p class="feature-text">We're working hard to bring the system back online as quickly as possible. Our team is
+            <p>We're working hard to bring the system back online as quickly as possible. Our team is
               committed to providing you with the best possible experience. If the page doesn't automatically update,
               please try refreshing your browser. For any urgent matters, our support team is ready to assist you.</p>
-            <p class="feature-text">Once maintenance is complete, you'll have access to the comprehensive and
+            <p>Once maintenance is complete, you'll have access to the comprehensive and
               authoritative listing of all certified health information technology products.</p>
           </div>
         </div>
       </div>
       <div class="footer-info">
-        <p>Thank you for your patience as we work to improve your experience. We appreciate your understanding during this
-          maintenance period.</p>
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; color: #fff; font-size: 0.9rem;">
+          <a style="color: #fff; text-decoration: none;" href="#/search">Home</a>
+          <span style="color: #fff;">|</span>
+          <a style="color: #fff; text-decoration: none;" href="http://www.hhs.gov/privacy.html">Privacy Policy</a>
+          <span style="color: #fff;">|</span>
+          <a style="color: #fff; text-decoration: none;" href="http://www.hhs.gov/disclaimer.html">Disclaimer</a>
+          <span style="color: #fff;">|</span>
+          <a style="color: #fff; text-decoration: none;" href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
+        </div>
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; align-items: center;">
+          <a href="https://www.whitehouse.gov/">
+            <img src="assets/images/US-WhiteHouse-Logo.svg.png" alt="Whitehouse.gov logo" style="height: 24px;" />
+          </a>
+          <a href="https://www.usa.gov/">
+            <img src="assets/images/USAgov_logo_2.png" alt="USA.gov logo" style="height: 24px;" />
+          </a>
+          <a href="http://www.hhs.gov/">
+            <img src="assets/images/HHS-White_HiRes.png" alt="HHS.gov logo" style="height: 24px;" />
+          </a>
+          <a href="https://gobierno.usa.gov/">
+            <img src="assets/images/Logo_USAGov_Spanish.png" alt="gobiernoUSA.gov logo" style="height: 24px;" />
+          </a>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 1rem;">
+          <p style="color: #fff; font-size: 0.9rem;">Owned by the Assistant Secretary for Technology Policy</p>
+        </div>
       </div>
     </div>
   </body>
