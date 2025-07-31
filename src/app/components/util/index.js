@@ -8,7 +8,7 @@ import ChplNonProdIndicator from './non-prod-indicator';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
-import ChplSortableHeaders from './chpl-sortable-headers';
+import { ChplSortableHeaders } from './sortable-headers';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 import ChplUpdateIndicator from './update-indicator';
