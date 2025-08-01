@@ -586,7 +586,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
                   </Typography>
                 )}
             </div>
-            { changeRequest.details.listing.id
+            { changeRequest.details.listing?.id
               && (
                 <div>
                   <Typography gutterBottom variant="subtitle2">CHPL Product Number:</Typography>
