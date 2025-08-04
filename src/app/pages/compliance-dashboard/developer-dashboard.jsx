@@ -56,8 +56,19 @@ const useStyles = makeStyles({
     paddingBottom: '16px',
   },
   welcomeCard: {
-    background: '#f8f9fa',
-    border: '1px solid #e9ecef',
+    background: '#fff',
+    border: '1px solid #ddd',
+    position: 'relative',
+    overflow: 'visible',
+  },
+  dashboardGraphic: {
+    position: 'absolute',
+    top: '60%',
+    right: '-32px',
+    transform: 'translateY(-50%)',
+    zIndex: 10,
+    width: '180px',
+    height: 'auto',
   },
   laptopGraphic: {
     width: '120px',
@@ -305,11 +316,11 @@ function ChplDeveloperDashboard() {
       <Container maxWidth="lg">
         <div className={classes.containerDashboard}>
           <Grid container alignItems='flex-end' spacing={4}>
-            <Grid item xs={10}>
-              <Card>
+            <Grid item xs={8}>
+              <Card className={classes.welcomeCard}>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" alignItems="flex-start">
+                    <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ maxWidth: '85%' }}>
                       <Typography variant="h4" className={classes.titlePadding}>
                         Welcome {userName} to the Compliance Dashboard
                       </Typography>
@@ -317,14 +328,16 @@ function ChplDeveloperDashboard() {
                         This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you'll be able to easily take action, review content, and stay updated with minimal effort.
                       </Typography>
                     </Box>
-                    <Box>
-                      <img src="src/assets/images/dashboard_graphic.svg" alt="Laptop Graphic" style={{ width: '100%', height: '100%' }} />
-                    </Box>
+                    <img 
+                      src="src/assets/images/dashboard_graphic.svg" 
+                      alt="Dashboard Graphic" 
+                      className={classes.dashboardGraphic}
+                    />
                   </Box>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={4}>
               <Button
                 variant="contained"
                 color="secondary"
