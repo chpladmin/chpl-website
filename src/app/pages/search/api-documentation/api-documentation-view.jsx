@@ -10,6 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import Moment from 'react-moment';
+import { arrayOf, object } from 'prop-types';
 
 import {
   useFetchApiDocumentationData,
@@ -119,7 +120,7 @@ const headers = [
 const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
   const items = Object.entries(apiDocumentation
-    .filter((item) => (item.criterion.id !== 57 && item.criterion.id !== 58))
+    .filter((item) => (!item.criterion.removed))
     .map((item) => ({
       id: item.criterion.id,
       url: item.value,
@@ -131,8 +132,8 @@ const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product },
     .map(([url, ids]) => ({
       url,
       criteria: ids
-        .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
-        .map((id) => criteriaLookup[id].display)
+        .sort((a, b) => criteriaLookup[a]?.sort - criteriaLookup[b]?.sort)
+        .map((id) => criteriaLookup[id]?.display)
         .join(', '),
     }))
     .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
@@ -159,7 +160,7 @@ const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product },
   );
 };
 
-function ChplApiDocumentationSearchView() {
+function ChplApiDocumentationSearchView({ displayCriteria }) {
   const storageKey = 'storageKey-apiDocumentationView';
   const API = getAngularService('API');
   const authService = getAngularService('authService');
@@ -238,9 +239,11 @@ function ChplApiDocumentationSearchView() {
             This list includes all health IT products that have been certified to at least one of the following API Criteria:
           </Typography>
           <ul>
-            <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
+            { displayCriteria.map((cc) => (
+              <li key={cc.id}>
+                {`§${cc.longDisplay}`}
+              </li>
+            ))}
           </ul>
           <Typography variant="body1" gutterBottom>
             The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
@@ -432,4 +435,5 @@ function ChplApiDocumentationSearchView() {
 export default ChplApiDocumentationSearchView;
 
 ChplApiDocumentationSearchView.propTypes = {
+  displayCriteria: arrayOf(object).isRequired,
 };
