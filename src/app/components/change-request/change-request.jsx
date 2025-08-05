@@ -103,9 +103,8 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     display: 'grid',
     gap: '8px',
-    paddingBottom: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '2fr 1fr',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   cardHeader: {
