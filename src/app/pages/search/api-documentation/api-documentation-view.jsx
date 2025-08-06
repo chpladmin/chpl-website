@@ -100,8 +100,12 @@ const useStyles = makeStyles({
 
 const criteriaLookup = {
   56: { display: '170.315 (g)(7)', sort: 0 },
-  181: { display: '170.315 (g)(9)', sort: 1 },
-  182: { display: '170.315 (g)(10)', sort: 2 },
+  57: { display: 'Removed | 170.315 (g)(8)', sort: 1 },
+  58: { display: 'Removed | 170.315 (g)(9)', sort: 2 },
+  181: { display: '170.315 (g)(9)', sort: 3 },
+  182: { display: '170.315 (g)(10)', sort: 4 },
+  212: { display: '170.315 (g)(31)', sort: 5 },
+  214: { display: '170.315 (g)(33)', sort: 6 },
 };
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
