@@ -15,8 +15,13 @@ import {
   InputAdornment,
   IconButton,
   makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@material-ui/core';
 
+import Skeleton from '@material-ui/lab/Skeleton';
 // Material-UI Icons
 import {
   Add as AddIcon,
@@ -30,7 +35,8 @@ import {
 } from '@material-ui/icons';
 
 // Local Imports
-import { UserContext } from 'shared/contexts';
+import ChplDeveloperViewDetails from 'components/developer/developer-view';
+import { UserContext, DeveloperContext, FlagContext } from 'shared/contexts';
 import { 
   useFetchDeveloperHierarchy, 
   useFetchInsights, 
@@ -46,7 +52,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    marginTop: '10%',
+    marginTop: '12%',
   },
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
@@ -60,33 +66,16 @@ const useStyles = makeStyles({
     border: '1px solid #ddd',
     position: 'relative',
     overflow: 'visible',
+    paddingRight: '16px'
   },
   dashboardGraphic: {
     position: 'absolute',
     top: '60%',
-    right: '-32px',
+    right: '-4px',
     transform: 'translateY(-50%)',
     zIndex: 10,
     width: '180px',
     height: 'auto',
-  },
-  laptopGraphic: {
-    width: '120px',
-    height: '80px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      width: '80px',
-      height: '50px',
-      background: '#fff',
-      borderRadius: '4px',
-    },
   },
   actionCard: {
     textAlign: 'left',
@@ -163,6 +152,7 @@ function ChplDeveloperDashboard() {
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [displayedUsers, setDisplayedUsers] = useState([]);
   const [surveillanceActivities, setSurveillanceActivities] = useState([]);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   const userName = user?.fullName || 'User';
 
@@ -311,12 +301,21 @@ function ChplDeveloperDashboard() {
     return colors[hash % colors.length];
   };
 
+  const handleInfoDialogOpen = () => {
+    console.log('Opening info dialog, developer data:', developer);
+    setInfoDialogOpen(true);
+  };
+
+  const handleInfoDialogClose = () => {
+    setInfoDialogOpen(false);
+  };
+
   return (
     <div className={classes.fixFooterSpacing}>
       <Container maxWidth="lg">
         <div className={classes.containerDashboard}>
-          <Grid container alignItems='flex-end' spacing={4}>
-            <Grid item xs={8}>
+          <Grid container spacing={4} display="flex" flexDirection="row" alignItems='flex-start' alignContent='flex-start'>
+            <Grid item xs={8} style={{ paddingRight: '32px' }}>
               <Card className={classes.welcomeCard}>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -337,25 +336,44 @@ function ChplDeveloperDashboard() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={4}>
-              <Button
-                variant="contained"
-                color="secondary"
+            <Grid item style={{ padding: '0' }} xs={4}>
+              <Box 
+                display="flex"
+                justifyContent="flex-end"
+                marginRight={8}
+                gridGap="8px"
+                alignItems="center"
               >
-                History
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-              >
-                Info
-              </Button>
+                {/* <Button
+                  variant="contained"
+                  color="secondary"
+                >
+                  History
+                </Button> */}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleInfoDialogOpen}
+                >
+                  Info
+                </Button>
+              </Box> 
             </Grid>
           </Grid>
-          <Grid container wrap='nowrap' lg={12} spacing={4}>
+          <Grid style={{ marginBottom: '24px' }} container wrap='nowrap' lg={12} spacing={4}>
             <Grid item xs={8}>
-              <Grid container spacing={4}>
+              <Grid style={{ marginBottom: '24px' }} container spacing={4}>
                 <Grid item xs={4}>
+                   <Typography variant="subtitle2" gutterBottom>
+                    Submit A Service Plan URL List Change
+                  </Typography>
+                  <Skeleton variant="rectangular" width="100%" height={100}>
+     
+                      <Skeleton variant="text" width="60%" height={20} />
+                      <Skeleton variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
+                      <Skeleton variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
+                  </Skeleton>
+                  {/* Original card - commented out until completion
                   <Card className={classes.actionCard}>
                     <Box display="flex" alignItems="center" justifyContent="space-between">
                       <Box display="flex" flexDirection="column" alignItems="flex-start">
@@ -372,8 +390,18 @@ function ChplDeveloperDashboard() {
                       </IconButton>
                     </Box>
                   </Card>
+                  */}
                 </Grid>
                 <Grid item xs={4}>
+                   <Typography variant="subtitle2" gutterBottom>
+                     Pending Change Request
+                  </Typography>
+                  <Skeleton variant="rectangular" width="100%" height={100}>
+                      <Skeleton variant="text" width="60%" height={20} />
+                      <Skeleton variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
+                      <Skeleton variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
+                  </Skeleton>
+                  {/* Original card - commented out until completion
                   <Card className={classes.actionCard}>
                     <CardContent>
                       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -391,8 +419,18 @@ function ChplDeveloperDashboard() {
                       </Button>
                     </CardContent>
                   </Card>
+                  */}
                 </Grid>
                 <Grid item xs={4}>
+                   <Typography variant="subtitle2" gutterBottom>
+                    Submitted Change Request
+                  </Typography>
+                  <Skeleton variant="rectangular" width="100%" height={100}>
+                      <Skeleton variant="text" width="60%" height={20} />
+                      <Skeleton variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
+                      <Skeleton variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
+                  </Skeleton>
+                  {/* Original card - commented out until completion
                   <Card className={classes.actionCard}>
                     <CardContent>
                       <Typography variant="h6">
@@ -408,6 +446,7 @@ function ChplDeveloperDashboard() {
                       </Button>
                     </CardContent>
                   </Card>
+                  */}
                 </Grid>
               </Grid>
               <Grid wrap='nowrap' container spacing={4}>
@@ -724,12 +763,36 @@ function ChplDeveloperDashboard() {
               </Grid>
             </Grid>
             <Grid item xs={4}>
-              <Card style={{ marginBottom: '24px' }}>
+              <Card style={{ marginBottom: '24px', marginTop: '-84px' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Your Announcements
                   </Typography>
-
+                  <Skeleton variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                  
+                  <Skeleton variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
+                  
+                  <Skeleton variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
+                  
+                  <Skeleton variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                  
+                  <Skeleton variant="rectangular" width="100%" height={32} style={{ marginTop: 16 }} />
+                </CardContent>
+              </Card>
+              {/* Original announcements card - commented out until completion
+              <Card style={{ marginBottom: '24px', marginTop: '-64px' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Your Announcements
+                  </Typography>
                   <Box style={{ marginBottom: '16px' }}>
                     <Typography variant="subtitle2" gutterBottom>
                       • Service Base URL Change Request Window Now Open
@@ -775,6 +838,7 @@ function ChplDeveloperDashboard() {
                   </Button>
                 </CardContent>
               </Card>
+              */}
 
               <Card>
                 <CardContent>
@@ -844,30 +908,76 @@ function ChplDeveloperDashboard() {
                       </IconButton>
                     </Box>
                   ))}
-
-                  {filteredUsers.length > 0 && (
-                    <Typography variant="body2" style={{ marginTop: '16px', textAlign: 'center' }}>
-                      {filteredUsers.length}
-                      {' '}
-                      user
-                      {filteredUsers.length === 1 ? '' : 's'} found
-                    </Typography>
-                  )}
-
+                  </CardContent>
+              </Card>
+              <Card style={{ marginTop: '24px' }}>
+                <CardContent>
+                <div className={classes.chartPlaceholder}>
+                Amount Developer Was Searched Developer Page Visited
+                </div>
+                </CardContent>
+              </Card>
+              <Box display={'flex'} justifyContent="space-between">
+              <Card style={{ marginTop: '24px' }}>
+                <CardContent>
                   <Box style={{ marginTop: '16px' }}>
-                    <Typography variant="subtitle2" gutterBottom>
-                      Amount Developer Was Searched    Developer Page Visited
-                    </Typography>
                     <div className={classes.chartPlaceholder}>
                       Chart Visualization Here
                     </div>
                   </Box>
                 </CardContent>
-              </Card>
+                </Card>
+                <Card style={{ marginTop: '24px' }}>
+                  <CardContent>
+                    <Box >
+                      <div className={classes.chartPlaceholder}>
+                        Chart Visualization Here
+                      </div>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
             </Grid>
           </Grid>
         </div>
       </Container>
+
+      {/* Developer Details Dialog */}
+      <Dialog
+        open={infoDialogOpen}
+        onClose={handleInfoDialogClose}
+        maxWidth="md"
+        fullWidth
+      >
+          {developer ? (
+            <DeveloperContext.Provider value={{ developer }}>
+              <FlagContext.Provider value={{ demographicChangeRequestIsOn: false }}>
+                <UserContext.Provider value={{ 
+                  hasAnyRole: () => false, // Disable all role-based permissions
+                  user: null 
+                }}>
+                  <ChplDeveloperViewDetails
+                    dispatch={() => {}} // Empty dispatch function for view-only mode
+                    canEdit={() => false} // Disable editing in dialog
+                    canJoin={() => false} // Disable joining in dialog
+                    canSplit={() => false} // Disable splitting in dialog
+                    isSplitting={false}
+                  />
+                </UserContext.Provider>
+              </FlagContext.Provider>
+          <Button onClick={handleInfoDialogClose} color="primary">
+            Close
+          </Button>
+            </DeveloperContext.Provider>
+          ) : (
+            <div>
+              <Typography>Loading developer information...</Typography>
+              <Typography variant="body2">Developer ID: {developerId}</Typography>
+              <Typography variant="body2">Is Loading: {isLoading ? 'Yes' : 'No'}</Typography>
+            </div>
+          )}
+
+      </Dialog>
     </div>
   );
 }
