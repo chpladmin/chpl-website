@@ -14,6 +14,11 @@ import {
   IconButton,
   makeStyles,
   Dialog,
+  DialogContent,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 // Material-UI Icons
@@ -22,11 +27,16 @@ import {
   Visibility as VisibilityIcon,
   Search as SearchIcon,
   Edit as EditIcon,
+  ExpandMore as ExpandMoreIcon,
 } from '@material-ui/icons';
 
 // Local Imports
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
+import ChplAttestationView from 'components/attestation/attestation-view';
+import { ChplDialogTitle } from 'components/util';
+import { useFilterContext } from 'components/filter';
 import { UserContext, DeveloperContext, FlagContext } from 'shared/contexts';
+import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
 import {
   useFetchDeveloperHierarchy,
   useFetchInsights,
@@ -101,22 +111,34 @@ const useStyles = makeStyles({
     fontSize: '1.5rem',
     fontWeight: 'bold',
   },
+  developerSelect: {
+    minWidth: '80%',
+    marginBottom: '16px',
+  },
 });
 
 function ChplDeveloperDashboard() {
   const { user } = useContext(UserContext);
+  const filterContext = useFilterContext();
   const classes = useStyles();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [localSearchTerm, setLocalSearchTerm] = useState('');
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [displayedUsers, setDisplayedUsers] = useState([]);
   const [surveillanceActivities, setSurveillanceActivities] = useState([]);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [selectedDeveloperId, setSelectedDeveloperId] = useState(null);
+  const [activeAttestations, setActiveAttestations] = useState({});
+  const [attestationsDialogOpen, setAttestationsDialogOpen] = useState(false);
 
   const userName = user?.fullName || 'User';
-  const developerId = user?.organizations?.[0]?.id;
+  const userOrganizations = user?.organizations || [];
+  const hasMultipleDevelopers = userOrganizations.length > 1;
+  
+  // Use selected developer ID or default to first organization
+  const activeDeveloperId = selectedDeveloperId || userOrganizations[0]?.id;
 
   const { data: developer, isLoading } = useFetchDeveloperHierarchy({
-    id: developerId,
+    id: activeDeveloperId,
   });
 
   const safeDeveloper = developer || { id: null };
@@ -173,6 +195,13 @@ function ChplDeveloperDashboard() {
     }
     setDisplayedUsers(usersData.users || []);
   }, [usersData, usersLoading]);
+
+  // Reset selected developer when user changes or when user has only one developer
+  useEffect(() => {
+    if (!hasMultipleDevelopers) {
+      setSelectedDeveloperId(null);
+    }
+  }, [user, hasMultipleDevelopers]);
 
   useEffect(() => {
     if (!developer?.products) {
@@ -239,8 +268,8 @@ function ChplDeveloperDashboard() {
     );
   }
 
-  const filteredUsers = displayedUsers.filter((userData) => userData.fullName?.toLowerCase().includes(searchTerm.toLowerCase())
-    || userData.email?.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredUsers = displayedUsers.filter((userData) => userData.fullName?.toLowerCase().includes(localSearchTerm.toLowerCase())
+    || userData.email?.toLowerCase().includes(localSearchTerm.toLowerCase()));
 
   const getUserInitials = (fullName) => {
     if (!fullName) return '??';
@@ -264,6 +293,38 @@ function ChplDeveloperDashboard() {
     setInfoDialogOpen(false);
   };
 
+  const handleDeveloperChange = (event) => {
+    setSelectedDeveloperId(event.target.value);
+  };
+
+  const getActiveDeveloperName = () => {
+    const activeDeveloper = userOrganizations.find(org => org.id === activeDeveloperId);
+    return activeDeveloper?.name || 'Developer';
+  };
+
+  const handleAttestationsOpen = (attestation) => {
+    setActiveAttestations(attestation);
+    setAttestationsDialogOpen(true);
+  };
+
+  const handleAttestationsClose = () => {
+    setAttestationsDialogOpen(false);
+    setActiveAttestations({});
+  };
+
+  const handleViewAllProducts = () => {
+    const developerName = getActiveDeveloperName();
+    
+    // If filter context is available, set the search term
+    if (filterContext && filterContext.setSearchTerm) {
+      filterContext.setSearchTerm(encodeURI(developerName));
+      window.location.href = '#/search';
+    } else {
+      // Fallback to URL parameter approach if filter context is not available
+      window.location.href = `#/search?q=${encodeURIComponent(developerName)}`;
+    }
+  };
+
   return (
     <div className={classes.fixFooterSpacing}>
       <Container maxWidth="lg">
@@ -275,18 +336,14 @@ function ChplDeveloperDashboard() {
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ maxWidth: '85%' }}>
                       <Typography variant="h4" className={classes.titlePadding}>
-                        Welcome
-                        {' '}
-                        {userName}
-                        {' '}
-                        to the Compliance Dashboard
+                      {getActiveDeveloperName()}
                       </Typography>
                       <Typography variant="body2">
                         This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you&apos;ll be able to easily take action, review content, and stay updated with minimal effort.
                       </Typography>
                     </Box>
                     <img
-                      src="src/assets/images/dashboard_graphic.svg"
+                      src={DashboardGraphic}
                       alt="Dashboard Graphic"
                       className={classes.dashboardGraphic}
                     />
@@ -300,21 +357,35 @@ function ChplDeveloperDashboard() {
                 justifyContent="flex-end"
                 marginRight={8}
                 gridGap="8px"
-                alignItems="center"
+                alignItems="baseline"
               >
-                {/* <Button
-                  variant="contained"
-                  color="secondary"
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleInfoDialogOpen}
                 >
-                  History
-                </Button> */}
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleInfoDialogOpen}
-                >
-                  Info
-                </Button>
+              Developer Info
+              </Button>
+                  {hasMultipleDevelopers && (
+              <Box display="flex" justifyContent="center" marginBottom={3}>
+              <FormControl variant="outlined" className={classes.developerSelect}>
+              <InputLabel id="developer-select-label">Select Developer</InputLabel>
+              <Select
+                labelId="developer-select-label"
+                value={activeDeveloperId || ''}
+                onChange={handleDeveloperChange}
+                label="Select Developer"
+                IconComponent={ExpandMoreIcon}
+              >
+              {userOrganizations.map((org) => (
+              <MenuItem key={org.id} value={org.id}>
+              {org.name}
+              </MenuItem>
+              ))}
+              </Select>
+              </FormControl>
+              </Box>
+              )}
               </Box>
             </Grid>
           </Grid>
@@ -325,11 +396,11 @@ function ChplDeveloperDashboard() {
                   <Typography variant="subtitle2" gutterBottom>
                     Submit A Service Plan URL List Change
                   </Typography>
-                  <Skeleton variant="rectangular" width="100%" height={100}>
+                  <Skeleton animation="false" variant="rectangular" width="100%" height={100}>
 
-                    <Skeleton variant="text" width="60%" height={20} />
-                    <Skeleton variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
-                    <Skeleton variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
+                    <Skeleton animation="false" variant="text" width="60%" height={20} />
+                    <Skeleton animation="false" variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
+                    <Skeleton animation="false" variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
                   </Skeleton>
                   {/* Original card - commented out until completion
                   <Card className={classes.actionCard}>
@@ -354,10 +425,10 @@ function ChplDeveloperDashboard() {
                   <Typography variant="subtitle2" gutterBottom>
                     Pending Change Request
                   </Typography>
-                  <Skeleton variant="rectangular" width="100%" height={100}>
-                    <Skeleton variant="text" width="60%" height={20} />
-                    <Skeleton variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
-                    <Skeleton variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
+                  <Skeleton animation="false" variant="rectangular" width="100%" height={100}>
+                    <Skeleton animation="false" variant="text" width="60%" height={20} />
+                    <Skeleton animation="false" variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
+                    <Skeleton animation="false" variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
                   </Skeleton>
                   {/* Original card - commented out until completion
                   <Card className={classes.actionCard}>
@@ -383,10 +454,10 @@ function ChplDeveloperDashboard() {
                   <Typography variant="subtitle2" gutterBottom>
                     Submitted Change Request
                   </Typography>
-                  <Skeleton variant="rectangular" width="100%" height={100}>
-                    <Skeleton variant="text" width="60%" height={20} />
-                    <Skeleton variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
-                    <Skeleton variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
+                  <Skeleton animation="false" variant="rectangular" width="100%" height={100}>
+                    <Skeleton animation="false" variant="text" width="60%" height={20} />
+                    <Skeleton animation="false" variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
+                    <Skeleton animation="false" variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
                   </Skeleton>
                   {/* Original card - commented out until completion
                   <Card className={classes.actionCard}>
@@ -416,11 +487,16 @@ function ChplDeveloperDashboard() {
                           <Typography variant="h6">
                             Products Under
                             {' '}
-                            {user?.organizations?.[0]?.name || 'Your Organization'}
+                            {getActiveDeveloperName()}
                           </Typography>
                           <Typography className={classes.blueNumber}>{displayedProducts.length}</Typography>
                         </Box>
-                        <Button variant="text" color="primary" size="small">
+                        <Button 
+                          variant="text" 
+                          color="primary" 
+                          size="small"
+                          onClick={handleViewAllProducts}
+                        >
                           View All
                         </Button>
                       </CardContent>
@@ -471,7 +547,14 @@ function ChplDeveloperDashboard() {
                                     {!isSubmitted ? (
                                       <AddIcon color="primary" />
                                     ) : (
-                                      <VisibilityIcon color="action" />
+                                      <IconButton
+                                        color="primary"
+                                        size="small"
+                                        onClick={() => handleAttestationsOpen(attestation)}
+                                        aria-label={`View attestations for period ending ${periodEnd}`}
+                                      >
+                                        <VisibilityIcon color="action" />
+                                      </IconButton>
                                     )}
                                   </Box>
                                 </Box>
@@ -484,8 +567,8 @@ function ChplDeveloperDashboard() {
                           </Typography>
                         )}
 
-                        <Typography variant="body2" color="primary" style={{ marginTop: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
-                          For more information, please visit the Attestations Resource Guide.
+                        <Typography variant="body2">
+                          For more information, please visit the <a href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf" target="_blank" rel="noopener noreferrer">Attestations Resource Guide</a>.
                         </Typography>
                       </CardContent>
                     </Card>
@@ -555,20 +638,27 @@ function ChplDeveloperDashboard() {
 
                           {rwtPlans && rwtPlans.length > 0 ? (
                             rwtPlans.slice(0, 3).map((plan, index) => (
-                              <Typography
+                              <a
                                 key={plan.id || index}
-                                variant="body2"
-                                color="primary"
-                                style={{
-                                  textDecoration: 'underline',
-                                  cursor: 'pointer',
-                                  marginBottom: '8px',
-                                  display: 'block',
-                                  wordBreak: 'break-all',
-                                }}
+                                href={plan.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ textDecoration: 'none' }}
                               >
-                                {plan.url || `RWT Plan ${index + 1}`}
-                              </Typography>
+                                <Typography
+                                  variant="body2"
+                                  color="primary"
+                                  style={{
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                    marginBottom: '8px',
+                                    display: 'block',
+                                    wordBreak: 'break-all',
+                                  }}
+                                >
+                                  {plan.url || `RWT Plan ${index + 1}`}
+                                </Typography>
+                              </a>
                             ))
                           ) : (
                             <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
@@ -602,20 +692,27 @@ function ChplDeveloperDashboard() {
 
                           {rwtResults && rwtResults.length > 0 ? (
                             rwtResults.slice(0, 3).map((result, index) => (
-                              <Typography
+                              <a
                                 key={result.id || index}
-                                variant="body2"
-                                color="primary"
-                                style={{
-                                  textDecoration: 'underline',
-                                  cursor: 'pointer',
-                                  marginBottom: '8px',
-                                  display: 'block',
-                                  wordBreak: 'break-all',
-                                }}
+                                href={result.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ textDecoration: 'none' }}
                               >
-                                {result.url || `RWT Result ${index + 1}`}
-                              </Typography>
+                                <Typography
+                                  variant="body2"
+                                  color="primary"
+                                  style={{
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                    marginBottom: '8px',
+                                    display: 'block',
+                                    wordBreak: 'break-all',
+                                  }}
+                                >
+                                  {result.url || `RWT Result ${index + 1}`}
+                                </Typography>
+                              </a>
                             ))
                           ) : (
                             <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
@@ -771,21 +868,21 @@ function ChplDeveloperDashboard() {
                   <Typography variant="h6" gutterBottom>
                     Your Announcements
                   </Typography>
-                  <Skeleton variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation="false" variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation="false" variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
 
-                  <Skeleton variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation="false" variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation="false" variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
 
-                  <Skeleton variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation="false" variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation="false" variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
 
-                  <Skeleton variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation="false" variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation="false" variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
 
                   <Skeleton variant="rectangular" width="100%" height={32} style={{ marginTop: 16 }} />
                 </CardContent>
@@ -863,8 +960,8 @@ function ChplDeveloperDashboard() {
                     variant="outlined"
                     size="small"
                     fullWidth
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={localSearchTerm}
+                    onChange={(e) => setLocalSearchTerm(e.target.value)}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -964,6 +1061,9 @@ function ChplDeveloperDashboard() {
                 user: null,
               }}
               >
+            <Button onClick={handleInfoDialogClose} color="primary">
+              Close
+            </Button>
                 <ChplDeveloperViewDetails
                   dispatch={() => {}} // Empty dispatch function for view-only mode
                   canEdit={() => false} // Disable editing in dialog
@@ -973,16 +1073,14 @@ function ChplDeveloperDashboard() {
                 />
               </UserContext.Provider>
             </FlagContext.Provider>
-            <Button onClick={handleInfoDialogClose} color="primary">
-              Close
-            </Button>
+
           </DeveloperContext.Provider>
         ) : (
           <div>
             <Typography>Loading developer information...</Typography>
             <Typography variant="body2">
               Developer ID:
-              {developerId}
+              {activeDeveloperId}
             </Typography>
             <Typography variant="body2">
               Is Loading:
@@ -992,6 +1090,31 @@ function ChplDeveloperDashboard() {
         )}
 
       </Dialog>
+
+      {/* Attestations Details Dialog */}
+      {activeAttestations && Object.keys(activeAttestations).length > 0 && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={attestationsDialogOpen}
+          onClose={handleAttestationsClose}
+          aria-labelledby="attestations-details"
+        >
+          <ChplDialogTitle
+            id="attestations-details"
+            onClose={handleAttestationsClose}
+          >
+            View Attestations Details
+          </ChplDialogTitle>
+          <DialogContent dividers>
+            <ChplAttestationView
+              attestations={activeAttestations}
+              canCreateException={false}
+              developer={developer}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
