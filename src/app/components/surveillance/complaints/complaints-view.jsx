@@ -29,8 +29,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplEllipsis, ChplPagination } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
+import { ChplEllipsis, ChplPagination, ChplSortableHeaders } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
@@ -248,7 +247,7 @@ function ChplComplaintsView(props) {
       return (
         <Button
           onClick={downloadFile}
-          color="primary"
+          color="secondary"
           variant="contained"
           id="download-results"
           endIcon={<GetAppIcon />}
@@ -290,7 +289,7 @@ function ChplComplaintsView(props) {
           </Button>
           <Button
             onClick={downloadFile}
-            color="primary"
+            color="secondary"
             variant="contained"
             id="download-results"
             endIcon={<GetAppIcon />}
@@ -304,7 +303,7 @@ function ChplComplaintsView(props) {
     return (
       <Button
         onClick={downloadFile}
-        color="primary"
+        color="secondary"
         variant="contained"
         id="download-results"
         endIcon={<GetAppIcon />}
@@ -398,7 +397,7 @@ function ChplComplaintsView(props) {
                                   <Button
                                     onClick={() => handleDispatch({ action: 'view', payload: complaint })}
                                     variant="contained"
-                                    color="primary"
+                                    color="secondary"
                                     id={`view-complaint-${complaint.id}`}
                                     endIcon={<VisibilityIcon />}
                                   >

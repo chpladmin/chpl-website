@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   ButtonGroup,
   FormControlLabel,
@@ -20,6 +21,9 @@ import { palette, theme } from 'themes';
 const useStyles = makeStyles({
   advancedSearchButton: {
     color: '#000',
+  },
+  directionText: {
+    marginBottom: '8px',
   },
   filterPanelContainer: {
     background: '#fff',
@@ -220,7 +224,7 @@ function ChplFilterPanel() {
         onClick={handleClick}
       >
         Advanced Search
-        {' ' }
+        {' '}
         <FilterListIcon className={classes.iconSpacing} />
       </Button>
       <Popover
@@ -300,6 +304,13 @@ function ChplFilterPanel() {
             </div>
           </div>
           <div className={classes.filterPanelSecondary}>
+            {!activeCategory && (
+              <Box mt={2}>
+                <Typography className={classes.directionText} variant="subtitle1" gutterBottom>Select a filter to begin</Typography>
+                <Typography variant="body1">To narrow down your search results, choose a filter category from the left-hand panel.</Typography>
+                <Typography variant="body1">Then, select one or more filter options to apply to your search.</Typography>
+              </Box>
+            )}
             { activeCategory?.values.length > 0 && (
               <List
                 dense

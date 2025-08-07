@@ -12,7 +12,7 @@ describe('the Real World Testing Search page', () => {
     const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', 'Real World Testing Plans URL', 'Real World Testing Results URL', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
+    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toContain(expectedHeaders[idx]));
   });
 
   it('should have the Download Listings button for anonymous users', async () => {

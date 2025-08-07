@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -43,10 +44,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
 });
 
 function ChplStandardsView({ dispatch, standards: initialStandards }) {
@@ -92,10 +89,13 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
-      </Typography>
       <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+          <Typography variant="subtitle2">Search Results:</Typography>
+          <Typography variant="body2">
+            {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
         <ChplSystemMaintenanceActivity
           fetch={useFetchStandardsActivity}
           title="Standards"

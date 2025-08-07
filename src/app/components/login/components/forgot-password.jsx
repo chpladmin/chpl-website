@@ -124,8 +124,8 @@ function ChplForgotPassword({ dispatch, userName }) {
         </Button>
         <Button
           fullWidth
-          color="default"
-          variant="contained"
+          color="primary"
+          variant="outlined"
           onClick={cancel}
           endIcon={<ClearIcon />}
         >

@@ -59,7 +59,7 @@ function ChplChangeRequestsDownload(props) {
     <Button
       fullWidth
       color="primary"
-      variant="contained"
+      variant="outlined"
       onClick={download}
       disabled={recordCount === 0}
     >

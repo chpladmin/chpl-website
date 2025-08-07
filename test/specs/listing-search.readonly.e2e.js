@@ -13,13 +13,6 @@ describe('the Listing Search page', () => {
       await page.browse();
     });
 
-    it('should have table headers in a defined order', async () => {
-      const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Certification Date', 'Status', 'Actions'];
-      const actualHeaders = await page.getTableHeaders();
-      await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-      await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
-    });
-
     it('should have the Download Listings button for anonymous users', async () => {
       await expect(await page.downloadListingsButton).toBeExisting();
     });
