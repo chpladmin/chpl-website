@@ -7,9 +7,9 @@ const util = {
     },
   },
   deleteButtonOutlined: {
-    border: '1px solid #c44f65',
-    backgroundColor: '#ffffff',
-    color: '#c44f65',
+    border: '1px solid #c44f65 !important',
+    backgroundColor: '#ffffff !important',
+    color: '#c44f65 !important',
     '&:hover': {
       backgroundColor: '#c44f6525',
       color: '#c44f65',
@@ -59,6 +59,12 @@ const util = {
   pageHeader: {
     backgroundColor: '#FFF',
     padding: '32px',
+  },
+  tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 32px',
   },
 };
 

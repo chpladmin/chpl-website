@@ -22,8 +22,9 @@ import ChplDownloadListings from 'components/download-listings/download-listings
 import {
   ChplLink,
   ChplPagination,
+  ChplLoadingTable,
+  ChplSortableHeaders,
 } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -292,7 +293,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
       </div>
       { isLoading
         && (
-          <>Loading</>
+          <ChplLoadingTable className={classes.tableContainer} />
         )}
       { !isLoading
         && (
