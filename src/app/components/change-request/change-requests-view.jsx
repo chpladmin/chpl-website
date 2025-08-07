@@ -32,8 +32,8 @@ import {
   ChplAvatar,
   ChplLink,
   ChplPagination,
+  ChplSortableHeaders,
 } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
@@ -358,7 +358,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
                                       <TableCell align="right">
                                         <Button
                                           onClick={() => viewChangeRequest(item)}
-                                          variant="contained"
+                                          variant="outlined"
                                           color="primary"
                                         >
                                           View

@@ -31,7 +31,9 @@ const useStyles = makeStyles({
   },
 });
 
-const InternalScrollButton = ({ analytics, children, id }) => {
+const InternalScrollButton = ({
+  analytics, children, id,
+}) => {
   const [target, setTarget] = useState('');
   const classes = useStyles();
 

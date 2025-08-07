@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -72,9 +73,14 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
-      </Typography>
+      <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+          <Typography variant="subtitle2">Search Results:</Typography>
+          <Typography variant="body2">
+            {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+      </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Optional Standards table"

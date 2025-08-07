@@ -99,8 +99,8 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
           />
           <Button
             size="small"
-            color="secondary"
-            variant="contained"
+            color="primary"
+            variant="outlined"
             onClick={subscribe}
             endIcon={<SendIcon fontSize="small" />}
             disabled={isSubscribing || !formik.values.email}

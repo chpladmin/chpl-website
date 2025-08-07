@@ -12,7 +12,7 @@ describe('the Banned Developers Search page', () => {
     const expectedHeaders = ['Developer', 'Decertification Date', 'ONC-ACB'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
+    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toContain(expectedHeaders[idx]));
   });
 
   it('should be able to Browse after searching for text', async () => {

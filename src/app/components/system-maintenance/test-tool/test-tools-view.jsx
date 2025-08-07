@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -36,10 +37,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
 });
 
 function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
@@ -82,22 +79,25 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
-      </Typography>
-      { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-        <div className={classes.tableResultsHeaderContainer}>
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-test-tool"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        </div>
-      )}
+      <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+          <Typography variant="subtitle2">Search Results:</Typography>
+          <Typography variant="body2">
+            {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+        <Button
+          onClick={() => dispatch({ action: 'edit', payload: {} })}
+          id="add-new-test-tool"
+          variant="contained"
+          color="primary"
+          endIcon={<AddIcon />}
+        >
+          Add
+        </Button>
+        )}
+      </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Test Tools table"

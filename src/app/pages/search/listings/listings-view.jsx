@@ -19,11 +19,12 @@ import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
-import {
+import { 
+  ChplLoadingTable,
   ChplLink,
-  ChplPagination,
+  ChplPagination, 
+  ChplSortableHeaders,
 } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -227,10 +228,10 @@ function ChplListingsView() {
       <div>
         <ChplFilterChips />
       </div>
-      { isLoading
+      { isLoading 
         && (
-          <>Loading</>
-        )}
+          <ChplLoadingTable className={classes.tableContainer} />
+      )}
       { !isLoading
         && (
           <>
