@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 13.40.0
+_4 August 2025_
+
+### Features
+* Enable editing of Conformance Methods
+
+### UI Updates
+* Add Power BI report for "Updated Criteria Status Report"
+
+---
+
+## Version 13.39.2
+_21 July 2025_
+
+### User Interface Updates
+* Remove "CMS EHR Certification ID Edition" field from CMS ID reverse lookup
+
+---
+
 ## Version 13.39.1
 _7 July 2025_
 

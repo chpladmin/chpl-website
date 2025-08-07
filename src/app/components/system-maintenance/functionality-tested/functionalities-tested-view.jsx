@@ -50,8 +50,8 @@ const useStyles = makeStyles({
 });
 
 function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {
-  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
+  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const filterContext = useFilterContext();
