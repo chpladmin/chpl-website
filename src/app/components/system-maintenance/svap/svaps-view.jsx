@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -37,10 +38,6 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
 });
 
 function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
@@ -84,24 +81,27 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Typography variant="body2">
-        {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
-      </Typography>
       <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+          <Typography variant="subtitle2">Search Results:</Typography>
+          <Typography variant="body2">
+            {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
         <ChplSystemMaintenanceActivity
           fetch={useFetchSvapsActivity}
           title="SVAP"
         />
         { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-svap"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
+        <Button
+          onClick={() => dispatch({ action: 'edit', payload: {} })}
+          id="add-new-svap"
+          variant="contained"
+          color="primary"
+          endIcon={<AddIcon />}
+        >
+          Add
+        </Button>
         )}
       </div>
       <TableContainer className={classes.container} component={Paper}>

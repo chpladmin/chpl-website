@@ -16,6 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/Event';
 import { arrayOf, func } from 'prop-types';
 
+import { ChplTooltip } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { job as jobType } from 'shared/prop-types';
@@ -42,25 +43,35 @@ const useStyles = makeStyles({
 const getAction = (item, dispatch) => {
   if (item.jobDataMap.editableJobFields) {
     return (
-      <IconButton
-        onClick={() => dispatch({ action: 'edit', payload: item })}
-        variant="contained"
-        color="primary"
-        aria-label={`Edit Report ${item.name}`}
+      <ChplTooltip
+        title="Edit Report"
+        placement="top"
       >
-        <EditIcon />
-      </IconButton>
+        <IconButton
+          onClick={() => dispatch({ action: 'edit', payload: item })}
+          variant="contained"
+          color="primary"
+          aria-label={`Edit Report ${item.name}`}
+        >
+          <EditIcon />
+        </IconButton>
+      </ChplTooltip>
     );
   }
   if (item.group === 'chplJobs') {
     return (
-      <IconButton
-        onClick={() => dispatch({ action: 'schedule', payload: item })}
-        color="primary"
-        aria-label={`Schedule Report ${item.name}`}
+      <ChplTooltip
+        title="Schedule Report"
+        placement="top"
       >
-        <EventIcon />
-      </IconButton>
+        <IconButton
+          onClick={() => dispatch({ action: 'schedule', payload: item })}
+          color="primary"
+          aria-label={`Schedule Report ${item.name}`}
+        >
+          <EventIcon />
+        </IconButton>
+      </ChplTooltip>
     );
   }
   return null;
