@@ -6,7 +6,6 @@ class SearchPage extends Page {
     this.name = 'SearchPage';
     this.elements = {
       ...this.elements,
-      loading: 'body*=Loading',
       header: 'h1',
       table: 'table',
       searchResultsHeader: 'h6=Search Results:',
@@ -17,6 +16,7 @@ class SearchPage extends Page {
       filterBrowse: '#filter-browse',
       filterChipsSection: '#filter-chips',
       clearSearchTermButton: 'button[aria-label="Clear search"]',
+      skeletonElement: 'span.MuiSkeleton-root.MuiSkeleton-text.MuiSkeleton-pulse',
     };
   }
 
@@ -34,12 +34,12 @@ class SearchPage extends Page {
     ).getText();
   }
 
-  async isLoading() {
-    return (await
-    $(this.elements.loading)
-    ).isDisplayed();
+  async isSkeletonVisible() {
+    return (await 
+     $(this.elements.skeletonElement)
+    ).isExisting();
   }
-
+ 
   async getTableHeaders() {
     return (await
     (await

@@ -13,7 +13,7 @@ class InactiveCertificatesSearchPage extends SearchPage {
 
   async open() {
     await super.open('inactive-certificates');
-    await (browser.waitUntil(async () => !(await this.isLoading())));
+    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
   }
 
   get downloadListingsButton() {

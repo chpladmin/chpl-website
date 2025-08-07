@@ -12,7 +12,7 @@ class BannedDevelopersSearchPage extends SearchPage {
 
   async open() {
     await super.open('banned-developers');
-    await (browser.waitUntil(async () => !(await this.isLoading())));
+    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
   }
 }
 
