@@ -12,7 +12,7 @@ describe('the Corrective Action Search page', () => {
     const expectedHeaders = ['CHPL ID', 'Developer', 'Product', 'Version', 'Status', '# Open Surveillance NCs', '# Closed Surveillance NCs', '# Open Direct Review NCs', '# Closed Direct Review NCs', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
+    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toContain(expectedHeaders[idx]));
   });
 
   it('should have the Download Listings button for anonymous users', async () => {

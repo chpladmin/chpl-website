@@ -190,7 +190,7 @@ function ChplChangePassword({ dispatch }) {
         </Button>
         <Button
           fullWidth
-          color="default"
+          color="secondary"
           variant="contained"
           onClick={cancel}
           endIcon={<ClearIcon />}

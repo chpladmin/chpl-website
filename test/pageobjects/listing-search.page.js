@@ -14,7 +14,7 @@ class ListingSearchPage extends SearchPage {
 
   async open() {
     await super.open('search');
-    await (browser.waitUntil(async () => !(await this.isLoading())));
+    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
   }
 
   get composeMessageButton() {

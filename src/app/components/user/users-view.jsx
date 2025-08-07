@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
+  Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -169,7 +169,7 @@ function ChplUsersView({
   if (isLoading) { return <CircularProgress />; }
 
   return (
-    <Box>
+    <Container disableGutters maxWidth="lg">
       { activeUser
         && (
           displayUserEdit(activeUser)
@@ -216,7 +216,7 @@ function ChplUsersView({
             </Card>
           </div>
         )}
-    </Box>
+    </Container>
   );
 }
 

@@ -13,8 +13,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   buttonContainer: {
     marginTop: '16px',
     gap: '8px',
@@ -28,13 +30,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-  },
-  deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#853544',
-    },
   },
   productChips: {
     justifyContent: 'space-between',
@@ -94,12 +89,12 @@ function ChplCompareDisplay() {
           Compare products
         </Button>
         <Button
-          className={classes.deleteButton}
+          className={classes.deleteButtonOutlined}
           fullWidth
-          variant="contained"
+          variant="outlined"
           id="remove-listings"
           onClick={removeAll}
-          endIcon={<DeleteIcon />}
+          endIcon={<DeleteIcon color="error" />}
         >
           Remove all products
         </Button>
