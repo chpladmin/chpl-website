@@ -16,8 +16,9 @@ import ChplQuestionableActivityDetails from 'components/activity/questionable-ac
 import {
   ChplLink,
   ChplPagination,
+  ChplLoadingTable,
+  ChplSortableHeaders,
 } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -31,7 +32,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {  
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
   },
   linkWrap: {
@@ -187,7 +188,7 @@ function ChplQuestionableActivityView() {
       </div>
       { isLoading
         && (
-          <>Loading</>
+          <ChplLoadingTable className={classes.tableContainer} />
         )}
       { !isLoading
         && (

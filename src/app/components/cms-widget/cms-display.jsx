@@ -26,6 +26,7 @@ import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const ProgressBar = ({ value, year }) => (
   <Box
@@ -70,6 +71,7 @@ const ProgressBar = ({ value, year }) => (
 );
 
 const useStyles = makeStyles({
+  ...utilStyles,
   buttonContainer: {
     marginTop: '16px',
     gap: '8px',
@@ -91,13 +93,6 @@ const useStyles = makeStyles({
     alignItems: 'stretch',
     gap: '4px',
     marginTop: '16px',
-  },
-  deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#853544',
-    },
   },
   productChips: {
     justifyContent: 'space-between',
@@ -385,11 +380,11 @@ function ChplCmsDisplay() {
           </Button>
           <Button
             fullWidth
-            className={classes.deleteButton}
-            variant="contained"
+            variant="outlined"
             id="remove-listings"
             onClick={removeAll}
             endIcon={<DeleteIcon />}
+            className={classes.deleteButtonOutlined}
           >
             Remove All
           </Button>
