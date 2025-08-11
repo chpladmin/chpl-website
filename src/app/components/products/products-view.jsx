@@ -46,8 +46,14 @@ const useStyles = makeStyles({
   },
   '@global': {
     '.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
-      width: 'min-content !important',
-      right: '600px !important',
+      width: '300px !important',
+      right: '0px !important',
+      [theme.breakpoints.up('sm')]: {
+        width: '600px !important',
+      },
+      [theme.breakpoints.up('md')]: {
+        width: '750px !important',
+      },
     },
   },
 });
