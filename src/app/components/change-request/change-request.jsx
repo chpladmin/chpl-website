@@ -20,8 +20,10 @@ import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 import ChplChangeRequestHistory from './change-request-history';
-import ChplChangeRequestSBULEdit from './types/sbul-edit';
-import ChplChangeRequestSBULView from './types/sbul-view';
+import ChplChangeRequestListingRwtEdit from './types/listing-rwt-edit';
+import ChplChangeRequestListingRwtView from './types/listing-rwt-view';
+import ChplChangeRequestListingSbulEdit from './types/listing-sbul-edit';
+import ChplChangeRequestListingSbulView from './types/listing-sbul-view';
 
 import {
   useFetchChangeRequest,
@@ -30,10 +32,15 @@ import {
 } from 'api/change-requests';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
-import { ChplAvatar, ChplTextField } from 'components/util';
+import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  BreadcrumbContext,
+  ChangeRequestContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -96,9 +103,8 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     display: 'grid',
     gap: '8px',
-    paddingBottom: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '2fr 1fr',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   cardHeader: {
@@ -129,15 +135,25 @@ const getChangeRequestViewDetails = (cr) => {
       );
     case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDemographicsView
-          changeRequest={cr}
+        <ChplChangeRequestDemographicsView />
+      );
+    case 'RWT Plans URL Change Request':
+      return (
+        <ChplChangeRequestListingRwtView
+          value="rwtPlansUrl"
+          title="Plans"
         />
       );
-    case 'Listing URL Change Request':
+    case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestSBULView
-          changeRequest={cr}
+        <ChplChangeRequestListingRwtView
+          value="rwtResultsUrl"
+          title="Results"
         />
+      );
+    case 'Service Base URL List Change Request':
+      return (
+        <ChplChangeRequestListingSbulView />
       );
     default:
       return (
@@ -148,7 +164,7 @@ const getChangeRequestViewDetails = (cr) => {
   }
 };
 
-const getChangeRequestEditDetails = (cr, handleDispatch) => {
+const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
   switch (cr.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return (
@@ -159,17 +175,27 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
       );
     case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDemographicsEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
+        <ChplChangeRequestDemographicsEdit />
+      );
+    case 'RWT Plans URL Change Request':
+      return (
+        <ChplChangeRequestListingRwtEdit
+          isAccepting={isAccepting}
+          title="Plans"
+          value="rwtPlansUrl"
         />
       );
-    case 'Listing URL Change Request':
+    case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestSBULEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
+        <ChplChangeRequestListingRwtEdit
+          isAccepting={isAccepting}
+          title="Results"
+          value="rwtResultsUrl"
         />
+      );
+    case 'Service Base URL List Change Request':
+      return (
+        <ChplChangeRequestListingSbulEdit />
       );
     default:
       return (
@@ -281,7 +307,6 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
   }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
 
   const canEdit = () => {
-    if (changeRequest.changeRequestType.name === 'Listing URL Change Request') { return false; }
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-developer'])) {
       return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
@@ -378,7 +403,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
           website: payload.website,
         });
         break;
-      case 'Listing URL Change Request':
+      case 'Service Base URL List Change Request':
         setDetails({
           ...details,
           url: payload.url,
@@ -421,6 +446,8 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         // no default
     }
   };
+
+  const isAccepting = () => formik.values.changeRequestStatusType?.name === 'Accepted';
 
   const isReasonDisabled = () => hasAnyRole(['chpl-developer']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
 
@@ -472,7 +499,6 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
     onSubmit: () => {
       const updated = {
         ...changeRequest,
-        details,
         currentStatus: {
           comment: formik.values.comment,
           changeRequestStatusType: formik.values.changeRequestStatusType,
@@ -492,8 +518,13 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
     return <CircularProgress />;
   }
 
+  const changeRequestState = {
+    changeRequest,
+    setChangeRequest,
+  };
+
   return (
-    <>
+    <ChangeRequestContext.Provider value={changeRequestState}>
       { isConfirming
         && (
           <ChplActionBarConfirmation
@@ -555,6 +586,26 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
                   </Typography>
                 )}
             </div>
+            { changeRequest.details.listing?.id
+              && (
+                <div>
+                  <Typography gutterBottom variant="subtitle2">CHPL Product Number:</Typography>
+                  <Typography>
+                    <ChplLink
+                      href={`#/listing/${changeRequest.details.listing.id}`}
+                      text={changeRequest.details.listing.chplProductNumber}
+                      analytics={{
+                        ...analytics,
+                        event: 'Navigate to Listing Details Page',
+                        label: changeRequest.details.listing.chplProductNumber,
+                        aggregationName: changeRequest.details.listing.product.name,
+                      }}
+                      external={false}
+                      router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+                    />
+                  </Typography>
+                </div>
+              )}
           </div>
           <Divider />
           { !isEditing
@@ -567,7 +618,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
             && (
               <div className={classes.cardContentChangeRequest}>
                 <div>
-                  { getChangeRequestEditDetails(changeRequest, handleDispatch) }
+                  { getChangeRequestEditDetails(changeRequest, handleDispatch, isAccepting()) }
                 </div>
                 <div className={classes.actionsContainer}>
                   <div className={classes.actionSubContainer}>
@@ -658,6 +709,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
                 </div>
               </div>
             )}
+          <Divider />
           <ChplChangeRequestHistory
             changeRequest={changeRequest}
           />
@@ -674,7 +726,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
         showWarningAcknowledgement={showAcknowledgement}
         warnings={warnings}
       />
-    </>
+    </ChangeRequestContext.Provider>
   );
 }
 

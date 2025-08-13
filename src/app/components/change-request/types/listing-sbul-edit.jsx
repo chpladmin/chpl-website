@@ -4,22 +4,24 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { ChplLink, ChplTextField } from 'components/util';
+import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRight: '1px solid #DDD',
+    paddingRight: '16px',
+    marginRight: '8px',
     gap: '16px',
   },
   detailsContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '8px',
   },
   detailsSubContainer: {
@@ -35,14 +37,40 @@ const validationSchema = yup.object({
     .required('URL is required'),
 });
 
-function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
+function ChplChangeRequestListingSbulEdit() {
+  const { analytics } = useAnalyticsContext();
+  const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
 
+  const getCurrent = () => {
+    if (changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList) {
+      const url = changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
+      return (
+        <ChplLink
+          href={url}
+          analytics={{
+            ...analytics,
+            event: 'Navigate to Current SBUL',
+            label: url,
+          }}
+        />
+      );
+    }
+    return 'No current URL';
+  };
+
   const handleChange = (...args) => {
+    const event = args[0];
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        [event.target.name]: event.target.value,
+      },
+    }));
     formik.handleChange(...args);
-    dispatch('update', formik.values);
   };
 
   formik = useFormik({
@@ -57,10 +85,7 @@ function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
-          { changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList }
-        </Typography>
-        <Typography>
-          { changeRequest.details.listing.chplProductNumber }
+          { getCurrent() }
         </Typography>
       </div>
       <Divider />
@@ -83,9 +108,7 @@ function ChplChangeRequestSBULEdit({ changeRequest, dispatch }) {
   );
 }
 
-export default ChplChangeRequestSBULEdit;
+export default ChplChangeRequestListingSbulEdit;
 
-ChplChangeRequestSBULEdit.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
-  dispatch: func.isRequired,
+ChplChangeRequestListingSbulEdit.propTypes = {
 };

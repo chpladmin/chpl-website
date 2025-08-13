@@ -12,17 +12,19 @@ function FlagWrapper({ children }) {
     setFlags(data);
   }, [data]);
 
-  const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag).active;
+  const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag)?.active;
 
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
   const domainIsOn = isOn('domain');
   const insightsIsOn = isOn('insights');
+  const rwtChangeRequestIsOn = isOn('rwt-change-request');
   const sbulChangeRequestIsOn = isOn('sbul-change-request');
 
   const flagState = {
     demographicChangeRequestIsOn,
     domainIsOn,
     insightsIsOn,
+    rwtChangeRequestIsOn,
     sbulChangeRequestIsOn,
   };
 

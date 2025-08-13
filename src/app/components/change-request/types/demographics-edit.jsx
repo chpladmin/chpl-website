@@ -6,22 +6,24 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { ChangeRequestContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRight: '1px solid #DDD',
+    paddingRight: '16px',
+    marginRight: '8px',
     gap: '16px',
   },
   detailsContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '8px',
   },
   detailsSubContainer: {
@@ -56,15 +58,22 @@ const validationSchema = yup.object({
     .required('Website is required'),
 });
 
-function ChplChangeRequestDemographicsEdit(props) {
+function ChplChangeRequestDemographicsEdit() {
+  const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
-  const { changeRequest } = props;
   const classes = useStyles();
   let formik;
 
   const handleChange = (...args) => {
+    const event = args[0];
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        [event.target.name]: event.target.value,
+      },
+    }));
     formik.handleChange(...args);
-    props.dispatch('update', formik.values);
   };
 
   formik = useFormik({
@@ -317,6 +326,4 @@ function ChplChangeRequestDemographicsEdit(props) {
 export default ChplChangeRequestDemographicsEdit;
 
 ChplChangeRequestDemographicsEdit.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
-  dispatch: func.isRequired,
 };
