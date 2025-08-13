@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Card,
@@ -7,12 +7,14 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  func,
-  object,
-} from 'prop-types';
+import { func, object } from 'prop-types';
+import { useSnackbar } from 'notistack';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+import { usePutAnnual } from 'api/surveillance';
 import { ChplActionBar } from 'components/action-bar';
+import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -32,12 +34,6 @@ const useStyles = makeStyles({
   reportInfoCard: {
     padding: '8px',
   },
-  responseBox: {
-    padding: '16px',
-    backgroundColor: '#eee',
-    border: '1px solid #afafaf',
-    borderRadius: '4px',
-  },
   stickyColumn: {
     position: 'sticky',
     top: '124px',
@@ -50,15 +46,64 @@ const useStyles = makeStyles({
   },
 });
 
+const validationSchema = yup.object({
+  obstacleSummary: yup.string()
+    .required('Field is required'),
+  priorityChangesFromFindingsSummary: yup.string()
+    .required('Field is required'),
+});
+
 function ChplAnnualEdit({
   dispatch,
   report,
 }) {
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = usePutAnnual();
+  const [errorMessages, setErrorMessages] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
+  let formik;
 
   const handleDispatch = (action) => {
-    dispatch({ action });
+    switch (action) {
+      case 'save':
+        formik.submitForm();
+        break;
+      default:
+        dispatch({ action });
+        break;
+    }
   };
+
+  const save = () => {
+    setIsProcessing(true);
+    const payload = {
+      ...report,
+      obstacleSummary: formik.values.obstacleSummary,
+      priorityChangesFromFindingsSummary: formik.values.priorityChangesFromFindingsSummary,
+    };
+    mutate(payload, {
+      onSuccess: (response) => {
+        setIsProcessing(false);
+        console.log(response);
+      },
+      onError: (error) => {
+        setIsProcessing(false);
+        console.error(error);
+      },
+    });
+  };
+
+  formik  = useFormik({
+    initialValues: {
+      obstacleSummary: report.obstacleSummary || '',
+      priorityChangesFromFindingsSummary: report.priorityChangesFromFindingsSummary || '',
+    },
+    onSubmit: () => {
+      save();
+    },
+    validationSchema,
+  });
 
   return (
     <div className={classes.container}>
@@ -83,18 +128,34 @@ function ChplAnnualEdit({
             <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterBottom>
               Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.
             </Typography>
-            <Typography className={classes.responseBox}>
-              { report.obstacleSummary }
-            </Typography>
+            <ChplTextField
+              id="obstacleSummary"
+              name="obstacleSummary"
+              label="Obstacle Summary"
+              required
+              value={formik.values.obstacleSummary}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.obstacleSummary && !!formik.errors.obstacleSummary}
+              helperText={formik.touched.obstacleSummary && formik.errors.obstacleSummary}
+            />
           </Box>
           <Box className={classes.summaryGroup}>
             <Typography variant="h6" component="h2">
               <strong>Priority Changes From Findings Summary</strong>
             </Typography>
           </Box>
-          <Typography className={classes.responseBox}>
-            { report.priorityChangesFromFindingsSummary }
-          </Typography>
+          <ChplTextField
+            id="priorityChangesFromFindingsSummary"
+            name="priorityChangesFromFindingsSummary"
+            label="Priority Changes From Findings Summary"
+            required
+            value={formik.values.priorityChangesFromFindingsSummary}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.priorityChangesFromFindingsSummary && !!formik.errors.priorityChangesFromFindingsSummary}
+            helperText={formik.touched.priorityChangesFromFindingsSummary && formik.errors.priorityChangesFromFindingsSummary}
+          />
           <Divider />
           <Typography variant="body2">
             The titles and descriptions used in this module&apos;s user interface reflect the most recent version of the report and may appear differently for historical reports in the downloads
@@ -103,6 +164,8 @@ function ChplAnnualEdit({
       </Card>
       <ChplActionBar
         dispatch={handleDispatch}
+        disabled={!formik.isValid}
+        isProcessing={isProcessing}
       />
     </div>
   );

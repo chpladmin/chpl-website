@@ -234,9 +234,9 @@ export default class NetworkService {
     return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
 
-  updateAnnualSurveillanceReport(report) {
-    return this.apiPUT('/surveillance-report/annual', report);
-  }
+//  updateAnnualSurveillanceReport(report) {
+//    return this.apiPUT('/surveillance-report/annual', report);
+//  }
 
   updateCP(cpObject) {
     return this.apiPUT(`/certified_products/${cpObject.listing.id}`, cpObject);
