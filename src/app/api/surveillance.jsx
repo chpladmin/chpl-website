@@ -50,6 +50,16 @@ const usePostInitiateAnnualReport = () => {
   });
 };
 
+const usePostInitiateQuarterlyReport = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('surveillance-report/quarterly', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['quarterly']);
+    },
+  });
+};
+
 const usePostQuarterlyReportRequest = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post(`surveillance-report/export/quarterly/${data.id}`, {}));
@@ -72,6 +82,7 @@ export {
   useFetchRelevantListings,
   usePostAnnualReportRequest,
   usePostInitiateAnnualReport,
+  usePostInitiateQuarterlyReport,
   usePostQuarterlyReportRequest,
   usePutAnnual,
 };

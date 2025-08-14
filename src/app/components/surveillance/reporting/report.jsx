@@ -122,6 +122,7 @@ function ChplReport({ acb, dispatch }) {
               quarter={q}
               report={filteredQuarterly.find((r) => r.quarter === q.name)}
               year={activeYear}
+              acb={acb}
               style={{ minWidth: '200px', minHeight: '100px' }}
             />
           ))}

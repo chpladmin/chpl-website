@@ -23,10 +23,6 @@ export default class NetworkService {
     return this.apiPOST('/users/confirm', userObject);
   }
 
-  createQuarterlySurveillanceReport(report) {
-    return this.apiPOST('/surveillance-report/quarterly', report);
-  }
-
   deleteAnnualSurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/annual/${id}`);
   }
