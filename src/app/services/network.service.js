@@ -23,10 +23,6 @@ export default class NetworkService {
     return this.apiPOST('/users/confirm', userObject);
   }
 
-  createAnnualSurveillanceReport(report) {
-    return this.apiPOST('/surveillance-report/annual', report);
-  }
-
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
@@ -233,10 +229,6 @@ export default class NetworkService {
   splitProduct(productObject) {
     return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
-
-//  updateAnnualSurveillanceReport(report) {
-//    return this.apiPUT('/surveillance-report/annual', report);
-//  }
 
   updateCP(cpObject) {
     return this.apiPUT(`/certified_products/${cpObject.listing.id}`, cpObject);

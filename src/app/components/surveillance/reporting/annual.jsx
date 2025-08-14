@@ -15,21 +15,47 @@ import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import ChplAnnualEdit from './annual-edit';
 import ChplAnnualView from './annual-view';
 
-import { usePostAnnualReportRequest } from 'api/surveillance';
+import { usePostAnnualReportRequest, usePostInitiateAnnualReport } from 'api/surveillance';
 import { UserContext } from 'shared/contexts';
 
-function ChplAnnual({ year, dispatch, report }) {
+function ChplAnnual({
+  year, dispatch, report, acb,
+}) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePostAnnualReportRequest();
+  const { mutate: doDownload } = usePostAnnualReportRequest();
+  const { mutate: doInitiate } = usePostInitiateAnnualReport();
   const [state, setState] = useState('summary');
 
   const download = () => {
-    mutate(report, {
+    doDownload(report, {
       onSuccess: (response) => {
         enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
           variant: 'success',
         });
+      },
+      onError: (error) => {
+        const message = error.response.data.error;
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
+  };
+
+  const edit = () => {
+    setState('edit');
+    dispatch({ action: 'focus-annual' });
+  };
+
+  const initiate = () => {
+    const payload = {
+      acb,
+      year,
+    };
+    doInitiate(payload, {
+      onSuccess: () => {
+        edit();
       },
       onError: (error) => {
         const message = error.response.data.error;
@@ -49,11 +75,6 @@ function ChplAnnual({ year, dispatch, report }) {
       default:
         dispatch({ action, payload });
     }
-  };
-
-  const edit = () => {
-    setState('edit');
-    dispatch({ action: 'focus-annual' });
   };
 
   const view = () => {
@@ -130,7 +151,14 @@ function ChplAnnual({ year, dispatch, report }) {
             )}
           { !report.id && hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
             && (
-              <Button>Initiate</Button>
+              <Button
+                color="primary"
+                variant="outlined"
+                size="small"
+                onClick={initiate}
+              >
+                Initiate
+              </Button>
             )}
         </Box>
       </CardContent>
@@ -144,6 +172,7 @@ ChplAnnual.propTypes = {
   dispatch: func.isRequired,
   year: number.isRequired,
   report: object,
+  acb: object.isRequired,
 };
 
 ChplAnnual.defaultProps = {

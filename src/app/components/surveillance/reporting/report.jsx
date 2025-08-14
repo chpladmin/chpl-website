@@ -131,6 +131,7 @@ function ChplReport({ acb, dispatch }) {
               dispatch={handleDispatch}
               report={filteredAnnual}
               year={activeYear}
+              acb={acb}
               style={{ minWidth: '200px', minHeight: '100px' }}
             />
           )}
