@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { func, number, object } from 'prop-types';
+import BeenhereIcon from '@material-ui/icons/Beenhere';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import Edit from '@material-ui/icons/Edit';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
@@ -121,7 +122,7 @@ function ChplAnnual({
                       size="small"
                       style={{ marginRight: '4px' }}
                       onClick={edit}
-                      endIcon={<Edit />}
+                      endIcon={<Edit fontSize="small" />}
                     >
                       Edit
                     </Button>
@@ -134,7 +135,7 @@ function ChplAnnual({
                       size="small"
                       style={{ marginRight: '4px' }}
                       onClick={view}
-                      endIcon={<RemoveRedEye />}
+                      endIcon={<RemoveRedEye fontSize="small" />}
                     >
                       View
                     </Button>
@@ -142,8 +143,9 @@ function ChplAnnual({
                 <Button
                   color="primary"
                   size="small"
+                  variant="outlined"
                   onClick={download}
-                  endIcon={<CloudDownloadOutlinedIcon />}
+                  endIcon={<CloudDownloadOutlinedIcon fontSize="small" />}
                 >
                   Download
                 </Button>
@@ -156,6 +158,8 @@ function ChplAnnual({
                 variant="outlined"
                 size="small"
                 onClick={initiate}
+                endIcon={<BeenhereIcon fontSize="small" />}
+                style={{ marginTop: '8px' }}
               >
                 Initiate
               </Button>
