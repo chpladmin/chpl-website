@@ -234,10 +234,6 @@ export default class NetworkService {
     return this.apiPUT('/products', productObject);
   }
 
-  updateQuarterlySurveillanceReport(report) {
-    return this.apiPUT('/surveillance-report/quarterly', report);
-  }
-
   updateRelevantSurveillance(reportId, surveillance) {
     return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
   }

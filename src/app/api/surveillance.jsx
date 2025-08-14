@@ -75,6 +75,16 @@ const usePutAnnual = () => {
   });
 };
 
+const usePutQuarterly = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('surveillance-report/quarterly', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['quarterly']);
+    },
+  });
+};
+
 export {
   useFetchAnnual,
   useFetchQuarters,
@@ -85,4 +95,5 @@ export {
   usePostInitiateQuarterlyReport,
   usePostQuarterlyReportRequest,
   usePutAnnual,
+  usePutQuarterly,
 };
