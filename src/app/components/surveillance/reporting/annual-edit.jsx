@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Card,
@@ -77,24 +77,28 @@ function ChplAnnualEdit({
 
   const save = () => {
     setIsProcessing(true);
+    setErrorMessages([]);
     const payload = {
       ...report,
       obstacleSummary: formik.values.obstacleSummary,
       priorityChangesFromFindingsSummary: formik.values.priorityChangesFromFindingsSummary,
     };
     mutate(payload, {
-      onSuccess: (response) => {
+      onSuccess: () => {
         setIsProcessing(false);
-        console.log(response);
+        enqueueSnackbar('Your updates have been made', {
+          variant: 'success',
+        });
+        dispatch({ action: 'cancel' });
       },
       onError: (error) => {
         setIsProcessing(false);
-        console.error(error);
+        setErrorMessages([error.response?.data?.error]);
       },
     });
   };
 
-  formik  = useFormik({
+  formik = useFormik({
     initialValues: {
       obstacleSummary: report.obstacleSummary || '',
       priorityChangesFromFindingsSummary: report.priorityChangesFromFindingsSummary || '',
@@ -165,6 +169,7 @@ function ChplAnnualEdit({
       <ChplActionBar
         dispatch={handleDispatch}
         disabled={!formik.isValid}
+        errors={errorMessages}
         isProcessing={isProcessing}
       />
     </div>

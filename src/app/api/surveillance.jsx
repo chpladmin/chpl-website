@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -47,7 +47,12 @@ const usePostQuarterlyReportRequest = () => {
 
 const usePutAnnual = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.put('surveillance-report/annual', data));
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('surveillance-report/annual', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['annual']);
+    },
+  });
 };
 
 export {
