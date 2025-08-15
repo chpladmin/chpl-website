@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import BeenhereIcon from '@material-ui/icons/Beenhere';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import Edit from '@material-ui/icons/Edit';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
@@ -124,7 +125,7 @@ function ChplQuarter({
                      size="small"
                      style={{ marginRight: '4px' }}
                      onClick={edit}
-                     endIcon={<Edit />}
+                     endIcon={<Edit fontSize="small" />}
                    >
                      Edit
                    </Button>
@@ -137,7 +138,7 @@ function ChplQuarter({
                      size="small"
                      style={{ marginRight: '4px' }}
                      onClick={view}
-                     endIcon={<RemoveRedEye />}
+                     endIcon={<RemoveRedEye fontSize="small" />}
                    >
                      View
                    </Button>
@@ -145,8 +146,9 @@ function ChplQuarter({
                <Button
                  color="primary"
                  size="small"
+                 variant="outlined"
                  onClick={download}
-                 endIcon={<CloudDownloadOutlinedIcon />}
+                 endIcon={<CloudDownloadOutlinedIcon fontSize="small" />}
                >
                  Download
                </Button>
@@ -159,6 +161,8 @@ function ChplQuarter({
                 variant="outlined"
                 size="small"
                 onClick={initiate}
+                endIcon={<BeenhereIcon fontSize="small"/>}
+                style={{ marginTop: '8px' }}
               >
                 Initiate
               </Button>
