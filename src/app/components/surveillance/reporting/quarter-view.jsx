@@ -154,7 +154,7 @@ function ChplQuarterView({ dispatch, report }) {
                     All Surveillance Activities and Outcomes.
                   </Typography>
                   <Typography style={{ paddingTop: '4px' }} variant="body2" gutterBottom>
-                    Please log the surveillance activities and their outcomes to the &quot; Activities and Outcomes&quot; sheet of this workbook.
+                    Please log the surveillance activities and their outcomes to the &quot;Activities and Outcomes&quot; sheet of this workbook.
                   </Typography>
                 </Box>
                 <Divider />
