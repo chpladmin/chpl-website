@@ -95,7 +95,8 @@ const criteriaLookup = {
   181: { display: '170.315 (g)(9)', sort: 3 },
   182: { display: '170.315 (g)(10)', sort: 4 },
   212: { display: '170.315 (g)(31)', sort: 5 },
-  214: { display: '170.315 (g)(33)', sort: 6 },
+  213: { display: '170.315 (g)(32)', sort: 6 },
+  214: { display: '170.315 (g)(33)', sort: 7 },
 };
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
