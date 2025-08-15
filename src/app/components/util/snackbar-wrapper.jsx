@@ -25,6 +25,7 @@ const useStyles = makeStyles({
   containerRoot: {
     flexWrap: 'nowrap',
     padding: '8px',
+    zIndex: 1400,
   },
   root: {
     marginBottom: '64px',
@@ -65,11 +66,13 @@ function SnackbarWrapper(props) {
       autoHideDuration={null}
       ref={notistackRef}
       action={(key) => (
-        <Button className={classes.dismissButton} color="default" variant="contained" onClick={onClickDismiss(key)}>
-          Dismiss
-          {' '}
-          <CloseIcon className={classes.iconSpacing} />
-        </Button>
+        <div style={{ pointerEvents: 'auto', zIndex: 1402 }}>
+          <Button className={classes.dismissButton} color="default" variant="contained" onClick={onClickDismiss(key)}>
+            Dismiss
+            {' '}
+            <CloseIcon className={classes.iconSpacing} />
+          </Button>
+        </div>
       )}
     >
       { children }
