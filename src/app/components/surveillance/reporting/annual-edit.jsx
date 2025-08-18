@@ -47,10 +47,8 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  obstacleSummary: yup.string()
-    .required('Field is required'),
-  priorityChangesFromFindingsSummary: yup.string()
-    .required('Field is required'),
+  obstacleSummary: yup.string(),
+  priorityChangesFromFindingsSummary: yup.string(),
 });
 
 function ChplAnnualEdit({
@@ -136,7 +134,6 @@ function ChplAnnualEdit({
               id="obstacleSummary"
               name="obstacleSummary"
               label="Obstacle Summary"
-              required
               value={formik.values.obstacleSummary}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -153,7 +150,6 @@ function ChplAnnualEdit({
             id="priorityChangesFromFindingsSummary"
             name="priorityChangesFromFindingsSummary"
             label="Priority Changes From Findings Summary"
-            required
             value={formik.values.priorityChangesFromFindingsSummary}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

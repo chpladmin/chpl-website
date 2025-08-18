@@ -50,12 +50,6 @@ const useStyles = makeStyles({
     paddingBottom: '4px',
     color: '#373737',
   },
-  responseBox: {
-    padding: '16px',
-    backgroundColor: '#eee',
-    border: '1px solid #afafaf',
-    borderRadius: '4px',
-  },
   reportInfoCard: {
     padding: '8px',
     marginBottom: '16px',
@@ -73,10 +67,14 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  obstacleSummary: yup.string()
-    .required('Field is required'),
-  priorityChangesFromFindingsSummary: yup.string()
-    .required('Field is required'),
+  surveillanceActivitiesAndOutcomes: yup.string,
+  reactiveSurveillanceSummary: yup.string,
+  icsSurveillanceSummary: yup.string,
+  prioritizedElementSummary: yup.string,
+  disclosureRequirementsSummary: yup.string,
+  developerComplaintsLogReview: yup.string,
+  postCertificationPerformanceOfCertifiedCapabilities: yup.string,
+  appropriateUseOfMark: yup.string,
 });
 
 const menuItems = ['Activities, Outcomes, & Summaries', 'Listings with relevant surveillance', 'Complaints'];
