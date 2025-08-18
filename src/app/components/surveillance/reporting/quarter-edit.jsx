@@ -15,7 +15,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import ChplQuarterViewListing from './quarter-view-listing';
+import ChplQuarterEditListing from './quarter-edit-listing';
 
 import { useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
@@ -398,7 +398,7 @@ function ChplQuarterEdit({ dispatch, report }) {
               <CardHeader title="Listings with relevant surveillance" />
               <CardContent>
                 { listings.map((l) => (
-                  <ChplQuarterViewListing
+                  <ChplQuarterEditListing
                     key={l.id}
                     listing={l}
                   />
