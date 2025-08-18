@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 13.41.0
+_18 August 2025_
+
+### Features
+* Show details of change request activity in activity search page
+
+### UI Updates
+* Add consistency to some components
+
+### Flagged Features
+* Enable submission of RWT URL CRs
+
+---
+
 ## Version 13.40.0
 _4 August 2025_
 
