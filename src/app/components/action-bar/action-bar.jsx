@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Checkbox,
   CircularProgress,
   FormControlLabel,
@@ -21,9 +20,10 @@ import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
 import { UserContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   actionBar: {
     backgroundColor: palette.white,
     position: 'fixed',
@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     padding: '16px 0',
+    gap: '16px',
   },
   actionBarErrorAcknowledgement: {
     color: palette.white,
@@ -68,13 +69,6 @@ const useStyles = makeStyles({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
-  },
-  deleteButton: {
-    backgroundColor: palette.error,
-    color: palette.white,
-    '&:hover': {
-      backgroundColor: palette.errorDark,
-    },
   },
   errorCheckbox: {
     color: palette.white,
@@ -189,14 +183,14 @@ function ChplActionBar(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.actionBar}>
-        { isConfirming
+        {isConfirming
           && (
-          <ChplActionBarConfirmation
-            dispatch={handleConfirmation}
-            pendingMessage={pendingMessage}
-          />
+            <ChplActionBarConfirmation
+              dispatch={handleConfirmation}
+              pendingMessage={pendingMessage}
+            />
           )}
-        { showErrorAcknowledgement
+        {showErrorAcknowledgement
           && (
             <div
               className={classes.actionBarErrorAcknowledgement}
@@ -205,7 +199,7 @@ function ChplActionBar(props) {
               <FormControlLabel
                 label={
                   <Typography className={classes.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
-}
+                }
                 control={(
                   <Checkbox
                     value="errorAcknowledge"
@@ -218,7 +212,7 @@ function ChplActionBar(props) {
               />
             </div>
           )}
-        { showWarningAcknowledgement
+        {showWarningAcknowledgement
           && (
             <div
               className={classes.actionBarWarningAcknowledgement}
@@ -238,14 +232,13 @@ function ChplActionBar(props) {
             </div>
           )}
         <div className={classes.actionBarButtons}>
-          <ButtonGroup
-            color="primary"
-          >
+          <>
             { canCancel
               && (
                 <Button
                   id="action-bar-cancel"
-                  variant="outlined"
+                  color="secondary"
+                  variant="contained"
                   onClick={() => confirmCancel()}
                   className={classes.actionBarButton}
                 >
@@ -260,7 +253,7 @@ function ChplActionBar(props) {
                 <Button
                   id="action-bar-close"
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={() => act('cancel')}
                   className={classes.actionBarButton}
                 >
@@ -275,11 +268,12 @@ function ChplActionBar(props) {
                 <Button
                   id="action-bar-confirm"
                   variant="contained"
+                  color="primary"
                   onClick={() => act('confirm')}
                   disabled={isDisabled || isProcessing}
                   className={classes.actionBarButton}
                 >
-                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+                  {isProcessing && <CircularProgress size={24} className={classes.buttonProgress} />}
                   Confirm
                   <SaveIcon
                     className={classes.iconSpacing}
@@ -305,6 +299,7 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-save"
+                  color="primary"
                   variant="contained"
                   onClick={() => act('save')}
                   disabled={isDisabled || isProcessing}
@@ -322,8 +317,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-delete"
-                  variant="contained"
-                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  variant="outlined"
+                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
                   onClick={() => confirmDelete()}
                   disabled={isDeleteDisabled || isProcessing}
                 >
@@ -338,8 +333,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-reject"
-                  variant="contained"
-                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  variant="outlined"
+                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
                   onClick={() => confirmReject()}
                 >
                   Reject
@@ -352,8 +347,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-withdraw"
-                  variant="contained"
-                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  variant="outlined"
+                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
                   disabled={isDisabled || isProcessing}
                   onClick={() => confirmWithdraw()}
                 >
@@ -364,7 +359,7 @@ function ChplActionBar(props) {
                   />
                 </Button>
               )}
-          </ButtonGroup>
+          </>
         </div>
       </div>
       <ChplActionBarMessages

@@ -1,6 +1,7 @@
 import { AnalyticsContext, AnalyticsProvider, useAnalyticsContext } from './analytics-context';
 import BreadcrumbContext from './breadcrumb-context';
 import BrowserContext from './browser-context';
+import ChangeRequestContext from './change-request-context';
 import CmsContext from './cms-context';
 import CompareContext from './compare-context';
 import CriterionContext from './criterion-context';
@@ -14,6 +15,7 @@ export {
   AnalyticsProvider,
   BreadcrumbContext,
   BrowserContext,
+  ChangeRequestContext,
   CmsContext,
   CompareContext,
   CriterionContext,

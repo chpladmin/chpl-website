@@ -32,8 +32,8 @@ import {
   ChplAvatar,
   ChplLink,
   ChplPagination,
+  ChplSortableHeaders,
 } from 'components/util';
-import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
@@ -85,9 +85,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestsView(props) {
+function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
   const storageKey = 'storageKey-changeRequestsView';
-  const { disallowedFilters, bonusQuery, dispatch } = props;
   const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -359,7 +358,7 @@ function ChplChangeRequestsView(props) {
                                       <TableCell align="right">
                                         <Button
                                           onClick={() => viewChangeRequest(item)}
-                                          variant="contained"
+                                          variant="outlined"
                                           color="primary"
                                         >
                                           View
