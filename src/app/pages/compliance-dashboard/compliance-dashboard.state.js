@@ -1,12 +1,4 @@
-const states = [{
-  name: 'compliance-dashboard',
-  url: '/compliance-dashboard',
-  component: 'chplComplianceDashboardWrapperBridge',
-  data: {
-    title: 'CHPL Compliance Dashboard',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
-  },
-}];
+const states = [];
 
 function complianceDashboardStatesConfig($stateProvider) {
   'ngInject';

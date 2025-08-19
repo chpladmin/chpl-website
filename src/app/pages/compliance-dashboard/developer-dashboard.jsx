@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-// Material-UI Components
 import {
   Box,
   Card,
@@ -21,22 +20,20 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-// Material-UI Icons
 import {
   Add as AddIcon,
   Visibility as VisibilityIcon,
   Search as SearchIcon,
-  Edit as EditIcon,
   ExpandMore as ExpandMoreIcon,
 } from '@material-ui/icons';
 
-// Local Imports
+import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
+
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplAttestationView from 'components/attestation/attestation-view';
 import { ChplDialogTitle } from 'components/util';
 import { useFilterContext } from 'components/filter';
 import { UserContext, DeveloperContext, FlagContext } from 'shared/contexts';
-import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
 import {
   useFetchDeveloperHierarchy,
   useFetchInsights,
@@ -129,19 +126,22 @@ function ChplDeveloperDashboard() {
   const [selectedDeveloperId, setSelectedDeveloperId] = useState(null);
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsDialogOpen, setAttestationsDialogOpen] = useState(false);
+  const [safeDeveloper, setSafeDeveloper] = useState({ id: null });
+  const [activeDeveloperId, setActiveDeveloperId] = useState(null);
 
-  const userName = user?.fullName || 'User';
-  const userOrganizations = user?.organizations || [];
-  const hasMultipleDevelopers = userOrganizations.length > 1;
-  
-  // Use selected developer ID or default to first organization
-  const activeDeveloperId = selectedDeveloperId || userOrganizations[0]?.id;
+  useEffect(() => {
+    const userOrganizations = user?.organizations || [];
+    const newActiveDeveloperId = selectedDeveloperId || userOrganizations[0]?.id;
+    setActiveDeveloperId(newActiveDeveloperId);
+  }, [selectedDeveloperId, user]);
 
   const { data: developer, isLoading } = useFetchDeveloperHierarchy({
     id: activeDeveloperId,
   });
 
-  const safeDeveloper = developer || { id: null };
+  useEffect(() => {
+    setSafeDeveloper(developer || { id: null });
+  }, [developer]);
 
   const { data: insights, isLoading: insightsLoading } = useFetchInsights({
     developer: safeDeveloper,
@@ -196,12 +196,12 @@ function ChplDeveloperDashboard() {
     setDisplayedUsers(usersData.users || []);
   }, [usersData, usersLoading]);
 
-  // Reset selected developer when user changes or when user has only one developer
   useEffect(() => {
-    if (!hasMultipleDevelopers) {
+    const userOrganizations = user?.organizations || [];
+    if (userOrganizations.length <= 1) {
       setSelectedDeveloperId(null);
     }
-  }, [user, hasMultipleDevelopers]);
+  }, [user]);
 
   useEffect(() => {
     if (!developer?.products) {
@@ -279,7 +279,7 @@ function ChplDeveloperDashboard() {
                   </CardContent>
                 </Card>
               </Grid>
-              
+
               {/* Right side buttons skeleton */}
               <Grid item style={{ padding: '0' }} xs={4}>
                 <Box display="flex" justifyContent="flex-end" marginRight={8} gridGap="8px" alignItems="baseline">
@@ -327,12 +327,12 @@ function ChplDeveloperDashboard() {
                         </Box>
                         <Skeleton variant="text" width="100%" height={20} />
                         <Skeleton variant="text" width="90%" height={20} style={{ marginBottom: '16px' }} />
-                        
+
                         <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
                           <Skeleton variant="text" width="25%" height={20} />
                           <Skeleton variant="text" width="15%" height={20} />
                         </Box>
-                        
+
                         {[1, 2, 3].map((item) => (
                           <Box key={item} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
                             <Skeleton variant="text" width="40%" height={20} />
@@ -354,7 +354,7 @@ function ChplDeveloperDashboard() {
                         </Box>
                         <Skeleton variant="text" width="100%" height={20} />
                         <Skeleton variant="text" width="80%" height={20} style={{ marginBottom: '16px' }} />
-                        
+
                         {[1, 2].map((item) => (
                           <Box key={item} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
                             <Skeleton variant="text" width="30%" height={20} />
@@ -373,7 +373,7 @@ function ChplDeveloperDashboard() {
                         <Skeleton variant="text" width="40%" height={32} style={{ marginBottom: '16px' }} />
                         <Skeleton variant="text" width="100%" height={20} />
                         <Skeleton variant="text" width="90%" height={20} style={{ marginBottom: '24px' }} />
-                        
+
                         <Box style={{ marginBottom: '24px' }}>
                           <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
                             <Skeleton variant="text" width="25%" height={20} />
@@ -405,7 +405,7 @@ function ChplDeveloperDashboard() {
                         </Box>
                         <Skeleton variant="text" width="100%" height={20} />
                         <Skeleton variant="text" width="85%" height={20} style={{ marginBottom: '16px' }} />
-                        
+
                         {[1, 2].map((item) => (
                           <Box key={item} style={{ marginBottom: '12px' }}>
                             <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -432,12 +432,12 @@ function ChplDeveloperDashboard() {
                         </Box>
                         <Skeleton variant="text" width="100%" height={20} />
                         <Skeleton variant="text" width="80%" height={20} style={{ marginBottom: '16px' }} />
-                        
+
                         <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
                           <Skeleton variant="text" width="15%" height={20} />
                           <Skeleton variant="text" width="15%" height={20} />
                         </Box>
-                        
+
                         {[1, 2, 3, 4, 5].map((item) => (
                           <Box key={item} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
                             <Box>
@@ -482,9 +482,9 @@ function ChplDeveloperDashboard() {
                     </Box>
                     <Skeleton variant="text" width="100%" height={16} />
                     <Skeleton variant="text" width="80%" height={16} style={{ marginBottom: '16px' }} />
-                    
+
                     <Skeleton variant="rectangular" width="100%" height={40} style={{ marginBottom: '16px' }} />
-                    
+
                     {[1, 2, 3].map((item) => (
                       <Box key={item} display="flex" alignItems="center" style={{ padding: '8px 0' }}>
                         <Skeleton variant="circular" width={40} height={40} style={{ marginRight: '12px' }} />
@@ -503,7 +503,7 @@ function ChplDeveloperDashboard() {
                     <Skeleton variant="rectangular" width="100%" height={200} />
                   </CardContent>
                 </Card>
-                
+
                 <Box display="flex" justifyContent="space-between">
                   <Card style={{ marginTop: '24px', width: '48%' }}>
                     <CardContent>
@@ -554,7 +554,8 @@ function ChplDeveloperDashboard() {
   };
 
   const getActiveDeveloperName = () => {
-    const activeDeveloper = userOrganizations.find(org => org.id === activeDeveloperId);
+    const userOrganizations = user?.organizations || [];
+    const activeDeveloper = userOrganizations.find((org) => org.id === activeDeveloperId);
     return activeDeveloper?.name || 'Developer';
   };
 
@@ -570,13 +571,11 @@ function ChplDeveloperDashboard() {
 
   const handleViewAllProducts = () => {
     const developerName = getActiveDeveloperName();
-    
-    // If filter context is available, set the search term
+
     if (filterContext && filterContext.setSearchTerm) {
       filterContext.setSearchTerm(encodeURI(developerName));
       window.location.href = '#/search';
     } else {
-      // Fallback to URL parameter approach if filter context is not available
       window.location.href = `#/search?q=${encodeURIComponent(developerName)}`;
     }
   };
@@ -592,7 +591,7 @@ function ChplDeveloperDashboard() {
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ maxWidth: '85%' }}>
                       <Typography variant="h4" className={classes.titlePadding}>
-                      {getActiveDeveloperName()}
+                        {getActiveDeveloperName()}
                       </Typography>
                       <Typography variant="body2">
                         This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you&apos;ll be able to easily take action, review content, and stay updated with minimal effort.
@@ -615,33 +614,33 @@ function ChplDeveloperDashboard() {
                 gridGap="8px"
                 alignItems="baseline"
               >
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleInfoDialogOpen}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleInfoDialogOpen}
                 >
-              Developer Info
-              </Button>
-                  {hasMultipleDevelopers && (
-              <Box display="flex" justifyContent="center" marginBottom={3}>
-              <FormControl variant="outlined" className={classes.developerSelect}>
-              <InputLabel id="developer-select-label">Select Developer</InputLabel>
-              <Select
-                labelId="developer-select-label"
-                value={activeDeveloperId || ''}
-                onChange={handleDeveloperChange}
-                label="Select Developer"
-                IconComponent={ExpandMoreIcon}
-              >
-              {userOrganizations.map((org) => (
-              <MenuItem key={org.id} value={org.id}>
-              {org.name}
-              </MenuItem>
-              ))}
-              </Select>
-              </FormControl>
-              </Box>
-              )}
+                  Developer Info
+                </Button>
+                {(user?.organizations || []).length > 1 && (
+                  <Box display="flex" justifyContent="center" marginBottom={3}>
+                    <FormControl variant="outlined" className={classes.developerSelect}>
+                      <InputLabel id="developer-select-label">Select Developer</InputLabel>
+                      <Select
+                        labelId="developer-select-label"
+                        value={activeDeveloperId || ''}
+                        onChange={handleDeveloperChange}
+                        label="Select Developer"
+                        IconComponent={ExpandMoreIcon}
+                      >
+                        {(user?.organizations || []).map((org) => (
+                          <MenuItem key={org.id} value={org.id}>
+                            {org.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                )}
               </Box>
             </Grid>
           </Grid>
@@ -747,9 +746,9 @@ function ChplDeveloperDashboard() {
                           </Typography>
                           <Typography className={classes.blueNumber}>{displayedProducts.length}</Typography>
                         </Box>
-                        <Button 
-                          variant="text" 
-                          color="primary" 
+                        <Button
+                          variant="text"
+                          color="primary"
                           size="small"
                           onClick={handleViewAllProducts}
                         >
@@ -782,14 +781,12 @@ function ChplDeveloperDashboard() {
                             </Box>
 
                             {attestationsData.attestations.map((attestation, index) => {
-                              // Format period display
                               const periodStart = attestation.attestationPeriod?.periodStart
                                 ? new Date(attestation.attestationPeriod.periodStart).toLocaleDateString() : 'N/A';
                               const periodEnd = attestation.attestationPeriod?.periodEnd
                                 ? new Date(attestation.attestationPeriod.periodEnd).toLocaleDateString() : 'N/A';
                               const periodDisplay = `${periodStart} to ${periodEnd}`;
 
-                              // Determine status based on whether attestation was submitted
                               const isSubmitted = attestation.signature || attestation.signatureDate;
                               const statusDisplay = isSubmitted ? 'Attestations submitted' : 'No Attestations submitted';
 
@@ -824,7 +821,10 @@ function ChplDeveloperDashboard() {
                         )}
 
                         <Typography variant="body2">
-                          For more information, please visit the <a href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf" target="_blank" rel="noopener noreferrer">Attestations Resource Guide</a>.
+                          For more information, please visit the
+                          {' '}
+                          <a href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf" target="_blank" rel="noopener noreferrer">Attestations Resource Guide</a>
+                          .
                         </Typography>
                       </CardContent>
                     </Card>
@@ -1224,8 +1224,7 @@ function ChplDeveloperDashboard() {
                           <IconButton size="small">
                             <SearchIcon />
                           </IconButton>
-                          <IconButton size="small">
-                          </IconButton>
+                          <IconButton size="small" />
                         </InputAdornment>
                       ),
                     }}
@@ -1313,9 +1312,9 @@ function ChplDeveloperDashboard() {
                 user: null,
               }}
               >
-            <Button onClick={handleInfoDialogClose} color="primary">
-              Close
-            </Button>
+                <Button onClick={handleInfoDialogClose} color="primary">
+                  Close
+                </Button>
                 <ChplDeveloperViewDetails
                   dispatch={() => {}} // Empty dispatch function for view-only mode
                   canEdit={() => false} // Disable editing in dialog

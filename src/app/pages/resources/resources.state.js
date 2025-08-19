@@ -63,6 +63,14 @@ const states = [
       title: 'Dashboard',
       roles: ['chpl-admin', 'chpl-onc'],
     },
+  }, {
+    name: 'reports-dashboard',
+    url: '/reports-dashboard',
+    component: 'chplComplianceDashboardWrapperBridge',
+    data: {
+      title: 'Dashboard',
+      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
+    },
   },
 ];
 
