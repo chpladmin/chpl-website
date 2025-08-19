@@ -72,7 +72,7 @@ function ChplCriterionDetailsView({
         && ((criterion.optionalStandards?.length > 0)
             || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
 
-  const submitSBULChange = () => {
+  const submitSbulChange = () => {
     setSbulChange(true);
   };
 
@@ -705,7 +705,7 @@ function ChplCriterionDetailsView({
                       { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: listing.developer.id }) && sbulChangeRequestIsOn
                         && (
                           <Button
-                            onClick={() => submitSBULChange()}
+                            onClick={() => submitSbulChange()}
                           >
                             Submit change
                           </Button>
