@@ -27,6 +27,9 @@ const useStyles = makeStyles({
   nonCaps: {
     textTransform: 'none',
   },
+  questionParagraph: {
+    marginBottom: '8px',
+  },
   radioGroup: {
     textTransform: 'none',
   },
@@ -112,7 +115,10 @@ function ChplAttestationWizardSection2({ dispatch, instructions, sections: initi
       <FormControl component="fieldset">
         <FormLabel className={classes.nonCaps}>
           { item.question.question.split('\\n\\n').map((p) => (
-            <Typography key={p}>
+            <Typography
+              className={classes.questionParagraph}
+              key={p}
+            >
               { interpretLink(p) }
             </Typography>
           ))}
