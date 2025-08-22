@@ -1,43 +1,43 @@
 import React, { useContext, useState, useEffect } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Container,
-  Typography,
-  Grid,
-  Button,
-  Avatar,
-  TextField,
-  InputAdornment,
-  IconButton,
   Dialog,
   DialogContent,
   FormControl,
+  Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
-  Select,
-  MenuItem,
   List,
   ListItem,
   makeStyles,
-  DialogTitle,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import CloseIcon from '@material-ui/icons/Close';
+
 import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
 
-import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplAttestationView from 'components/attestation/attestation-view';
-import { ChplAvatar, ChplDialogTitle, ChplDashboardSkeleton, ChplLink, ChplTooltip } from 'components/util';
-import { getDataDisplay } from 'components/listing/details/compliance/compliance.services';
+import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import { useFilterContext } from 'components/filter';
+import { getDataDisplay } from 'components/listing/details/compliance/compliance.services';
+import {
+  ChplAvatar, ChplDashboardSkeleton, ChplDialogTitle, ChplLink,
+} from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext, DeveloperContext, FlagContext } from 'shared/contexts';
+import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
 import {
   useFetchDeveloperHierarchy,
   useFetchInsights,
@@ -49,6 +49,9 @@ import {
 } from 'api/developer';
 
 const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 158px)',
+  },
   titlePadding: {
     paddingTop: '16px',
     paddingBottom: '16px',
@@ -68,12 +71,6 @@ const useStyles = makeStyles({
     zIndex: 10,
     width: '180px',
     height: 'auto',
-  },
-  userAvatar: {
-    width: '40px',
-    height: '40px',
-    fontSize: '16px',
-    fontWeight: 'bold',
   },
   userRow: {
     display: 'flex',
@@ -108,7 +105,88 @@ const useStyles = makeStyles({
     marginBottom: '16px',
   },
   containerDashboard: {
-    marginTop: '142px',
+    marginTop: '32px',
+  },
+  // New classes from inline styles
+  gridRightPadding: {
+    paddingRight: '32px',
+  },
+  gridNoPadding: {
+    padding: '0',
+  },
+  gridMainContainer: {
+    marginBottom: '24px',
+  },
+  gridTopActions: {
+    marginTop: '16px',
+    marginBottom: '16px',
+  },
+  cardSpacing: {
+    marginBottom: '24px',
+  },
+  textSpacing: {
+    marginBottom: '16px',
+  },
+  textSpacingLarge: {
+    margin: '12px 0',
+  },
+  textSpacingTop: {
+    marginTop: '16px',
+  },
+  textRight: {
+    marginRight: '8px',
+  },
+  textItalic: {
+    margin: '12px 0',
+    fontStyle: 'italic',
+  },
+  maxWidthContainer: {
+    maxWidth: '85%',
+  },
+  listItemSpacing: {
+    padding: '8px 0',
+    borderBottom: '1px solid #f0f0f0',
+  },
+  listItemDynamic: {
+    padding: '8px 0',
+  },
+  cardHeaderSpacing: {
+    marginBottom: '16px',
+  },
+  textSpacingSmall: {
+    marginBottom: '12px',
+  },
+  textSpacingMedium: {
+    marginBottom: '8px',
+  },
+  noDecoration: {
+    textDecoration: 'none',
+  },
+  italicText: {
+    fontStyle: 'italic',
+  },
+  italicGrayText: {
+    fontStyle: 'italic',
+    color: '#666',
+  },
+  smallLinkText: {
+    fontSize: '12px',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+  },
+  avatarContainer: {
+    width: '40px',
+    height: '40px',
+    backgroundColor: 'transparent',
+    border: 'none',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: '16px',
+    cursor: 'pointer',
   },
 });
 
@@ -315,14 +393,14 @@ function ChplDeveloperDashboard() {
     if (!review.nonConformities || review.nonConformities.length === 0) {
       return 'Open';
     }
-    
+
     const openNonConformities = review.nonConformities.filter((nc) => nc.nonConformityStatus === 'Open').length;
     const endDates = review.nonConformities
       .filter((nc) => nc.capApprovalDate)
       .filter((nc) => nc.capEndDate)
       .sort((a, b) => (a.capEndDate > b.capEndDate ? -1 : 1));
     const endDate = openNonConformities === 0 && endDates[0]?.capEndDate;
-    
+
     return endDate ? 'Closed' : 'Open';
   };
 
@@ -342,11 +420,11 @@ function ChplDeveloperDashboard() {
       <Container maxWidth="lg">
         <div className={classes.containerDashboard}>
           <Grid container spacing={4} display="flex" flexDirection="row" alignItems="flex-start" alignContent="flex-start">
-            <Grid item xs={8} style={{ paddingRight: '32px' }}>
+            <Grid item xs={8} className={classes.gridRightPadding}>
               <Card className={classes.welcomeCard}>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ maxWidth: '85%' }}>
+                    <Box display="flex" flexDirection="column" alignItems="flex-start" className={classes.maxWidthContainer}>
                       <Box alignItems="center" display="flex" gridGap="8px" className={classes.titlePadding}>
                         <ChplAvatar text={getActiveDeveloperName()} />
                         <Typography variant="h4">
@@ -366,7 +444,7 @@ function ChplDeveloperDashboard() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item style={{ padding: '0' }} xs={4}>
+            <Grid item className={classes.gridNoPadding} xs={4}>
               <Box
                 display="flex"
                 justifyContent="flex-end"
@@ -404,9 +482,9 @@ function ChplDeveloperDashboard() {
               </Box>
             </Grid>
           </Grid>
-          <Grid style={{ marginBottom: '24px' }} container wrap="nowrap" lg={12} spacing={4}>
+          <Grid className={classes.gridMainContainer} container wrap="nowrap" lg={12} spacing={4}>
             <Grid item xs={8}>
-              <Grid style={{ marginTop: '16px', marginBottom: '16px' }} container spacing={4}>
+              <Grid className={classes.gridTopActions} container spacing={4}>
                 <Grid item xs={4}>
                   <Box className={classes.chartPlaceholder}>
                     <Typography align="center" variant="subtitle2" gutterBottom>
@@ -432,7 +510,7 @@ function ChplDeveloperDashboard() {
               <Grid wrap="nowrap" container spacing={4}>
                 <Grid item xs={12}>
                   <Grid item>
-                    <Card style={{ marginBottom: '24px' }}>
+                    <Card className={classes.cardSpacing}>
                       <CardContent>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
                           <Typography variant="h6">
@@ -454,9 +532,9 @@ function ChplDeveloperDashboard() {
                     </Card>
                   </Grid>
                   <Grid item>
-                    <Card style={{ marginBottom: '24px' }}>
+                    <Card className={classes.cardSpacing}>
                       <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.cardHeaderSpacing}>
                           <Typography variant="h6">Attestations</Typography>
                           <Typography variant="body2">
                             (
@@ -465,13 +543,13 @@ function ChplDeveloperDashboard() {
                             Found)
                           </Typography>
                         </Box>
-                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
+                        <Typography variant="body2" className={classes.textSpacing}>
                           Attestations information is displayed here if a health IT developer&apos;s attestation of compliance with ONC&apos;s Conditions of Certification requirements.
                         </Typography>
 
                         {attestationsData?.attestations && attestationsData.attestations.length > 0 ? (
                           <>
-                            <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
+                            <Box display="flex" justifyContent="space-between" className={classes.textSpacing}>
                               <Typography variant="subtitle2">Attestations Period</Typography>
                               <Typography variant="subtitle2">Status</Typography>
                             </Box>
@@ -484,10 +562,10 @@ function ChplDeveloperDashboard() {
                               const isSubmitted = attestation.signature || attestation.signatureDate;
                               const statusDisplay = isSubmitted ? 'Attestations submitted' : 'No Attestations submitted';
                               return (
-                                <Box key={attestation.id || index} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
+                                <Box key={attestation.id || index} display="flex" justifyContent="space-between" alignItems="center" className={classes.listItemSpacing}>
                                   <Typography variant="body2">{periodDisplay}</Typography>
                                   <Box display="flex" alignItems="center">
-                                    <Typography variant="body2" style={{ marginRight: '8px' }}>
+                                    <Typography variant="body2" className={classes.textRight}>
                                       {statusDisplay}
                                     </Typography>
                                     {!isSubmitted ? (
@@ -508,12 +586,12 @@ function ChplDeveloperDashboard() {
                             })}
                           </>
                         ) : (
-                          <Typography variant="body2" style={{ margin: '12px 0', fontStyle: 'italic' }}>
+                          <Typography variant="body2" className={classes.textItalic}>
                             No attestation data available
                           </Typography>
                         )}
 
-                        <Typography style={{ marginTop: '16px' }} variant="body2">
+                        <Typography className={classes.textSpacingTop} variant="body2">
                           For more information, please visit the
                           {' '}
                           <a href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf" target="_blank" rel="noopener noreferrer">Attestations Resource Guide</a>
@@ -534,26 +612,26 @@ function ChplDeveloperDashboard() {
                             Found)
                           </Typography>
                         </Box>
-                        <Typography variant="body2" style={{ margin: '12px 0' }}>
+                        <Typography variant="body2" className={classes.textSpacingLarge}>
                           Insights information is displayed here. For more information, please visit the Insights Hub.
                         </Typography>
 
                         {insights && insights.length > 0 ? (
                           <>
-                            <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
+                            <Box display="flex" justifyContent="space-between" className={classes.textSpacing}>
                               <Typography variant="subtitle2">Period</Typography>
                               <Typography variant="subtitle2">Status</Typography>
                             </Box>
 
                             {insights.map((insight, index) => (
-                              <Box key={insight.id || `insight-${index}`} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: index < insights.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
+                              <Box key={insight.id || `insight-${index}`} display="flex" justifyContent="space-between" alignItems="center" className={classes.listItemDynamic} style={{ borderBottom: index < insights.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
                                 <Typography variant="body2">{insight.period || insight.year || 'N/A'}</Typography>
                                 <Typography variant="body2">{insight.status || 'Submitted'}</Typography>
                               </Box>
                             ))}
                           </>
                         ) : (
-                          <Typography variant="body2" style={{ margin: '12px 0', fontStyle: 'italic' }}>
+                          <Typography variant="body2" className={classes.textItalic}>
                             No insights data available
                           </Typography>
                         )}
@@ -702,7 +780,7 @@ function ChplDeveloperDashboard() {
                                   </Typography>
                                   <Box display="flex" alignItems="center">
                                     <Typography variant="body2" style={{ marginRight: '8px' }}>
-                                      {(review.nonConformities || []).filter(nc => nc.nonConformityStatus === 'Open').length}
+                                      {(review.nonConformities || []).filter((nc) => nc.nonConformityStatus === 'Open').length}
                                       {' '}
                                       open /
                                       {' '}
@@ -893,16 +971,16 @@ function ChplDeveloperDashboard() {
               <Box display="flex" justifyContent="space-between">
                 <Card style={{ marginTop: '24px' }}>
                   <CardContent>
-                      <div className={classes.chartPlaceholder}>
-                        Chart Visualization Here
-                      </div>
+                    <div className={classes.chartPlaceholder}>
+                      Chart Visualization Here
+                    </div>
                   </CardContent>
                 </Card>
                 <Card style={{ marginTop: '24px' }}>
                   <CardContent>
-                      <div className={classes.chartPlaceholder}>
-                        Chart Visualization Here
-                      </div>
+                    <div className={classes.chartPlaceholder}>
+                      Chart Visualization Here
+                    </div>
                   </CardContent>
                 </Card>
               </Box>
@@ -1026,9 +1104,10 @@ function ChplDeveloperDashboard() {
                             flexWrap: 'wrap',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                          }}>
+                          }}
+                          >
                             {getDataDisplay('Non-conformity Type', <Typography>{nc.nonConformityType || 'N/A'}</Typography>, 'Type of non-conformity found during review')}
-                            
+
                             {getDataDisplay('Developer Associated Listings',
                               <>
                                 {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0) && (
@@ -1048,23 +1127,19 @@ function ChplDeveloperDashboard() {
                                   </List>
                                 )}
                               </>,
-                              'A listing of other certified products associated with the non-conformity, as applicable'
-                            )}
-                            
-                            {getDataDisplay('Corrective Action Plan Approval Date', 
-                              <Typography>{friendlyNc.friendlyCapApprovalDate || 'N/A'}</Typography>, 
-                              'The date that ONC approved the corrective action plan proposed by the developer'
-                            )}
-                            
-                            {getDataDisplay('Date Corrective Action Must Be Completed', 
-                              <Typography>{friendlyNc.friendlyCapMustCompleteDate || 'N/A'}</Typography>, 
-                              'The date that the corrective action must be completed in order to avoid termination of the certified product\'s certification status and/or a certification ban of the developer, as applicable'
-                            )}
-                            
-                            {getDataDisplay('Date Corrective Action Was Completed', 
-                              <Typography>{friendlyNc.friendlyCapEndDate || 'N/A'}</Typography>, 
-                              'The date the corrective action was completed'
-                            )}
+                              'A listing of other certified products associated with the non-conformity, as applicable')}
+
+                            {getDataDisplay('Corrective Action Plan Approval Date',
+                              <Typography>{friendlyNc.friendlyCapApprovalDate || 'N/A'}</Typography>,
+                              'The date that ONC approved the corrective action plan proposed by the developer')}
+
+                            {getDataDisplay('Date Corrective Action Must Be Completed',
+                              <Typography>{friendlyNc.friendlyCapMustCompleteDate || 'N/A'}</Typography>,
+                              'The date that the corrective action must be completed in order to avoid termination of the certified product\'s certification status and/or a certification ban of the developer, as applicable')}
+
+                            {getDataDisplay('Date Corrective Action Was Completed',
+                              <Typography>{friendlyNc.friendlyCapEndDate || 'N/A'}</Typography>,
+                              'The date the corrective action was completed')}
                           </Box>
                         </CardContent>
                       </Card>
