@@ -8,9 +8,9 @@ import { string } from 'prop-types';
 const colors = ['color_bdc3c7', 'color_6f7b87', 'color_2c3e50', 'color_2f3193', 'color_662d91', 'color_922790', 'color_ec2176', 'color_ed1c24', 'color_f36622', 'color_f8941e', 'color_fab70f', 'color_fdde00', 'color_d1d219', 'color_8ec73f', 'color_00a650', 'color_00aa9c', 'color_00adef', 'color_0081cd', 'color_005bab'];
 
 const useStyles = makeStyles((theme) => ({
-  color_bdc3c7: { backgroundColor: '#bdc3c7', color: theme.palette.getContrastText('#bdc3c7') },
-  color_6f7b87: { backgroundColor: '#6f7b87', color: theme.palette.getContrastText('#6f7b87') },
-  color_2c3e50: { backgroundColor: '#2c3e50', color: theme.palette.getContrastText('#2c3e50') },
+  color_bdc3c7: { backgroundColor: '#9efff5ff', color: theme.palette.getContrastText('#bdc3c7') },
+  color_6f7b87: { backgroundColor: '#490404ff', color: theme.palette.getContrastText('#6f7b87') },
+  color_2c3e50: { backgroundColor: '#00666dff', color: theme.palette.getContrastText('#2c3e50') },
   color_2f3193: { backgroundColor: '#2f3193', color: theme.palette.getContrastText('#2f3193') },
   color_662d91: { backgroundColor: '#662d91', color: theme.palette.getContrastText('#662d91') },
   color_922790: { backgroundColor: '#922790', color: theme.palette.getContrastText('#922790') },

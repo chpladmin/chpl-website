@@ -3,6 +3,7 @@ import {
   Box,
   Card,
   CardContent,
+  CardHeader,
   Container,
   Typography,
   Grid,
@@ -11,28 +12,31 @@ import {
   TextField,
   InputAdornment,
   IconButton,
-  makeStyles,
   Dialog,
   DialogContent,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
+  List,
+  ListItem,
+  makeStyles,
+  DialogTitle,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import {
-  Add as AddIcon,
-  Visibility as VisibilityIcon,
-  Search as SearchIcon,
-  ExpandMore as ExpandMoreIcon,
-} from '@material-ui/icons';
-
+import AddIcon from '@material-ui/icons/Add';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SearchIcon from '@material-ui/icons/Search';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import CloseIcon from '@material-ui/icons/Close';
 import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
 
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplAttestationView from 'components/attestation/attestation-view';
-import { ChplDialogTitle } from 'components/util';
+import { ChplAvatar, ChplDialogTitle, ChplDashboardSkeleton, ChplLink, ChplTooltip } from 'components/util';
+import { getDataDisplay } from 'components/listing/details/compliance/compliance.services';
 import { useFilterContext } from 'components/filter';
+import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext, DeveloperContext, FlagContext } from 'shared/contexts';
 import {
   useFetchDeveloperHierarchy,
@@ -45,15 +49,6 @@ import {
 } from 'api/developer';
 
 const useStyles = makeStyles({
-  containerDashboard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-    marginTop: '12%',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 188px)',
-  },
   titlePadding: {
     paddingTop: '16px',
     paddingBottom: '16px',
@@ -67,8 +62,8 @@ const useStyles = makeStyles({
   },
   dashboardGraphic: {
     position: 'absolute',
-    top: '60%',
-    right: '-4px',
+    top: '65%',
+    right: '-8px',
     transform: 'translateY(-50%)',
     zIndex: 10,
     width: '180px',
@@ -109,8 +104,11 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
   },
   developerSelect: {
-    minWidth: '80%',
+    maxWidth: '200px',
     marginBottom: '16px',
+  },
+  containerDashboard: {
+    marginTop: '142px',
   },
 });
 
@@ -126,6 +124,8 @@ function ChplDeveloperDashboard() {
   const [selectedDeveloperId, setSelectedDeveloperId] = useState(null);
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsDialogOpen, setAttestationsDialogOpen] = useState(false);
+  const [activeDirectReview, setActiveDirectReview] = useState({});
+  const [directReviewDialogOpen, setDirectReviewDialogOpen] = useState(false);
   const [safeDeveloper, setSafeDeveloper] = useState({ id: null });
   const [activeDeveloperId, setActiveDeveloperId] = useState(null);
 
@@ -259,286 +259,11 @@ function ChplDeveloperDashboard() {
   }, [developer]);
 
   if (isLoading || insightsLoading || usersLoading || directReviewsLoading || rwtPlansLoading || rwtResultsLoading || attestationsLoading) {
-    return (
-      <div className={classes.fixFooterSpacing}>
-        <Container maxWidth="lg">
-          <div className={classes.containerDashboard}>
-            <Grid container spacing={4} display="flex" flexDirection="row" alignItems="flex-start" alignContent="flex-start">
-              {/* Welcome Card Skeleton */}
-              <Grid item xs={8} style={{ paddingRight: '32px' }}>
-                <Card className={classes.welcomeCard}>
-                  <CardContent>
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ maxWidth: '85%' }}>
-                        <Skeleton variant="text" width="60%" height={40} style={{ marginBottom: '16px' }} />
-                        <Skeleton variant="text" width="100%" height={20} />
-                        <Skeleton variant="text" width="90%" height={20} />
-                        <Skeleton variant="text" width="80%" height={20} />
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              {/* Right side buttons skeleton */}
-              <Grid item style={{ padding: '0' }} xs={4}>
-                <Box display="flex" justifyContent="flex-end" marginRight={8} gridGap="8px" alignItems="baseline">
-                  <Skeleton variant="rectangular" width={120} height={36} />
-                  <Skeleton variant="rectangular" width={150} height={36} />
-                </Box>
-              </Grid>
-            </Grid>
-
-            <Grid style={{ marginBottom: '24px' }} container wrap="nowrap" lg={12} spacing={4}>
-              <Grid item xs={8}>
-                {/* Top action cards row */}
-                <Grid style={{ marginBottom: '24px' }} container spacing={4}>
-                  <Grid item xs={4}>
-                    <Skeleton variant="rectangular" width="100%" height={100} />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Skeleton variant="rectangular" width="100%" height={100} />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Skeleton variant="rectangular" width="100%" height={100} />
-                  </Grid>
-                </Grid>
-
-                {/* Main content cards */}
-                <Grid wrap="nowrap" container spacing={4}>
-                  <Grid item xs={12}>
-                    {/* Products card skeleton */}
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Skeleton variant="text" width="40%" height={32} />
-                          <Skeleton variant="text" width="10%" height={32} />
-                        </Box>
-                        <Skeleton variant="text" width="20%" height={24} />
-                      </CardContent>
-                    </Card>
-
-                    {/* Attestations card skeleton */}
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                          <Skeleton variant="text" width="30%" height={32} />
-                          <Skeleton variant="text" width="15%" height={20} />
-                        </Box>
-                        <Skeleton variant="text" width="100%" height={20} />
-                        <Skeleton variant="text" width="90%" height={20} style={{ marginBottom: '16px' }} />
-
-                        <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
-                          <Skeleton variant="text" width="25%" height={20} />
-                          <Skeleton variant="text" width="15%" height={20} />
-                        </Box>
-
-                        {[1, 2, 3].map((item) => (
-                          <Box key={item} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
-                            <Skeleton variant="text" width="40%" height={20} />
-                            <Box display="flex" alignItems="center">
-                              <Skeleton variant="text" width="30%" height={20} style={{ marginRight: '8px' }} />
-                              <Skeleton variant="circular" width={24} height={24} />
-                            </Box>
-                          </Box>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    {/* Access Insights card skeleton */}
-                    <Card>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Skeleton variant="text" width="30%" height={32} />
-                          <Skeleton variant="text" width="15%" height={20} />
-                        </Box>
-                        <Skeleton variant="text" width="100%" height={20} />
-                        <Skeleton variant="text" width="80%" height={20} style={{ marginBottom: '16px' }} />
-
-                        {[1, 2].map((item) => (
-                          <Box key={item} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
-                            <Skeleton variant="text" width="30%" height={20} />
-                            <Skeleton variant="text" width="20%" height={20} />
-                          </Box>
-                        ))}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-
-                  {/* Second column of cards */}
-                  <Grid item xs={12}>
-                    {/* Real World Testing card skeleton */}
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Skeleton variant="text" width="40%" height={32} style={{ marginBottom: '16px' }} />
-                        <Skeleton variant="text" width="100%" height={20} />
-                        <Skeleton variant="text" width="90%" height={20} style={{ marginBottom: '24px' }} />
-
-                        <Box style={{ marginBottom: '24px' }}>
-                          <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
-                            <Skeleton variant="text" width="25%" height={20} />
-                            <Skeleton variant="text" width="15%" height={16} />
-                          </Box>
-                          {[1, 2, 3].map((item) => (
-                            <Skeleton key={item} variant="text" width="100%" height={16} style={{ marginBottom: '8px' }} />
-                          ))}
-                        </Box>
-
-                        <Box>
-                          <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
-                            <Skeleton variant="text" width="25%" height={20} />
-                            <Skeleton variant="text" width="15%" height={16} />
-                          </Box>
-                          {[1, 2, 3].map((item) => (
-                            <Skeleton key={item} variant="text" width="100%" height={16} style={{ marginBottom: '8px' }} />
-                          ))}
-                        </Box>
-                      </CardContent>
-                    </Card>
-
-                    {/* Direct Reviews card skeleton */}
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Skeleton variant="text" width="40%" height={32} />
-                          <Skeleton variant="text" width="15%" height={20} />
-                        </Box>
-                        <Skeleton variant="text" width="100%" height={20} />
-                        <Skeleton variant="text" width="85%" height={20} style={{ marginBottom: '16px' }} />
-
-                        {[1, 2].map((item) => (
-                          <Box key={item} style={{ marginBottom: '12px' }}>
-                            <Box display="flex" justifyContent="space-between" alignItems="center">
-                              <Box>
-                                <Skeleton variant="text" width="60%" height={20} />
-                                <Skeleton variant="text" width="40%" height={16} />
-                              </Box>
-                              <Box display="flex" alignItems="center">
-                                <Skeleton variant="text" width="30%" height={20} style={{ marginRight: '8px' }} />
-                                <Skeleton variant="circular" width={24} height={24} />
-                              </Box>
-                            </Box>
-                          </Box>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    {/* Surveillance Activities card skeleton */}
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                          <Skeleton variant="text" width="40%" height={32} />
-                          <Skeleton variant="text" width="15%" height={20} />
-                        </Box>
-                        <Skeleton variant="text" width="100%" height={20} />
-                        <Skeleton variant="text" width="80%" height={20} style={{ marginBottom: '16px' }} />
-
-                        <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
-                          <Skeleton variant="text" width="15%" height={20} />
-                          <Skeleton variant="text" width="15%" height={20} />
-                        </Box>
-
-                        {[1, 2, 3, 4, 5].map((item) => (
-                          <Box key={item} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0' }}>
-                            <Box>
-                              <Skeleton variant="text" width="50%" height={20} />
-                              <Skeleton variant="text" width="60%" height={16} />
-                            </Box>
-                            <Box display="flex" alignItems="center">
-                              <Skeleton variant="text" width="20%" height={20} style={{ marginRight: '8px' }} />
-                              <Skeleton variant="circular" width={24} height={24} />
-                            </Box>
-                          </Box>
-                        ))}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              {/* Right sidebar skeleton */}
-              <Grid item xs={4}>
-                {/* Announcements card skeleton */}
-                <Card style={{ marginBottom: '24px', marginTop: '-84px' }}>
-                  <CardContent>
-                    <Skeleton variant="text" width="60%" height={32} style={{ marginBottom: '16px' }} />
-                    {[1, 2, 3, 4].map((item) => (
-                      <Box key={item} style={{ marginBottom: '16px' }}>
-                        <Skeleton variant="text" width="85%" height={20} style={{ marginBottom: '8px' }} />
-                        <Skeleton variant="text" width="100%" height={16} />
-                        <Skeleton variant="text" width="90%" height={16} />
-                      </Box>
-                    ))}
-                    <Skeleton variant="rectangular" width="100%" height={32} style={{ marginTop: '16px' }} />
-                  </CardContent>
-                </Card>
-
-                {/* Manage Users card skeleton */}
-                <Card>
-                  <CardContent>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                      <Skeleton variant="text" width="40%" height={32} />
-                      <Skeleton variant="text" width="20%" height={20} />
-                    </Box>
-                    <Skeleton variant="text" width="100%" height={16} />
-                    <Skeleton variant="text" width="80%" height={16} style={{ marginBottom: '16px' }} />
-
-                    <Skeleton variant="rectangular" width="100%" height={40} style={{ marginBottom: '16px' }} />
-
-                    {[1, 2, 3].map((item) => (
-                      <Box key={item} display="flex" alignItems="center" style={{ padding: '8px 0' }}>
-                        <Skeleton variant="circular" width={40} height={40} style={{ marginRight: '12px' }} />
-                        <Box>
-                          <Skeleton variant="text" width="120px" height={20} />
-                          <Skeleton variant="text" width="150px" height={16} />
-                        </Box>
-                      </Box>
-                    ))}
-                  </CardContent>
-                </Card>
-
-                {/* Chart skeletons */}
-                <Card style={{ marginTop: '24px' }}>
-                  <CardContent>
-                    <Skeleton variant="rectangular" width="100%" height={200} />
-                  </CardContent>
-                </Card>
-
-                <Box display="flex" justifyContent="space-between">
-                  <Card style={{ marginTop: '24px', width: '48%' }}>
-                    <CardContent>
-                      <Skeleton variant="rectangular" width="100%" height={150} />
-                    </CardContent>
-                  </Card>
-                  <Card style={{ marginTop: '24px', width: '48%' }}>
-                    <CardContent>
-                      <Skeleton variant="rectangular" width="100%" height={150} />
-                    </CardContent>
-                  </Card>
-                </Box>
-              </Grid>
-            </Grid>
-          </div>
-        </Container>
-      </div>
-    );
+    return <ChplDashboardSkeleton />;
   }
 
   const filteredUsers = displayedUsers.filter((userData) => userData.fullName?.toLowerCase().includes(localSearchTerm.toLowerCase())
     || userData.email?.toLowerCase().includes(localSearchTerm.toLowerCase()));
-
-  const getUserInitials = (fullName) => {
-    if (!fullName) return '??';
-    const names = fullName.split(' ');
-    const initials = names.map((name) => name.charAt(0).toUpperCase()).join('');
-    return initials.substring(0, 2);
-  };
-
-  const getUserColor = (email) => {
-    const colors = ['#ff9800', '#2196f3', '#f44336', '#4caf50', '#9c27b0', '#607d8b'];
-    const hash = email ? email.split('').reduce((a, b) => a + b.charCodeAt(0), 0) : 0;
-    return colors[hash % colors.length];
-  };
 
   const handleInfoDialogOpen = () => {
     console.log('Opening info dialog, developer data:', developer);
@@ -569,6 +294,38 @@ function ChplDeveloperDashboard() {
     setActiveAttestations({});
   };
 
+  const handleDirectReviewOpen = (directReview) => {
+    setActiveDirectReview(directReview);
+    setDirectReviewDialogOpen(true);
+  };
+
+  const handleDirectReviewClose = () => {
+    setDirectReviewDialogOpen(false);
+    setActiveDirectReview({});
+  };
+
+  const getFriendlyValues = (nc) => ({
+    ...nc,
+    friendlyCapApprovalDate: getDisplayDateFormat(nc.capApprovalDate, nc.capApprovalDate),
+    friendlyCapMustCompleteDate: getDisplayDateFormat(nc.capMustCompleteDate, nc.capMustCompleteDate),
+    friendlyCapEndDate: getDisplayDateFormat(nc.capEndDate, nc.capEndDate),
+  });
+
+  const getDirectReviewStatus = (review) => {
+    if (!review.nonConformities || review.nonConformities.length === 0) {
+      return 'Open';
+    }
+    
+    const openNonConformities = review.nonConformities.filter((nc) => nc.nonConformityStatus === 'Open').length;
+    const endDates = review.nonConformities
+      .filter((nc) => nc.capApprovalDate)
+      .filter((nc) => nc.capEndDate)
+      .sort((a, b) => (a.capEndDate > b.capEndDate ? -1 : 1));
+    const endDate = openNonConformities === 0 && endDates[0]?.capEndDate;
+    
+    return endDate ? 'Closed' : 'Open';
+  };
+
   const handleViewAllProducts = () => {
     const developerName = getActiveDeveloperName();
 
@@ -590,9 +347,12 @@ function ChplDeveloperDashboard() {
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ maxWidth: '85%' }}>
-                      <Typography variant="h4" className={classes.titlePadding}>
-                        {getActiveDeveloperName()}
-                      </Typography>
+                      <Box alignItems="center" display="flex" gridGap="8px" className={classes.titlePadding}>
+                        <ChplAvatar text={getActiveDeveloperName()} />
+                        <Typography variant="h4">
+                          {getActiveDeveloperName()}
+                        </Typography>
+                      </Box>
                       <Typography variant="body2">
                         This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you&apos;ll be able to easily take action, review content, and stay updated with minimal effort.
                       </Typography>
@@ -646,91 +406,27 @@ function ChplDeveloperDashboard() {
           </Grid>
           <Grid style={{ marginBottom: '24px' }} container wrap="nowrap" lg={12} spacing={4}>
             <Grid item xs={8}>
-              <Grid style={{ marginBottom: '24px' }} container spacing={4}>
+              <Grid style={{ marginTop: '16px', marginBottom: '16px' }} container spacing={4}>
                 <Grid item xs={4}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Submit A Service Plan URL List Change
-                  </Typography>
-                  <Skeleton animation="false" variant="rectangular" width="100%" height={100}>
-
-                    <Skeleton animation="false" variant="text" width="60%" height={20} />
-                    <Skeleton animation="false" variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
-                    <Skeleton animation="false" variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
-                  </Skeleton>
-                  {/* Original card - commented out until completion
-                  <Card className={classes.actionCard}>
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column" alignItems="flex-start">
-                        <Typography variant="h6">
-                          Submit A Service Plan URL List Change
-                        </Typography>
-                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                          URL Status Past
-                        </Typography>
-                        <Chip label="URL Status Past" color="primary" size="small" />
-                      </Box>
-                      <IconButton color='primary' style={{ marginTop: '16px' }}>
-                        <Send />
-                      </IconButton>
-                    </Box>
-                  </Card>
-                  */}
+                  <Box className={classes.chartPlaceholder}>
+                    <Typography align="center" variant="subtitle2" gutterBottom>
+                      Submit a Service Base URL List Change Request
+                    </Typography>
+                  </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Pending Change Request
-                  </Typography>
-                  <Skeleton animation="false" variant="rectangular" width="100%" height={100}>
-                    <Skeleton animation="false" variant="text" width="60%" height={20} />
-                    <Skeleton animation="false" variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
-                    <Skeleton animation="false" variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
-                  </Skeleton>
-                  {/* Original card - commented out until completion
-                  <Card className={classes.actionCard}>
-                    <CardContent>
-                      <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Typography variant="h6">
-                          Pending Change Request
-                        </Typography>
-                        <Typography className={classes.blueNumber}>2</Typography>
-                      </Box>
-                      <Button
-                        variant="text"
-                        size="small"
-                        color="primary"
-                      >
-                        View Pending
-                      </Button>
-                    </CardContent>
-                  </Card>
-                  */}
+                  <Box className={classes.chartPlaceholder}>
+                    <Typography align="center" variant="subtitle2" gutterBottom>
+                      Pending Change Request(s)
+                    </Typography>
+                  </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Submitted Change Request
-                  </Typography>
-                  <Skeleton animation="false" variant="rectangular" width="100%" height={100}>
-                    <Skeleton animation="false" variant="text" width="60%" height={20} />
-                    <Skeleton animation="false" variant="rectangular" width={120} height={24} style={{ marginTop: 8 }} />
-                    <Skeleton animation="false" variant="circular" width={40} height={40} style={{ marginTop: 16, marginLeft: 'auto' }} />
-                  </Skeleton>
-                  {/* Original card - commented out until completion
-                  <Card className={classes.actionCard}>
-                    <CardContent>
-                      <Typography variant="h6">
-                        Submitted Change Request
-                      </Typography>
-                      <Typography className={classes.greenNumber}>1</Typography>
-                      <Button
-                        variant="text"
-                        size="small"
-                        color="primary"
-                      >
-                        View Submitted
-                      </Button>
-                    </CardContent>
-                  </Card>
-                  */}
+                  <Box className={classes.chartPlaceholder}>
+                    <Typography align="center" variant="subtitle2" gutterBottom>
+                      Approved Change Request(s)
+                    </Typography>
+                  </Box>
                 </Grid>
               </Grid>
               <Grid wrap="nowrap" container spacing={4}>
@@ -779,17 +475,14 @@ function ChplDeveloperDashboard() {
                               <Typography variant="subtitle2">Attestations Period</Typography>
                               <Typography variant="subtitle2">Status</Typography>
                             </Box>
-
                             {attestationsData.attestations.map((attestation, index) => {
                               const periodStart = attestation.attestationPeriod?.periodStart
                                 ? new Date(attestation.attestationPeriod.periodStart).toLocaleDateString() : 'N/A';
                               const periodEnd = attestation.attestationPeriod?.periodEnd
                                 ? new Date(attestation.attestationPeriod.periodEnd).toLocaleDateString() : 'N/A';
                               const periodDisplay = `${periodStart} to ${periodEnd}`;
-
                               const isSubmitted = attestation.signature || attestation.signatureDate;
                               const statusDisplay = isSubmitted ? 'Attestations submitted' : 'No Attestations submitted';
-
                               return (
                                 <Box key={attestation.id || index} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
                                   <Typography variant="body2">{periodDisplay}</Typography>
@@ -806,7 +499,7 @@ function ChplDeveloperDashboard() {
                                         onClick={() => handleAttestationsOpen(attestation)}
                                         aria-label={`View attestations for period ending ${periodEnd}`}
                                       >
-                                        <VisibilityIcon color="action" />
+                                        <VisibilityIcon color="primary" />
                                       </IconButton>
                                     )}
                                   </Box>
@@ -820,7 +513,7 @@ function ChplDeveloperDashboard() {
                           </Typography>
                         )}
 
-                        <Typography variant="body2">
+                        <Typography style={{ marginTop: '16px' }} variant="body2">
                           For more information, please visit the
                           {' '}
                           <a href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf" target="_blank" rel="noopener noreferrer">Attestations Resource Guide</a>
@@ -878,7 +571,6 @@ function ChplDeveloperDashboard() {
                         <Typography variant="body2" style={{ marginBottom: '16px' }}>
                           Plans outline the testing approach and criteria while RWT Results provide the outcomes and assess whether the system meets performance requirements under real-world conditions to validate the system&apos;s readiness for real-world healthcare use.
                         </Typography>
-
                         <Box style={{ marginBottom: '24px' }}>
                           <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
                             <Typography variant="subtitle2">
@@ -891,7 +583,6 @@ function ChplDeveloperDashboard() {
                               Found)
                             </Typography>
                           </Box>
-
                           {rwtPlans && rwtPlans.length > 0 ? (
                             rwtPlans.slice(0, 3).map((plan, index) => (
                               <a
@@ -932,7 +623,6 @@ function ChplDeveloperDashboard() {
                             </Typography>
                           )}
                         </Box>
-
                         <Box>
                           <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
                             <Typography variant="subtitle2">
@@ -945,7 +635,6 @@ function ChplDeveloperDashboard() {
                               Found)
                             </Typography>
                           </Box>
-
                           {rwtResults && rwtResults.length > 0 ? (
                             rwtResults.slice(0, 3).map((result, index) => (
                               <a
@@ -975,7 +664,6 @@ function ChplDeveloperDashboard() {
                               No RWT Results URLs available
                             </Typography>
                           )}
-
                           {rwtResults && rwtResults.length > 3 && (
                             <Typography variant="body2" color="primary" style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
                               View all
@@ -1004,37 +692,34 @@ function ChplDeveloperDashboard() {
                         <Typography variant="body2" style={{ margin: '12px 0' }}>
                           Direct Reviews information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
                         </Typography>
-
                         {directReviews && directReviews.length > 0 ? (
                           <>
                             {directReviews.map((review, index) => (
-                              <Box key={review.id || index} style={{ marginBottom: '12px' }}>
-                                <Box display="flex" justifyContent="space-between" alignItems="center">
-                                  <Box>
-                                    <Typography variant="body2" style={{ fontWeight: 'bold' }}>
-                                      {review.jiraKey || `Direct Review ${index + 1}`}
-                                    </Typography>
-                                    <Typography variant="caption" color="textSecondary">
-                                      {review.developer?.name || 'Developer Name'}
-                                    </Typography>
-                                  </Box>
+                              <Box key={review.id || index} style={{ marginBottom: '16px' }}>
+                                <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '8px' }}>
+                                  <Typography variant="subtitle2">
+                                    {review.jiraKey || `${getDirectReviewStatus(review)} Direct Review`}
+                                  </Typography>
                                   <Box display="flex" alignItems="center">
                                     <Typography variant="body2" style={{ marginRight: '8px' }}>
-                                      {review.circumstance?.title || 'Status not available'}
+                                      {(review.nonConformities || []).filter(nc => nc.nonConformityStatus === 'Open').length}
+                                      {' '}
+                                      open /
+                                      {' '}
+                                      {(review.nonConformities || []).length}
+                                      {' '}
+                                      non-conformity found
                                     </Typography>
-                                    <VisibilityIcon color="action" />
+                                    <IconButton
+                                      color="primary"
+                                      size="small"
+                                      onClick={() => handleDirectReviewOpen(review)}
+                                      aria-label={`View direct review details for ${review.jiraKey || 'review'}`}
+                                    >
+                                      <VisibilityIcon color="primary" />
+                                    </IconButton>
                                   </Box>
                                 </Box>
-                                {review.nonConformityCount !== undefined && (
-                                  <Typography variant="body2" style={{ marginTop: '4px' }}>
-                                    {review.openNonConformityCount || 0}
-                                    {' '}
-                                    open /
-                                    {review.nonConformityCount || 0}
-                                    {' '}
-                                    non-conformity found
-                                  </Typography>
-                                )}
                               </Box>
                             ))}
                           </>
@@ -1059,9 +744,8 @@ function ChplDeveloperDashboard() {
                           </Typography>
                         </Box>
                         <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                          Relevant surveillance information that pertains to this listing under this developer can be found here.
+                          Open surveillance information that pertains to this listing under this developer can be found here.
                         </Typography>
-
                         {surveillanceActivities.length === 0 ? (
                           <Typography variant="body2" style={{ margin: '12px 0', fontStyle: 'italic' }}>
                             No surveillance activities found
@@ -1072,7 +756,6 @@ function ChplDeveloperDashboard() {
                               <Typography variant="subtitle2">Period</Typography>
                               <Typography variant="subtitle2">Status</Typography>
                             </Box>
-
                             {surveillanceActivities.slice(0, 5).map((item, index) => (
                               <Box key={item.id || `surveillance-${index}`} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
                                 <Box>
@@ -1096,11 +779,10 @@ function ChplDeveloperDashboard() {
                                     {item.status}
                                     {item.hasNonconformities && ' (NC)'}
                                   </Typography>
-                                  <VisibilityIcon color="action" />
+                                  <VisibilityIcon color="primary" />
                                 </Box>
                               </Box>
                             ))}
-
                             {surveillanceActivities.length > 5 && (
                               <Typography variant="body2" color="primary" style={{ marginTop: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
                                 View all
@@ -1127,75 +809,18 @@ function ChplDeveloperDashboard() {
                   <Skeleton animation="false" variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
                   <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
                   <Skeleton animation="false" variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
-
                   <Skeleton animation="false" variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
                   <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
                   <Skeleton animation="false" variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
-
                   <Skeleton animation="false" variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
                   <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
                   <Skeleton animation="false" variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
-
                   <Skeleton animation="false" variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
                   <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
                   <Skeleton animation="false" variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
-
-                  <Skeleton variant="rectangular" width="100%" height={32} style={{ marginTop: 16 }} />
+                  <Skeleton animation="false" variant="rectangular" width="100%" height={32} style={{ marginTop: 16 }} />
                 </CardContent>
               </Card>
-              {/* Original announcements card - commented out until completion
-              <Card style={{ marginBottom: '24px', marginTop: '-64px' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Your Announcements
-                  </Typography>
-                  <Box style={{ marginBottom: '16px' }}>
-                    <Typography variant="subtitle2" gutterBottom>
-                      • Service Base URL Change Request Window Now Open
-                    </Typography>
-                    <Typography variant="body2" style={{ fontSize: '12px', color: '#666' }}>
-                      Developers can requests your new Shared Service Base URL Change Requests through the ONC Certified Health IT Product List (CHPL) platform, and must submit the window checks on.
-                    </Typography>
-                  </Box>
-
-                  <Box style={{ marginBottom: '16px' }}>
-                    <Typography variant="subtitle2" gutterBottom>
-                      • Reminder: Check Up on Direct Review Requirements
-                    </Typography>
-                    <Typography variant="body2" style={{ fontSize: '12px', color: '#666' }}>
-                      As part of meeting compliance, we encourage to ensure they have information and can submit documentation as required. (Request an information request on us for more information)
-                    </Typography>
-                  </Box>
-
-                  <Box style={{ marginBottom: '16px' }}>
-                    <Typography variant="subtitle2" gutterBottom>
-                      • Real World Testing Submission Period Now Open
-                    </Typography>
-                    <Typography variant="body2" style={{ fontSize: '12px', color: '#666' }}>
-                      The submission period for Real World Testing (RWT) Plans and Results is now open. Certified Health IT Developers are encourage to submit their RWT plans or results by March 15, 2024.
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography variant="subtitle2" gutterBottom>
-                      • New API Documentation Available!
-                    </Typography>
-                    <Typography variant="body2" style={{ fontSize: '12px', color: '#666' }}>
-                      We've updated our CHPL API documentation with new endpoints and improved examples to help you integrate our services into your workflows. Check us filtering options for certified products. Check out the latest docs.– March 15, 2023
-                    </Typography>
-                  </Box>
-
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    style={{ marginTop: '16px', width: '100%' }}
-                  >
-                    SEE MORE
-                  </Button>
-                </CardContent>
-              </Card>
-              */}
-
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
@@ -1206,11 +831,9 @@ function ChplDeveloperDashboard() {
                       )
                     </Typography>
                   </Box>
-
                   <Typography variant="body2" style={{ marginBottom: '16px', fontSize: '12px' }}>
                     You can view all registered users along with the developer they are associated with in the Manage Users Dashboard.
                   </Typography>
-
                   <TextField
                     placeholder="Search by Name or Email"
                     variant="outlined"
@@ -1230,28 +853,23 @@ function ChplDeveloperDashboard() {
                     }}
                     style={{ marginBottom: '16px' }}
                   />
-
                   {filteredUsers.length === 0 && displayedUsers.length === 0 && (
                     <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
                       No users found for this developer
                     </Typography>
                   )}
-
                   {filteredUsers.length === 0 && displayedUsers.length > 0 && (
                     <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
                       No users match your search
                     </Typography>
                   )}
-
                   {filteredUsers.map((userData) => (
                     <Box key={userData.cognitoId || userData.id} className={classes.userRow}>
                       <Box display="flex" alignItems="center">
-                        <Avatar
-                          className={classes.userAvatar}
-                          style={{ backgroundColor: getUserColor(userData.email), marginRight: '12px' }}
-                        >
-                          {getUserInitials(userData.fullName)}
-                        </Avatar>
+                        <ChplAvatar
+                          text={userData.fullName || userData.email || 'Unknown User'}
+                          style={{ marginRight: '12px' }}
+                        />
                         <Box>
                           <Typography variant="body2" style={{ fontWeight: 'bold' }}>
                             {userData.fullName || 'Unknown User'}
@@ -1275,20 +893,16 @@ function ChplDeveloperDashboard() {
               <Box display="flex" justifyContent="space-between">
                 <Card style={{ marginTop: '24px' }}>
                   <CardContent>
-                    <Box style={{ marginTop: '16px' }}>
                       <div className={classes.chartPlaceholder}>
                         Chart Visualization Here
                       </div>
-                    </Box>
                   </CardContent>
                 </Card>
                 <Card style={{ marginTop: '24px' }}>
                   <CardContent>
-                    <Box>
                       <div className={classes.chartPlaceholder}>
                         Chart Visualization Here
                       </div>
-                    </Box>
                   </CardContent>
                 </Card>
               </Box>
@@ -1296,35 +910,38 @@ function ChplDeveloperDashboard() {
           </Grid>
         </div>
       </Container>
-
-      {/* Developer Details Dialog */}
       <Dialog
         open={infoDialogOpen}
         onClose={handleInfoDialogClose}
         maxWidth="md"
         fullWidth
+        aria-labelledby="developer-details"
       >
+        <ChplDialogTitle
+          id="developer-details"
+          onClose={handleInfoDialogClose}
+        >
+          Developer Details
+        </ChplDialogTitle>
         {developer ? (
           <DeveloperContext.Provider value={{ developer }}>
             <FlagContext.Provider value={{ demographicChangeRequestIsOn: false }}>
               <UserContext.Provider value={{
-                hasAnyRole: () => false, // Disable all role-based permissions
+                hasAnyRole: () => false,
                 user: null,
               }}
               >
-                <Button onClick={handleInfoDialogClose} color="primary">
-                  Close
-                </Button>
-                <ChplDeveloperViewDetails
-                  dispatch={() => {}} // Empty dispatch function for view-only mode
-                  canEdit={() => false} // Disable editing in dialog
-                  canJoin={() => false} // Disable joining in dialog
-                  canSplit={() => false} // Disable splitting in dialog
-                  isSplitting={false}
-                />
+                <DialogContent dividers>
+                  <ChplDeveloperViewDetails
+                    dispatch={() => {}}
+                    canEdit={() => false}
+                    canJoin={() => false}
+                    canSplit={() => false}
+                    isSplitting={false}
+                  />
+                </DialogContent>
               </UserContext.Provider>
             </FlagContext.Provider>
-
           </DeveloperContext.Provider>
         ) : (
           <div>
@@ -1339,10 +956,7 @@ function ChplDeveloperDashboard() {
             </Typography>
           </div>
         )}
-
       </Dialog>
-
-      {/* Attestations Details Dialog */}
       {activeAttestations && Object.keys(activeAttestations).length > 0 && (
         <Dialog
           fullWidth
@@ -1363,6 +977,112 @@ function ChplDeveloperDashboard() {
               canCreateException={false}
               developer={developer}
             />
+          </DialogContent>
+        </Dialog>
+      )}
+      {activeDirectReview && Object.keys(activeDirectReview).length > 0 && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={directReviewDialogOpen}
+          onClose={handleDirectReviewClose}
+          aria-labelledby="direct-review-details"
+        >
+          <ChplDialogTitle
+            id="direct-review-details"
+            onClose={handleDirectReviewClose}
+          >
+            Direct Review Details
+          </ChplDialogTitle>
+          <DialogContent dividers>
+            <Box>
+              {/* Non-Conformities Details */}
+              {activeDirectReview.nonConformities && activeDirectReview.nonConformities.length > 0 && (
+                <Box style={{ marginTop: '4px' }}>
+                  <Typography variant="h6" gutterBottom>
+                    Non-Conformities Details
+                  </Typography>
+                  {activeDirectReview.nonConformities.map((nc, index) => {
+                    const friendlyNc = getFriendlyValues(nc);
+                    return (
+                      <Card key={nc.created || index} style={{ marginBottom: '16px' }}>
+                        <CardHeader
+                          titleTypographyProps={{ variant: 'h6' }}
+                          style={{
+                            backgroundColor: '#fff',
+                            borderBottom: '0.5px solid #c2c6ca',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            padding: '16px 16px',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}
+                          title={nc.nonConformityType || 'Has not been determined'}
+                        />
+                        <CardContent>
+                          <Box style={{
+                            display: 'flex',
+                            gridGap: '8px',
+                            flexWrap: 'wrap',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                            {getDataDisplay('Non-conformity Type', <Typography>{nc.nonConformityType || 'N/A'}</Typography>, 'Type of non-conformity found during review')}
+                            
+                            {getDataDisplay('Developer Associated Listings',
+                              <>
+                                {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0) && (
+                                  <Typography>None</Typography>
+                                )}
+                                {nc.developerAssociatedListings?.length > 0 && (
+                                  <List>
+                                    {nc.developerAssociatedListings.map((dal) => (
+                                      <ListItem key={dal.id}>
+                                        <ChplLink
+                                          href={`#/listing/${dal.id}`}
+                                          text={dal.chplProductNumber}
+                                          external={false}
+                                        />
+                                      </ListItem>
+                                    ))}
+                                  </List>
+                                )}
+                              </>,
+                              'A listing of other certified products associated with the non-conformity, as applicable'
+                            )}
+                            
+                            {getDataDisplay('Corrective Action Plan Approval Date', 
+                              <Typography>{friendlyNc.friendlyCapApprovalDate || 'N/A'}</Typography>, 
+                              'The date that ONC approved the corrective action plan proposed by the developer'
+                            )}
+                            
+                            {getDataDisplay('Date Corrective Action Must Be Completed', 
+                              <Typography>{friendlyNc.friendlyCapMustCompleteDate || 'N/A'}</Typography>, 
+                              'The date that the corrective action must be completed in order to avoid termination of the certified product\'s certification status and/or a certification ban of the developer, as applicable'
+                            )}
+                            
+                            {getDataDisplay('Date Corrective Action Was Completed', 
+                              <Typography>{friendlyNc.friendlyCapEndDate || 'N/A'}</Typography>, 
+                              'The date the corrective action was completed'
+                            )}
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </Box>
+              )}
+              {(!activeDirectReview.nonConformities || activeDirectReview.nonConformities.length === 0) && (
+                <Box style={{ marginTop: '24px' }}>
+                  <Typography variant="h6" gutterBottom>
+                    Non-Conformities Details
+                  </Typography>
+                  <Typography>
+                    Has not been determined
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           </DialogContent>
         </Dialog>
       )}
