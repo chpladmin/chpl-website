@@ -13,6 +13,3 @@ function ChplComplianceDashboardWrapper() {
 }
 
 export default ChplComplianceDashboardWrapper;
-
-ChplComplianceDashboardWrapper.propTypes = {
-};

@@ -105,11 +105,10 @@ const useStyles = makeStyles({
     marginBottom: '16px',
   },
   containerDashboard: {
-    marginTop: '32px',
+    marginTop: '142px',
   },
-  // New classes from inline styles
   gridRightPadding: {
-    paddingRight: '32px',
+    paddingRight: '16px',
   },
   gridNoPadding: {
     padding: '0',
@@ -258,7 +257,7 @@ function ChplDeveloperDashboard() {
         ...product,
         versions: product.versions?.map((version) => ({
           ...version,
-          listings: version.listings?.filter(() => true) || [],
+          listings: version.listings || [],
         })).filter((version) => version.listings.length > 0) || [],
       }))
       .filter((product) => product.versions.length > 0);
@@ -344,7 +343,6 @@ function ChplDeveloperDashboard() {
     || userData.email?.toLowerCase().includes(localSearchTerm.toLowerCase()));
 
   const handleInfoDialogOpen = () => {
-    console.log('Opening info dialog, developer data:', developer);
     setInfoDialogOpen(true);
   };
 
@@ -448,7 +446,7 @@ function ChplDeveloperDashboard() {
               <Box
                 display="flex"
                 justifyContent="flex-end"
-                marginRight={8}
+                marginRight={4}
                 gridGap="8px"
                 alignItems="baseline"
               >
