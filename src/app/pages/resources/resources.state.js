@@ -58,7 +58,7 @@ const states = [
   }, {
     name: 'reports-dashboard',
     url: '/reports-dashboard',
-    component: 'chplDashboardWrapperBridge',
+    component: 'chplReportsDashboardWrapperBridge',
     data: {
       title: 'Dashboard',
       roles: ['chpl-admin', 'chpl-onc'],
@@ -66,7 +66,7 @@ const states = [
   }, {
     name: 'dashboard',
     url: '/dashboard',
-    component: 'chplComplianceDashboardWrapperBridge',
+    component: 'chplDashboardWrapperBridge',
     data: {
       title: 'Dashboard',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],

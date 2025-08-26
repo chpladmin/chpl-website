@@ -13,6 +13,3 @@ function ChplDashboardWrapper() {
 }
 
 export default ChplDashboardWrapper;
-
-ChplDashboardWrapper.propTypes = {
-};
