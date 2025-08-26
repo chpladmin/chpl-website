@@ -339,8 +339,8 @@ function ChplDeveloperDashboard() {
     return <ChplDashboardSkeleton />;
   }
 
-  const filteredUsers = displayedUsers.filter((userData) => userData.fullName?.toLowerCase().includes(localSearchTerm.toLowerCase())
-    || userData.email?.toLowerCase().includes(localSearchTerm.toLowerCase()));
+  const getFilteredUsers = () => displayedUsers.filter((userData) => userData.fullName?.toLowerCase().includes(localSearchTerm.toLowerCase())
+      || userData.email?.toLowerCase().includes(localSearchTerm.toLowerCase()));
 
   const handleInfoDialogOpen = () => {
     setInfoDialogOpen(true);
@@ -592,8 +592,11 @@ function ChplDeveloperDashboard() {
                         <Typography className={classes.textSpacingTop} variant="body2">
                           For more information, please visit the
                           {' '}
-                          <a href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf" target="_blank" rel="noopener noreferrer">Attestations Resource Guide</a>
-                          .
+                          <ChplLink
+                            href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
+                            text="Attestations Resource Guide"
+                            external
+                          />
                         </Typography>
                       </CardContent>
                     </Card>
@@ -661,27 +664,19 @@ function ChplDeveloperDashboard() {
                           </Box>
                           {rwtPlans && rwtPlans.length > 0 ? (
                             rwtPlans.slice(0, 3).map((plan, index) => (
-                              <a
+                              <ChplLink
                                 key={plan.id || index}
                                 href={plan.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ textDecoration: 'none' }}
-                              >
-                                <Typography
-                                  variant="body2"
-                                  color="primary"
-                                  style={{
-                                    textDecoration: 'underline',
-                                    cursor: 'pointer',
-                                    marginBottom: '8px',
-                                    display: 'block',
-                                    wordBreak: 'break-all',
-                                  }}
-                                >
-                                  {plan.url || `RWT Plan ${index + 1}`}
-                                </Typography>
-                              </a>
+                                text={plan.url || `RWT Plan ${index + 1}`}
+                                external
+                                style={{
+                                  textDecoration: 'underline',
+                                  cursor: 'pointer',
+                                  marginBottom: '8px',
+                                  display: 'block',
+                                  wordBreak: 'break-all',
+                                }}
+                              />
                             ))
                           ) : (
                             <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
@@ -713,27 +708,19 @@ function ChplDeveloperDashboard() {
                           </Box>
                           {rwtResults && rwtResults.length > 0 ? (
                             rwtResults.slice(0, 3).map((result, index) => (
-                              <a
+                              <ChplLink
                                 key={result.id || index}
                                 href={result.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ textDecoration: 'none' }}
-                              >
-                                <Typography
-                                  variant="body2"
-                                  color="primary"
-                                  style={{
-                                    textDecoration: 'underline',
-                                    cursor: 'pointer',
-                                    marginBottom: '8px',
-                                    display: 'block',
-                                    wordBreak: 'break-all',
-                                  }}
-                                >
-                                  {result.url || `RWT Result ${index + 1}`}
-                                </Typography>
-                              </a>
+                                text={result.url || `RWT Result ${index + 1}`}
+                                external
+                                style={{
+                                  textDecoration: 'underline',
+                                  cursor: 'pointer',
+                                  marginBottom: '8px',
+                                  display: 'block',
+                                  wordBreak: 'break-all',
+                                }}
+                              />
                             ))
                           ) : (
                             <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
@@ -929,17 +916,17 @@ function ChplDeveloperDashboard() {
                     }}
                     style={{ marginBottom: '16px' }}
                   />
-                  {filteredUsers.length === 0 && displayedUsers.length === 0 && (
+                  {getFilteredUsers().length === 0 && displayedUsers.length === 0 && (
                     <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
                       No users found for this developer
                     </Typography>
                   )}
-                  {filteredUsers.length === 0 && displayedUsers.length > 0 && (
+                  {getFilteredUsers().length === 0 && displayedUsers.length > 0 && (
                     <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
                       No users match your search
                     </Typography>
                   )}
-                  {filteredUsers.map((userData) => (
+                  {getFilteredUsers().map((userData) => (
                     <Box key={userData.cognitoId || userData.id} className={classes.userRow}>
                       <Box display="flex" alignItems="center">
                         <ChplAvatar
