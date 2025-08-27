@@ -114,7 +114,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions, sections: initi
     <div key={item.id}>
       <FormControl component="fieldset">
         <FormLabel className={classes.nonCaps}>
-          { item.question.question.split('\\n\\n').map((p) => (
+          { item.question.question.split('\n\n').map((p) => (
             <Typography
               className={classes.questionParagraph}
               key={p}
