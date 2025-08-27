@@ -60,8 +60,3 @@ export default ChplAvatar;
 ChplAvatar.propTypes = {
   text: string.isRequired,
 };
-
-
-ChplAvatar.propTypes = {
-  text: string.isRequired,
-};
