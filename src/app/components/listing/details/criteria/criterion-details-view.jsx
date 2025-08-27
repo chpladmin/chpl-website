@@ -134,22 +134,6 @@ function ChplCriterionDetailsView({
                     <TableCell><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
                   </TableRow>
                 )}
-              { criterion.success && criterion.criterion.attributes?.gap
-                && (
-                  <TableRow key="gap">
-                    <TableCell component="th" scope="row">
-                      <ChplTooltip title="The corresponding certification criterion are gap certified (True or False).">
-                        <IconButton className={classes.infoIcon}>
-                          <InfoIcon
-                            className={classes.infoIconColor}
-                          />
-                        </IconButton>
-                      </ChplTooltip>
-                      Gap
-                    </TableCell>
-                    <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
-                  </TableRow>
-                )}
               { criterion.success && criterion.criterion.attributes?.codeSet && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
                 && (
                   <TableRow key="codeSet">
