@@ -595,7 +595,7 @@ function ChplDeveloperDashboard() {
                           <ChplLink
                             href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
                             text="Attestations Resource Guide"
-                            external
+                            external={false}
                           />
                         </Typography>
                       </CardContent>
@@ -668,7 +668,6 @@ function ChplDeveloperDashboard() {
                                 key={plan.id || index}
                                 href={plan.url}
                                 text={plan.url || `RWT Plan ${index + 1}`}
-                                external
                                 style={{
                                   textDecoration: 'underline',
                                   cursor: 'pointer',
@@ -712,7 +711,6 @@ function ChplDeveloperDashboard() {
                                 key={result.id || index}
                                 href={result.url}
                                 text={result.url || `RWT Result ${index + 1}`}
-                                external
                                 style={{
                                   textDecoration: 'underline',
                                   cursor: 'pointer',
