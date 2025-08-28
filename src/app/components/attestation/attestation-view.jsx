@@ -49,7 +49,7 @@ const getRows = (section, classes) => section.formItems
           { section.name }
           {': '}
         </strong>
-        { item.question.question.split('\\n\\n').map((p) => (
+        { item.question.question.split('\n\n').map((p) => (
           <Typography
             className={classes.questionParagraph}
             key={p}
