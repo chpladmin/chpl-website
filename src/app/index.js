@@ -30,7 +30,6 @@ import administration from './pages/administration/index';
 import /* chartsModule from */ './pages/charts/index';
 import compare from './pages/compare/index';
 import /* componentsModule from */ './components/index';
-import /*compliance dashboard from'*/ './pages/compliance-dashboard/compliance-dashboard.module';
 import listing from './pages/listing/index';
 import /* navigationModule from */ './navigation/index';
 import organizations from './pages/organizations/index';
@@ -87,7 +86,6 @@ const dependencies = [
   'chpl.navigation',
   'chpl.registration',
   'chpl.shared',
-  'chpl.compliance-dashboard',
 ];
 
 const appModule = angular.module('chpl', dependencies);

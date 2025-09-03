@@ -1,6 +1,7 @@
 import ChplAvatar from './avatar';
 import ChplConfirmation from './confirmation';
 import ChplCriterionTitle from './criterion-title';
+import ChplDashboardSkeleton from './dashboard-skeleton';
 import ChplDialogTitle from './chpl-dialog-title';
 import ChplEllipsis from './chpl-ellipsis';
 import ChplLink from './chpl-link';
@@ -19,6 +20,7 @@ export {
   ChplAvatar,
   ChplConfirmation,
   ChplCriterionTitle,
+  ChplDashboardSkeleton,
   ChplDialogTitle,
   ChplEllipsis,
   ChplLink,

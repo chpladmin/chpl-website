@@ -56,12 +56,20 @@ const states = [
     component: 'chplNotFoundBridge',
     data: { title: 'Error: page not found' },
   }, {
+    name: 'reports-dashboard',
+    url: '/reports-dashboard',
+    component: 'chplReportsDashboardWrapperBridge',
+    data: {
+      title: 'Dashboard',
+      roles: ['chpl-admin', 'chpl-onc'],
+    },
+  }, {
     name: 'dashboard',
     url: '/dashboard',
     component: 'chplDashboardWrapperBridge',
     data: {
       title: 'Dashboard',
-      roles: ['chpl-admin', 'chpl-onc'],
+      roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer'],
     },
   },
 ];

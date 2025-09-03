@@ -2,8 +2,8 @@ import React from 'react';
 
 import ChplDashboardRouter from './dashboard-router';
 
-function ChplComplianceDashboard() {
+function ChplDashboard() {
   return <ChplDashboardRouter />;
 }
 
-export default ChplComplianceDashboard;
+export default ChplDashboard;
