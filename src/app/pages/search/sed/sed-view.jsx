@@ -183,7 +183,7 @@ function ChplSedSearchView() {
         <div>
           <h2>SED Information Dataset</h2>
           <Typography variant="body1" gutterBottom>
-            Please note the All SED Details file contains information for all certified product listings and is not filtered based on search results.
+            Please note the SED Details file contains information for certified product listings and is not filtered based on search results.
           </Typography>
           <ChplLink
             href={downloadLink}
