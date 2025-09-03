@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.41.1
+_2 September 2025_
+
+### User Interface Updates
+* Remove reference to obsolete GAP attribute
+
+---
+
 ## Version 13.41.0
 _18 August 2025_
 
