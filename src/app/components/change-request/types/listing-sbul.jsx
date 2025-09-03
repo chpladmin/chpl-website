@@ -85,9 +85,12 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplSbul() {
+function ChplListingSbul() {
   const { hasAnyRole } = useContext(UserContext);
-  const { listing, setSbulChange } = useContext(ListingContext);
+  const {
+    listing,
+    setSbulChange,
+  } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: submitCR } = usePostChangeRequest();
   const {
@@ -108,7 +111,7 @@ function ChplSbul() {
 
   useEffect(() => {
     const url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
-    formik.setFieldValue('url', url);
+    formik.setFieldValue('url', url ?? '');
     setCurrentUrl(url);
   }, [listing]);
 
@@ -121,12 +124,13 @@ function ChplSbul() {
         setIsProcessing(true);
         submitCR({
           developer: listing.developer,
+          changeRequestType: {
+            id: 4,
+            name: 'Service Base URL List Change Request',
+          },
           details: {
             listing,
             url: formik.values.url,
-            changeRequestListingUrlType: {
-              id: 1,
-            },
           },
         }, {
           onSuccess: () => {
@@ -152,7 +156,7 @@ function ChplSbul() {
     }
   };
 
-  const isActionDisabled = () => !formik.isValid || !hasValidated || formik.values.url === currentUrl;
+  const isActionDisabled = () => !formik.isValid || !hasValidated;
 
   const validate = (urlToValidate) => {
     setUrlCheckResponse(undefined);
@@ -197,7 +201,9 @@ function ChplSbul() {
     <>
       <Box className={classes.titleBackground}>
         <Container maxWidth="lg">
-          <Typography className={classes.titlePadding} variant="h1">Service Base URL List Update</Typography>
+          <Typography className={classes.titlePadding} variant="h1">
+            Service Base URL List Update
+          </Typography>
           <Typography>
             Current URL:
             {' '}
@@ -237,7 +243,7 @@ function ChplSbul() {
               <CircularProgress />
             </Box>
           )}
-        {urlCheckResponse
+        { urlCheckResponse
           && (
             <>
               <Typography className={classes.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
@@ -248,16 +254,18 @@ function ChplSbul() {
                       Status:
                     </Typography>
                     <Typography variant="h6" className={classes.statusText}>
-                      {urlCheckResponse.passed ? 'Passed' : 'Failure'}
-                      {displayStatusIcon(urlCheckResponse.passed)}
+                      { urlCheckResponse.passed ? 'Passed' : 'Failure' }
+                      { displayStatusIcon(urlCheckResponse.passed) }
                     </Typography>
-                    {urlCheckResponse.errorMessage
+                    { urlCheckResponse.errorMessage
                       && (
                         <>
                           <Typography variant="body2">
                             Error Message:
                           </Typography>
-                          <Typography variant="body2">{urlCheckResponse.errorMessage}</Typography>
+                          <Typography variant="body2">
+                            { urlCheckResponse.errorMessage }
+                          </Typography>
                         </>
                       )}
                   </CardContent>
@@ -268,7 +276,7 @@ function ChplSbul() {
                       URL:
                     </Typography>
                     <Typography>
-                      {urlCheckResponse.url}
+                      { urlCheckResponse.url }
                     </Typography>
                   </CardContent>
                 </Card>
@@ -280,16 +288,16 @@ function ChplSbul() {
                     <Box className={classes.resultsContainer}>
                       <Card className={classes.resultsCard}>
                         <CardContent>
-                          {urlCheckResponse.httpResponseAssertion?.actualValue ? (
+                          { urlCheckResponse.httpResponseAssertion?.actualValue ? (
                             <>
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 HTTP Status Code:
                               </Typography>
                               <Box className={classes.statusText}>
                                 <Typography>
-                                  {urlCheckResponse.httpResponseAssertion.actualValue}
+                                  { urlCheckResponse.httpResponseAssertion.actualValue }
                                 </Typography>
-                                {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
+                                { displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed) }
                               </Box>
                               <Typography variant="body2">
                                 <ChplLink
@@ -309,7 +317,7 @@ function ChplSbul() {
                                 <Typography>
                                   The HTTP response code could not be retrieved or is unavailable.
                                 </Typography>
-                                {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
+                                { displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed) }
                               </Box>
                             </>
                           )}
@@ -320,14 +328,14 @@ function ChplSbul() {
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Response Time (in milliseconds):
                           </Typography>
-                          {urlCheckResponse.responseTimeAssertion?.actualValue
+                          { urlCheckResponse.responseTimeAssertion?.actualValue
                             ? (
                               <>
                                 <Box className={classes.statusText}>
                                   <Typography>
-                                    {urlCheckResponse.responseTimeAssertion.actualValue}
+                                    { urlCheckResponse.responseTimeAssertion.actualValue }
                                   </Typography>
-                                  {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
+                                  { displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed) }
                                 </Box>
                               </>
                             ) : (
@@ -336,7 +344,7 @@ function ChplSbul() {
                                   <Typography>
                                     The response time is empty or unavailable.
                                   </Typography>
-                                  {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
+                                  { displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed) }
                                 </Box>
                               </>
                             )}
@@ -344,18 +352,18 @@ function ChplSbul() {
                       </Card>
                       <Card className={classes.resultsCard}>
                         <CardContent>
-                          {urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
+                          { urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
                             <>
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 Body Content:
                               </Typography>
                               <Box className={classes.statusText}>
                                 <Typography>
-                                  {urlCheckResponse.bodyNotEmptyAssertion.actualValue
+                                  { urlCheckResponse.bodyNotEmptyAssertion.actualValue
                                     ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
                                     : 'Empty body content'}
                                 </Typography>
-                                {displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed)}
+                                { displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed) }
                               </Box>
                             </>
                           ) : (
@@ -367,7 +375,7 @@ function ChplSbul() {
                                 <Typography>
                                   The body content is empty or unavailable.
                                 </Typography>
-                                {displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed)}
+                                { displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed) }
                               </Box>
                             </>
                           )}
@@ -389,7 +397,7 @@ function ChplSbul() {
   );
 }
 
-export default ChplSbul;
+export default ChplListingSbul;
 
-ChplSbul.propTypes = {
+ChplListingSbul.propTypes = {
 };
