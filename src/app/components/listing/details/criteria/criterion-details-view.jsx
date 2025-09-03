@@ -72,7 +72,7 @@ function ChplCriterionDetailsView({
         && ((criterion.optionalStandards?.length > 0)
             || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
 
-  const submitSBULChange = () => {
+  const submitSbulChange = () => {
     setSbulChange(true);
   };
 
@@ -132,22 +132,6 @@ function ChplCriterionDetailsView({
                       Relied Upon Software
                     </TableCell>
                     <TableCell><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
-                  </TableRow>
-                )}
-              { criterion.success && criterion.criterion.attributes?.gap
-                && (
-                  <TableRow key="gap">
-                    <TableCell component="th" scope="row">
-                      <ChplTooltip title="The corresponding certification criterion are gap certified (True or False).">
-                        <IconButton className={classes.infoIcon}>
-                          <InfoIcon
-                            className={classes.infoIconColor}
-                          />
-                        </IconButton>
-                      </ChplTooltip>
-                      Gap
-                    </TableCell>
-                    <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
                   </TableRow>
                 )}
               { criterion.success && criterion.criterion.attributes?.codeSet && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
@@ -721,7 +705,7 @@ function ChplCriterionDetailsView({
                       { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: listing.developer.id }) && sbulChangeRequestIsOn
                         && (
                           <Button
-                            onClick={() => submitSBULChange()}
+                            onClick={() => submitSbulChange()}
                           >
                             Submit change
                           </Button>

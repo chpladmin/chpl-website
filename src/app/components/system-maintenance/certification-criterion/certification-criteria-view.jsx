@@ -49,7 +49,6 @@ const getDisplay = (key) => {
     case 'functionalityTested': return 'Functionality Tested';
     case 'g1Success': return 'G1 Success';
     case 'g2Success': return 'G2 Success';
-    case 'gap': return 'Gap';
     case 'optionalStandard': return 'Optional Standard';
     case 'privacySecurityFramework': return 'Privacy & Security Framework';
     case 'riskManagementSummaryInformation': return 'Risk Management Summary Information';

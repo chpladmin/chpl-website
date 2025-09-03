@@ -27,6 +27,9 @@ const useStyles = makeStyles({
   nonCaps: {
     textTransform: 'none',
   },
+  questionParagraph: {
+    marginBottom: '8px',
+  },
   radioGroup: {
     textTransform: 'none',
   },
@@ -44,14 +47,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection2(props) {
-  const { dispatch, instructions } = props;
+function ChplAttestationWizardSection2({ dispatch, instructions, sections: initialSections }) {
   const [sections, setSections] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setSections(props.sections);
-  }, [props.sections]); // eslint-disable-line react/destructuring-assignment
+    setSections(initialSections);
+  }, [initialSections]);
 
   const handleResponse = (section, item, value) => {
     const updated = sections.map((s) => {
@@ -111,7 +113,16 @@ function ChplAttestationWizardSection2(props) {
   const getQuestion = (section, item) => (
     <div key={item.id}>
       <FormControl component="fieldset">
-        <FormLabel className={classes.nonCaps}>{ interpretLink(item.question.question) }</FormLabel>
+        <FormLabel className={classes.nonCaps}>
+          { item.question.question.split('\n\n').map((p) => (
+            <Typography
+              className={classes.questionParagraph}
+              key={p}
+            >
+              { interpretLink(p) }
+            </Typography>
+          ))}
+        </FormLabel>
         <RadioGroup
           className={classes.radioGroup}
           name={`response-${item.id}`}
