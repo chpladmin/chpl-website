@@ -187,10 +187,10 @@ function ChplSedSearchView() {
           </Typography>
           <ChplLink
             href={downloadLink}
-            text="Download All SED Details"
+            text="Download SED Details"
             analytics={{
               ...analytics,
-              event: 'Download All SED Details',
+              event: 'Download SED Details',
             }}
             external={false}
           />
