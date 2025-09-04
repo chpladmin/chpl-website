@@ -11,6 +11,7 @@ import {
   certificationDate,
   certificationStatuses,
 } from 'components/filter/filters';
+import { jsJoda } from 'services/date-util';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
@@ -19,10 +20,11 @@ const staticFilters = [
 ];
 
 function ChplApiDocumentationSearchPage() {
-  const [filters, setFilters] = useState(staticFilters);
   const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
+  const [filters, setFilters] = useState(staticFilters);
+  const [displayCriteria, setDisplayCriteria] = useState([]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -49,12 +51,13 @@ function ChplApiDocumentationSearchPage() {
     }
     const values = ccQuery.data
       .filter((cc) => cc.certificationEditionId === 3 || cc.certificationEditionId === null)
+      .filter((cc) => cc.startDay <= jsJoda.LocalDate.now())
       .map((cc) => ({
         ...cc,
         value: cc.id,
         display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}`,
         longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
-        default: [56, 181, 182].includes(cc.id),
+        default: cc.attributes.apiDocumentation && !cc.removed,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
@@ -62,6 +65,7 @@ function ChplApiDocumentationSearchPage() {
         ...certificationCriteriaIds,
         values,
       }));
+    setDisplayCriteria(values.filter((cc) => cc.default));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const data = {
@@ -78,7 +82,9 @@ function ChplApiDocumentationSearchPage() {
         filters={filters}
         storageKey="storageKey-apiDocumentationPage"
       >
-        <ChplApiDocumentationSearchView />
+        <ChplApiDocumentationSearchView
+          displayCriteria={displayCriteria}
+        />
       </FilterProvider>
     </AnalyticsContext.Provider>
   );
