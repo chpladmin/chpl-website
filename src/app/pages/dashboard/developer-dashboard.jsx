@@ -15,11 +15,11 @@ import {
   InputLabel,
   List,
   ListItem,
-  makeStyles,
   MenuItem,
   Select,
   TextField,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import AddIcon from '@material-ui/icons/Add';
@@ -29,15 +29,6 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
 
-import ChplAttestationView from 'components/attestation/attestation-view';
-import ChplDeveloperViewDetails from 'components/developer/developer-view';
-import { useFilterContext } from 'components/filter';
-import { getDataDisplay } from 'components/listing/details/compliance/compliance.services';
-import {
-  ChplAvatar, ChplDashboardSkeleton, ChplDialogTitle, ChplLink,
-} from 'components/util';
-import { getDisplayDateFormat } from 'services/date-util';
-import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
 import {
   useFetchDeveloperHierarchy,
   useFetchInsights,
@@ -47,6 +38,15 @@ import {
   useFetchRealWorldTestingResults,
   useFetchAttestations,
 } from 'api/developer';
+import ChplAttestationView from 'components/attestation/attestation-view';
+import ChplDeveloperViewDetails from 'components/developer/developer-view';
+import { useFilterContext } from 'components/filter';
+import { getDataDisplay } from 'components/listing/details/compliance/compliance.services';
+import {
+  ChplAvatar, ChplDashboardSkeleton, ChplDialogTitle, ChplLink,
+} from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
+import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   fixFooterSpacing: {
@@ -417,12 +417,12 @@ function ChplDeveloperDashboard() {
     <div className={classes.fixFooterSpacing}>
       <Container maxWidth="lg">
         <div className={classes.containerDashboard}>
-          <Grid container spacing={4} display="flex" flexDirection="row" alignItems="flex-start" alignContent="flex-start">
+          <Grid container spacing={4} display="flex" alignItems="flex-start" alignContent="flex-start">
             <Grid item xs={8} className={classes.gridRightPadding}>
               <Card className={classes.welcomeCard}>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" alignItems="flex-start" className={classes.maxWidthContainer}>
+                    <Box display="flex" alignItems="flex-start" className={classes.maxWidthContainer}>
                       <Box alignItems="center" display="flex" gridGap="8px" className={classes.titlePadding}>
                         <ChplAvatar text={getActiveDeveloperName()} />
                         <Typography variant="h4">
@@ -480,7 +480,7 @@ function ChplDeveloperDashboard() {
               </Box>
             </Grid>
           </Grid>
-          <Grid className={classes.gridMainContainer} container wrap="nowrap" lg={12} spacing={4}>
+          <Grid className={classes.gridMainContainer} container wrap="nowrap" spacing={4}>
             <Grid item xs={8}>
               <Grid className={classes.gridTopActions} container spacing={4}>
                 <Grid item xs={4}>
@@ -742,7 +742,7 @@ function ChplDeveloperDashboard() {
                     <Card style={{ marginBottom: '24px' }}>
                       <CardContent>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography variant="h6">Direct Reviews Activities</Typography>
+                          <Typography variant="h6">Direct Review Activities</Typography>
                           <Typography variant="body2">
                             (
                             {directReviews?.length || 0}
@@ -751,7 +751,7 @@ function ChplDeveloperDashboard() {
                           </Typography>
                         </Box>
                         <Typography variant="body2" style={{ margin: '12px 0' }}>
-                          Direct Reviews information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
+                          Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
                         </Typography>
                         {directReviews && directReviews.length > 0 ? (
                           <>
@@ -867,19 +867,19 @@ function ChplDeveloperDashboard() {
                   <Typography variant="h6" gutterBottom>
                     Your Announcements
                   </Typography>
-                  <Skeleton animation="false" variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation="false" variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation="false" variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation="false" variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation="false" variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation="false" variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation="false" variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation="false" variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation="false" variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation="false" variant="rectangular" width="100%" height={32} style={{ marginTop: 16 }} />
+                  <Skeleton animation={false} variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation={false} variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation={false} variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation={false} variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation={false} variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation={false} variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation={false} variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
+                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                  <Skeleton animation={false} variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                  <Skeleton animation={false} variant="rect" width="100%" height={32} style={{ marginTop: 16 }} />
                 </CardContent>
               </Card>
               <Card>
