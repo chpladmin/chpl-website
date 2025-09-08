@@ -29,6 +29,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import DashboardGraphic from '../../../assets/images/dashboard_graphic.svg';
 
+import SurveillanceWidget from './components/surveillance';
+
 import {
   useFetchDeveloperHierarchy,
   useFetchInsights,
@@ -192,11 +194,9 @@ const useStyles = makeStyles({
 function ChplDeveloperDashboard() {
   const { user } = useContext(UserContext);
   const filterContext = useFilterContext();
-  const classes = useStyles();
   const [localSearchTerm, setLocalSearchTerm] = useState('');
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [displayedUsers, setDisplayedUsers] = useState([]);
-  const [surveillanceActivities, setSurveillanceActivities] = useState([]);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [selectedDeveloperId, setSelectedDeveloperId] = useState(null);
   const [activeAttestations, setActiveAttestations] = useState({});
@@ -205,6 +205,7 @@ function ChplDeveloperDashboard() {
   const [directReviewDialogOpen, setDirectReviewDialogOpen] = useState(false);
   const [safeDeveloper, setSafeDeveloper] = useState({ id: null });
   const [activeDeveloperId, setActiveDeveloperId] = useState(null);
+  const classes = useStyles();
 
   useEffect(() => {
     const userOrganizations = user?.organizations || [];
@@ -279,61 +280,6 @@ function ChplDeveloperDashboard() {
       setSelectedDeveloperId(null);
     }
   }, [user]);
-
-  useEffect(() => {
-    if (!developer?.products) {
-      setSurveillanceActivities([]);
-      return;
-    }
-
-    const surveillanceData = [];
-
-    developer.products.forEach((product) => {
-      product.versions?.forEach((version) => {
-        version.listings?.forEach((listing) => {
-          listing.surveillance?.forEach((surveillance) => {
-            const startDate = surveillance.startDay ? new Date(surveillance.startDay).toLocaleDateString() : '';
-            const endDate = surveillance.endDay ? new Date(surveillance.endDay).toLocaleDateString() : '';
-
-            let period = '';
-            if (surveillance.endDay) {
-              period = `Ended ${endDate}`;
-            } else if (surveillance.startDay) {
-              period = `Began ${startDate}`;
-            } else {
-              period = 'Date not specified';
-            }
-
-            const status = surveillance.endDay ? 'Close' : 'Open';
-
-            surveillanceData.push({
-              id: surveillance.id,
-              friendlyId: surveillance.friendlyId,
-              period,
-              status,
-              type: surveillance.type?.name || 'Unknown',
-              productName: product.name,
-              listingChplProductNumber: listing.chplProductNumber,
-              hasNonconformities: surveillance.requirements?.some((req) => req.nonconformities && req.nonconformities.length > 0
-              ) || false,
-            });
-          });
-        });
-      });
-    });
-
-    surveillanceData.sort((a, b) => {
-      const dateA = a.period.includes('Ended')
-        ? new Date(a.period.replace('Ended ', ''))
-        : new Date(a.period.replace('Began ', ''));
-      const dateB = b.period.includes('Ended')
-        ? new Date(b.period.replace('Ended ', ''))
-        : new Date(b.period.replace('Began ', ''));
-      return dateB - dateA;
-    });
-
-    setSurveillanceActivities(surveillanceData);
-  }, [developer]);
 
   if (isLoading || insightsLoading || usersLoading || directReviewsLoading || rwtPlansLoading || rwtResultsLoading || attestationsLoading) {
     return <ChplDashboardSkeleton />;
@@ -414,578 +360,517 @@ function ChplDeveloperDashboard() {
   };
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <Container maxWidth="lg">
-        <div className={classes.containerDashboard}>
-          <Grid container spacing={4} display="flex" alignItems="flex-start" alignContent="flex-start">
-            <Grid item xs={8} className={classes.gridRightPadding}>
-              <Card className={classes.welcomeCard}>
-                <CardContent>
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Box display="flex" alignItems="flex-start" className={classes.maxWidthContainer}>
-                      <Box alignItems="center" display="flex" gridGap="8px" className={classes.titlePadding}>
-                        <ChplAvatar text={getActiveDeveloperName()} />
-                        <Typography variant="h4">
-                          {getActiveDeveloperName()}
-                        </Typography>
-                      </Box>
-                      <Typography variant="body2">
-                        This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you&apos;ll be able to easily take action, review content, and stay updated with minimal effort.
-                      </Typography>
-                    </Box>
-                    <img
-                      src={DashboardGraphic}
-                      alt="Dashboard Graphic"
-                      className={classes.dashboardGraphic}
-                    />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item className={classes.gridNoPadding} xs={4}>
-              <Box
-                display="flex"
-                justifyContent="flex-end"
-                marginRight={4}
-                gridGap="8px"
-                alignItems="baseline"
-              >
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleInfoDialogOpen}
-                >
-                  Developer Info
-                </Button>
-                {(user?.organizations || []).length > 1 && (
-                  <Box display="flex" justifyContent="center" marginBottom={3}>
-                    <FormControl variant="outlined" className={classes.developerSelect}>
-                      <InputLabel id="developer-select-label">Select Developer</InputLabel>
-                      <Select
-                        labelId="developer-select-label"
-                        value={activeDeveloperId || ''}
-                        onChange={handleDeveloperChange}
-                        label="Select Developer"
-                        IconComponent={ExpandMoreIcon}
-                      >
-                        {(user?.organizations || []).map((org) => (
-                          <MenuItem key={org.id} value={org.id}>
-                            {org.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Box>
-                )}
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid className={classes.gridMainContainer} container wrap="nowrap" spacing={4}>
-            <Grid item xs={8}>
-              <Grid className={classes.gridTopActions} container spacing={4}>
-                <Grid item xs={4}>
-                  <Box className={classes.chartPlaceholder}>
-                    <Typography align="center" variant="subtitle2" gutterBottom>
-                      Submit a Service Base URL List Change Request
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box className={classes.chartPlaceholder}>
-                    <Typography align="center" variant="subtitle2" gutterBottom>
-                      Pending Change Request(s)
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box className={classes.chartPlaceholder}>
-                    <Typography align="center" variant="subtitle2" gutterBottom>
-                      Approved Change Request(s)
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid wrap="nowrap" container spacing={4}>
-                <Grid item xs={12}>
-                  <Grid item>
-                    <Card className={classes.cardSpacing}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography variant="h6">
-                            Products Under
-                            {' '}
+    <DeveloperContext.Provider value={{ developer }}>
+      <div className={classes.fixFooterSpacing}>
+        <Container maxWidth="lg">
+          <div className={classes.containerDashboard}>
+            <Grid container spacing={4} display="flex" alignItems="flex-start" alignContent="flex-start">
+              <Grid item xs={8} className={classes.gridRightPadding}>
+                <Card className={classes.welcomeCard}>
+                  <CardContent>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <Box display="flex" alignItems="flex-start" className={classes.maxWidthContainer}>
+                        <Box alignItems="center" display="flex" gridGap="8px" className={classes.titlePadding}>
+                          <ChplAvatar text={getActiveDeveloperName()} />
+                          <Typography variant="h4">
                             {getActiveDeveloperName()}
                           </Typography>
-                          <Typography className={classes.blueNumber}>{displayedProducts.length}</Typography>
                         </Box>
-                        <Button
-                          variant="text"
-                          color="primary"
-                          size="small"
-                          onClick={handleViewAllProducts}
-                        >
-                          View All
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item>
-                    <Card className={classes.cardSpacing}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.cardHeaderSpacing}>
-                          <Typography variant="h6">Attestations</Typography>
-                          <Typography variant="body2">
-                            (
-                            {attestationsData?.attestations?.length || 0}
-                            {' '}
-                            Found)
-                          </Typography>
-                        </Box>
-                        <Typography variant="body2" className={classes.textSpacing}>
-                          Attestations information is displayed here if a health IT developer&apos;s attestation of compliance with ONC&apos;s Conditions of Certification requirements.
+                        <Typography variant="body2">
+                          This dashboard is designed to streamline your workflow and help you stay on top of your tasks. With everything in one place, you&apos;ll be able to easily take action, review content, and stay updated with minimal effort.
                         </Typography>
+                      </Box>
+                      <img
+                        src={DashboardGraphic}
+                        alt="Dashboard Graphic"
+                        className={classes.dashboardGraphic}
+                      />
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item className={classes.gridNoPadding} xs={4}>
+                <Box
+                  display="flex"
+                  justifyContent="flex-end"
+                  marginRight={4}
+                  gridGap="8px"
+                  alignItems="baseline"
+                >
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleInfoDialogOpen}
+                  >
+                    Developer Info
+                  </Button>
+                  {(user?.organizations || []).length > 1 && (
+                    <Box display="flex" justifyContent="center" marginBottom={3}>
+                      <FormControl variant="outlined" className={classes.developerSelect}>
+                        <InputLabel id="developer-select-label">Select Developer</InputLabel>
+                        <Select
+                          labelId="developer-select-label"
+                          value={activeDeveloperId || ''}
+                          onChange={handleDeveloperChange}
+                          label="Select Developer"
+                          IconComponent={ExpandMoreIcon}
+                        >
+                          {(user?.organizations || []).map((org) => (
+                            <MenuItem key={org.id} value={org.id}>
+                              {org.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  )}
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid className={classes.gridMainContainer} container wrap="nowrap" spacing={4}>
+              <Grid item xs={8}>
+                <Grid className={classes.gridTopActions} container spacing={4}>
+                  <Grid item xs={4}>
+                    <Box className={classes.chartPlaceholder}>
+                      <Typography align="center" variant="subtitle2" gutterBottom>
+                        Submit a Service Base URL List Change Request
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Box className={classes.chartPlaceholder}>
+                      <Typography align="center" variant="subtitle2" gutterBottom>
+                        Pending Change Request(s)
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Box className={classes.chartPlaceholder}>
+                      <Typography align="center" variant="subtitle2" gutterBottom>
+                        Approved Change Request(s)
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid wrap="nowrap" container spacing={4}>
+                  <Grid item xs={12}>
+                    <Grid item>
+                      <Card className={classes.cardSpacing}>
+                        <CardContent>
+                          <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography variant="h6">
+                              Products Under
+                              {' '}
+                              {getActiveDeveloperName()}
+                            </Typography>
+                            <Typography className={classes.blueNumber}>{displayedProducts.length}</Typography>
+                          </Box>
+                          <Button
+                            variant="text"
+                            color="primary"
+                            size="small"
+                            onClick={handleViewAllProducts}
+                          >
+                            View All
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item>
+                      <Card className={classes.cardSpacing}>
+                        <CardContent>
+                          <Box display="flex" justifyContent="space-between" alignItems="center" className={classes.cardHeaderSpacing}>
+                            <Typography variant="h6">Attestations</Typography>
+                            <Typography variant="body2">
+                              (
+                              {attestationsData?.attestations?.length || 0}
+                              {' '}
+                              Found)
+                            </Typography>
+                          </Box>
+                          <Typography variant="body2" className={classes.textSpacing}>
+                            Attestations information is displayed here if a health IT developer&apos;s attestation of compliance with ONC&apos;s Conditions of Certification requirements.
+                          </Typography>
 
-                        {attestationsData?.attestations && attestationsData.attestations.length > 0 ? (
-                          <>
-                            <Box display="flex" justifyContent="space-between" className={classes.textSpacing}>
-                              <Typography variant="subtitle2">Attestations Period</Typography>
-                              <Typography variant="subtitle2">Status</Typography>
+                          {attestationsData?.attestations && attestationsData.attestations.length > 0 ? (
+                            <>
+                              <Box display="flex" justifyContent="space-between" className={classes.textSpacing}>
+                                <Typography variant="subtitle2">Attestations Period</Typography>
+                                <Typography variant="subtitle2">Status</Typography>
+                              </Box>
+                              {attestationsData.attestations.map((attestation, index) => {
+                                const periodStart = attestation.attestationPeriod?.periodStart
+                                  ? new Date(attestation.attestationPeriod.periodStart).toLocaleDateString() : 'N/A';
+                                const periodEnd = attestation.attestationPeriod?.periodEnd
+                                  ? new Date(attestation.attestationPeriod.periodEnd).toLocaleDateString() : 'N/A';
+                                const periodDisplay = `${periodStart} to ${periodEnd}`;
+                                const isSubmitted = attestation.signature || attestation.signatureDate;
+                                const statusDisplay = isSubmitted ? 'Attestations submitted' : 'No Attestations submitted';
+                                return (
+                                  <Box key={attestation.id || index} display="flex" justifyContent="space-between" alignItems="center" className={classes.listItemSpacing}>
+                                    <Typography variant="body2">{periodDisplay}</Typography>
+                                    <Box display="flex" alignItems="center">
+                                      <Typography variant="body2" className={classes.textRight}>
+                                        {statusDisplay}
+                                      </Typography>
+                                      {!isSubmitted ? (
+                                        <AddIcon color="primary" />
+                                      ) : (
+                                        <IconButton
+                                          color="primary"
+                                          size="small"
+                                          onClick={() => handleAttestationsOpen(attestation)}
+                                          aria-label={`View attestations for period ending ${periodEnd}`}
+                                        >
+                                          <VisibilityIcon color="primary" />
+                                        </IconButton>
+                                      )}
+                                    </Box>
+                                  </Box>
+                                );
+                              })}
+                            </>
+                          ) : (
+                            <Typography variant="body2" className={classes.textItalic}>
+                              No attestation data available
+                            </Typography>
+                          )}
+
+                          <Typography className={classes.textSpacingTop} variant="body2">
+                            For more information, please visit the
+                            {' '}
+                            <ChplLink
+                              href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
+                              text="Attestations Resource Guide"
+                              external={false}
+                            />
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item>
+                      <Card>
+                        <CardContent>
+                          <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography variant="h6">Access Insights</Typography>
+                            <Typography variant="body2">
+                              (
+                              {insights?.length || 0}
+                              {' '}
+                              Found)
+                            </Typography>
+                          </Box>
+                          <Typography variant="body2" className={classes.textSpacingLarge}>
+                            Insights information is displayed here. For more information, please visit the Insights Hub.
+                          </Typography>
+
+                          {insights && insights.length > 0 ? (
+                            <>
+                              <Box display="flex" justifyContent="space-between" className={classes.textSpacing}>
+                                <Typography variant="subtitle2">Period</Typography>
+                                <Typography variant="subtitle2">Status</Typography>
+                              </Box>
+
+                              {insights.map((insight, index) => (
+                                <Box key={insight.id || `insight-${index}`} display="flex" justifyContent="space-between" alignItems="center" className={classes.listItemDynamic} style={{ borderBottom: index < insights.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
+                                  <Typography variant="body2">{insight.period || insight.year || 'N/A'}</Typography>
+                                  <Typography variant="body2">{insight.status || 'Submitted'}</Typography>
+                                </Box>
+                              ))}
+                            </>
+                          ) : (
+                            <Typography variant="body2" className={classes.textItalic}>
+                              No insights data available
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid item>
+                      <Card style={{ marginBottom: '24px' }}>
+                        <CardContent>
+                          <Typography variant="h6" gutterBottom>
+                            Real World Testing
+                          </Typography>
+                          <Typography variant="body2" style={{ marginBottom: '16px' }}>
+                            Plans outline the testing approach and criteria while RWT Results provide the outcomes and assess whether the system meets performance requirements under real-world conditions to validate the system&apos;s readiness for real-world healthcare use.
+                          </Typography>
+                          <Box style={{ marginBottom: '24px' }}>
+                            <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
+                              <Typography variant="subtitle2">
+                                RWT Plans URLs
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                (
+                                {rwtPlans?.length || 0}
+                                {' '}
+                                Found)
+                              </Typography>
                             </Box>
-                            {attestationsData.attestations.map((attestation, index) => {
-                              const periodStart = attestation.attestationPeriod?.periodStart
-                                ? new Date(attestation.attestationPeriod.periodStart).toLocaleDateString() : 'N/A';
-                              const periodEnd = attestation.attestationPeriod?.periodEnd
-                                ? new Date(attestation.attestationPeriod.periodEnd).toLocaleDateString() : 'N/A';
-                              const periodDisplay = `${periodStart} to ${periodEnd}`;
-                              const isSubmitted = attestation.signature || attestation.signatureDate;
-                              const statusDisplay = isSubmitted ? 'Attestations submitted' : 'No Attestations submitted';
-                              return (
-                                <Box key={attestation.id || index} display="flex" justifyContent="space-between" alignItems="center" className={classes.listItemSpacing}>
-                                  <Typography variant="body2">{periodDisplay}</Typography>
-                                  <Box display="flex" alignItems="center">
-                                    <Typography variant="body2" className={classes.textRight}>
-                                      {statusDisplay}
+                            {rwtPlans && rwtPlans.length > 0 ? (
+                              rwtPlans.slice(0, 3).map((plan, index) => (
+                                <ChplLink
+                                  key={plan.id || index}
+                                  href={plan.url}
+                                  text={plan.url || `RWT Plan ${index + 1}`}
+                                  style={{
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                    marginBottom: '8px',
+                                    display: 'block',
+                                    wordBreak: 'break-all',
+                                  }}
+                                />
+                              ))
+                            ) : (
+                              <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
+                                No RWT Plans URLs available
+                              </Typography>
+                            )}
+
+                            {rwtPlans && rwtPlans.length > 3 && (
+                              <Typography variant="body2" color="primary" style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
+                                View all
+                                {' '}
+                                {rwtPlans.length}
+                                {' '}
+                                RWT Plans
+                              </Typography>
+                            )}
+                          </Box>
+                          <Box>
+                            <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
+                              <Typography variant="subtitle2">
+                                RWT Results URLs
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                (
+                                {rwtResults?.length || 0}
+                                {' '}
+                                Found)
+                              </Typography>
+                            </Box>
+                            {rwtResults && rwtResults.length > 0 ? (
+                              rwtResults.slice(0, 3).map((result, index) => (
+                                <ChplLink
+                                  key={result.id || index}
+                                  href={result.url}
+                                  text={result.url || `RWT Result ${index + 1}`}
+                                  style={{
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                    marginBottom: '8px',
+                                    display: 'block',
+                                    wordBreak: 'break-all',
+                                  }}
+                                />
+                              ))
+                            ) : (
+                              <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
+                                No RWT Results URLs available
+                              </Typography>
+                            )}
+                            {rwtResults && rwtResults.length > 3 && (
+                              <Typography variant="body2" color="primary" style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
+                                View all
+                                {' '}
+                                {rwtResults.length}
+                                {' '}
+                                RWT Results
+                              </Typography>
+                            )}
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item>
+                      <Card style={{ marginBottom: '24px' }}>
+                        <CardContent>
+                          <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Typography variant="h6">Direct Review Activities</Typography>
+                            <Typography variant="body2">
+                              (
+                              {directReviews?.length || 0}
+                              {' '}
+                              Found)
+                            </Typography>
+                          </Box>
+                          <Typography variant="body2" style={{ margin: '12px 0' }}>
+                            Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
+                          </Typography>
+                          {directReviews && directReviews.length > 0 ? (
+                            <>
+                              {directReviews.map((review, index) => (
+                                <Box key={review.id || index} style={{ marginBottom: '16px' }}>
+                                  <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '8px' }}>
+                                    <Typography variant="subtitle2">
+                                      {review.jiraKey || `${getDirectReviewStatus(review)} Direct Review`}
                                     </Typography>
-                                    {!isSubmitted ? (
-                                      <AddIcon color="primary" />
-                                    ) : (
+                                    <Box display="flex" alignItems="center">
+                                      <Typography variant="body2" style={{ marginRight: '8px' }}>
+                                        {(review.nonConformities || []).filter((nc) => nc.nonConformityStatus === 'Open').length}
+                                        {' '}
+                                        open /
+                                        {' '}
+                                        {(review.nonConformities || []).length}
+                                        {' '}
+                                        non-conformity found
+                                      </Typography>
                                       <IconButton
                                         color="primary"
                                         size="small"
-                                        onClick={() => handleAttestationsOpen(attestation)}
-                                        aria-label={`View attestations for period ending ${periodEnd}`}
+                                        onClick={() => handleDirectReviewOpen(review)}
+                                        aria-label={`View direct review details for ${review.jiraKey || 'review'}`}
                                       >
                                         <VisibilityIcon color="primary" />
                                       </IconButton>
-                                    )}
+                                    </Box>
                                   </Box>
                                 </Box>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          <Typography variant="body2" className={classes.textItalic}>
-                            No attestation data available
-                          </Typography>
-                        )}
-
-                        <Typography className={classes.textSpacingTop} variant="body2">
-                          For more information, please visit the
-                          {' '}
-                          <ChplLink
-                            href="https://www.astp.hhs.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
-                            text="Attestations Resource Guide"
-                            external={false}
-                          />
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item>
-                    <Card>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography variant="h6">Access Insights</Typography>
-                          <Typography variant="body2">
-                            (
-                            {insights?.length || 0}
-                            {' '}
-                            Found)
-                          </Typography>
-                        </Box>
-                        <Typography variant="body2" className={classes.textSpacingLarge}>
-                          Insights information is displayed here. For more information, please visit the Insights Hub.
-                        </Typography>
-
-                        {insights && insights.length > 0 ? (
-                          <>
-                            <Box display="flex" justifyContent="space-between" className={classes.textSpacing}>
-                              <Typography variant="subtitle2">Period</Typography>
-                              <Typography variant="subtitle2">Status</Typography>
-                            </Box>
-
-                            {insights.map((insight, index) => (
-                              <Box key={insight.id || `insight-${index}`} display="flex" justifyContent="space-between" alignItems="center" className={classes.listItemDynamic} style={{ borderBottom: index < insights.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
-                                <Typography variant="body2">{insight.period || insight.year || 'N/A'}</Typography>
-                                <Typography variant="body2">{insight.status || 'Submitted'}</Typography>
-                              </Box>
-                            ))}
-                          </>
-                        ) : (
-                          <Typography variant="body2" className={classes.textItalic}>
-                            No insights data available
-                          </Typography>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid item>
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Typography variant="h6" gutterBottom>
-                          Real World Testing
-                        </Typography>
-                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                          Plans outline the testing approach and criteria while RWT Results provide the outcomes and assess whether the system meets performance requirements under real-world conditions to validate the system&apos;s readiness for real-world healthcare use.
-                        </Typography>
-                        <Box style={{ marginBottom: '24px' }}>
-                          <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
-                            <Typography variant="subtitle2">
-                              RWT Plans URLs
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                              (
-                              {rwtPlans?.length || 0}
-                              {' '}
-                              Found)
-                            </Typography>
-                          </Box>
-                          {rwtPlans && rwtPlans.length > 0 ? (
-                            rwtPlans.slice(0, 3).map((plan, index) => (
-                              <ChplLink
-                                key={plan.id || index}
-                                href={plan.url}
-                                text={plan.url || `RWT Plan ${index + 1}`}
-                                style={{
-                                  textDecoration: 'underline',
-                                  cursor: 'pointer',
-                                  marginBottom: '8px',
-                                  display: 'block',
-                                  wordBreak: 'break-all',
-                                }}
-                              />
-                            ))
+                              ))}
+                            </>
                           ) : (
-                            <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
-                              No RWT Plans URLs available
+                            <Typography variant="body2" style={{ fontStyle: 'italic' }}>
+                              No direct review activities found
                             </Typography>
                           )}
-
-                          {rwtPlans && rwtPlans.length > 3 && (
-                            <Typography variant="body2" color="primary" style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
-                              View all
-                              {' '}
-                              {rwtPlans.length}
-                              {' '}
-                              RWT Plans
-                            </Typography>
-                          )}
-                        </Box>
-                        <Box>
-                          <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '12px' }}>
-                            <Typography variant="subtitle2">
-                              RWT Results URLs
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                              (
-                              {rwtResults?.length || 0}
-                              {' '}
-                              Found)
-                            </Typography>
-                          </Box>
-                          {rwtResults && rwtResults.length > 0 ? (
-                            rwtResults.slice(0, 3).map((result, index) => (
-                              <ChplLink
-                                key={result.id || index}
-                                href={result.url}
-                                text={result.url || `RWT Result ${index + 1}`}
-                                style={{
-                                  textDecoration: 'underline',
-                                  cursor: 'pointer',
-                                  marginBottom: '8px',
-                                  display: 'block',
-                                  wordBreak: 'break-all',
-                                }}
-                              />
-                            ))
-                          ) : (
-                            <Typography variant="body2" style={{ fontStyle: 'italic', color: '#666' }}>
-                              No RWT Results URLs available
-                            </Typography>
-                          )}
-                          {rwtResults && rwtResults.length > 3 && (
-                            <Typography variant="body2" color="primary" style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
-                              View all
-                              {' '}
-                              {rwtResults.length}
-                              {' '}
-                              RWT Results
-                            </Typography>
-                          )}
-                        </Box>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item>
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography variant="h6">Direct Review Activities</Typography>
-                          <Typography variant="body2">
-                            (
-                            {directReviews?.length || 0}
-                            {' '}
-                            Found)
-                          </Typography>
-                        </Box>
-                        <Typography variant="body2" style={{ margin: '12px 0' }}>
-                          Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this developer directly or applies to a health IT module owned by this developer.
-                        </Typography>
-                        {directReviews && directReviews.length > 0 ? (
-                          <>
-                            {directReviews.map((review, index) => (
-                              <Box key={review.id || index} style={{ marginBottom: '16px' }}>
-                                <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '8px' }}>
-                                  <Typography variant="subtitle2">
-                                    {review.jiraKey || `${getDirectReviewStatus(review)} Direct Review`}
-                                  </Typography>
-                                  <Box display="flex" alignItems="center">
-                                    <Typography variant="body2" style={{ marginRight: '8px' }}>
-                                      {(review.nonConformities || []).filter((nc) => nc.nonConformityStatus === 'Open').length}
-                                      {' '}
-                                      open /
-                                      {' '}
-                                      {(review.nonConformities || []).length}
-                                      {' '}
-                                      non-conformity found
-                                    </Typography>
-                                    <IconButton
-                                      color="primary"
-                                      size="small"
-                                      onClick={() => handleDirectReviewOpen(review)}
-                                      aria-label={`View direct review details for ${review.jiraKey || 'review'}`}
-                                    >
-                                      <VisibilityIcon color="primary" />
-                                    </IconButton>
-                                  </Box>
-                                </Box>
-                              </Box>
-                            ))}
-                          </>
-                        ) : (
-                          <Typography variant="body2" style={{ fontStyle: 'italic' }}>
-                            No direct review activities found
-                          </Typography>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item>
-                    <Card style={{ marginBottom: '24px' }}>
-                      <CardContent>
-                        <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                          <Typography variant="h6">Surveillance Activities</Typography>
-                          <Typography variant="body2">
-                            (
-                            {surveillanceActivities.length}
-                            {' '}
-                            Found)
-                          </Typography>
-                        </Box>
-                        <Typography variant="body2" style={{ marginBottom: '16px' }}>
-                          Open surveillance information that pertains to this listing under this developer can be found here.
-                        </Typography>
-                        {surveillanceActivities.length === 0 ? (
-                          <Typography variant="body2" style={{ margin: '12px 0', fontStyle: 'italic' }}>
-                            No surveillance activities found
-                          </Typography>
-                        ) : (
-                          <>
-                            <Box display="flex" justifyContent="space-between" style={{ marginBottom: '16px' }}>
-                              <Typography variant="subtitle2">Period</Typography>
-                              <Typography variant="subtitle2">Status</Typography>
-                            </Box>
-                            {surveillanceActivities.slice(0, 5).map((item, index) => (
-                              <Box key={item.id || `surveillance-${index}`} display="flex" justifyContent="space-between" alignItems="center" style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                                <Box>
-                                  <Typography variant="body2">{item.period}</Typography>
-                                  {item.productName && (
-                                    <Typography variant="caption" color="textSecondary">
-                                      {item.productName}
-                                      {' '}
-                                      -
-                                      {' '}
-                                      {item.type}
-                                    </Typography>
-                                  )}
-                                </Box>
-                                <Box display="flex" alignItems="center">
-                                  <Typography
-                                    variant="body2"
-                                    className={item.status === 'Open' ? classes.statusOpen : classes.statusClosed}
-                                    style={{ marginRight: '8px' }}
-                                  >
-                                    {item.status}
-                                    {item.hasNonconformities && ' (NC)'}
-                                  </Typography>
-                                  <VisibilityIcon color="primary" />
-                                </Box>
-                              </Box>
-                            ))}
-                            {surveillanceActivities.length > 5 && (
-                              <Typography variant="body2" color="primary" style={{ marginTop: '12px', textDecoration: 'underline', cursor: 'pointer' }}>
-                                View all
-                                {' '}
-                                {surveillanceActivities.length}
-                                {' '}
-                                surveillance activities
-                              </Typography>
-                            )}
-                          </>
-                        )}
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item>
+                      <Card style={{ marginBottom: '24px' }}>
+                        <SurveillanceWidget />
+                      </Card>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item xs={4}>
-              <Card style={{ marginBottom: '24px', marginTop: '-84px' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Your Announcements
-                  </Typography>
-                  <Skeleton animation={false} variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation={false} variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation={false} variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation={false} variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation={false} variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation={false} variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation={false} variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
-                  <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
-                  <Skeleton animation={false} variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
-                  <Skeleton animation={false} variant="rect" width="100%" height={32} style={{ marginTop: 16 }} />
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
-                    <Typography variant="h6">Manage User</Typography>
-                    <Typography variant="body2">
-                      Users (
-                      {displayedUsers.length}
-                      )
+              <Grid item xs={4}>
+                <Card style={{ marginBottom: '24px', marginTop: '-84px' }}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Your Announcements
                     </Typography>
-                  </Box>
-                  <Typography variant="body2" style={{ marginBottom: '16px', fontSize: '12px' }}>
-                    You can view all registered users along with the developer they are associated with in the Manage Users Dashboard.
-                  </Typography>
-                  <TextField
-                    placeholder="Search by Name or Email"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    value={localSearchTerm}
-                    onChange={(e) => setLocalSearchTerm(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton size="small">
-                            <SearchIcon />
-                          </IconButton>
-                          <IconButton size="small" />
-                        </InputAdornment>
-                      ),
-                    }}
-                    style={{ marginBottom: '16px' }}
-                  />
-                  {getFilteredUsers().length === 0 && displayedUsers.length === 0 && (
-                    <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
-                      No users found for this developer
+                    <Skeleton animation={false} variant="text" width="80%" height={20} style={{ marginBottom: 8 }} />
+                    <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                    <Skeleton animation={false} variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                    <Skeleton animation={false} variant="text" width="75%" height={20} style={{ marginBottom: 8 }} />
+                    <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                    <Skeleton animation={false} variant="text" width="85%" height={16} style={{ marginBottom: 16 }} />
+                    <Skeleton animation={false} variant="text" width="85%" height={20} style={{ marginBottom: 8 }} />
+                    <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                    <Skeleton animation={false} variant="text" width="95%" height={16} style={{ marginBottom: 16 }} />
+                    <Skeleton animation={false} variant="text" width="70%" height={20} style={{ marginBottom: 8 }} />
+                    <Skeleton animation={false} variant="text" width="100%" height={16} style={{ marginBottom: 4 }} />
+                    <Skeleton animation={false} variant="text" width="90%" height={16} style={{ marginBottom: 16 }} />
+                    <Skeleton animation={false} variant="rect" width="100%" height={32} style={{ marginTop: 16 }} />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginBottom: '16px' }}>
+                      <Typography variant="h6">Manage User</Typography>
+                      <Typography variant="body2">
+                        Users (
+                        {displayedUsers.length}
+                        )
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" style={{ marginBottom: '16px', fontSize: '12px' }}>
+                      You can view all registered users along with the developer they are associated with in the Manage Users Dashboard.
                     </Typography>
-                  )}
-                  {getFilteredUsers().length === 0 && displayedUsers.length > 0 && (
-                    <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
-                      No users match your search
-                    </Typography>
-                  )}
-                  {getFilteredUsers().map((userData) => (
-                    <Box key={userData.cognitoId || userData.id} className={classes.userRow}>
-                      <Box display="flex" alignItems="center">
-                        <ChplAvatar
-                          text={userData.fullName || userData.email || 'Unknown User'}
-                          style={{ marginRight: '12px' }}
-                        />
-                        <Box>
-                          <Typography variant="body2" style={{ fontWeight: 'bold' }}>
-                            {userData.fullName || 'Unknown User'}
-                          </Typography>
-                          <Typography variant="body2" style={{ fontSize: '12px', color: '#666' }}>
-                            {userData.email || 'No email'}
-                          </Typography>
+                    <TextField
+                      placeholder="Search by Name or Email"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      value={localSearchTerm}
+                      onChange={(e) => setLocalSearchTerm(e.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton size="small">
+                              <SearchIcon />
+                            </IconButton>
+                            <IconButton size="small" />
+                          </InputAdornment>
+                        ),
+                      }}
+                      style={{ marginBottom: '16px' }}
+                    />
+                    {getFilteredUsers().length === 0 && displayedUsers.length === 0 && (
+                      <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
+                        No users found for this developer
+                      </Typography>
+                    )}
+                    {getFilteredUsers().length === 0 && displayedUsers.length > 0 && (
+                      <Typography variant="body2" style={{ fontStyle: 'italic', marginBottom: '16px' }}>
+                        No users match your search
+                      </Typography>
+                    )}
+                    {getFilteredUsers().map((userData) => (
+                      <Box key={userData.cognitoId || userData.id} className={classes.userRow}>
+                        <Box display="flex" alignItems="center">
+                          <ChplAvatar
+                            text={userData.fullName || userData.email || 'Unknown User'}
+                            style={{ marginRight: '12px' }}
+                          />
+                          <Box>
+                            <Typography variant="body2" style={{ fontWeight: 'bold' }}>
+                              {userData.fullName || 'Unknown User'}
+                            </Typography>
+                            <Typography variant="body2" style={{ fontSize: '12px', color: '#666' }}>
+                              {userData.email || 'No email'}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  ))}
-                </CardContent>
-              </Card>
-              <Card style={{ marginTop: '24px' }}>
-                <CardContent>
-                  <div className={classes.chartPlaceholder}>
-                    Amount Developer Was Searched Developer Page Visited
-                  </div>
-                </CardContent>
-              </Card>
-              <Box display="flex" justifyContent="space-between">
-                <Card style={{ marginTop: '24px' }}>
-                  <CardContent>
-                    <div className={classes.chartPlaceholder}>
-                      Chart Visualization Here
-                    </div>
+                    ))}
                   </CardContent>
                 </Card>
                 <Card style={{ marginTop: '24px' }}>
                   <CardContent>
                     <div className={classes.chartPlaceholder}>
-                      Chart Visualization Here
+                      Amount Developer Was Searched Developer Page Visited
                     </div>
                   </CardContent>
                 </Card>
-              </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Card style={{ marginTop: '24px' }}>
+                    <CardContent>
+                      <div className={classes.chartPlaceholder}>
+                        Chart Visualization Here
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card style={{ marginTop: '24px' }}>
+                    <CardContent>
+                      <div className={classes.chartPlaceholder}>
+                        Chart Visualization Here
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-      </Container>
-      <Dialog
-        open={infoDialogOpen}
-        onClose={handleInfoDialogClose}
-        maxWidth="md"
-        fullWidth
-        aria-labelledby="developer-details"
-      >
-        <ChplDialogTitle
-          id="developer-details"
+          </div>
+        </Container>
+        <Dialog
+          open={infoDialogOpen}
           onClose={handleInfoDialogClose}
+          maxWidth="md"
+          fullWidth
+          aria-labelledby="developer-details"
         >
-          Developer Details
-        </ChplDialogTitle>
-        {developer ? (
-          <DeveloperContext.Provider value={{ developer }}>
+          <ChplDialogTitle
+            id="developer-details"
+            onClose={handleInfoDialogClose}
+          >
+            Developer Details
+          </ChplDialogTitle>
+          {developer ? (
             <FlagContext.Provider value={{ demographicChangeRequestIsOn: false }}>
               <UserContext.Provider value={{
                 hasAnyRole: () => false,
@@ -1003,100 +888,98 @@ function ChplDeveloperDashboard() {
                 </DialogContent>
               </UserContext.Provider>
             </FlagContext.Provider>
-          </DeveloperContext.Provider>
-        ) : (
-          <div>
-            <Typography>Loading developer information...</Typography>
-            <Typography variant="body2">
-              Developer ID:
-              {activeDeveloperId}
-            </Typography>
-            <Typography variant="body2">
-              Is Loading:
-              {isLoading ? 'Yes' : 'No'}
-            </Typography>
-          </div>
-        )}
-      </Dialog>
-      {activeAttestations && Object.keys(activeAttestations).length > 0 && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={attestationsDialogOpen}
-          onClose={handleAttestationsClose}
-          aria-labelledby="attestations-details"
-        >
-          <ChplDialogTitle
-            id="attestations-details"
-            onClose={handleAttestationsClose}
-          >
-            View Attestations Details
-          </ChplDialogTitle>
-          <DialogContent dividers>
-            <ChplAttestationView
-              attestations={activeAttestations}
-              canCreateException={false}
-              developer={developer}
-            />
-          </DialogContent>
+          ) : (
+            <div>
+              <Typography>Loading developer information...</Typography>
+              <Typography variant="body2">
+                Developer ID:
+                {activeDeveloperId}
+              </Typography>
+              <Typography variant="body2">
+                Is Loading:
+                {isLoading ? 'Yes' : 'No'}
+              </Typography>
+            </div>
+          )}
         </Dialog>
-      )}
-      {activeDirectReview && Object.keys(activeDirectReview).length > 0 && (
-        <Dialog
-          fullWidth
-          maxWidth="md"
-          open={directReviewDialogOpen}
-          onClose={handleDirectReviewClose}
-          aria-labelledby="direct-review-details"
-        >
-          <ChplDialogTitle
-            id="direct-review-details"
-            onClose={handleDirectReviewClose}
+        {activeAttestations && Object.keys(activeAttestations).length > 0 && (
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={attestationsDialogOpen}
+            onClose={handleAttestationsClose}
+            aria-labelledby="attestations-details"
           >
-            Direct Review Details
-          </ChplDialogTitle>
-          <DialogContent dividers>
-            <Box>
-              {/* Non-Conformities Details */}
-              {activeDirectReview.nonConformities && activeDirectReview.nonConformities.length > 0 && (
-                <Box style={{ marginTop: '4px' }}>
-                  <Typography variant="h6" gutterBottom>
-                    Non-Conformities Details
-                  </Typography>
-                  {activeDirectReview.nonConformities.map((nc, index) => {
-                    const friendlyNc = getFriendlyValues(nc);
-                    return (
-                      <Card key={nc.created || index} style={{ marginBottom: '16px' }}>
-                        <CardHeader
-                          titleTypographyProps={{ variant: 'h6' }}
-                          style={{
-                            backgroundColor: '#fff',
-                            borderBottom: '0.5px solid #c2c6ca',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            padding: '16px 16px',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}
-                          title={nc.nonConformityType || 'Has not been determined'}
-                        />
-                        <CardContent>
-                          <Box style={{
-                            display: 'flex',
-                            gridGap: '8px',
-                            flexWrap: 'wrap',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}
-                          >
-                            {getDataDisplay('Non-conformity Type', <Typography>{nc.nonConformityType || 'N/A'}</Typography>, 'Type of non-conformity found during review')}
+            <ChplDialogTitle
+              id="attestations-details"
+              onClose={handleAttestationsClose}
+            >
+              View Attestations Details
+            </ChplDialogTitle>
+            <DialogContent dividers>
+              <ChplAttestationView
+                attestations={activeAttestations}
+                canCreateException={false}
+                developer={developer}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
+        {activeDirectReview && Object.keys(activeDirectReview).length > 0 && (
+          <Dialog
+            fullWidth
+            maxWidth="md"
+            open={directReviewDialogOpen}
+            onClose={handleDirectReviewClose}
+            aria-labelledby="direct-review-details"
+          >
+            <ChplDialogTitle
+              id="direct-review-details"
+              onClose={handleDirectReviewClose}
+            >
+              Direct Review Details
+            </ChplDialogTitle>
+            <DialogContent dividers>
+              <Box>
+                {activeDirectReview.nonConformities && activeDirectReview.nonConformities.length > 0 && (
+                  <Box style={{ marginTop: '4px' }}>
+                    <Typography variant="h6" gutterBottom>
+                      Non-Conformities Details
+                    </Typography>
+                    {activeDirectReview.nonConformities.map((nc, index) => {
+                      const friendlyNc = getFriendlyValues(nc);
+                      return (
+                        <Card key={nc.created || index} style={{ marginBottom: '16px' }}>
+                          <CardHeader
+                            titleTypographyProps={{ variant: 'h6' }}
+                            style={{
+                              backgroundColor: '#fff',
+                              borderBottom: '0.5px solid #c2c6ca',
+                              display: 'flex',
+                              flexDirection: 'row',
+                              padding: '16px 16px',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                            }}
+                            title={nc.nonConformityType || 'Has not been determined'}
+                          />
+                          <CardContent>
+                            <Box style={{
+                              display: 'flex',
+                              gridGap: '8px',
+                              flexWrap: 'wrap',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}
+                            >
+                              {getDataDisplay('Non-conformity Type', <Typography>{nc.nonConformityType || 'N/A'}</Typography>, 'Type of non-conformity found during review')}
 
-                            {getDataDisplay('Developer Associated Listings',
-                              <>
-                                {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0) && (
+                              {getDataDisplay('Developer Associated Listings',
+                                <>
+                                  {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0) && (
                                   <Typography>None</Typography>
-                                )}
-                                {nc.developerAssociatedListings?.length > 0 && (
+                                  )}
+                                  {nc.developerAssociatedListings?.length > 0 && (
                                   <List>
                                     {nc.developerAssociatedListings.map((dal) => (
                                       <ListItem key={dal.id}>
@@ -1108,43 +991,44 @@ function ChplDeveloperDashboard() {
                                       </ListItem>
                                     ))}
                                   </List>
-                                )}
-                              </>,
-                              'A listing of other certified products associated with the non-conformity, as applicable')}
+                                                )}
+                                </>,
+                                'A listing of other certified products associated with the non-conformity, as applicable')}
 
-                            {getDataDisplay('Corrective Action Plan Approval Date',
-                              <Typography>{friendlyNc.friendlyCapApprovalDate || 'N/A'}</Typography>,
-                              'The date that ONC approved the corrective action plan proposed by the developer')}
+                              {getDataDisplay('Corrective Action Plan Approval Date',
+                                <Typography>{friendlyNc.friendlyCapApprovalDate || 'N/A'}</Typography>,
+                                'The date that ONC approved the corrective action plan proposed by the developer')}
 
-                            {getDataDisplay('Date Corrective Action Must Be Completed',
-                              <Typography>{friendlyNc.friendlyCapMustCompleteDate || 'N/A'}</Typography>,
-                              'The date that the corrective action must be completed in order to avoid termination of the certified product\'s certification status and/or a certification ban of the developer, as applicable')}
+                              {getDataDisplay('Date Corrective Action Must Be Completed',
+                                <Typography>{friendlyNc.friendlyCapMustCompleteDate || 'N/A'}</Typography>,
+                                'The date that the corrective action must be completed in order to avoid termination of the certified product\'s certification status and/or a certification ban of the developer, as applicable')}
 
-                            {getDataDisplay('Date Corrective Action Was Completed',
-                              <Typography>{friendlyNc.friendlyCapEndDate || 'N/A'}</Typography>,
-                              'The date the corrective action was completed')}
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </Box>
-              )}
-              {(!activeDirectReview.nonConformities || activeDirectReview.nonConformities.length === 0) && (
-                <Box style={{ marginTop: '24px' }}>
-                  <Typography variant="h6" gutterBottom>
-                    Non-Conformities Details
-                  </Typography>
-                  <Typography>
-                    Has not been determined
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </DialogContent>
-        </Dialog>
-      )}
-    </div>
+                              {getDataDisplay('Date Corrective Action Was Completed',
+                                <Typography>{friendlyNc.friendlyCapEndDate || 'N/A'}</Typography>,
+                                'The date the corrective action was completed')}
+                            </Box>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </Box>
+                )}
+                {(!activeDirectReview.nonConformities || activeDirectReview.nonConformities.length === 0) && (
+                  <Box style={{ marginTop: '24px' }}>
+                    <Typography variant="h6" gutterBottom>
+                      Non-Conformities Details
+                    </Typography>
+                    <Typography>
+                      Has not been determined
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </DialogContent>
+          </Dialog>
+        )}
+      </div>
+    </DeveloperContext.Provider>
   );
 }
 export default ChplDeveloperDashboard;
