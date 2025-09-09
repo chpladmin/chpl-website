@@ -9,12 +9,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import Moment from 'react-moment';
+import { arrayOf, object } from 'prop-types';
 
-import {
-  useFetchApiDocumentationData,
-  useFetchListings,
-} from 'api/search';
+import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -30,7 +27,6 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -46,14 +42,8 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
   },
   pageBody: {
-    display: 'grid',
-    gridTemplateColumns: ' 1fr',
-    gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '2fr 1fr',
-    },
   },
   pageContent: {
     display: 'grid',
@@ -100,8 +90,13 @@ const useStyles = makeStyles({
 
 const criteriaLookup = {
   56: { display: '170.315 (g)(7)', sort: 0 },
-  181: { display: '170.315 (g)(9)', sort: 1 },
-  182: { display: '170.315 (g)(10)', sort: 2 },
+  57: { display: 'Removed | 170.315 (g)(8)', sort: 1 },
+  58: { display: 'Removed | 170.315 (g)(9)', sort: 2 },
+  181: { display: '170.315 (g)(9)', sort: 3 },
+  182: { display: '170.315 (g)(10)', sort: 4 },
+  212: { display: '170.315 (g)(31)', sort: 5 },
+  213: { display: '170.315 (g)(32)', sort: 6 },
+  214: { display: '170.315 (g)(33)', sort: 7 },
 };
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -120,7 +115,7 @@ const headers = [
 const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
   const items = Object.entries(apiDocumentation
-    .filter((item) => (item.criterion.id !== 57 && item.criterion.id !== 58))
+    .filter((item) => (!item.criterion.removed))
     .map((item) => ({
       id: item.criterion.id,
       url: item.value,
@@ -132,8 +127,8 @@ const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product },
     .map(([url, ids]) => ({
       url,
       criteria: ids
-        .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
-        .map((id) => criteriaLookup[id].display)
+        .sort((a, b) => criteriaLookup[a]?.sort - criteriaLookup[b]?.sort)
+        .map((id) => criteriaLookup[id]?.display)
         .join(', '),
     }))
     .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
@@ -160,13 +155,9 @@ const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product },
   );
 };
 
-function ChplApiDocumentationSearchView() {
+function ChplApiDocumentationSearchView({ displayCriteria }) {
   const storageKey = 'storageKey-apiDocumentationView';
-  const API = getAngularService('API');
-  const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
-  const [documentationDate, setDocumentationDate] = useState('');
-  const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -184,7 +175,6 @@ function ChplApiDocumentationSearchView() {
     sortDescending,
     query: filterContext.queryString(),
   });
-  const { data: documentation } = useFetchApiDocumentationData();
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -206,15 +196,6 @@ function ChplApiDocumentationSearchView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  useEffect(() => {
-    setDownloadLink(`${API}/files/api_documentation?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
-
-  useEffect(() => {
-    if (!documentation?.associatedDate) { return; }
-    setDocumentationDate(documentation.associatedDate);
-  }, [documentation?.associatedDate]);
-
   const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
       ...analytics,
@@ -234,51 +215,22 @@ function ChplApiDocumentationSearchView() {
         <Typography variant="h1">API Information</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1">
-            This list includes all health IT products that have been certified to at least one of the following API Criteria:
-          </Typography>
-          <ul>
-            <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
-          </ul>
-          <Typography variant="body1" gutterBottom>
-            The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
-          </Typography>
-          <Typography variant="body1">
-            Please note that by default, only listings that are active or suspended are shown in the search results.
-          </Typography>
-        </div>
-        <div>
-          <h2>API Documentation Dataset</h2>
-          <Typography variant="body1" gutterBottom>
-            The API Documentation Dataset is derived from a manual review by ONC of developer API documentation and details the API syntax and authorization standard used for products certified to the API criteria.
-          </Typography>
-          <ChplLink
-            href={downloadLink}
-            text="Download API Documentation Dataset"
-            analytics={{
-              ...analytics,
-              event: 'Download API Documentation Dataset',
-            }}
-            external={false}
-          />
-          { documentationDate
-            && (
-              <Typography variant="body2">
-                Last updated
-                {' '}
-                <Moment
-                  fromNow
-                  withTitle
-                  titleFormat="DD MMM yyyy"
-                >
-                  {documentationDate}
-                </Moment>
-              </Typography>
-            )}
-        </div>
+        <Typography variant="body1">
+          This list includes all health IT products that have been certified to at least one of the following API Criteria:
+        </Typography>
+        <ul>
+          { displayCriteria.map((cc) => (
+            <li key={cc.id}>
+              {`§${cc.longDisplay}`}
+            </li>
+          ))}
+        </ul>
+        <Typography variant="body1" gutterBottom>
+          The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
+        </Typography>
+        <Typography variant="body1">
+          Please note that by default, only listings that are active or suspended are shown in the search results.
+        </Typography>
       </div>
       <ChplFilterSearchBar />
       <div>
@@ -433,4 +385,5 @@ function ChplApiDocumentationSearchView() {
 export default ChplApiDocumentationSearchView;
 
 ChplApiDocumentationSearchView.propTypes = {
+  displayCriteria: arrayOf(object).isRequired,
 };
