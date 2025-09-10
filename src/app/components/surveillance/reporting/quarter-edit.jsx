@@ -17,7 +17,7 @@ import * as yup from 'yup';
 
 import ChplQuarterEditListing from './quarter-edit-listing';
 
-import { useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
+import { useDeleteQuarterly, useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
@@ -82,7 +82,8 @@ const menuItems = ['Activities, Outcomes, & Summaries', 'Listings with relevant 
 function ChplQuarterEdit({ dispatch, report }) {
   const relevantListingsQuery = useFetchRelevantListings({ id: report.id });
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePutQuarterly();
+  const { mutate: deleteReport } = useDeleteQuarterly();
+  const { mutate: putReport } = usePutQuarterly();
   const [bonusQuery, setBonusQuery] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -93,7 +94,7 @@ function ChplQuarterEdit({ dispatch, report }) {
 
   useEffect(() => {
     setBonusQuery([
-      `certificationBodies=${report.acb.name}`,
+      `certificationBodies=${report.acb?.name}`,
       `openDuringDateRange=${report.startDay},${report.endDay}`,
     ].sort((a, b) => (a < b ? -1 : 1)).join('&'));
   }, [report]);
@@ -103,20 +104,40 @@ function ChplQuarterEdit({ dispatch, report }) {
     setListings(relevantListingsQuery.data);
   }, [relevantListingsQuery.data, relevantListingsQuery.isLoading, relevantListingsQuery.isSuccess]);
 
+  const handleDelete = () => {
+    setIsProcessing(true);
+    setErrorMessages([]);
+    deleteReport(report, {
+      onSuccess: () => {
+        setIsProcessing(false);
+        enqueueSnackbar('The report has been deleted', {
+          variant: 'success',
+        });
+        dispatch({ action: 'cancel' });
+      },
+      onError: (error) => {
+        setIsProcessing(false);
+        setErrorMessages([error.response?.data?.error]);
+      },
+    });
+  };
+
   const handleDispatch = (action) => {
-    console.log(action);
     switch (action) {
+      case 'delete':
+        handleDelete();
+        break;
       case 'save':
         formik.submitForm();
         break;
       default:
+        console.log(action);
         dispatch({ action });
         break;
     }
   };
 
   const save = () => {
-    console.log('saving');
     setIsProcessing(true);
     setErrorMessages([]);
     const payload = {
@@ -130,8 +151,7 @@ function ChplQuarterEdit({ dispatch, report }) {
       postCertificationPerformanceOfCertifiedCapabilities: formik.values.postCertificationPerformanceOfCertifiedCapabilities,
       appropriateUseOfMark: formik.values.appropriateUseOfMark,
     };
-    console.log(payload);
-    mutate(payload, {
+    putReport(payload, {
       onSuccess: () => {
         setIsProcessing(false);
         enqueueSnackbar('Your updates have been made', {
@@ -420,6 +440,7 @@ function ChplQuarterEdit({ dispatch, report }) {
         disabled={!formik.isValid}
         errors={errorMessages}
         isProcessing={isProcessing}
+        canDelete
       />
     </>
   );

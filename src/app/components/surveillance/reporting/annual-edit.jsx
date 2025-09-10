@@ -12,7 +12,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { usePutAnnual } from 'api/surveillance';
+import { useDeleteAnnual, usePutAnnual } from 'api/surveillance';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
@@ -56,14 +56,36 @@ function ChplAnnualEdit({
   report,
 }) {
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate } = usePutAnnual();
+  const { mutate: deleteReport } = useDeleteAnnual();
+  const { mutate: putReport } = usePutAnnual();
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
 
+  const handleDelete = () => {
+    setIsProcessing(true);
+    setErrorMessages([]);
+    deleteReport(report, {
+      onSuccess: () => {
+        setIsProcessing(false);
+        enqueueSnackbar('The report has been deleted', {
+          variant: 'success',
+        });
+        dispatch({ action: 'cancel' });
+      },
+      onError: (error) => {
+        setIsProcessing(false);
+        setErrorMessages([error.response?.data?.error]);
+      },
+    });
+  };
+
   const handleDispatch = (action) => {
     switch (action) {
+      case 'delete':
+        handleDelete();
+        break;
       case 'save':
         formik.submitForm();
         break;
@@ -81,7 +103,7 @@ function ChplAnnualEdit({
       obstacleSummary: formik.values.obstacleSummary,
       priorityChangesFromFindingsSummary: formik.values.priorityChangesFromFindingsSummary,
     };
-    mutate(payload, {
+    putReport(payload, {
       onSuccess: () => {
         setIsProcessing(false);
         enqueueSnackbar('Your updates have been made', {
@@ -167,6 +189,7 @@ function ChplAnnualEdit({
         disabled={!formik.isValid}
         errors={errorMessages}
         isProcessing={isProcessing}
+        canDelete
       />
     </div>
   );
