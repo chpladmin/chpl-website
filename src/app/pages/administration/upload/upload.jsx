@@ -6,7 +6,6 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import ChplUploadApiDocumentation from 'components/upload/upload-api-documentation';
 import ChplUploadListings from 'components/upload/upload-listings';
 import ChplUploadPromotingInteroperability from 'components/upload/upload-promoting-interoperability';
 import ChplUploadRealWorldTesting from 'components/upload/upload-real-world-testing';
@@ -74,12 +73,6 @@ function ChplUpload() {
                 && (
                   <Box className={classes.uploadCards}>
                     <ChplUploadPromotingInteroperability />
-                  </Box>
-                )}
-              { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                && (
-                  <Box className={classes.uploadCards}>
-                    <ChplUploadApiDocumentation />
                   </Box>
                 )}
             </Box>

@@ -23,6 +23,9 @@ import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
+  questionParagraph: {
+    marginBottom: '8px',
+  },
   warningBox: {
     padding: '16px',
     backgroundColor: '#fdfde7',
@@ -46,7 +49,14 @@ const getRows = (section, classes) => section.formItems
           { section.name }
           {': '}
         </strong>
-        { interpretLink(item.question.question) }
+        { item.question.question.split('\n\n').map((p) => (
+          <Typography
+            className={classes.questionParagraph}
+            key={p}
+          >
+            { interpretLink(p) }
+          </Typography>
+        ))}
       </TableCell>
       <TableCell>
         { item.submittedResponses[0]?.response }
