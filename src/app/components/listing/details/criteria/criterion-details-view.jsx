@@ -324,7 +324,7 @@ function ChplCriterionDetailsView({
                                 Name:
                                 {' '}
                                 {`${cm.conformanceMethod.removed ? 'Removed | ' : ''} ${cm.conformanceMethod.name}`}
-                                { cm.conformanceMethod.name !== 'Attestation'
+                                { cm.conformanceMethodVersion && cm.conformanceMethodVersion?.length > 0
                                   && (
                                     <>
                                       ; Version:

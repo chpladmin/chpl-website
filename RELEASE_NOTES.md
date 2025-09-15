@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 13.42.0
+_15 September 2025_
+
+### Features
+* Show upcoming criteria in system maintenance page
+
+### User Interface Updates
+* Update SED Details text to not reference "all" listings
+* Support multiple paragraphs in attestation question labels
+* Remove obsolete API Documentation Dataset download link
+* Display API Documentation criteria based on data
+
+---
+
 ## Version 13.41.1
 _2 September 2025_
 
