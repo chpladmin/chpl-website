@@ -23,6 +23,14 @@ export default class NetworkService {
     return this.apiPOST('/users/confirm', userObject);
   }
 
+  createAnnualSurveillanceReport(report) {
+    return this.apiPOST('/surveillance-report/annual', report);
+  }
+
+  createQuarterlySurveillanceReport(report) {
+    return this.apiPOST('/surveillance-report/quarterly', report);
+  }
+
   deleteAnnualSurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/annual/${id}`);
   }
@@ -226,12 +234,20 @@ export default class NetworkService {
     return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
 
+  updateAnnualSurveillanceReport(report) {
+    return this.apiPUT('/surveillance-report/annual', report);
+  }
+
   updateCP(cpObject) {
     return this.apiPUT(`/certified_products/${cpObject.listing.id}`, cpObject);
   }
 
   updateProduct(productObject) {
     return this.apiPUT('/products', productObject);
+  }
+
+  updateQuarterlySurveillanceReport(report) {
+    return this.apiPUT('/surveillance-report/quarterly', report);
   }
 
   updateRelevantSurveillance(reportId, surveillance) {
