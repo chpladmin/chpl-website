@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Typography,
   Box,
 } from '@material-ui/core';
@@ -20,13 +21,18 @@ import { usePostInitiateQuarterlyReport, usePostQuarterlyReportRequest } from 'a
 import { UserContext } from 'shared/contexts';
 
 function ChplQuarter({
-  quarter, year, dispatch, report, acb,
+  quarter, year, dispatch, report: initialReport, acb,
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: doDownload } = usePostQuarterlyReportRequest();
   const { mutate: doInitiate } = usePostInitiateQuarterlyReport();
+  const [report, setReport] = useState(undefined);
   const [state, setState] = useState('summary');
+
+  useEffect(() => {
+    setReport(initialReport);
+  }, [initialReport]);
 
   const download = () => {
     doDownload(report, {
@@ -56,7 +62,8 @@ function ChplQuarter({
       year,
     };
     doInitiate(payload, {
-      onSuccess: () => {
+      onSuccess: (results) => {
+        setReport(results.data);
         edit();
       },
       onError: (error) => {
@@ -83,6 +90,10 @@ function ChplQuarter({
     setState('view');
     dispatch({ action: `focus-quarter-${quarter.name}` });
   };
+
+  if (!report) {
+    return <CircularProgress />;
+  }
 
   if (state === 'edit') {
     return (
@@ -161,7 +172,7 @@ function ChplQuarter({
                 variant="outlined"
                 size="small"
                 onClick={initiate}
-                endIcon={<BeenhereIcon fontSize="small"/>}
+                endIcon={<BeenhereIcon fontSize="small" />}
                 style={{ marginTop: '8px' }}
               >
                 Initiate
