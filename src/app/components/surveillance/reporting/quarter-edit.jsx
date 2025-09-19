@@ -237,6 +237,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="surveillanceActivitiesAndOutcomes"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.surveillanceActivitiesAndOutcomes}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -266,6 +267,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="reactiveSurveillanceSummary"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.reactiveSurveillanceSummary}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -285,6 +287,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="icsSurveillanceSummary"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.icsSurveillanceSummary}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -313,6 +316,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="prioritizedElementSummary"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.prioritizedElementSummary}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -332,6 +336,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="disclosureRequirementsSummary"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.disclosureRequirementsSummary}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -351,6 +356,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="developerComplaintsLogReview"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.developerComplaintsLogReview}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -370,6 +376,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     name="postCertificationPerformanceOfCertifiedCapabilities"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.postCertificationPerformanceOfCertifiedCapabilities}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -384,12 +391,12 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.
                   </Typography>
-
                   <ChplTextField
                     id="appropriateUseOfMark"
                     name="appropriateUseOfMark"
                     label="Obstacle Summary"
                     required
+                    multiline
                     value={formik.values.appropriateUseOfMark}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
