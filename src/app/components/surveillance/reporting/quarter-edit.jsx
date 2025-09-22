@@ -67,14 +67,14 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  surveillanceActivitiesAndOutcomes: yup.string,
-  reactiveSurveillanceSummary: yup.string,
-  icsSurveillanceSummary: yup.string,
-  prioritizedElementSummary: yup.string,
-  disclosureRequirementsSummary: yup.string,
-  developerComplaintsLogReview: yup.string,
-  postCertificationPerformanceOfCertifiedCapabilities: yup.string,
-  appropriateUseOfMark: yup.string,
+  surveillanceActivitiesAndOutcomes: yup.string(),
+  reactiveSurveillanceSummary: yup.string(),
+  icsSurveillanceSummary: yup.string(),
+  prioritizedElementSummary: yup.string(),
+  disclosureRequirementsSummary: yup.string(),
+  developerComplaintsLogReview: yup.string(),
+  postCertificationPerformanceOfCertifiedCapabilities: yup.string(),
+  appropriateUseOfMark: yup.string(),
 });
 
 const menuItems = ['Activities, Outcomes, & Summaries', 'Listings with relevant surveillance', 'Complaints'];
