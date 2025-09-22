@@ -35,6 +35,7 @@ const headers = [
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
   { property: 'requiredDay', text: 'Required Date', sortable: true },
+  { property: 'extensionEndDay', text: 'Extension End Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
   { text: 'Applicable Criteria' },
@@ -144,6 +145,9 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.requiredDay) }
+                  </TableCell>
+                  <TableCell>
+                    { getDisplayDateFormat(item.extensionEndDay) }
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }
