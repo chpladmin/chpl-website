@@ -31,6 +31,7 @@ const validationSchema = yup.object({
   additionalInformation: yup.string(),
   endDay: yup.date(),
   requiredDay: yup.date(),
+  extensionEndDay: yup.date(),
   startDay: yup.date(),
 });
 
@@ -126,6 +127,7 @@ function ChplFunctionalityTestedEdit(props) {
     criteria,
     endDay: formik.values.endDay,
     requiredDay: formik.values.requiredDay,
+    extensionEndDay: formik.values.extensionEndDay,
     startDay: formik.values.startDay,
   });
 
@@ -167,6 +169,7 @@ function ChplFunctionalityTestedEdit(props) {
       additionalInformation: initialFunctionalityTested?.additionalInformation ?? '',
       endDay: initialFunctionalityTested?.endDay ?? '',
       requiredDay: initialFunctionalityTested?.requiredDay ?? '',
+      extensionEndDay: initialFunctionalityTested?.extensionEndDay ?? '',
       startDay: initialFunctionalityTested?.startDay ?? '',
     },
     onSubmit: () => {
@@ -214,6 +217,17 @@ function ChplFunctionalityTestedEdit(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.startDay && !!formik.errors.startDay}
           helperText={formik.touched.startDay && formik.errors.startDay}
+        />
+        <ChplTextField
+          id="extension-end-day"
+          name="extensionEndDay"
+          label="Extension End Date"
+          type="date"
+          value={formik.values.extensionEndDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.extensionEndDay && !!formik.errors.extensionEndDay}
+          helperText={formik.touched.extensionEndDay && formik.errors.extensionEndDay}
         />
         <ChplTextField
           id="required-day"
