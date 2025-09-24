@@ -151,7 +151,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
                     { getDisplayDateFormat(item.requiredDay) }
                   </TableCell>
                   <TableCell>
-                    { getDisplayDateFormat(item.exstnsionEndDay) }
+                    { getDisplayDateFormat(item.extensionEndDay) }
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }
