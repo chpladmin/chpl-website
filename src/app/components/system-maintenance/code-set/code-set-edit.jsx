@@ -20,8 +20,6 @@ import {
 } from 'shared/prop-types';
 
 const validationSchema = yup.object({
-  name: yup.string()
-    .required('Field is required'),
   requiredDay: yup.date(),
   extensionEndDay: yup.date(),
   startDay: yup.date(),
@@ -103,7 +101,6 @@ function ChplCodeSetEdit(props) {
 
   const buildPayload = () => ({
     ...codeSet,
-    name: formik.values.name,
     criteria,
     requiredDay: formik.values.requiredDay,
     extensionEndDay: formik.values.extensionEndDay,
@@ -141,7 +138,6 @@ function ChplCodeSetEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: initialCodeSet?.name ?? '',
       requiredDay: initialCodeSet?.requiredDay ?? '',
       extensionEndDay: initialCodeSet?.extensionEndDay ?? '',
       startDay: initialCodeSet?.startDay ?? '',
@@ -154,19 +150,6 @@ function ChplCodeSetEdit(props) {
 
   return (
     <div className={classes.container}>
-      <Box className={classes.horizontalInput}>
-        <ChplTextField
-          id="name"
-          name="name"
-          label="Name"
-          value={formik.values.name}
-          required
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name && !!formik.errors.name}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-      </Box>
       <Box className={classes.horizontalInput}>
         <ChplTextField
           id="start-day"
