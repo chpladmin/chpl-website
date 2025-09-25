@@ -35,6 +35,9 @@ const useStyles = makeStyles({
     '&:hover': {
       transform: 'scale(1.02)',
     },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
   },
   cardContent: {
     display: 'flex',
@@ -47,6 +50,29 @@ const useStyles = makeStyles({
   cardButtons: {
     display: 'flex',
     flexDirection: 'column',
+    gap: '4px',
+  },
+  menuButton: {
+    justifyContent: 'flex-start',
+    color: palette.primary,
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': {
+      backgroundColor: palette.greyLight,
+      color: palette.primary,
+    },
+    '&:focus': {
+      backgroundColor: palette.secondary,
+      color: palette.primary,
+    },
+    '&.active': {
+      backgroundColor: palette.secondary,
+      color: palette.black,
+      fontWeight: 'bold',
+      '&:focus': {
+        backgroundColor: palette.secondary,
+        color: palette.black,
+      },
+    },
   },
 });
 
@@ -86,10 +112,11 @@ function ChplCharts() {
                 <CardContent>
                   <Box className={classes.cardButtons}>
                     <Button
-                      style={{ justifyContent: 'flex-start' }}
                       color="primary"
                       className={activeReport === undefined ? `${classes.menuButton} active` : classes.menuButton}
                       onClick={() => handleReportChange(undefined)}
+                      fullWidth
+                      variant="text"
                     >
                       Charts
                     </Button>
@@ -98,9 +125,8 @@ function ChplCharts() {
                       .map((report) => (
                         <Button
                           key={`${report.reportKey}-button`}
-                          style={{ justifyContent: 'flex-start' }}
                           color="primary"
-                          className={`${classes.menuButton} ${activeReport === report.reportKey ? 'active' : ''}`}
+                          className={`${classes.menuButton} ${activeReport?.reportKey === report.reportKey ? 'active' : ''}`}
                           onClick={() => handleReportChange(report.reportKey)}
                           id={`report-${report.reportKey}`}
                           fullWidth
