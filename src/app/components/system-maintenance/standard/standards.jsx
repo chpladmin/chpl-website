@@ -82,6 +82,26 @@ const staticFilters = [{
   getValueEntry: getDateEntry,
 }, {
   ...defaultFilter,
+  key: 'extensionEndDay',
+  display: 'Extension End Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
+  ],
+  filterFn: (item, filter) => filter.values.reduce((acc, v) => {
+    if ((!!v.selected && !!item.extensionEndDay)) { // selected and item has a value
+      return acc && (v.value === 'Before' ? item.extensionEndDay <= v.selected : item.extensionEndDay >= v.selected);
+    }
+    if (!v.selected) { // not selected
+      return acc;
+    }
+    // selected but no item value
+    return acc && (v.value !== 'Before');
+  }, true),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateEntry,
+}, {
+  ...defaultFilter,
   key: 'expired',
   display: 'Expired',
   getValueEntry: getRadioValueEntry,

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -8,17 +9,23 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf, func, object } from 'prop-types';
+import AddIcon from '@material-ui/icons/Add';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
+import { useFetchCodeSetsActivity } from 'api/activity';
+import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const headers = [
   { text: 'CHPL Entry Value' },
   { text: 'Start Date' },
   { text: 'Required Date' },
+  { text: 'Extension End Date' },
   { text: 'Applicable Criteria' },
 ];
 
@@ -26,7 +33,8 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplCodeSetsView({ codeSets: initialCodeSets }) {
+function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
+  const { hasAnyRole } = useContext(UserContext);
   const [codeSets, setCodeSets] = useState([]);
   const classes = useStyles();
 
@@ -43,6 +51,23 @@ function ChplCodeSetsView({ codeSets: initialCodeSets }) {
 
   return (
     <>
+      <>
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchCodeSetsActivity}
+          title="Code Sets"
+        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-code-set"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        )}
+      </>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Code Set table"
@@ -65,8 +90,24 @@ function ChplCodeSetsView({ codeSets: initialCodeSets }) {
                     { getDisplayDateFormat(item.requiredDay) }
                   </TableCell>
                   <TableCell>
+                    { getDisplayDateFormat(item.extensionEndDay) }
+                  </TableCell>
+                  <TableCell>
                     { item.criteriaDisplay }
                   </TableCell>
+                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                    <TableCell align="right">
+                      <Button
+                        onClick={() => dispatch({ action: 'edit', payload: item })}
+                        id={`edit-code-set-${item.name}`}
+                        variant="contained"
+                        color="secondary"
+                        endIcon={<EditOutlinedIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>
@@ -80,4 +121,5 @@ export default ChplCodeSetsView;
 
 ChplCodeSetsView.propTypes = {
   codeSets: arrayOf(object).isRequired,
+  dispatch: func.isRequired,
 };
