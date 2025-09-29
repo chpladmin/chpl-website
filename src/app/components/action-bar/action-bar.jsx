@@ -303,7 +303,6 @@ function ChplActionBar(props) {
                   variant="contained"
                   onClick={() => act('save')}
                   disabled={isDisabled || isProcessing}
-                  onMouseOver={() => act('mouseover')}
                   className={classes.actionBarButton}
                 >
                   { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
