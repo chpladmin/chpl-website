@@ -45,9 +45,9 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-    tableResultsHeaderContainer:{
-      display: 'flex',
-      justifyContent: 'flex-end',
+  tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -101,7 +101,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
             {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <div className={classes.tableResultsHeaderContainer}> 
+        <div className={classes.tableResultsHeaderContainer}>
           <ChplSystemMaintenanceActivity
             fetch={useFetchStandardsActivity}
             title="Standards"
