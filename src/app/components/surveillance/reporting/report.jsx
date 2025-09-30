@@ -110,7 +110,7 @@ function ChplReport({ acb, dispatch }) {
       <Box
         display="grid"
         gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
-        gridGap={8}
+        gridGap={12}
         alignItems="stretch"
         justifyItems="stretch"
       >
@@ -122,6 +122,7 @@ function ChplReport({ acb, dispatch }) {
               quarter={q}
               report={filteredQuarterly.find((r) => r.quarter === q.name)}
               year={activeYear}
+              acb={acb}
               style={{ minWidth: '200px', minHeight: '100px' }}
             />
           ))}
@@ -131,6 +132,7 @@ function ChplReport({ acb, dispatch }) {
               dispatch={handleDispatch}
               report={filteredAnnual}
               year={activeYear}
+              acb={acb}
               style={{ minWidth: '200px', minHeight: '100px' }}
             />
           )}
