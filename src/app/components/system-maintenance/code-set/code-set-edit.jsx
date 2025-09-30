@@ -163,17 +163,6 @@ function ChplCodeSetEdit(props) {
           helperText={formik.touched.startDay && formik.errors.startDay}
         />
         <ChplTextField
-          id="extension-end-day"
-          name="extensionEndDay"
-          label="Extension End Date"
-          type="date"
-          value={formik.values.extensionEndDay}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.extensionEndDay && !!formik.errors.extensionEndDay}
-          helperText={formik.touched.extensionEndDay && formik.errors.extensionEndDay}
-        />
-        <ChplTextField
           id="required-day"
           name="requiredDay"
           label="Required Date"
@@ -183,6 +172,17 @@ function ChplCodeSetEdit(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.requiredDay && !!formik.errors.requiredDay}
           helperText={formik.touched.requiredDay && formik.errors.requiredDay}
+        />
+        <ChplTextField
+          id="extension-end-day"
+          name="extensionEndDay"
+          label="Extension End Date"
+          type="date"
+          value={formik.values.extensionEndDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.extensionEndDay && !!formik.errors.extensionEndDay}
+          helperText={formik.touched.extensionEndDay && formik.errors.extensionEndDay}
         />
       </Box>
       <Divider />
