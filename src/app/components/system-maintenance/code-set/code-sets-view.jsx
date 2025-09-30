@@ -31,6 +31,10 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
+  tableResultsHeaderContainer:{
+      display: 'flex',
+      justifyContent: 'flex-end',
+  }
 });
 
 function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
@@ -51,7 +55,7 @@ function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
 
   return (
     <>
-      <>
+      <div className={classes.tableResultsHeaderContainer}>
         <ChplSystemMaintenanceActivity
           fetch={useFetchCodeSetsActivity}
           title="Code Sets"
@@ -67,7 +71,7 @@ function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
             Add
           </Button>
         )}
-      </>
+      </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Code Set table"

@@ -45,6 +45,10 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
+  tableResultsHeaderContainer:{
+      display: 'flex',
+      justifyContent: 'flex-end',
+  }
 });
 
 function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {
@@ -90,7 +94,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
       <div>
         <ChplFilterChips />
       </div>
-      <div className={classes.tableResultsHeaderContainer}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mx={8} my={2}>
         <Box display="flex" flexDirection="row" gap={1}>
           <Typography variant="subtitle2">
             Search Results:
@@ -99,7 +103,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
             {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <>
+        <div className={classes.tableResultsHeaderContainer}>
           <ChplSystemMaintenanceActivity
             fetch={useFetchFunctionalitiesTestedActivity}
             title="Functionalities Tested"
@@ -115,8 +119,8 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
               Add
             </Button>
           )}
-        </>
-      </div>
+        </div>
+      </Box>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Functionalities Tested table"
@@ -132,7 +136,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
             { functionalitiesTested
               .map((item) => (
                 <TableRow key={`${item.id}-${item.value}`}>
-                  <TableCell className={classes.firstColumn}>
+                  <TableCell width="150px" className={classes.firstColumn}>
                     { item.value }
                     { item.retired && ' (Retired)'}
                     <ChplUpdateIndicator
