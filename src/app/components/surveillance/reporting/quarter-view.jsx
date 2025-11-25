@@ -267,12 +267,14 @@ function ChplQuarterView({ dispatch, report }) {
             <Card>
               <CardHeader title="Listings with relevant surveillance" />
               <CardContent>
-                { listings.map((l) => (
-                  <ChplQuarterViewListing
-                    key={l.id}
-                    listing={l}
-                  />
-                ))}
+                { listings
+                  .sort((a, b) => (a.certificationDate < b.certificationDate ? 1 : -1))
+                  .map((l) => (
+                    <ChplQuarterViewListing
+                      key={l.id}
+                      listing={l}
+                    />
+                  ))}
               </CardContent>
             </Card>
           )}
