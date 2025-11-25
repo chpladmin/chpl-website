@@ -514,7 +514,7 @@ function ChplCriterionDetailsView({
                     </TableCell>
                   </TableRow>
                 )}
-              { criterion.success && criterion.criterion.attributes?.testData
+              { criterion.success && criterion.criterion.attributes?.testData && criterion.testDataUsed?.length > 0
                 && (
                   <TableRow key="testDataUsed">
                     <TableCell component="th" scope="row">
@@ -528,25 +528,21 @@ function ChplCriterionDetailsView({
                       Test Data Used
                     </TableCell>
                     <TableCell>
-                      { criterion.testDataUsed?.length > 0
-                        && (
-                          <List>
-                            { criterion.testDataUsed.map((td, index) => (
-                              <ListItem key={td.id || td.key || index}>
-                                Data:
-                                {' '}
-                                { td.testData.name || 'N/A' }
-                                ; Version:
-                                {' '}
-                                { td.version }
-                                ; Alteration:
-                                {' '}
-                                { td.alteration || 'N/A' }
-                              </ListItem>
-                            ))}
-                          </List>
-                        )}
-                      { criterion.testDataUsed?.length === 0 && 'None' }
+                      <List>
+                        { criterion.testDataUsed.map((td, index) => (
+                          <ListItem key={td.id || td.key || index}>
+                            Data:
+                            {' '}
+                            { td.testData.name || 'N/A' }
+                            ; Version:
+                            {' '}
+                            { td.version }
+                            ; Alteration:
+                            {' '}
+                            { td.alteration || 'N/A' }
+                          </ListItem>
+                        ))}
+                      </List>
                     </TableCell>
                   </TableRow>
                 )}
