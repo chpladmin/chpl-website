@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Typography,
   Container,
   Button,
@@ -11,35 +10,39 @@ import {
 } from '@material-ui/core';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { ChplLink } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
-    height: '1200px',
     padding: theme.spacing(8),
     backgroundColor: palette.greyLight,
+    minHeight: 'calc(100vh - 238px)',
+    alignItems: 'flex-start',
   },
   stickyCard: {
     position: 'sticky',
     top: '116px',
   },
   card: {
-    width: '46%',
+    width: '48%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'transform 0.3s ease, all 0.2s ease-in-out',
     cursor: 'pointer',
     '&:hover': {
-      transform: 'scale(1.05)',
+      transform: 'scale(1.02)',
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
     },
   },
   cardContent: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     padding: '32px !important',
     gap: theme.spacing(1),
@@ -47,50 +50,52 @@ const useStyles = makeStyles({
   cardButtons: {
     display: 'flex',
     flexDirection: 'column',
+    gap: '4px',
+  },
+  menuButton: {
+    justifyContent: 'flex-start',
+    color: palette.primary,
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': {
+      backgroundColor: palette.greyLight,
+      color: palette.primary,
+    },
+    '&:focus': {
+      backgroundColor: palette.secondary,
+      color: palette.primary,
+    },
+    '&.active': {
+      backgroundColor: palette.secondary,
+      color: palette.black,
+      fontWeight: 'bold',
+      '&:focus': {
+        backgroundColor: palette.secondary,
+        color: palette.black,
+      },
+    },
   },
 });
 
 function ChplCharts() {
-  const [activeReport, setActiveReport] = useState(undefined);
-  const [productMetadata, setProductMetadata] = useState(undefined);
-  const [ncMetadata, setNcMetadata] = useState(undefined);
-  const productQuery = useFetchReportMetadata('UniqueProducts');
-  const ncQuery = useFetchReportMetadata('Non-conformityCounts');
-  const analytics = {
-    ...useAnalyticsContext().analytics,
-    category: 'Charts',
-  };
   const classes = useStyles();
+  const { analytics } = useAnalyticsContext();
+  const [activeReport, setActiveReport] = useState(undefined);
+  const [reportMetadata, setReportMetadata] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchReportMetadata();
 
   useEffect(() => {
-    if (productQuery.isLoading || !productQuery.isSuccess) { return; }
-    setProductMetadata(productQuery.data);
-    setActiveReport(productQuery.data);
-  }, [productQuery.data, productQuery.isLoading, productQuery.isSuccess]);
+    if (isLoading || !isSuccess) { return; }
+    setReportMetadata(data);
+  }, [data, isLoading, isSuccess]);
 
-  useEffect(() => {
-    if (ncQuery.isLoading || !ncQuery.isSuccess) { return; }
-    setNcMetadata(ncQuery.data);
-  }, [ncQuery.data, ncQuery.isLoading, ncQuery.isSuccess]);
-
-  const handleReportChange = (report) => {
-    setActiveReport(report);
+  const handleReportChange = (reportKey) => {
+    setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
+    eventTrack({
+      ...analytics,
+      category: 'Charts',
+      event: `Navigate to ${reportMetadata.find((metadata) => metadata.reportKey === reportKey)?.title || 'Charts'}`,
+    });
   };
-
-  if (!productMetadata || !ncMetadata) {
-    return <CircularProgress />;
-  }
-
-  const getNavigationButton = (report) => (
-    <Button
-      key={`${report.reportKey}-button`}
-      style={{ justifyContent: 'flex-start' }}
-      color="primary"
-      onClick={() => handleReportChange(report)}
-    >
-      { report.title }
-    </Button>
-  );
 
   return (
     <>
@@ -101,58 +106,83 @@ function ChplCharts() {
       </Box>
       <Box className={classes.container}>
         <Container maxWidth="lg">
-          <Box display="flex" flexDirection="row" gridGap={32} width="100%">
+          <Box display="flex" alignItems="flex-start" flexDirection="row" gridGap={32} width="100%">
             <Box maxWidth="350px">
               <Card className={classes.stickyCard}>
                 <CardContent>
                   <Box className={classes.cardButtons}>
-                    { getNavigationButton(productMetadata) }
-                    { getNavigationButton(ncMetadata) }
+                    <Button
+                      color="primary"
+                      className={activeReport === undefined ? `${classes.menuButton} active` : classes.menuButton}
+                      onClick={() => handleReportChange(undefined)}
+                      fullWidth
+                      variant="text"
+                    >
+                      Charts
+                    </Button>
+                    { reportMetadata
+                      .sort((a, b) => (a.title < b.title ? -1 : 1))
+                      .map((report) => (
+                        <Button
+                          key={`${report.reportKey}-button`}
+                          color="primary"
+                          className={`${classes.menuButton} ${activeReport?.reportKey === report.reportKey ? 'active' : ''}`}
+                          onClick={() => handleReportChange(report.reportKey)}
+                          id={`report-${report.reportKey}`}
+                          fullWidth
+                          variant="text"
+                        >
+                          { report.title }
+                        </Button>
+                      ))}
                   </Box>
                 </CardContent>
               </Card>
             </Box>
             <Box width="100%">
-              <Card
-                style={{ width: '100%' }}
-              >
-                <CardContent>
-                  <Typography>
-                    The charts are a dynamic display of the data currently on the CHPL. If there are any questions or comments regarding this feature, please submit them through the
-                    {' '}
-                    <ChplLink
-                      href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
-                      text="Health IT Feedback and Inquiry Portal"
-                      analytics={{
-                        ...analytics,
-                        event: 'Go to CHPL Public User Guide',
-                      }}
-                      external={false}
-                      inline
+              { !activeReport && (
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h6">
+                      <b>CHPL Charts</b>
+                    </Typography>
+                    <Typography gutterBottom>
+                      A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
+                    </Typography>
+                    <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
+                      {reportMetadata && reportMetadata.map((report) => (
+                        <Card
+                          key={report.reportKey}
+                          className={classes.card}
+                          onClick={() => handleReportChange(report.reportKey)}
+                        >
+                          <CardContent className={classes.cardContent}>
+                            {report.icon}
+                            <Typography>{ report.title }</Typography>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </Box>
+                  </CardContent>
+                </Card>
+              )}
+              { activeReport && (
+                <Card
+                  style={{ width: '100%' }}
+                  key={activeReport.reportKey}
+                >
+                  <CardContent>
+                    <iframe
+                      title={activeReport.title}
+                      width="100%"
+                      height={activeReport.height}
+                      src={activeReport.url}
+                      frameBorder="0"
+                      allowFullScreen
                     />
-                  </Typography>
-                  <iframe
-                    title={activeReport.title}
-                    width="100%"
-                    height={activeReport.height}
-                    src={activeReport.url}
-                    frameBorder="0"
-                    allowFullScreen
-                  />
-                  { activeReport.reportKey === 'UniqueProducts'
-                    && (
-                      <Typography>
-                        Please note only certification criteria certified to by a unique product are displayed.
-                      </Typography>
-                    )}
-                  { activeReport.reportKey === 'Non-conformityCounts'
-                    && (
-                      <Typography>
-                        Please note only certification criteria and program requirements for which a non-conformity has been recorded are displayed.
-                      </Typography>
-                    )}
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              )}
             </Box>
           </Box>
         </Container>
