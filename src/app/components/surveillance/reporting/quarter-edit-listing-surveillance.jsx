@@ -13,6 +13,8 @@ import {
 import { object } from 'prop-types';
 import Edit from '@material-ui/icons/Edit';
 
+import ChplQuarterEditListingSurveillanceData from './quarter-edit-listing-surveillance-data';
+
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
 
@@ -76,6 +78,10 @@ function ChplQuarterEditListingSurveillance({ surveillance }) {
         + (surveillance.capStatuses?.length > 0 ? 1 : 0)
     ) * 100) / 13));
   }, [surveillance]);
+
+  const handleDispatch = ({ action }) => {
+    console.log({action});
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -154,113 +160,10 @@ function ChplQuarterEditListingSurveillance({ surveillance }) {
         <CardHeader title="Surveillance Data" />
         <DialogContent>
           <div className={classes.container}>
-            <Typography>
-              <strong>Surveillance Type:</strong>
-              {' '}
-              { surveillance.surveillanceType?.name }
-            </Typography>
-            <Typography>
-              <strong>k1 Reviewed:</strong>
-              {' '}
-              { surveillance.k1Reviewed ? 'Yes' : 'No' }
-            </Typography>
-            <Typography>
-              <strong>Surveillance Outcome:</strong>
-              {' '}
-              { surveillance.surveillanceOutcome?.name }
-            </Typography>
-            { surveillance.surveillanceOutcome?.name === 'Other'
-              && (
-                <Typography>
-                  <strong>Surveillance Outcome Other:</strong>
-                  {' '}
-                  { surveillance.surveillanceOutcomeOther }
-                </Typography>
-              )}
-            <Typography>
-              <strong>Surveillance Process Types:</strong>
-              {' '}
-              { surveillance.surveillanceProcessTypes.map((s) => s.name).join('; ') }
-            </Typography>
-            { surveillance.surveillanceProcessTypes.some((s) => s.name === 'Other')
-              && (
-                <Typography>
-                  <strong>Surveillance Process Type Other:</strong>
-                  {' '}
-                  { surveillance.surveillanceProcessTypeOther }
-                </Typography>
-              )}
-            <Typography>
-              <strong>Surveillance Grounds For Initiating:</strong>
-              {' '}
-              { surveillance.surveillanceGroundsForInitiating.map((s) => s.name).join('; ') }
-            </Typography>
-            { surveillance.surveillanceGroundsForInitiating.some((s) => s.name === 'Other')
-              && (
-                <Typography>
-                  <strong>Surveillance Grounds For Initiating Other:</strong>
-                  {' '}
-                  { surveillance.surveillanceGroundsForInitiatingOther }
-                </Typography>
-              )}
-            <Typography>
-              <strong>Nonconformity Causes:</strong>
-              {' '}
-              { surveillance.nonconformityCauses }
-            </Typography>
-            <Typography>
-              <strong>Nonconformity Nature:</strong>
-              {' '}
-              { surveillance.nonconformityNature }
-            </Typography>
-            <Typography>
-              <strong>Steps To Surveil:</strong>
-              {' '}
-              { surveillance.stepsToSurveil }
-            </Typography>
-            <Typography>
-              <strong>Steps To Engage:</strong>
-              {' '}
-              { surveillance.stepsToEngage }
-            </Typography>
-            <Typography>
-              <strong>Additional Costs Evaluation:</strong>
-              {' '}
-              { surveillance.additionalCostsEvaluation }
-            </Typography>
-            <Typography>
-              <strong>Limitations Evaluation:</strong>
-              {' '}
-              { surveillance.limitationsEvaluation }
-            </Typography>
-            <Typography>
-              <strong>Nondisclosure Evaluation:</strong>
-              {' '}
-              { surveillance.nondisclosureEvaluation }
-            </Typography>
-            <Typography>
-              <strong>Direction Developer Resolution:</strong>
-              {' '}
-              { surveillance.directionDeveloperResolution }
-            </Typography>
-            <Typography>
-              <strong>CAP Statuses:</strong>
-              {' '}
-              { surveillance.capStatuses.map((s) => s.name).join('; ') }
-            </Typography>
-            { surveillance.capStatuses.some((s) => s.name === 'Other')
-              && (
-                <Typography>
-                  <strong>CAP Status Other:</strong>
-                  {' '}
-                  { surveillance.capStatusOther }
-                </Typography>
-              )}
-            <Typography>
-              <strong>Surveillance Findings:</strong>
-              {' '}
-              { surveillance.surveillanceFindings }
-            </Typography>
+            <ChplQuarterEditListingSurveillanceData
+              surveillance={surveillance}
+              dispatch={handleDispatch}
+            />
           </div>
         </DialogContent>
         <div className={classes.dialogActions}>
