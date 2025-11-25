@@ -235,8 +235,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="surveillanceActivitiesAndOutcomes"
                     name="surveillanceActivitiesAndOutcomes"
-                    label="Obstacle Summary"
-                    required
+                    label="Randomized Surveillance – Selection Methods"
                     multiline
                     value={formik.values.surveillanceActivitiesAndOutcomes}
                     onChange={formik.handleChange}
@@ -265,8 +264,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="reactiveSurveillanceSummary"
                     name="reactiveSurveillanceSummary"
-                    label="Obstacle Summary"
-                    required
+                    label="Reactive Surveillance Summary"
                     multiline
                     value={formik.values.reactiveSurveillanceSummary}
                     onChange={formik.handleChange}
@@ -285,8 +283,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="icsSurveillanceSummary"
                     name="icsSurveillanceSummary"
-                    label="Obstacle Summary"
-                    required
+                    label="ICS Surveillance Summary"
                     multiline
                     value={formik.values.icsSurveillanceSummary}
                     onChange={formik.handleChange}
@@ -314,8 +311,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="prioritizedElementSummary"
                     name="prioritizedElementSummary"
-                    label="Obstacle Summary"
-                    required
+                    label="Prioritized Criteria"
                     multiline
                     value={formik.values.prioritizedElementSummary}
                     onChange={formik.handleChange}
@@ -334,8 +330,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="disclosureRequirementsSummary"
                     name="disclosureRequirementsSummary"
-                    label="Obstacle Summary"
-                    required
+                    label="Disclosure Requirements Summary"
                     multiline
                     value={formik.values.disclosureRequirementsSummary}
                     onChange={formik.handleChange}
@@ -354,8 +349,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="developerComplaintsLogReview"
                     name="developerComplaintsLogReview"
-                    label="Obstacle Summary"
-                    required
+                    label="Developer Complaints Log Review"
                     multiline
                     value={formik.values.developerComplaintsLogReview}
                     onChange={formik.handleChange}
@@ -366,7 +360,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                 </Box>
                 <Box className={classes.summaryGroup}>
                   <Typography variant="h6" gutterBottom>
-                    <strong> Post-certification Performance of Certified Capabilities</strong>
+                    <strong>Post-certification Performance of Certified Capabilities</strong>
                   </Typography>
                   <Typography className={classes.question} variant="body2" gutterBottom>
                     The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.
@@ -374,8 +368,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="postCertificationPerformanceOfCertifiedCapabilities"
                     name="postCertificationPerformanceOfCertifiedCapabilities"
-                    label="Obstacle Summary"
-                    required
+                    label="Post-certification Performance of Certified Capabilities"
                     multiline
                     value={formik.values.postCertificationPerformanceOfCertifiedCapabilities}
                     onChange={formik.handleChange}
@@ -394,8 +387,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <ChplTextField
                     id="appropriateUseOfMark"
                     name="appropriateUseOfMark"
-                    label="Obstacle Summary"
-                    required
+                    label="Appropriate Use of Mark"
                     multiline
                     value={formik.values.appropriateUseOfMark}
                     onChange={formik.handleChange}
