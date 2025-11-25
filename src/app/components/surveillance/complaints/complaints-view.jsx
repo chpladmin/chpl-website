@@ -72,7 +72,7 @@ const useStyles = makeStyles({
 
 function ChplComplaintsView(props) {
   const storageKey = 'storageKey-complaintsView';
-  const { canAdd, bonusQuery } = props;
+  const { canAdd, canEdit, bonusQuery } = props;
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
@@ -238,6 +238,7 @@ function ChplComplaintsView(props) {
         complaint={activeComplaint}
         dispatch={handleDispatch}
         showBreadcrumbs={showBreadcrumbs()}
+        canEdit={canEdit}
       />
     );
   }
@@ -430,5 +431,6 @@ export default ChplComplaintsView;
 
 ChplComplaintsView.propTypes = {
   canAdd: bool.isRequired,
+  canEdit: bool.isRequired,
   bonusQuery: string.isRequired,
 };

@@ -282,6 +282,7 @@ function ChplQuarterView({ dispatch, report }) {
               disallowedFilters={['certificationBodies', 'receivedDate', 'closedDate']}
               bonusQuery={bonusQuery}
               canAdd={false}
+              canEdit={false}
             />
           )}
       </div>

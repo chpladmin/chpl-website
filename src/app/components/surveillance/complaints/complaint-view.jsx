@@ -8,9 +8,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  func,
-} from 'prop-types';
+import { bool, func } from 'prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
@@ -41,7 +39,7 @@ const useStyles = makeStyles({
 });
 
 function ChplComplaintView(props) {
-  const { complaint: initialComplaint, dispatch } = props;
+  const { complaint: initialComplaint, dispatch, canEdit } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [complaint, setComplaint] = useState({});
   const classes = useStyles();
@@ -241,7 +239,7 @@ function ChplComplaintView(props) {
         >
           Back to Complaints
         </Button>
-        { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+        { hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && canEdit
           && (
             <Button
               color="primary"
@@ -262,4 +260,5 @@ export default ChplComplaintView;
 ChplComplaintView.propTypes = {
   complaint: complaintPropType.isRequired,
   dispatch: func.isRequired,
+  canEdit: bool.isRequired,
 };
