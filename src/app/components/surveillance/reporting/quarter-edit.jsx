@@ -233,7 +233,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.
                   </Typography>
                   <ChplTextField
-                    id="surveillanceActivitiesAndOutcomes"
+                    id="surveillance-activities-and-outcomes"
                     name="surveillanceActivitiesAndOutcomes"
                     label="Randomized Surveillance – Selection Methods"
                     multiline
@@ -262,7 +262,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.
                   </Typography>
                   <ChplTextField
-                    id="reactiveSurveillanceSummary"
+                    id="reactive-surveillance-summary"
                     name="reactiveSurveillanceSummary"
                     label="Reactive Surveillance Summary"
                     multiline
@@ -281,7 +281,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     In order to meet requirements to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance. Please outline the number of ICS-related surveillances conducted, the method to surveil these products and the approach to include prioritized elements as outlined in the Surveillance Resource.
                   </Typography>
                   <ChplTextField
-                    id="icsSurveillanceSummary"
+                    id="ics-surveillance-summary"
                     name="icsSurveillanceSummary"
                     label="ICS Surveillance Summary"
                     multiline
@@ -309,7 +309,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     Please describe which prioritized criteria were surveilled, how and with what frequency. Summarize the approach taken to conduct surveillance on these prioritized criteria.
                   </Typography>
                   <ChplTextField
-                    id="prioritizedElementSummary"
+                    id="prioritized-element-summary"
                     name="prioritizedElementSummary"
                     label="Prioritized Criteria"
                     multiline
@@ -328,7 +328,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):
                   </Typography>
                   <ChplTextField
-                    id="disclosureRequirementsSummary"
+                    id="disclosure-requirements-summary"
                     name="disclosureRequirementsSummary"
                     label="Disclosure Requirements Summary"
                     multiline
@@ -347,7 +347,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     Describe the activities conducted in the past quarter related to the review of developers&lsquo; complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC/ASTP. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under &quot;Surveillance Findings&quot;.
                   </Typography>
                   <ChplTextField
-                    id="developerComplaintsLogReview"
+                    id="developer-complaints-log-review"
                     name="developerComplaintsLogReview"
                     label="Developer Complaints Log Review"
                     multiline
@@ -366,7 +366,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.
                   </Typography>
                   <ChplTextField
-                    id="postCertificationPerformanceOfCertifiedCapabilities"
+                    id="post-certification-performance-of-certified-capabilities"
                     name="postCertificationPerformanceOfCertifiedCapabilities"
                     label="Post-certification Performance of Certified Capabilities"
                     multiline
@@ -385,7 +385,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.
                   </Typography>
                   <ChplTextField
-                    id="appropriateUseOfMark"
+                    id="appropriate-use-of-mark"
                     name="appropriateUseOfMark"
                     label="Appropriate Use of Mark"
                     multiline
