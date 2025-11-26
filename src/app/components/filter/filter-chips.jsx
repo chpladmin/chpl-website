@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: palette.white,
   },
   chipAvatar: {
-    backgroundColor: 'transparent!important',
+    backgroundColor: 'transparent !important',
   },
 }));
 
