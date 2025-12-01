@@ -36,8 +36,10 @@ const getDetails = (activity) => {
     case 'CERTIFICATION_BODY': compare = compareOrganization; break;
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
     case 'CHANGE_REQUEST': compare = compareChangeRequest; break;
+    case 'CODE_SET': compare = compareSystemMaintenance; break;
     case 'COMPLAINT': compare = compareComplaint; break;
     case 'DEVELOPER': compare = compareDeveloper; break;
+    case 'FUNCTIONALITY_TESTED': compare = compareSystemMaintenance; break;
     case 'PRODUCT': compare = compareProduct; break;
     case 'STANDARD': compare = compareSystemMaintenance; break;
     case 'SVAP': compare = compareSystemMaintenance; break;
@@ -113,8 +115,10 @@ function ChplActivityDetails({ activity }) {
     'CERTIFICATION_BODY',
     'CERTIFIED_PRODUCT',
     'CHANGE_REQUEST',
+    'CODE_SET',
     'COMPLAINT',
     'DEVELOPER',
+    'FUNCTIONALITY_TESTED',
     'PRODUCT',
     'STANDARD',
     'SVAP',
