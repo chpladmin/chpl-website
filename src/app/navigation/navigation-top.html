@@ -15,7 +15,7 @@
         </a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
+      <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labelledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right nav-main">
           <li><a href ng-click="vm.clear()">Home</a></li>
           <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
@@ -60,10 +60,11 @@
               <li><a ui-sref="shortcut.svap" analytics-on="click" analytics-event="Go to SVAP Info Page" analytics-properties="{ category: 'Navigation' }">SVAP Information</a></li>
             </ul>
           </li>
+          <li class="dropdown"><div style="padding: 15px;" ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><a style="font-size:14px; text-decoration: none; background-color: transparent; color: white;" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></a></div></li>
+          <chpl-announcements-fab-bridge></chpl-announcements-fab-bridge>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><button class="btn btn-link" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
   <nav class="navbar navbar-default navbar-admin" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'">
     <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown">

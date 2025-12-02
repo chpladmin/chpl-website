@@ -1,12 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
   CardContent,
   Container,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import BlockIcon from '@material-ui/icons/Block';
 import CodeIcon from '@material-ui/icons/Code';
@@ -19,12 +22,39 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
 import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
+import { useFetchAnnouncements } from 'api/announcements';
 import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
 import { FlagContext } from 'shared/contexts';
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
+  announcement: {
+    marginBottom: '8px',
+    color: '#fff',
+  },
+  infoBox: {
+    marginTop: '16px',
+    padding: '16px',
+    backgroundColor: '#fff',
+    border: `1px solid ${palette.primary}`,
+    borderRadius: '8px',
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+  },
+  carouselControls: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '8px',
+  },
+  carouselButton: {
+    color: '#fff',
+    '&:disabled': {
+      color: 'rgba(255, 255, 255, 0.3)',
+    },
+  },
   shortcutCard: {
     display: 'flex',
     flexDirection: 'row',
@@ -141,6 +171,40 @@ const useStyles = makeStyles({
 function ChplLandingPage() {
   const classes = useStyles();
   const { domainIsOn } = useContext(FlagContext);
+  const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
+  const [announcements, setAnnouncements] = useState([]);
+  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    if (announcements.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentAnnouncementIndex((prev) =>
+        prev === announcements.length - 1 ? 0 : prev + 1
+      );
+    }, 5000); // Auto-advance every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [announcements.length]);
+
+  const handlePrevious = () => {
+    setCurrentAnnouncementIndex((prev) =>
+      prev === 0 ? announcements.length - 1 : prev - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentAnnouncementIndex((prev) =>
+      prev === announcements.length - 1 ? 0 : prev + 1
+    );
+  };
 
   return (
     <>
@@ -162,25 +226,54 @@ function ChplLandingPage() {
                 hideAdvancedSearch
               />
             </Box>
-            <Box pb={4}>
-              <Typography className={classes.subHeaders} align="left" component="h2" variant="h2" gutterBottom>
-                Feature Topic
-              </Typography>
-            </Box>
-            <Card className={classes.shortcutCards}>
-              <CardContent>
-                <Box display="flex" flexDirection="row" gridGap={8}>
-                  <Box className={classes.shortcutCardText}>
-                    <Typography align="left" component="h3" variant="h4" color="primary">
-                      <strong>Discontinuing Year-Themed Editions for Health IT Certification Criteria</strong>
-                    </Typography>
-                    <Typography>
-                      To simplify the Certification Program and support more modular and extensible future updates, the HTI-1 final rule discontinues year-themed editions of certification criteria. This change also supports broader use of certification criteria and standards adopted by ONC for other federal agencies and programs.
-                    </Typography>
-                  </Box>
+            {announcements.length > 0 && (
+              <>
+                <Typography style={{ color: '#fff' }} className={classes.announcement} variant="h3">
+                  Announcement
+                  {announcements.length > 1 ? 's' : ''}
+                </Typography>
+                <Box className={classes.infoBox} mb={4}>
+
+                  {announcements.length > 1 && (
+                    <Box className={classes.carouselControls}>
+                      <IconButton
+                        onClick={handlePrevious}
+                        className={classes.carouselButton}
+                        size="small"
+                        color="primary"
+                        aria-label="Previous announcement"
+                      >
+                        <ChevronLeftIcon color="primary" />
+                      </IconButton>
+                      <Box flexGrow={1} flexDirection={"column"}>
+                        <Typography color="textPrimary" variant="body1">
+                          <strong>{announcements[currentAnnouncementIndex].title}</strong>
+                        </Typography>
+                        <Typography variant="body2">
+                          {announcements[currentAnnouncementIndex].text && (
+                            <>
+                             {announcements[currentAnnouncementIndex].text}
+                            </>
+                          )}
+                        </Typography>
+                        <Typography variant="caption">
+                          {`${currentAnnouncementIndex + 1} / ${announcements.length}`}
+                        </Typography>
+                      </Box>
+                      <IconButton
+                        onClick={handleNext}
+                        className={classes.carouselButton}
+                        size="small"
+                        color="primary"
+                        aria-label="Next announcement"
+                      >
+                        <ChevronRightIcon color="primary" />
+                      </IconButton>
+                    </Box>
+                  )}
                 </Box>
-              </CardContent>
-            </Card>
+              </>
+            )}
             <Box pt={6} pb={4}>
               <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
                 Use our shortcuts to help find a particular category of listings

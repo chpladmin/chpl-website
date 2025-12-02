@@ -62,6 +62,7 @@ const useStyles = makeStyles({
   announcement: {
     marginBottom: '16px',
     paddingBottom: '16px',
+    wordWrap: 'break-word',
     borderBottom: `1px solid ${palette.divider}`,
     '&:last-child': {
       borderBottom: 'none',
