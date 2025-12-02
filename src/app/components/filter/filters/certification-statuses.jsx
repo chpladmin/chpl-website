@@ -47,11 +47,11 @@ const values = [
   { value: 'Active', default: true },
   { value: 'Suspended by ONC', default: true },
   { value: 'Suspended by ONC-ACB', default: true },
-  { value: 'Withdrawn by Developer' },
-  { value: 'Retired' },
   { value: 'Terminated by ONC' },
   { value: 'Withdrawn by Developer Under Surveillance/Review' },
   { value: 'Withdrawn by ONC-ACB' },
+  { value: 'Withdrawn by Developer' },
+  { value: 'Retired' },
 ];
 
 const filter = {
