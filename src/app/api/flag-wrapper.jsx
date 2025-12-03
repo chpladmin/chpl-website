@@ -16,14 +16,16 @@ function FlagWrapper({ children }) {
 
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
   const domainIsOn = isOn('domain');
-  const insightsIsOn = isOn('insights');
+  const insightsConnectionIsOn = isOn('insights-connection');
+  const insightsDisplayIsOn = isOn('insights-display');
   const rwtChangeRequestIsOn = isOn('rwt-change-request');
   const sbulChangeRequestIsOn = isOn('sbul-change-request');
 
   const flagState = {
     demographicChangeRequestIsOn,
     domainIsOn,
-    insightsIsOn,
+    insightsConnectionIsOn,
+    insightsDisplayIsOn,
     rwtChangeRequestIsOn,
     sbulChangeRequestIsOn,
   };
