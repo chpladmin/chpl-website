@@ -20,6 +20,7 @@ const useStyles = makeStyles({
     zIndex: 96000,
     backgroundColor: palette.primary,
     color: 'white',
+    boxShadow: 'none',
     '&:hover': {
       backgroundColor: palette.primaryDark,
     },
@@ -43,7 +44,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     border: `1px solid ${palette.divider}`,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
   },
   header: {
     padding: '16px',
@@ -63,8 +63,9 @@ const useStyles = makeStyles({
     marginBottom: '16px',
     paddingBottom: '16px',
     wordWrap: 'break-word',
+    textWrapMode: 'wrap',
     borderBottom: `1px solid ${palette.divider}`,
-    '&:last-child': {
+    '&:last-child': { 
       borderBottom: 'none',
       marginBottom: 0,
       paddingBottom: 0,
@@ -125,7 +126,7 @@ function ChplAnnouncementsFab() {
       )}
 
       <Slide direction="up" in={expanded} mountOnEnter unmountOnExit>
-        <Paper elevation={0} className={classes.paper}>
+        <Paper elevation={0} className={classes.paper} role="region" aria-label="Announcements panel" aria-live="polite">
           <Box className={classes.header}>
             <Typography variant="h6">
               Announcement{announcements.length !== 1 ? 's' : ''}
@@ -134,13 +135,13 @@ function ChplAnnouncementsFab() {
               size="small"
               onClick={handleToggle}
               style={{ color: 'white' }}
-              aria-label="Close announcements"
+              aria-label="Close announcements panel"
             >
               <CloseIcon />
             </IconButton>
           </Box>
 
-          <Box className={classes.content}>
+          <Box className={classes.content} role="main">
             {announcements.length === 0 ? (
               <Box className={classes.noAnnouncements}>
                 <Typography variant="body1">
@@ -148,18 +149,22 @@ function ChplAnnouncementsFab() {
                 </Typography>
               </Box>
             ) : (
-              announcements.map((announcement, index) => (
-                <Box key={announcement.id || index} className={classes.announcement}>
-                  <Typography variant="body1">
-                    <strong>{announcement.title}</strong>
-                    {announcement.text && (
-                      <>
-                        : {announcement.text}
-                      </>
-                    )}
-                  </Typography>
-                </Box>
-              ))
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {announcements.map((announcement, index) => (
+                  <li key={announcement.id || index}>
+                    <Box className={classes.announcement}>
+                      <Typography variant="body1" component="h3">
+                        <strong>{announcement.title}</strong>
+                        {announcement.text && (
+                          <>
+                            : {announcement.text}
+                          </>
+                        )}
+                      </Typography>
+                    </Box>
+                  </li>
+                ))}
+              </ul>
             )}
           </Box>
         </Paper>

@@ -228,14 +228,14 @@ function ChplLandingPage() {
             </Box>
             {announcements.length > 0 && (
               <>
-                <Typography style={{ color: '#fff' }} className={classes.announcement} variant="h3">
+                <Typography style={{ color: '#fff' }} className={classes.announcement} variant="h2" id="announcements-heading">
                   Announcement
                   {announcements.length > 1 ? 's' : ''}
                 </Typography>
                 <Box className={classes.infoBox} mb={4}>
 
                   {announcements.length > 1 && (
-                    <Box className={classes.carouselControls}>
+                    <Box className={classes.carouselControls} role="region" aria-label="Announcement carousel">
                       <IconButton
                         onClick={handlePrevious}
                         className={classes.carouselButton}
@@ -256,8 +256,8 @@ function ChplLandingPage() {
                             </>
                           )}
                         </Typography>
-                        <Typography variant="caption">
-                          {`${currentAnnouncementIndex + 1} / ${announcements.length}`}
+                        <Typography variant="caption" aria-live="polite">
+                          Announcement {currentAnnouncementIndex + 1} of {announcements.length}
                         </Typography>
                       </Box>
                       <IconButton
