@@ -134,10 +134,10 @@
               </li>
             </ul>
           </li>
-          <li ng-if="vm.hasAnyRole(['chpl-developer'])" class="dropdown" uib-dropdown is-open="vm.insightsIsOpen" feature-flag="insights">
-            <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="insights-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.insightsIsOpen">Insights</button>
-            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="insights-toggle" id="insights-dropdown-menu">
-              <li><a href="insights">Insights Reporting</a></li>
+          <li ng-if="vm.hasAnyRole(['chpl-developer'])" class="dropdown" uib-dropdown is-open="vm.insightsIsOpen">
+            <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="insights-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.insightsIsOpen" feature-flag="insights-connection">Insights</button>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="insights-toggle" id="insights-dropdown-menu" feature-flag="insights-connection">
+              <li><a href="https://www.healthit.gov/insights">Insights Reporting</a></li>
             </ul>
           </li>
         </ul><!-- /admin nav -->

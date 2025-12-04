@@ -35,6 +35,7 @@ const lookup = {
   'root.endDate': { message: (before, after) => comparePrimitive(before, after, 'endDate', 'End Date', getDisplayDateFormat) },
   'root.endDateTime': { message: (before, after) => comparePrimitive(before, after, 'endDateTime', 'End Date / Time', getDisplayDateFormat) },
   'root.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Date', getDisplayDateFormat) },
+  'root.extensionEndDay': { message: (before, after) => comparePrimitive(before, after, 'extensionEndDay', 'Extension End Date', getDisplayDateFormat) },
   'root.groupName': { message: (before, after) => comparePrimitive(before, after, 'groupName', 'Group') },
   'root.id': { message: () => undefined },
   'root.isPublic': { message: (before, after) => comparePrimitive(before, after, 'isPublic', 'Is Public?') },

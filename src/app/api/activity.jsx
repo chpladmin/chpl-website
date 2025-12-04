@@ -46,6 +46,16 @@ const useFetchApiKeyActivity = ({ isEnabled }) => {
   });
 };
 
+const useFetchCodeSetsActivity = ({ isEnabled }) => {
+  const axios = useAxios();
+  return useQuery(['activity/metadata/code-sets'], async () => {
+    const response = await axios.get('activity/metadata/code-sets');
+    return response.data;
+  }, {
+    enabled: isEnabled,
+  });
+};
+
 const useFetchConformanceMethodsActivity = ({ isEnabled }) => {
   const axios = useAxios();
   return useQuery(['activity/metadata/conformance-methods'], async () => {
@@ -171,6 +181,7 @@ export {
   useFetchActivity,
   useFetchAnnouncementsActivity,
   useFetchApiKeyActivity,
+  useFetchCodeSetsActivity,
   useFetchDeveloperActivitiesMetadata,
   useFetchConformanceMethodsActivity,
   useFetchFunctionalitiesTestedActivity,

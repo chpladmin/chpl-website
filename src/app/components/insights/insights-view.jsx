@@ -53,7 +53,7 @@ function ChplInsightsView({ developer }) {
           {' '}
           <ChplLink
             href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdftopic/certification-ehrs/program`}
-            text="Insights Guite"
+            text="Insights Guide"
             external={false}
             inline
           />

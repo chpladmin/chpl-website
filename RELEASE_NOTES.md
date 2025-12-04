@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.42.1
+_1 December 2025_
+
+### User Interface Updates
+* Provide reports on the Charts page as per role
+
+---
+
 ## Version 13.42.0
 _15 September 2025_
 

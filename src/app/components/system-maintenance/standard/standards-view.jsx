@@ -35,6 +35,7 @@ const headers = [
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
   { property: 'requiredDay', text: 'Required Date', sortable: true },
+  { property: 'extensionEndDay', text: 'Extension End Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
   { text: 'Applicable Criteria' },
@@ -44,6 +45,10 @@ const headers = [
 
 const useStyles = makeStyles({
   ...utilStyles,
+  tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 });
 
 function ChplStandardsView({ dispatch, standards: initialStandards }) {
@@ -89,29 +94,31 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       <div>
         <ChplFilterChips />
       </div>
-      <div className={classes.tableResultsHeaderContainer}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mx={8} my={2}>
         <Box display="flex" flexDirection="row" gridGap={1}>
           <Typography variant="subtitle2">Search Results:</Typography>
           <Typography variant="body2">
             {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchStandardsActivity}
-          title="Standards"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-standard"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        )}
-      </div>
+        <div className={classes.tableResultsHeaderContainer}>
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchStandardsActivity}
+            title="Standards"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-standard"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
+        </div>
+      </Box>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="Standards table"
@@ -144,6 +151,9 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.requiredDay) }
+                  </TableCell>
+                  <TableCell>
+                    { getDisplayDateFormat(item.extensionEndDay) }
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }
