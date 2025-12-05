@@ -33,7 +33,6 @@ const useStyles = makeStyles({
     fontSize: '0.75rem',
   },
   paper: {
-    position: 'sticky',
     width: '325px',
     top: '140px',
     right: '0px',
@@ -49,27 +48,16 @@ const useStyles = makeStyles({
     padding: '16px',
     backgroundColor: palette.primary,
     color: 'white',
-    borderRadius: '8px 0px 0px 0px',
+    borderRadius: '8px 8px 0px 0px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  content: {
-    padding: '16px',
-    overflowY: 'auto',
-    flex: 1,
-  },
   announcement: {
-    marginBottom: '16px',
-    paddingBottom: '16px',
+    padding: '16px',
     wordWrap: 'break-word',
-    textWrapMode: 'wrap',
+    whiteSpace: 'pre-wrap',
     borderBottom: `1px solid ${palette.divider}`,
-    '&:last-child': { 
-      borderBottom: 'none',
-      marginBottom: 0,
-      paddingBottom: 0,
-    },
   },
   carouselControls: {
     display: 'flex',
@@ -101,9 +89,30 @@ function ChplAnnouncementsFab() {
     setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
 
-  const handleToggle = () => {
+  const handleToggle = (event) => {
+    event.stopPropagation();
     setExpanded(!expanded);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const paper = document.querySelector('[role="region"][aria-label="Announcements panel"]');
+      if (paper && !paper.contains(event.target)) {
+        setExpanded(false);
+      }
+    };
+
+    if (expanded) {
+      // Delay adding the listener to avoid capturing the opening click
+      const timer = setTimeout(() => {
+        document.addEventListener('click', handleClickOutside);
+      }, 100);
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('click', handleClickOutside);
+      };
+    }
+  }, [expanded]);
 
   return (
     <>
@@ -141,7 +150,7 @@ function ChplAnnouncementsFab() {
             </IconButton>
           </Box>
 
-          <Box className={classes.content} role="main">
+          <Box role="main">
             {announcements.length === 0 ? (
               <Box className={classes.noAnnouncements}>
                 <Typography variant="body1">
@@ -149,22 +158,20 @@ function ChplAnnouncementsFab() {
                 </Typography>
               </Box>
             ) : (
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <Box style={{ display: 'flex', flexDirection: 'column'}}>
                 {announcements.map((announcement, index) => (
-                  <li key={announcement.id || index}>
-                    <Box className={classes.announcement}>
-                      <Typography variant="body1" component="h3">
-                        <strong>{announcement.title}</strong>
-                        {announcement.text && (
-                          <>
-                            : {announcement.text}
+                  <Box key={announcement.id || index} className={classes.announcement}>
+                    <Typography variant="body1" component="h3">
+                      <strong>{announcement.title}</strong>
+                      {announcement.text && (
+                        <>
+                          : {announcement.text}
                           </>
                         )}
                       </Typography>
                     </Box>
-                  </li>
                 ))}
-              </ul>
+              </Box>
             )}
           </Box>
         </Paper>
