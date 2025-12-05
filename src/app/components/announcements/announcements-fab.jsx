@@ -120,7 +120,7 @@ function ChplAnnouncementsFab() {
             overlap="rectangular"
             max={99}
           >
-            <NotificationsIcon style={{ color: palette.secondary}} />
+            <NotificationsIcon style={{ color: palette.secondary }} />
           </Badge>
         </Fab>
       )}
