@@ -13,6 +13,17 @@ const useDeleteAccessibilityStandard = () => {
   });
 };
 
+const useDeleteCodeSet = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`code-sets/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['code-sets']);
+      queryClient.invalidateQueries(['activity/metadata/code-sets']);
+    },
+  });
+};
+
 const useDeleteConformanceMethod = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -134,6 +145,14 @@ const useFetchCriteria = (props = { enabled: true, active: true }) => {
     return response.data.filter((cc) => !props.active || cc.startDay < jsJoda.LocalDate.now());
   }, {
     enabled: props.enabled,
+  });
+};
+
+const useFetchCriteriaForCodeSets = () => {
+  const axios = useAxios();
+  return useQuery(['code-sets/criteria'], async () => {
+    const response = await axios.get('code-sets/criteria');
+    return response.data;
   });
 };
 
@@ -267,6 +286,17 @@ const usePostAccessibilityStandard = () => {
   });
 };
 
+const usePostCodeSet = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('code-sets', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['code-sets']);
+      queryClient.invalidateQueries(['activity/metadata/code-sets']);
+    },
+  });
+};
+
 const usePostConformanceMethod = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -351,6 +381,17 @@ const usePutAccessibilityStandard = () => {
   });
 };
 
+const usePutCodeSet = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('code-sets', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['code-sets']);
+      queryClient.invalidateQueries(['activity/metadata/code-sets']);
+    },
+  });
+};
+
 const usePutConformanceMethod = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -427,6 +468,7 @@ const usePutUcdProcess = () => {
 
 export {
   useDeleteAccessibilityStandard,
+  useDeleteCodeSet,
   useDeleteConformanceMethod,
   useDeleteFunctionalityTested,
   useDeleteQmsStandard,
@@ -439,6 +481,7 @@ export {
   useFetchConformanceMethods,
   useFetchCqms,
   useFetchCriteria,
+  useFetchCriteriaForCodeSets,
   useFetchCriteriaForConformanceMethods,
   useFetchCriteriaForFunctionalitiesTested,
   useFetchCriteriaForStandards,
@@ -455,6 +498,7 @@ export {
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,
+  usePostCodeSet,
   usePostConformanceMethod,
   usePostFunctionalityTested,
   usePostQmsStandard,
@@ -463,6 +507,7 @@ export {
   usePostTestTool,
   usePostUcdProcess,
   usePutAccessibilityStandard,
+  usePutCodeSet,
   usePutConformanceMethod,
   usePutFunctionalityTested,
   usePutQmsStandard,
