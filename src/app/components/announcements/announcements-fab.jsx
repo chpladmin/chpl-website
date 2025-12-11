@@ -1,181 +1,144 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Badge,
-  Box,
-  Fab,
-  IconButton,
-  Paper,
-  Slide,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { useFetchAnnouncements } from 'api/announcements';
-import { palette } from 'themes';
 
-const useStyles = makeStyles({
-  fab: {
-    position: 'sticky',
-    zIndex: 96000,
-    backgroundColor: 'transparent',
-    color: 'white',
-    boxShadow: 'none',
-    '&:hover': {
-      backgroundColor: palette.primaryDark,
-    },
-  },
-  badge: {
-    backgroundColor: palette.primary,
-    color: 'white',
-    height: '20px',
-    minWidth: '20px',
-    fontSize: '0.75rem',
-  },
-  paper: {
-    width: '325px',
-    top: '140px',
-    right: '0px',
-    position: 'fixed',
-    maxWidth: 'calc(100vw - 48px)',
-    maxHeight: 'calc(100vh - 100px)',
-    zIndex: 9998,
-    display: 'flex',
-    flexDirection: 'column',
-    border: `1px solid ${palette.divider}`,
-  },
-  header: {
-    padding: '16px',
-    backgroundColor: palette.primary,
-    color: 'white',
-    borderRadius: '8px 8px 0px 0px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  announcement: {
-    padding: '16px',
-    wordWrap: 'break-word',
-    whiteSpace: 'pre-wrap',
-    borderBottom: `1px solid ${palette.divider}`,
-  },
-  carouselControls: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '12px 16px',
-    borderTop: '1px solid #e0e0e0',
-    backgroundColor: '#f5f5f5',
-  },
-  noAnnouncements: {
-    textAlign: 'center',
-    color: '#999',
-    padding: '32px 16px',
-  },
-});
+import React, { useEffect, useState } from 'react';
+import { useFetchAnnouncements } from 'api/announcements';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 function ChplAnnouncementsFab() {
-  const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
+  const [error, setError] = useState(null);
 
-  console.log('ChplAnnouncementsFab rendering', { isLoading, isSuccess, dataLength: data?.length });
+  const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
 
   useEffect(() => {
-    if (isLoading || !isSuccess) {
-      return;
-    }
-    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
+    if (isLoading || !isSuccess) return;
+    setAnnouncements(Array.isArray(data) ? data : []);
   }, [data, isLoading, isSuccess]);
 
   const handleToggle = (event) => {
     event.stopPropagation();
-    setExpanded(!expanded);
+    setExpanded((prev) => !prev);
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const paper = document.querySelector('[role="region"][aria-label="Announcements panel"]');
-      if (paper && !paper.contains(event.target)) {
+      const panel = document.getElementById('announcements-panel');
+      if (panel && !panel.contains(event.target)) {
         setExpanded(false);
       }
     };
-
     if (expanded) {
-      // Delay adding the listener to avoid capturing the opening click
-      const timer = setTimeout(() => {
-        document.addEventListener('click', handleClickOutside);
-      }, 100);
-      return () => {
-        clearTimeout(timer);
-        document.removeEventListener('click', handleClickOutside);
-      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [expanded]);
 
   return (
     <>
-      {!expanded && (
-        <Fab
-          className={classes.fab}
-          onClick={handleToggle}
-          elevation={0}
-          aria-label="Show announcements"
-        >
-          <Badge
-            badgeContent={announcements.length}
-            classes={{ badge: classes.badge }}
-            overlap="rectangular"
-            max={99}
-          >
-            <NotificationsIcon style={{ color: palette.secondary }} />
-          </Badge>
-        </Fab>
-      )}
 
-      <Slide direction="up" in={expanded} mountOnEnter unmountOnExit>
-        <Paper elevation={0} className={classes.paper} role="region" aria-label="Announcements panel" aria-live="polite">
-          <Box className={classes.header}>
-            <Typography variant="h6">
-              Announcement{announcements.length !== 1 ? 's' : ''}
-            </Typography>
-            <IconButton
-              size="small"
+      <button
+        style={{
+          position: 'sticky',
+          zIndex: 96000,
+          backgroundColor: 'transparent',
+          color: 'white',
+          border: 'none',
+          cursor: 'pointer',
+          boxShadow: 'none',
+          padding: '12px',
+          borderRadius: '50%',
+        }}
+        onClick={handleToggle}
+        aria-label="Show announcements"
+      >
+        <span
+          style={{
+            backgroundColor: '#156dac',
+            color: 'white',
+            borderRadius: '50%',
+            padding: '4px 8px',
+            fontSize: '0.75rem',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+        >
+          {Array.isArray(announcements) ? announcements.length : 0}
+        </span>
+        <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
+      </button>
+
+      {expanded && (
+        <div
+          id="announcements-panel"
+          style={{
+            width: 325,
+            top: 140,
+            right: 0,
+            position: 'fixed',
+            maxWidth: 'calc(100vw - 48px)',
+            maxHeight: 'calc(100vh - 100px)',
+            zIndex: 9998,
+            display: 'flex',
+            flexDirection: 'column',
+            border: '1px solid #e0e0e0',
+            background: 'white',
+            borderRadius: 8,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          }}
+          role="region"
+          aria-label="Announcements panel"
+          aria-live="polite"
+        >
+          <div
+            style={{
+              padding: 16,
+              backgroundColor: '#156dac',
+              color: 'white',
+              borderRadius: '8px 8px 0px 0px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 'bold', fontFamily: 'inherit' }}>
+              Announcement{Array.isArray(announcements) && announcements.length !== 1 ? 's' : ''}
+            </h3>
+            <button
               onClick={handleToggle}
-              style={{ color: 'white' }}
+              style={{ background: 'none', border: 'none', color: 'white', fontSize: 20, cursor: 'pointer' }}
               aria-label="Close announcements panel"
             >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-
-          <Box role="main">
-            {announcements.length === 0 ? (
-              <Box className={classes.noAnnouncements}>
-                <Typography variant="body1">
-                  No current announcements
-                </Typography>
-              </Box>
-            ) : (
-              <Box style={{ display: 'flex', flexDirection: 'column'}}>
-                {announcements.map((announcement, index) => (
-                  <Box key={announcement.id || index} className={classes.announcement}>
-                    <Typography variant="body1" component="h3">
-                      <strong>{announcement.title}</strong>
-                      {announcement.text && (
-                        <>
-                          : {announcement.text}
-                          </>
-                        )}
-                      </Typography>
-                    </Box>
-                ))}
-              </Box>
+              ×
+            </button>
+          </div>
+          <div role="main" style={{ flex: 1, overflowY: 'auto' }}>
+            {error && (
+              <div style={{ textAlign: 'center', color: 'red', padding: '32px 16px' }}>
+                <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>Error: {error}</p>
+              </div>
             )}
-          </Box>
-        </Paper>
-      </Slide>
+            {!error && Array.isArray(announcements) && announcements.length === 0 ? (
+              <div style={{ textAlign: 'center', color: '#999', padding: '32px 16px' }}>
+                <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>No current announcements</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {Array.isArray(announcements) && announcements.map((announcement, index) => (
+                  <div key={announcement.id || index} style={{ padding: 16, wordWrap: 'break-word', whiteSpace: 'pre-wrap', borderBottom: '1px solid #e0e0e0' }}>
+                    <h4 style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>
+                      <strong>{announcement.title}</strong>
+                    </h4>
+                     {announcement.text && (
+                        <span>{announcement.text}</span>
+                      )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

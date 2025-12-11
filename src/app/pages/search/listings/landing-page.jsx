@@ -233,8 +233,20 @@ function ChplLandingPage() {
                   {announcements.length > 1 ? 's' : ''}
                 </Typography>
                 <Box className={classes.infoBox} mb={4}>
-
-                  {announcements.length > 1 && (
+                  {announcements.length === 1 ? (
+                    // Single announcement - no carousel
+                    <Box>
+                      <Typography color="textPrimary" variant="body1">
+                        <strong>{announcements[0].title}</strong>
+                      </Typography>
+                      {announcements[0].text && (
+                        <Typography variant="body2">
+                          {announcements[0].text}
+                        </Typography>
+                      )}
+                    </Box>
+                  ) : (
+                    // Multiple announcements - show carousel
                     <Box className={classes.carouselControls} role="region" aria-label="Announcement carousel">
                       <IconButton
                         onClick={handlePrevious}
@@ -249,13 +261,11 @@ function ChplLandingPage() {
                         <Typography color="textPrimary" variant="body1">
                           <strong>{announcements[currentAnnouncementIndex].title}</strong>
                         </Typography>
-                        <Typography variant="body2">
-                          {announcements[currentAnnouncementIndex].text && (
-                            <>
-                             {announcements[currentAnnouncementIndex].text}
-                            </>
-                          )}
-                        </Typography>
+                        {announcements[currentAnnouncementIndex].text && (
+                          <Typography variant="body2">
+                            {announcements[currentAnnouncementIndex].text}
+                          </Typography>
+                        )}
                         <Typography variant="caption" aria-live="polite">
                           Announcement {currentAnnouncementIndex + 1} of {announcements.length}
                         </Typography>

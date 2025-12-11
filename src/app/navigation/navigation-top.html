@@ -61,7 +61,7 @@
             </ul>
           </li>
           <li class="dropdown"><div style="padding: 15px;" ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><a style="font-size:14px; text-decoration: none; background-color: transparent; color: white;" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></a></div></li>
-          <chpl-announcements-fab-bridge></chpl-announcements-fab-bridge>
+          <li><chpl-announcements-fab-bridge></chpl-announcements-fab-bridge></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -141,6 +141,7 @@
             </ul>
           </li>
         </ul><!-- /admin nav -->
+
         <ul class="nav navbar-nav navbar-right">
           <li>
             <index-wrapper-bridge>
