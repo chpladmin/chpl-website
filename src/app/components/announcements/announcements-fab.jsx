@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   fab: {
     position: 'sticky',
     zIndex: 96000,
-    backgroundColor: palette.primary,
+    backgroundColor: 'transparent',
     color: 'white',
     boxShadow: 'none',
     '&:hover': {
