@@ -90,6 +90,13 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
   let formik;
 
   useEffect(() => {
+    formik.setFieldValue('capStatuses', surveillance?.capStatuses);
+    formik.setFieldValue('surveillanceGroundsForInitiating', surveillance?.surveillanceGroundsForInitiating);
+    formik.setFieldValue('surveillanceOutcome', surveillance?.surveillanceOutcome);
+    formik.setFieldValue('surveillanceProcessTypes', surveillance?.surveillanceProcessTypes);
+  }, [surveillance]);
+
+  useEffect(() => {
     if (capStatusesIsLoading || !capStatusesIsSuccess) { return; }
     setCapStatuses(capStatusesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [capStatusesData, capStatusesIsLoading, capStatusesIsSuccess, surveillance]);
