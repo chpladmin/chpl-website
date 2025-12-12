@@ -5,7 +5,9 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
+  MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,6 +17,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useFetchSurveillanceOutcomes } from 'api/data';
 import { useDeleteQuarterly, useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
 import { ChplActionBar } from 'components/action-bar';
@@ -65,7 +68,11 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  surveillanceOutcomeOther: yup.string(),
+  surveillanceOutcome: yup.object(),
+  surveillanceOutcomeOther: yup.string()
+    .test('conditionallyRequiredSurveillanceOutcome',
+      'Outcome of Surveillance - Other Description is required',
+      (value, context) => (!!value || context.parent.surveillanceOutcome?.name !== 'Non-conformity substantiated - Unresolved - Other - [Please describe]')),
   surveillanceProcessTypeOther: yup.string(),
   surveillanceGroundsForInitiatingOther: yup.string(),
   nonconformityCauses: yup.string(),
@@ -81,21 +88,21 @@ const validationSchema = yup.object({
 });
 
 function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
-  //const relevantListingsQuery = useFetchRelevantListings({ id: report.id });
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: deleteReport } = useDeleteQuarterly();
   const { mutate: putReport } = usePutQuarterly();
+  const [surveillanceOutcomes, setSurveillanceOutcomes] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const { data: surveillanceOutcomesData, isLoading: surveillanceOutcomesIsLoading, isSuccess: surveillanceOutcomesIsSuccess } = useFetchSurveillanceOutcomes();
   const classes = useStyles();
   let formik;
 
-  /*
   useEffect(() => {
-    if (relevantListingsQuery.isLoading || !relevantListingsQuery.isSuccess) { return; }
-    setListings(relevantListingsQuery.data);
-  }, [relevantListingsQuery.data, relevantListingsQuery.isLoading, relevantListingsQuery.isSuccess]);
-  */
+    if (surveillanceOutcomesIsLoading || !surveillanceOutcomesIsSuccess) { return; }
+    setSurveillanceOutcomes(surveillanceOutcomesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    formik.setFieldValue('surveillanceOutcome', surveillanceOutcomesData.find((type) => type.id === surveillance?.surveillanceOutcome?.id) || '');
+  }, [surveillanceOutcomesData, surveillanceOutcomesIsLoading, surveillanceOutcomesIsSuccess, surveillance]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -114,6 +121,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
     setErrorMessages([]);
     const payload = {
       ...surveillance,
+      surveillanceOutcome: formik.values.surveillanceOutcome,
       surveillanceOutcomeOther: formik.values.surveillanceOutcomeOther,
       surveillanceProcessTypeOther: formik.values.surveillanceProcessTypeOther,
       surveillanceGroundsForInitiatingOther: formik.values.surveillanceGroundsForInitiatingOther,
@@ -158,6 +166,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
       postCertificationPerformanceOfCertifiedCapabilities: report.postCertificationPerformanceOfCertifiedCapabilities || '',
       appropriateUseOfMark: report.appropriateUseOfMark || '',
       */
+      surveillanceOutcome: surveillance.surveillanceOutcome,
       surveillanceOutcomeOther: surveillance.surveillanceOutcomeOther || '',
       surveillanceProcessTypeOther: surveillance.surveillanceProcessTypeOther || '',
       surveillanceGroundsForInitiatingOther: surveillance.surveillanceGroundsForInitiatingOther || '',
@@ -178,6 +187,12 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
     validationSchema,
   });
 
+  if (surveillanceOutcomesIsLoading) {
+    return (
+      <CircularProgress />
+    );
+  }
+
   return (
     <>
       <Typography>
@@ -190,12 +205,22 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
         {' '}
         { surveillance.k1Reviewed ? 'Yes' : 'No' }
       </Typography>
-      <Typography>
-        <strong>Surveillance Outcome:</strong>
-        {' '}
-        { surveillance.surveillanceOutcome?.name }
-      </Typography>
-      { surveillance.surveillanceOutcome?.name === 'Other'
+      <ChplTextField
+        select
+        id="surveillance-outcome"
+        name="surveillanceOutcome"
+        label="Outcome of Surveillance"
+        value={formik.values.surveillanceOutcome}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.surveillanceOutcome && !!formik.errors.surveillanceOutcome}
+        helperText={formik.touched.surveillanceOutcome && formik.errors.surveillanceOutcome}
+      >
+        { surveillanceOutcomes.map((item) => (
+          <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+        ))}
+      </ChplTextField>
+      { formik.values.surveillanceOutcome?.name === 'Non-conformity substantiated - Unresolved - Other - [Please describe]'
         && (
           <Box className={classes.summaryGroup}>
             <Typography variant="h6" gutterBottom>
@@ -206,6 +231,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
               name="surveillanceOutcomeOther"
               label="Outcome of Surveillance - Other Explanation"
               multiline
+              required
               value={formik.values.surveillanceOutcomeOther}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

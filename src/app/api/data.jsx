@@ -51,6 +51,14 @@ const useFetchRequirementTypes = () => {
   }, options.daily);
 };
 
+const useFetchSurveillanceOutcomes = () => {
+  const axios = useAxios();
+  return useQuery(['surveillance-report/surveillance-outcomes'], async () => {
+    const response = await axios.get('surveillance-report/surveillance-outcomes');
+    return response.data;
+  }, options.daily);
+};
+
 const useFetchSurveillanceResultTypes = () => {
   const axios = useAxios();
   return useQuery(['surveillance/result-types'], async () => {
@@ -74,6 +82,7 @@ export {
   useFetchNonConformityTypes,
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,
+  useFetchSurveillanceOutcomes,
   useFetchSurveillanceResultTypes,
   useFetchSurveillanceTypes,
 };
