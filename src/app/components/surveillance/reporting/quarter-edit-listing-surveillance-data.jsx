@@ -8,8 +8,10 @@ import {
   Checkbox,
   CircularProgress,
   Divider,
+  FormControlLabel,
   ListItemText,
   MenuItem,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -125,6 +127,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
     setErrorMessages([]);
     const payload = {
       ...surveillance,
+      k1Reviewed: formik.values.k1Reviewed,
       surveillanceOutcome: formik.values.surveillanceOutcome,
       surveillanceOutcomeOther: formik.values.surveillanceOutcomeOther,
       surveillanceProcessTypes: formik.values.surveillanceProcessTypes,
@@ -163,6 +166,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
 
   formik = useFormik({
     initialValues: {
+      k1Reviewed: !!surveillance.k1Reviewed,
       surveillanceOutcome: surveillance.surveillanceOutcome,
       surveillanceOutcomeOther: surveillance.surveillanceOutcomeOther || '',
       surveillanceProcessTypes: [],
@@ -195,11 +199,18 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
 
   return (
     <>
-      <Typography>
-        <strong>k1 Reviewed:</strong>
-        {' '}
-        { surveillance.k1Reviewed ? 'Yes' : 'No' }
-      </Typography>
+      <FormControlLabel
+        control={(
+          <Switch
+            id="k1-reviewed"
+            name="k1Reviewed"
+            color="primary"
+            checked={formik.values.k1Reviewed}
+            onChange={formik.handleChange}
+          />
+        )}
+        label={`&sect;170.523(k)(1) Reviewed: ${formik.values.k1Reviewed ? 'Yes' : 'No'}`}
+      />
       <ChplTextField
         select
         id="surveillance-outcome"
@@ -334,7 +345,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
             <ChplTextField
               id="surveillance-grounds-for-initiating-other"
               name="surveillanceGroundsForInitiatingOther"
-              label="SurveillanceGroundsForInitiatingOther"
+              label="Grounds For Initiating Surveillance - Other"
               multiline
               value={formik.values.surveillanceGroundsForInitiatingOther}
               onChange={formik.handleChange}
