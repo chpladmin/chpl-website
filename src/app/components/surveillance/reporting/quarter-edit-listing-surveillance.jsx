@@ -37,9 +37,6 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  dialogActions: {
-    padding: '16px 32px',
-  },
   idContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -80,7 +77,13 @@ function ChplQuarterEditListingSurveillance({ surveillance }) {
   }, [surveillance]);
 
   const handleDispatch = ({ action }) => {
-    console.log({action});
+    switch (action) {
+      case 'cancel':
+        setOpen(false);
+        break;
+      default:
+        console.log({ action });
+    }
   };
 
   const handleOpen = () => {
@@ -166,11 +169,6 @@ function ChplQuarterEditListingSurveillance({ surveillance }) {
             />
           </div>
         </DialogContent>
-        <div className={classes.dialogActions}>
-          <Button onClick={handleClose} variant="outlined" color="primary">
-            Close
-          </Button>
-        </div>
       </Dialog>
     </>
   );
