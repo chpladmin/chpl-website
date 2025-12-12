@@ -30,13 +30,13 @@ class DeveloperPage extends Page {
 
   async browseAllListings() {
     const productsPanel = await this.getProductsPanel();
+
     await (
       await (
         await productsPanel.$('#filter-chips')
-      ).$$('[role="button"]')
+      ).$$('[role="button"] > svg')
     ).forEach(async (chip) => {
-      const btn = await chip.$('svg');
-      return btn.click();
+      return chip.click();
     });
   }
 
