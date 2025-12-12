@@ -72,14 +72,17 @@ export default class NetworkService {
     return this.apiGET(query);
   }
 
+  // maybe delete?
   getAnnualSurveillanceReports() {
     return this.apiGET('/surveillance-report/annual');
   }
 
+  // maybe delete?
   getAnnualSurveillanceReport(reportId) {
     return this.apiGET(`/surveillance-report/annual/${reportId}`);
   }
 
+  // delete
   getCapStatusTypes() {
     return this.apiGET('/surveillance-report/cap-statuses');
   }
@@ -128,10 +131,12 @@ export default class NetworkService {
     return this.apiGET('/data/quarters');
   }
 
+  // maybe delete?
   getQuarterlySurveillanceReport(reportId) {
     return this.apiGET(`/surveillance-report/quarterly/${reportId}`);
   }
 
+  // maybe delete?
   getQuarterlySurveillanceReports() {
     return this.apiGET('/surveillance-report/quarterly');
   }
@@ -140,6 +145,7 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}/listings`);
   }
 
+  // maybe delete
   getRelevantListings(reportId) {
     return this.apiGET(`/surveillance-report/quarterly/${reportId}/listings`);
   }
@@ -157,6 +163,7 @@ export default class NetworkService {
     return this.apiGET(url);
   }
 
+  // delete
   getSurveillanceGroundsForInitiatingTypes() {
     return this.apiGET('/surveillance-report/surveillance-grounds-for-initiating');
   }
@@ -186,11 +193,11 @@ export default class NetworkService {
     return data;
   }
 
-  getSurveillanceOutcomes() {
+  getSurveillanceOutcomes() { // delete
     return this.apiGET('/surveillance-report/surveillance-outcomes');
   }
 
-  getSurveillanceProcessTypes() {
+  getSurveillanceProcessTypes() { // delete
     return this.apiGET('/surveillance-report/surveillance-process-types');
   }
 

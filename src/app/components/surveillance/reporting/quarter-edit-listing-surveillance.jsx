@@ -37,6 +37,18 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
+  editContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    paddingTop: '0px',
+    paddingBottom: '8px',
+    width: '100%',
+    gap: '9px',
+    margin: '8px 0',
+  },
   idContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -162,7 +174,7 @@ function ChplQuarterEditListingSurveillance({ surveillance }) {
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <CardHeader title="Surveillance Data" />
         <DialogContent>
-          <div className={classes.container}>
+          <div className={classes.editContainer}>
             <ChplQuarterEditListingSurveillanceData
               surveillance={surveillance}
               dispatch={handleDispatch}
