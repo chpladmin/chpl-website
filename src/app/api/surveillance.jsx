@@ -105,6 +105,16 @@ const usePutQuarterly = () => {
   });
 };
 
+const usePutRelevantSurveillance = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`surveillance-report/quarterly/${data.reportId}/surveillance/${data.id}`, data), {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries(['relevant-listings', response.id]);
+    },
+  });
+};
+
 export {
   useDeleteAnnual,
   useDeleteQuarterly,
@@ -118,4 +128,5 @@ export {
   usePostQuarterlyReportRequest,
   usePutAnnual,
   usePutQuarterly,
+  usePutRelevantSurveillance,
 };

@@ -257,6 +257,7 @@ export default class NetworkService {
     return this.apiPUT('/surveillance-report/quarterly', report);
   }
 
+  // delete
   updateRelevantSurveillance(reportId, surveillance) {
     return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
   }

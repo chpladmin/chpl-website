@@ -10,7 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { object } from 'prop-types';
+import { number, object } from 'prop-types';
 import Edit from '@material-ui/icons/Edit';
 
 import ChplQuarterEditListingSurveillanceData from './quarter-edit-listing-surveillance-data';
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQuarterEditListingSurveillance({ surveillance }) {
+function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const classes = useStyles();
@@ -178,6 +178,7 @@ function ChplQuarterEditListingSurveillance({ surveillance }) {
             <ChplQuarterEditListingSurveillanceData
               surveillance={surveillance}
               dispatch={handleDispatch}
+              reportId={reportId}
             />
           </div>
         </DialogContent>
@@ -190,4 +191,5 @@ export default ChplQuarterEditListingSurveillance;
 
 ChplQuarterEditListingSurveillance.propTypes = {
   surveillance: object.isRequired,
+  reportId: number.isRequired,
 };

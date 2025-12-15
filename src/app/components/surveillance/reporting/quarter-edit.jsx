@@ -422,6 +422,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                     <ChplQuarterEditListing
                       key={l.id}
                       listing={l}
+                      reportId={report.id}
                     />
                   ))}
               </CardContent>

@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import { object } from 'prop-types';
+import { number, object } from 'prop-types';
 
 import ChplQuarterEditListingSurveillance from './quarter-edit-listing-surveillance';
 
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQuarterEditListing({ listing }) {
+function ChplQuarterEditListing({ listing, reportId }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const classes = useStyles();
 
@@ -82,6 +82,7 @@ function ChplQuarterEditListing({ listing }) {
             <ChplQuarterEditListingSurveillance
               key={surv.id}
               surveillance={surv}
+              reportId={reportId}
             />
           ))}
         </Box>
@@ -94,4 +95,5 @@ export default ChplQuarterEditListing;
 
 ChplQuarterEditListing.propTypes = {
   listing: object.isRequired,
+  reportId: number.isRequired,
 };

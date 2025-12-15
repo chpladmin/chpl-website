@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
   Checkbox,
   CircularProgress,
-  Divider,
   FormControlLabel,
   ListItemText,
   MenuItem,
@@ -15,18 +10,21 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { func, object } from 'prop-types';
+import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useFetchCapStatuses, useFetchSurveillanceGroundsForInitiating, useFetchSurveillanceOutcomes, useFetchSurveillanceProcessTypes } from 'api/data';
-import { useDeleteQuarterly, useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
-import ChplComplaints from 'components/surveillance/complaints/complaints';
+import {
+  useFetchCapStatuses,
+  useFetchSurveillanceGroundsForInitiating,
+  useFetchSurveillanceOutcomes,
+  useFetchSurveillanceProcessTypes,
+} from 'api/data';
+import { usePutRelevantSurveillance } from 'api/surveillance';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { theme, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -72,10 +70,9 @@ const validationSchema = yup.object({
   surveillanceFindings: yup.string(),
 });
 
-function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
+function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillance }) {
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate: deleteReport } = useDeleteQuarterly();
-  const { mutate: putReport } = usePutQuarterly();
+  const { mutate } = usePutRelevantSurveillance();
   const [capStatuses, setCapStatuses] = useState([]);
   const [surveillanceGroundsForInitiating, setSurveillanceGroundsForInitiating] = useState([]);
   const [surveillanceOutcomes, setSurveillanceOutcomes] = useState([]);
@@ -92,7 +89,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
   useEffect(() => {
     formik.setFieldValue('capStatuses', surveillance?.capStatuses);
     formik.setFieldValue('surveillanceGroundsForInitiating', surveillance?.surveillanceGroundsForInitiating);
-    formik.setFieldValue('surveillanceOutcome', surveillance?.surveillanceOutcome);
+    formik.setFieldValue('surveillanceOutcome', surveillance?.surveillanceOutcome || '');
     formik.setFieldValue('surveillanceProcessTypes', surveillance?.surveillanceProcessTypes);
   }, [surveillance]);
 
@@ -123,17 +120,17 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
         formik.submitForm();
         break;
       default:
-        console.log(action);
         dispatch({ action });
         break;
     }
   };
 
   const save = () => {
-    //setIsProcessing(true);
+    setIsProcessing(true);
     setErrorMessages([]);
     const payload = {
       ...surveillance,
+      reportId,
       k1Reviewed: formik.values.k1Reviewed,
       surveillanceOutcome: formik.values.surveillanceOutcome,
       surveillanceOutcomeOther: formik.values.surveillanceOutcomeOther,
@@ -153,9 +150,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
       capStatusOther: formik.values.capStatusOther,
       surveillanceFindings: formik.values.surveillanceFindings,
     };
-    console.log({payload});
-    /*
-    putReport(payload, {
+    mutate(payload, {
       onSuccess: () => {
         setIsProcessing(false);
         enqueueSnackbar('Your updates have been made', {
@@ -168,13 +163,12 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
         setErrorMessages([error.response?.data?.error]);
       },
     });
-    */
   };
 
   formik = useFormik({
     initialValues: {
       k1Reviewed: !!surveillance.k1Reviewed,
-      surveillanceOutcome: surveillance.surveillanceOutcome,
+      surveillanceOutcome: surveillance.surveillanceOutcome || '',
       surveillanceOutcomeOther: surveillance.surveillanceOutcomeOther || '',
       surveillanceProcessTypes: [],
       surveillanceProcessTypeOther: surveillance.surveillanceProcessTypeOther || '',
@@ -216,7 +210,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
             onChange={formik.handleChange}
           />
         )}
-        label={`&sect;170.523(k)(1) Reviewed: ${formik.values.k1Reviewed ? 'Yes' : 'No'}`}
+        label={`§170.523(k)(1) Reviewed: ${formik.values.k1Reviewed ? 'Yes' : 'No'}`}
       />
       <ChplTextField
         select
@@ -367,7 +361,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
           <strong>Potential Causes of Non-Conformities or Suspected Non-Conformities</strong>
         </Typography>
         <Typography className={classes.question} variant="body2" gutterBottom>
-          What were the substantial factors that, in the ONC-ACB's assessment, caused or contributed to the suspected non-conformity or non-conformities (e.g., implementation problem, user error, limitations on the use of capabilities in the field, a failure to disclose known material information, etc.)?
+          What were the substantial factors that, in the ONC-ACB&apos;s assessment, caused or contributed to the suspected non-conformity or non-conformities (e.g., implementation problem, user error, limitations on the use of capabilities in the field, a failure to disclose known material information, etc.)?
         </Typography>
         <ChplTextField
           id="nonconformity-causes"
@@ -443,7 +437,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
           <strong>Additional Costs Evaluation</strong>
         </Typography>
         <Typography className={classes.question} variant="body2" gutterBottom>
-          If a suspected non-conformity resulted from additional types of costs or fees that a user was required to pay in order to implement or use the Health IT Module's certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?
+          If a suspected non-conformity resulted from additional types of costs or fees that a user was required to pay in order to implement or use the Health IT Module&apos;s certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?
         </Typography>
         <ChplTextField
           id="additional-costs-evaluation"
@@ -462,7 +456,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, surveillance }) {
           <strong>Limitations Evaluation</strong>
         </Typography>
         <Typography className={classes.question} variant="body2" gutterBottom>
-          If a suspected non-conformity resulted from limitations that a user encountered in the course of implementing and using the Health IT Module's certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?
+          If a suspected non-conformity resulted from limitations that a user encountered in the course of implementing and using the Health IT Module&apos;s certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?
         </Typography>
         <ChplTextField
           id="limitations-evaluation"
@@ -601,5 +595,6 @@ export default ChplQuarterEditListingSurveillanceData;
 
 ChplQuarterEditListingSurveillanceData.propTypes = {
   dispatch: func.isRequired,
+  reportId: number.isRequired,
   surveillance: object.isRequired,
 };
