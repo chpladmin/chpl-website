@@ -23,18 +23,22 @@ export default class NetworkService {
     return this.apiPOST('/users/confirm', userObject);
   }
 
+  // delete
   createAnnualSurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/annual', report);
   }
 
+  // delete
   createQuarterlySurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
 
+  // delete
   deleteAnnualSurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/annual/${id}`);
   }
 
+  // delete
   deleteQuarterlySurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/quarterly/${id}`);
   }
@@ -49,10 +53,12 @@ export default class NetworkService {
     return this.apiDELETE(`/users/${userId}`);
   }
 
+  // delete
   generateAnnualSurveillanceReport(reportId) {
     return this.apiGET(`/surveillance-report/export/annual/${reportId}`);
   }
 
+  // delete
   generateQuarterlySurveillanceReport(reportId) {
     return this.apiGET(`/surveillance-report/export/quarterly/${reportId}`);
   }
@@ -103,6 +109,7 @@ export default class NetworkService {
     return this.apiGET('/developers');
   }
 
+  // delete ?
   getListing(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}/details`, { forceReload });
   }
@@ -168,6 +175,7 @@ export default class NetworkService {
     return this.apiGET('/surveillance-report/surveillance-grounds-for-initiating');
   }
 
+  // delete ?
   getSurveillanceLookups() {
     const data = {};
     this.apiGET('/surveillance/types')
@@ -241,6 +249,7 @@ export default class NetworkService {
     return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
 
+  // delete
   updateAnnualSurveillanceReport(report) {
     return this.apiPUT('/surveillance-report/annual', report);
   }
@@ -253,6 +262,7 @@ export default class NetworkService {
     return this.apiPUT('/products', productObject);
   }
 
+  // delete
   updateQuarterlySurveillanceReport(report) {
     return this.apiPUT('/surveillance-report/quarterly', report);
   }
