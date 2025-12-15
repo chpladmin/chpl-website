@@ -38,7 +38,6 @@ angular
     'ngFileUpload',
     'ngResource',
     'ngStorage',
-    'smart-table',
     'toaster',
     'ui.bootstrap',
     'ui.router',

@@ -18,7 +18,6 @@ import /* cytoscape from */ 'cytoscape';
 import /* ngCytoscape from */ './lib/ngCytoscape.min';
 import /* ngResource from */ 'angular-resource';
 import /* ngSanitize from */ 'angular-sanitize';
-import /* smartTable from */ 'angular-smart-table';
 import /* toaster from */ 'angularjs-toaster';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
@@ -65,7 +64,6 @@ const dependencies = [
   'ngResource',
   'ngStorage',
   'ngSanitize',
-  'smart-table',
   'toaster',
   'ui.bootstrap',
   'ui.router',
