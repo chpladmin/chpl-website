@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 13.43.0
+_8 December 2025_
+
+### Features
+* Support extension date for Functionalities Tested
+* Support extension date for Standards
+* Create Admin console to edit Code Sets and support extension date for Code Sets
+
+### Flagged Features
+* Split "Insights" flag into two flags
+
+---
+
 ## Version 13.42.1
 _1 December 2025_
 

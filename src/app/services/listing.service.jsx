@@ -17,7 +17,7 @@ import { palette } from 'themes';
 
 const getFullButton = (text, icon) => (
   <ChplTooltip title={`Certification Status: ${text}`}>
-    <IconButton>
+    <IconButton disableRipple>
       { icon }
     </IconButton>
   </ChplTooltip>
@@ -31,8 +31,8 @@ const getStatusIcon = (status) => {
     case 'Terminated by ONC': return getFullButton(status.name, <CancelPresentationIcon color="error" />);
     case 'Withdrawn by Developer Under Surveillance/Review': return getFullButton(status.name, <ErrorIcon color="error" />);
     case 'Withdrawn by ONC-ACB': return getFullButton(status.name, <CancelIcon color="error" />);
-    case 'Withdrawn by Developer': return getFullButton(status.name, <StopIcon />);
-    case 'Retired': return getFullButton(status.name, <AccountBalanceIcon />);
+    case 'Withdrawn by Developer': return getFullButton(status.name, <StopIcon color="disabled" />);
+    case 'Retired': return getFullButton(status.name, <AccountBalanceIcon color="disabled" />);
     default: return (<Typography>{ status.name }</Typography>);
   }
 };

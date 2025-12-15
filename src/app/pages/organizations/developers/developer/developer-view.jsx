@@ -59,7 +59,7 @@ const isActive = (statuses) => statuses.length === 0 || statuses.every((status) 
 
 function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { demographicChangeRequestIsOn, insightsIsOn } = useContext(FlagContext);
+  const { demographicChangeRequestIsOn, insightsDisplayIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
   const usersQuery = useFetchUsersAtDeveloper({
     developer,
@@ -136,7 +136,7 @@ function ChplDeveloperView({ dispatch }) {
                 canSplit={() => can('split-developer')}
                 isSplitting={false}
               />
-              { insightsIsOn
+              { insightsDisplayIsOn
                 && (
                   <ChplInsightsView
                     developer={developer}
