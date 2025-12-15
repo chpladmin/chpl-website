@@ -19,7 +19,6 @@ import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplRealWorldTestingViewWrapper from './real-world-testing/real-world-testing-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
-import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage/reporting-date-selector';
 import ChplUsersWrapper from './user/users-wrapper';
 import {
   ChplConfirmation,
@@ -61,7 +60,6 @@ angular
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplRealWorldTestingViewBridge', reactToAngularComponent(ChplRealWorldTestingViewWrapper))
-  .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
