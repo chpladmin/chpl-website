@@ -21,16 +21,16 @@ const useFetchCertificationStatuses = () => {
 
 const useFetchComplainantTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/complainant-types'], async () => {
-    const response = await axios.get('data/complainant-types');
+  return useQuery(['complaints/complainant-types'], async () => {
+    const response = await axios.get('complaints/complainant-types');
     return response.data;
   }, options.daily);
 };
 
 const useFetchComplaintTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/complaint-types'], async () => {
-    const response = await axios.get('data/complaint-types');
+  return useQuery(['complaints/types'], async () => {
+    const response = await axios.get('complaints/types');
     return response.data;
   }, options.daily);
 };
