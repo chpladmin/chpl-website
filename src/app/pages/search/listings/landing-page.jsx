@@ -27,6 +27,7 @@ import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
 import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles({
   announcement: {
@@ -182,18 +183,6 @@ function ChplLandingPage() {
     setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
 
-  useEffect(() => {
-    if (announcements.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentAnnouncementIndex((prev) =>
-        prev === announcements.length - 1 ? 0 : prev + 1
-      );
-    }, 5000); // Auto-advance every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [announcements.length]);
-
   const handlePrevious = () => {
     setCurrentAnnouncementIndex((prev) =>
       prev === 0 ? announcements.length - 1 : prev - 1
@@ -257,19 +246,21 @@ function ChplLandingPage() {
                       >
                         <ChevronLeftIcon color="primary" />
                       </IconButton>
-                      <Box flexGrow={1} flexDirection={"column"}>
-                        <Typography color="textPrimary" variant="body1">
-                          <strong>{announcements[currentAnnouncementIndex].title}</strong>
-                        </Typography>
-                        {announcements[currentAnnouncementIndex].text && (
-                          <Typography variant="body2">
-                            {announcements[currentAnnouncementIndex].text}
+                      <Fade in key={currentAnnouncementIndex} timeout={500}>
+                        <Box flexGrow={1} flexDirection={"column"}>
+                          <Typography color="textPrimary" variant="body1">
+                            <strong>{announcements[currentAnnouncementIndex].title}</strong>
                           </Typography>
-                        )}
-                        <Typography variant="caption" aria-live="polite">
-                          Announcement {currentAnnouncementIndex + 1} of {announcements.length}
-                        </Typography>
-                      </Box>
+                          {announcements[currentAnnouncementIndex].text && (
+                            <Typography variant="body2">
+                              {announcements[currentAnnouncementIndex].text}
+                            </Typography>
+                          )}
+                          <Typography variant="caption" aria-live="polite">
+                            Announcement {currentAnnouncementIndex + 1} of {announcements.length}
+                          </Typography>
+                        </Box>
+                      </Fade>
                       <IconButton
                         onClick={handleNext}
                         className={classes.carouselButton}
