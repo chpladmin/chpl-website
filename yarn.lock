@@ -4727,13 +4727,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-smart-table@npm:^2.1.11":
-  version: 2.1.11
-  resolution: "angular-smart-table@npm:2.1.11"
-  checksum: 10/6ed6ddfb334cf8624b5bec05eb997a2dbcaf1e157ed43464a0601a15176575a1064d846098991fc8de7b331abe9cdc7cd2b8c7e6ef2e0d491b7add002c3bbd5f
-  languageName: node
-  linkType: hard
-
 "angular-ui-bootstrap@npm:2.5.6":
   version: 2.5.6
   resolution: "angular-ui-bootstrap@npm:2.5.6"
@@ -6834,7 +6827,6 @@ __metadata:
     angular-mocks: "npm:^1.8.3"
     angular-resource: "npm:^1.8.3"
     angular-sanitize: "npm:^1.8.3"
-    angular-smart-table: "npm:^2.1.11"
     angular-ui-bootstrap: "npm:2.5.6"
     angular-ui-router: "npm:^1.0.30"
     angular-zxcvbn: "npm:^3.2.2"
