@@ -7,10 +7,6 @@ export default class NetworkService {
     this.API = API;
   }
 
-  authorizeUser(userAuthorization, userId) {
-    return this.apiPOST(`/users/${userId}/authorize`, userAuthorization);
-  }
-
   confirmApiKey(hash) {
     return this.apiPOST('/key/confirm', hash);
   }
@@ -23,26 +19,6 @@ export default class NetworkService {
     return this.apiPOST('/users/confirm', userObject);
   }
 
-  // delete
-  createAnnualSurveillanceReport(report) {
-    return this.apiPOST('/surveillance-report/annual', report);
-  }
-
-  // delete
-  createQuarterlySurveillanceReport(report) {
-    return this.apiPOST('/surveillance-report/quarterly', report);
-  }
-
-  // delete
-  deleteAnnualSurveillanceReport(id) {
-    return this.apiDELETE(`/surveillance-report/annual/${id}`);
-  }
-
-  // delete
-  deleteQuarterlySurveillanceReport(id) {
-    return this.apiDELETE(`/surveillance-report/quarterly/${id}`);
-  }
-
   deleteSurveillance(surveillanceId, reason) {
     return this.apiDELETE(`/surveillance/${surveillanceId}`, {
       reason,
@@ -51,16 +27,6 @@ export default class NetworkService {
 
   deleteUser(userId) {
     return this.apiDELETE(`/users/${userId}`);
-  }
-
-  // delete
-  generateAnnualSurveillanceReport(reportId) {
-    return this.apiGET(`/surveillance-report/export/annual/${reportId}`);
-  }
-
-  // delete
-  generateQuarterlySurveillanceReport(reportId) {
-    return this.apiGET(`/surveillance-report/export/quarterly/${reportId}`);
   }
 
   getAcbs(editable) {
@@ -78,21 +44,6 @@ export default class NetworkService {
     return this.apiGET(query);
   }
 
-  // maybe delete?
-  getAnnualSurveillanceReports() {
-    return this.apiGET('/surveillance-report/annual');
-  }
-
-  // maybe delete?
-  getAnnualSurveillanceReport(reportId) {
-    return this.apiGET(`/surveillance-report/annual/${reportId}`);
-  }
-
-  // delete
-  getCapStatusTypes() {
-    return this.apiGET('/surveillance-report/cap-statuses');
-  }
-
   getComplaintsWithSurveillance(surveillanceId) {
     return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
   }
@@ -101,25 +52,16 @@ export default class NetworkService {
     return this.apiGET(`/developers/${id}`);
   }
 
-  getDeveloperHierarchy(id) {
-    return this.apiGET(`/developers/${id}/hierarchy`);
-  }
-
   getDevelopers() {
     return this.apiGET('/developers');
   }
 
-  // delete ?
   getListing(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}/details`, { forceReload });
   }
 
   getListingBasic(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
-  }
-
-  getNonconformityStatisticsCount() {
-    return this.apiGET('/statistics/nonconformity_criteria_count');
   }
 
   getPendingListingById(id) {
@@ -134,27 +76,8 @@ export default class NetworkService {
     return this.apiGET(`/products?developerId=${developerId}`);
   }
 
-  getQuarterlySurveillanceQuarters() {
-    return this.apiGET('/data/quarters');
-  }
-
-  // maybe delete?
-  getQuarterlySurveillanceReport(reportId) {
-    return this.apiGET(`/surveillance-report/quarterly/${reportId}`);
-  }
-
-  // maybe delete?
-  getQuarterlySurveillanceReports() {
-    return this.apiGET('/surveillance-report/quarterly');
-  }
-
   getRelatedListings(id) {
     return this.apiGET(`/products/${id}/listings`);
-  }
-
-  // maybe delete
-  getRelevantListings(reportId) {
-    return this.apiGET(`/surveillance-report/quarterly/${reportId}/listings`);
   }
 
   getReportMetadata(reportKey) {
@@ -170,51 +93,8 @@ export default class NetworkService {
     return this.apiGET(url);
   }
 
-  // delete
-  getSurveillanceGroundsForInitiatingTypes() {
-    return this.apiGET('/surveillance-report/surveillance-grounds-for-initiating');
-  }
-
-  // delete ?
-  getSurveillanceLookups() {
-    const data = {};
-    this.apiGET('/surveillance/types')
-      .then((response) => {
-        data.surveillanceTypes = response;
-      });
-    this.apiGET('/surveillance/requirement-group-types')
-      .then((response) => {
-        data.requirementGroupTypes = response;
-      });
-    this.apiGET('/surveillance/result-types')
-      .then((response) => {
-        data.surveillanceResultTypes = response;
-      });
-    this.apiGET('/surveillance/nonconformity-types')
-      .then((response) => {
-        data.nonconformityTypes = response;
-      });
-    this.apiGET('/surveillance/requirement-types')
-      .then((response) => {
-        data.surveillanceRequirements = response;
-      });
-    return data;
-  }
-
-  getSurveillanceOutcomes() { // delete
-    return this.apiGET('/surveillance-report/surveillance-outcomes');
-  }
-
-  getSurveillanceProcessTypes() { // delete
-    return this.apiGET('/surveillance-report/surveillance-process-types');
-  }
-
   getSystemStatus() {
     return this.$http.get('/rest/system-status');
-  }
-
-  getUserById(id) {
-    return this.apiGET(`/users/beta/${id}/details`);
   }
 
   getUsers() {
@@ -247,29 +127,6 @@ export default class NetworkService {
 
   splitProduct(productObject) {
     return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
-  }
-
-  // delete
-  updateAnnualSurveillanceReport(report) {
-    return this.apiPUT('/surveillance-report/annual', report);
-  }
-
-  updateCP(cpObject) {
-    return this.apiPUT(`/certified_products/${cpObject.listing.id}`, cpObject);
-  }
-
-  updateProduct(productObject) {
-    return this.apiPUT('/products', productObject);
-  }
-
-  // delete
-  updateQuarterlySurveillanceReport(report) {
-    return this.apiPUT('/surveillance-report/quarterly', report);
-  }
-
-  // delete
-  updateRelevantSurveillance(reportId, surveillance) {
-    return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
   }
 
   updateSurveillance(surveillance) {
