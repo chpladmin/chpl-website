@@ -90,6 +90,11 @@ function ChplQuarterView({ dispatch, report }) {
     setListings(relevantListingsQuery.data);
   }, [relevantListingsQuery.data, relevantListingsQuery.isLoading, relevantListingsQuery.isSuccess]);
 
+  const sortListings = (a, b) => {
+    if (a.certificationDate === b.certificationDate) { return a.chplProductNumber < b.chplProductNumber ? -1 : 1; }
+    return a.certificationDate < b.certificationDate ? 1 : -1;
+  };
+
   const handleDispatch = (action) => {
     if (activeListing) {
       setActiveListing(undefined);
@@ -268,7 +273,7 @@ function ChplQuarterView({ dispatch, report }) {
               <CardHeader title="Listings with relevant surveillance" />
               <CardContent>
                 { listings
-                  .sort((a, b) => (a.certificationDate < b.certificationDate ? 1 : -1))
+                  .sort(sortListings)
                   .map((l) => (
                     <ChplQuarterViewListing
                       key={l.id}

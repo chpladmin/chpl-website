@@ -78,13 +78,15 @@ function ChplQuarterEditListing({ listing, reportId }) {
       }}
       >
         <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
-          { listing.surveillances.map((surv) => (
-            <ChplQuarterEditListingSurveillance
-              key={surv.id}
-              surveillance={surv}
-              reportId={reportId}
-            />
-          ))}
+          { listing.surveillances
+            .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
+            .map((surv) => (
+              <ChplQuarterEditListingSurveillance
+                key={surv.id}
+                surveillance={surv}
+                reportId={reportId}
+              />
+            ))}
         </Box>
       </AccordionDetails>
     </Accordion>
