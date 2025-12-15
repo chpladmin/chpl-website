@@ -85,6 +85,11 @@ const usePostQuarterlyReportRequest = () => {
   return useMutation(async (data) => axios.post(`surveillance-report/export/quarterly/${data.id}`, {}));
 };
 
+const usePostSurveillanceActivityReport = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('surveillance/reports/activity', data));
+};
+
 const usePutAnnual = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -126,6 +131,7 @@ export {
   usePostInitiateAnnualReport,
   usePostInitiateQuarterlyReport,
   usePostQuarterlyReportRequest,
+  usePostSurveillanceActivityReport,
   usePutAnnual,
   usePutQuarterly,
   usePutRelevantSurveillance,

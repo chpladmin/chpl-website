@@ -17,7 +17,7 @@ const states = [{
 }, {
   name: 'surveillance.activity-reporting',
   url: '/activity-reporting',
-  component: 'chplSurveillanceActivityReporting',
+  component: 'chplSurveillanceActivityReportingBridge',
   data: {
     title: 'CHPL Surveillance - Activity Reporting',
     roles: ['chpl-admin', 'chpl-onc'],

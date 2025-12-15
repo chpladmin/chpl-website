@@ -88,11 +88,6 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}`);
   }
 
-  getSurveillanceActivityReport(range) {
-    const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
-    return this.apiGET(url);
-  }
-
   getSystemStatus() {
     return this.$http.get('/rest/system-status');
   }
