@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { useFetchAnnouncements } from 'api/announcements';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+
+import { useFetchAnnouncements } from 'api/announcements';
 
 function ChplAnnouncementsFab() {
   const [expanded, setExpanded] = useState(false);
@@ -11,8 +12,14 @@ function ChplAnnouncementsFab() {
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
 
   useEffect(() => {
-    if (isLoading || !isSuccess) return;
-    setAnnouncements(Array.isArray(data) ? data : []);
+    if (isLoading) return;
+    if (!isSuccess) {
+      setError('Failed to load announcements');
+      setAnnouncements([]);
+      return;
+    }
+    setError(null);
+    setAnnouncements(data || []);
   }, [data, isLoading, isSuccess]);
 
   const handleToggle = (event) => {
@@ -63,7 +70,7 @@ function ChplAnnouncementsFab() {
             right: 0,
           }}
         >
-          {Array.isArray(announcements) ? announcements.length : 0}
+          {announcements.length}
         </span>
         <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
       </button>
@@ -102,7 +109,7 @@ function ChplAnnouncementsFab() {
             }}
           >
             <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 'bold', fontFamily: 'inherit' }}>
-              Announcement{Array.isArray(announcements) && announcements.length !== 1 ? 's' : ''}
+              Announcement{announcements.length !== 1 ? 's' : ''}
             </h3>
             <button
               onClick={handleToggle}
@@ -113,18 +120,17 @@ function ChplAnnouncementsFab() {
             </button>
           </div>
           <div role="main" style={{ flex: 1, overflowY: 'auto' }}>
-            {error && (
+            {error ? (
               <div style={{ textAlign: 'center', color: 'red', padding: '32px 16px' }}>
                 <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>Error: {error}</p>
               </div>
-            )}
-            {!error && Array.isArray(announcements) && announcements.length === 0 ? (
+            ) : announcements.length === 0 ? (
               <div style={{ textAlign: 'center', color: '#999', padding: '32px 16px' }}>
                 <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>No current announcements</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {Array.isArray(announcements) && announcements.map((announcement, index) => (
+                {announcements.map((announcement, index) => (
                   <div key={announcement.id || index} style={{ padding: 16, wordWrap: 'break-word', whiteSpace: 'pre-wrap', borderBottom: '1px solid #e0e0e0' }}>
                     <h4 style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>
                       <strong>{announcement.title}</strong>

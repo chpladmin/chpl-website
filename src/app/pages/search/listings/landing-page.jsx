@@ -7,6 +7,7 @@ import {
   IconButton,
   Typography,
   makeStyles,
+  Fade,
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -27,7 +28,6 @@ import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
 import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
-import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles({
   announcement: {
