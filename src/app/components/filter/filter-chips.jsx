@@ -12,7 +12,9 @@ import { useFilterContext } from './filter-context';
 
 import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { getStatusIcon } from 'services/listing.service';
 import theme from 'themes/theme';
+import { palette } from 'themes';
 
 const useStyles = makeStyles(() => ({
   filterContainer: {
@@ -41,6 +43,13 @@ const useStyles = makeStyles(() => ({
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  chip: {
+    border: `1px solid ${palette.primary}`,
+    backgroundColor: palette.white,
+  },
+  chipAvatar: {
+    backgroundColor: 'transparent !important',
   },
 }));
 
@@ -167,20 +176,22 @@ function ChplFilterChips() {
                         title={f.getLongValueDisplay(v)}
                       >
                         <Chip
+                          avatar={f.key === 'certificationStatuses' ? getStatusIcon({ name: f.getValueDisplay(v) }) : undefined}
                           label={truncate(f.getValueDisplay(v), maxLengthForChip, true)}
                           onDelete={() => removeChip(f, v)}
-                          color="primary"
                           variant="outlined"
                           disabled={f.required && f.values.length === 1}
+                          classes={{ avatar: classes.chipAvatar, root: classes.chip }}
                         />
                       </ChplTooltip>
                     ) : (
                       <Chip
+                        avatar={f.key === 'certificationStatuses' ? getStatusIcon({ name: f.getValueDisplay(v) }) : undefined}
                         label={f.getValueDisplay(v)}
                         onDelete={() => removeChip(f, v)}
-                        color="primary"
                         variant="outlined"
                         disabled={f.required && f.values.length === 1}
+                        classes={{ avatar: classes.chipAvatar, root: classes.chip }}
                       />
                     )}
                 </React.Fragment>
