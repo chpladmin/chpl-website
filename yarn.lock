@@ -4668,13 +4668,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-breadcrumb@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "angular-breadcrumb@npm:0.5.0"
-  checksum: 10/2ac55fd04b2d44e758044b8fce1cdb2a1aeb244960819f3edea27cc69d057a18c8f1130e0a647c5f3da0ebe2d92d94a5a1f8e6b797c92338dceb25f76aba075d
-  languageName: node
-  linkType: hard
-
 "angular-confirm@npm:1.2.6":
   version: 1.2.6
   resolution: "angular-confirm@npm:1.2.6"
@@ -6819,7 +6812,6 @@ __metadata:
     angular: "npm:^1.8.3"
     angular-animate: "npm:^1.8.3"
     angular-aria: "npm:^1.8.3"
-    angular-breadcrumb: "npm:^0.5.0"
     angular-confirm: "npm:1.2.6"
     angular-feature-flags: "npm:^1.6.1"
     angular-file-saver: "npm:^1.1.3"

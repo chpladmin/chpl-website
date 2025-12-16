@@ -5,7 +5,6 @@ import '../assets/favicons/favicons';
 import 'swagger-ui-react/swagger-ui.css';
 
 import angular from 'angular';
-import 'angular-breadcrumb';
 import /* angularConfirm from */ 'angular-confirm';
 import /* angularLoadingBar from */ 'angular-loading-bar';
 import /* angulartics from */ 'angulartics';
@@ -56,7 +55,6 @@ const dependencies = [
   'angulartics',
   'angulartics.google.tagmanager',
   'feature-flags',
-  'ncy-angular-breadcrumb',
   'ngAnimate',
   'ngAria',
   'ngCytoscape',

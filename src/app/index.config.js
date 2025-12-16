@@ -2,11 +2,7 @@
 
 (() => {
   /** @ngInject */
-  function config($breadcrumbProvider, $locationProvider, $logProvider) {
-    $breadcrumbProvider.setOptions({
-      includeAbstract: true,
-    });
-
+  function config($locationProvider, $logProvider) {
     $locationProvider.hashPrefix('');
 
     // Enable log
