@@ -61,17 +61,6 @@ export default class NetworkService {
     return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
   }
 
-  getAllCriteria(props) {
-    const params = Object
-      .entries(props)
-      .filter(([, value]) => value !== null && value !== undefined)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&');
-    let query = '/certification-criteria';
-    if (params.length > 0) { query += `?${params}`; }
-    return this.apiGET(query);
-  }
-
   getAnnualSurveillanceReports() {
     return this.apiGET('/surveillance-report/annual');
   }
