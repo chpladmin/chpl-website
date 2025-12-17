@@ -80,7 +80,7 @@ function ChplAnnouncementsFab() {
           id="announcements-panel"
           style={{
             width: 325,
-            top: 140,
+            top: 64,
             right: 0,
             position: 'fixed',
             maxWidth: 'calc(100vw - 48px)',
@@ -88,9 +88,9 @@ function ChplAnnouncementsFab() {
             zIndex: 9998,
             display: 'flex',
             flexDirection: 'column',
-            border: '1px solid #e0e0e0',
+            border: '2px solid #156dac',
             background: 'white',
-            borderRadius: 8,
+            borderRadius: 12,
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
           }}
           role="region"
