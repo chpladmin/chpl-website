@@ -39,11 +39,11 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  surveillanceOutcome: yup.object(),
+  surveillanceOutcome: yup.string(),
   surveillanceOutcomeOther: yup.string()
     .test('conditionallyRequireSurveillanceOutcome',
       'Outcome of Surveillance - Other Explanation is required',
-      (value, context) => (!!value || context.parent.surveillanceOutcome?.name !== 'Non-conformity substantiated - Unresolved - Other - [Please describe]')),
+      (value, context) => (!!value || context.parent.surveillanceOutcome !== 'Non-conformity substantiated - Unresolved - Other - [Please describe]')),
   surveillanceProcessTypes: yup.array(),
   surveillanceProcessTypeOther: yup.string()
     .test('conditionallyRequireSurveillanceProcessTypes',
@@ -89,7 +89,6 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
   useEffect(() => {
     formik.setFieldValue('capStatuses', surveillance?.capStatuses);
     formik.setFieldValue('surveillanceGroundsForInitiating', surveillance?.surveillanceGroundsForInitiating);
-    formik.setFieldValue('surveillanceOutcome', surveillance?.surveillanceOutcome || '');
     formik.setFieldValue('surveillanceProcessTypes', surveillance?.surveillanceProcessTypes);
   }, [surveillance]);
 
@@ -106,7 +105,6 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
   useEffect(() => {
     if (surveillanceOutcomesIsLoading || !surveillanceOutcomesIsSuccess) { return; }
     setSurveillanceOutcomes(surveillanceOutcomesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('surveillanceOutcome', surveillanceOutcomesData.find((type) => type.id === surveillance?.surveillanceOutcome?.id) || '');
   }, [surveillanceOutcomesData, surveillanceOutcomesIsLoading, surveillanceOutcomesIsSuccess, surveillance]);
 
   useEffect(() => {
@@ -132,7 +130,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
       ...surveillance,
       reportId,
       k1Reviewed: formik.values.k1Reviewed,
-      surveillanceOutcome: formik.values.surveillanceOutcome,
+      surveillanceOutcome: surveillanceOutcomes.find((v) => v.name === formik.values.surveillanceOutcome),
       surveillanceOutcomeOther: formik.values.surveillanceOutcomeOther,
       surveillanceProcessTypes: formik.values.surveillanceProcessTypes,
       surveillanceProcessTypeOther: formik.values.surveillanceProcessTypeOther,
@@ -168,7 +166,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
   formik = useFormik({
     initialValues: {
       k1Reviewed: !!surveillance.k1Reviewed,
-      surveillanceOutcome: surveillance.surveillanceOutcome || '',
+      surveillanceOutcome: surveillance.surveillanceOutcome?.name || '',
       surveillanceOutcomeOther: surveillance.surveillanceOutcomeOther || '',
       surveillanceProcessTypes: [],
       surveillanceProcessTypeOther: surveillance.surveillanceProcessTypeOther || '',
@@ -224,10 +222,10 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
         helperText={formik.touched.surveillanceOutcome && formik.errors.surveillanceOutcome}
       >
         { surveillanceOutcomes.map((item) => (
-          <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+          <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
         ))}
       </ChplTextField>
-      { formik.values.surveillanceOutcome?.name === 'Non-conformity substantiated - Unresolved - Other - [Please describe]'
+      { formik.values.surveillanceOutcome === 'Non-conformity substantiated - Unresolved - Other - [Please describe]'
         && (
           <Box className={classes.summaryGroup}>
             <Typography variant="h6" gutterBottom>
