@@ -10,6 +10,7 @@ import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper'
 import ChplListingView from './listing/listing-view-wrapper';
 import {
   ChplConfirmDeveloperWrapper,
+  ChplConfirmListingWrapper,
   ChplConfirmListingsWrapper,
   ChplConfirmProduct,
   ChplConfirmProgress,
@@ -52,6 +53,7 @@ angular
   .component('chplCmsDisplayWrapperBridge', reactToAngularComponent(ChplCmsDisplayWrapper))
   .component('chplCompareDisplayWrapperBridge', reactToAngularComponent(ChplCompareDisplayWrapper))
   .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
+  .component('chplConfirmListingBridge', reactToAngularComponent(ChplConfirmListingWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
   .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
