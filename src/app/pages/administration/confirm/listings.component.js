@@ -14,7 +14,7 @@ const ConfirmListingsComponent = {
     }
 
     handleProcess(listingId) {
-      this.$state.go('.listing', { id: listingId });
+      this.$state.go('.listing-old', { id: listingId });
     }
   },
 };

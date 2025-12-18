@@ -1,5 +1,6 @@
 import 'ng-file-upload';
 import ChplCmsWrapper from './cms/cms-wrapper';
+import ChplConfirmWrapper from './confirm/confirm-wrapper';
 import ChplLoginPage from './login/login-wrapper';
 import ChplReportsWrapper from './reports/reports-wrapper';
 import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
@@ -23,6 +24,7 @@ angular
     'ui.router',
   ])
   .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
+  .component('chplConfirmBridge', reactToAngularComponent(ChplConfirmWrapper))
   .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))
   .component('chplReportsWrapperBridge', reactToAngularComponent(ChplReportsWrapper))
   .component('chplSystemMaintenanceWrapperBridge', reactToAngularComponent(ChplSystemMaintenanceWrapper))

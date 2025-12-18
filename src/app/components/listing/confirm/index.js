@@ -1,3 +1,4 @@
+import ChplConfirmDeveloper from './confirm-developer';
 import ChplConfirmDeveloperWrapper from './confirm-developer-wrapper';
 import ChplConfirmListing from './confirm-listing';
 import ChplConfirmListingWrapper from './confirm-listing-wrapper';
@@ -8,6 +9,7 @@ import ChplConfirmProgress from './confirm-progress';
 import ChplConfirmVersion from './confirm-version';
 
 export {
+  ChplConfirmDeveloper,
   ChplConfirmDeveloperWrapper,
   ChplConfirmListing,
   ChplConfirmListingWrapper,
