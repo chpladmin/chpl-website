@@ -63,6 +63,9 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
+  editModal: {
+    marginBottom: '60px',
+  },
 });
 
 function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
@@ -171,7 +174,7 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
           </Button>
         </Box>
       </Card>
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth className={classes.editModal}>
         <CardHeader title="Surveillance Data" />
         <DialogContent>
           <div className={classes.editContainer}>
