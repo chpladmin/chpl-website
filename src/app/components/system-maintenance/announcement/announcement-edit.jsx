@@ -6,32 +6,18 @@ import {
   Switch,
   makeStyles,
 } from '@material-ui/core';
+
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { jsJoda } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   fullWidth: {
-    [theme.breakpoints.down('xl')]: {
-      width: '200%',
-    },
-    [theme.breakpoints.down('lg')]: {
-      width: '200%',
-    },
-    [theme.breakpoints.down('md')]: {
-      width: '200%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '200%',
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-    },
+    width: '100%',
   },
   helperTextSpacing: {
     marginLeft: '14px',
@@ -96,7 +82,6 @@ function ChplAnnouncementEdit(props) {
 
   return (
     <Box display="flex" flexDirection="column" gridGap="16px">
-      <Box display="flex" flexDirection="column" gridGap="16px">
         <ChplTextField
           id="title"
           name="title"
@@ -112,7 +97,7 @@ function ChplAnnouncementEdit(props) {
         <ChplTextField
           id="text"
           multiline
-          rows={6}
+          minRows={6}
           className={classes.fullWidth}
           name="text"
           inputProps={{
@@ -125,8 +110,8 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.text && !!formik.errors.text}
           helperText={formik.touched.text && formik.errors.text}
         />
-      </Box>
-      <div>
+      <Box display="flex" flexDirection="row" gridGap="16px" width={"100%"}>
+      <div className={classes.fullWidth}>
         <ChplTextField
           id="start-date-time"
           name="startDateTime"
@@ -142,7 +127,7 @@ function ChplAnnouncementEdit(props) {
         />
         <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
       </div>
-      <div>
+      <div className={classes.fullWidth}>
         <ChplTextField
           id="end-date-time"
           name="endDateTime"
@@ -158,6 +143,7 @@ function ChplAnnouncementEdit(props) {
         />
         <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
       </div>
+      </Box>
       <div>
         <FormControlLabel
           control={(

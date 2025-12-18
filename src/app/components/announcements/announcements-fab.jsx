@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
@@ -58,21 +57,21 @@ function ChplAnnouncementsFab() {
         onClick={handleToggle}
         aria-label="Show announcements"
       >
-        <span
-          style={{
-            backgroundColor: '#156dac',
-            color: 'white',
-            borderRadius: '50%',
-            padding: '4px 8px',
-            fontSize: '0.75rem',
-            position: 'absolute',
-            top: 0,
-            right: 0,
-          }}
-        >
-          {announcements.length}
-        </span>
-        <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
+      <span
+        style={{
+        backgroundColor: '#156dac',
+        color: 'white',
+        borderRadius: '50%',
+        padding: '4px 8px',
+        fontSize: '0.75rem',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        }}
+      >
+        {announcements.length}
+      </span>
+      <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
       </button>
 
       {expanded && (
@@ -88,7 +87,7 @@ function ChplAnnouncementsFab() {
             zIndex: 9998,
             display: 'flex',
             flexDirection: 'column',
-            border: '2px solid #156dac',
+            border: `2px solid ${palette.primary}`,
             background: 'white',
             borderRadius: 12,
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
