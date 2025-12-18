@@ -221,6 +221,19 @@ function ChplQuarterEdit({ dispatch, report }) {
                   </Box>
                 </Button>
               ))}
+              <Button
+                onClick={() => dispatch({ action: 'cancel' })}
+                id="navigation-back"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                <Box display="flex" flexDirection="row" gridGap={4}>
+                  Back
+                </Box>
+              </Button>
             </CardContent>
           </Card>
         </Box>
@@ -443,13 +456,16 @@ function ChplQuarterEdit({ dispatch, report }) {
             />
           )}
       </div>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        disabled={!formik.isValid}
-        errors={errorMessages}
-        isProcessing={isProcessing}
-        canDelete
-      />
+      { state === menuItems[0]
+        && (
+          <ChplActionBar
+            dispatch={handleDispatch}
+            disabled={!formik.isValid}
+            errors={errorMessages}
+            isProcessing={isProcessing}
+            canDelete
+          />
+        )}
     </>
   );
 }
