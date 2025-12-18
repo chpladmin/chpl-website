@@ -59,7 +59,7 @@ const states = [{
 }, {
   name: 'administration.confirm.listings.listing',
   url: '/{id}/confirm',
-  component: 'chplConfirmBridge',
+  component: 'chplConfirm',
   data: {
     title: 'CHPL Administration - Confirm Listing',
     roles: ['chpl-admin', 'chpl-onc-acb'],

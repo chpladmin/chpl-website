@@ -5,18 +5,28 @@ import {
   Card,
   CardContent,
   Chip,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { ErrorBoundary } from 'react-error-boundary';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { number, oneOfType, string } from 'prop-types';
 
-import { useFetchAcbs } from 'api/acbs';
+import { useFetchPendingListing } from 'api/pending-listings';
 import { ChplActionBar } from 'components/action-bar';
-import { ChplConfirmDeveloper, ChplConfirmProduct, ChplConfirmVersion, ChplConfirmListing, ChplConfirmProgress } from 'components/listing/confirm';
+import {
+  ChplConfirmDeveloper, ChplConfirmProduct, ChplConfirmVersion, ChplConfirmListing, ChplConfirmProgress,
+} from 'components/listing/confirm';
 import ChplReport from 'components/surveillance/reporting/report';
 import { theme, utilStyles } from 'themes';
+
+const replaceDeveloperCode = (chplProductNumber, code) => {
+  const parts = chplProductNumber.split('.');
+  parts[3] = code;
+  return parts.join('.');
+};
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -41,55 +51,210 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplConfirm() {
-  const acbQuery = useFetchAcbs(true);
-  const [acbs, setAcbs] = useState([]);
-  const [activeAcb, setActiveAcb] = useState(undefined);
-  const [state, setState] = useState('');
+function ChplConfirm({ id }) {
+  const { data, isLoading, isSuccess } = useFetchPendingListing({ id });
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pending, setPending] = useState(undefined);
+  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
+  const [stage, setStage] = useState('developer');
+  const [staged, setStaged] = useState(undefined);
+  const [uploaded, setUploaded] = useState(undefined);
+  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
-    setAcbs(acbQuery.data.acbs);
-    if (acbQuery.data.acbs.length === 1) {
-      setActiveAcb(acbQuery.data.acbs[0]);
-    }
-  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
+    if (!uploaded) { return; }
+    setStaged(uploaded.developer);
+  }, [uploaded]);
 
-  const handleDispatch = ({ action, payload }) => {
+  useEffect(() => {
+    if (isLoading || !isSuccess) { return; }
+    setUploaded(data);
+    setPending(data);
+    /*
+        if (this.pending.developer && !this.pending.developer.id) {
+          this.pending.developer.id = '';
+        }
+        */
+    setErrors(data.errorMessages);
+    setWarnings(data.warningMessages);
+  }, [data, isLoading, isSuccess]);
+
+  const canAct = (action) => {
     switch (action) {
-      case 'cancel':
-        setState('');
-        break;
-      case 'focus':
-        setState('focus');
-        break;
-      default:
-        console.error(`No action found for ${action} with payload ${payload}`);
+      case 'confirm': return stage === 'listing' && !isSubmitting;
+      case 'next': return stage !== 'listing';
+      case 'previous': return stage !== 'developer';
+        // no default
     }
   };
+
+  const loadProducts = () => { setStage('product'); };
+  const loadFamily = () => {};
+  const loadVersions = () => { setStage('version'); };
+
+  const getProgress = () => {
+    switch (stage) {
+      case 'developer':
+        return 0;
+      case 'product':
+        return 1;
+      case 'version':
+        return 2;
+      case 'listing':
+        return 3;
+      default:
+        return -1;
+    }
+  };
+
+  const next = () => {
+    switch (stage) {
+      case 'developer':
+        loadProducts();
+        break;
+      case 'product':
+        loadFamily();
+        loadVersions();
+        break;
+      case 'version':
+        setStage('listing');
+        break;
+      default:
+        break;
+    }
+  };
+
+  const previous = () => {
+    switch (stage) {
+      case 'product':
+        setStaged(() => ({
+          ...pending.developer,
+        }));
+        setStage('developer');
+        break;
+      case 'version':
+        setStaged(() => ({
+          ...pending.product,
+        }));
+        setStage('product');
+        break;
+      case 'listing':
+        setStaged(() => ({
+          ...pending.version,
+        }));
+        setStage('version');
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleActionDispatch = (action) => {
+    switch (action) {
+      case 'cancel':
+        console.log('cancel / navigate away');
+        break;
+      case 'confirm':
+        console.log('confirm listing');
+        break;
+      case 'reject':
+        console.log('reject listing');
+        break;
+      case 'toggleWarningAcknowledgement':
+        setAcknowledgeWarnings((prev) => !prev);
+        break;
+      default:
+        console.error(`No action found for ${action} coming from action bar`);
+    }
+  };
+
+  const handleDeveloperDispatch = (action, data) => {
+    switch (action) {
+      case 'select':
+        setPending((prev) => ({
+          ...prev,
+          developer: data,
+          chplProductNumber: replaceDeveloperCode(pending.chplProductNumber, data.developerCode),
+        }));
+        break;
+      case 'edit':
+        setPending((prev) => ({
+          ...prev,
+          developer: data,
+          chplProductNumber: replaceDeveloperCode(pending.chplProductNumber, 'XXXX'),
+        }));
+        break;
+          // no default
+    }
+  };
+
+  const handleProgressDispatch = (action) => {
+    switch (action) {
+      case 'next': next();
+        break;
+      case 'previous': previous();
+        break;
+        // no default
+    }
+  };
+
+  if (!uploaded || isLoading || !isSuccess) { return <CircularProgress />; }
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="lg">
       <div className={classes.container}>
-        Header
+        Inspecting Listing
+        { pending.chplProductNumber }
         <ErrorBoundary fallback={<div>Progress Bar went wrong</div>}>
-          <ChplConfirmProgress />
+          <ChplConfirmProgress
+            value={getProgress(stage)}
+            canNext={canAct('next')}
+            canPrevious={canAct('previous')}
+            dispatch={handleProgressDispatch}
+          />
         </ErrorBoundary>
-        <ErrorBoundary fallback={<div>Developer went wrong</div>}>
-          <ChplConfirmDeveloper />
-        </ErrorBoundary>
-        <ErrorBoundary fallback={<div>Product went wrong</div>}>
-          <ChplConfirmProduct />
-        </ErrorBoundary>
-        <ErrorBoundary fallback={<div>Version went wrong</div>}>
-          <ChplConfirmVersion />
-        </ErrorBoundary>
-        <ErrorBoundary fallback={<div>Listing went wrong</div>}>
-          <ChplConfirmListing />
-        </ErrorBoundary>
+        { stage === 'developer' && staged
+          && (
+            <ErrorBoundary fallback={<div>Developer went wrong</div>}>
+              <ChplConfirmDeveloper
+                listing={pending}
+                developer={staged}
+                dispatch={handleDeveloperDispatch}
+              />
+            </ErrorBoundary>
+          )}
+        { stage === 'product'
+          && (
+            <ErrorBoundary fallback={<div>Product went wrong</div>}>
+              <ChplConfirmProduct />
+            </ErrorBoundary>
+          )}
+        { stage === 'version'
+          && (
+            <ErrorBoundary fallback={<div>Version went wrong</div>}>
+              <ChplConfirmVersion />
+            </ErrorBoundary>
+          )}
+        { stage === 'listing'
+          && (
+            <ErrorBoundary fallback={<div>Listing went wrong</div>}>
+              <ChplConfirmListing />
+            </ErrorBoundary>
+          )}
         <ErrorBoundary fallback={<div>Action Bar went wrong</div>}>
-          <ChplActionBar />
+          <ChplActionBar
+            canConfirm
+            canReject
+            isDisabled={!canAct('confirm')}
+            isProcessing={isSubmitting}
+            showWarningAcknowledgement={showAcknowledgement}
+            errors={errors}
+            warnings={warnings}
+            dispatch={handleActionDispatch}
+          />
         </ErrorBoundary>
       </div>
     </Container>
@@ -99,4 +264,5 @@ function ChplConfirm() {
 export default ChplConfirm;
 
 ChplConfirm.propTypes = {
+  id: oneOfType([number, string]).isRequired,
 };

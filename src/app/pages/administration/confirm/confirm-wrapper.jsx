@@ -1,13 +1,16 @@
 import React from 'react';
+import { number, oneOfType, string } from 'prop-types';
 
 import ChplConfirm from './confirm';
 
 import AppWrapper from 'app-wrapper';
 
-function ChplConfirmWrapper() {
+function ChplConfirmWrapper({ id }) {
   return (
     <AppWrapper>
-      <ChplConfirm />
+      <ChplConfirm
+        id={id}
+      />
     </AppWrapper>
   );
 }
@@ -15,4 +18,5 @@ function ChplConfirmWrapper() {
 export default ChplConfirmWrapper;
 
 ChplConfirmWrapper.propTypes = {
+  id: oneOfType([number, string]).isRequired,
 };
