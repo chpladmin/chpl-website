@@ -37,11 +37,11 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-   ...utilStyles,
+  ...utilStyles,
   actionContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '16px',
-    gridTemplateColumns: '1fr',
   },
   container: {
     maxHeight: '64vh',

@@ -7,7 +7,6 @@ import { palette } from 'themes';
 function ChplAnnouncementsFab() {
   const [expanded, setExpanded] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
-  const [error, setError] = useState(null);
 
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
 
@@ -63,9 +62,9 @@ function ChplAnnouncementsFab() {
             right: 0,
           }}
         >
-        {announcements.length}
-      </span>
-      <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
+          {announcements.length}
+        </span>
+        <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
       </button>
 
       {expanded && (
@@ -113,11 +112,7 @@ function ChplAnnouncementsFab() {
             </button>
           </div>
           <div role="main" style={{ flex: 1, overflowY: 'auto' }}>
-            {error ? (
-              <div style={{ textAlign: 'center', color: 'red', padding: '32px 16px' }}>
-                <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>Error: {error}</p>
-              </div>
-            ) : announcements.length === 0 ? (
+            {announcements.length === 0 ? (
               <div style={{ textAlign: 'center', color: '#999', padding: '32px 16px' }}>
                 <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>No current announcements</p>
               </div>

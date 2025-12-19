@@ -110,9 +110,9 @@ function ChplAnnouncementEdit(props) {
           helperText={formik.touched.text && formik.errors.text}
         />
       <Box display="flex" flexDirection="row" gridGap="16px" width={"100%"}>
-      <div className={classes.fullWidth}>
-        <ChplTextField
-          id="start-date-time"
+        <Box className={classes.fullWidth}>
+          <ChplTextField
+            id="start-date-time"
           name="startDateTime"
           label="Start Date"
           type="datetime-local"
@@ -123,11 +123,11 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.startDateTime && !!formik.errors.startDateTime}
           helperText={formik.touched.startDateTime && formik.errors.startDateTime}
         />
-        <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-      </div>
-      <div className={classes.fullWidth}>
-        <ChplTextField
-          id="end-date-time"
+          <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+        </Box>
+        <Box className={classes.fullWidth}>
+          <ChplTextField
+            id="end-date-time"
           name="endDateTime"
           label="End Date"
           type="datetime-local"
@@ -138,8 +138,8 @@ function ChplAnnouncementEdit(props) {
           error={formik.touched.endDateTime && !!formik.errors.endDateTime}
           helperText={formik.touched.endDateTime && formik.errors.endDateTime}
         />
-        <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-      </div>
+          <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+        </Box>
       </Box>
       <div>
         <FormControlLabel
