@@ -191,6 +191,13 @@ function ChplConfirm({ id }) {
     }
   };
 
+  const handleProductDispatch = (action, data) => {
+    setPending((prev) => ({
+      ...prev,
+      product: data,
+    }));
+  }
+
   const handleProgressDispatch = (action) => {
     switch (action) {
       case 'next': next();
@@ -229,7 +236,11 @@ function ChplConfirm({ id }) {
         { stage === 'product'
           && (
             <ErrorBoundary fallback={<div>Product went wrong</div>}>
-              <ChplConfirmProduct />
+              <ChplConfirmProduct
+                product={staged}
+                products={[]}
+                dispatch={handleProductDispatch}
+              />
             </ErrorBoundary>
           )}
         { stage === 'version'
