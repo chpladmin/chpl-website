@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { useFetchAnnouncements } from 'api/announcements';
+import { palette } from 'themes';
 
 function ChplAnnouncementsFab() {
   const [expanded, setExpanded] = useState(false);
@@ -11,13 +12,7 @@ function ChplAnnouncementsFab() {
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
 
   useEffect(() => {
-    if (isLoading) return;
-    if (!isSuccess) {
-      setError('Failed to load announcements');
-      setAnnouncements([]);
-      return;
-    }
-    setError(null);
+    if (isLoading || !isSuccess) { return; }
     setAnnouncements(data || []);
   }, [data, isLoading, isSuccess]);
 
@@ -41,7 +36,6 @@ function ChplAnnouncementsFab() {
 
   return (
     <>
-
       <button
         style={{
           position: 'sticky',
@@ -57,18 +51,18 @@ function ChplAnnouncementsFab() {
         onClick={handleToggle}
         aria-label="Show announcements"
       >
-      <span
-        style={{
-        backgroundColor: '#156dac',
-        color: 'white',
-        borderRadius: '50%',
-        padding: '4px 8px',
-        fontSize: '0.75rem',
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        }}
-      >
+        <span
+          style={{
+            backgroundColor: '#156dac',
+            color: 'white',
+            borderRadius: '50%',
+            padding: '4px 8px',
+            fontSize: '0.75rem',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+        >
         {announcements.length}
       </span>
       <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />

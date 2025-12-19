@@ -14,15 +14,14 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { jsJoda } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
-const useStyles = makeStyles(() => ({
-  fullWidth: {
-    width: '100%',
-  },
+const useStyles = makeStyles({
+  ...utilStyles,
   helperTextSpacing: {
     marginLeft: '14px',
   },
-}));
+});
 
 const validationSchema = yup.object({
   title: yup.string()
@@ -118,7 +117,6 @@ function ChplAnnouncementEdit(props) {
           label="Start Date"
           type="datetime-local"
           required
-          className={classes.fullWidth}
           value={formik.values.startDateTime}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -134,7 +132,6 @@ function ChplAnnouncementEdit(props) {
           label="End Date"
           type="datetime-local"
           required
-          className={classes.fullWidth}
           value={formik.values.endDateTime}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

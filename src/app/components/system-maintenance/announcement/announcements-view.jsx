@@ -37,14 +37,11 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  ...utilStyles,
+   ...utilStyles,
   actionContainer: {
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr',
-    },
   },
   container: {
     maxHeight: '64vh',
