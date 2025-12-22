@@ -91,10 +91,6 @@ function ChplConfirm({ id }) {
     }
   };
 
-  const loadProducts = () => { setStage('product'); };
-  const loadFamily = () => {};
-  const loadVersions = () => { setStage('version'); };
-
   const getProgress = () => {
     switch (stage) {
       case 'developer':
@@ -113,11 +109,10 @@ function ChplConfirm({ id }) {
   const next = () => {
     switch (stage) {
       case 'developer':
-        loadProducts();
+        setStage('product');
         break;
       case 'product':
-        loadFamily();
-        loadVersions();
+        setStage('version');
         break;
       case 'version':
         setStage('listing');
@@ -234,8 +229,8 @@ function ChplConfirm({ id }) {
           && (
             <ErrorBoundary fallback={<div>Developer went wrong</div>}>
               <ChplConfirmDeveloper
-                listing={pending}
                 developer={staged}
+                listing={pending}
                 dispatch={handleDeveloperDispatch}
               />
             </ErrorBoundary>
@@ -244,8 +239,8 @@ function ChplConfirm({ id }) {
           && (
             <ErrorBoundary fallback={<div>Product went wrong</div>}>
               <ChplConfirmProduct
-                developer={pending.developer}
                 product={staged}
+                developer={pending.developer}
                 dispatch={handleProductDispatch}
               />
             </ErrorBoundary>
@@ -263,7 +258,9 @@ function ChplConfirm({ id }) {
         { stage === 'listing'
           && (
             <ErrorBoundary fallback={<div>Listing went wrong</div>}>
-              <ChplConfirmListing />
+              <ChplConfirmListing
+                listing={pending}
+              />
             </ErrorBoundary>
           )}
         <ErrorBoundary fallback={<div>Action Bar went wrong</div>}>
