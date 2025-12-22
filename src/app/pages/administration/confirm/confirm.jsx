@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
   CircularProgress,
   Container,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { ErrorBoundary } from 'react-error-boundary';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { number, oneOfType, string } from 'prop-types';
 
 import { useFetchPendingListing } from 'api/pending-listings';
@@ -19,8 +12,7 @@ import { ChplActionBar } from 'components/action-bar';
 import {
   ChplConfirmDeveloper, ChplConfirmProduct, ChplConfirmVersion, ChplConfirmListing, ChplConfirmProgress,
 } from 'components/listing/confirm';
-import ChplReport from 'components/surveillance/reporting/report';
-import { theme, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const replaceDeveloperCode = (chplProductNumber, code) => {
   const parts = chplProductNumber.split('.');
@@ -52,7 +44,7 @@ const useStyles = makeStyles({
 });
 
 function ChplConfirm({ id }) {
-  const { data, isLoading, isSuccess } = useFetchPendingListing({ id });
+  const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,16 +63,16 @@ function ChplConfirm({ id }) {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setUploaded(data);
-    setPending(data);
+    setUploaded(pendingListing);
+    setPending(pendingListing);
     /*
         if (this.pending.developer && !this.pending.developer.id) {
           this.pending.developer.id = '';
         }
         */
-    setErrors(data.errorMessages);
-    setWarnings(data.warningMessages);
-  }, [data, isLoading, isSuccess]);
+    setErrors(pendingListing.errorMessages);
+    setWarnings(pendingListing.warningMessages);
+  }, [pendingListing, isLoading, isSuccess]);
 
   const canAct = (action) => {
     switch (action) {
@@ -89,6 +81,7 @@ function ChplConfirm({ id }) {
       case 'previous': return stage !== 'developer';
         // no default
     }
+    return false;
   };
 
   const getProgress = () => {
@@ -191,14 +184,14 @@ function ChplConfirm({ id }) {
       ...prev,
       product: data,
     }));
-  }
+  };
 
   const handleVersionDispatch = (action, data) => {
     setPending((prev) => ({
       ...prev,
       version: data,
     }));
-  }
+  };
 
   const handleProgressDispatch = (action) => {
     switch (action) {
