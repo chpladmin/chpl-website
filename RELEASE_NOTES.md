@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.43.1
+_22 December 2025_
+
+### UI updates
+* Add "certification status" icons to search panel and chips
+
+### Bug Fixes
+* Handle certification event differences in Listing edit correctly
+
+---
+
 ## Version 13.43.0
 _8 December 2025_
 
