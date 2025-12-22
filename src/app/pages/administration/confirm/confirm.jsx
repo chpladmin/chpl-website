@@ -84,6 +84,14 @@ function ChplConfirm({ id }) {
     return false;
   };
 
+  const confirm = () => {
+    console.log('confirming');
+  };
+
+  const reject = () => {
+    console.log('rejecting');
+  };
+
   const getProgress = () => {
     switch (stage) {
       case 'developer':
@@ -146,10 +154,10 @@ function ChplConfirm({ id }) {
         console.log('cancel / navigate away');
         break;
       case 'confirm':
-        console.log('confirm listing');
+        confirm();
         break;
       case 'reject':
-        console.log('reject listing');
+        reject();
         break;
       case 'toggleWarningAcknowledgement':
         setAcknowledgeWarnings((prev) => !prev);
