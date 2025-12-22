@@ -119,7 +119,7 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    const selected = products.filter((p) => p.id === initialProduct.id)[0];
+    const selected = products.find((p) => p.id === initialProduct.id);
     if (selected) {
       setSelectedProduct(selected);
     }

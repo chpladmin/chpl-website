@@ -198,6 +198,13 @@ function ChplConfirm({ id }) {
     }));
   }
 
+  const handleVersionDispatch = (action, data) => {
+    setPending((prev) => ({
+      ...prev,
+      version: data,
+    }));
+  }
+
   const handleProgressDispatch = (action) => {
     switch (action) {
       case 'next': next();
@@ -246,7 +253,11 @@ function ChplConfirm({ id }) {
         { stage === 'version'
           && (
             <ErrorBoundary fallback={<div>Version went wrong</div>}>
-              <ChplConfirmVersion />
+              <ChplConfirmVersion
+                version={staged}
+                product={pending.product}
+                dispatch={handleVersionDispatch}
+              />
             </ErrorBoundary>
           )}
         { stage === 'listing'

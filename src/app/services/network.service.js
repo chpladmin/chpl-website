@@ -197,10 +197,12 @@ export default class NetworkService {
     return this.apiGET('/users');
   }
 
+  // delete ?
   getVersion(id) {
     return this.apiGET(`/versions/${id}`);
   }
 
+  // delete?
   getVersionsByProduct(productId) {
     return this.apiGET(`/versions?productId=${productId}`);
   }
