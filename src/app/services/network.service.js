@@ -109,6 +109,7 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}`);
   }
 
+  // delete
   getProductsByDeveloper(developerId) {
     return this.apiGET(`/products?developerId=${developerId}`);
   }
@@ -137,6 +138,7 @@ export default class NetworkService {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
   }
 
+  // delete?
   getSimpleProduct(id) {
     return this.apiGET(`/products/${id}`);
   }

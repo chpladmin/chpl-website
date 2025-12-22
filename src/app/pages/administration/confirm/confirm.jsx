@@ -237,8 +237,8 @@ function ChplConfirm({ id }) {
           && (
             <ErrorBoundary fallback={<div>Product went wrong</div>}>
               <ChplConfirmProduct
+                developer={pending.developer}
                 product={staged}
-                products={[]}
                 dispatch={handleProductDispatch}
               />
             </ErrorBoundary>
