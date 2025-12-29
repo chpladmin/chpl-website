@@ -8,14 +8,7 @@ import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper'
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
-import {
-  ChplConfirmDeveloperWrapper,
-  ChplConfirmListingWrapper,
-  ChplConfirmListingsWrapper,
-  ChplConfirmProduct,
-  ChplConfirmProgress,
-  ChplConfirmVersion,
-} from './listing/confirm';
+import { ChplConfirmListingsWrapper } from './listing/confirm';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplRealWorldTestingViewWrapper from './real-world-testing/real-world-testing-view-wrapper';
@@ -52,12 +45,7 @@ angular
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
   .component('chplCmsDisplayWrapperBridge', reactToAngularComponent(ChplCmsDisplayWrapper))
   .component('chplCompareDisplayWrapperBridge', reactToAngularComponent(ChplCompareDisplayWrapper))
-  .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
-  .component('chplConfirmListingBridge', reactToAngularComponent(ChplConfirmListingWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
-  .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
-  .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
-  .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
