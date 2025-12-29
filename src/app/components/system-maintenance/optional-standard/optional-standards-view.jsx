@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards }) {
+function ChplOptionalStandardsView(props) {
   const [optionalStandards, setOptionalStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('displayValue');
@@ -40,7 +40,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
   const classes = useStyles();
 
   useEffect(() => {
-    setOptionalStandards(initialOptionalStandards
+    setOptionalStandards(props.optionalStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.displayValue,
@@ -55,7 +55,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           .join(', '),
       }))
       .sort(sortComparator('displayValue')));
-  }, [initialOptionalStandards, filterContext.filters, filterContext.searchTerm]);
+  }, [props.optionalStandards, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -81,7 +81,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           </Typography>
         </Box>
       </div>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Optional Standards table"
         >
@@ -90,7 +90,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { optionalStandards

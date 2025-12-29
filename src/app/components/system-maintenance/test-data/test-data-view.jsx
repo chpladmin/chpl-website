@@ -26,12 +26,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestDataView({ testData: initialTestData }) {
+function ChplTestDataView(props) {
   const [testData, setTestData] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setTestData(initialTestData
+    setTestData(props.testData
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -40,17 +40,17 @@ function ChplTestDataView({ testData: initialTestData }) {
           .join(', '),
       }))
       .sort(sortComparator('name')));
-  }, [initialTestData]);
+  }, [props.testData]);
 
   return (
     <>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Test Data table"
         >
           <ChplSortableHeaders
             headers={headers}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { testData

@@ -70,7 +70,7 @@ function ChplAccessibilityStandardsView(props) {
           </Button>
         </div>
       )}
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Accessibility Standard table"
         >
@@ -79,7 +79,7 @@ function ChplAccessibilityStandardsView(props) {
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { accessibilityStandards

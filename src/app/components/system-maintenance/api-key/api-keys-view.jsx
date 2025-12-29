@@ -39,15 +39,16 @@ const useStyles = makeStyles({
   }
 });
 
-function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
+function ChplApiKeysView(props) {
+  const { dispatch } = props;
   const [apiKeys, setApiKeys] = useState([]);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('lastUsedDate', true);
   const classes = useStyles();
 
   useEffect(() => {
-    setApiKeys(initialApiKeys.sort(sortComparator('lastUsedDate')));
-  }, [initialApiKeys]);
+    setApiKeys(props.apiKeys.sort(sortComparator('lastUsedDate')));
+  }, [props.apiKeys]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -66,14 +67,14 @@ function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
         />
       </div>
       <Paper className={classes.container}>
-        <TableContainer>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
           <Table aria-label="API Keys table">
             <ChplSortableHeaders
               headers={headers}
               onTableSort={handleTableSort}
               orderBy={orderBy}
               order={order}
-              stickyHeader
+              stickyHeader={props.stickyHeader}
             />
             <TableBody>
               {apiKeys.map((key) => (

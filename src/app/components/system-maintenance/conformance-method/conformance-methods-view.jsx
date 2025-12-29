@@ -36,7 +36,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplConformanceMethodsView({ conformanceMethods: initialConformanceMethods, dispatch }) {
+function ChplConformanceMethodsView(props) {
+  const { dispatch } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [conformanceMethods, setConformanceMethods] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -44,7 +45,7 @@ function ChplConformanceMethodsView({ conformanceMethods: initialConformanceMeth
   const classes = useStyles();
 
   useEffect(() => {
-    setConformanceMethods(initialConformanceMethods
+    setConformanceMethods(props.conformanceMethods
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -53,7 +54,7 @@ function ChplConformanceMethodsView({ conformanceMethods: initialConformanceMeth
           .join(', '),
       }))
       .sort(sortComparator('name')));
-  }, [initialConformanceMethods]);
+  }, [props.conformanceMethods]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -82,7 +83,7 @@ function ChplConformanceMethodsView({ conformanceMethods: initialConformanceMeth
           </Button>
         )}
       </div>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Conformance Method table"
         >
@@ -91,7 +92,7 @@ function ChplConformanceMethodsView({ conformanceMethods: initialConformanceMeth
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { conformanceMethods

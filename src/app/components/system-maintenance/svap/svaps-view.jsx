@@ -44,7 +44,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
+function ChplSvapsView(props) {
+  const { dispatch } = props;
   const [svaps, setSvaps] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -53,7 +54,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setSvaps(initialSvaps
+    setSvaps(props.svaps
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.regulatoryTextCitation,
@@ -67,7 +68,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, [initialSvaps, filterContext.filters, filterContext.searchTerm]);
+  }, [props.svaps, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -110,7 +111,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             )}
           </div>
       </Box>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="SVAP table"
         >
@@ -119,7 +120,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { svaps

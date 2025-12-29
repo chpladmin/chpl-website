@@ -31,21 +31,21 @@ const sortVersion = (a, b) => {
   return aNum - bNum;
 };
 
-function ChplCqmsView({ cqms: initialCqms }) {
+function ChplCqmsView(props) {
   const [cqms, setCqms] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setCqms(initialCqms
+    setCqms(props.cqms
       .map((c) => ({
         ...c,
         display: c.cmsId ? c.cmsId : `NQF-${c.nqfNumber}`,
         versionDisplay: c.versions.sort(sortVersion).join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialCqms]);
+  }, [props.cqms]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -57,7 +57,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
 
   return (
     <>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="CQM table"
         >
@@ -66,7 +66,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { cqms

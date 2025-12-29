@@ -37,13 +37,14 @@ const useStyles = makeStyles({
   }
 });
 
-function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
+function ChplCodeSetsView(props) {
+  const { dispatch } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [codeSets, setCodeSets] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setCodeSets(initialCodeSets
+    setCodeSets(props.codeSets
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -51,7 +52,7 @@ function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       })));
-  }, [initialCodeSets]);
+  }, [props.codeSets]);
 
   return (
     <>
@@ -72,13 +73,13 @@ function ChplCodeSetsView({ codeSets: initialCodeSets, dispatch }) {
           </Button>
         )}
       </div>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Code Set table"
         >
           <ChplSortableHeaders
             headers={headers}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { codeSets

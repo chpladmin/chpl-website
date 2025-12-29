@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplG1g2View({ g1g2: initialG1g2 }) {
+function ChplG1g2View(props) {
   const [g1g2, setG1g2] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('abbreviation');
@@ -41,7 +41,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setG1g2(initialG1g2
+    setG1g2(props.g1g2
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.abbreviation,
@@ -58,7 +58,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           .join(', '),
       }))
       .sort(sortComparator('abbreviation')));
-  }, [initialG1g2, filterContext.filters, filterContext.searchTerm]);
+  }, [props.g1g2, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -84,7 +84,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           </Typography>
         </Box>
       </div>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="G1/G2 Measure table"
         >
@@ -93,7 +93,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { g1g2

@@ -51,7 +51,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplStandardsView({ dispatch, standards: initialStandards }) {
+function ChplStandardsView(props) {
+  const { dispatch } = props;
   const [standards, setStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -60,7 +61,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setStandards(initialStandards
+    setStandards(props.standards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.value,
@@ -76,7 +77,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialStandards, filterContext.filters, filterContext.searchTerm]);
+  }, [props.standards, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -119,7 +120,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           )}
         </div>
       </Box>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Standards table"
         >
@@ -128,7 +129,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { standards

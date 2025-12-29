@@ -67,7 +67,7 @@ const getDisplay = (key) => {
   }
 };
 
-function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
+function ChplCertificationCriteriaView(props) {
   const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
@@ -75,7 +75,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
   const classes = useStyles();
 
   useEffect(() => {
-    setCertificationCriteria(initialCertificationCriteria
+    setCertificationCriteria(props.certificationCriteria
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.number,
@@ -92,7 +92,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .join('; '),
       }))
       .sort(sortComparator('value')));
-  }, [initialCertificationCriteria, filterContext.filters, filterContext.searchTerm]);
+  }, [props.certificationCriteria, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -120,7 +120,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           </Typography>
         </Box>
       </div>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Certification Criteria table"
         >
@@ -129,7 +129,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { certificationCriteria

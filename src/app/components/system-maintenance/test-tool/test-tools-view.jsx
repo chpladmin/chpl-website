@@ -39,7 +39,8 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
+function ChplTestToolsView(props) {
+  const { dispatch } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [testTools, setTestTools] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -48,7 +49,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setTestTools(initialTestTools
+    setTestTools(props.testTools
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.value,
@@ -61,7 +62,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialTestTools, filterContext.filters, filterContext.searchTerm]);
+  }, [props.testTools, filterContext.filters, filterContext.searchTerm]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -98,7 +99,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
         </Button>
         )}
       </div>
-      <TableContainer className={classes.container} component={Paper}>
+      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table
           aria-label="Test Tools table"
         >
@@ -107,7 +108,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
             onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            stickyHeader={props.stickyHeader}
           />
           <TableBody>
             { testTools
