@@ -17,6 +17,7 @@ import {
   ChplConfirmProgress,
   ChplConfirmVersion,
 } from 'components/listing/confirm';
+import { getAngularService } from 'services/angular-react-helper';
 import { utilStyles } from 'themes';
 
 const replaceDeveloperCode = (chplProductNumber, code) => {
@@ -49,6 +50,7 @@ const useStyles = makeStyles({
 });
 
 function ChplConfirm({ id }) {
+  const $state = getAngularService('$state');
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
   const { mutate: rejectListing } = useRejectPendingListing();
   const { enqueueSnackbar } = useSnackbar();
@@ -91,6 +93,10 @@ function ChplConfirm({ id }) {
         // no default
     }
     return false;
+  };
+
+  const cancel = () => {
+    $state.go('^', {}, { reload: true });
   };
 
   const confirm = () => {
@@ -185,7 +191,7 @@ function ChplConfirm({ id }) {
   const handleActionDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        console.log('cancel / navigate away');
+        cancel();
         break;
       case 'confirm':
         confirm();
