@@ -2,6 +2,19 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
+const useConfirmPendingListing = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post(`/listings/pending/${data.listing.id}`, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['listings/pending']);
+    },
+    onError: () => {
+      queryClient.invalidateQueries(['listings/pending']);
+    },
+  });
+};
+
 const useFetchPendingListing = ({ id }) => {
   const axios = useAxios();
   return useQuery(['listings/pending', id], async () => {
@@ -50,6 +63,7 @@ const useRejectPendingListing = () => {
 };
 
 export {
+  useConfirmPendingListing,
   useFetchPendingListing,
   useFetchPendingListings,
   useFetchUploadedDeveloper,

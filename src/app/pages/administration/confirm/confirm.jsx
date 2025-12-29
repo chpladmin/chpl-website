@@ -8,7 +8,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { useFetchPendingListing, useRejectPendingListing } from 'api/pending-listings';
+import { useConfirmPendingListing, useFetchPendingListing, useRejectPendingListing } from 'api/pending-listings';
 import { ChplActionBar } from 'components/action-bar';
 import {
   ChplConfirmDeveloper,
@@ -52,6 +52,7 @@ const useStyles = makeStyles({
 function ChplConfirm({ id }) {
   const $state = getAngularService('$state');
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
+  const { mutate: confirmListing } = useConfirmPendingListing();
   const { mutate: rejectListing } = useRejectPendingListing();
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
@@ -77,10 +78,10 @@ function ChplConfirm({ id }) {
     setUploaded(pendingListing);
     setPending(pendingListing);
     /*
-        if (this.pending.developer && !this.pending.developer.id) {
-          this.pending.developer.id = '';
-        }
-        */
+      if (this.pending.developer && !this.pending.developer.id) {
+      this.pending.developer.id = '';
+      }
+    */
     setErrors(pendingListing.errorMessages);
     setWarnings(pendingListing.warningMessages);
   }, [pendingListing, isLoading, isSuccess]);
@@ -100,7 +101,49 @@ function ChplConfirm({ id }) {
   };
 
   const confirm = () => {
-    console.log('confirming');
+    setIsSubmitting(true);
+    confirmListing({
+      listing: pending,
+      acknowledgeWarnings,
+    }, {
+      onSuccess: (result) => {
+        enqueueSnackbar(`The Listing has been confirmed. Details are available at <a href="#/listing/${result.id}">${result.chplProductNumber}</a>`, {
+          variant: 'success',
+        });
+        setIsSubmitting(false);
+        cancel();
+      },
+      onError: (error) => {
+        if (error.response.data.contact) {
+          enqueueSnackbar('The Listing was already resolved', {
+            variant: 'error',
+          });
+          setIsSubmitting(false);
+          cancel();
+        } else if (error.response.data?.error) {
+          enqueueSnackbar(error.response.data.error, {
+            variant: 'error',
+          });
+          setIsSubmitting(false);
+          cancel();
+        } else if (error.response.data.errorMessages?.length > 0 || error.response.data.warningMessages?.length > 0) {
+          setErrors(error.response.data.errorMessages);
+          setWarnings(error.response.data.warningMessages);
+          if (error.response.data.warningMessages?.length > 0) {
+            setShowAcknowledgement(true);
+          } else {
+            setShowAcknowledgement(false);
+            setAcknowledgeWarnings(false);
+          }
+          setIsSubmitting(false);
+        } else {
+          enqueueSnackbar('An error occurred', {
+            variant: 'error',
+          });
+          setIsSubmitting(false);
+        }
+      },
+    });
   };
 
   const reject = () => {
@@ -113,11 +156,11 @@ function ChplConfirm({ id }) {
       },
       onError: (error) => {
         let message = 'An unexpected error occurred';
-        if (error?.data?.errorMessages) {
-          message = error.data.errorMessages.join(', ');
+        if (error.response?.data?.errorMessages) {
+          message = error.response.data.errorMessages.join(', ');
         }
-        if (error?.data?.error) {
-          message = error.data.error;
+        if (error.response?.data?.error) {
+          message = error.response.data.error;
         }
         enqueueSnackbar(message, {
           variant: 'error',
@@ -223,7 +266,7 @@ function ChplConfirm({ id }) {
           chplProductNumber: replaceDeveloperCode(pending.chplProductNumber, 'XXXX'),
         }));
         break;
-          // no default
+        // no default
     }
   };
 

@@ -15,6 +15,7 @@ export default class NetworkService {
     return this.apiPOST('/key/confirm', hash);
   }
 
+  // delete?
   confirmListing(request) {
     return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
   }
