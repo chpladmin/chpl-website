@@ -6,11 +6,16 @@ import {
 } from '@material-ui/core';
 import { ErrorBoundary } from 'react-error-boundary';
 import { number, oneOfType, string } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
-import { useFetchPendingListing } from 'api/pending-listings';
+import { useFetchPendingListing, useRejectPendingListing } from 'api/pending-listings';
 import { ChplActionBar } from 'components/action-bar';
 import {
-  ChplConfirmDeveloper, ChplConfirmProduct, ChplConfirmVersion, ChplConfirmListing, ChplConfirmProgress,
+  ChplConfirmDeveloper,
+  ChplConfirmListing,
+  ChplConfirmProduct,
+  ChplConfirmProgress,
+  ChplConfirmVersion,
 } from 'components/listing/confirm';
 import { utilStyles } from 'themes';
 
@@ -45,6 +50,8 @@ const useStyles = makeStyles({
 
 function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
+  const { mutate: rejectListing } = useRejectPendingListing();
+  const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,7 +66,7 @@ function ChplConfirm({ id }) {
   useEffect(() => {
     if (!uploaded) { return; }
     setStaged(() => ({
-      ...uploaded.developer
+      ...uploaded.developer,
     }));
   }, [uploaded]);
 
@@ -91,7 +98,26 @@ function ChplConfirm({ id }) {
   };
 
   const reject = () => {
-    console.log('rejecting');
+    rejectListing(id, {
+      onSuccess: () => {
+        enqueueSnackbar('The pending Listing has been removed', {
+          variant: 'error',
+        });
+        cancel();
+      },
+      onError: (error) => {
+        let message = 'An unexpected error occurred';
+        if (error?.data?.errorMessages) {
+          message = error.data.errorMessages.join(', ');
+        }
+        if (error?.data?.error) {
+          message = error.data.error;
+        }
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
   };
 
   const getProgress = () => {

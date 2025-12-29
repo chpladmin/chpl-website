@@ -215,6 +215,7 @@ export default class NetworkService {
     return this.apiPOST('/auth/logout', logoutRequest);
   }
 
+  // delete?
   rejectPendingListing(id) {
     return this.apiDELETE(`/listings/pending/${id}`);
   }
