@@ -15,11 +15,6 @@ export default class NetworkService {
     return this.apiPOST('/key/confirm', hash);
   }
 
-  // delete?
-  confirmListing(request) {
-    return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
-  }
-
   confirmUser(userObject) {
     return this.apiPOST('/users/confirm', userObject);
   }
@@ -110,11 +105,6 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}`);
   }
 
-  // delete
-  getProductsByDeveloper(developerId) {
-    return this.apiGET(`/products?developerId=${developerId}`);
-  }
-
   getQuarterlySurveillanceQuarters() {
     return this.apiGET('/data/quarters');
   }
@@ -137,11 +127,6 @@ export default class NetworkService {
 
   getReportMetadata(reportKey) {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
-  }
-
-  // delete?
-  getSimpleProduct(id) {
-    return this.apiGET(`/products/${id}`);
   }
 
   getSurveillanceActivityReport(range) {
@@ -198,27 +183,12 @@ export default class NetworkService {
     return this.apiGET('/users');
   }
 
-  // delete ?
-  getVersion(id) {
-    return this.apiGET(`/versions/${id}`);
-  }
-
-  // delete?
-  getVersionsByProduct(productId) {
-    return this.apiGET(`/versions?productId=${productId}`);
-  }
-
   inviteUser(invitationObject) {
     return this.apiPOST('/users/invitation', invitationObject);
   }
 
   logout(logoutRequest) {
     return this.apiPOST('/auth/logout', logoutRequest);
-  }
-
-  // delete?
-  rejectPendingListing(id) {
-    return this.apiDELETE(`/listings/pending/${id}`);
   }
 
   requestApiKey(apiKeyRequest) {
