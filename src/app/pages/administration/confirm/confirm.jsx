@@ -4,7 +4,6 @@ import {
   Container,
   makeStyles,
 } from '@material-ui/core';
-import { ErrorBoundary } from 'react-error-boundary';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -301,64 +300,52 @@ function ChplConfirm({ id }) {
       <div className={classes.container}>
         Inspecting Listing
         { pending.chplProductNumber }
-        <ErrorBoundary fallback={<div>Progress Bar went wrong</div>}>
-          <ChplConfirmProgress
-            value={getProgress(stage)}
-            canNext={canAct('next')}
-            canPrevious={canAct('previous')}
-            dispatch={handleProgressDispatch}
-          />
-        </ErrorBoundary>
+        <ChplConfirmProgress
+          value={getProgress(stage)}
+          canNext={canAct('next')}
+          canPrevious={canAct('previous')}
+          dispatch={handleProgressDispatch}
+        />
         { stage === 'developer' && staged
           && (
-            <ErrorBoundary fallback={<div>Developer went wrong</div>}>
-              <ChplConfirmDeveloper
-                developer={staged}
-                listing={pending}
-                dispatch={handleDeveloperDispatch}
-              />
-            </ErrorBoundary>
+            <ChplConfirmDeveloper
+              developer={staged}
+              listing={pending}
+              dispatch={handleDeveloperDispatch}
+            />
           )}
         { stage === 'product'
           && (
-            <ErrorBoundary fallback={<div>Product went wrong</div>}>
-              <ChplConfirmProduct
-                product={staged}
-                developer={pending.developer}
-                dispatch={handleProductDispatch}
-              />
-            </ErrorBoundary>
+            <ChplConfirmProduct
+              product={staged}
+              developer={pending.developer}
+              dispatch={handleProductDispatch}
+            />
           )}
         { stage === 'version'
           && (
-            <ErrorBoundary fallback={<div>Version went wrong</div>}>
-              <ChplConfirmVersion
-                version={staged}
-                product={pending.product}
-                dispatch={handleVersionDispatch}
-              />
-            </ErrorBoundary>
+            <ChplConfirmVersion
+              version={staged}
+              product={pending.product}
+              dispatch={handleVersionDispatch}
+            />
           )}
         { stage === 'listing'
           && (
-            <ErrorBoundary fallback={<div>Listing went wrong</div>}>
-              <ChplConfirmListing
-                listing={pending}
-              />
-            </ErrorBoundary>
+            <ChplConfirmListing
+              listing={pending}
+            />
           )}
-        <ErrorBoundary fallback={<div>Action Bar went wrong</div>}>
-          <ChplActionBar
-            canConfirm
-            canReject
-            isDisabled={!canAct('confirm')}
-            isProcessing={isSubmitting}
-            showWarningAcknowledgement={showAcknowledgement}
-            errors={errors}
-            warnings={warnings}
-            dispatch={handleActionDispatch}
-          />
-        </ErrorBoundary>
+        <ChplActionBar
+          canConfirm
+          canReject
+          isDisabled={!canAct('confirm')}
+          isProcessing={isSubmitting}
+          showWarningAcknowledgement={showAcknowledgement}
+          errors={errors}
+          warnings={warnings}
+          dispatch={handleActionDispatch}
+        />
       </div>
     </Container>
   );
