@@ -58,7 +58,9 @@ function ChplConfirm({ id }) {
 
   useEffect(() => {
     if (!uploaded) { return; }
-    setStaged(uploaded.developer);
+    setStaged(() => ({
+      ...uploaded.developer
+    }));
   }, [uploaded]);
 
   useEffect(() => {
@@ -110,9 +112,15 @@ function ChplConfirm({ id }) {
   const next = () => {
     switch (stage) {
       case 'developer':
+        setStaged(() => ({
+          ...pending.product,
+        }));
         setStage('product');
         break;
       case 'product':
+        setStaged(() => ({
+          ...pending.version,
+        }));
         setStage('version');
         break;
       case 'version':
