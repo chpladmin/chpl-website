@@ -76,11 +76,6 @@ function ChplConfirm({ id }) {
     if (isLoading || !isSuccess) { return; }
     setUploaded(pendingListing);
     setPending(pendingListing);
-    /*
-      if (this.pending.developer && !this.pending.developer.id) {
-      this.pending.developer.id = '';
-      }
-    */
     setErrors(pendingListing.errorMessages);
     setWarnings(pendingListing.warningMessages);
   }, [pendingListing, isLoading, isSuccess]);

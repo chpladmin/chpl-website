@@ -65,26 +65,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc-acb'],
   },
 }, {
-  name: 'administration.confirm.listings.listing-old',
-  url: '/{id}/confirm-old',
-  component: 'chplConfirmListing',
-  resolve: {
-    developers: (networkService) => {
-      'ngInject';
-
-      return networkService.getDevelopers().then((response) => response.developers);
-    },
-    listing: (networkService, $transition$) => {
-      'ngInject';
-
-      return networkService.getPendingListingById($transition$.params().id);
-    },
-  },
-  data: {
-    title: 'CHPL Administration - Confirm Listing',
-    roles: ['chpl-admin', 'chpl-onc-acb'],
-  },
-}, {
   name: 'administration.reports',
   url: '/reports',
   component: 'chplReportsWrapperBridge',
