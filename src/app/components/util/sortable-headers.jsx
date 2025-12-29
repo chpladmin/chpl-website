@@ -35,19 +35,24 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSortableHeaders(props) {
-  const { headers } = props;
+function ChplSortableHeaders({
+  headers,
+  onTableSort = () => {},
+  order: initialOrder = 'asc',
+  orderBy: initialOrderBy = '',
+  stickyHeader = false,
+}) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const classes = useStyles();
 
   useEffect(() => {
-    setOrder(props.order);
-  }, [props.order]); // eslint-disable-line react/destructuring-assignment
+    setOrder(initialOrder);
+  }, [initialOrder]);
 
   useEffect(() => {
-    setOrderBy(props.orderBy);
-  }, [props.orderBy]); // eslint-disable-line react/destructuring-assignment
+    setOrderBy(initialOrderBy);
+  }, [initialOrderBy]);
 
   const createSortHandler = (cell) => (event) => {
     const { property, reverseDefault } = cell;
@@ -57,7 +62,7 @@ function ChplSortableHeaders(props) {
     } else {
       direction = reverseDefault ? 'desc' : 'asc';
     }
-    props.onTableSort(event, property, direction);
+    onTableSort(event, property, direction);
   };
 
   return (
@@ -68,7 +73,7 @@ function ChplSortableHeaders(props) {
             key={cell.property || cell.text}
             align="left"
             sortDirection={orderBy === cell.property ? order : false}
-            className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
+            className={(index === 0 && stickyHeader) ? classes.stickyColumn : undefined}
           >
             { cell.sortable
               ? (
@@ -115,13 +120,6 @@ ChplSortableHeaders.propTypes = {
   order: oneOf(['asc', 'desc']),
   orderBy: string,
   stickyHeader: bool,
-};
-
-ChplSortableHeaders.defaultProps = {
-  onTableSort: () => {},
-  order: 'asc',
-  orderBy: '',
-  stickyHeader: false,
 };
 
 export { ChplSortableHeaders, sortComparator };

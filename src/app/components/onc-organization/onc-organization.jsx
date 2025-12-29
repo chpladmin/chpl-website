@@ -12,7 +12,7 @@ function ChplOncOrganization({
   dispatch,
   organization: initialOrg,
   orgType,
-  isCreating,
+  isCreating = false,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -82,8 +82,4 @@ ChplOncOrganization.propTypes = {
   organization: acbPropType.isRequired,
   orgType: string.isRequired,
   isCreating: bool,
-};
-
-ChplOncOrganization.defaultProps = {
-  isCreating: false,
 };

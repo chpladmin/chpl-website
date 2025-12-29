@@ -16,13 +16,17 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplLoginPage(props) {
+function ChplLoginPage({
+  returnTo = {
+    state: () => 'search',
+    params: () => {},
+    options: () => {},
+  },
+}) {
   const $state = getAngularService('$state');
-  /* eslint-disable react/destructuring-assignment */
-  const state = props.returnTo.state();
-  const params = props.returnTo.params();
-  const options = { ...props.returnTo.options(), reload: true };
-  /* eslint-enable react/destructuring-assignment */
+  const state = returnTo.state();
+  const params = returnTo.params();
+  const options = { ...returnTo.options(), reload: true };
   const classes = useStyles();
 
   const handleLogin = (action) => {
@@ -50,12 +54,4 @@ ChplLoginPage.propTypes = {
     params: func.isRequired,
     options: func.isRequired,
   }),
-};
-
-ChplLoginPage.defaultProps = {
-  returnTo: {
-    state: () => 'search',
-    params: () => {},
-    options: () => {},
-  },
 };

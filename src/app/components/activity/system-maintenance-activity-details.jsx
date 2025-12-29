@@ -53,7 +53,7 @@ const getDescription = (activity) => {
   return action;
 };
 
-function ChplSystemMaintenanceActivityDetails({ activity, interpret, last }) {
+function ChplSystemMaintenanceActivityDetails({ activity, interpret = compareSystemMaintenance, last }) {
   const [details, setDetails] = useState([]);
   const classes = useStyles();
 
@@ -104,8 +104,4 @@ ChplSystemMaintenanceActivityDetails.propTypes = {
   activity: object.isRequired,
   interpret: func,
   last: bool.isRequired,
-};
-
-ChplSystemMaintenanceActivityDetails.defaultProps = {
-  interpret: compareSystemMaintenance,
 };

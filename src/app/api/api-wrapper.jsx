@@ -12,7 +12,7 @@ import { AxiosProvider } from './axios';
 
 const queryClient = new QueryClient();
 
-function ApiWrapper({ children, showQueryTools }) {
+function ApiWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
     <AxiosProvider>
       <QueryClientProvider client={queryClient}>
@@ -31,8 +31,4 @@ export default ApiWrapper;
 ApiWrapper.propTypes = {
   children: element.isRequired,
   showQueryTools: bool,
-};
-
-ApiWrapper.defaultProps = {
-  showQueryTools: DEVELOPER_MODE,
 };

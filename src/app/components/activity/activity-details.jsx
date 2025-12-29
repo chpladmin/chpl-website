@@ -48,7 +48,7 @@ const getDescription = (activity, title) => {
 };
 
 function ChplActivityDetails({
-  activity, interpret, last, title,
+  activity, interpret, last, title = undefined,
 }) {
   const [details, setDetails] = useState([]);
   const classes = useStyles();
@@ -109,8 +109,4 @@ ChplActivityDetails.propTypes = {
   interpret: func.isRequired,
   last: bool.isRequired,
   title: string,
-};
-
-ChplActivityDetails.defaultProps = {
-  title: undefined,
 };

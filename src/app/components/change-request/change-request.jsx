@@ -206,7 +206,7 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
   }
 };
 
-function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch }) {
+function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -736,8 +736,4 @@ ChplChangeRequest.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
   showBreadcrumbs: bool,
-};
-
-ChplChangeRequest.defaultProps = {
-  showBreadcrumbs: true,
 };

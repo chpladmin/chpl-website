@@ -45,13 +45,13 @@ const useStyles = makeStyles({
 
 function ChplCriteria(props) {
   const {
-    canEdit,
-    hasIcs,
-    isConfirming,
+    canEdit = false,
+    hasIcs = false,
+    isConfirming = false,
     listing,
     resources,
-    onSave,
-    viewAll,
+    onSave = () => {},
+    viewAll = false,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
@@ -175,13 +175,4 @@ ChplCriteria.propTypes = {
   onSave: func,
   resources: resourceDefinition,
   viewAll: bool,
-};
-
-ChplCriteria.defaultProps = {
-  canEdit: false,
-  hasIcs: false,
-  isConfirming: false,
-  onSave: () => {},
-  resources: {},
-  viewAll: false,
 };

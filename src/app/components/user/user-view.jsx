@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUserView({ user, dispatch }) {
+function ChplUserView({ user, dispatch = () => {} }) {
   const classes = useStyles();
 
   const edit = () => {
@@ -94,8 +94,4 @@ export default ChplUserView;
 ChplUserView.propTypes = {
   user: userPropType.isRequired,
   dispatch: func,
-};
-
-ChplUserView.defaultProps = {
-  dispatch: () => {},
 };

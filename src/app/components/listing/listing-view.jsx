@@ -117,7 +117,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingView({ isConfirming, listing: initialListing, dispatch }) {
+function ChplListingView({
+  isConfirming = false,
+  listing: initialListing,
+  dispatch = () => {},
+}) {
   const { analytics } = useAnalyticsContext();
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
@@ -420,9 +424,4 @@ ChplListingView.propTypes = {
   isConfirming: bool,
   listing: listingPropType.isRequired,
   dispatch: func,
-};
-
-ChplListingView.defaultProps = {
-  isConfirming: false,
-  dispatch: () => {},
 };

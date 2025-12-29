@@ -99,7 +99,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarnings }) {
+function ChplActionBarMessages({ errors: initialErrors = [], warnings: initialWarnings = [] }) {
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [open, setOpen] = useState(false);
@@ -251,9 +251,4 @@ export default ChplActionBarMessages;
 ChplActionBarMessages.propTypes = {
   errors: arrayOf(string),
   warnings: arrayOf(string),
-};
-
-ChplActionBarMessages.defaultProps = {
-  errors: [],
-  warnings: [],
 };

@@ -78,17 +78,24 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplActionBar(props) {
-  const {
-    canCancel,
-    canClose,
-    canConfirm,
-    canDelete,
-    canEdit,
-    canReject,
-    canSave,
-    canWithdraw,
-  } = props;
+function ChplActionBar({
+  errors: initialErrors = [],
+  warnings: initialWarnings = [],
+  canCancel = true,
+  canClose = false,
+  canConfirm = false,
+  canDelete = false,
+  canEdit = false,
+  canReject = false,
+  canSave = true,
+  canWithdraw = false,
+  dispatch,
+  isDeleteDisabled: initialIsDeleteDisabled = false,
+  isDisabled: initialIsDisabled = false,
+  isProcessing: initialIsProcessing = false,
+  showErrorAcknowledgement: initialShowErrorAcknowledgement = false,
+  showWarningAcknowledgement: initialShowWarningAcknowledgement = false,
+}) {
   const { hasAnyRole } = useContext(UserContext);
   const [errorAcknowledged, setErrorAcknowledged] = useState(false);
   const [warningAcknowledged, setWarningAcknowledged] = useState(false);
@@ -105,36 +112,36 @@ function ChplActionBar(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setErrors(props.errors);
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(initialErrors);
+  }, [initialErrors]);
 
   useEffect(() => {
-    setWarnings(props.warnings);
-  }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
+    setWarnings(initialWarnings);
+  }, [initialWarnings]);
 
   useEffect(() => {
-    setShowErrorAcknowledgement(props.showErrorAcknowledgement && hasAnyRole(['chpl-admin', 'chpl-onc']));
-  }, [props.showErrorAcknowledgement, hasAnyRole]); // eslint-disable-line react/destructuring-assignment
+    setShowErrorAcknowledgement(initialShowErrorAcknowledgement && hasAnyRole(['chpl-admin', 'chpl-onc']));
+  }, [initialShowErrorAcknowledgement, hasAnyRole]);
 
   useEffect(() => {
-    setShowWarningAcknowledgement(props.showWarningAcknowledgement);
-  }, [props.showWarningAcknowledgement]); // eslint-disable-line react/destructuring-assignment
+    setShowWarningAcknowledgement(initialShowWarningAcknowledgement);
+  }, [initialShowWarningAcknowledgement]);
 
   useEffect(() => {
-    setIsDeleteDisabled(props.isDeleteDisabled);
-  }, [props.isDeleteDisabled]); // eslint-disable-line react/destructuring-assignment
+    setIsDeleteDisabled(initialIsDeleteDisabled);
+  }, [initialIsDeleteDisabled]);
 
   useEffect(() => {
-    setIsDisabled(props.isDisabled);
-  }, [props.isDisabled]); // eslint-disable-line react/destructuring-assignment
+    setIsDisabled(initialIsDisabled);
+  }, [initialIsDisabled]);
 
   useEffect(() => {
-    setIsProcessing(props.isProcessing);
-  }, [props.isProcessing]); // eslint-disable-line react/destructuring-assignment
+    setIsProcessing(initialIsProcessing);
+  }, [initialIsProcessing]);
 
   const act = (action) => {
-    if (props.dispatch) {
-      props.dispatch(action);
+    if (dispatch) {
+      dispatch(action);
     }
   };
 
@@ -388,22 +395,4 @@ ChplActionBar.propTypes = {
   isProcessing: bool,
   showErrorAcknowledgement: bool,
   showWarningAcknowledgement: bool,
-};
-
-ChplActionBar.defaultProps = {
-  errors: [],
-  warnings: [],
-  canCancel: true,
-  canClose: false,
-  canConfirm: false,
-  canDelete: false,
-  canEdit: false,
-  canReject: false,
-  canSave: true,
-  canWithdraw: false,
-  isDeleteDisabled: false,
-  isDisabled: false,
-  isProcessing: false,
-  showErrorAcknowledgement: false,
-  showWarningAcknowledgement: false,
 };

@@ -9,7 +9,11 @@ import { user as userPropType } from 'shared/prop-types';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 function ChplUsers({
-  dispatch, groupNames, users, organizationId, isLoading,
+  dispatch,
+  groupNames,
+  users,
+  organizationId = undefined,
+  isLoading = false,
 }) {
   const { analytics } = useAnalyticsContext();
 
@@ -41,9 +45,4 @@ ChplUsers.propTypes = {
   groupNames: arrayOf(string).isRequired,
   organizationId: number,
   isLoading: bool,
-};
-
-ChplUsers.defaultProps = {
-  organizationId: undefined,
-  isLoading: false,
 };

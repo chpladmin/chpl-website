@@ -43,8 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterSearchTerm(props) {
-  const { placeholder } = props;
+function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or CHPL ID...' }) {
   const [term, setTerm] = useState('');
   const classes = useStyles();
 
@@ -138,8 +137,4 @@ export default ChplFilterSearchTerm;
 
 ChplFilterSearchTerm.propTypes = {
   placeholder: string,
-};
-
-ChplFilterSearchTerm.defaultProps = {
-  placeholder: 'Search by Developer, Product, or CHPL ID...',
 };

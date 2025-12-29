@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCqms({ cqms, edition: initialEdition, viewAll: initialViewAll }) {
+function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialViewAll }) {
   const [viewAll, setViewAll] = useState(false);
   const [edition, setEdition] = useState(undefined);
   const classes = useStyles();
@@ -122,8 +122,4 @@ ChplCqms.propTypes = {
   cqms: arrayOf(cqmType).isRequired,
   edition: certificationEdition,
   viewAll: bool.isRequired,
-};
-
-ChplCqms.defaultProps = {
-  edition: undefined,
 };

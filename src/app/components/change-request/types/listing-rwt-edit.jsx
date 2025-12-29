@@ -44,7 +44,7 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtEdit({ isAccepting, title, value }) {
+function ChplChangeRequestListingRwtEdit({ isAccepting = false, title, value }) {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -142,8 +142,4 @@ ChplChangeRequestListingRwtEdit.propTypes = {
   isAccepting: bool,
   title: string.isRequired,
   value: string.isRequired,
-};
-
-ChplChangeRequestListingRwtEdit.defaultProps = {
-  isAccepting: false,
 };

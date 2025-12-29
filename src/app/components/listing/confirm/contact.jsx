@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplConfirmDeveloperContact({
-  contact, editing, formik, handleChange,
+  contact, editing, formik, handleChange = () => {},
 }) {
   const classes = useStyles();
 
@@ -131,8 +131,4 @@ ChplConfirmDeveloperContact.propTypes = {
   editing: bool.isRequired,
   formik: formikProp.isRequired,
   handleChange: func,
-};
-
-ChplConfirmDeveloperContact.defaultProps = {
-  handleChange: () => {},
 };
