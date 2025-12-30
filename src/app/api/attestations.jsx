@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -15,5 +15,6 @@ const useFetchAttestationForm = ({ period, developer }) => {
 };
 
 /* eslint-disable import/prefer-default-export */
-// remove eslint disable line when new api methods are added
-export { useFetchAttestationForm };
+export {
+  useFetchAttestationForm,
+};
