@@ -25,6 +25,13 @@ const useStyles = makeStyles(() => ({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
     backgroundColor: '#ffffff',
+    zIndex: 2,
+  },
+  stickyHeader: {
+    position: 'sticky',
+    top: 0,
+    backgroundColor: '#ffffff',
+    zIndex: 3,
   },
 }));
 
@@ -41,6 +48,17 @@ function ChplSortableHeaders(props) {
     props.onTableSort(event, property, orderDirection);
   };
 
+  const getCellClassName = (index) => {
+    const classNames = [];
+    if (props.stickyHeader) {
+      classNames.push(classes.stickyHeader);
+    }
+    if (index === 0 && props.stickyHeader) {
+      classNames.push(classes.stickyColumn);
+    }
+    return classNames.join(' ') || undefined;
+  };
+
   return (
     <TableHead>
       <TableRow>
@@ -51,7 +69,7 @@ function ChplSortableHeaders(props) {
                 key={headCell.property}
                 align="left"
                 sortDirection={orderBy === headCell.property ? order : false}
-                className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
+                className={getCellClassName(index)}
               >
                 <TableSortLabel
                   className={classes.header}
@@ -73,7 +91,7 @@ function ChplSortableHeaders(props) {
               <TableCell
                 align="left"
                 key={headCell.text}
-                className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
+                className={getCellClassName(index)}
               >
                 <span className={headCell.invisible && classes.visuallyHidden}>
                   { headCell.text }
