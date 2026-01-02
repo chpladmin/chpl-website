@@ -49,7 +49,7 @@ function ChplCriteria(props) {
     hasIcs = false,
     isConfirming = false,
     listing,
-    resources,
+    resources = {},
     onSave = () => {},
     viewAll = false,
   } = props;
