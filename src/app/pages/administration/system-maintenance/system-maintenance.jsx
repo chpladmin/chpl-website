@@ -21,6 +21,9 @@ import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
 import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
+import HomeOutlined from '@material-ui/icons/HomeOutlined';
+import MenuOpenIcon  from '@material-ui/icons/MenuOpen';
+import MenuIcon from '@material-ui/icons/Menu';
 import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
@@ -45,6 +48,7 @@ import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-sta
 import ChplStandards from 'components/system-maintenance/standard/standards';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
+import ChplToolTip from 'components/util/chpl-tooltip';
 import ChplTestData from 'components/system-maintenance/test-data/test-data';
 import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
 import ChplUcdProcesses from 'components/system-maintenance/ucd-process/ucd-processes';
@@ -83,16 +87,22 @@ const useStyles = makeStyles({
   navigation: {
     display: 'flex',
     flexDirection: 'column',
-    width: '250px',
     position: 'sticky',
     top: '115px',
     zIndex: 1,
+    transition: 'width 0.3s ease',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'row',
       width: '100%',
       position: 'relative',
       top: 0,
     },
+  },
+  navOpen: {
+    width: '200px',
+  },
+  navClosed: {
+    width: '50px',
   },
   navigationFlex: {
     display: 'flex',
@@ -114,102 +124,110 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-  
+  toggleButton: {
+    maxWidth: 'min-content',
+    padding: '4px',
+  },
 });
 
 const maintenanceItems = [{
+  id: '',
+  primary: 'System Maintenance Home',
+  secondary: 'View all available system maintenance options',
+  icon: <ChplToolTip title="System Maintenance Home"><HomeOutlined /></ChplToolTip>,
+}, {
   id: 'accessibilityStandards',
   primary: 'Accessibility Standards',
   secondary: 'Add and update the Accessibility Standards available to be applied to listings',
-  icon: <AccessibilityNewOutlinedIcon />,
+  icon: <ChplToolTip title="Accessibility Standards"><AccessibilityNewOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'announcements',
   primary: 'Announcements',
   secondary: 'Create and edit announcements displayed on CHPL for public and/or logged-in users',
-  icon: <AnnouncementOutlinedIcon />,
+  icon: <ChplToolTip title="Announcements"><AnnouncementOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'apiKeys',
   primary: 'API Keys',
   secondary: 'View and optionally revoke existing API Keys',
   roles: ['chpl-admin', 'chpl-onc'],
-  icon: <CodeOutlinedIcon />,
+  icon: <ChplToolTip title="API Keys"><CodeOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'certificationCriteria',
   primary: 'Certification Criteria',
   secondary: 'Table of the Certification Criteria values',
-  icon: <BookOutlinedIcon />,
+  icon: <ChplToolTip title="Certification Criteria"><BookOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'codeSets',
   primary: 'Code Sets',
   secondary: 'Table of Code Sets',
-  icon: <SettingsEthernetIcon />,
+  icon: <ChplToolTip title="Code Sets"><SettingsEthernetIcon /></ChplToolTip>,
 }, {
   id: 'conformanceMethods',
   primary: 'Conformance Methods',
   secondary: 'Table of Conformance Methods',
-  icon: <AccountBalanceOutlinedIcon />,
+  icon: <ChplToolTip title="Conformance Methods"><AccountBalanceOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'cqms',
   primary: 'CQMs',
   secondary: 'Table of the CQM values',
-  icon: <SpeedOutlinedIcon />,
+  icon: <ChplToolTip title="CQMs"><SpeedOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'functionalitiesTested',
   primary: 'Functionalities Tested',
   secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
-  icon: <BeenhereOutlinedIcon />,
+  icon: <ChplToolTip title="Functionalities Tested"><BeenhereOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'g1g2',
   primary: 'G1/G2 Measures',
   secondary: 'Table of G1/G2 Measures',
-  icon: <AssessmentOutlinedIcon />,
+  icon: <ChplToolTip title="G1/G2 Measures"><AssessmentOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'optionalStandards',
   primary: 'Optional Standards',
   secondary: 'View Optional Standards available to be applied to listings',
-  icon: <MoreOutlinedIcon />,
+  icon: <ChplToolTip title="Optional Standards"><MoreOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'qmsStandards',
   primary: 'QMS Standards',
   secondary: 'Add and update the QMS Standards available to be applied to listings',
-  icon: <AssignmentTurnedInOutlinedIcon />,
+  icon: <ChplToolTip title="QMS Standards"><AssignmentTurnedInOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'standards',
   primary: 'Standards',
   secondary: 'Add and update health IT standards used across all CHPL listings, as maintained by ONC-ACBs',
-  icon: <PlaylistAddCheckOutlinedIcon />,
+  icon: <ChplToolTip title="Standards"><PlaylistAddCheckOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'subscriptions',
   primary: 'Subscriptions',
   secondary: 'Search and filter CHPL subscriptions',
   roles: ['chpl-admin', 'chpl-onc'],
-  icon: <SubscriptionsOutlinedIcon />,
+  icon: <ChplToolTip title="Subscriptions"><SubscriptionsOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'svaps',
   primary: 'SVAP',
   secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
-  icon: <TrendingUpOutlinedIcon />,
+  icon: <ChplToolTip title="SVAP"><TrendingUpOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'systemJobs',
   primary: 'System Jobs',
   secondary: 'View and schedule system-related jobs',
   roles: ['chpl-admin'],
-  icon: <PlayArrowOutlinedIcon />,
+  icon: <ChplToolTip title="System Jobs"><PlayArrowOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'testData',
   primary: 'Test Data',
   secondary: 'Table of Test Data',
-  icon: <DataUsageOutlinedIcon />,
+  icon: <ChplToolTip title="Test Data"><DataUsageOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'testTools',
   primary: 'Test Tools',
   secondary: 'Table of the Test Tool values used during testing of certification criterion functionality',
-  icon: <BuildOutlinedIcon />,
+  icon: <ChplToolTip title="Test Tools"><BuildOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'ucdProcesses',
   primary: 'UCD Processes',
   secondary: 'Add and update the UCD process(es) available to be applied to certification criteria',
-  icon: <TouchAppOutlinedIcon />,
+  icon: <ChplToolTip title="UCD Processes"><TouchAppOutlinedIcon /></ChplToolTip>,
 }];
 
 function ChplSystemMaintenance() {
@@ -217,6 +235,7 @@ function ChplSystemMaintenance() {
   const { hasAnyRole } = useContext(UserContext);
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [active, setActive] = useState('');
+  const [navOpen, setNavOpen] = useState(true); // or false to start closed
   const classes = useStyles();
   let navigate;
   let data;
@@ -251,13 +270,13 @@ function ChplSystemMaintenance() {
       onClick={() => navigate(item.id)}
       disabled={active === item.id}
       id={`system-maintenance-navigation-${item.id}`}
-      fullWidth
+      size='small'
       variant="text"
       color="primary"
-      endIcon={item.icon}
+      endIcon={navOpen ? item.icon : null}
       className={classes.menuItems}
     >
-      { item.primary }
+      { navOpen ? item.primary : item.icon }
     </Button>
   );
 
@@ -330,9 +349,20 @@ function ChplSystemMaintenance() {
   return (
     <AnalyticsContext.Provider value={data}>
       <div className={classes.container}>
-        <div className={classes.navigation}>
+        <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
           <Card className={classes.navigationFlex}>
-            { maintenanceItems
+            <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
+              <Button 
+                onClick={() => setNavOpen(!navOpen)}
+                variant="text"
+                color="primary"
+                size="medium"
+                className={classes.menuItems}
+              >
+               { navOpen ? <MenuIcon /> : <MenuOpenIcon /> }
+              </Button>
+            </ChplToolTip>
+            {maintenanceItems
               .filter((item) => !item.roles || hasAnyRole(item.roles))
               .map((item) => getNavigationItem(item))}
           </Card>
