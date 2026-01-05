@@ -100,7 +100,7 @@ function ChplAnnouncementsFab() {
               alignItems: 'center',
             }}
           >
-            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 'bold', fontFamily: 'inherit' }}>
+            <h3 style={{ margin: 0, fontSize: '1.75rem', fontWeight: 'bold', fontFamily: 'inherit' }}>
               Announcement{announcements.length !== 1 ? 's' : ''}
             </h3>
             <button
