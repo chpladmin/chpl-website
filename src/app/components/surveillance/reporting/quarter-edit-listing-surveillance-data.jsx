@@ -346,6 +346,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
               name="surveillanceGroundsForInitiatingOther"
               label="Grounds For Initiating Surveillance - Other"
               multiline
+              required
               value={formik.values.surveillanceGroundsForInitiatingOther}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -552,6 +553,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
               name="capStatusOther"
               label="CAP Status - Other"
               multiline
+              required
               value={formik.values.capStatusOther}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
