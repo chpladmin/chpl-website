@@ -44,7 +44,7 @@ function ChplAnnouncementsFab() {
           border: 'none',
           cursor: 'pointer',
           boxShadow: 'none',
-          padding: '12px',
+          padding: '14px',
           borderRadius: '50%',
         }}
         onClick={handleToggle}
@@ -55,11 +55,12 @@ function ChplAnnouncementsFab() {
             backgroundColor: '#156dac',
             color: 'white',
             borderRadius: '50%',
-            padding: '4px 8px',
-            fontSize: '0.75rem',
+            padding: '2px 6px',
+            fontSize: '12px',
             position: 'absolute',
-            top: 0,
-            right: 0,
+            border: '2px #001439 solid',
+            top: '-2px',
+            right: '4px',
           }}
         >
           {announcements.length}
