@@ -77,7 +77,6 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
     setProgress(Math.round(((
       (surveillance.surveillanceOutcome ? 1 : 0)
         + (surveillance.surveillanceProcessTypes?.length > 0 ? 1 : 0)
-        + (surveillance.k1Reviewed ? 1 : 0)
         + (surveillance.surveillanceGroundsForInitiating?.length > 0 ? 1 : 0)
         + (surveillance.nonconformityCauses ? 1 : 0)
         + (surveillance.nonconformityNature ? 1 : 0)
@@ -88,7 +87,7 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
         + (surveillance.nondisclosureEvaluation ? 1 : 0)
         + (surveillance.directionDeveloperResolution ? 1 : 0)
         + (surveillance.capStatuses?.length > 0 ? 1 : 0)
-    ) * 100) / 13));
+    ) * 100) / 12));
   }, [surveillance]);
 
   const handleDispatch = ({ action }) => {
