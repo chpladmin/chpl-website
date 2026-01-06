@@ -22,7 +22,7 @@ import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
 import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
 import HomeOutlined from '@material-ui/icons/HomeOutlined';
-import MenuOpenIcon  from '@material-ui/icons/MenuOpen';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
@@ -270,7 +270,7 @@ function ChplSystemMaintenance() {
       onClick={() => navigate(item.id)}
       disabled={active === item.id}
       id={`system-maintenance-navigation-${item.id}`}
-      size='small'
+      size="small"
       variant="text"
       color="primary"
       endIcon={navOpen ? item.icon : null}
@@ -333,10 +333,15 @@ function ChplSystemMaintenance() {
     if (target) {
       display('system-maintenance');
       hide('system-maintenance.disabled');
+      setNavOpen(false);
     } else {
       display('system-maintenance.disabled');
       hide('system-maintenance');
     }
+  };
+
+  const closeNavigation = () => {
+    setNavOpen(false);
   };
 
   data = {
@@ -352,14 +357,14 @@ function ChplSystemMaintenance() {
         <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
           <Card className={classes.navigationFlex}>
             <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
-              <Button 
+              <Button
                 onClick={() => setNavOpen(!navOpen)}
                 variant="text"
                 color="primary"
                 size="medium"
                 className={classes.menuItems}
               >
-               { navOpen ? <MenuIcon /> : <MenuOpenIcon /> }
+                { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
               </Button>
             </ChplToolTip>
             {maintenanceItems
@@ -367,7 +372,7 @@ function ChplSystemMaintenance() {
               .map((item) => getNavigationItem(item))}
           </Card>
         </div>
-        <Box width="100%" >
+        <Box width="100%">
           { active === ''
             && (
               <Card>
@@ -391,24 +396,24 @@ function ChplSystemMaintenance() {
                 </CardContent>
               </Card>
             )}
-          { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
-          { active === 'announcements' && <ChplAnnouncements /> }
-          { active === 'apiKeys' && <ChplApiKeys /> }
-          { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
-          { active === 'codeSets' && <ChplCodeSets /> }
-          { active === 'conformanceMethods' && <ChplConformanceMethods /> }
-          { active === 'cqms' && <ChplCqms /> }
-          { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
-          { active === 'g1g2' && <ChplG1g2 /> }
-          { active === 'optionalStandards' && <ChplOptionalStandards /> }
-          { active === 'qmsStandards' && <ChplQmsStandards /> }
-          { active === 'standards' && <ChplStandards /> }
-          { active === 'subscriptions' && <ChplManageSubscriptions /> }
-          { active === 'svaps' && <ChplSvaps /> }
-          { active === 'systemJobs' && <ChplSystemJobs /> }
-          { active === 'testData' && <ChplTestData /> }
-          { active === 'testTools' && <ChplTestTools /> }
-          { active === 'ucdProcesses' && <ChplUcdProcesses /> }
+          { active === 'accessibilityStandards' && <ChplAccessibilityStandards onEditModeEnter={closeNavigation} /> }
+          { active === 'announcements' && <ChplAnnouncements onEditModeEnter={closeNavigation} /> }
+          { active === 'apiKeys' && <ChplApiKeys onEditModeEnter={closeNavigation} /> }
+          { active === 'certificationCriteria' && <ChplCertificationCriteria onEditModeEnter={closeNavigation} /> }
+          { active === 'codeSets' && <ChplCodeSets onEditModeEnter={closeNavigation} /> }
+          { active === 'conformanceMethods' && <ChplConformanceMethods onEditModeEnter={closeNavigation} /> }
+          { active === 'cqms' && <ChplCqms onEditModeEnter={closeNavigation} /> }
+          { active === 'functionalitiesTested' && <ChplFunctionalitiesTested onEditModeEnter={closeNavigation} /> }
+          { active === 'g1g2' && <ChplG1g2 onEditModeEnter={closeNavigation} /> }
+          { active === 'optionalStandards' && <ChplOptionalStandards onEditModeEnter={closeNavigation} /> }
+          { active === 'qmsStandards' && <ChplQmsStandards onEditModeEnter={closeNavigation} /> }
+          { active === 'standards' && <ChplStandards onEditModeEnter={closeNavigation} /> }
+          { active === 'subscriptions' && <ChplManageSubscriptions onEditModeEnter={closeNavigation} /> }
+          { active === 'svaps' && <ChplSvaps onEditModeEnter={closeNavigation} /> }
+          { active === 'systemJobs' && <ChplSystemJobs onEditModeEnter={closeNavigation} /> }
+          { active === 'testData' && <ChplTestData onEditModeEnter={closeNavigation} /> }
+          { active === 'testTools' && <ChplTestTools onEditModeEnter={closeNavigation} /> }
+          { active === 'ucdProcesses' && <ChplUcdProcesses onEditModeEnter={closeNavigation} /> }
         </Box>
       </div>
     </AnalyticsContext.Provider>

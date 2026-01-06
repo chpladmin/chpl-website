@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplFunctionalityTestedEdit from './functionality-tested-edit';
@@ -262,7 +263,13 @@ function ChplFunctionalitiesTested() {
   if (activeFunctionalityTested) {
     return (
       <Card>
-        <CardHeader title={`${activeFunctionalityTested.id ? 'Edit' : 'Add'} Functionality Tested`} />
+        <CardHeader title={(
+          <>
+            <BeenhereOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeFunctionalityTested.id ? 'Edit' : 'Add'} Functionality Tested`}
+          </>
+)}
+        />
         <CardContent>
           <ChplFunctionalityTestedEdit
             functionalityTested={activeFunctionalityTested}
@@ -289,7 +296,15 @@ function ChplFunctionalitiesTested() {
       storageKey="storageKey-functionalitiesTestedManagement"
     >
       <Card>
-        <CardHeader title="Functionalities Tested" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Functionalities Tested
+              <BeenhereOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           { (deleteFunctionalityTested.isLoading || postFunctionalityTested.isLoading || putFunctionalityTested.isLoading)
             && (
