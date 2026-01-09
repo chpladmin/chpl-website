@@ -264,7 +264,10 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.surveillanceProcessTypes && formik.errors.surveillanceProcessTypes}
           SelectProps={{
             multiple: true,
-            renderValue: (selected) => selected.map((value) => surveillanceProcessTypes.find((item) => item.id === value.id)?.name).join(', '),
+            renderValue: (selected) => selected
+              .map((value) => surveillanceProcessTypes.find((item) => item.id === value.id)?.name)
+              .sort((a, b) => a < b ? -1 : 1)
+              .join(', '),
           }}
         >
           { surveillanceProcessTypes.map((item) => (
@@ -319,7 +322,10 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.surveillanceGroundsForInitiating && formik.errors.surveillanceGroundsForInitiating}
           SelectProps={{
             multiple: true,
-            renderValue: (selected) => selected.map((value) => surveillanceGroundsForInitiating.find((item) => item.id === value.id)?.name).join(', '),
+            renderValue: (selected) => selected
+              .map((value) => surveillanceGroundsForInitiating.find((item) => item.id === value.id)?.name)
+              .sort((a, b) => a < b ? -1 : 1)
+              .join(', '),
           }}
         >
           { surveillanceGroundsForInitiating.map((item) => (
@@ -526,7 +532,10 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.capStatuses && formik.errors.capStatuses}
           SelectProps={{
             multiple: true,
-            renderValue: (selected) => selected.map((value) => capStatuses.find((item) => item.id === value.id)?.name).join(', '),
+            renderValue: (selected) => selected
+              .map((value) => capStatuses.find((item) => item.id === value.id)?.name)
+              .sort((a, b) => a < b ? -1 : 1)
+              .join(', ')
           }}
         >
           { capStatuses.map((item) => (
