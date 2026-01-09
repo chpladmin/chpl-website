@@ -434,15 +434,26 @@ function ChplQuarterEdit({ dispatch, report }) {
             <Card>
               <CardHeader title="Listings with relevant surveillance" />
               <CardContent>
-                { listings
-                  .sort(sortListings)
-                  .map((l) => (
-                    <ChplQuarterEditListing
-                      key={l.id}
-                      listing={l}
-                      reportId={report.id}
-                    />
-                  ))}
+                { listings.length > 0
+                  && (
+                    <>
+                      { listings
+                        .sort(sortListings)
+                        .map((l) => (
+                          <ChplQuarterEditListing
+                            key={l.id}
+                            listing={l}
+                            reportId={report.id}
+                          />
+                        ))}
+                    </>
+                  )}
+                { listings.length === 0
+                  && (
+                    <Typography>
+                      No listings with relevant surveillance apply
+                    </Typography>
+                  )}
               </CardContent>
             </Card>
           )}
