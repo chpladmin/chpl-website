@@ -40,7 +40,7 @@ function ChplAnnouncementsFab() {
           position: 'sticky',
           zIndex: 96000,
           backgroundColor: 'transparent',
-          color: 'white',
+          color: palette.white,
           border: 'none',
           cursor: 'pointer',
           boxShadow: 'none',
@@ -52,20 +52,20 @@ function ChplAnnouncementsFab() {
       >
         <span
           style={{
-            backgroundColor: '#156dac',
-            color: 'white',
+            backgroundColor: palette.primary,
+            color: palette.white,
             borderRadius: '50%',
             padding: '2px 6px',
             fontSize: '12px',
             position: 'absolute',
-            border: '2px #001439 solid',
+            border: `2px ${palette.primaryDark} solid`,
             top: '-2px',
             right: '4px',
           }}
         >
           {announcements.length}
         </span>
-        <NotificationsIcon style={{ fontSize: 18, color: 'white' }} />
+        <NotificationsIcon style={{ fontSize: 18, color: palette.white }} />
       </button>
 
       {expanded && (
@@ -82,7 +82,7 @@ function ChplAnnouncementsFab() {
             display: 'flex',
             flexDirection: 'column',
             border: `2px solid ${palette.primary}`,
-            background: 'white',
+            background: palette.white,
             borderRadius: 12,
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
           }}
@@ -93,8 +93,8 @@ function ChplAnnouncementsFab() {
           <div
             style={{
               padding: 16,
-              backgroundColor: '#156dac',
-              color: 'white',
+              backgroundColor: palette.primary,
+              color: palette.white,
               borderRadius: '8px 8px 0px 0px',
               display: 'flex',
               justifyContent: 'space-between',
@@ -106,7 +106,7 @@ function ChplAnnouncementsFab() {
             </h3>
             <button
               onClick={handleToggle}
-              style={{ background: 'none', border: 'none', color: 'white', fontSize: 20, cursor: 'pointer' }}
+              style={{ background: 'none', border: 'none', color: palette.white, fontSize: 20, cursor: 'pointer' }}
               aria-label="Close announcements panel"
             >
               ×

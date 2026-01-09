@@ -9,10 +9,10 @@ import {
   makeStyles,
   Fade,
 } from '@material-ui/core';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import BlockIcon from '@material-ui/icons/Block';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CodeIcon from '@material-ui/icons/Code';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
@@ -32,12 +32,12 @@ import { palette, theme } from 'themes';
 const useStyles = makeStyles({
   announcement: {
     marginBottom: '8px',
-    color: '#fff',
+    color: palette.white,
   },
   infoBox: {
     marginTop: '16px',
     padding: '16px',
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     border: `1px solid ${palette.primary}`,
     borderRadius: '8px',
     display: 'flex',
@@ -51,9 +51,9 @@ const useStyles = makeStyles({
     marginTop: '8px',
   },
   carouselButton: {
-    color: '#fff',
+    color: palette.white,
     '&:disabled': {
-      color: 'rgba(255, 255, 255, 0.3)',
+      color: palette.divider,
     },
   },
   shortcutCard: {

@@ -81,63 +81,63 @@ function ChplAnnouncementEdit(props) {
 
   return (
     <Box display="flex" flexDirection="column" gridGap="16px">
-        <ChplTextField
-          id="title"
-          name="title"
-          label="Title"
-          className={classes.fullWidth}
-          required
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.title && !!formik.errors.title}
-          helperText={formik.touched.title && formik.errors.title}
-        />
-        <ChplTextField
-          id="text"
-          multiline
-          minRows={6}
-          className={classes.fullWidth}
-          name="text"
-          inputProps={{
-            style: { height: 132, padding: 0 },
-            }}
-          label="Text"
-          value={formik.values.text}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.text && !!formik.errors.text}
-          helperText={formik.touched.text && formik.errors.text}
-        />
-      <Box display="flex" flexDirection="row" gridGap="16px" width={"100%"}>
+      <ChplTextField
+        id="title"
+        name="title"
+        label="Title"
+        className={classes.fullWidth}
+        required
+        value={formik.values.title}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.title && !!formik.errors.title}
+        helperText={formik.touched.title && formik.errors.title}
+      />
+      <ChplTextField
+        id="text"
+        multiline
+        minRows={6}
+        className={classes.fullWidth}
+        name="text"
+        inputProps={{
+          style: { height: 132, padding: 0 },
+        }}
+        label="Text"
+        value={formik.values.text}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.text && !!formik.errors.text}
+        helperText={formik.touched.text && formik.errors.text}
+      />
+      <Box display="flex" flexDirection="row" gridGap="16px">
         <Box className={classes.fullWidth}>
           <ChplTextField
             id="start-date-time"
-          name="startDateTime"
-          label="Start Date"
-          type="datetime-local"
-          required
-          value={formik.values.startDateTime}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.startDateTime && !!formik.errors.startDateTime}
-          helperText={formik.touched.startDateTime && formik.errors.startDateTime}
-        />
+            name="startDateTime"
+            label="Start Date"
+            type="datetime-local"
+            required
+            value={formik.values.startDateTime}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.startDateTime && !!formik.errors.startDateTime}
+            helperText={formik.touched.startDateTime && formik.errors.startDateTime}
+          />
           <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
         </Box>
         <Box className={classes.fullWidth}>
           <ChplTextField
             id="end-date-time"
-          name="endDateTime"
-          label="End Date"
-          type="datetime-local"
-          required
-          value={formik.values.endDateTime}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.endDateTime && !!formik.errors.endDateTime}
-          helperText={formik.touched.endDateTime && formik.errors.endDateTime}
-        />
+            name="endDateTime"
+            label="End Date"
+            type="datetime-local"
+            required
+            value={formik.values.endDateTime}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.endDateTime && !!formik.errors.endDateTime}
+            helperText={formik.touched.endDateTime && formik.errors.endDateTime}
+          />
           <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
         </Box>
       </Box>
