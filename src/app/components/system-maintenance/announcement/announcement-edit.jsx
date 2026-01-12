@@ -6,10 +6,10 @@ import {
   Switch,
   makeStyles,
 } from '@material-ui/core';
-
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { jsJoda } from 'services/date-util';

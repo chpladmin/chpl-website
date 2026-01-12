@@ -12,7 +12,7 @@ function ChplAnnouncementsFab() {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setAnnouncements(data || []);
+    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
 
   const handleToggle = (event) => {
@@ -72,8 +72,8 @@ function ChplAnnouncementsFab() {
         <div
           id="announcements-panel"
           style={{
-            width: 325,
-            top: 64,
+            width: '325px',
+            top: '64px',
             right: 0,
             position: 'fixed',
             maxWidth: 'calc(100vw - 48px)',
