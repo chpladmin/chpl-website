@@ -31,11 +31,13 @@ function ChplAnnouncementsFab() {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
+    return undefined;
   }, [expanded]);
 
   return (
     <>
       <button
+        type="button"
         style={{
           position: 'sticky',
           zIndex: 96000,
@@ -74,7 +76,7 @@ function ChplAnnouncementsFab() {
           style={{
             width: '325px',
             top: '64px',
-            right: 0,
+            right: '0px',
             position: 'fixed',
             maxWidth: 'calc(100vw - 48px)',
             maxHeight: 'calc(100vh - 100px)',
@@ -83,7 +85,7 @@ function ChplAnnouncementsFab() {
             flexDirection: 'column',
             border: `2px solid ${palette.primary}`,
             background: palette.white,
-            borderRadius: 12,
+            borderRadius: '12px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
           }}
           role="region"
@@ -92,7 +94,7 @@ function ChplAnnouncementsFab() {
         >
           <div
             style={{
-              padding: 16,
+              padding: '16px',
               backgroundColor: palette.primary,
               color: palette.white,
               borderRadius: '8px 8px 0px 0px',
@@ -101,12 +103,19 @@ function ChplAnnouncementsFab() {
               alignItems: 'center',
             }}
           >
-            <h3 style={{ margin: 0, fontSize: '1.75rem', fontWeight: 'bold', fontFamily: 'inherit' }}>
-              Announcement{announcements.length !== 1 ? 's' : ''}
+            <h3 style={{
+              margin: 0, fontSize: '1.75rem', fontWeight: 'bold', fontFamily: 'inherit',
+            }}
+            >
+              Announcement
+              {announcements.length !== 1 ? 's' : ''}
             </h3>
             <button
+              type="button"
               onClick={handleToggle}
-              style={{ background: 'none', border: 'none', color: palette.white, fontSize: 20, cursor: 'pointer' }}
+              style={{
+                background: 'none', border: 'none', color: palette.white, fontSize: '20px', cursor: 'pointer',
+              }}
               aria-label="Close announcements panel"
             >
               ×
@@ -120,13 +129,18 @@ function ChplAnnouncementsFab() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {announcements.map((announcement, index) => (
-                  <div key={announcement.id || index} style={{ padding: 16, wordWrap: 'break-word', whiteSpace: 'pre-wrap', borderBottom: '1px solid #e0e0e0' }}>
+                  <div
+                    key={announcement.id || index}
+                    style={{
+                      padding: '16px', wordWrap: 'break-word', whiteSpace: 'pre-wrap', borderBottom: '1px solid #e0e0e0',
+                    }}
+                  >
                     <h4 style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>
                       <strong>{announcement.title}</strong>
                     </h4>
-                     {announcement.text && (
-                        <span>{announcement.text}</span>
-                      )}
+                    {announcement.text && (
+                    <span>{announcement.text}</span>
+                    )}
                   </div>
                 ))}
               </div>

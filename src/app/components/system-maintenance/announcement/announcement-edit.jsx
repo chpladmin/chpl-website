@@ -74,7 +74,7 @@ function ChplAnnouncementEdit(props) {
         endDateTime: formik.values.endDateTime,
         isPublic: formik.values.isPublic,
       };
-      props.dispatch('save', updated);
+      dispatch('save', updated);
     },
     validationSchema,
   });
@@ -141,20 +141,18 @@ function ChplAnnouncementEdit(props) {
           <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
         </Box>
       </Box>
-      <div>
-        <FormControlLabel
-          control={(
-            <Switch
-              id="is-public"
-              name="isPublic"
-              color="primary"
-              checked={formik.values.isPublic}
-              onChange={formik.handleChange}
-            />
+      <FormControlLabel
+        control={(
+          <Switch
+            id="is-public"
+            name="isPublic"
+            color="primary"
+            checked={formik.values.isPublic}
+            onChange={formik.handleChange}
+          />
           )}
-          label={formik.values.isPublic ? 'Public announcement' : 'For logged in users only'}
-        />
-      </div>
+        label={formik.values.isPublic ? 'Public announcement' : 'For logged in users only'}
+      />
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={!formik.isValid || formik.isSubmitting}
