@@ -10,7 +10,22 @@ import ChplActionBar from './action-bar';
 
 import AppWrapper from 'app-wrapper';
 
-function ChplActionBarWrapper(props) {
+function ChplActionBarWrapper(props = {
+  errors: [],
+  warnings: [],
+  canCancel: true,
+  canClose: false,
+  canConfirm: false,
+  canDelete: false,
+  canEdit: false,
+  canReject: false,
+  canSave: true,
+  canWithdraw: false,
+  isDisabled: false,
+  isProcessing: false,
+  showErrorAcknowledgement: false,
+  showWarningAcknowledgement: false,
+}) {
   return (
     <AppWrapper>
       <ChplActionBar {...props} />
@@ -36,21 +51,4 @@ ChplActionBarWrapper.propTypes = {
   isProcessing: bool,
   showErrorAcknowledgement: bool,
   showWarningAcknowledgement: bool,
-};
-
-ChplActionBarWrapper.defaultProps = {
-  errors: [],
-  warnings: [],
-  canCancel: true,
-  canClose: false,
-  canConfirm: false,
-  canDelete: false,
-  canEdit: false,
-  canReject: false,
-  canSave: true,
-  canWithdraw: false,
-  isDisabled: false,
-  isProcessing: false,
-  showErrorAcknowledgement: false,
-  showWarningAcknowledgement: false,
 };

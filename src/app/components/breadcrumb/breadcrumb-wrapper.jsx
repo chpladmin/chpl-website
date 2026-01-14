@@ -103,9 +103,3 @@ BreadcrumbWrapper.propTypes = {
   disabled: bool,
   title: string,
 };
-
-BreadcrumbWrapper.defaultProps = {
-  children: undefined,
-  disabled: false,
-  title: undefined,
-};

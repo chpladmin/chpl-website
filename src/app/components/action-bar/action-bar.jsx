@@ -79,8 +79,8 @@ const useStyles = makeStyles({
 });
 
 function ChplActionBar({
-  errors: initialErrors = [],
-  warnings: initialWarnings = [],
+  errors = [],
+  warnings = [],
   canCancel = true,
   canClose = false,
   canConfirm = false,
@@ -99,7 +99,6 @@ function ChplActionBar({
   const { hasAnyRole } = useContext(UserContext);
   const [errorAcknowledged, setErrorAcknowledged] = useState(false);
   const [warningAcknowledged, setWarningAcknowledged] = useState(false);
-  const [errors, setErrors] = useState([]);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDeleteDisabled, setIsDeleteDisabled] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -108,16 +107,7 @@ function ChplActionBar({
   const [pendingMessage, setPendingMessage] = useState('');
   const [showErrorAcknowledgement, setShowErrorAcknowledgement] = useState(false);
   const [showWarningAcknowledgement, setShowWarningAcknowledgement] = useState(false);
-  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
-
-  useEffect(() => {
-    setErrors(initialErrors);
-  }, [initialErrors]);
-
-  useEffect(() => {
-    setWarnings(initialWarnings);
-  }, [initialWarnings]);
 
   useEffect(() => {
     setShowErrorAcknowledgement(initialShowErrorAcknowledgement && hasAnyRole(['chpl-admin', 'chpl-onc']));
