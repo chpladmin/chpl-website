@@ -109,7 +109,6 @@ function ChplAnnouncementsFab() {
               {announcements.length !== 1 ? 's' : ''}
             </h3>
             <button
-              type="button"
               onClick={handleToggle}
               style={{
                 background: 'none', border: 'none', color: palette.white, fontSize: '20px', cursor: 'pointer',
