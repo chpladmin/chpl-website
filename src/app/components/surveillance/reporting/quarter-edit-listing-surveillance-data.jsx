@@ -149,7 +149,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
     mutate(payload, {
       onSuccess: () => {
         setIsProcessing(false);
-        enqueueSnackbar('Your updates have been made', {
+        enqueueSnackbar('Your updates have been made. It might take a few moments to reflect the updates on the page.', {
           variant: 'success',
         });
         dispatch({ action: 'cancel' });
