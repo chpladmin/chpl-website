@@ -31,13 +31,11 @@ function ChplAnnouncementsFab() {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-    return undefined;
   }, [expanded]);
 
   return (
     <>
       <button
-        type="button"
         style={{
           position: 'sticky',
           zIndex: 96000,
@@ -76,7 +74,7 @@ function ChplAnnouncementsFab() {
           style={{
             width: '325px',
             top: '64px',
-            right: '0px',
+            right: 0,
             position: 'fixed',
             maxWidth: 'calc(100vw - 48px)',
             maxHeight: 'calc(100vh - 100px)',
@@ -139,7 +137,7 @@ function ChplAnnouncementsFab() {
                       <strong>{announcement.title}</strong>
                     </h4>
                     {announcement.text && (
-                    <span>{announcement.text}</span>
+                      <span>{announcement.text}</span>
                     )}
                   </div>
                 ))}
