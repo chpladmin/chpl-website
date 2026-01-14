@@ -126,38 +126,58 @@ const validationSchema = yup.object({
 });
 
 const getChangeRequestViewDetails = (cr) => {
-  switch (cr.changeRequestType.name) {
-    case 'Developer Attestation Change Request':
-      return (
+  if (cr.changeRequestType.name === 'Developer Attestation Change Request') {
+    return (
+      <>
+        <Divider />
         <ChplChangeRequestAttestationView
           changeRequest={cr}
         />
-      );
+      </>
+    );
+  }
+  if (cr.currentStatus.changeRequestStatusType.name === 'Accepted') {
+    return undefined;
+  }
+  switch (cr.changeRequestType.name) {
     case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDemographicsView />
+        <>
+          <Divider />
+          <ChplChangeRequestDemographicsView />
+        </>
       );
     case 'RWT Plans URL Change Request':
       return (
-        <ChplChangeRequestListingRwtView
-          value="rwtPlansUrl"
-          title="Plans"
-        />
+        <>
+          <Divider />
+          <ChplChangeRequestListingRwtView
+            value="rwtPlansUrl"
+            title="Plans"
+          />
+        </>
       );
     case 'RWT Results URL Change Request':
       return (
-        <ChplChangeRequestListingRwtView
-          value="rwtResultsUrl"
-          title="Results"
-        />
+        <>
+          <Divider />
+          <ChplChangeRequestListingRwtView
+            value="rwtResultsUrl"
+            title="Results"
+          />
+        </>
       );
     case 'Service Base URL List Change Request':
       return (
-        <ChplChangeRequestListingSbulView />
+        <>
+          <Divider />
+          <ChplChangeRequestListingSbulView />
+        </>
       );
     default:
       return (
         <>
+          <Divider />
           No details found
         </>
       );
@@ -607,107 +627,109 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs, dispatch })
                 </div>
               )}
           </div>
-          <Divider />
           { !isEditing
             && (
-              <div>
+              <>
                 { getChangeRequestViewDetails(changeRequest) }
-              </div>
+              </>
             )}
           { isEditing
             && (
-              <div className={classes.cardContentChangeRequest}>
-                <div>
-                  { getChangeRequestEditDetails(changeRequest, handleDispatch, isAccepting()) }
-                </div>
-                <div className={classes.actionsContainer}>
-                  <div className={classes.actionSubContainer}>
-                    <Typography variant="subtitle1">Change Request change data</Typography>
-                    <Typography variant="subtitle2">
-                      { changeRequest.certificationBodies.length > 1
-                        && (
-                          <>
-                            This Change Request requires ONC-ACB coordination
-                          </>
-                        )}
-                    </Typography>
-                    <div>
-                      <Typography variant="subtitle2">Current status</Typography>
-                      <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-                    </div>
-                    <div>
+              <>
+                <Divider />
+                <div className={classes.cardContentChangeRequest}>
+                  <div>
+                    { getChangeRequestEditDetails(changeRequest, handleDispatch, isAccepting()) }
+                  </div>
+                  <div className={classes.actionsContainer}>
+                    <div className={classes.actionSubContainer}>
+                      <Typography variant="subtitle1">Change Request change data</Typography>
                       <Typography variant="subtitle2">
-                        Associated ONC-ACB
-                        { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+                        { changeRequest.certificationBodies.length > 1
+                          && (
+                            <>
+                              This Change Request requires ONC-ACB coordination
+                            </>
+                          )}
                       </Typography>
-                      { changeRequest.certificationBodies.length > 0
-                        ? (
-                          <ul>
-                            {changeRequest.certificationBodies.map((acb) => (
-                              <li key={acb.name}>{acb.name}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <Typography>
-                            None
-                          </Typography>
-                        )}
-                    </div>
-                    {hasAnyRole(['chpl-developer'])
-                      ? (
-                        <Typography className={classes.fullWidth}>
-                          {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
-                          && (
-                            <>
-                              Status will be set to &quot;Pending ONC-ACB Action&quot;
-                            </>
-                          )}
-                          {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
-                          && (
-                            <>
-                              No status change will occur
-                            </>
-                          )}
+                      <div>
+                        <Typography variant="subtitle2">Current status</Typography>
+                        <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+                      </div>
+                      <div>
+                        <Typography variant="subtitle2">
+                          Associated ONC-ACB
+                          { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
                         </Typography>
-                      ) : (
-                        <ChplTextField
-                          select
-                          id="change-request-status-type"
-                          name="changeRequestStatusType"
-                          label="Select new Status"
-                          className={classes.fullWidth}
-                          required
-                          value={formik.values.changeRequestStatusType}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
-                          helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
-                        >
-                          { changeRequestStatusTypes
-                            .map((item) => (
-                              <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                            ))}
-                        </ChplTextField>
-                      )}
-                    <ChplTextField
-                      id="comment"
-                      name="comment"
-                      label="Reason for change"
-                      margin="none"
-                      className={classes.fullWidth}
-                      required={isReasonRequired()}
-                      disabled={isReasonDisabled()}
-                      multiline
-                      value={formik.values.comment}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.comment && !!formik.errors.comment}
-                      helperText={formik.touched.comment && formik.errors.comment}
-                      minRows={4}
-                    />
+                        { changeRequest.certificationBodies.length > 0
+                          ? (
+                            <ul>
+                              {changeRequest.certificationBodies.map((acb) => (
+                                <li key={acb.name}>{acb.name}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <Typography>
+                              None
+                            </Typography>
+                          )}
+                      </div>
+                      {hasAnyRole(['chpl-developer'])
+                        ? (
+                          <Typography className={classes.fullWidth}>
+                            {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
+                            && (
+                              <>
+                                Status will be set to &quot;Pending ONC-ACB Action&quot;
+                              </>
+                            )}
+                            {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
+                            && (
+                              <>
+                                No status change will occur
+                              </>
+                            )}
+                          </Typography>
+                        ) : (
+                          <ChplTextField
+                            select
+                            id="change-request-status-type"
+                            name="changeRequestStatusType"
+                            label="Select new Status"
+                            className={classes.fullWidth}
+                            required
+                            value={formik.values.changeRequestStatusType}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+                            helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
+                          >
+                            { changeRequestStatusTypes
+                              .map((item) => (
+                                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                              ))}
+                          </ChplTextField>
+                        )}
+                      <ChplTextField
+                        id="comment"
+                        name="comment"
+                        label="Reason for change"
+                        margin="none"
+                        className={classes.fullWidth}
+                        required={isReasonRequired()}
+                        disabled={isReasonDisabled()}
+                        multiline
+                        value={formik.values.comment}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.comment && !!formik.errors.comment}
+                        helperText={formik.touched.comment && formik.errors.comment}
+                        minRows={4}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
           <Divider />
           <ChplChangeRequestHistory
