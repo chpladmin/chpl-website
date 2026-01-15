@@ -1,0 +1,115 @@
+import React from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import {
+  arrayOf,
+  node,
+  number,
+  oneOfType,
+  shape,
+  string,
+} from 'prop-types';
+
+import palette from '../../themes/palette';
+function ChplSearchResultCard({
+  title,
+  titleValue,
+  headerActions,
+  fieldGroups,
+  actions,
+}) {
+  return (
+    <Card style={{ marginBottom: '12px', marginLeft: '8px', marginRight: '8px' }}>
+      <CardContent style={{ padding: '8px' }}>
+        {/* Title Section */}
+        {title && (
+          <>
+            <Typography variant="body1" style={{fontWeight: 'bold'}} display="block" >
+              {title}
+            </Typography>
+            <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px', }} alignItems="center">
+              <Box
+                display="flex"
+                flex={1}
+                gridGap={2}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography variant="body2" >
+                  {titleValue}
+                </Typography>
+                {headerActions}
+              </Box>
+            </Grid>
+          </>
+        )}
+
+        {/* Field Groups */}
+        {fieldGroups?.map((group, groupIndex) => (
+          <Grid
+            key={`group-${groupIndex}`}
+            container
+            spacing={2}
+            alignItems="flex-start"
+          >
+            {group.map((field, fieldIndex) => (
+              <Grid
+                key={`field-${groupIndex}-${fieldIndex}`}
+                item
+                xs={field.xs || 12}
+                sm={field.sm || field.xs || 12}
+                style={field.style}
+              >
+                <Typography variant="body2" style={{ fontWeight: '600' }}>
+                  {field.label}
+                </Typography>
+                <Typography variant="body2" style={{ fontSize: '1.125rem' }}>
+                  {field.value ?? field.fallback ?? 'N/A'}
+                </Typography>
+              </Grid>
+            ))}
+            {actions && groupIndex === fieldGroups.length - 1 && (
+              <Grid item xs={12} sm="auto" style={{ marginLeft: 'auto' }}>
+                {actions}
+              </Grid>
+            )}
+          </Grid>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+export default ChplSearchResultCard;
+
+ChplSearchResultCard.propTypes = {
+  title: string,
+  titleValue: oneOfType([string, node]),
+  headerActions: node,
+  fieldGroups: arrayOf(
+    arrayOf(
+      shape({
+        label: string.isRequired,
+        value: oneOfType([string, number, node]),
+        fallback: string,
+        xs: number,
+        sm: number,
+        style: shape({}),
+      }),
+    ),
+  ),
+  actions: node,
+};
+
+ChplSearchResultCard.defaultProps = {
+  title: undefined,
+  titleValue: undefined,
+  headerActions: undefined,
+  fieldGroups: [],
+  actions: undefined,
+};
