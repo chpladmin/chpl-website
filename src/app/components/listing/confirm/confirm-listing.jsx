@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
   Container,
-  makeStyles,
 } from '@material-ui/core';
 import { ErrorBoundary } from 'react-error-boundary';
-import { object } from 'prop-types';
 
 import ChplListingView from 'components/listing/listing-view';
-import { ListingContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { ListingContext, PendingListingContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
-  ...utilStyles,
-});
-
-function ChplConfirmListing({ listing }) {
-  const classes = useStyles();
+function ChplConfirmListing() {
+  const { listing } = useContext(PendingListingContext);
 
   if (!listing) { return <CircularProgress />; }
 
@@ -52,5 +45,4 @@ function ChplConfirmListing({ listing }) {
 export default ChplConfirmListing;
 
 ChplConfirmListing.propTypes = {
-  listing: object.isRequired,
 };

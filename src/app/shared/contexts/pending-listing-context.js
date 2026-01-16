@@ -1,10 +1,10 @@
 import { createContext } from 'react';
 
 const PendingListingContext = createContext({
-  pending: {},
-  setPending: () => {},
-  staged: {},
-  setStaged: () => {},
+  listing: {},
+  setListing: () => {},
+  uploaded: {},
+  setUploaded: () => {},
 });
 PendingListingContext.displayName = 'pending-listing-information';
 

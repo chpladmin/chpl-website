@@ -292,10 +292,10 @@ function ChplConfirm({ id }) {
   if (!uploaded || isLoading || !isSuccess) { return <CircularProgress />; }
 
   const pendingListingState = {
-    pending,
-    setPending,
-    staged,
-    setStaged,
+    listing: pending,
+    setListing: setPending,
+    uploaded,
+    setUploaded,
   };
 
   return (
@@ -336,9 +336,7 @@ function ChplConfirm({ id }) {
             )}
           { stage === 'listing'
             && (
-              <ChplConfirmListing
-                listing={pending}
-              />
+              <ChplConfirmListing />
             )}
           <ChplActionBar
             canConfirm
