@@ -17,6 +17,7 @@ import {
   ChplConfirmVersion,
 } from 'components/listing/confirm';
 import { getAngularService } from 'services/angular-react-helper';
+import { PendingListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const replaceDeveloperCode = (chplProductNumber, code) => {
@@ -290,58 +291,67 @@ function ChplConfirm({ id }) {
 
   if (!uploaded || isLoading || !isSuccess) { return <CircularProgress />; }
 
+  const pendingListingState = {
+    pending,
+    setPending,
+    staged,
+    setStaged,
+  };
+
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="lg">
-      <div className={classes.container}>
-        Inspecting Listing
-        { pending.chplProductNumber }
-        <ChplConfirmProgress
-          value={getProgress(stage)}
-          canNext={canAct('next')}
-          canPrevious={canAct('previous')}
-          dispatch={handleProgressDispatch}
-        />
-        { stage === 'developer' && staged
-          && (
-            <ChplConfirmDeveloper
-              developer={staged}
-              listing={pending}
-              dispatch={handleDeveloperDispatch}
-            />
-          )}
-        { stage === 'product'
-          && (
-            <ChplConfirmProduct
-              product={staged}
-              developer={pending.developer}
-              dispatch={handleProductDispatch}
-            />
-          )}
-        { stage === 'version'
-          && (
-            <ChplConfirmVersion
-              version={staged}
-              product={pending.product}
-              dispatch={handleVersionDispatch}
-            />
-          )}
-        { stage === 'listing'
-          && (
-            <ChplConfirmListing
-              listing={pending}
-            />
-          )}
-        <ChplActionBar
-          canConfirm
-          canReject
-          isDisabled={!canAct('confirm')}
-          isProcessing={isSubmitting}
-          showWarningAcknowledgement={showAcknowledgement}
-          errors={errors}
-          warnings={warnings}
-          dispatch={handleActionDispatch}
-        />
-      </div>
+      <PendingListingContext.Provider value={pendingListingState}>
+        <div className={classes.container}>
+          Inspecting Listing
+          { pending.chplProductNumber }
+          <ChplConfirmProgress
+            value={getProgress(stage)}
+            canNext={canAct('next')}
+            canPrevious={canAct('previous')}
+            dispatch={handleProgressDispatch}
+          />
+          { stage === 'developer' && staged
+            && (
+              <ChplConfirmDeveloper
+                developer={staged}
+                listing={pending}
+                dispatch={handleDeveloperDispatch}
+              />
+            )}
+          { stage === 'product'
+            && (
+              <ChplConfirmProduct
+                product={staged}
+                developer={pending.developer}
+                dispatch={handleProductDispatch}
+              />
+            )}
+          { stage === 'version'
+            && (
+              <ChplConfirmVersion
+                version={staged}
+                product={pending.product}
+                dispatch={handleVersionDispatch}
+              />
+            )}
+          { stage === 'listing'
+            && (
+              <ChplConfirmListing
+                listing={pending}
+              />
+            )}
+          <ChplActionBar
+            canConfirm
+            canReject
+            isDisabled={!canAct('confirm')}
+            isProcessing={isSubmitting}
+            showWarningAcknowledgement={showAcknowledgement}
+            errors={errors}
+            warnings={warnings}
+            dispatch={handleActionDispatch}
+          />
+        </div>
+      </PendingListingContext.Provider>
     </Container>
   );
 }
