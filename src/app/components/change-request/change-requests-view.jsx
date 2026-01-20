@@ -248,7 +248,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
                       No results were found, due to invalid parameters:
                     </div>
                     <ul>
-                      {error.response.data.errorMessages.map((msg) => (
+                      {error.response.data.errorMessages?.map((msg) => (
                         <li key={msg}>{msg}</li>
                       ))}
                     </ul>
