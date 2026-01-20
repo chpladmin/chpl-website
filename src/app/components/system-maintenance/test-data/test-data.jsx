@@ -44,7 +44,15 @@ function ChplTestData() {
 
   return (
     <Card>
-      <CardHeader title="Test Data" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            Test Data
+            <DataUsageOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         <ChplTestDataView
           testData={testData}

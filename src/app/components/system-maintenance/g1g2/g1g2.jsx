@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 
 import ChplG1g2View from './g1g2-view';
 
@@ -93,7 +94,15 @@ function ChplG1g2() {
       storageKey="storageKey-g1g2Management"
     >
       <Card>
-        <CardHeader title="G1/G2 Measures" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              G1/G2 Measures
+              <AssessmentOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           <ChplG1g2View
             g1g2={g1g2}

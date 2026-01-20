@@ -2,12 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,7 +9,8 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -27,12 +22,10 @@ import { UserContext } from 'shared/contexts';
 import { testTool as testToolPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'value', text: 'Value', sortable: true },
-  { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'endDay', text: 'End Date', sortable: true },
-  { text: 'Applicable Criteria' },
-  { text: 'Action', invisible: true },
+const sortOptions = [
+  { property: 'value', text: 'Value' },
+  { property: 'startDay', text: 'Start Date' },
+  { property: 'endDay', text: 'End Date' },
 ];
 
 const useStyles = makeStyles({
@@ -64,7 +57,7 @@ function ChplTestToolsView(props) {
       .sort(sortComparator('value')));
   }, [props.testTools, filterContext.filters, filterContext.searchTerm]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
     const updated = testTools.sort(sortComparator(property, descending));
     setOrderBy(property);
@@ -80,71 +73,79 @@ function ChplTestToolsView(props) {
       <div>
         <ChplFilterChips />
       </div>
-      <div className={classes.tableResultsHeaderContainer}>
-        <Box display="flex" flexDirection="row" gridGap={1}>
-          <Typography variant="subtitle2">Search Results:</Typography>
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-        <Button
-          onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-test-tool"
-          variant="contained"
-          color="primary"
-          endIcon={<AddIcon />}
-        >
-          Add
-        </Button>
-        )}
-      </div>
-      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
-        <Table
-          aria-label="Test Tools table"
-        >
-          <ChplSortableHeaders
-            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
-            onTableSort={handleTableSort}
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader={props.stickyHeader}
+            onSort={handleSort}
           />
-          <TableBody>
-            { testTools
-              .map((item) => (
-                <TableRow key={`${item.value}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.value }
-                    { item.retired && ' (Retired)'}
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.startDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.endDay) }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                    <TableCell align="right">
-                      <Button
-                        onClick={() => dispatch({ action: 'edit', payload: item })}
-                        id={`edit-test-tool-${item.value}`}
-                        variant="contained"
-                        color="secondary"
-                        endIcon={<EditOutlinedIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-test-tool"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { testTools
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.value}`}
+              title="Value"
+              titleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Start Date',
+                    value: getDisplayDateFormat(item.startDay) || 'N/A',
+                    xs: 6,
+                    sm: 4,
+                  },
+                  {
+                    label: 'End Date',
+                    value: getDisplayDateFormat(item.endDay) || 'N/A',
+                    xs: 6,
+                    sm: 4,
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 12,
+                    sm: 4,
+                  },
+                ],
+              ]}
+              actions={
+                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <Button
+                    onClick={() => dispatch({ action: 'edit', payload: item })}
+                    id={`edit-test-tool-${item.value}`}
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    endIcon={<EditOutlinedIcon />}
+                  >
+                    Edit
+                  </Button>
+                )
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }

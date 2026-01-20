@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -21,12 +16,10 @@ import {
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'abbreviation', text: 'Abbreviation', sortable: true },
-  { property: 'domainDisplay', text: 'Domain', sortable: true },
-  { property: 'requiredTest', text: 'Required Test' },
-  { property: 'name', text: 'Name', sortable: true },
-  { text: 'Applicable Criteria' },
+const sortOptions = [
+  { property: 'abbreviation', text: 'Abbreviation' },
+  { property: 'domainDisplay', text: 'Domain' },
+  { property: 'name', text: 'Name' },
 ];
 
 const useStyles = makeStyles({
@@ -60,7 +53,7 @@ function ChplG1g2View(props) {
       .sort(sortComparator('abbreviation')));
   }, [props.g1g2, filterContext.filters, filterContext.searchTerm]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
     const updated = g1g2.sort(sortComparator(property, descending));
     setOrderBy(property);
@@ -76,55 +69,62 @@ function ChplG1g2View(props) {
       <div>
         <ChplFilterChips />
       </div>
-      <div className={classes.tableResultsHeaderContainer}>
-        <Box display="flex" flexDirection="row" gridGap={1}>
-          <Typography variant="subtitle2">Search Results:</Typography>
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-      </div>
-      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
-        <Table
-          aria-label="G1/G2 Measure table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader={props.stickyHeader}
+            onSort={handleSort}
           />
-          <TableBody>
-            { g1g2
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.abbreviation }
-                  </TableCell>
-                  <TableCell>
-                    { item.domainDisplay }
-                  </TableCell>
-                  <TableCell>
-                    { item.removed
-                      && (
-                        <>
-                          Removed |
-                        </>
-                      )}
-                    { item.requiredTest }
-                  </TableCell>
-                  <TableCell>
-                    { item.name }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { g1g2
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Abbreviation"
+              titleValue={item.abbreviation}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Domain',
+                    value: item.domainDisplay || 'N/A',
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'Required Test',
+                    value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'Name',
+                    value: item.name || 'N/A',
+                    xs: 12,
+                    sm: 6,
+                  },
+                ],
+                [
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 12,
+                    sm: 12,
+                  },
+                ],
+              ]}
+            />
+          ))}
+      </Box>
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 import { useSnackbar } from 'notistack';
 
 import ChplCodeSetEdit from './code-set-edit';
@@ -148,7 +149,12 @@ function ChplCodeSets() {
   if (activeCodeSet) {
     return (
       <Card>
-        <CardHeader title={`${activeCodeSet.id ? 'Edit' : 'Add'} Code Set`} />
+        <CardHeader title={(
+          <>
+            <SettingsEthernetIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeCodeSet.id ? 'Edit' : 'Add'} Code Set`}
+          </>
+)} />
         <CardContent>
           <ChplCodeSetEdit
             codeSet={activeCodeSet}
@@ -170,7 +176,15 @@ function ChplCodeSets() {
 
   return (
     <Card>
-      <CardHeader title="Code Sets" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            Code Sets
+            <SettingsEthernetIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         <ChplCodeSetsView
           codeSets={codeSets}

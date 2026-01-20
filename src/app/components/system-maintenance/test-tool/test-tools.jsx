@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplTestToolEdit from './test-tool-edit';
@@ -214,7 +215,12 @@ function ChplTestTools() {
   if (activeTestTool) {
     return (
       <Card>
-        <CardHeader title={`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`} />
+        <CardHeader title={(
+          <>
+            <BuildOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`}
+          </>
+)} />
         <CardContent>
           <ChplTestToolEdit
             testTool={activeTestTool}

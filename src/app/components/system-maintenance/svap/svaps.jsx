@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplSvapEdit from './svap-edit';
@@ -181,7 +182,12 @@ function ChplSvaps() {
   if (activeSvap) {
     return (
       <Card>
-        <CardHeader title={`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`} />
+        <CardHeader title={(
+          <>
+            <TrendingUpOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`}
+          </>
+)} />
         <CardContent>
           <ChplSvapEdit
             svap={activeSvap}
@@ -207,7 +213,15 @@ function ChplSvaps() {
       storageKey="storageKey-svapManagement"
     >
       <Card>
-        <CardHeader title="SVAP" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              SVAP
+              <TrendingUpOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
             && (

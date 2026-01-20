@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplConformanceMethodEdit from './conformance-method-edit';
@@ -137,7 +138,12 @@ function ChplConformanceMethods() {
   if (activeConformanceMethod) {
     return (
       <Card>
-        <CardHeader title={`${activeConformanceMethod.id ? 'Edit' : 'Add'} Conformance Method`} />
+        <CardHeader title={(
+          <>
+            <AccountBalanceOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeConformanceMethod.id ? 'Edit' : 'Add'} Conformance Method`}
+          </>
+)} />
         <CardContent>
           <ChplConformanceMethodEdit
             conformanceMethod={activeConformanceMethod}
@@ -159,7 +165,15 @@ function ChplConformanceMethods() {
 
   return (
     <Card>
-      <CardHeader title="Conformance Methods" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            Conformance Methods
+            <AccountBalanceOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         { (deleteConformanceMethod.isLoading || postConformanceMethod.isLoading || putConformanceMethod.isLoading)
             && (

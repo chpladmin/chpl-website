@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplStandardEdit from './standard-edit';
@@ -262,7 +263,12 @@ function ChplStandards() {
   if (activeStandard) {
     return (
       <Card>
-        <CardHeader title={`${activeStandard.id ? 'Edit' : 'Add'} Standard`} />
+        <CardHeader title={(
+          <>
+            <PlaylistAddCheckOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeStandard.id ? 'Edit' : 'Add'} Standard`}
+          </>
+)} />
         <CardContent>
           <ChplStandardEdit
             standard={activeStandard}
@@ -289,7 +295,15 @@ function ChplStandards() {
       storageKey="storageKey-standardsManagement"
     >
       <Card>
-        <CardHeader title="Standards" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Standards
+              <PlaylistAddCheckOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           { (deleteStandard.isLoading || postStandard.isLoading || putStandard.isLoading)
             && (

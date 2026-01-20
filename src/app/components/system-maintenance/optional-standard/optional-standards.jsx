@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
 
 import ChplOptionalStandardsView from './optional-standards-view';
 
@@ -69,7 +70,15 @@ function ChplOptionalStandards() {
       storageKey="storageKey-optionalStandardsManagement"
     >
       <Card>
-        <CardHeader title="Optional Standards" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Optional Standards
+              <MoreOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           <ChplOptionalStandardsView
             optionalStandards={optionalStandards}

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplApiKeysView from './api-keys-view';
@@ -68,7 +69,15 @@ function ChplApiKeys() {
 
   return (
     <Card>
-      <CardHeader title="API Keys" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            API Keys
+            <CodeOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         <ChplApiKeysView
           apiKeys={apiKeys}

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplQmsStandardEdit from './qms-standard-edit';
@@ -140,7 +141,12 @@ function ChplQmsStandards() {
   if (activeQmsStandard) {
     return (
       <Card>
-        <CardHeader title={`${activeQmsStandard.id ? 'Edit' : 'Add'} QMS Standard`} />
+        <CardHeader title={(
+          <>
+            <AssignmentTurnedInOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeQmsStandard.id ? 'Edit' : 'Add'} QMS Standard`}
+          </>
+)} />
         <CardContent>
           <ChplQmsStandardEdit
             qmsStandard={activeQmsStandard}
@@ -161,7 +167,15 @@ function ChplQmsStandards() {
 
   return (
     <Card>
-      <CardHeader title="QMS Standards" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            QMS Standards
+            <AssignmentTurnedInOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         { (deleteQmsStandard.isLoading || postQmsStandard.isLoading || putQmsStandard.isLoading)
           && (

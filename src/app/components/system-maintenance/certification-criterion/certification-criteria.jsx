@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 
 import ChplCertificationCriteriaView from './certification-criteria-view';
 
@@ -122,7 +123,15 @@ function ChplCertificationCriteria() {
       storageKey="storageKey-certificationCriteriaManagement"
     >
       <Card>
-        <CardHeader title="Certification Criteria" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Certification Criteria
+              <BookOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           <ChplCertificationCriteriaView
             certificationCriteria={certificationCriteria}

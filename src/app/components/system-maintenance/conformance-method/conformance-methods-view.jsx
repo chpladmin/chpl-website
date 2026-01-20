@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, object } from 'prop-types';
@@ -15,17 +11,16 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { useFetchConformanceMethodsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'name', text: 'Name', sortable: true },
+const sortOptions = [
+  { property: 'name', text: 'Name' },
   { property: 'removalDate', text: 'Removal Date' },
-  { text: 'Applicable Criteria' },
-  { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -56,7 +51,7 @@ function ChplConformanceMethodsView(props) {
       .sort(sortComparator('name')));
   }, [props.conformanceMethods]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
     const updated = conformanceMethods.sort(sortComparator(property, descending));
     setOrderBy(property);
@@ -66,71 +61,79 @@ function ChplConformanceMethodsView(props) {
 
   return (
     <>
-      <div className={classes.tableResultsHeaderContainer}>
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchConformanceMethodsActivity}
-          title="Conformance Methods"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-conformance-method"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        )}
-      </div>
-      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
-        <Table
-          aria-label="Conformance Method table"
-        >
-          <ChplSortableHeaders
-            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
-            onTableSort={handleTableSort}
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">
+            Conformance Methods
+          </Typography>
+          <Typography variant="body2">
+            {`(${conformanceMethods.length} Result${conformanceMethods.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader={props.stickyHeader}
+            onSort={handleSort}
           />
-          <TableBody>
-            { conformanceMethods
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.removed
-                      && (
-                        <>
-                          Removed |
-                        </>
-                      )}
-                    { item.name }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.removalDate) }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                    <TableCell align="right">
-                      <Button
-                        onClick={() => dispatch({ action: 'edit', payload: item })}
-                        id={`edit-conformance-method-${item.value}`}
-                        variant="contained"
-                        color="secondary"
-                        endIcon={<EditOutlinedIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchConformanceMethodsActivity}
+            title="Conformance Methods"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-conformance-method"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { conformanceMethods
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Name"
+              titleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Removal Date',
+                    value: getDisplayDateFormat(item.removalDate) || 'N/A',
+                    xs: 6,
+                    sm: 4,
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 12,
+                    sm: 8,
+                  },
+                ],
+              ]}
+              actions={
+                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <Button
+                    onClick={() => dispatch({ action: 'edit', payload: item })}
+                    id={`edit-conformance-method-${item.value}`}
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    endIcon={<EditOutlinedIcon />}
+                  >
+                    Edit
+                  </Button>
+                )
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }

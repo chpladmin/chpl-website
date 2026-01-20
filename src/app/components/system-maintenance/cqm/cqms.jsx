@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
 
 import ChplCqmsView from './cqms-view';
 
@@ -44,7 +45,15 @@ function ChplCqms() {
 
   return (
     <Card>
-      <CardHeader title="CQMs" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            CQMs
+            <SpeedOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         <ChplCqmsView
           cqms={cqms}

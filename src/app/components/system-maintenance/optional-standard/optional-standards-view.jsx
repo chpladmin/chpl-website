@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -21,11 +16,8 @@ import {
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'displayValue', text: 'Display Value', sortable: true },
-  { text: 'Citation' },
-  { text: 'Description' },
-  { text: 'Applicable Criteria' },
+const sortOptions = [
+  { property: 'displayValue', text: 'Display Value' },
 ];
 
 const useStyles = makeStyles({
@@ -57,7 +49,7 @@ function ChplOptionalStandardsView(props) {
       .sort(sortComparator('displayValue')));
   }, [props.optionalStandards, filterContext.filters, filterContext.searchTerm]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
     const updated = optionalStandards.sort(sortComparator(property, descending));
     setOrderBy(property);
@@ -73,46 +65,54 @@ function ChplOptionalStandardsView(props) {
       <div>
         <ChplFilterChips />
       </div>
-      <div className={classes.tableResultsHeaderContainer}>
-        <Box display="flex" flexDirection="row" gridGap={1}>
-          <Typography variant="subtitle2">Search Results:</Typography>
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-      </div>
-      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
-        <Table
-          aria-label="Optional Standards table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader={props.stickyHeader}
+            onSort={handleSort}
           />
-          <TableBody>
-            { optionalStandards
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.displayValue }
-                  </TableCell>
-                  <TableCell>
-                    { item.citation }
-                  </TableCell>
-                  <TableCell>
-                    { item.description }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { optionalStandards
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Display Value"
+              titleValue={item.displayValue}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Citation',
+                    value: item.citation || 'N/A',
+                    xs: 6,
+                    sm: 4,
+                  },
+                  {
+                    label: 'Description',
+                    value: item.description || 'N/A',
+                    xs: 12,
+                    sm: 4,
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 12,
+                    sm: 4,
+                  },
+                ],
+              ]}
+            />
+          ))}
+      </Box>
     </>
   );
 }

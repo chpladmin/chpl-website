@@ -1,26 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { qmsStandardType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'name', text: 'Name', sortable: true },
-  { text: 'Action', invisible: true },
+const sortOptions = [
+  { property: 'name', text: 'Name' },
 ];
 
 const useStyles = makeStyles({
@@ -36,7 +32,7 @@ function ChplQmsStandardsView(props) {
   const [qmsStandards, setQmsStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
+  const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
@@ -47,7 +43,7 @@ function ChplQmsStandardsView(props) {
       .sort(sortComparator('name')));
   }, [props.qmsStandards]); // eslint-disable-line react/destructuring-assignment
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
     const updated = qmsStandards.sort(sortComparator(property, descending));
     setOrderBy(property);
@@ -57,55 +53,59 @@ function ChplQmsStandardsView(props) {
 
   return (
     <>
-      { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-        <div className={classes.tableResultsHeaderContainer}>
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-qms-standard"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        </div>
-      )}
-      <TableContainer className={classes.container} component={Paper} style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
-        <Table
-          aria-label="QMS Standard table"
-        >
-          <ChplSortableHeaders
-            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
-            onTableSort={handleTableSort}
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">
+            QMS Standards
+          </Typography>
+          <Typography variant="body2">
+            {`(${qmsStandards.length} Result${qmsStandards.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader={props.stickyHeader}
+            onSort={handleSort}
           />
-          <TableBody>
-            { qmsStandards
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.name }
-                  </TableCell>
-                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                    <TableCell align="right">
-                      <Button
-                        onClick={() => dispatch({ action: 'edit', payload: item })}
-                        id={`edit-qms-standard-${item.id}`}
-                        variant="contained"
-                        color="secondary"
-                        endIcon={<EditOutlinedIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-qms-standard"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { qmsStandards
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Name"
+              titleValue={item.name}
+              actions={
+                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <Button
+                    onClick={() => dispatch({ action: 'edit', payload: item })}
+                    id={`edit-qms-standard-${item.id}`}
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    endIcon={<EditOutlinedIcon />}
+                  >
+                    Edit
+                  </Button>
+                )
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }

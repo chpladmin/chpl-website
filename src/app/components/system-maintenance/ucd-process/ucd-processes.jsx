@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplUcdProcessEdit from './ucd-process-edit';
@@ -140,7 +141,12 @@ function ChplUcdProcesses() {
   if (activeUcdProcess) {
     return (
       <Card>
-        <CardHeader title={`${activeUcdProcess.id ? 'Edit' : 'Add'} UCD Process`} />
+        <CardHeader title={(
+          <>
+            <TouchAppOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeUcdProcess.id ? 'Edit' : 'Add'} UCD Process`}
+          </>
+)} />
         <CardContent>
           <ChplUcdProcessEdit
             ucdProcess={activeUcdProcess}
@@ -161,7 +167,15 @@ function ChplUcdProcesses() {
 
   return (
     <Card>
-      <CardHeader title="UCD Processes" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            UCD Processes
+            <TouchAppOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         { (deleteUcdProcess.isLoading || postUcdProcess.isLoading || putUcdProcess.isLoading)
           && (
