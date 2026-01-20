@@ -15,7 +15,6 @@ import {
   string,
 } from 'prop-types';
 
-import palette from '../../themes/palette';
 function ChplSearchResultCard({
   title,
   titleValue,
@@ -40,7 +39,7 @@ function ChplSearchResultCard({
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Typography variant="body2" >
+                <Typography variant="h5" >
                   {titleValue}
                 </Typography>
                 {headerActions}
@@ -68,13 +67,13 @@ function ChplSearchResultCard({
                 <Typography variant="body2" style={{ fontWeight: '600' }}>
                   {field.label}
                 </Typography>
-                <Typography variant="body2" style={{ fontSize: '1.125rem' }}>
+                <Typography variant="body1">
                   {field.value ?? field.fallback ?? 'N/A'}
                 </Typography>
               </Grid>
             ))}
             {actions && groupIndex === fieldGroups.length - 1 && (
-              <Grid item xs={12} sm="auto" style={{ marginLeft: 'auto' }}>
+              <Grid item sm="auto" style={{ marginLeft: 'auto' }}>
                 {actions}
               </Grid>
             )}

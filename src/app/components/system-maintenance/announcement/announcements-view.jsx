@@ -213,19 +213,19 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                                 label: 'Start Date',
                                 value: getDisplayDateFormat(item.startDateTime),
                                 xs: 6,
-                                sm: 6,
+                                sm: 3,
                               },
                               {
                                 label: 'End Date',
                                 value: getDisplayDateFormat(item.endDateTime),
                                 xs: 6,
-                                sm: 4,
+                                sm: 3,
                               },
                               {
                                 label: 'Public?',
                                 value: item.isPublic ? 'Yes' : 'No',
                                 xs: 6,
-                                sm: 4,
+                                sm: 3,
                               },
                             ],
                           ]}

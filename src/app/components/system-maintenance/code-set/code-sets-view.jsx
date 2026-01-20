@@ -103,8 +103,8 @@ function ChplCodeSetsView(props) {
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 12,
-                    sm: 12,
+                    xs: 11,
+                    sm: 11,
                   },
                 ],
               ]}

@@ -119,7 +119,7 @@ function ChplCertificationCriteriaView(props) {
           />
         </Box>
       </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '16px' }}>
         {certificationCriteria
           .map((item) => (
             <ChplSearchResultCard
@@ -131,28 +131,28 @@ function ChplCertificationCriteriaView(props) {
                   {
                     label: 'Title',
                     value: item.title,
-                    xs: 12,
-                    sm: 12,
+                    xs: 6,
+                    sm: 4,
                   },
-                ],
-                [
                   {
                     label: 'Start Date',
                     value: getDisplayDateFormat(item.startDay),
                     xs: 6,
-                    sm: 3,
+                    sm: 4,
                   },
                   {
                     label: 'End Date',
                     value: getDisplayDateFormat(item.endDay),
                     xs: 6,
-                    sm: 3,
+                    sm: 4,
                   },
+                ],
+                [
                   {
                     label: 'Rule',
                     value: item.rule?.name || 'N/A',
                     xs: 6,
-                    sm: 3,
+                    sm: 4,
                   },
                   {
                     label: 'Certification Companion Guide',
@@ -164,15 +164,13 @@ function ChplCertificationCriteriaView(props) {
                       />
                     ) : 'N/A',
                     xs: 6,
-                    sm: 3,
+                    sm: 4,
                   },
-                ],
-                [
                   {
                     label: 'Attributes',
                     value: item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A',
                     xs: 12,
-                    sm: 12,
+                    sm: 4,
                   },
                 ],
               ]}

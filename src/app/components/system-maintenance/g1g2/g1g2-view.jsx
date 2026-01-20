@@ -106,6 +106,8 @@ function ChplG1g2View(props) {
                     xs: 6,
                     sm: 3,
                   },
+                ],
+                [
                   {
                     label: 'Name',
                     value: item.name || 'N/A',
@@ -118,7 +120,7 @@ function ChplG1g2View(props) {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
                     xs: 12,
-                    sm: 12,
+                    sm: 6,
                   },
                 ],
               ]}

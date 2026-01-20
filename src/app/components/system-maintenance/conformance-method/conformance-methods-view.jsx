@@ -107,7 +107,7 @@ function ChplConformanceMethodsView(props) {
                     label: 'Removal Date',
                     value: getDisplayDateFormat(item.removalDate),
                     xs: 6,
-                    sm: 4,
+                    sm: 3,
                   },
                   {
                     label: 'Applicable Criteria',

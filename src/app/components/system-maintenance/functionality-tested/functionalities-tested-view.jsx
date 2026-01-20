@@ -140,19 +140,19 @@ function ChplFunctionalitiesTestedView(props) {
                     label: 'Rule',
                     value: item.rule?.name || 'N/A',
                     xs: 6,
-                    sm: 2,
+                    sm: 3,
                   },
                   {
                     label: 'Practice Type',
                     value: item.practiceType?.name || 'N/A',
                     xs: 6,
-                    sm: 2,
+                    sm: 3,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
                     xs: 6,
-                    sm: 5,
+                    sm: 2,
                   },
                 ],
                 [
@@ -178,7 +178,7 @@ function ChplFunctionalitiesTestedView(props) {
                     label: 'Extension End Date',
                     value: getDisplayDateFormat(item.extensionEndDay) || 'N/A',
                     xs: 6,
-                    sm: 3,
+                    sm: 2,
                   },
                 ],
               ]}
