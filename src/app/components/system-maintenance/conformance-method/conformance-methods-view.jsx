@@ -105,7 +105,7 @@ function ChplConformanceMethodsView(props) {
                 [
                   {
                     label: 'Removal Date',
-                    value: getDisplayDateFormat(item.removalDate) || 'N/A',
+                    value: getDisplayDateFormat(item.removalDate),
                     xs: 6,
                     sm: 4,
                   },

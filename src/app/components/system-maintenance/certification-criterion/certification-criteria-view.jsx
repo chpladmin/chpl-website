@@ -138,13 +138,13 @@ function ChplCertificationCriteriaView(props) {
                 [
                   {
                     label: 'Start Date',
-                    value: getDisplayDateFormat(item.startDay) || 'N/A',
+                    value: getDisplayDateFormat(item.startDay),
                     xs: 6,
                     sm: 3,
                   },
                   {
                     label: 'End Date',
-                    value: getDisplayDateFormat(item.endDay) || 'N/A',
+                    value: getDisplayDateFormat(item.endDay),
                     xs: 6,
                     sm: 3,
                   },

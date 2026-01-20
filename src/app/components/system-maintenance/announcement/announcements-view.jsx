@@ -211,13 +211,13 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                             [
                               {
                                 label: 'Start Date',
-                                value: getDisplayDateFormat(item.startDateTime) || 'N/A',
+                                value: getDisplayDateFormat(item.startDateTime),
                                 xs: 6,
-                                sm: 4,
+                                sm: 6,
                               },
                               {
                                 label: 'End Date',
-                                value: getDisplayDateFormat(item.endDateTime) || 'N/A',
+                                value: getDisplayDateFormat(item.endDateTime),
                                 xs: 6,
                                 sm: 4,
                               },

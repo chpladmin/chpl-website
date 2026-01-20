@@ -35,10 +35,6 @@ const sortOptions = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
 });
 
 function ChplFunctionalitiesTestedView(props) {
@@ -142,13 +138,13 @@ function ChplFunctionalitiesTestedView(props) {
                   },
                   {
                     label: 'Rule',
-                    value: item.rule?.name ?? 'N/A',
+                    value: item.rule?.name || 'N/A',
                     xs: 6,
                     sm: 2,
                   },
                   {
                     label: 'Practice Type',
-                    value: item.practiceType?.name ?? 'N/A',
+                    value: item.practiceType?.name || 'N/A',
                     xs: 6,
                     sm: 2,
                   },

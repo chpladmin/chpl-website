@@ -160,25 +160,25 @@ function ChplStandardsView(props) {
                 [
                   {
                     label: 'Start Date',
-                    value: getDisplayDateFormat(item.startDay) || 'N/A',
+                    value: getDisplayDateFormat(item.startDay),
                     xs: 6,
                     sm: 3,
                   },
                   {
                     label: 'Required Date',
-                    value: getDisplayDateFormat(item.requiredDay) || 'N/A',
+                    value: getDisplayDateFormat(item.requiredDay),
                     xs: 6,
                     sm: 3,
                   },
                   {
                     label: 'Extension End Date',
-                    value: getDisplayDateFormat(item.extensionEndDay) || 'N/A',
+                    value: getDisplayDateFormat(item.extensionEndDay),
                     xs: 6,
                     sm: 3,
                   },
                   {
                     label: 'End Date',
-                    value: getDisplayDateFormat(item.endDay) || 'N/A',
+                    value: getDisplayDateFormat(item.endDay),
                     xs: 6,
                     sm: 3,
                   },
