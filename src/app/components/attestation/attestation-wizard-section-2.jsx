@@ -110,6 +110,19 @@ function ChplAttestationWizardSection2({ dispatch, instructions, sections: initi
     setSections(updated);
   };
 
+  const getInstructions = (ins) => (
+    <>
+      { ins.split('\n\n').map((p) => (
+        <Typography
+          className={classes.questionParagraph}
+          key={p}
+        >
+          { interpretLink(p) }
+        </Typography>
+      ))}
+    </>
+  );
+
   const getQuestion = (section, item) => (
     <div key={item.id}>
       <FormControl component="fieldset">
@@ -208,7 +221,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions, sections: initi
       <Card>
         <CardContent>
           <Typography variant="body1">
-            { instructions }
+            { getInstructions(instructions) }
           </Typography>
           <Divider />
           { sections.sort((a, b) => a.sortOrder - b.sortOrder).map((section, idx) => getSection(section, idx)) }
