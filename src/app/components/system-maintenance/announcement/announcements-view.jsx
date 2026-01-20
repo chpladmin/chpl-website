@@ -25,12 +25,9 @@ import { theme, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   actionContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '16px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
   },
   noResultsContainer: {
     padding: '16px 32px',

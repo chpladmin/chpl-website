@@ -12,7 +12,6 @@ import USAGovLogo from '../../assets/images/USAgov_logo_2.png';
 import USAGovEspLogo from '../../assets/images/Logo_USAGov_Spanish.png';
 
 import { theme } from 'themes';
-import ChplAnnouncementsDisplay from 'components/system-maintenance/announcement/announcements-display';
 
 const useStyles = makeStyles({
   footer: {
@@ -52,7 +51,6 @@ function ChplNavigationBottom() {
   const classes = useStyles();
   return (
       <Box className={classes.footer}>
-        <ChplAnnouncementsDisplay />
         <Container maxWidth="lg" disableGutters>
           <Box className={classes.footerContentContainer}>
             <Box display="flex" flexDirection="row" alignItems="baseline" gridGap={4}>
