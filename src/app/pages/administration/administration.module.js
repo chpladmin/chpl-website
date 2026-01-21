@@ -18,7 +18,6 @@ angular
     'ngIdle',
     'ngFileUpload',
     'ngSanitize',
-    'smart-table',
     'toaster',
     'ui.bootstrap',
     'ui.router',

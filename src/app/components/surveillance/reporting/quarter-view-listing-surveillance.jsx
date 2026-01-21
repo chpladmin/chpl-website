@@ -172,54 +172,54 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             { surveillance.surveillanceOutcome?.name === 'Other'
               && (
                 <Typography>
-                  <strong>Surveillance Outcome Other:</strong>
+                  <strong>Outcome of Surveillance - Other Explanation:</strong>
                   {' '}
                   { surveillance.surveillanceOutcomeOther }
                 </Typography>
               )}
             <Typography>
-              <strong>Surveillance Process Types:</strong>
+              <strong>Surveillance Process Type:</strong>
               {' '}
               { surveillance.surveillanceProcessTypes.map((s) => s.name).join('; ') }
             </Typography>
             { surveillance.surveillanceProcessTypes.some((s) => s.name === 'Other')
               && (
                 <Typography>
-                  <strong>Surveillance Process Type Other:</strong>
+                  <strong>Surveillance Process Type - Other Explanation:</strong>
                   {' '}
                   { surveillance.surveillanceProcessTypeOther }
                 </Typography>
               )}
             <Typography>
-              <strong>Surveillance Grounds For Initiating:</strong>
+              <strong>Grounds For Initiating Surveillance:</strong>
               {' '}
               { surveillance.surveillanceGroundsForInitiating.map((s) => s.name).join('; ') }
             </Typography>
             { surveillance.surveillanceGroundsForInitiating.some((s) => s.name === 'Other')
               && (
                 <Typography>
-                  <strong>Surveillance Grounds For Initiating Other:</strong>
+                  <strong>Grounds For Initiating Surveillance - Other:</strong>
                   {' '}
                   { surveillance.surveillanceGroundsForInitiatingOther }
                 </Typography>
               )}
             <Typography>
-              <strong>Nonconformity Causes:</strong>
+              <strong>Potential Causes of Non-Conformities or Suspected Non-Conformities:</strong>
               {' '}
               { surveillance.nonconformityCauses }
             </Typography>
             <Typography>
-              <strong>Nonconformity Nature:</strong>
+              <strong>Nature of Any Substantiated Non-Conformities:</strong>
               {' '}
               { surveillance.nonconformityNature }
             </Typography>
             <Typography>
-              <strong>Steps To Surveil:</strong>
+              <strong>Steps to Surveil and Substantiate:</strong>
               {' '}
               { surveillance.stepsToSurveil }
             </Typography>
             <Typography>
-              <strong>Steps To Engage:</strong>
+              <strong>Steps To Engage and Work with Developer and End-Users:</strong>
               {' '}
               { surveillance.stepsToEngage }
             </Typography>
@@ -234,12 +234,12 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
               { surveillance.limitationsEvaluation }
             </Typography>
             <Typography>
-              <strong>Nondisclosure Evaluation:</strong>
+              <strong>Non-Disclosure Evaluation:</strong>
               {' '}
               { surveillance.nondisclosureEvaluation }
             </Typography>
             <Typography>
-              <strong>Direction Developer Resolution:</strong>
+              <strong>Direction for Developer Resolution:</strong>
               {' '}
               { surveillance.directionDeveloperResolution }
             </Typography>
@@ -251,7 +251,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             { surveillance.capStatuses.some((s) => s.name === 'Other')
               && (
                 <Typography>
-                  <strong>CAP Status Other:</strong>
+                  <strong>CAP Status - Other:</strong>
                   {' '}
                   { surveillance.capStatusOther }
                 </Typography>

@@ -10,6 +10,7 @@ import { object } from 'prop-types';
 
 import compareChangeRequest from './services/change-requests.service';
 import compareComplaint from './services/complaints.service';
+import compareSurveillanceReporting from './services/surveillance-reporting.service';
 import compareUser from './services/users.service';
 
 import { compareDeveloper } from 'components/activity/services/developers.service';
@@ -33,6 +34,7 @@ const getDetails = (activity) => {
   let details;
   switch (activity.concept) {
     case 'ANNOUNCEMENT': compare = compareSystemMaintenance; break;
+    case 'ANNUAL_REPORT': compare = compareSurveillanceReporting; break;
     case 'CERTIFICATION_BODY': compare = compareOrganization; break;
     case 'CERTIFIED_PRODUCT': compare = compareListing; break;
     case 'CHANGE_REQUEST': compare = compareChangeRequest; break;
@@ -41,6 +43,8 @@ const getDetails = (activity) => {
     case 'DEVELOPER': compare = compareDeveloper; break;
     case 'FUNCTIONALITY_TESTED': compare = compareSystemMaintenance; break;
     case 'PRODUCT': compare = compareProduct; break;
+    case 'QUARTERLY_REPORT': compare = compareSurveillanceReporting; break;
+    case 'QUARTERLY_REPORT_LISTING': compare = compareSurveillanceReporting; break;
     case 'STANDARD': compare = compareSystemMaintenance; break;
     case 'SVAP': compare = compareSystemMaintenance; break;
     case 'TESTING_LAB': compare = compareOrganization; break;
@@ -112,6 +116,7 @@ function ChplActivityDetails({ activity }) {
 
   if (![
     'ANNOUNCEMENT',
+    'ANNUAL_REPORT',
     'CERTIFICATION_BODY',
     'CERTIFIED_PRODUCT',
     'CHANGE_REQUEST',
@@ -120,6 +125,8 @@ function ChplActivityDetails({ activity }) {
     'DEVELOPER',
     'FUNCTIONALITY_TESTED',
     'PRODUCT',
+    'QUARTERLY_REPORT',
+    'QUARTERLY_REPORT_LISTING',
     'STANDARD',
     'SVAP',
     'TESTING_LAB',

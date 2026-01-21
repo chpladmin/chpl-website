@@ -90,6 +90,11 @@ function ChplQuarterView({ dispatch, report }) {
     setListings(relevantListingsQuery.data);
   }, [relevantListingsQuery.data, relevantListingsQuery.isLoading, relevantListingsQuery.isSuccess]);
 
+  const sortListings = (a, b) => {
+    if (a.certificationDate === b.certificationDate) { return a.chplProductNumber < b.chplProductNumber ? -1 : 1; }
+    return a.certificationDate < b.certificationDate ? 1 : -1;
+  };
+
   const handleDispatch = (action) => {
     if (activeListing) {
       setActiveListing(undefined);
@@ -267,12 +272,14 @@ function ChplQuarterView({ dispatch, report }) {
             <Card>
               <CardHeader title="Listings with relevant surveillance" />
               <CardContent>
-                { listings.map((l) => (
-                  <ChplQuarterViewListing
-                    key={l.id}
-                    listing={l}
-                  />
-                ))}
+                { listings
+                  .sort(sortListings)
+                  .map((l) => (
+                    <ChplQuarterViewListing
+                      key={l.id}
+                      listing={l}
+                    />
+                  ))}
               </CardContent>
             </Card>
           )}
@@ -282,6 +289,7 @@ function ChplQuarterView({ dispatch, report }) {
               disallowedFilters={['certificationBodies', 'receivedDate', 'closedDate']}
               bonusQuery={bonusQuery}
               canAdd={false}
+              canEdit={false}
             />
           )}
       </div>
