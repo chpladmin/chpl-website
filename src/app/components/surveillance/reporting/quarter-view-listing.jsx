@@ -70,14 +70,19 @@ function ChplQuarterViewListing({ listing }) {
           </div>
         </div>
       </AccordionSummary>
-      <AccordionDetails style={{ display: 'flex', padding: '0', marginTop: '-32px', boxShadow: 'none' }}>
+      <AccordionDetails style={{
+        display: 'flex', padding: '0', marginTop: '-32px', boxShadow: 'none',
+      }}
+      >
         <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
-          { listing.surveillances.map((surv) => (
-            <ChplQuarterViewListingSurveillance
-              key={surv.id}
-              surveillance={surv}
-            />
-          ))}
+          { listing.surveillances
+            .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
+            .map((surv) => (
+              <ChplQuarterViewListingSurveillance
+                key={surv.id}
+                surveillance={surv}
+              />
+            ))}
         </Box>
       </AccordionDetails>
     </Accordion>

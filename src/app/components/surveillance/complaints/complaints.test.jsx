@@ -88,9 +88,7 @@ jest.mock('api/complaints', () => ({
 const mockData = {
   isLoading: false,
   isSuccess: true,
-  data: {
-    data: [],
-  },
+  data: [],
 };
 
 jest.mock('api/data', () => ({
