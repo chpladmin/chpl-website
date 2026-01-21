@@ -1,33 +1,7 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
-import { sortCriteria } from 'services/criteria.service';
+import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-let lookup;
-
-/* eslint-disable no-nested-ternary */
-const compare = (before, after, key, title = 'unknown') => {
-  let options;
-  switch (key) {
-    case 'criteria':
-      options = {
-        sort: (p, c) => sortCriteria(p.certificationCriterion, c.certificationCriterion),
-        write: (f) => `Criterion "${f.certificationCriterion.number}"`,
-      };
-      break;
-    default:
-      if (after.length > 0) {
-        console.debug({ before, after, key });
-      }
-      return undefined;
-  }
-  const changes = compareArrays(before, after, { ...options, root: key }, lookup);
-  if (changes && changes.length > 0) {
-    return `${title} changes<ul>${changes.join('')}</ul>`;
-  }
-  return undefined;
-};
-
-lookup = {
+const lookup = {
   shortCircuit: [
     'root.currentStatus.certificationBody',
     'root.developer',
@@ -77,10 +51,6 @@ lookup = {
   'root.details.signatureEmail': { message: (before, after) => comparePrimitive(before, after, 'signatureEmail', 'Signer\'s Email') },
   'root.details.url': { message: (before, after) => comparePrimitive(before, after, 'url', 'URL') },
   'root.statuses': { message: () => undefined },
-
-
-
-  'root.complaintTypes': { message: (before, after) => compare(before, after, 'complaintTypes', 'Complaint Type(s)') },
 };
 
 const compareChangeRequest = (prev, curr) => compareObject(prev, curr, lookup);
