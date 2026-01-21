@@ -42,7 +42,7 @@ function ChplSortControls({
   };
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" mr={2}>
       <ButtonGroup color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
         <Button
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
