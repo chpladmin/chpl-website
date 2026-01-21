@@ -55,7 +55,6 @@ import ChplUcdProcesses from 'components/system-maintenance/ucd-process/ucd-proc
 import { eventTrack } from 'services/analytics.service';
 import {
   AnalyticsContext,
-  BreadcrumbContext,
   UserContext,
   useAnalyticsContext,
 } from 'shared/contexts';
@@ -92,14 +91,16 @@ const useStyles = makeStyles({
     zIndex: 1,
     transition: 'width 0.3s ease',
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'row',
-      width: '100%',
       position: 'relative',
       top: 0,
+      width: '100%',
     },
   },
   navOpen: {
     width: '200px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
   navClosed: {
     width: '50px',
@@ -233,36 +234,11 @@ const maintenanceItems = [{
 function ChplSystemMaintenance() {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const [active, setActive] = useState('');
   const [navOpen, setNavOpen] = useState(true); // or false to start closed
   const classes = useStyles();
   let navigate;
   let data;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="system-maintenance.disabled"
-        depth={0}
-        variant="text"
-        disabled
-      >
-        System Maintenance
-      </Button>,
-    );
-    append(
-      <Button
-        key="system-maintenance"
-        depth={0}
-        variant="text"
-        onClick={() => navigate('')}
-      >
-        System Maintenance
-      </Button>,
-    );
-    display('system-maintenance.disabled');
-  }, []);
 
   const getNavigationItem = (item) => (
     <Button
@@ -281,62 +257,16 @@ function ChplSystemMaintenance() {
   );
 
   navigate = (target) => {
-    hide('accessibilityStandards.viewall.disabled');
-    hide('accessibilityStandards.viewall');
-    hide('accessibilityStandards.add.disabled');
-    hide('accessibilityStandards.edit.disabled');
-    hide('announcements.viewall.disabled');
-    hide('announcements.viewall');
-    hide('announcements.add.disabled');
-    hide('announcements.edit.disabled');
-    hide('apiKeys.viewall.disabled');
-    hide('certificationCriteria.viewall.disabled');
-    hide('codeSets.viewall.disabled');
-    hide('conformanceMethods.viewall.disabled');
-    hide('cqms.viewall.disabled');
-    hide('functionalitiesTested.viewall.disabled');
-    hide('functionalitiesTested.viewall');
-    hide('functionalitiesTested.add.disabled');
-    hide('functionalitiesTested.edit.disabled');
-    hide('g1g2.viewall.disabled');
-    hide('manageSubscriptions.viewall.disabled');
-    hide('optionalStandards.viewall.disabled');
-    hide('qmsStandards.viewall.disabled');
-    hide('qmsStandards.viewall');
-    hide('qmsStandards.add.disabled');
-    hide('qmsStandards.edit.disabled');
-    hide('standards.viewall.disabled');
-    hide('standards.viewall');
-    hide('standards.add.disabled');
-    hide('standards.edit.disabled');
-    hide('testData.viewall.disabled');
-    hide('testTools.viewall.disabled');
-    hide('testTools.viewall');
-    hide('testTools.add.disabled');
-    hide('testTools.edit.disabled');
-    hide('svaps.viewall.disabled');
-    hide('svaps.viewall');
-    hide('svaps.add.disabled');
-    hide('svaps.edit.disabled');
-    hide('systemJobs.viewall.disabled');
-    hide('systemJobs.viewall');
-    hide('systemJobs.schedule.disabled');
-    hide('ucdProcesses.viewall.disabled');
-    hide('ucdProcesses.viewall');
-    hide('ucdProcesses.add.disabled');
-    hide('ucdProcesses.edit.disabled');
     setActive(target);
     eventTrack({
       ...data.analytics,
       event: `Navigate to ${target}`,
     });
     if (target && target !== 'home') {
-      display('system-maintenance');
-      hide('system-maintenance.disabled');
-      setNavOpen(false);
-    } else {
-      display('system-maintenance.disabled');
-      hide('system-maintenance');
+      // Only close nav on desktop (screen width > 600px for 'sm' breakpoint)
+      if (window.innerWidth > 600) {
+        setNavOpen(false);
+      }
     }
   };
 

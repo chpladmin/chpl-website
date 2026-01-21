@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -14,7 +14,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   rule as rulePropType,
@@ -62,7 +61,6 @@ function ChplStandardEdit(props) {
     isProcessing,
     standard: initialStandard,
   } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
@@ -72,34 +70,10 @@ function ChplStandardEdit(props) {
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="standards.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="standards.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
     setStandard(initialStandard);
     setCriteria(initialStandard.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(initialStandard.id ? 'standards.edit.disabled' : 'standards.add.disabled');
   }, [initialStandard]);
 
   useEffect(() => {
@@ -133,18 +107,12 @@ function ChplStandardEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('standards.add.disabled');
-        hide('standards.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('standards.add.disabled');
-        hide('standards.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('standards.add.disabled');
-        hide('standards.edit.disabled');
         break;
         // no default
     }

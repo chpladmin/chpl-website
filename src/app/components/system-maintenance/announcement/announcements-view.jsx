@@ -18,7 +18,7 @@ import { useFetchAnnouncementsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplSearchResultCard } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
 
@@ -35,93 +35,23 @@ const useStyles = makeStyles({
 });
 
 function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }) {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [announcement, setAnnouncement] = useState(undefined);
   const [announcements, setAnnouncements] = useState([]);
   const classes = useStyles();
-  let handleBreadcrumbs;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="announcements.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Announcements
-      </Button>,
-    );
-    append(
-      <Button
-        key="announcements.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleBreadcrumbs({ action: 'close' })}
-      >
-        Announcements
-      </Button>,
-    );
-    append(
-      <Button
-        key="announcements.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="announcements.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-    display('announcements.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     setAnnouncements(initialAnnouncements.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
   }, [initialAnnouncements]);
 
   const handleActionBarDispatch = (action, payload) => {
-    if (action !== 'close') {
+    if (action === 'close') {
+      setAnnouncement(undefined);
+    } else {
       dispatch(action, {
         ...announcement,
         ...payload,
       });
-    }
-    handleBreadcrumbs({ action: 'close' });
-  };
-
-  handleBreadcrumbs = ({ action, payload }) => {
-    switch (action) {
-      case 'add':
-        setAnnouncement({});
-        display('announcements.add.disabled');
-        display('announcements.viewall');
-        hide('announcements.viewall.disabled');
-        break;
-      case 'close':
-        setAnnouncement(undefined);
-        display('announcements.viewall.disabled');
-        hide('announcements.add.disabled');
-        hide('announcements.edit.disabled');
-        hide('announcements.viewall');
-        break;
-      case 'edit':
-        setAnnouncement(payload);
-        display('announcements.edit.disabled');
-        display('announcements.viewall');
-        hide('announcements.viewall.disabled');
-        break;
-        // no default
     }
   };
 
@@ -176,7 +106,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                       color="primary"
                       variant="contained"
                       id="add-new-announcement"
-                      onClick={() => handleBreadcrumbs({ action: 'add' })}
+                      onClick={() => setAnnouncement({})}
                       endIcon={<AddIcon />}
                     >
                       Add
@@ -232,7 +162,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
                           actions={
                             hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                               <Button
-                                onClick={() => handleBreadcrumbs({ action: 'edit', payload: item })}
+                                onClick={() => setAnnouncement(item)}
                                 variant="contained"
                                 color="secondary"
                                 size="small"

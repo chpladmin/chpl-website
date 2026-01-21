@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,10 +18,8 @@ import {
   usePostAccessibilityStandard,
   usePutAccessibilityStandard,
 } from 'api/standards';
-import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplAccessibilityStandards() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchAccessibilityStandards();
   const deleteAccessibilityStandard = useDeleteAccessibilityStandard();
   const postAccessibilityStandard = usePostAccessibilityStandard();
@@ -34,30 +32,6 @@ function ChplAccessibilityStandards() {
   let handleDispatch;
 
   useEffect(() => {
-    append(
-      <Button
-        key="accessibilityStandards.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Accessibility Standards
-      </Button>,
-    );
-    append(
-      <Button
-        key="accessibilityStandards.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        Accessibility Standards
-      </Button>,
-    );
-    display('accessibilityStandards.viewall.disabled');
-  }, []);
-
-  useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setAccessibilityStandards(data);
   }, [data, isLoading, isSuccess]);
@@ -67,10 +41,6 @@ function ChplAccessibilityStandards() {
       case 'cancel':
         setActiveAccessibilityStandard(undefined);
         setIsProcessing(false);
-        display('accessibilityStandards.viewall.disabled');
-        hide('accessibilityStandards.viewall');
-        hide('accessibilityStandards.add.disabled');
-        hide('accessibilityStandards.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -82,8 +52,6 @@ function ChplAccessibilityStandards() {
             });
             setActiveAccessibilityStandard(undefined);
             setIsProcessing(false);
-            display('accessibilityStandards.viewall.disabled');
-            hide('accessibilityStandards.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -94,8 +62,6 @@ function ChplAccessibilityStandards() {
       case 'edit':
         setActiveAccessibilityStandard(payload);
         setErrors([]);
-        display('accessibilityStandards.viewall');
-        hide('accessibilityStandards.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -108,8 +74,6 @@ function ChplAccessibilityStandards() {
               });
               setActiveAccessibilityStandard(undefined);
               setIsProcessing(false);
-              display('accessibilityStandards.viewall.disabled');
-              hide('accessibilityStandards.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -124,8 +88,6 @@ function ChplAccessibilityStandards() {
               });
               setActiveAccessibilityStandard(undefined);
               setIsProcessing(false);
-              display('accessibilityStandards.viewall.disabled');
-              hide('accessibilityStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   makeStyles,
@@ -9,7 +9,6 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { BreadcrumbContext } from 'shared/contexts';
 import { ucdProcessType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -33,38 +32,13 @@ const useStyles = makeStyles({
 
 function ChplUcdProcessEdit(props) {
   const { dispatch, isProcessing } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="ucdProcesses.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="ucdProcesses.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
     setUcdProcess(props.ucdProcess);
-    display(props.ucdProcess.id ? 'ucdProcesses.edit.disabled' : 'ucdProcesses.add.disabled');
   }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
@@ -80,18 +54,12 @@ function ChplUcdProcessEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('ucdProcesses.add.disabled');
-        hide('ucdProcesses.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('ucdProcesses.add.disabled');
-        hide('ucdProcesses.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('ucdProcesses.add.disabled');
-        hide('ucdProcesses.edit.disabled');
         break;
         // no default
     }

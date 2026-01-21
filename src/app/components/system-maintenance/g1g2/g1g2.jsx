@@ -17,7 +17,6 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -33,25 +32,10 @@ const staticFilters = [{
 }];
 
 function ChplG1g2() {
-  const { append, display } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchG1g2();
   const criteriaQuery = useFetchCriteria();
   const [filters, setFilters] = useState(staticFilters);
   const [g1g2, setG1g2] = useState([]);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="g1g2.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        G1/G2 Measures
-      </Button>,
-    );
-    display('g1g2.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }

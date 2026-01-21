@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,10 +18,8 @@ import {
   usePostQmsStandard,
   usePutQmsStandard,
 } from 'api/standards';
-import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplQmsStandards() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchQmsStandards();
   const deleteQmsStandard = useDeleteQmsStandard();
   const postQmsStandard = usePostQmsStandard();
@@ -34,30 +32,6 @@ function ChplQmsStandards() {
   let handleDispatch;
 
   useEffect(() => {
-    append(
-      <Button
-        key="qmsStandards.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        QMS Standards
-      </Button>,
-    );
-    append(
-      <Button
-        key="qmsStandards.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        QMS Standards
-      </Button>,
-    );
-    display('qmsStandards.viewall.disabled');
-  }, []);
-
-  useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setQmsStandards(data);
   }, [data, isLoading, isSuccess]);
@@ -67,10 +41,6 @@ function ChplQmsStandards() {
       case 'cancel':
         setActiveQmsStandard(undefined);
         setIsProcessing(false);
-        display('qmsStandards.viewall.disabled');
-        hide('qmsStandards.viewall');
-        hide('qmsStandards.add.disabled');
-        hide('qmsStandards.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -82,8 +52,6 @@ function ChplQmsStandards() {
             });
             setActiveQmsStandard(undefined);
             setIsProcessing(false);
-            display('qmsStandards.viewall.disabled');
-            hide('qmsStandards.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -94,8 +62,6 @@ function ChplQmsStandards() {
       case 'edit':
         setActiveQmsStandard(payload);
         setErrors([]);
-        display('qmsStandards.viewall');
-        hide('qmsStandards.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -108,8 +74,6 @@ function ChplQmsStandards() {
               });
               setActiveQmsStandard(undefined);
               setIsProcessing(false);
-              display('qmsStandards.viewall.disabled');
-              hide('qmsStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
@@ -124,8 +88,6 @@ function ChplQmsStandards() {
               });
               setActiveQmsStandard(undefined);
               setIsProcessing(false);
-              display('qmsStandards.viewall.disabled');
-              hide('qmsStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);

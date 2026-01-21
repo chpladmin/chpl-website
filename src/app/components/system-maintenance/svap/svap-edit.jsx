@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Chip,
@@ -14,7 +14,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { BreadcrumbContext } from 'shared/contexts';
 import { criterion as criterionPropType, svap as svapPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -40,7 +39,6 @@ const useStyles = makeStyles({
 
 function ChplSvapEdit(props) {
   const { criterionOptions, dispatch, isProcessing } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -49,34 +47,10 @@ function ChplSvapEdit(props) {
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="svaps.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="svaps.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
     setSvap(props.svap);
     setCriteria(props.svap.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(props.svap.svapId ? 'svaps.edit.disabled' : 'svaps.add.disabled');
   }, [props.svap]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
@@ -100,18 +74,12 @@ function ChplSvapEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
         // no default
     }

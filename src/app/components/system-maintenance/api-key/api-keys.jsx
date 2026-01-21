@@ -13,29 +13,14 @@ import ChplApiKeysView from './api-keys-view';
 
 import { useFetchApiKeys, useDeleteKey } from 'api/api-keys';
 import { eventTrack } from 'services/analytics.service';
-import { BreadcrumbContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 
 function ChplApiKeys() {
   const { analytics } = useAnalyticsContext();
-  const { append, display } = useContext(BreadcrumbContext);
   const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading, isSuccess } = useFetchApiKeys();
   const { mutate } = useDeleteKey();
   const [apiKeys, setApiKeys] = useState([]);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="apiKeys.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        API Keys
-      </Button>,
-    );
-    display('apiKeys.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }

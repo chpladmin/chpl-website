@@ -13,28 +13,12 @@ import ChplOptionalStandardsView from './optional-standards-view';
 import { useFetchCriteria, useFetchOptionalStandards } from 'api/standards';
 import { FilterProvider } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
-import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplOptionalStandards() {
-  const { append, display } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchOptionalStandards();
   const criteriaQuery = useFetchCriteria();
   const [filters, setFilters] = useState([]);
   const [optionalStandards, setOptionalStandards] = useState([]);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="optionalStandards.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Optional Standards
-      </Button>,
-    );
-    display('optionalStandards.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }

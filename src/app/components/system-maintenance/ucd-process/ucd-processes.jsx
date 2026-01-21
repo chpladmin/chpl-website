@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,10 +18,8 @@ import {
   usePostUcdProcess,
   usePutUcdProcess,
 } from 'api/standards';
-import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplUcdProcesses() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
   const deleteUcdProcess = useDeleteUcdProcess();
   const postUcdProcess = usePostUcdProcess();
@@ -34,30 +32,6 @@ function ChplUcdProcesses() {
   let handleDispatch;
 
   useEffect(() => {
-    append(
-      <Button
-        key="ucdProcesses.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        UCD Processes
-      </Button>,
-    );
-    append(
-      <Button
-        key="ucdProcesses.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        UCD Processes
-      </Button>,
-    );
-    display('ucdProcesses.viewall.disabled');
-  }, []);
-
-  useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setUcdProcesses(data);
   }, [data, isLoading, isSuccess]);
@@ -67,10 +41,6 @@ function ChplUcdProcesses() {
       case 'cancel':
         setActiveUcdProcess(undefined);
         setIsProcessing(false);
-        display('ucdProcesses.viewall.disabled');
-        hide('ucdProcesses.viewall');
-        hide('ucdProcesses.add.disabled');
-        hide('ucdProcesses.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -82,8 +52,6 @@ function ChplUcdProcesses() {
             });
             setActiveUcdProcess(undefined);
             setIsProcessing(false);
-            display('ucdProcesses.viewall.disabled');
-            hide('ucdProcesses.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -94,8 +62,6 @@ function ChplUcdProcesses() {
       case 'edit':
         setActiveUcdProcess(payload);
         setErrors([]);
-        display('ucdProcesses.viewall');
-        hide('ucdProcesses.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -108,8 +74,6 @@ function ChplUcdProcesses() {
               });
               setActiveUcdProcess(undefined);
               setIsProcessing(false);
-              display('ucdProcesses.viewall.disabled');
-              hide('ucdProcesses.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
@@ -124,8 +88,6 @@ function ChplUcdProcesses() {
               });
               setActiveUcdProcess(undefined);
               setIsProcessing(false);
-              display('ucdProcesses.viewall.disabled');
-              hide('ucdProcesses.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);

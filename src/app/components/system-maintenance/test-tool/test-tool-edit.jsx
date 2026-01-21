@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -14,7 +14,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   testTool as testToolPropType,
@@ -53,7 +52,6 @@ function ChplTestToolEdit(props) {
     testTool: initialTestTool,
     isProcessing,
   } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -62,34 +60,10 @@ function ChplTestToolEdit(props) {
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="testTools.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="testTools.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
     setTestTool(initialTestTool);
     setCriteria(initialTestTool.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(initialTestTool.id ? 'testTools.edit.disabled' : 'testTools.add.disabled');
   }, [initialTestTool]);
 
   useEffect(() => {
@@ -113,18 +87,12 @@ function ChplTestToolEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
         break;
         // no default
     }

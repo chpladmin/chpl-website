@@ -28,7 +28,6 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -115,7 +114,6 @@ const staticFilters = [{
 }];
 
 function ChplStandards() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchStandards();
   const deleteStandard = useDeleteStandard();
   const postStandard = usePostStandard();
@@ -131,30 +129,6 @@ function ChplStandards() {
   const [filters, setFilters] = useState(staticFilters);
   const [standards, setStandards] = useState([]);
   let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="standards.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Standards
-      </Button>,
-    );
-    append(
-      <Button
-        key="standards.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        Standards
-      </Button>,
-    );
-    display('standards.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -189,10 +163,6 @@ function ChplStandards() {
       case 'cancel':
         setActiveStandard(undefined);
         setIsProcessing(false);
-        display('standards.viewall.disabled');
-        hide('standards.viewall');
-        hide('standards.add.disabled');
-        hide('standards.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -204,8 +174,6 @@ function ChplStandards() {
             });
             setActiveStandard(undefined);
             setIsProcessing(false);
-            display('standards.viewall.disabled');
-            hide('standards.viewall');
           },
           onError: (error) => {
             setIsProcessing(false);
@@ -216,8 +184,6 @@ function ChplStandards() {
       case 'edit':
         setActiveStandard(payload);
         setErrors([]);
-        display('standards.viewall');
-        hide('standards.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -230,8 +196,6 @@ function ChplStandards() {
               });
               setActiveStandard(undefined);
               setIsProcessing(false);
-              display('standards.viewall.disabled');
-              hide('standards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
@@ -246,8 +210,6 @@ function ChplStandards() {
               });
               setActiveStandard(undefined);
               setIsProcessing(false);
-              display('standards.viewall.disabled');
-              hide('standards.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
