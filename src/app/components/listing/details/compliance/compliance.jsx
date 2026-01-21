@@ -18,7 +18,10 @@ const isIcs = (req) => {
 };
 
 function ChplCompliance({
-  directReviews, directReviewsAvailable, surveillance: initialSurveillance, dispatch,
+  directReviews,
+  directReviewsAvailable, surveillance:
+  initialSurveillance,
+  dispatch = () => {},
 }) {
   const { listing } = useContext(ListingContext);
   const { hasAnyRole, user } = useContext(UserContext);
@@ -66,8 +69,4 @@ ChplCompliance.propTypes = {
   directReviewsAvailable: bool.isRequired,
   surveillance: arrayOf(surveillancePropType).isRequired,
   dispatch: func,
-};
-
-ChplCompliance.defaultProps = {
-  dispatch: () => {},
 };

@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 13.43.2
+_20 January 2026_
+
+### User Interface Updates
+* Remove "diff" from Accepted Change Requests where not needed
+* Move Announcements from footer to main landing page, and to floating action button
+
+---
+
 ## Version 13.43.1
 _22 December 2025_
 

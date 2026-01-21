@@ -144,14 +144,14 @@ function ChplComplaintEdit(props) {
 
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
-    setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
+    setComplainantTypes(complainantTypesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    formik.setFieldValue('complainantType', complainantTypesData.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
   }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (complaintTypesIsLoading || !complaintTypesIsSuccess) { return; }
-    setComplaintTypes(complaintTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('complaintTypes', complaintTypesData.data.filter((type) => initialComplaint?.complaintTypes?.some((t) => t.id === type.id)) || []);
+    setComplaintTypes(complaintTypesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    formik.setFieldValue('complaintTypes', complaintTypesData.filter((type) => initialComplaint?.complaintTypes?.some((t) => t.id === type.id)) || []);
   }, [complaintTypesData, complaintTypesIsLoading, complaintTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {

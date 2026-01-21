@@ -8,7 +8,7 @@ const useDeleteAnnual = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`surveillance-report/annual/${data.id}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['annual']);
+      queryClient.invalidateQueries(['surveillance-report/annual']);
     },
   });
 };
@@ -18,14 +18,14 @@ const useDeleteQuarterly = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`surveillance-report/quarterly/${data.id}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['quarterly']);
+      queryClient.invalidateQueries(['surveillance-report/quarterly']);
     },
   });
 };
 
 const useFetchAnnual = () => {
   const axios = useAxios();
-  return useQuery(['annual'], async () => {
+  return useQuery(['surveillance-report/annual'], async () => {
     const response = await axios.get('surveillance-report/annual');
     return response.data;
   });
@@ -33,15 +33,15 @@ const useFetchAnnual = () => {
 
 const useFetchQuarters = () => {
   const axios = useAxios();
-  return useQuery(['quarters'], async () => {
-    const response = await axios.get('data/quarters');
+  return useQuery(['surveillance-report/quarters'], async () => {
+    const response = await axios.get('surveillance-report/quarters');
     return response.data;
   }, options.daily);
 };
 
 const useFetchQuarterly = () => {
   const axios = useAxios();
-  return useQuery(['quarterly'], async () => {
+  return useQuery(['surveillance-report/quarterly'], async () => {
     const response = await axios.get('surveillance-report/quarterly');
     return response.data;
   });
@@ -49,7 +49,7 @@ const useFetchQuarterly = () => {
 
 const useFetchRelevantListings = ({ id }) => {
   const axios = useAxios();
-  return useQuery(['relevant-listings', id], async () => {
+  return useQuery(['surveillance-report/relevant-listings', id], async () => {
     const response = await axios.get(`surveillance-report/quarterly/${id}/listings`);
     return response.data;
   });
@@ -65,7 +65,7 @@ const usePostInitiateAnnualReport = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('surveillance-report/annual', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['annual']);
+      queryClient.invalidateQueries(['surveillance-report/annual']);
     },
   });
 };
@@ -75,7 +75,7 @@ const usePostInitiateQuarterlyReport = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('surveillance-report/quarterly', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['quarterly']);
+      queryClient.invalidateQueries(['surveillance-report/quarterly']);
     },
   });
 };
@@ -85,12 +85,17 @@ const usePostQuarterlyReportRequest = () => {
   return useMutation(async (data) => axios.post(`surveillance-report/export/quarterly/${data.id}`, {}));
 };
 
+const usePostSurveillanceActivityReport = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('surveillance/reports/activity', data));
+};
+
 const usePutAnnual = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put('surveillance-report/annual', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['annual']);
+      queryClient.invalidateQueries(['surveillance-report/annual']);
     },
   });
 };
@@ -100,7 +105,17 @@ const usePutQuarterly = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put('surveillance-report/quarterly', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['quarterly']);
+      queryClient.invalidateQueries(['surveillance-report/quarterly']);
+    },
+  });
+};
+
+const usePutRelevantSurveillance = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`surveillance-report/quarterly/${data.reportId}/surveillance/${data.id}`, data), {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries(['surveillance-report/relevant-listings', response.id]);
     },
   });
 };
@@ -116,6 +131,8 @@ export {
   usePostInitiateAnnualReport,
   usePostInitiateQuarterlyReport,
   usePostQuarterlyReportRequest,
+  usePostSurveillanceActivityReport,
   usePutAnnual,
   usePutQuarterly,
+  usePutRelevantSurveillance,
 };

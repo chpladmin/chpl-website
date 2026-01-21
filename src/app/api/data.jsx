@@ -3,6 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useAxios } from './axios';
 import options from './options';
 
+const useFetchCapStatuses = () => {
+  const axios = useAxios();
+  return useQuery(['surveillance-report/cap-statuses'], async () => {
+    const response = await axios.get('surveillance-report/cap-statuses');
+    return response.data;
+  }, options.daily);
+};
+
 const useFetchCertificationStatuses = () => {
   const axios = useAxios();
   return useQuery(['certified_products/certification-statuses'], async () => {
@@ -13,16 +21,16 @@ const useFetchCertificationStatuses = () => {
 
 const useFetchComplainantTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/complainant-types'], async () => {
-    const response = await axios.get('data/complainant-types');
+  return useQuery(['complaints/complainant-types'], async () => {
+    const response = await axios.get('complaints/complainant-types');
     return response.data;
   }, options.daily);
 };
 
 const useFetchComplaintTypes = () => {
   const axios = useAxios();
-  return useQuery(['data/complaint-types'], async () => {
-    const response = await axios.get('data/complaint-types');
+  return useQuery(['complaints/types'], async () => {
+    const response = await axios.get('complaints/types');
     return response.data;
   }, options.daily);
 };
@@ -51,6 +59,30 @@ const useFetchRequirementTypes = () => {
   }, options.daily);
 };
 
+const useFetchSurveillanceGroundsForInitiating = () => {
+  const axios = useAxios();
+  return useQuery(['surveillance-report/surveillance-grounds-for-initiating'], async () => {
+    const response = await axios.get('surveillance-report/surveillance-grounds-for-initiating');
+    return response.data;
+  }, options.daily);
+};
+
+const useFetchSurveillanceOutcomes = () => {
+  const axios = useAxios();
+  return useQuery(['surveillance-report/surveillance-outcomes'], async () => {
+    const response = await axios.get('surveillance-report/surveillance-outcomes');
+    return response.data;
+  }, options.daily);
+};
+
+const useFetchSurveillanceProcessTypes = () => {
+  const axios = useAxios();
+  return useQuery(['surveillance-report/surveillance-process-types'], async () => {
+    const response = await axios.get('surveillance-report/surveillance-process-types');
+    return response.data;
+  }, options.daily);
+};
+
 const useFetchSurveillanceResultTypes = () => {
   const axios = useAxios();
   return useQuery(['surveillance/result-types'], async () => {
@@ -68,12 +100,16 @@ const useFetchSurveillanceTypes = () => {
 };
 
 export {
+  useFetchCapStatuses,
   useFetchCertificationStatuses,
   useFetchComplainantTypes,
   useFetchComplaintTypes,
   useFetchNonConformityTypes,
   useFetchRequirementGroupTypes,
   useFetchRequirementTypes,
+  useFetchSurveillanceGroundsForInitiating,
+  useFetchSurveillanceOutcomes,
+  useFetchSurveillanceProcessTypes,
   useFetchSurveillanceResultTypes,
   useFetchSurveillanceTypes,
 };

@@ -4,9 +4,6 @@ const states = [
     abstract: true,
     url: '/organizations',
     component: 'chplOrganizations',
-    ncyBreadcrumb: {
-      label: 'Organizations',
-    },
   }, {
     name: 'organizations.developers',
     url: '/developers',

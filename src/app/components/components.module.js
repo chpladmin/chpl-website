@@ -1,6 +1,7 @@
 import IndexWrapper from '../index-wrapper';
 
 import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
+import ChplAnnouncementsFabWrapper from './announcements/announcements-fab-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
 import ChplAttestationEditWrapper from './attestation/attestation-edit-wrapper';
 import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
@@ -16,10 +17,8 @@ import {
   ChplConfirmVersion,
 } from './listing/confirm';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
-import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplRealWorldTestingViewWrapper from './real-world-testing/real-world-testing-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
-import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage/reporting-date-selector';
 import ChplUsersWrapper from './user/users-wrapper';
 import {
   ChplConfirmation,
@@ -38,12 +37,12 @@ angular
     'ngFileUpload',
     'ngResource',
     'ngStorage',
-    'smart-table',
     'toaster',
     'ui.bootstrap',
     'ui.router',
   ])
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
+  .component('chplAnnouncementsFabBridge', reactToAngularComponent(ChplAnnouncementsFabWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
   .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
@@ -62,7 +61,5 @@ angular
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplRealWorldTestingViewBridge', reactToAngularComponent(ChplRealWorldTestingViewWrapper))
-  .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
-  .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));

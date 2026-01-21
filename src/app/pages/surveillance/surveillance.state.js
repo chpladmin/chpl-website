@@ -7,9 +7,6 @@ const states = [{
     title: 'CHPL Surveillance',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
   },
-  ncyBreadcrumb: {
-    label: 'Surveillance',
-  },
 }, {
   name: 'surveillance.complaints',
   url: '/complaints',
@@ -20,113 +17,17 @@ const states = [{
 }, {
   name: 'surveillance.activity-reporting',
   url: '/activity-reporting',
-  component: 'chplSurveillanceActivityReporting',
+  component: 'chplSurveillanceActivityReportingBridge',
   data: {
     title: 'CHPL Surveillance - Activity Reporting',
     roles: ['chpl-admin', 'chpl-onc'],
   },
-  ncyBreadcrumb: {
-    label: 'Activity Reporting',
-  },
 }, {
   name: 'surveillance.reporting',
-  url: '/reporting-v2',
+  url: '/reporting',
   component: 'chplSurveillanceReportingBridge',
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
-  },
-}, {
-  name: 'surveillance.reporting-old',
-  url: '/reporting',
-  component: 'chplSurveillanceReporting',
-  resolve: {
-    acbs: (networkService) => {
-      'ngInject';
-
-      return networkService.getAcbs(true);
-    },
-    annual: (networkService) => {
-      'ngInject';
-
-      return networkService.getAnnualSurveillanceReports();
-    },
-    availableQuarters: (networkService) => {
-      'ngInject';
-
-      return networkService.getQuarterlySurveillanceQuarters();
-    },
-    quarters: (networkService) => {
-      'ngInject';
-
-      return networkService.getQuarterlySurveillanceReports();
-    },
-    surveillanceOutcomes: (networkService) => {
-      'ngInject';
-
-      return networkService.getSurveillanceOutcomes();
-    },
-    surveillanceProcessTypes: (networkService) => {
-      'ngInject';
-
-      return networkService.getSurveillanceProcessTypes();
-    },
-    surveillanceGroundsForInitiatingTypes: (networkService) => {
-      'ngInject';
-
-      return networkService.getSurveillanceGroundsForInitiatingTypes();
-    },
-    capStatusTypes: (networkService) => {
-      'ngInject';
-
-      return networkService.getCapStatusTypes();
-    },
-  },
-  data: { title: 'CHPL Surveillance - Reporting' },
-  ncyBreadcrumb: {
-    label: 'Reporting',
-  },
-}, {
-  name: 'surveillance.reporting-old.annual',
-  url: '/annual/{reportId}',
-  component: 'chplSurveillanceReportAnnual',
-  resolve: {
-    report: ($transition$, networkService) => {
-      'ngInject';
-
-      return networkService.getAnnualSurveillanceReport($transition$.params().reportId);
-    },
-  },
-  data: { title: 'CHPL Surveillance - Reporting - Annual' },
-  ncyBreadcrumb: {
-    label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }}',
-  },
-}, {
-  name: 'surveillance.reporting-old.quarterly',
-  url: '/quarterly/{reportId}',
-  params: {
-    relevantListing: { squash: true, value: null },
-  },
-  component: 'chplSurveillanceReportQuarter',
-  resolve: {
-    report: ($transition$, networkService) => {
-      'ngInject';
-
-      return networkService.getQuarterlySurveillanceReport($transition$.params().reportId);
-    },
-    relevantListing: ($transition$) => {
-      'ngInject';
-
-      return $transition$.params().relevantListing;
-    },
-    relevantListings: ($transition$, networkService) => {
-      'ngInject';
-
-      return networkService.getRelevantListings($transition$.params().reportId);
-    },
-  },
-  data: { title: 'CHPL Surveillance - Reporting - Quarterly' },
-  ncyBreadcrumb: {
-    label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }} - {{ $resolve.report.quarter }}',
   },
 }];
 
