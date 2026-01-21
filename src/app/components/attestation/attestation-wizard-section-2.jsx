@@ -114,10 +114,11 @@ function ChplAttestationWizardSection2({ dispatch, instructions, sections: initi
     <>
       { ins.split('\n\n').map((p) => (
         <Typography
+          variant="body1"
           className={classes.questionParagraph}
           key={p}
         >
-          { interpretLink(p) }
+          { p }
         </Typography>
       ))}
     </>
@@ -220,9 +221,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions, sections: initi
       </Typography>
       <Card>
         <CardContent>
-          <Typography variant="body1">
-            { getInstructions(instructions) }
-          </Typography>
+          { getInstructions(instructions) }
           <Divider />
           { sections.sort((a, b) => a.sortOrder - b.sortOrder).map((section, idx) => getSection(section, idx)) }
         </CardContent>
