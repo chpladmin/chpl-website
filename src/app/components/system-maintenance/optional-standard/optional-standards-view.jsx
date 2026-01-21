@@ -91,22 +91,23 @@ function ChplOptionalStandardsView(props) {
               fieldGroups={[
                 [
                   {
-                    label: 'Citation',
-                    value: item.citation || 'N/A',
-                    xs: 6,
-                    sm: 4,
-                  },
-                  {
                     label: 'Description',
                     value: item.description || 'N/A',
                     xs: 12,
-                    sm: 4,
+                    sm: 12,
                   },
+                  {
+                    label: 'Citation',
+                    value: item.citation || 'N/A',
+                    xs: 6,
+                    sm: 6,
+                  },
+
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 12,
-                    sm: 4,
+                    xs: 6,
+                    sm: 6,
                   },
                 ],
               ]}

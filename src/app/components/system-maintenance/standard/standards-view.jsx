@@ -153,8 +153,8 @@ function ChplStandardsView(props) {
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 12,
-                    sm: 3,
+                    xs: 6,
+                    sm: 2,
                   },
                 ],
                 [
@@ -180,7 +180,7 @@ function ChplStandardsView(props) {
                     label: 'End Date',
                     value: getDisplayDateFormat(item.endDay),
                     xs: 6,
-                    sm: 3,
+                    sm: 2,
                   },
                 ],
               ]}

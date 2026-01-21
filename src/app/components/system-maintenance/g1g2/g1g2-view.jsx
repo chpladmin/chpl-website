@@ -98,28 +98,24 @@ function ChplG1g2View(props) {
                     label: 'Domain',
                     value: item.domainDisplay || 'N/A',
                     xs: 6,
-                    sm: 3,
+                    sm: 6,
                   },
                   {
                     label: 'Required Test',
                     value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
                     xs: 6,
-                    sm: 3,
+                    sm: 6,
                   },
-                ],
-                [
                   {
                     label: 'Name',
                     value: item.name || 'N/A',
-                    xs: 12,
+                    xs: 6,
                     sm: 6,
                   },
-                ],
-                [
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 12,
+                    xs: 6,
                     sm: 6,
                   },
                 ],

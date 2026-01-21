@@ -113,19 +113,19 @@ function ChplTestToolsView(props) {
                     label: 'Start Date',
                     value: getDisplayDateFormat(item.startDay),
                     xs: 6,
-                    sm: 4,
+                    sm: 2,
                   },
                   {
                     label: 'End Date',
                     value: getDisplayDateFormat(item.endDay),
                     xs: 6,
-                    sm: 4,
+                    sm: 2,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
                     xs: 12,
-                    sm: 4,
+                    sm: 7,
                   },
                 ],
               ]}
