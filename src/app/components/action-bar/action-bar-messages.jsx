@@ -126,7 +126,7 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
           <>
             <ChplTooltip
               placement="left"
-              title={`Error${fixMessages(errors.length) !== 1 ? 's' : ''}`}
+              title={`Error${fixMessages(errors).length !== 1 ? 's' : ''}`}
             >
               <IconButton
                 size="medium"
