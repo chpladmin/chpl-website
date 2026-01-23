@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useConfirmPendingListing = () => {
   const axios = useAxios();
@@ -23,9 +24,7 @@ const useFetchPendingListing = ({ id }) => {
       return response.data;
     }
     return {};
-  }, {
-    keepPreviousData: true,
-  });
+  }, options.daily);
 };
 
 const useFetchPendingListings = () => {
