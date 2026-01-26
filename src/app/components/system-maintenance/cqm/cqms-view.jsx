@@ -45,10 +45,9 @@ function ChplCqmsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = cqms.sort(sortComparator(property, descending));
+    setCqms((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setCqms(updated);
   };
 
   return (

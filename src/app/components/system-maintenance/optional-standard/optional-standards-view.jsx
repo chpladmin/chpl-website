@@ -51,10 +51,9 @@ function ChplOptionalStandardsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = optionalStandards.sort(sortComparator(property, descending));
+    setOptionalStandards((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setOptionalStandards(updated);
   };
 
   return (

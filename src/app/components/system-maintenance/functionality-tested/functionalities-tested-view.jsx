@@ -67,10 +67,9 @@ function ChplFunctionalitiesTestedView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = functionalitiesTested.sort(sortComparator(property, descending));
+    setFunctionalitiesTested((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setFunctionalitiesTested(updated);
   };
 
   return (

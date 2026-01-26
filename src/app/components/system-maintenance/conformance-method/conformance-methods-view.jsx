@@ -53,10 +53,9 @@ function ChplConformanceMethodsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = conformanceMethods.sort(sortComparator(property, descending));
+    setConformanceMethods((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setConformanceMethods(updated);
   };
 
   return (

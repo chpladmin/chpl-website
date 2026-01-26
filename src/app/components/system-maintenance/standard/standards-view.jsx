@@ -71,10 +71,9 @@ function ChplStandardsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = standards.sort(sortComparator(property, descending));
+    setStandards((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setStandards(updated);
   };
 
   return (

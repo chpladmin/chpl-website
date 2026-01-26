@@ -44,10 +44,9 @@ function ChplApiKeysView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = apiKeys.sort(sortComparator(property, descending));
+    setApiKeys((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setApiKeys(updated);
   };
 
   return (

@@ -65,10 +65,9 @@ function ChplSvapsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = svaps.sort(sortComparator(property, descending));
+    setSvaps((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setSvaps(updated);
   };
 
   return (

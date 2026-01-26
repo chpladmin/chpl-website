@@ -45,10 +45,9 @@ function ChplQmsStandardsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = qmsStandards.sort(sortComparator(property, descending));
+    setQmsStandards((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setQmsStandards(updated);
   };
 
   return (

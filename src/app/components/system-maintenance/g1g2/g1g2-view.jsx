@@ -55,10 +55,9 @@ function ChplG1g2View(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = g1g2.sort(sortComparator(property, descending));
+    setG1g2((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setG1g2(updated);
   };
 
   return (

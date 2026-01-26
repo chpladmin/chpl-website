@@ -45,10 +45,9 @@ function ChplUcdProcessesView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = ucdProcesses.sort(sortComparator(property, descending));
+    setUcdProcesses((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setUcdProcesses(updated);
   };
 
   return (

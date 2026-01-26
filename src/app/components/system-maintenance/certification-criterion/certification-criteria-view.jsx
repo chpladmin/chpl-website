@@ -87,10 +87,9 @@ function ChplCertificationCriteriaView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = certificationCriteria.sort(sortComparator(property, descending));
+    setCertificationCriteria((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setCertificationCriteria(updated);
   };
 
   return (

@@ -45,10 +45,9 @@ function ChplAccessibilityStandardsView(props) {
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = accessibilityStandards.sort(sortComparator(property, descending));
+    setAccessibilityStandards((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setAccessibilityStandards(updated);
   };
 
   return (
