@@ -15,6 +15,8 @@ import {
   string,
 } from 'prop-types';
 
+import palette from 'themes/palette';
+
 function ChplSearchResultCard({
   title,
   titleValue,
@@ -62,7 +64,12 @@ function ChplSearchResultCard({
                 item
                 xs={field.xs || 12}
                 sm={field.sm || field.xs || 12}
-                style={field.style}
+                style={{
+                  ...field.style,
+                  backgroundColor: groupIndex === 0 && fieldIndex === 0 ? palette.secondary : undefined,
+                  padding: groupIndex === 0 && fieldIndex === 0 ? '8px' : undefined,
+                  borderRadius: groupIndex === 0 && fieldIndex === 0 ? '4px' : undefined,
+                }}
               >
                 <Typography variant="body2" style={{ fontWeight: '600' }}>
                   {field.label}
