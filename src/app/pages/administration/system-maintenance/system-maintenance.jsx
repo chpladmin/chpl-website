@@ -119,6 +119,8 @@ const useStyles = makeStyles({
     padding: '8px',
     minWidth: 'min-content',
     justifyContent: 'space-between',
+    textTransform: 'none',
+    fontSize: '11.5px',
     '&.Mui-disabled': {
       color: '#000',
       backgroundColor: '#f9f9f9',
@@ -246,7 +248,7 @@ function ChplSystemMaintenance() {
       onClick={() => navigate(item.id)}
       disabled={active === item.id}
       id={`system-maintenance-navigation-${item.id}`}
-      size="small"
+      size="medium"
       variant="text"
       color="primary"
       endIcon={navOpen ? item.icon : null}
@@ -262,16 +264,6 @@ function ChplSystemMaintenance() {
       ...data.analytics,
       event: `Navigate to ${target}`,
     });
-    if (target && target !== 'home') {
-      // Only close nav on desktop (screen width > 600px for 'sm' breakpoint)
-      if (window.innerWidth > 600) {
-        setNavOpen(false);
-      }
-    }
-  };
-
-  const closeNavigation = () => {
-    setNavOpen(false);
   };
 
   data = {
