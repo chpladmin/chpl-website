@@ -35,8 +35,12 @@ describe('the ChplUserTriggersView component', () => {
     cleanup();
   });
 
-  it('should have a table of jobs', async () => {
-    expect(screen.getByRole('table', { name: 'Reports table' })).toBeInTheDocument();
+  it('should display jobs in card view', async () => {
+    await waitFor(() => {
+      expect(screen.getByText('Scheduled Reports:')).toBeInTheDocument();
+      expect(screen.getByText('job name')).toBeInTheDocument();
+      expect(screen.getByText('name@example.com')).toBeInTheDocument();
+    });
   });
 
   describe('when interacting with a job', () => {

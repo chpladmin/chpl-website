@@ -32,8 +32,12 @@ describe('the ChplSystemJobTypesView component', () => {
     cleanup();
   });
 
-  it('should have a table of jobs', async () => {
-    expect(screen.getByRole('table', { name: 'Types of Jobs table' })).toBeInTheDocument();
+  it('should display jobs in card view', async () => {
+    await waitFor(() => {
+      expect(screen.getByText('Jobs:')).toBeInTheDocument();
+      expect(screen.getByText('test name')).toBeInTheDocument();
+      expect(screen.getByText('test description')).toBeInTheDocument();
+    });
   });
 
   describe('when interacting with a job', () => {

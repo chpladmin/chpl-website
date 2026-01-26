@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  cleanup, render, screen,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
@@ -31,7 +31,11 @@ describe('the ChplSystemTriggersView component', () => {
     cleanup();
   });
 
-  it('should have a table of triggers', async () => {
-    expect(screen.getByRole('table', { name: 'Scheduled System Jobs table' })).toBeInTheDocument();
+  it('should display triggers in card view', async () => {
+    await waitFor(() => {
+      expect(screen.getByText('Scheduled Jobs:')).toBeInTheDocument();
+      expect(screen.getByText('job name')).toBeInTheDocument();
+      expect(screen.getByText('job description')).toBeInTheDocument();
+    });
   });
 });

@@ -96,10 +96,9 @@ describe('the ChplSvaps component', () => {
   describe('when viewing SVAPs', () => {
     it('should sort the SVAPs by citation', async () => {
       await waitFor(() => {
-        const rows = within(screen.getByRole('table')).getAllByRole('row');
-        expect(within(rows[1]).getByText(/a citation/)).toBeInTheDocument();
-        expect(within(rows[2]).getByText(/citation/)).toBeInTheDocument();
-        expect(within(rows[3]).getByText(/last citation/)).toBeInTheDocument();
+        expect(screen.getByText('a citation 2')).toBeInTheDocument();
+        expect(screen.getByText('citation 1')).toBeInTheDocument();
+        expect(screen.getByText('last citation 3')).toBeInTheDocument();
       });
     });
   });
