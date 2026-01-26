@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -24,17 +24,27 @@ function ChplSortControls({
   onSort,
 }) {
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
+  const currentOrderRef = useRef(order);
+  
+  // Keep ref in sync with prop
+  currentOrderRef.current = order;
 
   const handleSortChange = (property) => {
-    const newOrder = orderBy === property && order === 'asc' ? 'desc' : 'asc';
+    const newOrder = orderBy === property 
+      ? (currentOrderRef.current === 'asc' ? 'desc' : 'asc')  // Toggle if same
+      : 'asc';  // Start with asc if different
+    
+    currentOrderRef.current = newOrder;
     onSort(property, newOrder);
     setSortMenuAnchor(null);
   };
 
-  const toggleSortDirection = () => {
-    const newOrder = order === 'asc' ? 'desc' : 'asc';
+  const toggleSortDirection = useCallback(() => {
+    // Always toggle based on the ref, which has the most recent value
+    const newOrder = currentOrderRef.current === 'asc' ? 'desc' : 'asc';
+    currentOrderRef.current = newOrder;
     onSort(orderBy, newOrder);
-  };
+  }, [orderBy, onSort]);
 
   const getCurrentSortLabel = () => {
     const currentOption = sortOptions.find((opt) => opt.property === orderBy);
