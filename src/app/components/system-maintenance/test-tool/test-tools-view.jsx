@@ -2,14 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
@@ -32,8 +34,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplTestToolsView(props) {
-  const { dispatch } = props;
+function ChplTestToolsView({ dispatch, testTools: propsTestTools }) {
   const { hasAnyRole } = useContext(UserContext);
   const [testTools, setTestTools] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -42,7 +43,7 @@ function ChplTestToolsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setTestTools(props.testTools
+    setTestTools(propsTestTools
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.value,
@@ -55,7 +56,7 @@ function ChplTestToolsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [props.testTools, filterContext.filters, filterContext.searchTerm]);
+  }, [propsTestTools, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -106,6 +107,13 @@ function ChplTestToolsView(props) {
               key={`${item.value}`}
               title="Value"
               titleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
               fieldGroups={[
                 [
                   {

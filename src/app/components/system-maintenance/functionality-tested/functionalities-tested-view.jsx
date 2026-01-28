@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -16,7 +18,9 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplSearchResultCard, ChplSortControls, ChplUpdateIndicator } from 'components/util';
+import {
+  ChplSearchResultCard, ChplSortControls, ChplTooltip, ChplUpdateIndicator,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -120,13 +124,13 @@ function ChplFunctionalitiesTestedView(props) {
               key={`${item.id}-${item.value}`}
               title="Value"
               titleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
-              additionalTitleContent={
+              additionalTitleContent={(
                 <ChplUpdateIndicator
                   requiredDay={item.requiredDay}
                   endDay={item.endDay}
                   additionalInformation={item.additionalInformation}
                 />
-              }
+              )}
               fieldGroups={[
                 [
                   {
@@ -134,6 +138,13 @@ function ChplFunctionalitiesTestedView(props) {
                     value: item.regulatoryTextCitation || 'N/A',
                     xs: 6,
                     sm: 3,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
                   },
                   {
                     label: 'Rule',

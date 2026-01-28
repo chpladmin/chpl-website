@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf, shape } from 'prop-types';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplOptionalStandardsView(props) {
+function ChplOptionalStandardsView({ optionalStandards: propsOptionalStandards }) {
   const [optionalStandards, setOptionalStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('displayValue');
@@ -32,7 +34,7 @@ function ChplOptionalStandardsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setOptionalStandards(props.optionalStandards
+    setOptionalStandards(propsOptionalStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.displayValue,
@@ -47,7 +49,7 @@ function ChplOptionalStandardsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('displayValue')));
-  }, [props.optionalStandards, filterContext.filters, filterContext.searchTerm]);
+  }, [propsOptionalStandards, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -100,8 +102,14 @@ function ChplOptionalStandardsView(props) {
                     value: item.citation || 'N/A',
                     xs: 6,
                     sm: 6,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
                   },
-
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
@@ -120,5 +128,5 @@ function ChplOptionalStandardsView(props) {
 export default ChplOptionalStandardsView;
 
 ChplOptionalStandardsView.propTypes = {
-  optionalStandards: arrayOf(object).isRequired,
+  optionalStandards: arrayOf(shape({})).isRequired,
 };

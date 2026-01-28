@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -16,7 +18,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
@@ -31,14 +33,13 @@ const sortOptions = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-      tableResultsHeaderContainer:{
-      display: 'flex',
-      justifyContent: 'flex-end',
+  tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 });
 
-function ChplSvapsView(props) {
-  const { dispatch } = props;
+function ChplSvapsView({ dispatch, svaps: propsSvaps }) {
   const [svaps, setSvaps] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -47,7 +48,7 @@ function ChplSvapsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setSvaps(props.svaps
+    setSvaps(propsSvaps
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.regulatoryTextCitation,
@@ -61,7 +62,7 @@ function ChplSvapsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, [props.svaps, filterContext.filters, filterContext.searchTerm]);
+  }, [propsSvaps, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -114,16 +115,24 @@ function ChplSvapsView(props) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
-              title="Regulatory Text Citation"
-              titleValue={item.regulatoryTextCitation}
+              title="Approved Standard Version"
+              titleValue={item.approvedStandardVersion}
               fieldGroups={[
                 [
                   {
-                    label: 'Approved Standard Version',
-                    value: item.approvedStandardVersion || 'N/A',
+                    label: 'Regulatory Text Citation',
+                    value: item.regulatoryTextCitation || 'N/A',
                     xs: 6,
                     sm: 4,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
                   },
+
                   {
                     label: 'Replaced',
                     value: item.replaced ? 'Yes' : 'No',

@@ -15,11 +15,10 @@ import {
   string,
 } from 'prop-types';
 
-import palette from 'themes/palette';
-
 function ChplSearchResultCard({
   title,
   titleValue,
+  titleIconButton,
   headerActions,
   fieldGroups,
   actions,
@@ -30,10 +29,17 @@ function ChplSearchResultCard({
         {/* Title Section */}
         {title && (
           <>
-            <Typography variant="body1" style={{fontWeight: 'bold'}} display="block" >
-              {title}
-            </Typography>
-            <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px', }} alignItems="center">
+            <Box display="flex" alignItems="center" gap={1}>
+              <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
+                {title}
+              </Typography>
+              {titleIconButton && (
+                <Box>
+                  {titleIconButton}
+                </Box>
+              )}
+            </Box>
+            <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px' }} alignItems="center">
               <Box
                 display="flex"
                 flex={1}
@@ -41,7 +47,7 @@ function ChplSearchResultCard({
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Typography variant="h5" >
+                <Typography variant="h5">
                   {titleValue}
                 </Typography>
                 {headerActions}
@@ -53,7 +59,7 @@ function ChplSearchResultCard({
         {/* Field Groups */}
         {fieldGroups?.map((group, groupIndex) => (
           <Grid
-            key={`group-${groupIndex}`}
+            key={`field-group-${groupIndex}`}
             container
             spacing={2}
             alignItems="flex-start"
@@ -64,19 +70,23 @@ function ChplSearchResultCard({
                 item
                 xs={field.xs || 12}
                 sm={field.sm || field.xs || 12}
-                style={{
-                  ...field.style,
-                  backgroundColor: groupIndex === 0 && fieldIndex === 0 ? palette.secondary : undefined,
-                  padding: groupIndex === 0 && fieldIndex === 0 ? '8px' : undefined,
-                  borderRadius: groupIndex === 0 && fieldIndex === 0 ? '4px' : undefined,
-                }}
+                style={field.style}
               >
-                <Typography variant="body2" style={{ fontWeight: '600' }}>
-                  {field.label}
-                </Typography>
-                <Typography variant="body1">
-                  {field.value ?? field.fallback ?? 'N/A'}
-                </Typography>
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Box flex={1}>
+                    <Typography variant="body2" style={{ fontWeight: '600' }}>
+                      {field.label}
+                    </Typography>
+                    <Typography variant="body1">
+                      {field.value ?? field.fallback ?? 'N/A'}
+                    </Typography>
+                  </Box>
+                  {field.iconButton && (
+                    <Box>
+                      {field.iconButton}
+                    </Box>
+                  )}
+                </Box>
               </Grid>
             ))}
             {actions && groupIndex === fieldGroups.length - 1 && (
@@ -96,6 +106,7 @@ export default ChplSearchResultCard;
 ChplSearchResultCard.propTypes = {
   title: string,
   titleValue: oneOfType([string, node]),
+  titleIconButton: node,
   headerActions: node,
   fieldGroups: arrayOf(
     arrayOf(
@@ -106,6 +117,7 @@ ChplSearchResultCard.propTypes = {
         xs: number,
         sm: number,
         style: shape({}),
+        iconButton: node,
       }),
     ),
   ),
@@ -115,6 +127,7 @@ ChplSearchResultCard.propTypes = {
 ChplSearchResultCard.defaultProps = {
   title: undefined,
   titleValue: undefined,
+  titleIconButton: undefined,
   headerActions: undefined,
   fieldGroups: [],
   actions: undefined,

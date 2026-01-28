@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
 import { arrayOf } from 'prop-types';
 
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { cqm as cqmPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
@@ -27,21 +29,21 @@ const sortVersion = (a, b) => {
   return aNum - bNum;
 };
 
-function ChplCqmsView(props) {
+function ChplCqmsView({ cqms: propsCqms }) {
   const [cqms, setCqms] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setCqms(props.cqms
+    setCqms(propsCqms
       .map((c) => ({
         ...c,
         display: c.cmsId ? c.cmsId : `NQF-${c.nqfNumber}`,
         versionDisplay: c.versions.sort(sortVersion).join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [props.cqms]);
+  }, [propsCqms]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -77,6 +79,13 @@ function ChplCqmsView(props) {
               key={item.display}
               title="ID"
               titleValue={item.display}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
               fieldGroups={[
                 [
                   {

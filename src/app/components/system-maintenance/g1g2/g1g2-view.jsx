@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
@@ -26,7 +28,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplG1g2View(props) {
+function ChplG1g2View({ g1g2: propsG1g2 }) {
   const [g1g2, setG1g2] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('abbreviation');
@@ -34,7 +36,7 @@ function ChplG1g2View(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setG1g2(props.g1g2
+    setG1g2(propsG1g2
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.abbreviation,
@@ -51,7 +53,7 @@ function ChplG1g2View(props) {
           .join(', '),
       }))
       .sort(sortComparator('abbreviation')));
-  }, [props.g1g2, filterContext.filters, filterContext.searchTerm]);
+  }, [propsG1g2, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -89,25 +91,39 @@ function ChplG1g2View(props) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Abbreviation"
-              titleValue={item.abbreviation}
+              title="Name"
+              titleValue={item.name}
               fieldGroups={[
                 [
+                  {
+                    label: 'Abbreviation',
+                    value: item.abbreviation || 'N/A',
+                    xs: 6,
+                    sm: 6,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
+                  },
                   {
                     label: 'Domain',
                     value: item.domainDisplay || 'N/A',
                     xs: 6,
                     sm: 6,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
                   },
                   {
                     label: 'Required Test',
                     value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
-                    xs: 6,
-                    sm: 6,
-                  },
-                  {
-                    label: 'Name',
-                    value: item.name || 'N/A',
                     xs: 6,
                     sm: 6,
                   },
@@ -129,5 +145,5 @@ function ChplG1g2View(props) {
 export default ChplG1g2View;
 
 ChplG1g2View.propTypes = {
-  g1g2: arrayOf(object).isRequired,
+  g1g2: arrayOf(shape({})).isRequired,
 };

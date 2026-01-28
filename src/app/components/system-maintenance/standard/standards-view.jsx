@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -16,7 +18,9 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplSearchResultCard, ChplSortControls, ChplUpdateIndicator } from 'components/util';
+import {
+  ChplSearchResultCard, ChplSortControls, ChplUpdateIndicator, ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -41,8 +45,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplStandardsView(props) {
-  const { dispatch } = props;
+function ChplStandardsView({ dispatch, standards: propsStandards }) {
   const [standards, setStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -51,7 +54,7 @@ function ChplStandardsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setStandards(props.standards
+    setStandards(propsStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.value,
@@ -67,7 +70,7 @@ function ChplStandardsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [props.standards, filterContext.filters, filterContext.searchTerm]);
+  }, [propsStandards, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -122,13 +125,13 @@ function ChplStandardsView(props) {
               key={`${item.id}-${item.value}`}
               title="Value"
               titleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}
-              additionalTitleContent={
+              additionalTitleContent={(
                 <ChplUpdateIndicator
                   requiredDay={item.requiredDay}
                   endDay={item.endDay}
                   additionalInformation={item.additionalInformation}
                 />
-              }
+              )}
               fieldGroups={[
                 [
                   {
@@ -136,6 +139,13 @@ function ChplStandardsView(props) {
                     value: item.regulatoryTextCitation || 'N/A',
                     xs: 6,
                     sm: 3,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
                   },
                   {
                     label: 'Rule',

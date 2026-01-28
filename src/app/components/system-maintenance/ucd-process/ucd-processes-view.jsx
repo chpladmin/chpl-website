@@ -2,14 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { ucdProcessType } from 'shared/prop-types';
@@ -27,8 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessesView(props) {
-  const { dispatch } = props;
+function ChplUcdProcessesView({ dispatch, ucdProcesses: propsUcdProcesses }) {
   const { hasAnyRole } = useContext(UserContext);
   const [ucdProcesses, setUcdProcesses] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -36,12 +37,12 @@ function ChplUcdProcessesView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setUcdProcesses(props.ucdProcesses
+    setUcdProcesses(propsUcdProcesses
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
+  }, [propsUcdProcesses]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -88,6 +89,13 @@ function ChplUcdProcessesView(props) {
               key={`${item.id}`}
               title="Name"
               titleValue={item.name}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
               actions={
                 hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                   <Button
