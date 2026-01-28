@@ -45,14 +45,13 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }
   }, [initialAnnouncements]);
 
   const handleActionBarDispatch = (action, payload) => {
-    if (action === 'close') {
-      setAnnouncement(undefined);
-    } else {
+    if (action !== 'close') {
       dispatch(action, {
         ...announcement,
         ...payload,
       });
     }
+    setAnnouncement(undefined);
   };
 
   const getTitle = () => {
