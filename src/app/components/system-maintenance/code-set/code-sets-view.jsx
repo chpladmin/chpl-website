@@ -2,16 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func, shape } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchCodeSetsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard } from 'components/util';
+import { ChplSearchResultCard, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -19,20 +21,20 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer:{
-      display: 'flex',
-      justifyContent: 'flex-end',
-  }
+  tableResultsHeaderContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 });
 
 function ChplCodeSetsView(props) {
-  const { dispatch } = props;
+  const { dispatch, codeSets: propsCodeSets } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [codeSets, setCodeSets] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setCodeSets(props.codeSets
+    setCodeSets(propsCodeSets
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -40,7 +42,7 @@ function ChplCodeSetsView(props) {
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       })));
-  }, [props.codeSets]);
+  }, [propsCodeSets]);
 
   return (
     <>
@@ -78,6 +80,13 @@ function ChplCodeSetsView(props) {
               key={item.id}
               title="CHPL Entry Value"
               titleValue={item.name}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
               fieldGroups={[
                 [
                   {
@@ -132,6 +141,6 @@ function ChplCodeSetsView(props) {
 export default ChplCodeSetsView;
 
 ChplCodeSetsView.propTypes = {
-  codeSets: arrayOf(object).isRequired,
+  codeSets: arrayOf(shape({})).isRequired,
   dispatch: func.isRequired,
 };

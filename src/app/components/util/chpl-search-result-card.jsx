@@ -57,16 +57,16 @@ function ChplSearchResultCard({
         )}
 
         {/* Field Groups */}
-        {fieldGroups?.map((group, groupIndex) => (
+        {fieldGroups?.map((group) => ( // eslint-disable-line
           <Grid
-            key={`field-group-${groupIndex}`}
+            key={group.map((f) => f.label).join('-')} // eslint-disable-line react/no-array-index-key
             container
             spacing={2}
             alignItems="flex-start"
           >
-            {group.map((field, fieldIndex) => (
+            {group.map((field) => ( // eslint-disable-line
               <Grid
-                key={`field-${groupIndex}-${fieldIndex}`}
+                key={field.label} // eslint-disable-line react/no-array-index-key
                 item
                 xs={field.xs || 12}
                 sm={field.sm || field.xs || 12}
@@ -76,20 +76,19 @@ function ChplSearchResultCard({
                   <Box flex={1}>
                     <Typography variant="body2" style={{ fontWeight: '600' }}>
                       {field.label}
+                      {field.iconButton && (
+                        field.iconButton
+                      )}
                     </Typography>
                     <Typography variant="body1">
                       {field.value ?? field.fallback ?? 'N/A'}
                     </Typography>
                   </Box>
-                  {field.iconButton && (
-                    <Box>
-                      {field.iconButton}
-                    </Box>
-                  )}
+
                 </Box>
               </Grid>
             ))}
-            {actions && groupIndex === fieldGroups.length - 1 && (
+            {actions && group === fieldGroups[fieldGroups.length - 1] && (
               <Grid item sm="auto" style={{ marginLeft: 'auto' }}>
                 {actions}
               </Grid>

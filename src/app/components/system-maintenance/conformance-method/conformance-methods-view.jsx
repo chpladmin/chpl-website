@@ -2,16 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func, shape } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchConformanceMethodsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -32,7 +34,7 @@ const useStyles = makeStyles({
 });
 
 function ChplConformanceMethodsView(props) {
-  const { dispatch } = props;
+  const { dispatch, conformanceMethods: propsConformanceMethods } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [conformanceMethods, setConformanceMethods] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -40,7 +42,7 @@ function ChplConformanceMethodsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setConformanceMethods(props.conformanceMethods
+    setConformanceMethods(propsConformanceMethods
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -49,7 +51,7 @@ function ChplConformanceMethodsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('name')));
-  }, [props.conformanceMethods]);
+  }, [propsConformanceMethods]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -100,6 +102,13 @@ function ChplConformanceMethodsView(props) {
               key={`${item.id}`}
               title="Name"
               titleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
               fieldGroups={[
                 [
                   {
@@ -140,6 +149,6 @@ function ChplConformanceMethodsView(props) {
 export default ChplConformanceMethodsView;
 
 ChplConformanceMethodsView.propTypes = {
-  conformanceMethods: arrayOf(object).isRequired,
+  conformanceMethods: arrayOf(shape({})).isRequired,
   dispatch: func.isRequired,
 };

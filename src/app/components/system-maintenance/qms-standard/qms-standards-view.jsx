@@ -2,14 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { qmsStandardType } from 'shared/prop-types';
@@ -28,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 function ChplQmsStandardsView(props) {
-  const { dispatch } = props;
+  const { dispatch, qmsStandards: propsQmsStandards } = props;
   const [qmsStandards, setQmsStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -36,12 +38,12 @@ function ChplQmsStandardsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setQmsStandards(props.qmsStandards
+    setQmsStandards(propsQmsStandards
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [props.qmsStandards]); // eslint-disable-line react/destructuring-assignment
+  }, [propsQmsStandards]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -88,6 +90,13 @@ function ChplQmsStandardsView(props) {
               key={`${item.id}`}
               title="Name"
               titleValue={item.name}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
               actions={
                 hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                   <Button
