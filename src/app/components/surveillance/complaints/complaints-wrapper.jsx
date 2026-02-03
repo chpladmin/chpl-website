@@ -5,15 +5,11 @@ import ChplComplaints from './complaints';
 
 import AppWrapper from 'app-wrapper';
 
-function ChplComplaintsWrapper(props = {
-  bonusQuery: '',
-  disallowedFilters: [],
-  canAdd: true,
-}) {
+function ChplComplaintsWrapper(props) {
   const {
-    bonusQuery,
-    canAdd,
-    disallowedFilters,
+    bonusQuery = '',
+    canAdd = true,
+    disallowedFilters = [],
   } = props;
 
   return (
