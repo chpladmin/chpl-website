@@ -8,7 +8,7 @@ import AppWrapper from 'app-wrapper';
 function ChplComplaintsWrapper(props) {
   const {
     bonusQuery = '',
-    canAdd = false,
+    canAdd = true,
     disallowedFilters = [],
   } = props;
 
