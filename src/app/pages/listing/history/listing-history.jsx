@@ -282,8 +282,7 @@ function ChplListingHistory(props) {
           { (fetchListingActivityMetadata.isLoading
              || fetchVersionActivitiesMetadata.isLoading
              || fetchProductsActivitiesMetadata.isLoading
-             || fetchDeveloperActivitiesMetadata.isLoading
-             || (listingActivityIds.length + versionActivityIds.length + productActivityIds.length + developerActivityIds.length < evaluated.length))
+             || fetchDeveloperActivitiesMetadata.isLoading)
             && <CircularProgress /> }
           { activity.length > 0
             ? (
