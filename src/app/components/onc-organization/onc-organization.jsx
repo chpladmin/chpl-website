@@ -10,22 +10,20 @@ import { acb as acbPropType } from 'shared/prop-types';
 
 function ChplOncOrganization({
   dispatch,
-  organization: initialOrg,
+  organization,
   orgType,
   isCreating = false,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [organization, setOrganization] = useState(undefined);
   const { mutate: postAcb } = usePostAcb();
   const { mutate: putAcb } = usePutAcb();
   const { mutate: postAtl } = usePostAtl();
   const { mutate: putAtl } = usePutAtl();
 
   useEffect(() => {
-    setOrganization(initialOrg);
     setIsEditing(isCreating);
-  }, [initialOrg, isCreating]);
+  }, [isCreating]);
 
   const handleDispatch = (action, payload) => {
     const mutate = isCreating ? (orgType === 'acb' ? postAcb : postAtl) : (orgType === 'acb' ? putAcb : putAtl); // eslint-disable-line no-nested-ternary
