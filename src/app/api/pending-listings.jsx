@@ -1,6 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
+import options from './options';
+
+const useConfirmPendingListing = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post(`/listings/pending/${data.listing.id}`, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['listings/pending']);
+    },
+    onError: () => {
+      queryClient.invalidateQueries(['listings/pending']);
+    },
+  });
+};
 
 const useFetchPendingListing = ({ id }) => {
   const axios = useAxios();
@@ -10,9 +24,7 @@ const useFetchPendingListing = ({ id }) => {
       return response.data;
     }
     return {};
-  }, {
-    keepPreviousData: true,
-  });
+  }, options.daily);
 };
 
 const useFetchPendingListings = () => {
@@ -50,6 +62,7 @@ const useRejectPendingListing = () => {
 };
 
 export {
+  useConfirmPendingListing,
   useFetchPendingListing,
   useFetchPendingListings,
   useFetchUploadedDeveloper,

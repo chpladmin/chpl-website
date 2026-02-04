@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Container,
   Divider,
   FormControlLabel,
@@ -15,7 +16,7 @@ import {
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import { arrayOf, object, func } from 'prop-types';
+import { object, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -23,6 +24,7 @@ import ChplCompareUploadedAndSystemDevelopers from './compare-uploaded-and-syste
 import ChplConfirmDeveloperAddress from './address';
 import ChplConfirmDeveloperContact from './contact';
 
+import { useFetchDevelopers } from 'api/developer';
 import { ChplTextField } from 'components/util';
 import { developer as developerProp } from 'shared/prop-types';
 
@@ -137,29 +139,32 @@ const validationSchema = yup.object({
     .required('Phone is required'),
 });
 
-function ChplConfirmDeveloper(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const { listing, developer } = props;
+function ChplConfirmDeveloper({ listing, developer, dispatch }) {
+  const { data, isLoading, isSuccess } = useFetchDevelopers();
+  const [developers, setDevelopers] = useState([]);
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
-  const developers = props.developers
-    .filter((d) => !d.deleted)
-    .sort((a, b) => (a.name < b.name ? -1 : 1));
-  const [isCreating, setIsCreating] = useState(!props.developer.id);
+  const [isCreating, setIsCreating] = useState(!developer.id);
   const [isShowingComparison, setIsShowingComparison] = useState(false);
-  /* eslint-enable react/destructuring-assignment */
+  const classes = useStyles();
+  let formik;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    const foundDeveloper = props.developers.find((d) => d.id === props.developer.id);
+    if (isLoading || !isSuccess) { return; }
+    setDevelopers(data
+      .filter((d) => !d.deleted)
+      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    const foundDeveloper = developers.find((d) => d.id === developer.id);
     if (foundDeveloper) {
       setSelectedDeveloper(foundDeveloper);
     }
-  }, [props.developer, props.developers]); // eslint-disable-line react/destructuring-assignment
-
-  let formik;
+  }, [developer, developers]);
 
   const handleCompareDispatch = () => {
     setIsShowingComparison(false);
@@ -169,7 +174,7 @@ function ChplConfirmDeveloper(props) {
     if (isCreating !== creating) {
       if (isCreating) {
         if (selectedDeveloper) {
-          props.dispatch('select', selectedDeveloper);
+          dispatch('select', selectedDeveloper);
         }
       } else {
         formik.handleSubmit();
@@ -184,14 +189,12 @@ function ChplConfirmDeveloper(props) {
   };
 
   const handleSelectOnChange = (event) => {
-    props.dispatch('select', event.target.value);
+    dispatch('select', event.target.value);
     setSelectedDeveloper(event.target.value);
   };
 
-  const classes = useStyles();
-
   const submit = () => {
-    props.dispatch('edit', {
+    dispatch('edit', {
       name: formik.values.name,
       website: formik.values.website,
       selfDeveloper: formik.values.selfDeveloper,
@@ -233,6 +236,8 @@ function ChplConfirmDeveloper(props) {
     },
     validationSchema,
   });
+
+  if (developers.length === 0 || isLoading || !isSuccess) { return <CircularProgress />; }
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="md">
@@ -393,7 +398,6 @@ export default ChplConfirmDeveloper;
 
 ChplConfirmDeveloper.propTypes = {
   developer: developerProp.isRequired,
-  developers: arrayOf(developerProp).isRequired,
   dispatch: func.isRequired,
-  listing: object.isRequired, // eslint-disable-line react/forbid-prop-types
+  listing: object.isRequired,
 };

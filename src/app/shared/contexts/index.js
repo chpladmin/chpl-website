@@ -8,6 +8,7 @@ import CriterionContext from './criterion-context';
 import DeveloperContext from './developer-context';
 import FlagContext from './flag-context';
 import ListingContext from './listing-context';
+import PendingListingContext from './pending-listing-context';
 import UserContext from './user-context';
 
 export {
@@ -22,6 +23,7 @@ export {
   DeveloperContext,
   FlagContext,
   ListingContext,
+  PendingListingContext,
   UserContext,
   useAnalyticsContext,
 };

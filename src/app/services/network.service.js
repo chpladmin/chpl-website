@@ -11,10 +11,6 @@ export default class NetworkService {
     return this.apiPOST('/key/confirm', hash);
   }
 
-  confirmListing(request) {
-    return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
-  }
-
   confirmUser(userObject) {
     return this.apiPOST('/users/confirm', userObject);
   }
@@ -31,17 +27,6 @@ export default class NetworkService {
 
   getAcbs(editable) {
     return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
-  }
-
-  getAllCriteria(props) {
-    const params = Object
-      .entries(props)
-      .filter(([, value]) => value !== null && value !== undefined)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&');
-    let query = '/certification-criteria';
-    if (params.length > 0) { query += `?${params}`; }
-    return this.apiGET(query);
   }
 
   getComplaintsWithSurveillance(surveillanceId) {
@@ -72,20 +57,12 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}`);
   }
 
-  getProductsByDeveloper(developerId) {
-    return this.apiGET(`/products?developerId=${developerId}`);
-  }
-
   getRelatedListings(id) {
     return this.apiGET(`/products/${id}/listings`);
   }
 
   getReportMetadata(reportKey) {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
-  }
-
-  getSimpleProduct(id) {
-    return this.apiGET(`/products/${id}`);
   }
 
   getSystemStatus() {
@@ -96,24 +73,12 @@ export default class NetworkService {
     return this.apiGET('/users');
   }
 
-  getVersion(id) {
-    return this.apiGET(`/versions/${id}`);
-  }
-
-  getVersionsByProduct(productId) {
-    return this.apiGET(`/versions?productId=${productId}`);
-  }
-
   inviteUser(invitationObject) {
     return this.apiPOST('/users/invitation', invitationObject);
   }
 
   logout(logoutRequest) {
     return this.apiPOST('/auth/logout', logoutRequest);
-  }
-
-  rejectPendingListing(id) {
-    return this.apiDELETE(`/listings/pending/${id}`);
   }
 
   requestApiKey(apiKeyRequest) {

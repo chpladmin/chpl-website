@@ -1,6 +1,16 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
+
+const useFetchVersionsByProduct = ({ id }) => {
+  const axios = useAxios();
+  return useQuery([`/versions?productId=${id}`], async () => {
+    const response = await axios.get(`/versions?productId=${id}`);
+    return response.data;
+  }, {
+    enabled: !!id,
+  });
+};
 
 const usePostVersionSplit = () => {
   const axios = useAxios();
@@ -29,6 +39,7 @@ const usePutVersion = () => {
 };
 
 export {
+  useFetchVersionsByProduct,
   usePostVersionSplit,
   usePutVersion,
 };
