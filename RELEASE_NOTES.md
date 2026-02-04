@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 13.44.0
+_4 February 2026_
+
+### Features
+* Convert Confirmation workflow to React
+* Enable editing of surveillance reporting data in new UI
+
+### User Interface Updates
+* Display "Listing confirm" screen in new UI
+
+### Bug Fixes
+* Handle "new Developer" in upload/confirm workflow
+
+---
+
 ## Version 13.43.2
 _20 January 2026_
 
