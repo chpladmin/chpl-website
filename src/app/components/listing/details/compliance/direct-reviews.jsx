@@ -123,7 +123,11 @@ const sortNonconformities = (a, b) => {
   return a.created - b.created;
 };
 
-function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable, isListing }) {
+function ChplDirectReviews({
+  directReviews: initialDirectReviews,
+  directReviewsAvailable,
+  isListing = true,
+}) {
   const { analytics } = useAnalyticsContext();
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -336,8 +340,4 @@ ChplDirectReviews.propTypes = {
   directReviews: arrayOf(directReviewPropType).isRequired,
   directReviewsAvailable: bool.isRequired,
   isListing: bool,
-};
-
-ChplDirectReviews.defaultProps = {
-  isListing: true,
 };

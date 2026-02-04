@@ -126,7 +126,11 @@ const getSurveillanceResult = (surveillance) => {
   );
 };
 
-function ChplSurveillance({ surveillance: initialSurveillance, ics, dispatch }) {
+function ChplSurveillance({
+  surveillance: initialSurveillance,
+  ics = false,
+  dispatch = () => {},
+}) {
   const { analytics } = useAnalyticsContext();
   const { listing } = useContext(ListingContext);
   const { hasAnyRole, user } = useContext(UserContext);
@@ -323,9 +327,4 @@ ChplSurveillance.propTypes = {
   surveillance: arrayOf(surveillancePropType).isRequired,
   dispatch: func,
   ics: bool,
-};
-
-ChplSurveillance.defaultProps = {
-  dispatch: () => {},
-  ics: false,
 };

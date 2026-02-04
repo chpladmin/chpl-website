@@ -1,6 +1,16 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
+
+const useFetchProductsByDeveloper = ({ id }) => {
+  const axios = useAxios();
+  return useQuery([`/products?developerId=${id}`], async () => {
+    const response = await axios.get(`/products?developerId=${id}`);
+    return response.data;
+  }, {
+    enabled: !!id,
+  });
+};
 
 const usePostProductSplit = () => {
   const axios = useAxios();
@@ -29,6 +39,7 @@ const usePutProduct = () => {
 };
 
 export {
+  useFetchProductsByDeveloper,
   usePostProductSplit,
   usePutProduct,
 };

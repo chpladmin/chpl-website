@@ -7,18 +7,16 @@ import {
   Container,
   Divider,
   MenuItem,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { arrayOf, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from 'themes/theme';
-import { product as productProp } from 'shared/prop-types';
+import { useFetchProductsByDeveloper } from 'api/product';
 import { ChplTextField } from 'components/util';
 
 const useStyles = makeStyles({
@@ -106,28 +104,32 @@ const validationSchema = yup.object({
     .required('Product Name is required'),
 });
 
-function ChplConfirmProduct(props) {
-  /* eslint-disable react/destructuring-assignment */
+function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
+  const { data, isLoading, isSuccess } = useFetchProductsByDeveloper({ id: developer.id });
   const [selectedProduct, setSelectedProduct] = useState('');
-  const products = props.products
-    .sort((a, b) => (a.name < b.name ? -1 : 1));
+  const [products, setProducts] = useState([]);
   const [isCreating, setIsCreating] = useState(true);
-  /* eslint-enable react/destructuring-assignment */
+  const classes = useStyles();
+  let formik;
 
   useEffect(() => {
-    const selected = props.products.filter((p) => p.id === props.product.id)[0];
+    if (isLoading || !isSuccess) { return; }
+    setProducts(data.products
+      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    const selected = products.find((p) => p.id === initialProduct.id);
     if (selected) {
       setSelectedProduct(selected);
     }
-    setIsCreating(!props.product.id || props.products.length === 0);
-  }, [props.product, props.products]); // eslint-disable-line react/destructuring-assignment
-
-  let formik;
+    setIsCreating(!initialProduct.id || products.length === 0);
+  }, [initialProduct, products]);
 
   const handleCreationToggle = (creating) => {
     if (isCreating !== creating) {
       if (isCreating) {
-        props.dispatch('select', selectedProduct);
+        dispatch('select', selectedProduct);
       } else {
         formik.handleSubmit();
       }
@@ -141,21 +143,19 @@ function ChplConfirmProduct(props) {
   };
 
   const handleSelectOnChange = (event) => {
-    props.dispatch('select', event.target.value);
+    dispatch('select', event.target.value);
     setSelectedProduct(event.target.value);
   };
 
-  const classes = useStyles();
-
   const submit = () => {
-    props.dispatch('edit', {
+    dispatch('edit', {
       name: formik.values.name,
     });
   };
 
   formik = useFormik({
     initialValues: {
-      name: props.product?.name || '', // eslint-disable-line react/destructuring-assignment
+      name: initialProduct?.name || '',
     },
     onSubmit: () => {
       submit();
@@ -164,102 +164,100 @@ function ChplConfirmProduct(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="md" className={classes.fixFooterSpacing}>
-        <div className={classes.developerConfirm}>
-          <div className={classes.developerSubContainer}>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              disabled={products?.length === 0}
-              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(false)}
-            >
-              <span className={classes.buttonContent}>
-                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                { selectedProduct
-                  ? (
-                    <>
-                      {`Use "${selectedProduct.name}"`}
-                    </>
-                  ) : (
-                    <>
-                      Choose A Product To Use
-                    </>
-                  )}
-              </span>
-            </Button>
-            <div className={classes.orContainer}>
-              <Divider />
-              <Typography>OR</Typography>
-              <Divider />
-            </div>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(true)}
-            >
-              <span className={classes.buttonContent}>
-                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                Create a Product
-              </span>
-            </Button>
+    <Container maxWidth="md" className={classes.fixFooterSpacing}>
+      <div className={classes.developerConfirm}>
+        <div className={classes.developerSubContainer}>
+          <Button
+            variant="outlined"
+            color="default"
+            fullWidth
+            disabled={products?.length === 0}
+            className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+            onClick={() => handleCreationToggle(false)}
+          >
+            <span className={classes.buttonContent}>
+              <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+              { selectedProduct
+                ? (
+                  <>
+                    {`Use "${selectedProduct.name}"`}
+                  </>
+                ) : (
+                  <>
+                    Choose A Product To Use
+                  </>
+                )}
+            </span>
+          </Button>
+          <div className={classes.orContainer}>
+            <Divider />
+            <Typography>OR</Typography>
+            <Divider />
           </div>
-          <Divider />
-          {isCreating
-            ? (
-              <Card>
-                <CardHeader title="Create A New Product" />
-                <CardContent>
-                  <div className={classes.formContainer}>
-                    <ChplTextField
-                      id="name"
-                      name="name"
-                      label="Product Name"
-                      value={formik.values.name}
-                      error={formik.touched.name && !!formik.errors.name}
-                      helperText={formik.touched.name && formik.errors.name}
-                      onChange={handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardHeader title="Select An Existing Product" />
-                <CardContent>
-                  <ChplTextField
-                    select
-                    id="selected-product"
-                    name="selectedProduct"
-                    label="Select a Product"
-                    required
-                    value={selectedProduct}
-                    onChange={handleSelectOnChange}
-                  >
-                    {products.map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                </CardContent>
-              </Card>
-            )}
+          <Button
+            variant="outlined"
+            color="default"
+            fullWidth
+            className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+            onClick={() => handleCreationToggle(true)}
+          >
+            <span className={classes.buttonContent}>
+              <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+              Create a Product
+            </span>
+          </Button>
         </div>
-      </Container>
-    </ThemeProvider>
+        <Divider />
+        {isCreating
+          ? (
+            <Card>
+              <CardHeader title="Create A New Product" />
+              <CardContent>
+                <div className={classes.formContainer}>
+                  <ChplTextField
+                    id="name"
+                    name="name"
+                    label="Product Name"
+                    value={formik.values.name}
+                    error={formik.touched.name && !!formik.errors.name}
+                    helperText={formik.touched.name && formik.errors.name}
+                    onChange={handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader title="Select An Existing Product" />
+              <CardContent>
+                <ChplTextField
+                  select
+                  id="selected-product"
+                  name="selectedProduct"
+                  label="Select a Product"
+                  required
+                  value={selectedProduct}
+                  onChange={handleSelectOnChange}
+                >
+                  {products.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </ChplTextField>
+              </CardContent>
+            </Card>
+          )}
+      </div>
+    </Container>
   );
 }
 
 export default ChplConfirmProduct;
 
 ChplConfirmProduct.propTypes = {
-  product: productProp.isRequired,
-  products: arrayOf(productProp).isRequired,
+  developer: object.isRequired,
+  product: object.isRequired,
   dispatch: func.isRequired,
 };

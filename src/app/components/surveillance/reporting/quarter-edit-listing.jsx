@@ -10,9 +10,9 @@ import {
 } from '@material-ui/core';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import { object } from 'prop-types';
+import { number, object } from 'prop-types';
 
-import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveillance';
+import ChplQuarterEditListingSurveillance from './quarter-edit-listing-surveillance';
 
 import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles, palette } from 'themes';
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQuarterEditListing({ listing }) {
+function ChplQuarterEditListing({ listing, reportId }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const classes = useStyles();
 
@@ -78,12 +78,15 @@ function ChplQuarterEditListing({ listing }) {
       }}
       >
         <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
-          { listing.surveillances.map((surv) => (
-            <ChplQuarterViewListingSurveillance
-              key={surv.id}
-              surveillance={surv}
-            />
-          ))}
+          { listing.surveillances
+            .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
+            .map((surv) => (
+              <ChplQuarterEditListingSurveillance
+                key={surv.id}
+                surveillance={surv}
+                reportId={reportId}
+              />
+            ))}
         </Box>
       </AccordionDetails>
     </Accordion>
@@ -94,4 +97,5 @@ export default ChplQuarterEditListing;
 
 ChplQuarterEditListing.propTypes = {
   listing: object.isRequired,
+  reportId: number.isRequired,
 };

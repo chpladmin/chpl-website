@@ -5,7 +5,6 @@ import '../assets/favicons/favicons';
 import 'swagger-ui-react/swagger-ui.css';
 
 import angular from 'angular';
-import 'angular-breadcrumb';
 import /* angularConfirm from */ 'angular-confirm';
 import /* angularLoadingBar from */ 'angular-loading-bar';
 import /* angulartics from */ 'angulartics';
@@ -18,7 +17,6 @@ import /* cytoscape from */ 'cytoscape';
 import /* ngCytoscape from */ './lib/ngCytoscape.min';
 import /* ngResource from */ 'angular-resource';
 import /* ngSanitize from */ 'angular-sanitize';
-import /* smartTable from */ 'angular-smart-table';
 import /* toaster from */ 'angularjs-toaster';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
@@ -57,7 +55,6 @@ const dependencies = [
   'angulartics',
   'angulartics.google.tagmanager',
   'feature-flags',
-  'ncy-angular-breadcrumb',
   'ngAnimate',
   'ngAria',
   'ngCytoscape',
@@ -65,7 +62,6 @@ const dependencies = [
   'ngResource',
   'ngStorage',
   'ngSanitize',
-  'smart-table',
   'toaster',
   'ui.bootstrap',
   'ui.router',
