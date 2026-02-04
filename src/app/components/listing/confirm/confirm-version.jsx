@@ -7,21 +7,20 @@ import {
   Container,
   Divider,
   MenuItem,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { arrayOf, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../../themes/theme';
-import { version as versionProp } from '../../../shared/prop-types';
-import { ChplTextField } from '../../util';
+import { useFetchVersionsByProduct } from 'api/version';
+import { ChplTextField } from 'components/util';
+import { version as versionProp } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   buttonCard: {
     padding: '32px',
     display: 'flex',
@@ -97,35 +96,39 @@ const useStyles = makeStyles(() => ({
   verticalDivider: {
     height: '25%',
   },
-}));
+});
 
 const validationSchema = yup.object({
   version: yup.string()
     .required('Version is required'),
 });
 
-function ChplConfirmVersion(props) {
-  /* eslint-disable react/destructuring-assignment */
+function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
+  const { data, isLoading, isSuccess } = useFetchVersionsByProduct({ id: product.id });
   const [selectedVersion, setSelectedVersion] = useState('');
-  const versions = props.versions
-    .sort((a, b) => (a.version < b.version ? -1 : 1));
+  const [versions, setVersions] = useState([]);
   const [isCreating, setIsCreating] = useState(true);
-  /* eslint-enable react/destructuring-assignment */
+  const classes = useStyles();
+  let formik;
 
   useEffect(() => {
-    const selected = props.versions.filter((p) => p.id === props.version.id)[0];
+    if (isLoading || !isSuccess) { return; }
+    setVersions(data
+      .sort((a, b) => (a.version < b.version ? -1 : 1)));
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    const selected = versions.find((p) => p.id === initialVersion.id);
     if (selected) {
       setSelectedVersion(selected);
     }
-    setIsCreating(!props.version.id || props.versions.length === 0);
-  }, [props.version, props.versions]); // eslint-disable-line react/destructuring-assignment
-
-  let formik;
+    setIsCreating(!initialVersion.id || versions.length === 0);
+  }, [initialVersion, versions]);
 
   const handleCreationToggle = (creating) => {
     if (isCreating !== creating) {
       if (isCreating) {
-        props.dispatch('select', selectedVersion);
+        dispatch('select', selectedVersion);
       } else {
         formik.handleSubmit();
       }
@@ -139,21 +142,19 @@ function ChplConfirmVersion(props) {
   };
 
   const handleSelectOnChange = (event) => {
-    props.dispatch('select', event.target.value);
+    dispatch('select', event.target.value);
     setSelectedVersion(event.target.value);
   };
 
-  const classes = useStyles();
-
   const submit = () => {
-    props.dispatch('edit', {
+    dispatch('edit', {
       version: formik.values.version,
     });
   };
 
   formik = useFormik({
     initialValues: {
-      version: props.version?.version || '', // eslint-disable-line react/destructuring-assignment
+      version: initialVersion?.version || '',
     },
     onSubmit: () => {
       submit();
@@ -162,93 +163,91 @@ function ChplConfirmVersion(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="md">
-        <div className={classes.developerConfirm}>
-          <div className={classes.developerSubContainer}>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              disabled={versions?.length === 0}
-              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(false)}
-            >
-              <span className={classes.buttonContent}>
-                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                { selectedVersion
-                  ? (
-                    <>
-                      {`Use "${selectedVersion.version}"`}
-                    </>
-                  ) : (
-                    <>
-                      Choose A Version To Use
-                    </>
-                  )}
-              </span>
-            </Button>
-            <div className={classes.orContainer}>
-              <Divider />
-              <Typography>OR</Typography>
-              <Divider />
-            </div>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
-              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(true)}
-            >
-              <span className={classes.buttonContent}>
-                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                Create A Version
-              </span>
-            </Button>
+    <Container maxWidth="md">
+      <div className={classes.developerConfirm}>
+        <div className={classes.developerSubContainer}>
+          <Button
+            variant="outlined"
+            color="default"
+            fullWidth
+            disabled={versions?.length === 0}
+            className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+            onClick={() => handleCreationToggle(false)}
+          >
+            <span className={classes.buttonContent}>
+              <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+              { selectedVersion
+                ? (
+                  <>
+                    {`Use "${selectedVersion.version}"`}
+                  </>
+                ) : (
+                  <>
+                    Choose A Version To Use
+                  </>
+                )}
+            </span>
+          </Button>
+          <div className={classes.orContainer}>
+            <Divider />
+            <Typography>OR</Typography>
+            <Divider />
           </div>
-          <Divider />
-          { isCreating
-            ? (
-              <Card>
-                <CardHeader title="Create A New Version" />
-                <CardContent>
-                  <ChplTextField
-                    id="version"
-                    name="version"
-                    label="Version"
-                    value={formik.values.version}
-                    error={formik.touched.version && !!formik.errors.version}
-                    helperText={formik.touched.version && formik.errors.version}
-                    onChange={handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardHeader title="Existing Versions" />
-                <CardContent>
-                  <ChplTextField
-                    select
-                    id="selected-version"
-                    name="selectedVersion"
-                    label="Select a Version"
-                    required
-                    value={selectedVersion}
-                    onChange={handleSelectOnChange}
-                  >
-                    { versions.map((item) => (
-                      <MenuItem value={item} key={item.id}>
-                        { item.version }
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                </CardContent>
-              </Card>
-            )}
+          <Button
+            variant="outlined"
+            color="default"
+            fullWidth
+            className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+            onClick={() => handleCreationToggle(true)}
+          >
+            <span className={classes.buttonContent}>
+              <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+              Create A Version
+            </span>
+          </Button>
         </div>
-      </Container>
-    </ThemeProvider>
+        <Divider />
+        { isCreating
+          ? (
+            <Card>
+              <CardHeader title="Create A New Version" />
+              <CardContent>
+                <ChplTextField
+                  id="version"
+                  name="version"
+                  label="Version"
+                  value={formik.values.version}
+                  error={formik.touched.version && !!formik.errors.version}
+                  helperText={formik.touched.version && formik.errors.version}
+                  onChange={handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader title="Existing Versions" />
+              <CardContent>
+                <ChplTextField
+                  select
+                  id="selected-version"
+                  name="selectedVersion"
+                  label="Select a Version"
+                  required
+                  value={selectedVersion}
+                  onChange={handleSelectOnChange}
+                >
+                  { versions.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      { item.version }
+                    </MenuItem>
+                  ))}
+                </ChplTextField>
+              </CardContent>
+            </Card>
+          )}
+      </div>
+    </Container>
   );
 }
 
@@ -256,6 +255,6 @@ export default ChplConfirmVersion;
 
 ChplConfirmVersion.propTypes = {
   version: versionProp.isRequired,
-  versions: arrayOf(versionProp).isRequired,
+  product: object.isRequired,
   dispatch: func.isRequired,
 };

@@ -59,19 +59,7 @@ const states = [{
 }, {
   name: 'administration.confirm.listings.listing',
   url: '/{id}/confirm',
-  component: 'chplConfirmListing',
-  resolve: {
-    developers: (networkService) => {
-      'ngInject';
-
-      return networkService.getDevelopers().then((response) => response.developers);
-    },
-    listing: (networkService, $transition$) => {
-      'ngInject';
-
-      return networkService.getPendingListingById($transition$.params().id);
-    },
-  },
+  component: 'chplConfirm',
   data: {
     title: 'CHPL Administration - Confirm Listing',
     roles: ['chpl-admin', 'chpl-onc-acb'],
