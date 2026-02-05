@@ -96,8 +96,7 @@ const parseSvapCsv = ({ svaps }, data) => {
     .join('\n');
 };
 
-function ChplDownloadListings(props) {
-  const { toggled } = props;
+function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
@@ -112,7 +111,7 @@ function ChplDownloadListings(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setListings(props.listings.map((listing) => ({
+    setListings(initialListings.map((listing) => ({
       ...listing,
       developerName: listing.developer.name,
       productName: listing.product.name,
@@ -134,7 +133,7 @@ function ChplDownloadListings(props) {
       svapNoticeUrl: listing.svapNoticeUrl || '',
       riskManagementSummaryInformation: listing.riskManagementSummaryInformation?.value || 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
     })));
-  }, [props.listings]); // eslint-disable-line react/destructuring-assignment
+  }, [initialListings]);
 
   useEffect(() => {
     if (svapQuery.isLoading || !svapQuery.isSuccess) {
@@ -273,9 +272,4 @@ export default ChplDownloadListings;
 ChplDownloadListings.propTypes = {
   listings: arrayOf(listingPropType),
   toggled: arrayOf(string),
-};
-
-ChplDownloadListings.defaultProps = {
-  listings: [],
-  toggled: [],
 };

@@ -4,7 +4,7 @@ The web UI for chpl
 
 ## Prerequisites
 
-Git, Node.js, and Yarn are required to install and test this project.
+Git, Node.js, and Yarn are required to install and run this project.
 
  * Git: [git][git]
  * Node.js: [nodejs][nodejs]
@@ -31,20 +31,14 @@ yarn install
 ### Yarn scripts
 
 * `yarn build`: Build deployable artifacts
-* `yarn html-lint`: Run HTML Linter with rules that should all pass
-* `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
 * `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
 * `yarn start:dev`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but connecting to the DEV environment for data
 * `yarn start:prod`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but using the production settings for js minification / packaging / etc.
-* `yarn start:all`: Run `yarn start`, `yarn test:auto` and `yarn test:react:auto` all at once, in the same terminal
-* `yarn profile`: Generate a webpack statistics output file
-* `yarn test`: Run the Jest-based unit tests once (tests based on the React components)
-* `yarn test:auto`: Run the Jest-based unit tests continuously (tests based on the React components), re-running the tests on any file change
+* `yarn start:prod:dev`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but using the production settings for js minification / packaging / etc. and connecting to the DEV environment for data
 * `lint`: Run ESLint against all JavaScript files in the project
 * `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically. Especially useful when run as `yarn lint:fix src/app/path/to/file.js[x]` to automatically apply fixes against a single file
-* `yarn e2e`: Run the end to end integration tests, as well as e2e linting
-* `yarn e2e:lint`: Run code and syntax rules
-* `yarn e2e:clean`: Clear out old E2E artifacts
+* `wdio`: Run the end to end integration tests
+* `wdio:clean`: Run the end to end integration tests and clear out old E2E artifacts
 
 #### Yarn environment parameters
 

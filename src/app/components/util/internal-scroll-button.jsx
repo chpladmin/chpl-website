@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 });
 
 const InternalScrollButton = ({
-  analytics, children, id,
+  analytics = {}, children, id,
 }) => {
   const [target, setTarget] = useState('');
   const classes = useStyles();
@@ -67,8 +67,4 @@ InternalScrollButton.propTypes = {
   id: string.isRequired,
   children: node.isRequired,
   analytics: analyticsConfig,
-};
-
-InternalScrollButton.defaultProps = {
-  analytics: {},
 };

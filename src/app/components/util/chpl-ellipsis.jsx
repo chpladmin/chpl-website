@@ -20,11 +20,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplEllipsis(props) {
+function ChplEllipsis({
+  text,
+  maxLength = 80,
+  wordBoundaries = false,
+}) {
   const [isShortened, setShortened] = useState(true);
-  const { text } = props;
-  const { wordBoundaries } = props;
-  const { maxLength } = props;
   const classes = useStyles();
 
   if (!text) {
@@ -81,9 +82,4 @@ ChplEllipsis.propTypes = {
   text: string.isRequired,
   maxLength: number,
   wordBoundaries: bool,
-};
-
-ChplEllipsis.defaultProps = {
-  maxLength: 80,
-  wordBoundaries: false,
 };

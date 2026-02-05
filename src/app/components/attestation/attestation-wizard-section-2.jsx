@@ -47,7 +47,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection2({ dispatch, instructions, sections: initialSections }) {
+function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: initialSections }) {
   const [sections, setSections] = useState([]);
   const classes = useStyles();
 
@@ -236,8 +236,4 @@ ChplAttestationWizardSection2.propTypes = {
   sections: array.isRequired, // eslint-disable-line react/forbid-prop-types
   instructions: string,
   dispatch: func.isRequired,
-};
-
-ChplAttestationWizardSection2.defaultProps = {
-  instructions: '',
 };

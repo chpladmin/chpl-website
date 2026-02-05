@@ -40,13 +40,16 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUserTriggersView(props) {
-  const { dispatch } = props;
+function ChplUserTriggersView({
+  acbs = [],
+  dispatch = () => {},
+  triggers: initialTriggers = [],
+}) {
   const [triggers, setTriggers] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setTriggers(props.triggers
+    setTriggers(initialTriggers
       .sort((a, b) => (a.email < b.email ? -1 : 1))
       .map((trigger) => {
         const response = {
@@ -57,7 +60,7 @@ function ChplUserTriggersView(props) {
           const relevant = trigger.acb
             .split(',')
             .map((id) => parseInt(id, 10))
-            .map((id) => props.acbs.find((acb) => acb.id === id))
+            .map((id) => acbs.find((acb) => acb.id === id))
             .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
             .sort((a, b) => (a < b ? -1 : 1))
             .join(', ');
@@ -65,7 +68,7 @@ function ChplUserTriggersView(props) {
         }
         return response;
       }));
-  }, [props.acbs, props.triggers]); // eslint-disable-line react/destructuring-assignment
+  }, [acbs, initialTriggers]);
 
   return (
     <Card>
@@ -137,10 +140,4 @@ ChplUserTriggersView.propTypes = {
   acbs: arrayOf(acbType),
   dispatch: func,
   triggers: arrayOf(triggerType),
-};
-
-ChplUserTriggersView.defaultProps = {
-  acbs: [],
-  dispatch: () => {},
-  triggers: [],
 };

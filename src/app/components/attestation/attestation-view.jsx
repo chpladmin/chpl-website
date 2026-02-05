@@ -83,29 +83,23 @@ const getRows = (section, classes) => section.formItems
     </TableRow>
   ));
 
-function ChplAttestationView(props) {
+function ChplAttestationView({
+  attestations: initialAttestations,
+  canCreateException = false,
+  developer = {},
+}) {
   const { hasAnyRole } = useContext(UserContext);
   const [attestations, setAttestations] = useState({});
-  const [canCreateException, setCanCreateException] = useState(false);
-  const [developer, setDeveloper] = useState({});
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
     setAttestations({
-      ...props.attestations,
-      period: props.attestations.period || props.attestations.attestationPeriod,
-      sections: props.attestations.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder),
+      ...initialAttestations,
+      period: initialAttestations.period || initialAttestations.attestationPeriod,
+      sections: initialAttestations.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder),
     });
-  }, [props.attestations]); // eslint-disable-line react/destructuring-assignment
-
-  useEffect(() => {
-    setCanCreateException(props.canCreateException);
-  }, [props.canCreateException]); // eslint-disable-line react/destructuring-assignment
-
-  useEffect(() => {
-    setDeveloper(props.developer);
-  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+  }, [initialAttestations]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -187,9 +181,4 @@ ChplAttestationView.propTypes = {
   attestations: object.isRequired, // eslint-disable-line react/forbid-prop-types
   canCreateException: bool,
   developer: developerPropType,
-};
-
-ChplAttestationView.defaultProps = {
-  canCreateException: false,
-  developer: {},
 };

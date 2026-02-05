@@ -32,7 +32,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
+function ChplUpdateIndicator({
+  requiredDay = undefined,
+  endDay = undefined,
+  additionalInformation = undefined,
+}) {
   const { criterion } = useContext(CriterionContext);
   const { listing } = useContext(ListingContext);
   const classes = useStyles();
@@ -127,10 +131,4 @@ ChplUpdateIndicator.propTypes = {
   requiredDay: string,
   endDay: string,
   additionalInformation: string,
-};
-
-ChplUpdateIndicator.defaultProps = {
-  requiredDay: undefined,
-  endDay: undefined,
-  additionalInformation: undefined,
 };

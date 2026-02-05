@@ -26,8 +26,14 @@ const isFormFilledOut = (submission) => submission
   .reduce((completed, section) => completed && completedFormItems(section),
     true);
 
-function ChplAttestationWizard(props) {
-  const { developer, dispatch } = props;
+function ChplAttestationWizard({
+  form: initialForm,
+  isSubmitting: initialIsSubmitting = false,
+  developer,
+  dispatch,
+  period: initialPeriod,
+  stage: initialStage = 0,
+}) {
   const [form, setForm] = useState({});
   const [sections, setSections] = useState([]);
   const [submission, setSubmission] = useState([]);
@@ -36,25 +42,25 @@ function ChplAttestationWizard(props) {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    setForm(props.form);
-    if (props.form?.sectionHeadings) {
-      setSections(props.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder));
-      setSubmission(props.form.sectionHeadings);
+    setForm(initialForm);
+    if (initialForm?.sectionHeadings) {
+      setSections(initialForm.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder));
+      setSubmission(initialForm.sectionHeadings);
     }
-  }, [props.form]); // eslint-disable-line react/destructuring-assignment
+  }, [initialForm]);
 
   useEffect(() => {
-    setIsSubmitting(props.isSubmitting);
-  }, [props.isSubmitting]); // eslint-disable-line react/destructuring-assignment
+    setIsSubmitting(initialIsSubmitting);
+  }, [initialIsSubmitting]);
 
   useEffect(() => {
-    setPeriod(props.period);
-  }, [props.period]); // eslint-disable-line react/destructuring-assignment
+    setPeriod(initialPeriod);
+  }, [initialPeriod]);
 
   useEffect(() => {
     setSections(submission);
-    setStage(props.stage);
-  }, [props.stage]); // eslint-disable-line react/destructuring-assignment
+    setStage(initialStage);
+  }, [initialStage]);
 
   const canNext = () => stage === 0 || (stage === 1 && isFormFilledOut(submission));
 
@@ -140,9 +146,4 @@ ChplAttestationWizard.propTypes = {
     periodEnd: string,
   }).isRequired,
   stage: number,
-};
-
-ChplAttestationWizard.defaultProps = {
-  isSubmitting: false,
-  stage: 0,
 };
