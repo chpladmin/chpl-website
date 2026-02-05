@@ -20,7 +20,7 @@ import { usePostAnnualReportRequest, usePostInitiateAnnualReport } from 'api/sur
 import { UserContext } from 'shared/contexts';
 
 function ChplAnnual({
-  year, dispatch, report, acb,
+  year, dispatch, report = {}, acb,
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -177,8 +177,4 @@ ChplAnnual.propTypes = {
   year: number.isRequired,
   report: object,
   acb: object.isRequired,
-};
-
-ChplAnnual.defaultProps = {
-  report: {},
 };

@@ -94,7 +94,7 @@ const includeListing = (listing, params) => {
 
 const sortProducts = (a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
 
-function ChplProductsView({ products, dispatch }) {
+function ChplProductsView({ products = [], dispatch }) {
   const { queryParams } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [params, setParams] = useState({});
@@ -168,8 +168,4 @@ export default ChplProductsView;
 ChplProductsView.propTypes = {
   products: arrayOf(productPropType),
   dispatch: func.isRequired,
-};
-
-ChplProductsView.defaultProps = {
-  products: [],
 };

@@ -42,6 +42,7 @@
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "import/order": ["error", {"newlines-between": "always"}],
     "react/forbid-prop-types": ["warn"],
+    "react/require-default-props": ["off"],
   },
   "overrides": [
     {

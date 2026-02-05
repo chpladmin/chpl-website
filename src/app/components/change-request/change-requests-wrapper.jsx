@@ -8,9 +8,9 @@ import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
 
 function ChplChangeRequestsWrapper(props) {
   const {
-    disallowedFilters,
-    bonusQuery,
-    dispatch,
+    disallowedFilters = [],
+    bonusQuery = '',
+    dispatch = () => {},
   } = props;
 
   return (
@@ -35,10 +35,4 @@ ChplChangeRequestsWrapper.propTypes = {
   disallowedFilters: arrayOf(string),
   bonusQuery: string,
   dispatch: func,
-};
-
-ChplChangeRequestsWrapper.defaultProps = {
-  disallowedFilters: [],
-  bonusQuery: '',
-  dispatch: () => {},
 };

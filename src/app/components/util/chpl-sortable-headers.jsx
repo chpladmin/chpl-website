@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   arrayOf, bool, func, oneOf, shape, string,
 } from 'prop-types';
@@ -28,30 +28,44 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplSortableHeaders(props) {
-  const [order, setOrder] = useState(props.order);
-  const [orderBy, setOrderBy] = useState(props.orderBy);
+function ChplSortableHeaders({
+  onTableSort,
+  order: initialOrder = '',
+  orderBy: initialOrderBy = '',
+  headers,
+  stickyHeader = false,
+}) {
+  const [order, setOrder] = useState('');
+  const [orderBy, setOrderBy] = useState('');
   const classes = useStyles();
+
+  useEffect(() => {
+    setOrder(initialOrder);
+  }, [initialOrder]);
+
+  useEffect(() => {
+    setOrderBy(initialOrderBy);
+  }, [initialOrderBy]);
 
   const createSortHandler = (property) => (event) => {
     const isAsc = orderBy === property && order === 'asc';
     const orderDirection = order === 'asc' ? '' : '-';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    props.onTableSort(event, property, orderDirection);
+    onTableSort(event, property, orderDirection);
   };
 
   return (
     <TableHead>
       <TableRow>
-        { props.headers.map((headCell, index) => (
+        { headers.map((headCell, index) => (
           headCell.sortable
             ? (
               <TableCell
                 key={headCell.property}
                 align="left"
                 sortDirection={orderBy === headCell.property ? order : false}
-                className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
+                className={(index === 0 && stickyHeader) ? classes.stickyColumn : undefined}
               >
                 <TableSortLabel
                   className={classes.header}
@@ -73,7 +87,7 @@ function ChplSortableHeaders(props) {
               <TableCell
                 align="left"
                 key={headCell.text}
-                className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
+                className={(index === 0 && stickyHeader) ? classes.stickyColumn : undefined}
               >
                 <span className={headCell.invisible && classes.visuallyHidden}>
                   { headCell.text }
@@ -99,10 +113,4 @@ ChplSortableHeaders.propTypes = {
     sortable: bool,
   })).isRequired,
   stickyHeader: bool,
-};
-
-ChplSortableHeaders.defaultProps = {
-  order: '',
-  orderBy: '',
-  stickyHeader: false,
 };

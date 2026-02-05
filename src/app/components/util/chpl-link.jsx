@@ -29,12 +29,12 @@ const prependLink = (url) => {
 };
 
 function ChplLink({
-  analytics,
-  external,
+  analytics = {},
+  external = true,
   href: initialHref,
-  inline,
-  router,
-  text: initialText,
+  inline = false,
+  router = {},
+  text: initialText = '',
 }) {
   const classes = useStyles();
   const [href, setHref] = useState('');
@@ -95,12 +95,4 @@ ChplLink.propTypes = {
   external: bool,
   inline: bool,
   router: routerConfig,
-};
-
-ChplLink.defaultProps = {
-  text: '',
-  analytics: {},
-  external: true,
-  inline: false,
-  router: {},
 };

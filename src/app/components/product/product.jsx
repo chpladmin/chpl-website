@@ -37,12 +37,12 @@ const useStyles = makeStyles({
 });
 
 function ChplProduct({
-  dispatch,
-  errorMessages,
-  isEditing,
-  isInvalid: initialIsInvalid,
-  isProcessing,
-  isSplitting,
+  dispatch = () => {},
+  errorMessages = [],
+  isEditing = false,
+  isInvalid: initialIsInvalid = false,
+  isProcessing = false,
+  isSplitting = false,
   product,
 }) {
   const [isInvalid, setIsInvalid] = useState(false);
@@ -101,13 +101,4 @@ ChplProduct.propTypes = {
   isProcessing: bool,
   isSplitting: bool,
   product: object.isRequired,
-};
-
-ChplProduct.defaultProps = {
-  dispatch: () => {},
-  errorMessages: [],
-  isEditing: false,
-  isInvalid: false,
-  isProcessing: false,
-  isSplitting: false,
 };

@@ -135,7 +135,7 @@ function ChplProductEdit(props) {
     dispatch,
     errorMessages: initialErrorMessages,
     isInvalid: initialIsInvalid,
-    isProcessing,
+    isProcessing = false,
     isSplitting,
   } = props;
   const { analytics } = useAnalyticsContext();
@@ -465,8 +465,4 @@ ChplProductEdit.propTypes = {
   isInvalid: bool.isRequired,
   isProcessing: bool,
   isSplitting: bool.isRequired,
-};
-
-ChplProductEdit.defaultProps = {
-  isProcessing: false,
 };

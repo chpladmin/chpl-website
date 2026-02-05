@@ -132,9 +132,9 @@ const useStyles = makeStyles({
 
 function ChplListingEditUpload({
   dispatch,
-  errors: initialErrors,
-  warnings: initialWarnings,
-  isProcessing,
+  errors: initialErrors = [],
+  warnings: initialWarnings = [],
+  isProcessing = false,
 }) {
   const { listing } = useContext(ListingContext);
   const [diff, setDiff] = useState([]);
@@ -540,10 +540,4 @@ ChplListingEditUpload.propTypes = {
   errors: arrayOf(string),
   warnings: arrayOf(string),
   isProcessing: bool,
-};
-
-ChplListingEditUpload.defaultProps = {
-  errors: [],
-  warnings: [],
-  isProcessing: false,
 };

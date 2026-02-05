@@ -6,7 +6,7 @@ import ChplLogin from './login';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 
-function UserWrapper({ children }) {
+function UserWrapper({ children = <ChplLogin /> }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const [user, setUser] = useState({});
@@ -53,8 +53,4 @@ export default UserWrapper;
 
 UserWrapper.propTypes = {
   children: node,
-};
-
-UserWrapper.defaultProps = {
-  children: <ChplLogin />,
 };

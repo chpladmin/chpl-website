@@ -7,9 +7,7 @@ import ChplUserTriggerEdit from './user-trigger-edit';
 
 import { acb as acbPropType, job as jobType } from 'shared/prop-types';
 
-function ChplJobEdit(props) {
-  const { acbs, dispatch, job } = props;
-
+function ChplJobEdit({ acbs = [], dispatch, job }) {
   if (job.jobDataMap?.editableJobFields) {
     return (
       <ChplEditableJobEdit
@@ -47,8 +45,4 @@ ChplJobEdit.propTypes = {
   acbs: arrayOf(acbPropType),
   dispatch: func.isRequired,
   job: jobType.isRequired,
-};
-
-ChplJobEdit.defaultProps = {
-  acbs: [],
 };

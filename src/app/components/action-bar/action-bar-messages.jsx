@@ -99,28 +99,20 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarnings }) {
-  const [errors, setErrors] = useState([]);
-  const [warnings, setWarnings] = useState([]);
+const fixMessages = (msgs) => ([...new Set(msgs)].sort((a, b) => (a < b ? 1 : -1)));
+
+function ChplActionBarMessages({ errors = [], warnings = [] }) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    setErrors([...new Set(initialErrors)].sort((a, b) => (a < b ? 1 : -1)));
-    if (initialErrors.length > 0) {
+    if (errors.length > 0 || warnings.length > 0) {
       setOpen(true);
     }
-  }, [initialErrors]);
-
-  useEffect(() => {
-    setWarnings([...new Set(initialWarnings)].sort((a, b) => (a < b ? 1 : -1)));
-    if (initialWarnings.length > 0) {
-      setOpen(true);
-    }
-  }, [initialWarnings]);
+  }, []);
 
   const toggleDrawer = () => {
-    setOpen(!open);
+    setOpen((p) => !p);
   };
 
   if (errors.length === 0 && warnings.length === 0) {
@@ -134,7 +126,7 @@ function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarning
           <>
             <ChplTooltip
               placement="left"
-              title={`Error${errors.length !== 1 ? 's' : ''}`}
+              title={`Error${fixMessages(errors).length !== 1 ? 's' : ''}`}
             >
               <IconButton
                 size="medium"
@@ -142,12 +134,12 @@ function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarning
                 className={`${classes.toggle} ${classes.toggleError} ${classes.errorTheme}`}
                 id="action-bar-messages-toggle-errors"
               >
-                {errors.length}
+                {fixMessages(errors).length}
               </IconButton>
             </ChplTooltip>
             <ChplTooltip
               placement="left"
-              title={`Warning${warnings.length !== 1 ? 's' : ''}`}
+              title={`Warning${fixMessages(warnings).length !== 1 ? 's' : ''}`}
             >
               <IconButton
                 size="medium"
@@ -155,7 +147,7 @@ function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarning
                 className={`${classes.toggle} ${classes.toggleWarning} ${classes.warningTheme}`}
                 id="action-bar-messages-toggle-warnings"
               >
-                {warnings.length}
+                {fixMessages(warnings).length}
               </IconButton>
             </ChplTooltip>
           </>
@@ -171,21 +163,21 @@ function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarning
         }}
       >
         <div className={classes.messageContainer}>
-          {errors.length > 0
+          {fixMessages(errors).length > 0
            && (
              <div className={classes.errorContainer} id="action-bar-errors">
                <div className={classes.messageHeader}>
                  Error
-                 {errors.length !== 1 ? 's' : ''}
+                 {fixMessages(errors).length !== 1 ? 's' : ''}
                  <Chip
                    size="small"
                    className={`${classes.messageChip} ${classes.errorTheme}`}
-                   label={errors.length}
+                   label={fixMessages(errors).length}
                  />
                </div>
                <Divider className={classes.noMargin} />
                <ul className={classes.list}>
-                 {errors.map((message) => (
+                 {fixMessages(errors).map((message) => (
                    <li key={message}>
                      <Typography
                        gutterBottom
@@ -207,16 +199,16 @@ function ChplActionBarMessages({ errors: initialErrors, warnings: initialWarning
              <div className={classes.warningContainer} id="action-bar-warnings">
                <div className={classes.messageHeader}>
                  Warning
-                 {warnings.length !== 1 ? 's' : ''}
+                 {fixMessages(warnings).length !== 1 ? 's' : ''}
                  <Chip
                    size="small"
                    className={`${classes.messageChip} ${classes.warningTheme}`}
-                   label={warnings.length}
+                   label={fixMessages(warnings).length}
                  />
                </div>
                <Divider className={classes.noMargin} />
                <ul className={classes.list}>
-                 {warnings.map((message) => (
+                 {fixMessages(warnings).map((message) => (
                    <li key={message}>
                      <Typography
                        gutterBottom
@@ -251,9 +243,4 @@ export default ChplActionBarMessages;
 ChplActionBarMessages.propTypes = {
   errors: arrayOf(string),
   warnings: arrayOf(string),
-};
-
-ChplActionBarMessages.defaultProps = {
-  errors: [],
-  warnings: [],
 };

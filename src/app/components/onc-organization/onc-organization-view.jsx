@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -41,15 +41,10 @@ const useStyles = makeStyles({
 });
 
 function ChplOncOrganizationView({
-  organization: initialOrg,
+  organization,
   dispatch,
 }) {
-  const [organization, setOrganization] = useState(undefined);
   const classes = useStyles();
-
-  useEffect(() => {
-    setOrganization(initialOrg);
-  }, [initialOrg]);
 
   const edit = () => {
     dispatch('edit');
