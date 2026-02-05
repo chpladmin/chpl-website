@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplAnnouncementsView from './announcements-view';

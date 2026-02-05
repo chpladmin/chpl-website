@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplG1g2View({ g1g2: propsG1g2 }) {
+function ChplG1g2View({ g1g2: initialG1g2 }) {
   const [g1g2, setG1g2] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('abbreviation');
@@ -36,7 +36,7 @@ function ChplG1g2View({ g1g2: propsG1g2 }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setG1g2(propsG1g2
+    setG1g2(initialG1g2
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.abbreviation,

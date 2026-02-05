@@ -58,7 +58,7 @@ const getDisplay = (key) => {
   }
 };
 
-function ChplCertificationCriteriaView(props) {
+function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
   const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
@@ -66,7 +66,7 @@ function ChplCertificationCriteriaView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setCertificationCriteria(props.certificationCriteria
+    setCertificationCriteria(initialCertificationCriteria
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.number,
@@ -83,7 +83,7 @@ function ChplCertificationCriteriaView(props) {
           .join('; '),
       }))
       .sort(sortComparator('value')));
-  }, [props.certificationCriteria, filterContext.filters, filterContext.searchTerm]);
+  }, [initialCertificationCriteria, filterContext.filters, filterContext.searchTerm]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

@@ -46,13 +46,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplConformanceMethodEdit(props) {
-  const {
-    criterionOptions,
-    dispatch,
-    isProcessing,
-    conformanceMethod: initialConformanceMethod,
-  } = props;
+function ChplConformanceMethodEdit({
+  criterionOptions,
+  dispatch,
+  isProcessing,
+  conformanceMethod: initialConformanceMethod,
+  errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -68,8 +68,8 @@ function ChplConformanceMethodEdit(props) {
   }, [initialConformanceMethod]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));

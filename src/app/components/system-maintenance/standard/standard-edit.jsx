@@ -53,14 +53,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplStandardEdit(props) {
-  const {
-    criterionOptions,
-    dispatch,
-    rules,
-    isProcessing,
-    standard: initialStandard,
-  } = props;
+function ChplStandardEdit({
+  criterionOptions,
+  dispatch,
+  rules,
+  isProcessing,
+  standard: initialStandard,
+  errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
@@ -81,8 +81,8 @@ function ChplStandardEdit(props) {
   }, [rules]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));

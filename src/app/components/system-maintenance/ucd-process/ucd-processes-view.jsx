@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessesView({ dispatch, ucdProcesses: propsUcdProcesses }) {
+function ChplUcdProcessesView({ dispatch, ucdProcesses: initialUcdProcesses }) {
   const { hasAnyRole } = useContext(UserContext);
   const [ucdProcesses, setUcdProcesses] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -37,12 +37,12 @@ function ChplUcdProcessesView({ dispatch, ucdProcesses: propsUcdProcesses }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setUcdProcesses(propsUcdProcesses
+    setUcdProcesses(initialUcdProcesses
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [propsUcdProcesses]);
+  }, [initialUcdProcesses]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

@@ -15,12 +15,12 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplTestDataView(props) {
+function ChplTestDataView({ testData: initialTestData }) {
   const [testData, setTestData] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setTestData(props.testData
+    setTestData(initialTestData
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -29,7 +29,7 @@ function ChplTestDataView(props) {
           .join(', '),
       }))
       .sort(sortComparator('name')));
-  }, [props.testData]);
+  }, [initialTestData]);
 
   return (
     <>

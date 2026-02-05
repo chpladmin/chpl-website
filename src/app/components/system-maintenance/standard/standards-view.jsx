@@ -45,7 +45,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplStandardsView({ dispatch, standards: propsStandards }) {
+function ChplStandardsView({ dispatch, standards: initialStandards }) {
   const [standards, setStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -54,7 +54,7 @@ function ChplStandardsView({ dispatch, standards: propsStandards }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setStandards(propsStandards
+    setStandards(initialStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.value,

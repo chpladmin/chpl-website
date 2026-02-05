@@ -29,8 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQmsStandardsView(props) {
-  const { dispatch, qmsStandards: propsQmsStandards } = props;
+function ChplQmsStandardsView({ dispatch, qmsStandards: initialQmsStandards }) {
   const [qmsStandards, setQmsStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -38,12 +37,12 @@ function ChplQmsStandardsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setQmsStandards(propsQmsStandards
+    setQmsStandards(initialQmsStandards
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [propsQmsStandards]);
+  }, [initialQmsStandards]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

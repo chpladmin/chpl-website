@@ -30,20 +30,19 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQmsStandardEdit(props) {
-  const { dispatch, isProcessing } = props;
+function ChplQmsStandardEdit({ dispatch, isProcessing, qmsStandard: initialQmsStandard, errors: propsErrors = [] }) {
   const [errors, setErrors] = useState([]);
   const [qmsStandard, setQmsStandard] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setQmsStandard(props.qmsStandard);
-  }, [props.qmsStandard]); // eslint-disable-line react/destructuring-assignment
+    setQmsStandard(initialQmsStandard);
+  }, [initialQmsStandard]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...qmsStandard,
@@ -69,10 +68,10 @@ function ChplQmsStandardEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.qmsStandard?.name || '', // eslint-disable-line react/destructuring-assignment
+      name: initialQmsStandard?.name || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });

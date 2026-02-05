@@ -45,13 +45,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestToolEdit(props) {
-  const {
-    criterionOptions,
-    dispatch,
-    testTool: initialTestTool,
-    isProcessing,
-  } = props;
+function ChplTestToolEdit({
+  criterionOptions,
+  dispatch,
+  testTool: initialTestTool,
+  isProcessing,
+  errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -67,8 +67,8 @@ function ChplTestToolEdit(props) {
   }, [initialTestTool]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));

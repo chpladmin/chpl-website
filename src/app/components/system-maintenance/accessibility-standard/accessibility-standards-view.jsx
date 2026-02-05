@@ -29,8 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAccessibilityStandardsView(props) {
-  const { dispatch, accessibilityStandards: propsAccessibilityStandards } = props;
+function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: initialAccessibilityStandards }) {
   const { hasAnyRole } = useContext(UserContext);
   const [accessibilityStandards, setAccessibilityStandards] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -38,12 +37,12 @@ function ChplAccessibilityStandardsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setAccessibilityStandards(propsAccessibilityStandards
+    setAccessibilityStandards(initialAccessibilityStandards
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [propsAccessibilityStandards]);
+  }, [initialAccessibilityStandards]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

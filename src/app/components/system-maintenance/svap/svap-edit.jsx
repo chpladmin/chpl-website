@@ -37,8 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapEdit(props) {
-  const { criterionOptions, dispatch, isProcessing } = props;
+function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [] }) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -47,15 +46,15 @@ function ChplSvapEdit(props) {
   let formik;
 
   useEffect(() => {
-    setSvap(props.svap);
-    setCriteria(props.svap.criteria?.map((c) => ({
+    setSvap(initialSvap);
+    setCriteria(initialSvap.criteria?.map((c) => ({
       ...c,
     })) || []);
-  }, [props.svap]); // eslint-disable-line react/destructuring-assignment
+  }, [initialSvap]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
@@ -95,12 +94,12 @@ function ChplSvapEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      regulatoryTextCitation: props.svap?.regulatoryTextCitation || '', // eslint-disable-line react/destructuring-assignment
-      approvedStandardVersion: props.svap?.approvedStandardVersion || '', // eslint-disable-line react/destructuring-assignment
-      replaced: props.svap?.replaced || false, // eslint-disable-line react/destructuring-assignment
+      regulatoryTextCitation: initialSvap?.regulatoryTextCitation || '',
+      approvedStandardVersion: initialSvap?.approvedStandardVersion || '',
+      replaced: initialSvap?.replaced || false,
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });

@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplTestToolsView({ dispatch, testTools: propsTestTools }) {
+function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const { hasAnyRole } = useContext(UserContext);
   const [testTools, setTestTools] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -43,7 +43,7 @@ function ChplTestToolsView({ dispatch, testTools: propsTestTools }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setTestTools(propsTestTools
+    setTestTools(initialTestTools
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.value,

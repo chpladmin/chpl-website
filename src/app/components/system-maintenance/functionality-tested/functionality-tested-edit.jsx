@@ -53,14 +53,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFunctionalityTestedEdit(props) {
-  const {
-    criterionOptions,
-    dispatch,
-    isProcessing,
-    rules,
-    functionalityTested: initialFunctionalityTested,
-  } = props;
+function ChplFunctionalityTestedEdit({
+  criterionOptions,
+  dispatch,
+  isProcessing,
+  rules,
+  functionalityTested: initialFunctionalityTested,
+  errors: propsErrors = [],
+}) {
   const practiceTypes = [{ id: 1, name: 'Ambulatory' }, { id: 2, name: 'Inpatient' }];
   const practiceTypeOptions = ['Ambulatory', 'Inpatient', 'N/A'];
   const [criteria, setCriteria] = useState([]);
@@ -83,8 +83,8 @@ function ChplFunctionalityTestedEdit(props) {
   }, [rules]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));

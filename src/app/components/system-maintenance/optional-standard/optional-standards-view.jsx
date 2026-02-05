@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplOptionalStandardsView({ optionalStandards: propsOptionalStandards }) {
+function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards }) {
   const [optionalStandards, setOptionalStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('displayValue');
@@ -34,7 +34,7 @@ function ChplOptionalStandardsView({ optionalStandards: propsOptionalStandards }
   const classes = useStyles();
 
   useEffect(() => {
-    setOptionalStandards(propsOptionalStandards
+    setOptionalStandards(initialOptionalStandards
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.displayValue,

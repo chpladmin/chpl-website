@@ -30,20 +30,19 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAccessibilityStandardEdit(props) {
-  const { dispatch, isProcessing } = props;
+function ChplAccessibilityStandardEdit({ dispatch, isProcessing, accessibilityStandard: initialAccessibilityStandard, errors: propsErrors = [] }) {
   const [errors, setErrors] = useState([]);
   const [accessibilityStandard, setAccessibilityStandard] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setAccessibilityStandard(props.accessibilityStandard);
-  }, [props.accessibilityStandard]); // eslint-disable-line react/destructuring-assignment
+    setAccessibilityStandard(initialAccessibilityStandard);
+  }, [initialAccessibilityStandard]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...accessibilityStandard,
@@ -69,10 +68,10 @@ function ChplAccessibilityStandardEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.accessibilityStandard?.name || '', // eslint-disable-line react/destructuring-assignment
+      name: initialAccessibilityStandard?.name || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });

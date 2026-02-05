@@ -21,20 +21,15 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
 });
 
-function ChplCodeSetsView(props) {
-  const { dispatch, codeSets: propsCodeSets } = props;
+function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
   const { hasAnyRole } = useContext(UserContext);
   const [codeSets, setCodeSets] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setCodeSets(propsCodeSets
+    setCodeSets(initialCodeSets
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -42,7 +37,7 @@ function ChplCodeSetsView(props) {
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       })));
-  }, [propsCodeSets]);
+  }, [initialCodeSets]);
 
   return (
     <>

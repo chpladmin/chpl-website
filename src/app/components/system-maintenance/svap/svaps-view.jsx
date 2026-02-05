@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapsView({ dispatch, svaps: propsSvaps }) {
+function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   const [svaps, setSvaps] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
@@ -48,7 +48,7 @@ function ChplSvapsView({ dispatch, svaps: propsSvaps }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setSvaps(propsSvaps
+    setSvaps(initialSvaps
       .filter((item) => filterContext.filters.reduce((acc, f) => f.filterFn(item, f) && acc, true))
       .filter((item) => filterContext.searchTermFilter(filterContext.searchTerm, [
         item.regulatoryTextCitation,

@@ -29,14 +29,14 @@ const sortVersion = (a, b) => {
   return aNum - bNum;
 };
 
-function ChplCqmsView({ cqms: propsCqms }) {
+function ChplCqmsView({ cqms: initialCqms }) {
   const [cqms, setCqms] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setCqms(propsCqms
+    setCqms(initialCqms
       .map((c) => ({
         ...c,
         display: c.cmsId ? c.cmsId : `NQF-${c.nqfNumber}`,

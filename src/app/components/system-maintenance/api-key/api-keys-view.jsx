@@ -31,16 +31,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplApiKeysView(props) {
-  const { dispatch } = props;
+function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
   const [apiKeys, setApiKeys] = useState([]);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('lastUsedDate', true);
   const classes = useStyles();
 
   useEffect(() => {
-    setApiKeys(props.apiKeys.sort(sortComparator('lastUsedDate')));
-  }, [props.apiKeys]);
+    setApiKeys(initialApiKeys.sort(sortComparator('lastUsedDate')));
+  }, [initialApiKeys]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

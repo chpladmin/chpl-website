@@ -43,13 +43,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCodeSetEdit(props) {
-  const {
-    criterionOptions,
-    dispatch,
-    isProcessing,
-    codeSet: initialCodeSet,
-  } = props;
+function ChplCodeSetEdit({
+  criterionOptions,
+  dispatch,
+  isProcessing,
+  codeSet: initialCodeSet,
+  errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -65,8 +65,8 @@ function ChplCodeSetEdit(props) {
   }, [initialCodeSet]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));

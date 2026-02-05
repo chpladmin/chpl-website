@@ -33,8 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplConformanceMethodsView(props) {
-  const { dispatch, conformanceMethods: propsConformanceMethods } = props;
+function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConformanceMethods }) {
   const { hasAnyRole } = useContext(UserContext);
   const [conformanceMethods, setConformanceMethods] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -42,7 +41,7 @@ function ChplConformanceMethodsView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setConformanceMethods(propsConformanceMethods
+    setConformanceMethods(initialConformanceMethods
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -51,7 +50,7 @@ function ChplConformanceMethodsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('name')));
-  }, [propsConformanceMethods]);
+  }, [initialConformanceMethods]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

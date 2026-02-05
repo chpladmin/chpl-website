@@ -30,20 +30,19 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessEdit(props) {
-  const { dispatch, isProcessing } = props;
+function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [] }) {
   const [errors, setErrors] = useState([]);
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setUcdProcess(props.ucdProcess);
-  }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
+    setUcdProcess(initialUcdProcess);
+  }, [initialUcdProcess]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...ucdProcess,
@@ -69,7 +68,7 @@ function ChplUcdProcessEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.ucdProcess?.name || '', // eslint-disable-line react/destructuring-assignment
+      name: initialUcdProcess?.name || '',
     },
     onSubmit: () => {
       dispatch({ action: 'save', payload: buildPayload() });
