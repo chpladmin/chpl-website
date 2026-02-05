@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueries } from 'react-query';
+import { useMutation, useQuery, useQueries } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -26,8 +26,8 @@ const useFetchCmsIdPdf = (certId, isDownloading) => {
 
 const useFetchListings = ({ cmsIds }) => {
   const axios = useAxios();
-  return useQueries(
-    cmsIds.map((cmsId) => ({
+  return useQueries({
+    queries: cmsIds.map((cmsId) => ({
       queryKey: ['certification_ids', { cmsId }],
       queryFn: async () => {
         const response = await axios.get(`/certification_ids/${cmsId}`);
@@ -37,7 +37,7 @@ const useFetchListings = ({ cmsIds }) => {
       enabled: cmsIds?.length > 0,
       ...options.daily,
     })),
-  );
+  });
 };
 
 const usePostCreateCmsId = (listings) => {

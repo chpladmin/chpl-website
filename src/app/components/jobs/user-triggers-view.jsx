@@ -34,15 +34,18 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUserTriggersView(props) {
-  const { dispatch } = props;
+function ChplUserTriggersView({
+  acbs = [],
+  dispatch = () => {},
+  triggers: initialTriggers = [],
+}) {
   const [triggers, setTriggers] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('email');
   const classes = useStyles();
 
   useEffect(() => {
-    setTriggers(props.triggers
+    setTriggers(initialTriggers
       .map((trigger) => {
         const response = {
           ...trigger,
@@ -53,7 +56,7 @@ function ChplUserTriggersView(props) {
           const relevant = trigger.acb
             .split(',')
             .map((id) => parseInt(id, 10))
-            .map((id) => props.acbs.find((acb) => acb.id === id))
+            .map((id) => acbs.find((acb) => acb.id === id))
             .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
             .sort((a, b) => (a < b ? -1 : 1))
             .join(', ');
@@ -62,7 +65,7 @@ function ChplUserTriggersView(props) {
         return response;
       })
       .sort(sortComparator('email')));
-  }, [props.acbs, props.triggers]); // eslint-disable-line react/destructuring-assignment
+  }, [acbs, initialTriggers]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -156,10 +159,4 @@ ChplUserTriggersView.propTypes = {
   acbs: arrayOf(acbType),
   dispatch: func,
   triggers: arrayOf(triggerType),
-};
-
-ChplUserTriggersView.defaultProps = {
-  acbs: [],
-  dispatch: () => {},
-  triggers: [],
 };

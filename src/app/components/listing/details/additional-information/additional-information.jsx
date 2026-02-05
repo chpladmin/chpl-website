@@ -41,8 +41,7 @@ const getRelatives = (source, user, isParent, listings) => listings.map((listing
   </ListItem>
 ));
 
-function ChplAdditionalInformation(props) {
-  const { isConfirming, listing } = props;
+function ChplAdditionalInformation({ isConfirming = false, listing }) {
   const [currentPi, setCurrentPi] = useState(undefined);
   const { user } = useContext(UserContext);
 
@@ -178,8 +177,4 @@ export default ChplAdditionalInformation;
 ChplAdditionalInformation.propTypes = {
   isConfirming: bool,
   listing: listingType.isRequired,
-};
-
-ChplAdditionalInformation.defaultProps = {
-  isConfirming: false,
 };

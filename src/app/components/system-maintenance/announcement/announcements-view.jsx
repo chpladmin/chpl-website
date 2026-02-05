@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAnnouncementsView({ announcements: initialAnnouncements, dispatch }) {
+function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispatch = () => {} }) {
   const { hasAnyRole } = useContext(UserContext);
   const [announcement, setAnnouncement] = useState(undefined);
   const [announcements, setAnnouncements] = useState([]);
@@ -187,9 +187,4 @@ export default ChplAnnouncementsView;
 ChplAnnouncementsView.propTypes = {
   announcements: arrayOf(announcementPropType),
   dispatch: func,
-};
-
-ChplAnnouncementsView.defaultProps = {
-  announcements: [],
-  dispatch: () => {},
 };

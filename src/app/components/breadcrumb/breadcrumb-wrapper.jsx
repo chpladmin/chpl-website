@@ -28,8 +28,11 @@ const useStyles = makeStyles({
   },
 });
 
-function BreadcrumbWrapper(props) {
-  const { children, disabled, title } = props;
+function BreadcrumbWrapper({
+  children = undefined,
+  disabled = false,
+  title = undefined,
+}) {
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [displayed, setDisplayed] = useState([]);
   const [visible, setVisible] = useState(new Set());
@@ -99,10 +102,4 @@ BreadcrumbWrapper.propTypes = {
   children: node,
   disabled: bool,
   title: string,
-};
-
-BreadcrumbWrapper.defaultProps = {
-  children: undefined,
-  disabled: false,
-  title: undefined,
 };

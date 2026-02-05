@@ -92,7 +92,7 @@ function ChplBannedDevelopersSearchView() {
   const storageKey = 'storageKey-bannedDevelopersView';
   const { analytics } = useAnalyticsContext();
   const [developers, setDevelopers] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer_name');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);

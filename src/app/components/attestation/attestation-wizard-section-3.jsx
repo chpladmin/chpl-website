@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection3({ developer, isSubmitting, dispatch }) {
+function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
   const [signature, setSignature] = useState('');
@@ -181,8 +181,4 @@ ChplAttestationWizardSection3.propTypes = {
   isSubmitting: bool,
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
-};
-
-ChplAttestationWizardSection3.defaultProps = {
-  isSubmitting: false,
 };

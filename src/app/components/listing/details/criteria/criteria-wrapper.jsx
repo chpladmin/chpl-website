@@ -15,7 +15,16 @@ import {
   qmsStandard,
 } from 'shared/prop-types';
 
-function ChplCriteriaWrapper(props) {
+function ChplCriteriaWrapper(props = {
+  accessibilityStandards: [],
+  canEdit: false,
+  isConfirming: false,
+  hasIcs: false,
+  onSave: () => {},
+  qmsStandards: [],
+  resources: {},
+  viewAll: false,
+}) {
   return (
     <AppWrapper>
       <ChplCriteria {...props} />
@@ -35,15 +44,4 @@ ChplCriteriaWrapper.propTypes = {
   qmsStandards: arrayOf(qmsStandard),
   resources: resourceDefinition,
   viewAll: bool,
-};
-
-ChplCriteriaWrapper.defaultProps = {
-  accessibilityStandards: [],
-  canEdit: false,
-  isConfirming: false,
-  hasIcs: false,
-  onSave: () => {},
-  qmsStandards: [],
-  resources: {},
-  viewAll: false,
 };

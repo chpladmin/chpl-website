@@ -8,7 +8,13 @@ import ChplLoginPage from './login';
 
 import AppWrapper from 'app-wrapper';
 
-function ChplLoginWrapper(props) {
+function ChplLoginWrapper(props = {
+  returnTo: {
+    state: () => 'search',
+    params: () => {},
+    options: () => {},
+  },
+}) {
   return (
     <AppWrapper>
       <Container disableGutters maxWidth={false} id="login-component">
@@ -28,12 +34,4 @@ ChplLoginWrapper.propTypes = {
     params: func.isRequired,
     options: func.isRequired,
   }),
-};
-
-ChplLoginWrapper.defaultProps = {
-  returnTo: {
-    state: () => 'search',
-    params: () => {},
-    options: () => {},
-  },
 };

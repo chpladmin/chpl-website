@@ -26,8 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplActionButton(props) {
-  const { children, horizontal, listing } = props;
+function ChplActionButton({ children = undefined, horizontal = false, listing }) {
   const classes = useStyles();
 
   return (
@@ -45,9 +44,4 @@ ChplActionButton.propTypes = {
   listing: listingPropType.isRequired,
   children: node,
   horizontal: bool,
-};
-
-ChplActionButton.defaultProps = {
-  children: undefined,
-  horizontal: false,
 };

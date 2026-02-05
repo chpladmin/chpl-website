@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 });
 
 function ChplTextField(props) {
-  const { type } = props;
+  const { type = undefined } = props;
   const classes = useStyles();
   const [isDate, setIsDate] = useState(false);
 
@@ -44,8 +44,4 @@ export default ChplTextField;
 
 ChplTextField.propTypes = {
   type: string,
-};
-
-ChplTextField.defaultProps = {
-  type: undefined,
 };

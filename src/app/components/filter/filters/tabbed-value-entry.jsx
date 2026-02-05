@@ -25,9 +25,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function TabPanel(props) {
-  const { children, value, index } = props;
-
+function TabPanel({
+  children,
+  value,
+  index,
+}) {
   return (
     <div
       role="tabpanel"
@@ -57,13 +59,12 @@ function a11yProps(index) {
   };
 }
 
-function ChplTabbedValueEntry(props) {
-  const {
-    filter,
-    handleFilterToggle,
-    isActive,
-    retiredLabel,
-  } = props;
+function ChplTabbedValueEntry({
+  filter,
+  handleFilterToggle,
+  isActive,
+  retiredLabel = 'Retired',
+}) {
   const [activeTab, setActiveTab] = useState(0);
   const classes = useStyles();
 
@@ -132,8 +133,4 @@ ChplTabbedValueEntry.propTypes = {
   handleFilterToggle: func.isRequired,
   isActive: func.isRequired,
   retiredLabel: string,
-};
-
-ChplTabbedValueEntry.defaultProps = {
-  retiredLabel: 'Retired',
 };

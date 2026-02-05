@@ -37,12 +37,12 @@ const useStyles = makeStyles({
 });
 
 function ChplVersion({
-  dispatch,
-  errorMessages,
-  isEditing,
-  isInvalid: initialIsInvalid,
-  isProcessing,
-  isSplitting,
+  dispatch = () => {},
+  errorMessages = [],
+  isEditing = false,
+  isInvalid: initialIsInvalid = false,
+  isProcessing = false,
+  isSplitting = false,
   version,
 }) {
   const [isInvalid, setIsInvalid] = useState(false);
@@ -101,13 +101,4 @@ ChplVersion.propTypes = {
   isProcessing: bool,
   isSplitting: bool,
   version: object.isRequired,
-};
-
-ChplVersion.defaultProps = {
-  dispatch: () => {},
-  errorMessages: [],
-  isEditing: false,
-  isInvalid: false,
-  isProcessing: false,
-  isSplitting: false,
 };

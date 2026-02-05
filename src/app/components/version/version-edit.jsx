@@ -50,7 +50,7 @@ function ChplVersionEdit(props) {
     dispatch,
     errorMessages: initialErrorMessages,
     isInvalid: initialIsInvalid,
-    isProcessing,
+    isProcessing = false,
     isSplitting,
     version,
   } = props;
@@ -179,8 +179,4 @@ ChplVersionEdit.propTypes = {
   isProcessing: bool,
   isSplitting: bool.isRequired,
   version: object.isRequired,
-};
-
-ChplVersionEdit.defaultProps = {
-  isProcessing: false,
 };

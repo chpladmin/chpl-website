@@ -11,10 +11,10 @@ import ChplSignin from './components/signin';
 import { UserContext } from 'shared/contexts';
 
 function ChplLogin({
-  dispatch,
-  setState,
-  state,
-  uuid,
+  dispatch = () => {},
+  setState = () => {},
+  state = 'SIGNIN',
+  uuid = '',
 }) {
   const { user } = useContext(UserContext);
   const [sessionId, setSessionId] = useState('');
@@ -105,11 +105,4 @@ ChplLogin.propTypes = {
   setState: func,
   state: string,
   uuid: string,
-};
-
-ChplLogin.defaultProps = {
-  dispatch: () => {},
-  setState: () => {},
-  state: 'SIGNIN',
-  uuid: '',
 };

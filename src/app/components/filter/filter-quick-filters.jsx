@@ -13,7 +13,7 @@ import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { palette } from 'themes';
 
-function ChplFilterQuickFilters({ toggleMultipleFilters }) {
+function ChplFilterQuickFilters({ toggleMultipleFilters = undefined }) {
   const { analytics, dispatch, filters } = useFilterContext();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -132,8 +132,4 @@ export default ChplFilterQuickFilters;
 
 ChplFilterQuickFilters.propTypes = {
   toggleMultipleFilters: arrayOf(object),
-};
-
-ChplFilterQuickFilters.defaultProps = {
-  toggleMultipleFilters: undefined,
 };

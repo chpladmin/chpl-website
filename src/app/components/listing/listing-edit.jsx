@@ -87,9 +87,9 @@ const useStyles = makeStyles({
 
 function ChplListingEdit({
   dispatch,
-  errors,
-  warnings,
-  isProcessing,
+  errors = [],
+  warnings = [],
+  isProcessing = false,
 }) {
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -612,10 +612,4 @@ ChplListingEdit.propTypes = {
   errors: arrayOf(string),
   warnings: arrayOf(string),
   isProcessing: bool,
-};
-
-ChplListingEdit.defaultProps = {
-  errors: [],
-  warnings: [],
-  isProcessing: false,
 };

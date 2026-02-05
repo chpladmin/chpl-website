@@ -10,15 +10,15 @@ import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
 function ChplDeveloper({
-  canEdit,
-  canJoin,
-  canSplit,
-  dispatch,
-  errorMessages,
-  isEditing,
-  isInvalid: initialIsInvalid,
-  isProcessing,
-  isSplitting,
+  canEdit = () => false,
+  canJoin = () => false,
+  canSplit = () => false,
+  dispatch = () => {},
+  errorMessages = [],
+  isEditing = false,
+  isInvalid: initialIsInvalid = false,
+  isProcessing = false,
+  isSplitting = false,
 }) {
   const [isInvalid, setIsInvalid] = useState(false);
 
@@ -64,16 +64,4 @@ ChplDeveloper.propTypes = {
   isInvalid: bool,
   isProcessing: bool,
   isSplitting: bool,
-};
-
-ChplDeveloper.defaultProps = {
-  canEdit: () => false,
-  canJoin: () => false,
-  canSplit: () => false,
-  dispatch: () => {},
-  errorMessages: [],
-  isEditing: false,
-  isInvalid: false,
-  isProcessing: false,
-  isSplitting: false,
 };

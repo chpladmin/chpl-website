@@ -38,10 +38,10 @@ const useStyles = makeStyles({
 });
 
 function ChplFilterSearchBar({
-  hideAdvancedSearch,
-  hideSearchTerm,
-  placeholder,
-  toggleMultipleFilters,
+  hideAdvancedSearch = false,
+  hideSearchTerm = false,
+  placeholder = 'Search by Developer, Product, or CHPL ID...',
+  toggleMultipleFilters = undefined,
 }) {
   const { filters } = useFilterContext();
   const classes = useStyles();
@@ -78,11 +78,4 @@ ChplFilterSearchBar.propTypes = {
   hideSearchTerm: bool,
   placeholder: string,
   toggleMultipleFilters: arrayOf(object),
-};
-
-ChplFilterSearchBar.defaultProps = {
-  hideAdvancedSearch: false,
-  hideSearchTerm: false,
-  placeholder: 'Search by Developer, Product, or CHPL ID...',
-  toggleMultipleFilters: undefined,
 };

@@ -7,9 +7,9 @@ import AppWrapper from 'app-wrapper';
 
 function ChplComplaintsWrapper(props) {
   const {
-    bonusQuery,
-    canAdd,
-    disallowedFilters,
+    bonusQuery = '',
+    canAdd = true,
+    disallowedFilters = [],
   } = props;
 
   return (
@@ -29,10 +29,4 @@ ChplComplaintsWrapper.propTypes = {
   bonusQuery: string,
   disallowedFilters: arrayOf(string),
   canAdd: bool,
-};
-
-ChplComplaintsWrapper.defaultProps = {
-  bonusQuery: '',
-  disallowedFilters: [],
-  canAdd: true,
 };

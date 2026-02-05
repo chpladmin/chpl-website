@@ -10,8 +10,7 @@ import ChplComplaintView from './complaint-view';
 import { BreadcrumbContext } from 'shared/contexts';
 import { complaint as complaintPropType } from 'shared/prop-types';
 
-function ChplComplaint(props) {
-  const { complaint, dispatch, showBreadcrumbs, canEdit } = props;
+function ChplComplaint({ complaint, dispatch, showBreadcrumbs = true, canEdit = true }) {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -112,9 +111,4 @@ ChplComplaint.propTypes = {
   dispatch: func.isRequired,
   showBreadcrumbs: bool,
   canEdit: bool,
-};
-
-ChplComplaint.defaultProps = {
-  showBreadcrumbs: true,
-  canEdit: true,
 };

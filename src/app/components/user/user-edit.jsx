@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     gap: '8px',
   },
   fixFooterSpacing: {
-    minHeight : 'calc(100vh - 188px)',
+    minHeight: 'calc(100vh - 188px)',
   },
 });
 
@@ -42,7 +42,10 @@ const validationSchema = yup.object({
 });
 
 function ChplUserEdit({
-  user, dispatch, errors, organizationId,
+  user,
+  dispatch = () => {},
+  errors = [],
+  organizationId = undefined,
 }) {
   const classes = useStyles();
   let formik;
@@ -142,10 +145,4 @@ ChplUserEdit.propTypes = {
   errors: arrayOf(string),
   dispatch: func,
   organizationId: number,
-};
-
-ChplUserEdit.defaultProps = {
-  errors: [],
-  dispatch: () => {},
-  organizationId: undefined,
 };

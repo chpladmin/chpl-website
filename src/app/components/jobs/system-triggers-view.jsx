@@ -37,8 +37,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSystemTriggersView(props) {
-  const { dispatch } = props;
+function ChplSystemTriggersView({
+  dispatch,
+  triggers: initialTriggers = [],
+}) {
   const [triggers, setTriggers] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('nextRunDate');
@@ -50,13 +52,13 @@ function ChplSystemTriggersView(props) {
   let getAction;
 
   useEffect(() => {
-    setTriggers(props.triggers
+    setTriggers(initialTriggers
       .map((trigger) => ({
         ...trigger,
         action: getAction(trigger, dispatch),
       }))
       .sort(sortComparator('nextRunDate')));
-  }, [props.triggers, dispatch]); // eslint-disable-line react/destructuring-assignment
+  }, [initialTriggers, dispatch]);
 
   const confirmDelete = (item) => {
     setIsConfirming(true);
@@ -95,7 +97,7 @@ function ChplSystemTriggersView(props) {
           variant="contained"
           aria-label={`Delete Job ${item.name}`}
         >
-          <DeleteIcon color="error"/>
+          <DeleteIcon color="error" />
         </IconButton>
       );
     }
@@ -184,8 +186,4 @@ export default ChplSystemTriggersView;
 ChplSystemTriggersView.propTypes = {
   triggers: arrayOf(scheduledSystemTrigger),
   dispatch: func.isRequired,
-};
-
-ChplSystemTriggersView.defaultProps = {
-  triggers: [],
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   arrayOf, bool, func, oneOf, shape, string,
 } from 'prop-types';
@@ -35,25 +35,39 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplSortableHeaders(props) {
-  const [order, setOrder] = useState(props.order);
-  const [orderBy, setOrderBy] = useState(props.orderBy);
+function ChplSortableHeaders({
+  onTableSort,
+  order: initialOrder = '',
+  orderBy: initialOrderBy = '',
+  headers,
+  stickyHeader = false,
+}) {
+  const [order, setOrder] = useState('');
+  const [orderBy, setOrderBy] = useState('');
   const classes = useStyles();
+
+  useEffect(() => {
+    setOrder(initialOrder);
+  }, [initialOrder]);
+
+  useEffect(() => {
+    setOrderBy(initialOrderBy);
+  }, [initialOrderBy]);
 
   const createSortHandler = (property) => (event) => {
     const isAsc = orderBy === property && order === 'asc';
     const orderDirection = order === 'asc' ? '' : '-';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    props.onTableSort(event, property, orderDirection);
+    onTableSort(event, property, orderDirection);
   };
 
   const getCellClassName = (index) => {
     const classNames = [];
-    if (props.stickyHeader) {
+    if (stickyHeader) {
       classNames.push(classes.stickyHeader);
     }
-    if (index === 0 && props.stickyHeader) {
+    if (index === 0 && stickyHeader) {
       classNames.push(classes.stickyColumn);
     }
     return classNames.join(' ') || undefined;
@@ -62,7 +76,7 @@ function ChplSortableHeaders(props) {
   return (
     <TableHead>
       <TableRow>
-        { props.headers.map((headCell, index) => (
+        { headers.map((headCell, index) => (
           headCell.sortable
             ? (
               <TableCell
@@ -117,10 +131,4 @@ ChplSortableHeaders.propTypes = {
     sortable: bool,
   })).isRequired,
   stickyHeader: bool,
-};
-
-ChplSortableHeaders.defaultProps = {
-  order: '',
-  orderBy: '',
-  stickyHeader: false,
 };
