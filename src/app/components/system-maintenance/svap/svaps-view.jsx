@@ -62,7 +62,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, [propsSvaps, filterContext]);
+  }, [initialSvaps, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

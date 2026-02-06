@@ -43,7 +43,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
         versionDisplay: c.versions.sort(sortVersion).join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [propsCqms]);
+  }, [initialCqms]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

@@ -66,7 +66,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [propsFunctionalitiesTested, filterContext]);
+  }, [initialFunctionalitiesTested, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

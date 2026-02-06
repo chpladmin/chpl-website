@@ -53,7 +53,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           .join(', '),
       }))
       .sort(sortComparator('abbreviation')));
-  }, [propsG1g2, filterContext]);
+  }, [initialG1g2, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

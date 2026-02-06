@@ -70,7 +70,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [propsStandards, filterContext]);
+  }, [initialStandards, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';

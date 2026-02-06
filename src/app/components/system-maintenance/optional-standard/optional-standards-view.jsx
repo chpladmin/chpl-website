@@ -49,7 +49,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           .join(', '),
       }))
       .sort(sortComparator('displayValue')));
-  }, [propsOptionalStandards, filterContext]);
+  }, [initialOptionalStandards, filterContext]);
 
   const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
