@@ -94,7 +94,7 @@ function ChplListingEdit({
   warnings = [],
   isProcessing = false,
 }) {
-  const { rwtAiIntegrationIsOn } = useContext(FlagContext);
+  const { isProduction, rwtAiIntegrationIsOn } = useContext(FlagContext);
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -587,7 +587,7 @@ function ChplListingEdit({
                   error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
                   helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
                 />
-                { rwtAiIntegrationIsOn
+                { rwtAiIntegrationIsOn && !isProduction
                   && (
                     <Button
                       id="validate-url"
