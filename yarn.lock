@@ -3542,6 +3542,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uirouter/core@npm:6.1.2":
+  version: 6.1.2
+  resolution: "@uirouter/core@npm:6.1.2"
+  checksum: 10/3771a57f44e059b046aa8a50426f6861fce536f98d7b56f38bbc5b113ce4423fcaee2837d31103e5a04687ec605066f26af6668185ed0c43fd0bf035423dcf7b
+  languageName: node
+  linkType: hard
+
+"@uirouter/react@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@uirouter/react@npm:1.0.8"
+  dependencies:
+    "@uirouter/core": "npm:6.1.2"
+    classnames: "npm:^2.3.1"
+    prop-types: "npm:^15.6.1"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10/1b074958e105e61c715ee3f0e57151487c7eecca84a88b72be6436faf4ab6419a932788872e7ae92aa592ce384b3fc98779db951135fc29ce5baadfe7700621c
+  languageName: node
+  linkType: hard
+
 "@vitest/pretty-format@npm:2.1.8":
   version: 2.1.8
   resolution: "@vitest/pretty-format@npm:2.1.8"
@@ -6253,6 +6273,7 @@ __metadata:
     "@tanstack/react-query": "npm:4.42.0"
     "@tanstack/react-query-devtools": "npm:4.42.0"
     "@testing-library/webdriverio": "npm:^3.2.1"
+    "@uirouter/react": "npm:^1.0.8"
     "@wdio/cli": "npm:^9.12.1"
     "@wdio/jasmine-framework": "npm:^9.12.1"
     "@wdio/junit-reporter": "npm:^9.11.0"
@@ -16397,7 +16418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.6.1, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
