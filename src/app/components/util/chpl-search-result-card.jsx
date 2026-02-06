@@ -20,7 +20,7 @@ function ChplSearchResultCard({
   titleValue,
   titleIconButton,
   headerActions,
-  fieldGroups,
+  fieldGroups = [],
   actions,
 }) {
   return (
@@ -57,16 +57,16 @@ function ChplSearchResultCard({
         )}
 
         {/* Field Groups */}
-        {fieldGroups?.map((group) => ( // eslint-disable-line
+        {fieldGroups.map((group) => (
           <Grid
-            key={group.map((f) => f.label).join('-')} // eslint-disable-line react/no-array-index-key
+            key={group.map((f) => f.label).join('-')}
             container
             spacing={2}
             alignItems="flex-start"
           >
-            {group.map((field) => ( // eslint-disable-line
+            {group.map((field) => (
               <Grid
-                key={field.label} // eslint-disable-line react/no-array-index-key
+                key={field.label}
                 item
                 xs={field.xs || 12}
                 sm={field.sm || field.xs || 12}
@@ -121,13 +121,4 @@ ChplSearchResultCard.propTypes = {
     ),
   ),
   actions: node,
-};
-
-ChplSearchResultCard.defaultProps = {
-  title: undefined,
-  titleValue: undefined,
-  titleIconButton: undefined,
-  headerActions: undefined,
-  fieldGroups: [],
-  actions: undefined,
 };
