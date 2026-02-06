@@ -16,15 +16,7 @@ function FlagWrapper({ children }) {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    let headerValue = '';
-    // Local environments send the header key in all lower case
-    // but other environments send the header key capitalized
-//    if (isProductionData.headers.Environment) {
-//      headerValue = isProductionData.headers.Environment;
-//    } else if (isProductionData.headers.environment) {
-      headerValue = isProductionData.headers.environment;
-//    }
-    setIsProduction((headerValue.toUpperCase() === 'PRODUCTION'));
+    setIsProduction(isProductionData.headers.environment.toUpperCase() === 'PRODUCTION');
   }, [isProductionData, isLoading, isSuccess]);
 
   const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag)?.active;
