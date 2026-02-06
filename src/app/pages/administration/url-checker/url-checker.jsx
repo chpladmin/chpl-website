@@ -16,7 +16,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
-import usePostUrlChecker from 'api/url-checker';
+import { usePostUrlChecker } from 'api/url-checker';
 import { ChplLink, ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles, palette, theme } from 'themes';
@@ -86,7 +86,12 @@ const validationSchema = yup.object({
 function ChplUrlChecker() {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { data, isLoading, isSuccess, mutate } = usePostUrlChecker();
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    mutate,
+  } = usePostUrlChecker();
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
 
@@ -104,7 +109,7 @@ function ChplUrlChecker() {
         });
       },
     });
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -253,8 +258,8 @@ function ChplUrlChecker() {
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Response Time (in milliseconds):
                           </Typography>
-                          {urlCheckResponse.responseTimeAssertion?.actualValue ?
-                            (
+                          {urlCheckResponse.responseTimeAssertion?.actualValue
+                            ? (
                               <>
                                 <Box className={classes.statusText}>
                                   <Typography>
@@ -271,7 +276,7 @@ function ChplUrlChecker() {
                                   </Typography>
                                   {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
                                 </Box>
-                              </>  
+                              </>
                             )}
                         </CardContent>
                       </Card>
