@@ -563,10 +563,11 @@ function ChplListingEdit({
 
             { /* Real-World Testing */}
             <Box display="flex" pt={4} gridGap={8} flexDirection="column">
-              <Typography variant="h6">
+              <Typography gutterBottom variant="h6">
                 Real World Testing
               </Typography>
-              <Box display="flex" pt={2} justifyContent="space-around" gridGap={32} flexDirection="row">
+              <Box display="flex" justifyContent="space-around" gridGap={16} flexDirection="row">
+                <Box display="flex" justifyContent="space-around" gridGap={16} width="90%" flexDirection="row">
                 <ChplTextField
                   id="rwt-plans-url"
                   name="rwtPlansUrl"
@@ -587,6 +588,7 @@ function ChplListingEdit({
                   error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
                   helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
                 />
+                </Box>
                 { rwtAiIntegrationIsOn && !isProduction
                   && (
                     <Button
@@ -596,14 +598,14 @@ function ChplListingEdit({
                       variant="contained"
                       onClick={validate}
                       size="small"
-                      style={{ marginLeft: '-4px', fontSize: 'small', padding: '9px' }}
                       endIcon={<VerifiedUserIcon />}
+                      style={{ padding: '8px!important'}}
                     >
                       Validate
                     </Button>
                   )}
               </Box>
-              <Box display="flex" pt={4} justifyContent="space-around" gridGap={32} flexDirection="row">
+              <Box display="flex" pt={4} justifyContent="space-around" gridGap={16} flexDirection="row">
                 <ChplTextField
                   id="rwt-plans-check-date"
                   name="rwtPlansCheckDate"
