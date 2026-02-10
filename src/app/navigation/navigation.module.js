@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 import ChplNavigationBottomWrapper from './navigation-bottom-wrapper';
+import ChplNavigationTopWrapper from './navigation-top-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -136,4 +137,5 @@ angular.module('chpl.navigation', [
   .config(($httpProvider) => {
     $httpProvider.interceptors.push('authInterceptor');
   })
-  .component('chplNavigationBottomBridge', reactToAngularComponent(ChplNavigationBottomWrapper));
+  .component('chplNavigationBottomBridge', reactToAngularComponent(ChplNavigationBottomWrapper))
+  .component('chplNavigationTopBridge', reactToAngularComponent(ChplNavigationTopWrapper));
