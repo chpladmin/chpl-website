@@ -567,27 +567,27 @@ function ChplListingEdit({
                 Real World Testing
               </Typography>
               <Box display="flex" justifyContent="space-around" gridGap={16} flexDirection="row">
-                <Box display="flex" justifyContent="space-around" gridGap={16} width="90%" flexDirection="row">
-                <ChplTextField
-                  id="rwt-plans-url"
-                  name="rwtPlansUrl"
-                  label="Real-World Testing Plans URL"
-                  value={formik.values.rwtPlansUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-                  helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-                />
-                <ChplTextField
-                  id="rwt-results-url"
-                  name="rwtResultsUrl"
-                  label="Real-World Testing Results URL"
-                  value={formik.values.rwtResultsUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
-                  helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
-                />
+                <Box display="flex" justifyContent="space-around" gridGap={16} width={rwtAiIntegrationIsOn ? '90%' : '100%'} flexDirection="row">
+                  <ChplTextField
+                    id="rwt-plans-url"
+                    name="rwtPlansUrl"
+                    label="Real-World Testing Plans URL"
+                    value={formik.values.rwtPlansUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                    helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                  />
+                  <ChplTextField
+                    id="rwt-results-url"
+                    name="rwtResultsUrl"
+                    label="Real-World Testing Results URL"
+                    value={formik.values.rwtResultsUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
+                    helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
+                  />
                 </Box>
                 { rwtAiIntegrationIsOn && !isProduction
                   && (
@@ -599,7 +599,7 @@ function ChplListingEdit({
                       onClick={validate}
                       size="small"
                       endIcon={<VerifiedUserIcon />}
-                      style={{ padding: '8px!important'}}
+                      style={{ padding: '8px !important' }}
                     >
                       Validate
                     </Button>
