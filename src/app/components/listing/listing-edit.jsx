@@ -212,7 +212,7 @@ function ChplListingEdit({
     }, {
       onSuccess: (response) => {
         console.log(response);
-        enqueueSnackbar('Success', {
+        enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
           variant: 'success',
         });
       },
