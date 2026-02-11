@@ -19,6 +19,7 @@ import { theme } from 'themes';
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
+import ChplToggle from 'components/login/toggle';
 
 const useStyles = makeStyles({
 });
@@ -142,6 +143,7 @@ function ChplNavigationTop() {
             <MenuItem><li><a ui-sref="shortcut.svap" analytics-on="click" analytics-event="Go to SVAP Info Page" analytics-properties="{ category: 'Navigation' }">SVAP Information</a></li></MenuItem>
           </Menu>
           <ChplAnnouncementsFab />
+          <ChplToggle />
         </Toolbar>
       </AppBar>
     </>
