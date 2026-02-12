@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
-import { arrayOf, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
 
@@ -16,6 +18,9 @@ import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 283px)',
+  },
+  noFooterSpacing: {
+    minHeight: 'unset',
   },
 });
 
@@ -64,6 +69,7 @@ function ChplChangeRequests({
   disallowedFilters,
   bonusQuery,
   dispatch = () => {},
+  useFooterSpacing = true,
 }) {
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
@@ -110,7 +116,7 @@ function ChplChangeRequests({
         filters={filters}
         storageKey="storageKey-changeRequestsComponent"
       >
-        <div className={classes.fixFooterSpacing}>
+        <div className={useFooterSpacing ? classes.fixFooterSpacing : classes.noFooterSpacing}>
           <ChplChangeRequestsView
             disallowedFilters={disallowedFilters}
             bonusQuery={bonusQuery}
@@ -128,4 +134,5 @@ ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
   dispatch: func,
+  useFooterSpacing: bool,
 };
