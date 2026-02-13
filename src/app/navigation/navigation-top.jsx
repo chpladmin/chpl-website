@@ -9,7 +9,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
@@ -36,6 +35,9 @@ function ChplNavigationTop() {
   const [showResources, setShowResources] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const classes = useStyles();
+
+  const home = () => {
+  };
 
   const searchChpl = () => {
     // <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
@@ -65,9 +67,11 @@ function ChplNavigationTop() {
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
+          <Button
+            onClick={home}
+          >
+            Home
+          </Button>
           <Button
             onClick={searchChpl}
             endIcon={<SearchIcon />}
