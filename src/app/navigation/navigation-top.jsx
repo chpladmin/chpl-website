@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   AppBar,
   Button,
-  Box,
-  Container,
   IconButton,
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { theme } from 'themes';
 
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplToggle from 'components/login/toggle';
 import { ChplLink } from 'components/util';
-import { useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
 });
@@ -31,6 +28,8 @@ function ChplNavigationTop() {
     ...useAnalyticsContext().analytics,
     category: 'Navigation',
   };
+  const { domainIsOn } = useContext(FlagContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [showCmsWidget, setShowCmsWidget] = useState(false);
   const [showCompareWidget, setShowCompareWidget] = useState(false);
@@ -38,16 +37,8 @@ function ChplNavigationTop() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const classes = useStyles();
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const searchChpl = () => {
-    //<li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
+    // <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
   };
 
   const toggleCmsWidget = (event) => {
@@ -117,15 +108,133 @@ function ChplNavigationTop() {
             open={!!anchorEl && showResources}
             onClose={toggleResources}
           >
-            <MenuItem><li><a ui-sref="resources.overview" analytics-on="click" analytics-event="Go to Overview Page" analytics-properties="{ category: 'Navigation' }">Overview</a></li></MenuItem>
-            <MenuItem><li feature-flag="domain"><a href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide <i class="fa fa-download text-right"></i></a></li></MenuItem>
-            <MenuItem><li feature-flag="domain" feature-flag-hide><a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide <i class="fa fa-download text-right"></i></a></li></MenuItem>
-            <MenuItem><li feature-flag="domain" ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><a href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf" analytics-on="click" analytics-event="CHPL Developer User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Developer User Guide <i class="fa fa-download text-right"></i></a></li></MenuItem>
-            <MenuItem><li feature-flag="domain" feature-flag-hide ng-if="vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])"><a href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf" analytics-on="click" analytics-event="CHPL Developer User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Developer User Guide <i class="fa fa-download text-right"></i></a></li></MenuItem>
-            <MenuItem><li><a ui-sref="resources.cms-lookup" analytics-on="click" analytics-event="Go to CMS ID Reverse Lookup Page" analytics-properties="{ category: 'Navigation' }">CMS ID Reverse Lookup</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="resources.download" analytics-on="click" analytics-event="Go to Download the CHPL Page" analytics-properties="{ category: 'Navigation' }">Download the CHPL</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="resources.api" analytics-on="click" analytics-event="Go to CHPL API Page" analytics-properties="{ category: 'Navigation' }">CHPL API</a></li></MenuItem>
-            <MenuItem><li><a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51" analytics-on="click" analytics-event="Go to Contact Us Page" analytics-properties="{ category: 'Navigation' }">Contact Us</a></li></MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/resources/overview"
+                text="Overview"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Overview Page',
+                }}
+                external={false}
+                router={{ sref: 'resources.overview' }}
+              />
+            </MenuItem>
+            { domainIsOn
+              ? (
+                <MenuItem>
+                  <ChplLink
+                    href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+                    text="CHPL Public User Guide"
+                    analytics={{
+                      ...analytics,
+                      event: 'CHPL Public User Guide',
+                      category: 'Resources',
+                    }}
+                    external={false}
+                    router={{ sref: 'resources.overview' }}
+                    icon={<CloudDownloadIcon />}
+                  />
+                </MenuItem>
+              ) : (
+                <MenuItem>
+                  <ChplLink
+                    href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+                    text="CHPL Public User Guide"
+                    analytics={{
+                      ...analytics,
+                      event: 'CHPL Public User Guide',
+                      category: 'Resources',
+                    }}
+                    external={false}
+                    router={{ sref: 'resources.overview' }}
+                    icon={<CloudDownloadIcon />}
+                  />
+                </MenuItem>
+              )}
+            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
+              && domainIsOn
+              && (
+                <MenuItem>
+                  <ChplLink
+                    href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
+                    text="CHPL Developer User Guide"
+                    analytics={{
+                      ...analytics,
+                      event: 'CHPL Developer User Guide',
+                      category: 'Resources',
+                    }}
+                    external={false}
+                    router={{ sref: 'resources.overview' }}
+                    icon={<CloudDownloadIcon />}
+                  />
+                </MenuItem>
+              )}
+            { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
+              && !domainIsOn
+              && (
+                <MenuItem>
+                  <ChplLink
+                    href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
+                    text="CHPL Developer User Guide"
+                    analytics={{
+                      ...analytics,
+                      event: 'CHPL Developer User Guide',
+                      category: 'Resources',
+                    }}
+                    external={false}
+                    router={{ sref: 'resources.overview' }}
+                    icon={<CloudDownloadIcon />}
+                  />
+                </MenuItem>
+              )}
+            <MenuItem>
+              <ChplLink
+                href="#/resources/cms-lookup"
+                text="CMS ID Reverse Lookup"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to CMS ID Reverse Lookup Page',
+                }}
+                external={false}
+                router={{ sref: 'resources.cms-lookup' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/resources/download"
+                text="Download the CHPL"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Download the CHPL Page',
+                }}
+                external={false}
+                router={{ sref: 'resources.download' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/resources/api"
+                text="CHPL API"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to CHPL API Page',
+                }}
+                external={false}
+                router={{ sref: 'resources.api' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
+                text="Contact Us"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Contact Us Page',
+                }}
+                external={false}
+              />
+            </MenuItem>
           </Menu>
           <Button
             onClick={toggleShortcuts}

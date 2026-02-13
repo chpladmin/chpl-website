@@ -3,7 +3,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { bool, string } from 'prop-types';
+import { bool, node, string } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -35,6 +35,7 @@ function ChplLink({
   inline = false,
   router = {},
   text: initialText = '',
+  icon = undefined,
 }) {
   const classes = useStyles();
   const [href, setHref] = useState('');
@@ -75,6 +76,7 @@ function ChplLink({
       <a href={href} onClick={track}>
         {text}
       </a>
+      { icon }
       { external
         && (
           <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
@@ -95,4 +97,5 @@ ChplLink.propTypes = {
   external: bool,
   inline: bool,
   router: routerConfig,
+  icon: node,
 };
