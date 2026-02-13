@@ -20,11 +20,17 @@ import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplToggle from 'components/login/toggle';
+import { ChplLink } from 'components/util';
+import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
 });
 
 function ChplNavigationTop() {
+  const analytics = {
+    ...useAnalyticsContext().analytics,
+    category: 'Navigation',
+  };
   const [anchorEl, setAnchorEl] = useState(null);
   const [showCmsWidget, setShowCmsWidget] = useState(false);
   const [showCompareWidget, setShowCompareWidget] = useState(false);
@@ -131,16 +137,126 @@ function ChplNavigationTop() {
             open={!!anchorEl && showShortcuts}
             onClose={toggleShortcuts}
           >
-            <MenuItem><li><a ui-sref="shortcut.api-documentation" analytics-on="click" analytics-event="Go to API Info Page" analytics-properties="{ category: 'Navigation' }">API Information</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.banned-developers" analytics-on="click" analytics-event="Go to Banned Developers Page" analytics-properties="{ category: 'Navigation' }">Banned Developers</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="charts" analytics-on="click" analytics-event="Go to Charts Page" analytics-properties="{ category: 'Navigation' }">Charts</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.decertified-products" analytics-on="click" analytics-event="Go to Decertified Products Page" analytics-properties="{ category: 'Navigation' }">Decertified Products</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.decision-support-interventions" analytics-on="click" analytics-event="Go to Decision Support Interventions Page" analytics-properties="{ category: 'Navigation' }">Decision Support Interventions</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.inactive-certificates" analytics-on="click" analytics-event="Go to Inactive Certificates Page" analytics-properties="{ category: 'Navigation' }">Inactive Certificates</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.corrective-action" analytics-on="click" analytics-event="Go to Products: Corrective Action Page" analytics-properties="{ category: 'Navigation' }">Products: Corrective Action</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.real-world-testing" analytics-on="click" analytics-event="Go to Real World Testing Page" analytics-properties="{ category: 'Navigation' }">Real World Testing</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.sed" analytics-on="click" analytics-event="Go to SED Info Page" analytics-properties="{ category: 'Navigation' }">SED Information</a></li></MenuItem>
-            <MenuItem><li><a ui-sref="shortcut.svap" analytics-on="click" analytics-event="Go to SVAP Info Page" analytics-properties="{ category: 'Navigation' }">SVAP Information</a></li></MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/api-documentation"
+                text="API Information"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to API Info Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.api-documentation' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/banned-developers"
+                text="Banned Developers"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Banned Developers Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.banned-developers' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/charts"
+                text="Charts"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Charts Page',
+                }}
+                external={false}
+                router={{ sref: 'charts' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/decertified-products"
+                text="Decertified Products"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Decertified Products Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.decertified-products' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/decision-support-interventions"
+                text="Decision Support Interventions"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Decision Support Interventions Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.decision-support-interventions' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/inactive-certificates"
+                text="Inactive Certificates"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Inactive Certificates Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.inactive-certificates' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/corrective-action"
+                text="Products: Corrective Action"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Products: Corrective Action Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.corrective-action' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/real-world-testing"
+                text="Real World Testing"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Real World Testing Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.real-world-testing' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/sed"
+                text="SED Information"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to SED Info Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.sed' }}
+              />
+            </MenuItem>
+            <MenuItem>
+              <ChplLink
+                href="#/svap"
+                text="SVAP Information"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to SVAP Info Page',
+                }}
+                external={false}
+                router={{ sref: 'shortcut.svap' }}
+              />
+            </MenuItem>
           </Menu>
           <ChplAnnouncementsFab />
           <ChplToggle />
