@@ -55,7 +55,7 @@ function ChplOrganizationActivity({ organization, type, interpret }) {
         />
       )));
     setResultSetSize(data.resultSetSize);
-  }, [isError, isLoading]);
+  }, [isError, isLoading, open]);
 
   const handleClickOpen = () => {
     eventTrack({

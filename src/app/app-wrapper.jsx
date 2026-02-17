@@ -17,7 +17,7 @@ import { UserWrapper } from 'components/login';
 import { SnackbarWrapper } from 'components/util';
 import theme from 'themes/theme';
 
-function AppWrapper({ children, showQueryTools }) {
+function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
     <ThemeProvider theme={theme}>
       <UserWrapper>
@@ -53,8 +53,4 @@ export default AppWrapper;
 AppWrapper.propTypes = {
   children: node.isRequired,
   showQueryTools: bool,
-};
-
-AppWrapper.defaultProps = {
-  showQueryTools: DEVELOPER_MODE,
 };

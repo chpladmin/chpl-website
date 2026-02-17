@@ -9,7 +9,11 @@ import AppWrapper from 'app-wrapper';
 import { user as userPropType } from 'shared/prop-types';
 
 function ChplUsersWrapper({
-  users, dispatch, groupNames, organizationId, isLoading,
+  users,
+  dispatch,
+  groupNames,
+  organizationId = null,
+  isLoading = false,
 }) {
   return (
     <AppWrapper>
@@ -32,9 +36,4 @@ ChplUsersWrapper.propTypes = {
   groupNames: arrayOf(string).isRequired,
   organizationId: number,
   isLoading: bool,
-};
-
-ChplUsersWrapper.defaultProps = {
-  organizationId: null,
-  isLoading: false,
 };

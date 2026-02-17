@@ -59,7 +59,11 @@ const useStyles = makeStyles({
 });
 
 function ChplUsersView({
-  dispatch, groupNames, users: initialUsers, organizationId, isLoading,
+  dispatch,
+  groupNames,
+  users: initialUsers,
+  organizationId = undefined,
+  isLoading = false,
 }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -228,9 +232,4 @@ ChplUsersView.propTypes = {
   groupNames: arrayOf(string).isRequired,
   organizationId: number,
   isLoading: bool,
-};
-
-ChplUsersView.defaultProps = {
-  organizationId: undefined,
-  isLoading: false,
 };

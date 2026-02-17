@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
 
@@ -10,6 +10,7 @@ const useFetchReportMetadata = () => {
   });
 };
 
+/* eslint-disable import/prefer-default-export */
 export {
   useFetchReportMetadata,
 };

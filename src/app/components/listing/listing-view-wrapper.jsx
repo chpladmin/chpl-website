@@ -7,7 +7,7 @@ import AppWrapper from 'app-wrapper';
 import { ListingContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 
-function ChplListingViewWrapper({ isConfirming, listing }) {
+function ChplListingViewWrapper({ isConfirming = false, listing }) {
   const listingState = {
     listing,
   };
@@ -29,8 +29,4 @@ export default ChplListingViewWrapper;
 ChplListingViewWrapper.propTypes = {
   isConfirming: bool,
   listing: listingPropType.isRequired,
-};
-
-ChplListingViewWrapper.defaultProps = {
-  isConfirming: false,
 };

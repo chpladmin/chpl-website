@@ -4,15 +4,15 @@ import React from 'react';
 import {
   QueryClient,
   QueryClientProvider,
-} from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { bool, element } from 'prop-types';
 
 import { AxiosProvider } from './axios';
 
 const queryClient = new QueryClient();
 
-function ApiWrapper({ children, showQueryTools }) {
+function ApiWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
     <AxiosProvider>
       <QueryClientProvider client={queryClient}>
@@ -31,8 +31,4 @@ export default ApiWrapper;
 ApiWrapper.propTypes = {
   children: element.isRequired,
   showQueryTools: bool,
-};
-
-ApiWrapper.defaultProps = {
-  showQueryTools: DEVELOPER_MODE,
 };

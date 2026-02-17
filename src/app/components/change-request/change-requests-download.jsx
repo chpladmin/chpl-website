@@ -16,8 +16,11 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplChangeRequestsDownload(props) {
-  const { bonusQuery, queryParams, recordCount } = props;
+function ChplChangeRequestsDownload({
+  bonusQuery = '',
+  queryParams = {},
+  recordCount = 0,
+}) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
@@ -80,10 +83,4 @@ ChplChangeRequestsDownload.propTypes = {
   bonusQuery: string,
   queryParams: object,
   recordCount: number,
-};
-
-ChplChangeRequestsDownload.defaultProps = {
-  bonusQuery: '',
-  queryParams: {},
-  recordCount: 0,
 };

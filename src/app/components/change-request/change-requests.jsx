@@ -60,8 +60,11 @@ const staticFilters = [{
   getValueEntry: getDateTimeEntry,
 }];
 
-function ChplChangeRequests(props) {
-  const { disallowedFilters, bonusQuery, dispatch } = props;
+function ChplChangeRequests({
+  disallowedFilters,
+  bonusQuery,
+  dispatch = () => {},
+}) {
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
@@ -125,8 +128,4 @@ ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
   dispatch: func,
-};
-
-ChplChangeRequests.defaultProps = {
-  dispatch: () => {},
 };

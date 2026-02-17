@@ -167,7 +167,8 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
 
 function FilterProvider(props) {
   const {
-    storageKey,
+    filters: initialFilters,
+    storageKey = '',
   } = props;
   const [filters, setFilters] = useState([]);
   const [hasSearched, setHasSearched] = useStorage(`${storageKey}-hasSearched`, false);
@@ -184,7 +185,7 @@ function FilterProvider(props) {
   }, []);
 
   useEffect(() => {
-    setFilters(props.filters.map((filter) => ({
+    setFilters(initialFilters.map((filter) => ({
       ...filter,
       required: !!filter.required,
       operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
@@ -196,7 +197,7 @@ function FilterProvider(props) {
         display: value.display || value.value,
       })),
     })));
-  }, [props.filters]); // eslint-disable-line react/destructuring-assignment
+  }, [initialFilters]);
 
   useEffect(() => {
     setOperators((previous) => filters
@@ -339,10 +340,6 @@ function FilterProvider(props) {
 FilterProvider.propTypes = {
   filters: arrayOf(filterPropType).isRequired,
   storageKey: string,
-};
-
-FilterProvider.defaultProps = {
-  storageKey: '',
 };
 
 function useFilterContext() {

@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 14.0.0
+_17 February 2026_
+
+### Major Feature
+* Upgrade to ReactJS v18
+
+---
+
 ## Version 13.44.0
 _4 February 2026_
 

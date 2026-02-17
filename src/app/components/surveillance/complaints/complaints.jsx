@@ -115,8 +115,7 @@ const staticFilters = [{
   ],
 }];
 
-function ChplComplaints(props) {
-  const { bonusQuery: initialBonusQuery, canAdd, disallowedFilters: initialDisallowedFilters, canEdit } = props;
+function ChplComplaints({ bonusQuery: initialBonusQuery, canAdd, disallowedFilters: initialDisallowedFilters, canEdit = true }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole, user } = useContext(UserContext);
   const [bonusQuery, setBonusQuery] = useState('');
@@ -200,8 +199,4 @@ ChplComplaints.propTypes = {
   canAdd: bool.isRequired,
   disallowedFilters: arrayOf(string).isRequired,
   canEdit: bool,
-};
-
-ChplComplaints.defaultProps = {
-  canEdit: true,
 };

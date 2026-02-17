@@ -21,7 +21,7 @@ import { usePostInitiateQuarterlyReport, usePostQuarterlyReportRequest } from 'a
 import { UserContext } from 'shared/contexts';
 
 function ChplQuarter({
-  quarter, year, dispatch, report: initialReport, acb,
+  quarter, year, dispatch, report: initialReport = {}, acb,
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -192,8 +192,4 @@ ChplQuarter.propTypes = {
   year: number.isRequired,
   report: object,
   acb: object.isRequired,
-};
-
-ChplQuarter.defaultProps = {
-  report: {},
 };

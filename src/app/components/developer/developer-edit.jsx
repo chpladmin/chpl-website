@@ -164,14 +164,13 @@ const getEditField = ({
   </div>
 );
 
-function ChplDeveloperEdit(props) {
-  const {
-    dispatch,
-    errorMessages: initialErrorMessages,
-    isInvalid: initialIsInvalid,
-    isProcessing,
-    isSplitting,
-  } = props;
+function ChplDeveloperEdit({
+  dispatch,
+  errorMessages: initialErrorMessages,
+  isInvalid: initialIsInvalid,
+  isProcessing = false,
+  isSplitting,
+}) {
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -545,8 +544,4 @@ ChplDeveloperEdit.propTypes = {
   isInvalid: bool.isRequired,
   isProcessing: bool,
   isSplitting: bool.isRequired,
-};
-
-ChplDeveloperEdit.defaultProps = {
-  isProcessing: false,
 };

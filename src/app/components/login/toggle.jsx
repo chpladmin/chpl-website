@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplToggle({ dispatch }) {
+function ChplToggle({ dispatch = () => {} }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const { user, setUser } = useContext(UserContext);
@@ -143,8 +143,4 @@ export default ChplToggle;
 
 ChplToggle.propTypes = {
   dispatch: func,
-};
-
-ChplToggle.defaultProps = {
-  dispatch: () => {},
 };
