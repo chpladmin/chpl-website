@@ -16,6 +16,7 @@ import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplToggle from 'components/login/toggle';
 import { ChplLink } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
@@ -27,6 +28,10 @@ function ChplNavigationTop() {
     ...useAnalyticsContext().analytics,
     category: 'Navigation',
   };
+  const $localStorage = getAngularService('$localStorage');
+  const $location = getAngularService('$location');
+  const $rootScope = getAngularService('$rootScope');
+  const $state = getAngularService('$state');
   const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -37,10 +42,18 @@ function ChplNavigationTop() {
   const classes = useStyles();
 
   const home = () => {
+    $rootScope.$broadcast('ClearResults', {});
+    $localStorage.clearResults = true;
+    sessionStorage.removeItem('storageKey-listingsPage-hasSearched');
+    if ($location.url() === '/search') {
+      $state.reload();
+    } else {
+      $state.go('search');
+    }
   };
 
   const searchChpl = () => {
-    // <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
+      $state.go('search');
   };
 
   const toggleCmsWidget = (event) => {
