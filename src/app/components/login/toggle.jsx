@@ -10,6 +10,7 @@ import { getAccessToken, setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
 import ChplLogin from './login';
+import ChplAdminMenu from './admin-menu';
 
 import { usePostRefreshToken } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
@@ -27,6 +28,13 @@ const useStyles = makeStyles({
     width: '300px',
     [theme.breakpoints.up('md')]: {
       width: '375px',
+    },
+  },
+  loggedInButton: {
+    backgroundColor: '#0066cc',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#0052a3',
     },
   },
 });
@@ -91,9 +99,19 @@ function ChplToggle({ dispatch = () => {} }) {
     }
   };
 
+  const handleAdminMenuDispatch = ({ action }) => {
+    switch (action) {
+      case 'changePassword':
+        setState('CHANGEPASSWORD');
+        break;
+      default:
+        console.error(`No action found for ${action}`);
+    }
+  };
+
   useEffect(() => {
     if (user?.fullName) {
-      setTitle(user.fullName);
+      setTitle(user.fullName.toUpperCase());
     } else {
       setTitle('Administrator login');
     }
@@ -102,12 +120,12 @@ function ChplToggle({ dispatch = () => {} }) {
   return (
     <>
       <Button
-        color="secondary"
+        color="primary"
         variant="contained"
         id="login-toggle"
         aria-describedby="admin-login-form"
         onClick={handleClick}
-        className={classes.loginSpacing}
+        className={`${classes.loginSpacing} ${state === 'LOGGEDIN' ? classes.loggedInButton : ''}`}
         endIcon={<PersonIcon />}
       >
         { title }
@@ -126,14 +144,19 @@ function ChplToggle({ dispatch = () => {} }) {
           horizontal: 'right',
         }}
         className={classes.popoverSpacing}
+        disableScrollLock
       >
-        <div className={classes.loginCard}>
-          <ChplLogin
-            dispatch={handleDispatch}
-            setState={setState}
-            state={state}
-          />
-        </div>
+        {state === 'LOGGEDIN' ? (
+          <ChplAdminMenu onClose={handleClose} onDispatch={handleAdminMenuDispatch} />
+        ) : (
+          <div className={classes.loginCard}>
+            <ChplLogin
+              dispatch={handleDispatch}
+              setState={setState}
+              state={state}
+            />
+          </div>
+        )}
       </Popover>
     </>
   );

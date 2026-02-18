@@ -44,7 +44,7 @@ function ChplAnnouncementsFab() {
           border: 'none',
           cursor: 'pointer',
           boxShadow: 'none',
-          padding: '14px',
+          padding: '0 14px',
           borderRadius: '50%',
         }}
         onClick={handleToggle}
@@ -59,8 +59,8 @@ function ChplAnnouncementsFab() {
             fontSize: '12px',
             position: 'absolute',
             border: `2px ${palette.primaryDark} solid`,
-            top: '-2px',
-            right: '4px',
+            top: '-12px',
+            right: '2px',
           }}
         >
           {announcements.length}
@@ -81,9 +81,8 @@ function ChplAnnouncementsFab() {
             zIndex: 9998,
             display: 'flex',
             flexDirection: 'column',
-            border: `2px solid ${palette.primary}`,
             background: palette.white,
-            borderRadius: '12px',
+            borderRadius: '8px 0px 0px 8px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
           }}
           role="region"
@@ -93,9 +92,8 @@ function ChplAnnouncementsFab() {
           <div
             style={{
               padding: '16px',
-              backgroundColor: palette.primary,
+              backgroundColor: '#001439',
               color: palette.white,
-              borderRadius: '8px 8px 0px 0px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',

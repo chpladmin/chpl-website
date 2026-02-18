@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import {
   AppBar,
+  Box,
   Button,
   IconButton,
   Menu,
@@ -17,9 +18,18 @@ import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplToggle from 'components/login/toggle';
 import { ChplLink } from 'components/util';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-import { theme } from 'themes';
+import { theme, palette } from 'themes';
+import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
 
 const useStyles = makeStyles({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: '#001439',
+  },
+  whiteButton: {
+    color: '#fff!important',
+  },
+  offset: theme.mixins.toolbar,
 });
 
 function ChplNavigationTop() {
@@ -29,11 +39,10 @@ function ChplNavigationTop() {
   };
   const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [showCmsWidget, setShowCmsWidget] = useState(false);
-  const [showCompareWidget, setShowCompareWidget] = useState(false);
-  const [showResources, setShowResources] = useState(false);
-  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [cmsAnchorEl, setCmsAnchorEl] = useState(null);
+  const [compareAnchorEl, setCompareAnchorEl] = useState(null);
+  const [resourcesAnchorEl, setResourcesAnchorEl] = useState(null);
+  const [shortcutsAnchorEl, setShortcutsAnchorEl] = useState(null);
   const classes = useStyles();
 
   const home = () => {
@@ -44,73 +53,88 @@ function ChplNavigationTop() {
   };
 
   const toggleCmsWidget = (event) => {
-    setAnchorEl(showCmsWidget ? null : event.currentTarget);
-    setShowCmsWidget((p) => !p);
+    setCmsAnchorEl(cmsAnchorEl ? null : event.currentTarget);
   };
 
   const toggleCompareWidget = (event) => {
-    setAnchorEl(showCompareWidget ? null : event.currentTarget);
-    setShowCompareWidget((p) => !p);
+    setCompareAnchorEl(compareAnchorEl ? null : event.currentTarget);
   };
 
   const toggleResources = (event) => {
-    setAnchorEl(showResources ? null : event.currentTarget);
-    setShowResources((p) => !p);
+    setResourcesAnchorEl(resourcesAnchorEl ? null : event.currentTarget);
   };
 
   const toggleShortcuts = (event) => {
-    setAnchorEl(showShortcuts ? null : event.currentTarget);
-    setShowShortcuts((p) => !p);
+    setShortcutsAnchorEl(shortcutsAnchorEl ? null : event.currentTarget);
   };
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar style={{ backgroundColor: '#001439', display: 'flex', justifyContent: 'space-between' }}>
+          <Box>
+            <img src={ChplLogo} alt="Certified Health IT Product List Logo" style={{ height: '40px', marginRight: '16px' }} />
+          </Box>
+          <Box>
           <Button
             onClick={home}
+            className={classes.whiteButton}
           >
             Home
           </Button>
           <Button
             onClick={searchChpl}
             endIcon={<SearchIcon />}
+            className={classes.whiteButton}
           >
             Search CHPL
           </Button>
           <Button
             onClick={toggleCmsWidget}
+            className={classes.whiteButton}
           >
             CMS ID Creator
           </Button>
           <Menu
-            anchorEl={anchorEl}
-            open={!!anchorEl && showCmsWidget}
+            anchorEl={cmsAnchorEl}
+            open={Boolean(cmsAnchorEl)}
             onClose={toggleCmsWidget}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+            disableScrollLock
           >
             <ChplCmsDisplay />
           </Menu>
           <Button
             onClick={toggleCompareWidget}
+            className={classes.whiteButton}
+            color='inherit'
           >
             Compare Products
           </Button>
           <Menu
-            anchorEl={anchorEl}
-            open={!!anchorEl && showCompareWidget}
+            anchorEl={compareAnchorEl}
+            open={Boolean(compareAnchorEl)}
             onClose={toggleCompareWidget}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+            disableScrollLock
           >
             <ChplCompareDisplay />
           </Menu>
           <Button
             onClick={toggleResources}
+            className={classes.whiteButton}
           >
             Resources
           </Button>
           <Menu
-            anchorEl={anchorEl}
-            open={!!anchorEl && showResources}
+            anchorEl={resourcesAnchorEl}
+            open={Boolean(resourcesAnchorEl)}
             onClose={toggleResources}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+            disableScrollLock
           >
             <MenuItem>
               <ChplLink
@@ -242,15 +266,19 @@ function ChplNavigationTop() {
           </Menu>
           <Button
             onClick={toggleShortcuts}
+            className={classes.whiteButton}
           >
             Shortcuts
           </Button>
           <Menu
-            anchorEl={anchorEl}
-            open={!!anchorEl && showShortcuts}
+            anchorEl={shortcutsAnchorEl}
+            open={Boolean(shortcutsAnchorEl)}
             onClose={toggleShortcuts}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+            disableScrollLock
           >
-            <MenuItem>
+            <MenuItem divider>
               <ChplLink
                 href="#/api-documentation"
                 text="API Information"
@@ -371,10 +399,12 @@ function ChplNavigationTop() {
               />
             </MenuItem>
           </Menu>
-          <ChplAnnouncementsFab />
           <ChplToggle />
+          <ChplAnnouncementsFab />
+          </Box>
         </Toolbar>
       </AppBar>
+      <div className={classes.offset} />
     </>
   );
 }
