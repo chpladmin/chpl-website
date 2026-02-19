@@ -118,7 +118,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCmsDisplay() {
+const ChplCmsDisplay = React.forwardRef((props, ref) => {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
@@ -180,7 +180,7 @@ function ChplCmsDisplay() {
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent id="no-products-selected">
+      <CardContent id="no-products-selected" ref={ref}>
         <Box display="flex" flexDirection="column" boxSizing="border-box">
         <Typography className={classes.wordWrap} gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
         <Typography variant="body2" className={classes.wordWrap}>Please select products to create a CMS ID using the button found on either search results or product detail pages.</Typography>
@@ -234,7 +234,7 @@ function ChplCmsDisplay() {
   }
 
   return (
-    <CardContent className={classes.cardcontentPadding}>
+    <CardContent className={classes.cardcontentPadding} ref={ref}>
       { certId
         && (
           <>
@@ -407,6 +407,6 @@ function ChplCmsDisplay() {
       </div>
     </CardContent>
   );
-}
+});
 
 export default ChplCmsDisplay;
