@@ -37,6 +37,11 @@ const useStyles = makeStyles({
       backgroundColor: '#0052a3',
     },
   },
+  whiteButton: {
+    color: '#fff!important',
+    textTransform: "capitalize!important",
+    fontSize: '0.875rem'
+  },
 });
 
 function ChplToggle({ dispatch = () => {} }) {
@@ -120,13 +125,10 @@ function ChplToggle({ dispatch = () => {} }) {
   return (
     <>
       <Button
-        color="primary"
-        variant="contained"
         id="login-toggle"
         aria-describedby="admin-login-form"
         onClick={handleClick}
-        className={`${classes.loginSpacing} ${state === 'LOGGEDIN' ? classes.loggedInButton : ''}`}
-        endIcon={<PersonIcon />}
+        className={classes.whiteButton}
       >
         { title }
       </Button>
