@@ -117,6 +117,11 @@ function ChplNavigationTop() {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
+            PaperProps={{
+              style: {
+                width: '400px',
+              },
+            }}
           >
             <ChplCmsDisplay />
           </Menu>
@@ -135,6 +140,11 @@ function ChplNavigationTop() {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
+            PaperProps={{
+              style: {
+                width: '400px',
+              },
+            }}
           >
             <ChplCompareDisplay />
           </Menu>

@@ -10,6 +10,8 @@ import {
   LinearProgress,
   List,
   ListItem,
+  Menu,
+  MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -86,6 +88,7 @@ const useStyles = makeStyles({
   },
   cardcontentPadding: {
     padding: '8px',
+    width: '400px',
   },
   chipContainer: {
     display: 'flex',
@@ -173,13 +176,20 @@ function ChplCmsDisplay() {
 
   if (!listings || listings.length === 0) {
     return (
-      <>
-        <Typography gutterBottom><strong>No products selected.</strong></Typography>
-        <Typography>
+      <CardContent id="no-products-selected">
+        <Box display="flex" flexDirection="column" boxSizing="border-box">
+        <Typography style={{ wordWrap: 'break-word' }} gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
+        <Typography variant="body2" style={{ wordWrap: 'break-word' }}>Please select products to create a CMS ID using the button found on either search results or product detail pages.</Typography>
+        <Typography style={{ wordWrap: 'break-word' }}>
           Note: the selected product
           {listings?.length !== 1 ? 's' : ''}
           {' '}
-          must meet 100% of the Base Criteria. For assistance, view the
+          must meet 100% of the Base Criteria. 
+        </Typography>
+        <Divider />
+        <Box display="flex" flexDirection="column" alignItems="center" gap="8px" paddingTop="8px">
+        <Typography align="center" variant="body2" style={{ wordWrap: 'break-word' }}>
+          For assistance, view the
           {' '}
           <ChplLink
             href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
@@ -198,10 +208,9 @@ function ChplCmsDisplay() {
             external={false}
             inline
           />
-          .
+          
         </Typography>
-        <Divider />
-        <Typography variant="body2">
+        <Typography align="center" variant="body2" style={{ wordWrap: 'break-word' }}>
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -214,7 +223,9 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-      </>
+        </Box>
+        </Box>
+      </CardContent>
     );
   }
 
