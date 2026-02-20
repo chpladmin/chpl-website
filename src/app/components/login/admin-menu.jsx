@@ -65,11 +65,12 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
   const $state = getAngularService('$state');
   const authService = getAngularService('authService');
   const { hasAnyRole } = useContext(UserContext);
-  const [administrationOpen, setAdministrationOpen] = useState(false);
-  const [organizationsOpen, setOrganizationsOpen] = useState(false);
-  const [activityOpen, setActivityOpen] = useState(false);
-  const [surveillanceOpen, setSurveillanceOpen] = useState(false);
+  const [openSection, setOpenSection] = useState(null);
   const classes = useStyles();
+
+  const toggleSection = (section) => {
+    setOpenSection(openSection === section ? null : section);
+  };
 
   const navigateTo = (state) => {
     $state.go(state);
@@ -97,13 +98,13 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
           <>
             <ListItem
               className={classes.sectionHeader}
-              onClick={() => setAdministrationOpen(!administrationOpen)}
+              onClick={() => toggleSection('administration')}
               divider
             >
               <Typography className={classes.sectionHeaderText}>Administration</Typography>
-              {administrationOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {openSection === 'administration' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItem>
-            <Collapse in={administrationOpen} timeout="auto" unmountOnExit>
+            <Collapse in={openSection === 'administration'} timeout="auto" unmountOnExit>
               <List component="div" >
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
                   <ListItem
@@ -228,13 +229,13 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
           <>
             <ListItem
               className={classes.sectionHeader}
-              onClick={() => setOrganizationsOpen(!organizationsOpen)}
+              onClick={() => toggleSection('organizations')}
                 divider
             >
               <Typography className={classes.sectionHeaderText}>Organizations</Typography>
-              {organizationsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {openSection === 'organizations' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItem>
-            <Collapse in={organizationsOpen} timeout="auto" unmountOnExit>
+            <Collapse in={openSection === 'organizations'} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItem
                   className={classes.menuItem}
@@ -275,13 +276,13 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
           <>
             <ListItem
               className={classes.sectionHeader}
-              onClick={() => setActivityOpen(!activityOpen)}
+              onClick={() => toggleSection('activity')}
               divider
             >
               <Typography className={classes.sectionHeaderText}>Activity</Typography>
-              {activityOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {openSection === 'activity' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItem>
-            <Collapse in={activityOpen} timeout="auto" unmountOnExit>
+            <Collapse in={openSection === 'activity'} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItem
                   className={classes.menuItem}
@@ -311,13 +312,13 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
           <>
             <ListItem
               className={classes.sectionHeader}
-              onClick={() => setSurveillanceOpen(!surveillanceOpen)}
+              onClick={() => toggleSection('surveillance')}
               divider
             >
               <Typography className={classes.sectionHeaderText}>Surveillance</Typography>
-              {surveillanceOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {openSection === 'surveillance' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItem>
-            <Collapse in={surveillanceOpen} timeout="auto" unmountOnExit>
+            <Collapse in={openSection === 'surveillance'} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                   <ListItem
