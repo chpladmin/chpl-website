@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   AppBar,
   Box,
@@ -33,6 +33,41 @@ const useStyles = makeStyles({
     fontSize: '0.875rem'
   },
   offset: theme.mixins.toolbar,
+  '@keyframes shimmer': {
+    '0%': {
+      transform: 'translateX(-100%)',
+      opacity: 0,
+    },
+    '50%': {
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'translateX(100%)',
+      opacity: 0,
+    },
+  },
+  logoContainer: {
+    position: 'relative',
+    overflow: 'hidden',
+    display: 'inline-block',
+    marginRight: '16px',
+  },
+  logo: {
+    height: '40px',
+    display: 'block',
+  },
+  shimmer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(63deg, transparent 0%, rgba(255, 255, 255, 0.6) 20%, transparent 6%)',
+    animation: '$shimmer 2s ease-in-out forwards',
+    animationFillMode: 'forwards',
+    opacity: 0,
+    pointerEvents: 'none',
+  },
 });
 
 function ChplNavigationTop() {
@@ -79,16 +114,27 @@ function ChplNavigationTop() {
     setResourcesAnchorEl(resourcesAnchorEl ? null : event.currentTarget);
   };
 
+  const closeResources = () => {
+    setResourcesAnchorEl(null);
+  };
+
   const toggleShortcuts = (event) => {
     setShortcutsAnchorEl(shortcutsAnchorEl ? null : event.currentTarget);
+  };
+
+  const closeShortcuts = () => {
+    setShortcutsAnchorEl(null);
   };
 
   return (
     <>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar style={{ backgroundColor: '#001439', display: 'flex', justifyContent: 'space-between' }}>
-          <Box>
-            <img src={ChplLogo} alt="Certified Health IT Product List Logo" style={{ height: '40px', marginRight: '16px' }} />
+          <Box ahref="#/search" display={"flex"} alignItems="center" onClick={home} style={{ cursor: 'pointer' }}>
+            <div className={classes.logoContainer}>
+              <img src={ChplLogo} alt="Certified Health IT Product List Logo" className={classes.logo} />
+              <div className={classes.shimmer} />
+            </div>
           </Box>
           <Box display={"flex"} alignItems="center">
           <Button
@@ -157,13 +203,13 @@ function ChplNavigationTop() {
           <Menu
             anchorEl={resourcesAnchorEl}
             open={Boolean(resourcesAnchorEl)}
-            onClose={toggleResources}
+            onClose={closeResources}
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
           >
-            <MenuItem divider>
+            <MenuItem divider onClick={closeResources}>
               <ChplLink
                 href="#/resources/overview"
                 text="Overview"
@@ -177,7 +223,7 @@ function ChplNavigationTop() {
             </MenuItem>
             { domainIsOn
               ? (
-                <MenuItem divider>
+                <MenuItem divider onClick={closeResources}>
                   <ChplLink
                     href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
                     text="CHPL Public User Guide"
@@ -192,7 +238,7 @@ function ChplNavigationTop() {
                   />
                 </MenuItem>
               ) : (
-                <MenuItem divider>
+                <MenuItem divider onClick={closeResources}>
                   <ChplLink
                     href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
                     text="CHPL Public User Guide"
@@ -210,7 +256,7 @@ function ChplNavigationTop() {
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
               && domainIsOn
               && (
-                <MenuItem divider> 
+                <MenuItem divider onClick={closeResources}> 
                   <ChplLink
                     href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
                     text="CHPL Developer User Guide"
@@ -228,7 +274,7 @@ function ChplNavigationTop() {
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
               && !domainIsOn
               && (
-                <MenuItem divider>
+                <MenuItem divider onClick={closeResources}>
                   <ChplLink
                     href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
                     text="CHPL Developer User Guide"
@@ -243,7 +289,7 @@ function ChplNavigationTop() {
                   />
                 </MenuItem>
               )}
-            <MenuItem divider>
+            <MenuItem divider onClick={closeResources}>
               <ChplLink
                 href="#/resources/cms-lookup"
                 text="CMS ID Reverse Lookup"
@@ -255,7 +301,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'resources.cms-lookup' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeResources}>
               <ChplLink
                 href="#/resources/download"
                 text="Download the CHPL"
@@ -267,7 +313,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'resources.download' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeResources}>
               <ChplLink
                 href="#/resources/api"
                 text="CHPL API"
@@ -279,7 +325,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'resources.api' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeResources}>
               <ChplLink
                 href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
                 text="Contact Us"
@@ -300,13 +346,13 @@ function ChplNavigationTop() {
           <Menu
             anchorEl={shortcutsAnchorEl}
             open={Boolean(shortcutsAnchorEl)}
-            onClose={toggleShortcuts}
+            onClose={closeShortcuts}
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
           >
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/api-documentation"
                 text="API Information"
@@ -318,7 +364,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.api-documentation' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/banned-developers"
                 text="Banned Developers"
@@ -330,7 +376,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.banned-developers' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/charts"
                 text="Charts"
@@ -342,7 +388,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'charts' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/decertified-products"
                 text="Decertified Products"
@@ -354,7 +400,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.decertified-products' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/decision-support-interventions"
                 text="Decision Support Interventions"
@@ -366,7 +412,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.decision-support-interventions' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/inactive-certificates"
                 text="Inactive Certificates"
@@ -378,7 +424,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.inactive-certificates' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/corrective-action"
                 text="Products: Corrective Action"
@@ -390,7 +436,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.corrective-action' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/real-world-testing"
                 text="Real World Testing"
@@ -402,7 +448,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.real-world-testing' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/sed"
                 text="SED Information"
@@ -414,7 +460,7 @@ function ChplNavigationTop() {
                 router={{ sref: 'shortcut.sed' }}
               />
             </MenuItem>
-            <MenuItem divider>
+            <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
                 href="#/svap"
                 text="SVAP Information"
@@ -432,7 +478,6 @@ function ChplNavigationTop() {
           </Box>
         </Toolbar>
       </AppBar>
-      <div className={classes.offset} />
     </>
   );
 }

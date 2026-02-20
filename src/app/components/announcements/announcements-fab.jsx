@@ -49,6 +49,7 @@ function ChplAnnouncementsFab() {
         <Badge
           badgeContent={announcements.length}
           color="primary"
+          overlap="rectangular"
           classes={{ badge: classes.badge }}
         >
           <NotificationsIcon style={{ fontSize: 18 }} />
