@@ -598,6 +598,7 @@ function ChplListingEdit({
                       variant="contained"
                       onClick={validate}
                       size="small"
+                      disabled={formik.values.rwtResultsUrl.length === 0}
                       endIcon={<VerifiedUserIcon />}
                       style={{ padding: '8px !important' }}
                     >
