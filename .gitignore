@@ -27,4 +27,3 @@ test/config/urls.js
 !.yarn/sdks
 !.yarn/versions
 dist/
-.github/copilot-instructions.md

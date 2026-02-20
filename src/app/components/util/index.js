@@ -8,9 +8,7 @@ import ChplNonProdIndicator from './non-prod-indicator';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
-import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
-import ChplSearchResultCard from './chpl-search-result-card';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 import ChplUpdateIndicator from './update-indicator';
@@ -28,8 +26,6 @@ export {
   ChplNonProdIndicator,
   ChplPagination,
   ChplProgress,
-  ChplSearchResultCard,
-  ChplSortControls,
   ChplSortableHeaders,
   ChplTextField,
   ChplTooltip,

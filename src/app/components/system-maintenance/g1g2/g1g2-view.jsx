@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, shape, string } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
+import { arrayOf, object } from 'prop-types';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -18,10 +21,12 @@ import {
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
-const sortOptions = [
-  { property: 'abbreviation', text: 'Abbreviation' },
-  { property: 'domainDisplay', text: 'Domain' },
-  { property: 'name', text: 'Name' },
+const headers = [
+  { property: 'abbreviation', text: 'Abbreviation', sortable: true },
+  { property: 'domainDisplay', text: 'Domain', sortable: true },
+  { property: 'requiredTest', text: 'Required Test' },
+  { property: 'name', text: 'Name', sortable: true },
+  { text: 'Applicable Criteria' },
 ];
 
 const useStyles = makeStyles({
@@ -53,13 +58,14 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           .join(', '),
       }))
       .sort(sortComparator('abbreviation')));
-  }, [initialG1g2, filterContext]);
+  }, [initialG1g2, filterContext.filters, filterContext.searchTerm]);
 
-  const handleSort = (property, orderDirection) => {
+  const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    setG1g2((prev) => [...prev].sort(sortComparator(property, descending)));
+    const updated = g1g2.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
+    setG1g2(updated);
   };
 
   return (
@@ -70,74 +76,55 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">Search Results</Typography>
+      <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" flexDirection="row" gridGap={1}>
+          <Typography variant="subtitle2">Search Results:</Typography>
           <Typography variant="body2">
             {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
+      </div>
+      <TableContainer className={classes.container} component={Paper}>
+        <Table
+          aria-label="G1/G2 Measure table"
+        >
+          <ChplSortableHeaders
+            headers={headers}
+            onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            onSort={handleSort}
+            stickyHeader
           />
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { g1g2
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              title="Name"
-              titleValue={item.name}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Abbreviation',
-                    value: item.abbreviation || 'N/A',
-                    xs: 6,
-                    sm: 6,
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Domain',
-                    value: item.domainDisplay || 'N/A',
-                    xs: 6,
-                    sm: 6,
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Required Test',
-                    value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
-                    xs: 6,
-                    sm: 6,
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 6,
-                  },
-                ],
-              ]}
-            />
-          ))}
-      </Box>
+          <TableBody>
+            { g1g2
+              .map((item) => (
+                <TableRow key={`${item.id}`}>
+                  <TableCell className={classes.firstColumn}>
+                    { item.abbreviation }
+                  </TableCell>
+                  <TableCell>
+                    { item.domainDisplay }
+                  </TableCell>
+                  <TableCell>
+                    { item.removed
+                      && (
+                        <>
+                          Removed |
+                        </>
+                      )}
+                    { item.requiredTest }
+                  </TableCell>
+                  <TableCell>
+                    { item.name }
+                  </TableCell>
+                  <TableCell>
+                    { item.criteriaDisplay }
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }
@@ -145,5 +132,5 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
 export default ChplG1g2View;
 
 ChplG1g2View.propTypes = {
-  g1g2: arrayOf(shape({})).isRequired,
+  g1g2: arrayOf(object).isRequired,
 };

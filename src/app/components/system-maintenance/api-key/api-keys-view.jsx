@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Button,
-  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   makeStyles,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -10,17 +14,17 @@ import { arrayOf, func, object } from 'prop-types';
 
 import { useFetchApiKeyActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
 
-const sortOptions = [
-  { property: 'name', text: 'User' },
-  { property: 'email', text: 'Email' },
-  { property: 'key', text: 'API Key' },
-  { property: 'lastUsedDate', text: 'Last Used' },
-  { property: 'deleteWarningSentDate', text: 'Warning Sent' },
+const headers = [
+  { property: 'name', text: 'User', sortable: true },
+  { property: 'email', text: 'Email', sortable: true },
+  { property: 'key', text: 'API Key', sortable: true },
+  { property: 'lastUsedDate', text: 'Last Used', sortable: true },
+  { property: 'deleteWarningSentDate', text: 'Warning Sent', sortable: true },
+  { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -29,9 +33,13 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  container: {
+    maxWidth: '1280px',
+    overflowX: 'auto',
+  }
 });
 
-function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
+function ChplApiKeysView({ apiKeys: initialApiKeys, dispatch }) {
   const [apiKeys, setApiKeys] = useState([]);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('lastUsedDate', true);
@@ -41,88 +49,57 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
     setApiKeys(initialApiKeys.sort(sortComparator('lastUsedDate')));
   }, [initialApiKeys]);
 
-  const handleSort = (property, orderDirection) => {
+  const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    setApiKeys((prev) => [...prev].sort(sortComparator(property, descending)));
+    const updated = apiKeys.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
+    setApiKeys(updated);
   };
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            API Keys
-          </Typography>
-          <Typography variant="body2">
-            {`(${apiKeys.length} Result${apiKeys.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <div className={classes.tableResultsHeaderContainer}>
-          <Box display="flex" alignItems="center" gridGap={4}>
-            <ChplSortControls
-              sortOptions={sortOptions}
+      <div className={classes.tableResultsHeaderContainer}>
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchApiKeyActivity}
+          title="API Keys History"
+        />
+      </div>
+      <Paper className={classes.container}>
+        <TableContainer>
+          <Table aria-label="API Keys table">
+            <ChplSortableHeaders
+              headers={headers}
+              onTableSort={handleTableSort}
               orderBy={orderBy}
               order={order}
-              onSort={handleSort}
+              stickyHeader
             />
-            <ChplSystemMaintenanceActivity
-              fetch={useFetchApiKeyActivity}
-              title="API Keys History"
-            />
-          </Box>
-        </div>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        {apiKeys.map((key) => (
-          <ChplSearchResultCard
-            key={key.key}
-            title="User"
-            titleValue={key.name}
-            fieldGroups={[
-              [
-                {
-                  label: 'Email',
-                  value: key.email,
-                  xs: 6,
-                  sm: 6,
-                },
-                {
-                  label: 'API Key',
-                  value: key.key,
-                  xs: 6,
-                  sm: 6,
-                },
-                {
-                  label: 'Last Used',
-                  value: getDisplayDateFormat(key.lastUsedDate),
-                  xs: 6,
-                  sm: 6,
-                },
-                {
-                  label: 'Warning Sent',
-                  value: getDisplayDateFormat(key.deleteWarningSentDate),
-                  xs: 6,
-                  sm: 4,
-                },
-              ],
-            ]}
-            actions={
-              <Button
-                onClick={() => dispatch({ action: 'revoke', payload: key })}
-                id={`revoke-api-key-${key.key}`}
-                variant="contained"
-                className={classes.deleteButtonOutlined}
-                size="small"
-                endIcon={<DeleteIcon />}
-              >
-                Revoke key
-              </Button>
-            }
-          />
-        ))}
-      </Box>
+            <TableBody>
+              {apiKeys.map((key) => (
+                <TableRow key={key.key}>
+                  <TableCell className={classes.firstColumn}>{ key.name }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.email }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 100, }}>{ key.key }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 50, }}>{ getDisplayDateFormat(key.lastUsedDate) }</TableCell>
+                  <TableCell className={classes.linkWrap} style={{ maxWidth: 70, }}>{ getDisplayDateFormat(key.deleteWarningSentDate) }</TableCell>
+                  <TableCell className={classes.linkWrap} align="left">
+                    <Button
+                      onClick={() => dispatch({ action: 'revoke', payload: key })}
+                      id={`revoke-api-key-${key.key}`}
+                      variant="contained"
+                      className={classes.deleteButtonOutlined}
+                      endIcon={<DeleteIcon/>}
+                    >
+                      Revoke key
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </>
   );
 }

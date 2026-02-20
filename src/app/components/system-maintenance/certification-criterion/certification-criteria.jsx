@@ -6,7 +6,6 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 
 import ChplCertificationCriteriaView from './certification-criteria-view';
 
@@ -19,6 +18,7 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -66,9 +66,24 @@ const staticFilters = [{
 }];
 
 function ChplCertificationCriteria() {
+  const { append, display } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchCriteria({ active: false });
   const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
+
+  useEffect(() => {
+    append(
+      <Button
+        key="certificationCriteria.viewall.disabled"
+        depth={1}
+        variant="text"
+        disabled
+      >
+        Certification Criteria
+      </Button>,
+    );
+    display('certificationCriteria.viewall.disabled');
+  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -107,15 +122,7 @@ function ChplCertificationCriteria() {
       storageKey="storageKey-certificationCriteriaManagement"
     >
       <Card>
-        <CardHeader
-          style={{ paddingLeft: '16px' }}
-          title={(
-            <>
-              Certification Criteria
-              <BookOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
-            </>
-)}
-        />
+        <CardHeader title="Certification Criteria" />
         <CardContent>
           <ChplCertificationCriteriaView
             certificationCriteria={certificationCriteria}

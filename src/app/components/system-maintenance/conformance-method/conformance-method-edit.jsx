@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,6 +16,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   conformanceMethod as conformanceMethodPropType,
@@ -46,13 +47,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplConformanceMethodEdit({
-  criterionOptions,
-  dispatch,
-  isProcessing,
-  conformanceMethod: initialConformanceMethod,
-  errors: propsErrors = [],
-}) {
+function ChplConformanceMethodEdit(props) {
+  const {
+    criterionOptions,
+    dispatch,
+    isProcessing,
+    conformanceMethod: initialConformanceMethod,
+  } = props;
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -61,15 +63,39 @@ function ChplConformanceMethodEdit({
   let formik;
 
   useEffect(() => {
+    append(
+      <Button
+        key="conformanceMethods.add.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Add
+      </Button>,
+    );
+    append(
+      <Button
+        key="conformanceMethods.edit.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Edit
+      </Button>,
+    );
+  }, []);
+
+  useEffect(() => {
     setConformanceMethod(initialConformanceMethod);
     setCriteria(initialConformanceMethod.criteria?.map((c) => ({
       ...c,
     })) || []);
+    display(initialConformanceMethod.id ? 'conformanceMethods.edit.disabled' : 'conformanceMethods.add.disabled');
   }, [initialConformanceMethod]);
 
   useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
+    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -87,12 +113,18 @@ function ChplConformanceMethodEdit({
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
+        hide('conformanceMethods.add.disabled');
+        hide('conformanceMethods.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
+        hide('conformanceMethods.add.disabled');
+        hide('conformanceMethods.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
+        hide('conformanceMethods.add.disabled');
+        hide('conformanceMethods.edit.disabled');
         break;
         // no default
     }

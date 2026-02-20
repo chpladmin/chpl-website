@@ -6,7 +6,6 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 
 import ChplG1g2View from './g1g2-view';
 
@@ -17,6 +16,7 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -32,10 +32,25 @@ const staticFilters = [{
 }];
 
 function ChplG1g2() {
+  const { append, display } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchG1g2();
   const criteriaQuery = useFetchCriteria();
   const [filters, setFilters] = useState(staticFilters);
   const [g1g2, setG1g2] = useState([]);
+
+  useEffect(() => {
+    append(
+      <Button
+        key="g1g2.viewall.disabled"
+        depth={1}
+        variant="text"
+        disabled
+      >
+        G1/G2 Measures
+      </Button>,
+    );
+    display('g1g2.viewall.disabled');
+  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -78,15 +93,7 @@ function ChplG1g2() {
       storageKey="storageKey-g1g2Management"
     >
       <Card>
-        <CardHeader
-          style={{ paddingLeft: '16px' }}
-          title={(
-            <>
-              G1/G2 Measures
-              <AssessmentOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
-            </>
-)}
-        />
+        <CardHeader title="G1/G2 Measures" />
         <CardContent>
           <ChplG1g2View
             g1g2={g1g2}

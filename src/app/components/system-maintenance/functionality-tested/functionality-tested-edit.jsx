@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   rule as rulePropType,
@@ -53,16 +54,17 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFunctionalityTestedEdit({
-  criterionOptions,
-  dispatch,
-  isProcessing,
-  rules,
-  functionalityTested: initialFunctionalityTested,
-  errors: propsErrors = [],
-}) {
+function ChplFunctionalityTestedEdit(props) {
+  const {
+    criterionOptions,
+    dispatch,
+    isProcessing,
+    rules,
+    functionalityTested: initialFunctionalityTested,
+  } = props;
   const practiceTypes = [{ id: 1, name: 'Ambulatory' }, { id: 2, name: 'Inpatient' }];
   const practiceTypeOptions = ['Ambulatory', 'Inpatient', 'N/A'];
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
@@ -72,10 +74,34 @@ function ChplFunctionalityTestedEdit({
   let formik;
 
   useEffect(() => {
+    append(
+      <Button
+        key="functionalitiesTested.add.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Add
+      </Button>,
+    );
+    append(
+      <Button
+        key="functionalitiesTested.edit.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Edit
+      </Button>,
+    );
+  }, []);
+
+  useEffect(() => {
     setFunctionalityTested(initialFunctionalityTested);
     setCriteria(initialFunctionalityTested.criteria?.map((c) => ({
       ...c,
     })) || []);
+    display(initialFunctionalityTested.id ? 'functionalitiesTested.edit.disabled' : 'functionalitiesTested.add.disabled');
   }, [initialFunctionalityTested]);
 
   useEffect(() => {
@@ -83,8 +109,8 @@ function ChplFunctionalityTestedEdit({
   }, [rules]);
 
   useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
+    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -109,12 +135,18 @@ function ChplFunctionalityTestedEdit({
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
         // no default
     }

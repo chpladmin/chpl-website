@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   makeStyles,
@@ -9,6 +9,7 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { BreadcrumbContext } from 'shared/contexts';
 import { ucdProcessType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -30,19 +31,45 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [] }) {
+function ChplUcdProcessEdit(props) {
+  const { dispatch, isProcessing } = props;
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const [errors, setErrors] = useState([]);
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setUcdProcess(initialUcdProcess);
-  }, [initialUcdProcess]);
+    append(
+      <Button
+        key="ucdProcesses.add.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Add
+      </Button>,
+    );
+    append(
+      <Button
+        key="ucdProcesses.edit.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Edit
+      </Button>,
+    );
+  }, []);
 
   useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
+    setUcdProcess(props.ucdProcess);
+    display(props.ucdProcess.id ? 'ucdProcesses.edit.disabled' : 'ucdProcesses.add.disabled');
+  }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   const buildPayload = () => ({
     ...ucdProcess,
@@ -53,12 +80,18 @@ function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProc
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
+        hide('ucdProcesses.add.disabled');
+        hide('ucdProcesses.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
+        hide('ucdProcesses.add.disabled');
+        hide('ucdProcesses.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
+        hide('ucdProcesses.add.disabled');
+        hide('ucdProcesses.edit.disabled');
         break;
         // no default
     }
@@ -68,7 +101,7 @@ function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProc
 
   formik = useFormik({
     initialValues: {
-      name: initialUcdProcess?.name || '',
+      name: props.ucdProcess?.name || '', // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
       dispatch({ action: 'save', payload: buildPayload() });
