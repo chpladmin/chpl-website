@@ -24,7 +24,8 @@ import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/
 import {
   ChplLink,
   ChplPagination,
-  ChplSortableHeaders,
+  ChplSearchResultCard,
+  ChplSortControls,
 } from 'components/util';
 import {
   ChplFilterChips,
@@ -36,11 +37,10 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { theme } from 'themes';
 
-const initialHeaders = [
-  { property: 'subscriber_email', text: 'Email', sortable: true },
-  { property: 'creation_date', text: 'Creation Date', sortable: true },
-  { property: 'subscriber_role', text: 'Role', sortable: true },
-  { text: 'Subject' },
+const sortOptions = [
+  { property: 'subscriber_email', text: 'Email' },
+  { property: 'creation_date', text: 'Creation Date' },
+  { property: 'subscriber_role', text: 'Role' },
 ];
 
 const useStyles = makeStyles({
@@ -116,7 +116,6 @@ function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const $analytics = getAngularService('$analytics');
   const { enqueueSnackbar } = useSnackbar();
-  const [headers] = useState(initialHeaders);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
@@ -153,7 +152,7 @@ function ChplManageSubscriptionsView({ analytics }) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleTableSort = (property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
@@ -223,45 +222,44 @@ function ChplManageSubscriptionsView({ analytics }) {
                         {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                       </Typography>
                     )}
-
                 </div>
+                { subscriptions.length > 0
+                  && (
+                    <ChplSortControls
+                      sortOptions={sortOptions}
+                      orderBy={orderBy}
+                      order={sortDescending ? 'desc' : 'asc'}
+                      onSort={handleTableSort}
+                    />
+                  )}
               </div>
               { subscriptions.length > 0
                 && (
                   <>
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                      <Table
-                        stickyHeader
-                        aria-label="Manage Subscriptions table"
-                      >
-                        <ChplSortableHeaders
-                          headers={headers}
-                          onTableSort={handleTableSort}
-                          orderBy={orderBy}
-                          order={sortDescending ? 'desc' : 'asc'}
-                          stickyHeader
-                        />
-                        <TableBody>
-                          { subscriptions
-                            .map((item) => (
-                              <TableRow key={`${item.subscriberId}-${item.subscribedObjectId}`}>
-                                <TableCell className={classes.stickyColumn}>
-                                  { item.subscriberEmail }
-                                </TableCell>
-                                <TableCell>
-                                  { getDisplayDateFormat(item.creationDate) }
-                                </TableCell>
-                                <TableCell>
-                                  { item.subscriberRole }
-                                </TableCell>
-                                <TableCell>
-                                  <ChplLink
-                                    href={`#/listing/${item.subscribedObjectId}`}
-                                    text={item.subscribedObjectName}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
-                                    external={false}
-                                    router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
-                                  />
+                    <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 32px' }}>
+                      { subscriptions.map((item) => (
+                        <ChplSearchResultCard
+                          key={`${item.subscriberId}-${item.subscribedObjectId}`}
+                          title="CHPL Product"
+                          titleValue={(
+                            <ChplLink
+                              href={`#/listing/${item.subscribedObjectId}`}
+                              text={item.subscribedObjectName}
+                              analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
+                              external={false}
+                              router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
+                            />
+                          )}
+                          fieldGroups={[
+                            [
+                              { label: 'Email', value: item.subscriberEmail, xs: 12, sm: 6 },
+                              { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate), xs: 12, sm: 6 },
+                            ],
+                            [
+                              { label: 'Role', value: item.subscriberRole, xs: 12, sm: 6 },
+                              { 
+                                label: 'Subscription Subjects', 
+                                value: (
                                   <List className={classes.listContainer}>
                                     { item.subscriptionSubjects
                                       .sort((a, b) => (a < b ? -1 : 1))
@@ -269,12 +267,15 @@ function ChplManageSubscriptionsView({ analytics }) {
                                         <ListItem className={classes.listItem} key={sub}>{ sub }</ListItem>
                                       ))}
                                   </List>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                                ),
+                                xs: 12,
+                                sm: 6
+                              },
+                            ],
+                          ]}
+                        />
+                      ))}
+                    </Box>
                     <ChplPagination
                       count={recordCount}
                       page={pageNumber}

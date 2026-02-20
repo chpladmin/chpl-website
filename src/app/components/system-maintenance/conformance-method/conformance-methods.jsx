@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplConformanceMethodEdit from './conformance-method-edit';
@@ -18,10 +19,8 @@ import {
   usePostConformanceMethod,
   usePutConformanceMethod,
 } from 'api/standards';
-import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplConformanceMethods() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchConformanceMethods();
   const deleteConformanceMethod = useDeleteConformanceMethod();
   const postConformanceMethod = usePostConformanceMethod();
@@ -33,20 +32,6 @@ function ChplConformanceMethods() {
   const [criterionOptions, setCriterionOptions] = useState([]);
   const [errors, setErrors] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="conformanceMethods.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Conformance Methods
-      </Button>,
-    );
-    display('conformanceMethods.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -63,10 +48,6 @@ function ChplConformanceMethods() {
       case 'cancel':
         setActiveConformanceMethod(undefined);
         setIsProcessing(false);
-        display('conformanceMethods.viewall.disabled');
-        hide('conformanceMethods.viewall');
-        hide('conformanceMethods.add.disabled');
-        hide('conformanceMethods.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -78,8 +59,6 @@ function ChplConformanceMethods() {
             });
             setActiveConformanceMethod(undefined);
             setIsProcessing(false);
-            display('conformanceMethods.viewall.disabled');
-            hide('conformanceMethods.viewall');
           },
           onError: (error) => {
             setIsProcessing(false);
@@ -90,8 +69,6 @@ function ChplConformanceMethods() {
       case 'edit':
         setActiveConformanceMethod(payload);
         setErrors([]);
-        display('conformanceMethods.viewall');
-        hide('conformanceMethods.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -104,8 +81,6 @@ function ChplConformanceMethods() {
               });
               setActiveConformanceMethod(undefined);
               setIsProcessing(false);
-              display('conformanceMethods.viewall.disabled');
-              hide('conformanceMethods.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -120,8 +95,6 @@ function ChplConformanceMethods() {
               });
               setActiveConformanceMethod(undefined);
               setIsProcessing(false);
-              display('conformanceMethods.viewall.disabled');
-              hide('conformanceMethods.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -137,7 +110,12 @@ function ChplConformanceMethods() {
   if (activeConformanceMethod) {
     return (
       <Card>
-        <CardHeader title={`${activeConformanceMethod.id ? 'Edit' : 'Add'} Conformance Method`} />
+        <CardHeader title={(
+          <>
+            <AccountBalanceOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeConformanceMethod.id ? 'Edit' : 'Add'} Conformance Method`}
+          </>
+)} />
         <CardContent>
           <ChplConformanceMethodEdit
             conformanceMethod={activeConformanceMethod}
@@ -159,7 +137,15 @@ function ChplConformanceMethods() {
 
   return (
     <Card>
-      <CardHeader title="Conformance Methods" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            Conformance Methods
+            <AccountBalanceOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         { (deleteConformanceMethod.isLoading || postConformanceMethod.isLoading || putConformanceMethod.isLoading)
             && (

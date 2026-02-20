@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplFunctionalityTestedEdit from './functionality-tested-edit';
@@ -27,7 +28,6 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -114,7 +114,6 @@ const staticFilters = [{
 }];
 
 function ChplFunctionalitiesTested() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchFunctionalitiesTested();
   const deleteFunctionalityTested = useDeleteFunctionalityTested();
   const postFunctionalityTested = usePostFunctionalityTested();
@@ -130,30 +129,6 @@ function ChplFunctionalitiesTested() {
   const [filters, setFilters] = useState(staticFilters);
   const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="functionalitiesTested.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Functionalities Tested
-      </Button>,
-    );
-    append(
-      <Button
-        key="functionalitiesTested.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        Functionalities Tested
-      </Button>,
-    );
-    display('functionalitiesTested.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -188,10 +163,6 @@ function ChplFunctionalitiesTested() {
       case 'cancel':
         setActiveFunctionalityTested(undefined);
         setIsProcessing(false);
-        display('functionalitiesTested.viewall.disabled');
-        hide('functionalitiesTested.viewall');
-        hide('functionalitiesTested.add.disabled');
-        hide('functionalitiesTested.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -203,8 +174,6 @@ function ChplFunctionalitiesTested() {
             });
             setActiveFunctionalityTested(undefined);
             setIsProcessing(false);
-            display('functionalitiesTested.viewall.disabled');
-            hide('functionalitiesTested.viewall');
           },
           onError: (error) => {
             setIsProcessing(false);
@@ -215,8 +184,6 @@ function ChplFunctionalitiesTested() {
       case 'edit':
         setActiveFunctionalityTested(payload);
         setErrors([]);
-        display('functionalitiesTested.viewall');
-        hide('functionalitiesTested.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -229,8 +196,6 @@ function ChplFunctionalitiesTested() {
               });
               setActiveFunctionalityTested(undefined);
               setIsProcessing(false);
-              display('functionalitiesTested.viewall.disabled');
-              hide('functionalitiesTested.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -245,8 +210,6 @@ function ChplFunctionalitiesTested() {
               });
               setActiveFunctionalityTested(undefined);
               setIsProcessing(false);
-              display('functionalitiesTested.viewall.disabled');
-              hide('functionalitiesTested.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -262,7 +225,13 @@ function ChplFunctionalitiesTested() {
   if (activeFunctionalityTested) {
     return (
       <Card>
-        <CardHeader title={`${activeFunctionalityTested.id ? 'Edit' : 'Add'} Functionality Tested`} />
+        <CardHeader title={(
+          <>
+            <BeenhereOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeFunctionalityTested.id ? 'Edit' : 'Add'} Functionality Tested`}
+          </>
+)}
+        />
         <CardContent>
           <ChplFunctionalityTestedEdit
             functionalityTested={activeFunctionalityTested}
@@ -289,7 +258,15 @@ function ChplFunctionalitiesTested() {
       storageKey="storageKey-functionalitiesTestedManagement"
     >
       <Card>
-        <CardHeader title="Functionalities Tested" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Functionalities Tested
+              <BeenhereOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           { (deleteFunctionalityTested.isLoading || postFunctionalityTested.isLoading || putFunctionalityTested.isLoading)
             && (
