@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
   IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -13,27 +18,29 @@ import Moment from 'react-moment';
 import { arrayOf, func } from 'prop-types';
 
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders } from 'components/util';
 import { scheduledSystemTrigger } from 'shared/prop-types';
 
-const sortOptions = [
+const headers = [
   { property: 'name', text: 'Job Name' },
+  { property: 'description', text: 'Description' },
   { property: 'nextRunDate', text: 'Next Run Date' },
   { property: 'triggerScheduleType', text: 'Trigger Schedule Type' },
+  { property: 'actions', text: 'Actions', invisible: true },
 ];
 
 const useStyles = makeStyles({
-  headerContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px',
+  container: {
+    maxHeight: '64vh',
   },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
+  firstColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#ffffff',
+  },
+  noResultsContainer: {
+    padding: '16px 32px',
   },
 });
 
@@ -42,8 +49,6 @@ function ChplSystemTriggersView({
   triggers: initialTriggers = [],
 }) {
   const [triggers, setTriggers] = useState([]);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('nextRunDate');
   const [isConfirming, setIsConfirming] = useState(false);
   const [pendingAction, setPendingAction] = useState({});
   const [pendingMessage, setPendingMessage] = useState('');
@@ -53,11 +58,11 @@ function ChplSystemTriggersView({
 
   useEffect(() => {
     setTriggers(initialTriggers
+      .sort((a, b) => (a.nextRunDate - b.nextRunDate))
       .map((trigger) => ({
         ...trigger,
         action: getAction(trigger, dispatch),
-      }))
-      .sort(sortComparator('nextRunDate')));
+      })));
   }, [initialTriggers, dispatch]);
 
   const confirmDelete = (item) => {
@@ -79,13 +84,6 @@ function ChplSystemTriggersView({
     }
     setIsConfirming(false);
     setPendingAction({});
-  };
-
-  const handleSort = (property, orderDirection) => {
-    const descending = orderDirection === 'desc';
-    setTriggers((prev) => [...prev].sort(sortComparator(property, descending)));
-    setOrderBy(property);
-    setOrder(orderDirection);
   };
 
   getAction = (item) => {
@@ -116,63 +114,61 @@ function ChplSystemTriggersView({
       <Card>
         <CardHeader title="Currently Scheduled System Jobs" />
         <CardContent>
-          <>            { (triggers.length === 0)
+          <>
+            { (triggers.length === 0)
               && (
-                <Typography style={{ padding: '16px' }}>
+                <Typography className={classes.noResultsContainer}>
                   No results found
                 </Typography>
               )}
             { triggers.length > 0
               && (
-                <>
-                  <div className={classes.headerContainer}>
-                    <div className={classes.resultsContainer}>
-                      <Typography variant="subtitle2">Scheduled Jobs:</Typography>
-                      <Typography variant="body2">
-                        {`(${triggers.length} Result${triggers.length !== 1 ? 's' : ''})`}
-                      </Typography>
-                    </div>
-                    <ChplSortControls
-                      sortOptions={sortOptions}
-                      orderBy={orderBy}
-                      order={order}
-                      onSort={handleSort}
+                <TableContainer className={classes.container} component={Paper}>
+                  <Table
+                    aria-label="Scheduled System Jobs table"
+                  >
+                    <ChplSortableHeaders
+                      headers={headers}
+                      onTableSort={() => {}}
+                      orderBy="name"
+                      order="asc"
+                      stickyHeader
                     />
-                  </div>
-                  <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
-                    { triggers.map((item) => (
-                      <ChplSearchResultCard
-                        key={item.nextRunDate}
-                        fieldGroups={[
-                          [
-                            { label: 'Job Name', value: item.name, xs: 12, sm: 6 },
-                            { label: 'Description', value: item.description, xs: 12, sm: 6 },
-                          ],
-                          [
-                            {
-                              label: 'Next Run Date',
-                              value: item.nextRunDate ? (
-                                <Moment
-                                  fromNow
-                                  withTitle
-                                  titleFormat="DD MMM yyyy, h:mm a"
-                                >
-                                  {item.nextRunDate}
-                                </Moment>
-                              ) : (
-                                <>In Progress</>
-                              ),
-                              xs: 12,
-                              sm: 6,
-                            },
-                            { label: 'Trigger Schedule Type', value: item.triggerScheduleType, xs: 12, sm: 6 },
-                          ],
-                        ]}
-                        actions={item.action}
-                      />
-                    ))}
-                  </Box>
-                </>
+                    <TableBody>
+                      { triggers
+                        .map((item) => (
+                          <TableRow key={item.nextRunDate}>
+                            <TableCell className={classes.firstColumn}>
+                              { item.name }
+                            </TableCell>
+                            <TableCell>
+                              { item.description }
+                            </TableCell>
+                            <TableCell>
+                              { item.nextRunDate
+                                ? (
+                                  <Moment
+                                    fromNow
+                                    withTitle
+                                    titleFormat="DD MMM yyyy, h:mm a"
+                                  >
+                                    {item.nextRunDate}
+                                  </Moment>
+                                ) : (
+                                  <>In Progress</>
+                                )}
+                            </TableCell>
+                            <TableCell>
+                              { item.triggerScheduleType }
+                            </TableCell>
+                            <TableCell align="right">
+                              { item.action }
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               )}
           </>
         </CardContent>

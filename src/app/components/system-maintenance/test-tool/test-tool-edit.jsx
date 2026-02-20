@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   testTool as testToolPropType,
@@ -45,13 +46,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestToolEdit({
-  criterionOptions,
-  dispatch,
-  testTool: initialTestTool,
-  isProcessing,
-  errors: propsErrors = [],
-}) {
+function ChplTestToolEdit(props) {
+  const {
+    criterionOptions,
+    dispatch,
+    testTool: initialTestTool,
+    isProcessing,
+  } = props;
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -60,15 +62,39 @@ function ChplTestToolEdit({
   let formik;
 
   useEffect(() => {
+    append(
+      <Button
+        key="testTools.add.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Add
+      </Button>,
+    );
+    append(
+      <Button
+        key="testTools.edit.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Edit
+      </Button>,
+    );
+  }, []);
+
+  useEffect(() => {
     setTestTool(initialTestTool);
     setCriteria(initialTestTool.criteria?.map((c) => ({
       ...c,
     })) || []);
+    display(initialTestTool.id ? 'testTools.edit.disabled' : 'testTools.add.disabled');
   }, [initialTestTool]);
 
   useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
+    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -87,12 +113,18 @@ function ChplTestToolEdit({
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
+        hide('testTools.add.disabled');
+        hide('testTools.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
+        hide('testTools.add.disabled');
+        hide('testTools.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
+        hide('testTools.add.disabled');
+        hide('testTools.edit.disabled');
         break;
         // no default
     }

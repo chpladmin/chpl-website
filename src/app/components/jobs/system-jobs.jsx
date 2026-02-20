@@ -21,7 +21,7 @@ import {
   useFetchSystemTriggers,
   usePostOneTimeTrigger,
 } from 'api/jobs';
-import { UserContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 });
 
 function ChplJobs() {
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const jobTypeQuery = useFetchJobTypes();
   const systemQuery = useFetchSystemTriggers({ isAuthenticated: hasAnyRole(['chpl-admin']) });
@@ -43,6 +44,30 @@ function ChplJobs() {
   const [systemTriggers, setSystemTriggers] = useState([]);
   const classes = useStyles();
   let handleDispatch;
+
+  useEffect(() => {
+    append(
+      <Button
+        key="systemJobs.viewall.disabled"
+        depth={1}
+        variant="text"
+        disabled
+      >
+        System Jobs
+      </Button>,
+    );
+    append(
+      <Button
+        key="systemJobs.viewall"
+        depth={1}
+        variant="text"
+        onClick={() => handleDispatch({ action: 'close' })}
+      >
+        System Jobs
+      </Button>,
+    );
+    display('systemJobs.viewall.disabled');
+  }, []);
 
   useEffect(() => {
     if (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess) { return; }
@@ -61,6 +86,9 @@ function ChplJobs() {
     switch (action) {
       case 'close':
         setJob(undefined);
+        display('systemJobs.viewall.disabled');
+        hide('systemJobs.viewall');
+        hide('systemJobs.schedule.disabled');
         break;
       case 'delete':
         apiAction = deleteTrigger.mutate;
@@ -68,6 +96,8 @@ function ChplJobs() {
         break;
       case 'edit':
         setJob(payload);
+        display('systemJobs.viewall');
+        hide('systemJobs.viewall.disabled');
         break;
       case 'save':
         if (payload.group === 'systemJobs' && payload.runTime) {
@@ -94,6 +124,8 @@ function ChplJobs() {
       case 'schedule':
         if (payload.group === 'systemJobs') {
           setJob(payload);
+          display('systemJobs.viewall');
+          hide('systemJobs.viewall.disabled');
         }
         break;
         // no default
@@ -105,6 +137,8 @@ function ChplJobs() {
             variant: 'success',
           });
           setJob(undefined);
+          display('systemJobs.viewall.disabled');
+          hide('systemJobs.viewall');
         },
         onError: (error) => {
           const errorMessage = error.response.data?.error

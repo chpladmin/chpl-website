@@ -1,35 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
   IconButton,
-  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   makeStyles,
 } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { arrayOf, func } from 'prop-types';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { job as jobType } from 'shared/prop-types';
 
-const sortOptions = [
-  { property: 'name', text: 'Job Name' },
+const headers = [
+  { property: 'name', text: 'Job Name', sortable: true },
+  { property: 'description', text: 'Description' },
+  { property: 'actions', text: 'Actions', invisible: true },
 ];
 
 const useStyles = makeStyles({
-  headerContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px',
+  container: {
+    maxHeight: '64vh',
   },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
+  firstColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#fff',
   },
 });
 
@@ -45,58 +48,53 @@ function ChplSystemJobTypesView(props) {
       .sort(sortComparator('name')));
   }, []);
 
-  const handleTableSort = (property, orderDirection) => {
+  const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    setJobTypes((prev) => [...prev].sort(sortComparator(property, descending)));
+    const updated = jobTypes.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
+    setJobTypes(updated);
   };
 
   return (
     <Card>
       <CardHeader title="Types of Jobs" />
       <CardContent>
-        <div className={classes.headerContainer}>
-          <div className={classes.resultsContainer}>
-            <Typography variant="subtitle2">Jobs:</Typography>
-            <Typography variant="body2">
-              {`(${jobTypes.length} Result${jobTypes.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </div>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleTableSort}
-          />
-        </div>
-        <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
-          { jobTypes.map((item) => (
-            <ChplSearchResultCard
-              key={item.name}
-              fieldGroups={[
-                [
-                  { label: 'Job Name', value: item.name, xs: 12, sm: 6 },
-                  { label: 'Description', value: item.description, xs: 12, sm: 5 },
-                ],
-              ]}
-              actions={
-                <ChplTooltip
-                  title="Schedule Job"
-                  placement="top"
-                >
-                  <IconButton
-                    onClick={() => dispatch({ action: 'schedule', payload: item })}
-                    color="primary"
-                    aria-label={`Schedule Job ${item.name}`}
-                  >
-                    <PlayArrowIcon />
-                  </IconButton>
-                </ChplTooltip>
-              }
+        <TableContainer className={classes.container} component={Paper}>
+          <Table
+            aria-label="Types of Jobs table"
+          >
+            <ChplSortableHeaders
+              headers={headers}
+              onTableSort={handleTableSort}
+              orderBy={orderBy}
+              order={order}
+              stickyHeader
             />
-          ))}
-        </Box>
+            <TableBody>
+              { jobTypes
+                .map((item) => (
+                  <TableRow key={item.name}>
+                    <TableCell className={classes.firstColumn}>
+                      { item.name }
+                    </TableCell>
+                    <TableCell>
+                      { item.description }
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={() => dispatch({ action: 'schedule', payload: item })}
+                        color="primary"
+                        aria-label={`Schedule Job ${item.name}`}
+                      >
+                        <PlayArrowIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </CardContent>
     </Card>
   );

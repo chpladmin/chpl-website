@@ -66,14 +66,6 @@ const util = {
     alignItems: 'center',
     padding: '8px 32px',
   },
-  headerContainer: {
-    boxShadow: 'rgba(0, 0, 0, 0.1) 0px 8px 16px 0px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '8px',
-    padding: '16px 32px',
-  },
 };
 
 export default util;

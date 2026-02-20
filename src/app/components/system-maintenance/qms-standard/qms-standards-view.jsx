@@ -1,24 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
   Button,
-  IconButton,
-  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { qmsStandardType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const sortOptions = [
-  { property: 'name', text: 'Name' },
+const headers = [
+  { property: 'name', text: 'Name', sortable: true },
+  { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -29,90 +31,81 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQmsStandardsView({ dispatch, qmsStandards: initialQmsStandards }) {
+function ChplQmsStandardsView(props) {
+  const { dispatch } = props;
   const [qmsStandards, setQmsStandards] = useState([]);
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const classes = useStyles();
 
   useEffect(() => {
-    setQmsStandards(initialQmsStandards
+    setQmsStandards(props.qmsStandards
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [initialQmsStandards]);
+  }, [props.qmsStandards]); // eslint-disable-line react/destructuring-assignment
 
-  const handleSort = (property, orderDirection) => {
+  const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    setQmsStandards((prev) => [...prev].sort(sortComparator(property, descending)));
+    const updated = qmsStandards.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
+    setQmsStandards(updated);
   };
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            QMS Standards
-          </Typography>
-          <Typography variant="body2">
-            {`(${qmsStandards.length} Result${qmsStandards.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
+      { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+        <div className={classes.tableResultsHeaderContainer}>
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-qms-standard"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        </div>
+      )}
+      <TableContainer className={classes.container} component={Paper}>
+        <Table
+          aria-label="QMS Standard table"
+        >
+          <ChplSortableHeaders
+            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
+            onTableSort={handleTableSort}
             orderBy={orderBy}
             order={order}
-            onSort={handleSort}
+            stickyHeader
           />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-            <Button
-              onClick={() => dispatch({ action: 'edit', payload: {} })}
-              id="add-new-qms-standard"
-              variant="contained"
-              color="primary"
-              endIcon={<AddIcon />}
-            >
-              Add
-            </Button>
-          )}
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { qmsStandards
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              title="Name"
-              titleValue={item.name}
-              titleIconButton={(
-                <ChplTooltip title="Use this value in a upload file">
-                  <IconButton color="primary" size="small">
-                    <InfoIcon fontSize="small" />
-                  </IconButton>
-                </ChplTooltip>
-              )}
-              actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-qms-standard-${item.id}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
-            />
-          ))}
-      </Box>
+          <TableBody>
+            { qmsStandards
+              .map((item) => (
+                <TableRow key={`${item.id}`}>
+                  <TableCell className={classes.firstColumn}>
+                    { item.name }
+                  </TableCell>
+                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                    <TableCell align="right">
+                      <Button
+                        onClick={() => dispatch({ action: 'edit', payload: item })}
+                        id={`edit-qms-standard-${item.id}`}
+                        variant="contained"
+                        color="secondary"
+                        endIcon={<EditOutlinedIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

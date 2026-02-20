@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,7 +6,6 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplAccessibilityStandardEdit from './accessibility-standard-edit';
@@ -18,8 +17,10 @@ import {
   usePostAccessibilityStandard,
   usePutAccessibilityStandard,
 } from 'api/standards';
+import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplAccessibilityStandards() {
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchAccessibilityStandards();
   const deleteAccessibilityStandard = useDeleteAccessibilityStandard();
   const postAccessibilityStandard = usePostAccessibilityStandard();
@@ -32,6 +33,30 @@ function ChplAccessibilityStandards() {
   let handleDispatch;
 
   useEffect(() => {
+    append(
+      <Button
+        key="accessibilityStandards.viewall.disabled"
+        depth={1}
+        variant="text"
+        disabled
+      >
+        Accessibility Standards
+      </Button>,
+    );
+    append(
+      <Button
+        key="accessibilityStandards.viewall"
+        depth={1}
+        variant="text"
+        onClick={() => handleDispatch({ action: 'cancel' })}
+      >
+        Accessibility Standards
+      </Button>,
+    );
+    display('accessibilityStandards.viewall.disabled');
+  }, []);
+
+  useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setAccessibilityStandards(data);
   }, [data, isLoading, isSuccess]);
@@ -41,6 +66,10 @@ function ChplAccessibilityStandards() {
       case 'cancel':
         setActiveAccessibilityStandard(undefined);
         setIsProcessing(false);
+        display('accessibilityStandards.viewall.disabled');
+        hide('accessibilityStandards.viewall');
+        hide('accessibilityStandards.add.disabled');
+        hide('accessibilityStandards.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -52,6 +81,8 @@ function ChplAccessibilityStandards() {
             });
             setActiveAccessibilityStandard(undefined);
             setIsProcessing(false);
+            display('accessibilityStandards.viewall.disabled');
+            hide('accessibilityStandards.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -62,6 +93,8 @@ function ChplAccessibilityStandards() {
       case 'edit':
         setActiveAccessibilityStandard(payload);
         setErrors([]);
+        display('accessibilityStandards.viewall');
+        hide('accessibilityStandards.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -74,6 +107,8 @@ function ChplAccessibilityStandards() {
               });
               setActiveAccessibilityStandard(undefined);
               setIsProcessing(false);
+              display('accessibilityStandards.viewall.disabled');
+              hide('accessibilityStandards.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -88,6 +123,8 @@ function ChplAccessibilityStandards() {
               });
               setActiveAccessibilityStandard(undefined);
               setIsProcessing(false);
+              display('accessibilityStandards.viewall.disabled');
+              hide('accessibilityStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
@@ -103,12 +140,7 @@ function ChplAccessibilityStandards() {
   if (activeAccessibilityStandard) {
     return (
       <Card>
-        <CardHeader title={(
-          <>
-            <AccessibilityNewOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
-            {`${activeAccessibilityStandard.id ? 'Edit' : 'Add'} Accessibility Standard`}
-          </>
-)} />
+        <CardHeader title={`${activeAccessibilityStandard.id ? 'Edit' : 'Add'} Accessibility Standard`} />
         <CardContent>
           <ChplAccessibilityStandardEdit
             accessibilityStandard={activeAccessibilityStandard}
@@ -129,15 +161,7 @@ function ChplAccessibilityStandards() {
 
   return (
     <Card>
-      <CardHeader
-        style={{ paddingLeft: '16px' }}
-        title={(
-          <>
-            Accessibility Standards
-            <AccessibilityNewOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
-          </>
-)}
-      />
+      <CardHeader title="Accessibility Standards" />
       <CardContent>
         { (deleteAccessibilityStandard.isLoading || postAccessibilityStandard.isLoading || putAccessibilityStandard.isLoading)
           && (

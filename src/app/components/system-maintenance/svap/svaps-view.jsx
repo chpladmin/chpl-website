@@ -2,14 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -18,24 +22,25 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
 import { svap as svapPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const sortOptions = [
-  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation' },
-  { property: 'approvedStandardVersion', text: 'Approved Standard Version' },
-  { property: 'replaced', text: 'Replaced' },
+const headers = [
+  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
+  { property: 'approvedStandardVersion', text: 'Approved Standard Version', sortable: true },
+  { text: 'Applicable Criteria' },
+  { property: 'replaced', text: 'Replaced', sortable: true },
+  { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+      tableResultsHeaderContainer:{
+      display: 'flex',
+      justifyContent: 'flex-end',
   },
 });
 
@@ -62,13 +67,14 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, [initialSvaps, filterContext]);
+  }, [initialSvaps, filterContext.filters, filterContext.searchTerm]);
 
-  const handleSort = (property, orderDirection) => {
+  const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    setSvaps((prev) => [...prev].sort(sortComparator(property, descending)));
+    const updated = svaps.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
+    setSvaps(updated);
   };
 
   return (
@@ -79,25 +85,19 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">Search Results</Typography>
+      <Box  display="flex" justifyContent="space-between" alignContent="center" mx={8} my={2}>
+        <Box display="flex" flexDirection="row" gridGap={1} >
+          <Typography variant="subtitle2">Search Results:</Typography>
           <Typography variant="body2">
             {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchSvapsActivity}
-            title="SVAP"
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+          <div className={classes.tableResultsHeaderContainer}>
+            <ChplSystemMaintenanceActivity
+              fetch={useFetchSvapsActivity}
+              title="SVAP"
+            />
+            { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
             <Button
               onClick={() => dispatch({ action: 'edit', payload: {} })}
               id="add-new-svap"
@@ -107,63 +107,54 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             >
               Add
             </Button>
-          )}
-        </Box>
+            )}
+          </div>
       </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { svaps
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
-              title="Approved Standard Version"
-              titleValue={item.approvedStandardVersion}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Regulatory Text Citation',
-                    value: item.regulatoryTextCitation || 'N/A',
-                    xs: 6,
-                    sm: 4,
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-
-                  {
-                    label: 'Replaced',
-                    value: item.replaced ? 'Yes' : 'No',
-                    xs: 6,
-                    sm: 3,
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 4,
-                  },
-                ],
-              ]}
-              actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
-            />
-          ))}
-      </Box>
+      <TableContainer className={classes.container} component={Paper}>
+        <Table
+          aria-label="SVAP table"
+        >
+          <ChplSortableHeaders
+            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
+            onTableSort={handleTableSort}
+            orderBy={orderBy}
+            order={order}
+            stickyHeader
+          />
+          <TableBody>
+            { svaps
+              .map((item) => (
+                <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
+                  <TableCell className={classes.firstColumn}>
+                    { item.regulatoryTextCitation }
+                  </TableCell>
+                  <TableCell>
+                    { item.approvedStandardVersion }
+                  </TableCell>
+                  <TableCell>
+                    { item.criteriaDisplay }
+                  </TableCell>
+                  <TableCell>
+                    { item.replaced ? 'Yes' : 'No' }
+                  </TableCell>
+                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                    <TableCell align="right">
+                      <Button
+                        onClick={() => dispatch({ action: 'edit', payload: item })}
+                        id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
+                        variant="contained"
+                        color="secondary"
+                        endIcon={<EditOutlinedIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }
