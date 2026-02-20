@@ -116,7 +116,7 @@ function ChplToggle({ dispatch = () => {} }) {
 
   useEffect(() => {
     if (user?.fullName) {
-      setTitle(user.fullName.toUpperCase());
+      setTitle(user.fullName);
     } else {
       setTitle('Administrator login');
     }

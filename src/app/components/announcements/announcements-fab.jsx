@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Badge,
   CardHeader,
   IconButton,
   Menu,
@@ -16,6 +17,9 @@ const useStyles = makeStyles({
     padding: '16px',
     fontWeight: 'bold',
     color: palette.black,
+  },
+  badge: {
+    border: `2px solid ${palette.primaryDark}`,
   },
 });
 
@@ -40,26 +44,15 @@ function ChplAnnouncementsFab() {
       <IconButton
         onClick={handleToggle}
         aria-label="Show announcements"
-        style={{ color: palette.white, position: 'relative' }}
+        style={{ color: palette.white }}
       >
-        {announcements.length > 0 && (
-          <span
-            style={{
-              backgroundColor: palette.primary,
-              color: palette.white,
-              borderRadius: '50%',
-              padding: '2px 6px',
-              fontSize: '12px',
-              position: 'absolute',
-              border: `2px ${palette.primaryDark} solid`,
-              top: '4px',
-              right: '4px',
-            }}
-          >
-            {announcements.length}
-          </span>
-        )}
-        <NotificationsIcon style={{ fontSize: 18 }} />
+        <Badge
+          badgeContent={announcements.length}
+          color="primary"
+          classes={{ badge: classes.badge }}
+        >
+          <NotificationsIcon style={{ fontSize: 18 }} />
+        </Badge>
       </IconButton>
       <Menu
         anchorEl={anchorEl}
