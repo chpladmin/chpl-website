@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf, shape } from 'prop-types';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterSearchBar,
@@ -21,11 +18,8 @@ import {
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'displayValue', text: 'Display Value', sortable: true },
-  { text: 'Citation' },
-  { text: 'Description' },
-  { text: 'Applicable Criteria' },
+const sortOptions = [
+  { property: 'displayValue', text: 'Display Value' },
 ];
 
 const useStyles = makeStyles({
@@ -55,14 +49,13 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           .join(', '),
       }))
       .sort(sortComparator('displayValue')));
-  }, [initialOptionalStandards, filterContext.filters, filterContext.searchTerm]);
+  }, [initialOptionalStandards, filterContext]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = optionalStandards.sort(sortComparator(property, descending));
+    setOptionalStandards((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setOptionalStandards(updated);
   };
 
   return (
@@ -73,46 +66,61 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
       <div>
         <ChplFilterChips />
       </div>
-      <div className={classes.tableResultsHeaderContainer}>
-        <Box display="flex" flexDirection="row" gridGap={1}>
-          <Typography variant="subtitle2">Search Results:</Typography>
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-      </div>
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          aria-label="Optional Standards table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            onSort={handleSort}
           />
-          <TableBody>
-            { optionalStandards
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.displayValue }
-                  </TableCell>
-                  <TableCell>
-                    { item.citation }
-                  </TableCell>
-                  <TableCell>
-                    { item.description }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { optionalStandards
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Display Value"
+              titleValue={item.displayValue}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Description',
+                    value: item.description || 'N/A',
+                    xs: 12,
+                    sm: 12,
+                  },
+                  {
+                    label: 'Citation',
+                    value: item.citation || 'N/A',
+                    xs: 6,
+                    sm: 6,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 6,
+                    sm: 6,
+                  },
+                ],
+              ]}
+            />
+          ))}
+      </Box>
     </>
   );
 }
@@ -120,5 +128,5 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
 export default ChplOptionalStandardsView;
 
 ChplOptionalStandardsView.propTypes = {
-  optionalStandards: arrayOf(object).isRequired,
+  optionalStandards: arrayOf(shape({})).isRequired,
 };
