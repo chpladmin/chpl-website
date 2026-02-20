@@ -23,12 +23,12 @@ function ChplLogin({
   useEffect(() => {
     if (uuid) {
       setState('RESETFORGOTTENPASSWORD');
-    } else if (user?.cognitoId) {
+    } else if (user?.cognitoId && state !== 'CHANGEPASSWORD') {
       setState('LOGGEDIN');
-    } else {
+    } else if (!user?.cognitoId && state !== 'CHANGEPASSWORD') {
       setState('SIGNIN');
     }
-  }, [user, uuid]);
+  }, [user, uuid, state, setState]);
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {

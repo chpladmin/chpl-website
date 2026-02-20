@@ -81,6 +81,7 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
 
   const handleLogout = () => {
     authService.logout();
+    onDispatch({ action: 'logout' });
     if (onClose) {
       onClose();
     }

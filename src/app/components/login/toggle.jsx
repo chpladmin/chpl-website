@@ -109,6 +109,10 @@ function ChplToggle({ dispatch = () => {} }) {
       case 'changePassword':
         setState('CHANGEPASSWORD');
         break;
+      case 'logout':
+        setState('SIGNIN');
+        handleClose();
+        break;
       default:
         console.error(`No action found for ${action}`);
     }
