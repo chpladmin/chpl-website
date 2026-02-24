@@ -146,9 +146,10 @@ const useStyles = makeStyles({
 
 const maintenanceItems = [{
   id: 'home',
-  primary: 'System Maintenance Home',
+  primary: 'Home',
   secondary: 'View all available system maintenance options',
   icon: <ChplToolTip title="System Maintenance Home"><HomeOutlined /></ChplToolTip>,
+  showInList: false,
 }, {
   id: 'accessibilityStandards',
   primary: 'Accessibility Standards',
@@ -257,7 +258,7 @@ function ChplSystemMaintenance() {
     <Button
       key={item.id}
       onClick={() => navigate(item.id)}
-      disabled={active === item.id}
+      disabled={active === item.id || (item.id === 'home' && (active === '' || active === 'home'))}
       id={`system-maintenance-navigation-${item.id}`}
       size="medium"
       variant="text"
@@ -324,7 +325,7 @@ function ChplSystemMaintenance() {
                   <Divider />
                   <List>
                     { maintenanceItems
-                      .filter((item) => !item.roles || hasAnyRole(item.roles))
+                      .filter((item) => item.showInList !== false && (!item.roles || hasAnyRole(item.roles)))
                       .map((item, index) => (
                         <React.Fragment key={item.id}>
                           <ListItem>
