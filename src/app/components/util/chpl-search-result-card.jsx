@@ -88,13 +88,13 @@ function ChplSearchResultCard({
                 </Box>
               </Grid>
             ))}
-            {actions && group === fieldGroups[fieldGroups.length - 1] && (
-              <Grid item sm="auto" style={{ marginLeft: 'auto' }}>
-                {actions}
-              </Grid>
-            )}
           </Grid>
         ))}
+        {actions && (
+          <Grid item sm="auto" style={{ marginLeft: 'auto' }}>
+            {actions}
+          </Grid>
+        )}
       </CardContent>
     </Card>
   );
