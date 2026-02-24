@@ -208,7 +208,15 @@ function ChplTestTools() {
       storageKey="storageKey-testToolsManagement"
     >
       <Card>
-        <CardHeader title="Test Tools" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Test Tools
+              <BuildOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+          )}
+        />
         <CardContent>
           { (deleteTestTool.isLoading || postTestTool.isLoading || putTestTool.isLoading)
             && (

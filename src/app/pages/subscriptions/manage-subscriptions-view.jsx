@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import { NotificationsOutlined } from '@material-ui/icons';
+import { NotificationsOutlined, SubscriptionsOutlined } from '@material-ui/icons';
 
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {
@@ -178,9 +178,13 @@ function ChplManageSubscriptionsView({ analytics }) {
   return (
     <Card>
       <CardHeader
+        style={{ paddingLeft: '16px' }}
         title={(
           <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
-            <span>Subscriptions</span>
+            <span>
+              Subscriptions
+              <SubscriptionsOutlined style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </span>
             <Button
                   color="secondary"
                   variant="contained"

@@ -9,6 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { arrayOf, func } from 'prop-types';
 
@@ -57,22 +58,31 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
   const getTitle = () => {
     if (!announcement) {
       return (
-        <>Announcements</>
+        <>
+          Announcements
+          <AnnouncementOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+        </>
       );
     }
     if (announcement.id) {
       return (
-        <>Edit Announcement</>
+        <>
+          Edit Announcement
+          <AnnouncementOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+        </>
       );
     }
     return (
-      <>Add Announcement</>
+      <>
+        Add Announcement
+        <AnnouncementOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+      </>
     );
   };
 
   return (
     <Card>
-      <CardHeader title={getTitle()} />
+      <CardHeader style={{ paddingLeft: '16px' }} title={getTitle()} />
       <CardContent>
         { announcement
           && (

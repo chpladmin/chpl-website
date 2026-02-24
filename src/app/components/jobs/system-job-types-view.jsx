@@ -9,6 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
@@ -54,7 +55,15 @@ function ChplSystemJobTypesView(props) {
 
   return (
     <Card>
-      <CardHeader title="Types of Jobs" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            Types of Jobs
+            <PlayArrowOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+        )}
+      />
       <CardContent>
         <div className={classes.headerContainer}>
           <div className={classes.resultsContainer}>
