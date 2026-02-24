@@ -25,8 +25,8 @@ function ChplSearchResultCard({
 }) {
   return (
     <Card style={{ marginBottom: '12px', marginLeft: '8px', marginRight: '8px' }}>
-      <CardContent style={{ padding: '8px' }}>
-        {/* Title Section */}
+      <CardContent style={{ padding: '8px', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+        <Box display="flex" flexDirection="column" flex={1} gap={2}>
         {title && (
           <>
             <Box display="flex" alignItems="center" gap={1}>
@@ -55,8 +55,6 @@ function ChplSearchResultCard({
             </Grid>
           </>
         )}
-
-        {/* Field Groups */}
         {fieldGroups.map((group) => (
           <Grid
             key={group.map((f) => f.label).join('-')}
@@ -90,10 +88,11 @@ function ChplSearchResultCard({
             ))}
           </Grid>
         ))}
+        </Box>
         {actions && (
-          <Grid item sm="auto" style={{ marginLeft: 'auto' }}>
+          <Box display="flex" justifyContent="flex-end" mt={1} style={{ maxHeight: 'fit-content' }}>
             {actions}
-          </Grid>
+          </Box>
         )}
       </CardContent>
     </Card>
