@@ -22,7 +22,6 @@ import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'name', text: 'Name' },
-  { property: 'removalDate', text: 'Removal Date' },
 ];
 
 const useStyles = makeStyles({
