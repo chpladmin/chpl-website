@@ -32,7 +32,7 @@ const sortVersion = (a, b) => {
 function ChplCqmsView({ cqms: initialCqms }) {
   const [cqms, setCqms] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('value');
+  const [orderBy, setOrderBy] = useState('id');
   const classes = useStyles();
 
   useEffect(() => {

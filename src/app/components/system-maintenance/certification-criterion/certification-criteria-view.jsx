@@ -61,7 +61,7 @@ const getDisplay = (key) => {
 function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
   const [certificationCriteria, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('value');
+  const [orderBy, setOrderBy] = useState('number');
   const filterContext = useFilterContext();
   const classes = useStyles();
 
@@ -82,7 +82,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .sort((a, b) => (a < b ? -1 : 1))
           .join('; '),
       }))
-      .sort(sortComparator('value')));
+      .sort(sortComparator('number')));
   }, [initialCertificationCriteria, filterContext.filters, filterContext.searchTerm]);
 
   const handleSort = (property, orderDirection) => {
