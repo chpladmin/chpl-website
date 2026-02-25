@@ -7,6 +7,7 @@ import {
   CircularProgress,
   makeStyles,
 } from '@material-ui/core';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import { useSnackbar } from 'notistack';
 import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';
@@ -139,7 +140,15 @@ function ChplJobs() {
 
   return (
     <Card>
-      <CardHeader title="System Jobs" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            System Jobs
+            <PlayArrowOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+        )}
+      />
       <CardContent>
         <div className={classes.container}>
           { systemQuery.isSuccess

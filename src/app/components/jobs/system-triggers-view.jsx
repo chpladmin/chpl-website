@@ -9,6 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import Moment from 'react-moment';
 import { arrayOf, func } from 'prop-types';
 
@@ -114,7 +115,15 @@ function ChplSystemTriggersView({
         />
         )}
       <Card>
-        <CardHeader title="Currently Scheduled System Jobs" />
+         <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Currently Scheduled System Jobs
+              <PlayArrowOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+          )}
+        />
         <CardContent>
           <>            { (triggers.length === 0)
               && (
