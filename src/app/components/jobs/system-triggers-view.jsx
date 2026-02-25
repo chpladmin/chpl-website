@@ -115,7 +115,7 @@ function ChplSystemTriggersView({
         />
         )}
       <Card>
-         <CardHeader
+        <CardHeader
           style={{ paddingLeft: '16px' }}
           title={(
             <>
