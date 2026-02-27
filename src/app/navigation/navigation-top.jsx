@@ -29,19 +29,19 @@ const useStyles = makeStyles({
     backgroundColor: `${palette.navBackground} !important`,
   },
   envBanner: {
-    minHeight: '32px',
-    backgroundColor: `${palette.error} !important`,
+    backgroundColor: `${palette.error}!important`,
     width: '100%',
-    color: '#ffffff',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'fixed',
-    top: 0,
+    color: '#ffffff!important',
     zIndex: theme.zIndex.drawer + 2,
+    '& .MuiToolbar-root': {
+      minHeight: '25px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   },
   appBarWithBanner: {
-    top: '32px',
+    top: '25px',
   },
   whiteButton: {
     color: '#fff!important',
@@ -180,11 +180,13 @@ function ChplNavigationTop() {
   return (
     <>
       {!isProduction && (
-        <Box className={classes.envBanner}>
-          <Typography variant="body2" style={{ fontWeight: 'bold' }}>
-            ⚠ This is a test environment used for development and quality assurance.
-          </Typography>
-        </Box>
+        <AppBar position="fixed" className={classes.envBanner}>
+          <Toolbar style={{ minHeight: '25px' }}>
+            <Typography variant="body2" noWrap style={{ fontWeight: 'bold' }}>
+              ⚠ This is a test environment used for development and quality assurance.
+            </Typography>
+          </Toolbar>
+        </AppBar>
       )}
       <AppBar position="fixed" className={!isProduction ? `${classes.appBar} ${classes.appBarWithBanner}` : classes.appBar}>
         <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
