@@ -11,13 +11,13 @@ import HHSLogo from '../../assets/images/HHS-White_HiRes.png';
 import USAGovLogo from '../../assets/images/USAgov_logo_2.png';
 import USAGovEspLogo from '../../assets/images/Logo_USAGov_Spanish.png';
 
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   footer: {
     position: 'sticky',
     width: '100%',
-    backgroundColor: '#001439 !important',
+    backgroundColor: `${palette.navBackground} !important`,
     padding: '4px 32px',
     borderTop: '1px solid #000d25',
     zIndex: 999,
