@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   Toolbar,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
@@ -25,12 +26,41 @@ import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
 const useStyles = makeStyles({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: '#001439',
+    backgroundColor: `${palette.navBackground} !important`,
+  },
+  envBanner: {
+    minHeight: '32px',
+    backgroundColor: `${palette.error} !important`,
+    width: '100%',
+    color: '#ffffff',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'fixed',
+    top: 0,
+    zIndex: theme.zIndex.drawer + 2,
+  },
+  appBarWithBanner: {
+    top: '32px',
   },
   whiteButton: {
     color: '#fff!important',
     textTransform: "capitalize!important",
     fontSize: '0.875rem'
+  },
+  menuPaper: {
+    marginTop: '8px',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: '-8px',
+      left: '20px',
+      width: 0,
+      height: 0,
+      borderLeft: '8px solid transparent',
+      borderRight: '8px solid transparent',
+      borderBottom: '8px solid white',
+    },
   },
   offset: theme.mixins.toolbar,
   '@keyframes shimmer': {
@@ -79,13 +109,34 @@ function ChplNavigationTop() {
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
+  const networkService = getAngularService('networkService');
   const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
+  const cmsButtonRef = React.useRef(null);
+  const compareButtonRef = React.useRef(null);
+  const resourcesButtonRef = React.useRef(null);
+  const shortcutsButtonRef = React.useRef(null);
   const [cmsAnchorEl, setCmsAnchorEl] = useState(null);
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesAnchorEl, setResourcesAnchorEl] = useState(null);
   const [shortcutsAnchorEl, setShortcutsAnchorEl] = useState(null);
+  const [isProduction, setIsProduction] = useState(true);
   const classes = useStyles();
+
+  useEffect(() => {
+    networkService.getSystemStatus()
+      .then((response) => {
+        let headerValue = '';
+        // Local environments send the header key in all lower case
+        // but other environments send the header key capitalized
+        if (response.headers('Environment')) {
+          headerValue = response.headers('Environment');
+        } else if (response.headers('environment')) {
+          headerValue = response.headers('environment');
+        }
+        setIsProduction(headerValue.toUpperCase() === 'PRODUCTION');
+      });
+  }, []);
 
   const home = () => {
     $rootScope.$broadcast('ClearResults', {});
@@ -102,24 +153,24 @@ function ChplNavigationTop() {
       $state.go('search');
   };
 
-  const toggleCmsWidget = (event) => {
-    setCmsAnchorEl(cmsAnchorEl ? null : event.currentTarget);
+  const toggleCmsWidget = () => {
+    setCmsAnchorEl(cmsAnchorEl ? null : cmsButtonRef.current);
   };
 
-  const toggleCompareWidget = (event) => {
-    setCompareAnchorEl(compareAnchorEl ? null : event.currentTarget);
+  const toggleCompareWidget = () => {
+    setCompareAnchorEl(compareAnchorEl ? null : compareButtonRef.current);
   };
 
-  const toggleResources = (event) => {
-    setResourcesAnchorEl(resourcesAnchorEl ? null : event.currentTarget);
+  const toggleResources = () => {
+    setResourcesAnchorEl(resourcesAnchorEl ? null : resourcesButtonRef.current);
   };
 
   const closeResources = () => {
     setResourcesAnchorEl(null);
   };
 
-  const toggleShortcuts = (event) => {
-    setShortcutsAnchorEl(shortcutsAnchorEl ? null : event.currentTarget);
+  const toggleShortcuts = () => {
+    setShortcutsAnchorEl(shortcutsAnchorEl ? null : shortcutsButtonRef.current);
   };
 
   const closeShortcuts = () => {
@@ -128,15 +179,22 @@ function ChplNavigationTop() {
 
   return (
     <>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar style={{ backgroundColor: '#001439', display: 'flex', justifyContent: 'space-between' }}>
-          <Box ahref="#/search" display={"flex"} alignItems="center" onClick={home} style={{ cursor: 'pointer' }}>
+      {!isProduction && (
+        <Box className={classes.envBanner}>
+          <Typography variant="body2" style={{ fontWeight: 'bold' }}>
+            ⚠ This is a test environment used for development and quality assurance.
+          </Typography>
+        </Box>
+      )}
+      <AppBar position="fixed" className={!isProduction ? `${classes.appBar} ${classes.appBarWithBanner}` : classes.appBar}>
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box display="flex" alignItems="center" onClick={home} style={{ cursor: 'pointer' }}>
             <div className={classes.logoContainer}>
               <img src={ChplLogo} alt="Certified Health IT Product List Logo" className={classes.logo} />
               <div className={classes.shimmer} />
             </div>
           </Box>
-          <Box display={"flex"} alignItems="center">
+          <Box display="flex" alignItems="center">
           <Button
             onClick={home}
             className={classes.whiteButton}
@@ -150,6 +208,7 @@ function ChplNavigationTop() {
             Search CHPL
           </Button>
           <Button
+            ref={cmsButtonRef}
             onClick={toggleCmsWidget}
             className={classes.whiteButton}
           >
@@ -157,13 +216,14 @@ function ChplNavigationTop() {
           </Button>
           <Menu
             anchorEl={cmsAnchorEl}
-            open={Boolean(cmsAnchorEl)}
+            open={!!cmsAnchorEl}
             onClose={toggleCmsWidget}
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
             PaperProps={{
+              className: classes.menuPaper,
               style: {
                 width: '400px',
               },
@@ -172,21 +232,23 @@ function ChplNavigationTop() {
             <ChplCmsDisplay />
           </Menu>
           <Button
+            ref={compareButtonRef}
             onClick={toggleCompareWidget}
             className={classes.whiteButton}
-            color='inherit'
+            color="inherit"
           >
             Compare Products
           </Button>
           <Menu
             anchorEl={compareAnchorEl}
-            open={Boolean(compareAnchorEl)}
+            open={!!compareAnchorEl}
             onClose={toggleCompareWidget}
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
             PaperProps={{
+              className: classes.menuPaper,
               style: {
                 width: '400px',
               },
@@ -195,6 +257,7 @@ function ChplNavigationTop() {
             <ChplCompareDisplay />
           </Menu>
           <Button
+            ref={resourcesButtonRef}
             onClick={toggleResources}
             className={classes.whiteButton}
           >
@@ -202,12 +265,15 @@ function ChplNavigationTop() {
           </Button>
           <Menu
             anchorEl={resourcesAnchorEl}
-            open={Boolean(resourcesAnchorEl)}
+            open={!!resourcesAnchorEl}
             onClose={closeResources}
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
+            PaperProps={{
+              className: classes.menuPaper,
+            }}
           >
             <MenuItem divider onClick={closeResources}>
               <ChplLink
@@ -338,6 +404,7 @@ function ChplNavigationTop() {
             </MenuItem>
           </Menu>
           <Button
+            ref={shortcutsButtonRef}
             onClick={toggleShortcuts}
             className={classes.whiteButton}
           >
@@ -345,12 +412,15 @@ function ChplNavigationTop() {
           </Button>
           <Menu
             anchorEl={shortcutsAnchorEl}
-            open={Boolean(shortcutsAnchorEl)}
+            open={!!shortcutsAnchorEl}
             onClose={closeShortcuts}
             getContentAnchorEl={null}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             disableScrollLock
+            PaperProps={{
+              className: classes.menuPaper,
+            }}
           >
             <MenuItem divider onClick={closeShortcuts}>
               <ChplLink
