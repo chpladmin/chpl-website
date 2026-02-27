@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import {
+  Button,
   Box,
   Collapse,
   List,
@@ -10,15 +11,18 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { func } from 'prop-types';
 
+import { ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   menuContainer: {
     padding: 0,
-    minWidth: '300px',
+    minWidth: '350px',
   },
   sectionHeader: {
     padding: '12px 16px',
@@ -37,6 +41,11 @@ const useStyles = makeStyles({
   menuItem: {
     padding: '8px 16px 8px 32px',
     cursor: 'pointer',
+    color: '#0066cc',
+    textDecoration: 'none',
+    cursor: 'pointer',
+    fontSize: '14px',
+    textDecoration: 'underline!important',
     '&:hover': {
       backgroundColor: '#f5f5f5',
     },
@@ -48,6 +57,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-around',
     padding: '16px',
+    gap: '8px',
     borderTop: '1px solid #e0e0e0',
   },
   link: {
@@ -62,7 +72,6 @@ const useStyles = makeStyles({
 });
 
 function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
-  const $state = getAngularService('$state');
   const authService = getAngularService('authService');
   const { hasAnyRole } = useContext(UserContext);
   const [openSection, setOpenSection] = useState(null);
@@ -72,19 +81,10 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
     setOpenSection(openSection === section ? null : section);
   };
 
-  const navigateTo = (state) => {
-    $state.go(state);
-    if (onClose) {
-      onClose();
-    }
-  };
-
   const handleLogout = () => {
     authService.logout();
     onDispatch({ action: 'logout' });
-    if (onClose) {
-      onClose();
-    }
+    onClose();
   };
 
   const handleChangePassword = () => {
@@ -108,105 +108,102 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
             <Collapse in={openSection === 'administration'} timeout="auto" unmountOnExit>
               <List component="div" >
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.upload')}
-                  >
-                    <ListItemText
-                      primary="Upload"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/upload"
+                      text="Upload"
+                      external={false}
+                      router={{ sref: 'administration.upload' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.confirm.listings')}
-                  >
-                    <ListItemText
-                      primary="Confirm Listings"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/confirm/listings"
+                      text="Confirm Listings"
+                      external={false}
+                      router={{ sref: 'administration.confirm.listings' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.reports')}
-                  >
-                    <ListItemText
-                      primary="Reports"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/reports"
+                      text="Reports"
+                      external={false}
+                      router={{ sref: 'administration.reports' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-cms-staff']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.cms')}
-                  >
-                    <ListItemText
-                      primary="CMS"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/cms"
+                      text="CMS"
+                      external={false}
+                      router={{ sref: 'administration.cms' }}
+                    />
+                  </ListItem>
+                )}
+                {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/change-requests"
+                      text="Change Request"
+                      external={false}
+                      router={{ sref: 'administration.change-requests' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.api-keys')}
-                  >
-                    <ListItemText
-                      primary="API Keys"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/url-checker"
+                      text="URL Checker"
+                      external={false}
+                      router={{ sref: 'administration.url-checker' }}
+                    />
+                  </ListItem>
+                )}
+                {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/users"
+                      text="Users"
+                      external={false}
+                      router={{ sref: 'users' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.change-requests')}
-                  >
-                    <ListItemText
-                      primary="Change Request"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/system-maintenance"
+                      text="System Maintenance"
+                      external={false}
+                      router={{ sref: 'administration.system-maintenance' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.system-maintenance')}
-                  >
-                    <ListItemText
-                      primary="System Maintenance"
-                      classes={{ primary: classes.menuItemText }}
-                    />
-                  </ListItem>
-                )}
-                {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('administration.url-checker')}
-                  >
-                    <ListItemText
-                      primary="Style Guide"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/administration/url-checker"
+                      text="Style Guide"
+                      external={false}
+                      router={{ sref: 'administration.url-checker' }}
                     />
                   </ListItem>
                 )}
                 {hasAnyRole(['chpl-admin']) && (
-                  <ListItem className={classes.menuItem}>
-                    <a
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
                       href="rest/ff4j-console/home"
-                      className={classes.link}
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      <ListItemText
-                        primary="FF4j"
-                        classes={{ primary: classes.menuItemText }}
-                      />
-                    </a>
+                      text="FF4j"
+                      external={true}
+                    />
                   </ListItem>
                 )}
               </List>
@@ -215,15 +212,7 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
         )}
 
         {/* Users Section */}
-        {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <ListItem
-            className={classes.sectionHeader}
-            onClick={() => navigateTo('users')}
-            divider
-          >
-            <Typography className={classes.sectionHeaderText}>Users</Typography>
-          </ListItem>
-        )}
+
 
         {/* Organizations Section */}
         {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
@@ -238,32 +227,29 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
             </ListItem>
             <Collapse in={openSection === 'organizations'} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem
-                  className={classes.menuItem}
-                  onClick={() => navigateTo('organizations.developers')}
-                >
-                  <ListItemText
-                    primary="Developers"
-                    classes={{ primary: classes.menuItemText }}
+                <ListItem className={classes.menuItem} onClick={onClose}>
+                  <ChplLink
+                    href="#/organizations/developers"
+                    text="Developers"
+                    external={false}
+                    router={{ sref: 'organizations.developers' }}
                   />
                 </ListItem>
-                <ListItem
-                  className={classes.menuItem}
-                  onClick={() => navigateTo('organizations.onc-acbs')}
-                >
-                  <ListItemText
-                    primary="ONC-ACBs"
-                    classes={{ primary: classes.menuItemText }}
+                <ListItem className={classes.menuItem} onClick={onClose}>
+                  <ChplLink
+                    href="#/organizations/onc-acbs"
+                    text="ONC-ACBs"
+                    external={false}
+                    router={{ sref: 'organizations.onc-acbs' }}
                   />
                 </ListItem>
                 {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('organizations.onc-atls')}
-                  >
-                    <ListItemText
-                      primary="ONC-ATLs"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/organizations/onc-atls"
+                      text="ONC-ATLs"
+                      external={false}
+                      router={{ sref: 'organizations.onc-atls' }}
                     />
                   </ListItem>
                 )}
@@ -285,22 +271,20 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
             </ListItem>
             <Collapse in={openSection === 'activity'} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem
-                  className={classes.menuItem}
-                  onClick={() => navigateTo('reports.activity')}
-                >
-                  <ListItemText
-                    primary="Search"
-                    classes={{ primary: classes.menuItemText }}
+                <ListItem className={classes.menuItem} onClick={onClose}>
+                  <ChplLink
+                    href="#/reports/activity"
+                    text="Search"
+                    external={false}
+                    router={{ sref: 'reports.activity' }}
                   />
                 </ListItem>
-                <ListItem
-                  className={classes.menuItem}
-                  onClick={() => navigateTo('reports.questionable-activity')}
-                >
-                  <ListItemText
-                    primary="Questionable Activity"
-                    classes={{ primary: classes.menuItemText }}
+                <ListItem className={classes.menuItem} onClick={onClose}>
+                  <ChplLink
+                    href="#/reports/questionable-activity"
+                    text="Questionable Activity"
+                    external={false}
+                    router={{ sref: 'reports.questionable-activity' }}
                   />
                 </ListItem>
               </List>
@@ -322,32 +306,29 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
             <Collapse in={openSection === 'surveillance'} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <ListItem
-                    className={classes.menuItem}
-                    onClick={() => navigateTo('surveillance.activity-reporting')}
-                  >
-                    <ListItemText
-                      primary="Activity Reporting"
-                      classes={{ primary: classes.menuItemText }}
+                  <ListItem className={classes.menuItem} onClick={onClose}>
+                    <ChplLink
+                      href="#/surveillance/activity-reporting"
+                      text="Activity Reporting"
+                      external={false}
+                      router={{ sref: 'surveillance.activity-reporting' }}
                     />
                   </ListItem>
                 )}
-                <ListItem
-                  className={classes.menuItem}
-                  onClick={() => navigateTo('surveillance.complaints')}
-                >
-                  <ListItemText
-                    primary="Complaints Reporting"
-                    classes={{ primary: classes.menuItemText }}
+                <ListItem className={classes.menuItem} onClick={onClose}>
+                  <ChplLink
+                    href="#/surveillance/complaints"
+                    text="Complaints Reporting"
+                    external={false}
+                    router={{ sref: 'surveillance.complaints' }}
                   />
                 </ListItem>
-                <ListItem
-                  className={classes.menuItem}
-                  onClick={() => navigateTo('surveillance.reporting')}
-                >
-                  <ListItemText
-                    primary="Reporting"
-                    classes={{ primary: classes.menuItemText }}
+                <ListItem className={classes.menuItem} onClick={onClose}>
+                  <ChplLink
+                    href="#/surveillance/reporting"
+                    text="Reporting"
+                    external={false}
+                    router={{ sref: 'surveillance.reporting' }}
                   />
                 </ListItem>
               </List>
@@ -358,18 +339,24 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
 
       {/* Footer with Log Out and Change Password */}
       <Box className={classes.footer}>
-        <Typography
-          className={classes.link}
+        <Button
           onClick={handleLogout}
+          variant="outlined"
+          endIcon={<ExitToAppIcon />}
+          fullWidth
+          color="primary"
         >
           Log Out
-        </Typography>
-        <Typography
-          className={classes.link}
+        </Button>
+        <Button
+          variant="text"
           onClick={handleChangePassword}
+          endIcon={<VpnKeyIcon />}
+          fullWidth
+          color="primary"
         >
           Change Password
-        </Typography>
+        </Button>
       </Box>
     </Box>
   );
