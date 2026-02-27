@@ -40,10 +40,6 @@ const useStyles = makeStyles({
     marginBottom: '8px',
     display: 'flex',
   },
-  wordWrap: {
-    wordWrap: 'break-word',
-    overflowWrap: 'break-word',
-  },
 });
 
 const ChplCompareDisplay = React.forwardRef((props, ref) => {

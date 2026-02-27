@@ -112,10 +112,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
   },
-  wordWrap: {
-    wordWrap: 'break-word',
-    overflowWrap: 'break-word',
-  },
 });
 
 const ChplCmsDisplay = React.forwardRef((props, ref) => {
