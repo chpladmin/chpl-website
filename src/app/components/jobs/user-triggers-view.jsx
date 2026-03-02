@@ -1,42 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { arrayOf, func } from 'prop-types';
 
-import { ChplSortableHeaders, ChplTooltip } from 'components/util';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
 
-const headers = [
+const sortOptions = [
   { property: 'email', text: 'Email' },
-  { property: 'details', text: 'Report details' },
-  { property: 'actions', text: 'Actions', invisible: true },
+  { property: 'jobName', text: 'Type' },
 ];
 
 const useStyles = makeStyles({
-  container: {
-    maxHeight: '64vh',
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '16px',
   },
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-  },
-  noResultsContainer: {
-    padding: '16px 32px',
+  resultsContainer: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center',
   },
 });
 
@@ -46,15 +40,17 @@ function ChplUserTriggersView({
   triggers: initialTriggers = [],
 }) {
   const [triggers, setTriggers] = useState([]);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('email');
   const classes = useStyles();
 
   useEffect(() => {
     setTriggers(initialTriggers
-      .sort((a, b) => (a.email < b.email ? -1 : 1))
       .map((trigger) => {
         const response = {
           ...trigger,
-          details: [`Schedule: ${trigger.cronSchedule}`, `Type: ${trigger.job.name}`],
+          jobName: trigger.job.name,
+          schedule: trigger.cronSchedule,
         };
         if (trigger.acb) {
           const relevant = trigger.acb
@@ -64,11 +60,19 @@ function ChplUserTriggersView({
             .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
             .sort((a, b) => (a < b ? -1 : 1))
             .join(', ');
-          response.details.push(`ONC-ACB${relevant.length !== 1 ? 's: ' : ': '}${relevant}`);
+          response.acbNames = relevant;
         }
         return response;
-      }));
+      })
+      .sort(sortComparator('email')));
   }, [acbs, initialTriggers]);
+
+  const handleSort = (property, orderDirection) => {
+    const descending = orderDirection === 'desc';
+    setTriggers((prev) => [...prev].sort(sortComparator(property, descending)));
+    setOrderBy(property);
+    setOrder(orderDirection);
+  };
 
   return (
     <Card>
@@ -77,38 +81,53 @@ function ChplUserTriggersView({
         <>
           { (triggers.length === 0)
             && (
-              <Typography className={classes.noResultsContainer}>
+              <Typography style={{ padding: '16px' }}>
                 No results found. To get started, click on the calendar icon next to the desired report to schedule it.
               </Typography>
             )}
           { triggers.length > 0
             && (
-            <TableContainer className={classes.container} component={Paper}>
-              <Table
-                aria-label="Reports table"
-              >
-                <ChplSortableHeaders
-                  headers={headers}
-                  onTableSort={() => {}}
-                  orderBy="email"
-                  order="asc"
-                  stickyHeader
-                />
-                <TableBody>
-                  { triggers
-                    .map((item) => (
-                      <TableRow key={`${item.name}-${item.job.name}`}>
-                        <TableCell className={classes.firstColumn}>
-                          { item.email }
-                        </TableCell>
-                        <TableCell>
-                          <ul>
-                            { item.details.map((detail) => (
-                              <li key={detail}>{detail}</li>
-                            ))}
-                          </ul>
-                        </TableCell>
-                        <TableCell align="right">
+              <>
+                <div className={classes.headerContainer}>
+                  <div className={classes.resultsContainer}>
+                    <Typography variant="subtitle2">Scheduled Reports:</Typography>
+                    <Typography variant="body2">
+                      {`(${triggers.length} Result${triggers.length !== 1 ? 's' : ''})`}
+                    </Typography>
+                  </div>
+                  <ChplSortControls
+                    sortOptions={sortOptions}
+                    orderBy={orderBy}
+                    order={order}
+                    onSort={handleSort}
+                  />
+                </div>
+                <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
+                  { triggers.map((item) => {
+                    const fieldGroups = [
+                      [
+                        { label: 'Email', value: item.email, xs: 12, sm: 6 },
+                        { label: 'Schedule', value: item.schedule, xs: 12, sm: 6 },
+                      ],
+                      [
+                        { label: 'Type', value: item.jobName, xs: 12, sm: item.acbNames ? 6 : 12 },
+                      ],
+                    ];
+                    
+                    if (item.acbNames) {
+                      fieldGroups[1].push({
+                        label: 'ONC-ACB',
+                        value: item.acbNames,
+                        xs: 12,
+                        sm: 6,
+                      });
+                    }
+                    
+                    return (
+                      <ChplSearchResultCard
+                        key={`${item.name}-${item.job.name}`}
+                        fieldGroups={fieldGroups}
+                        actions={
                           <ChplTooltip
                             title="Edit Report"
                             placement="top"
@@ -121,12 +140,12 @@ function ChplUserTriggersView({
                               <EditIcon />
                             </IconButton>
                           </ChplTooltip>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                        }
+                      />
+                    );
+                  })}
+                </Box>
+              </>
             )}
         </>
       </CardContent>

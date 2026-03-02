@@ -2,18 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -22,25 +18,23 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplUpdateIndicator } from 'components/util';
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import {
+  ChplSearchResultCard, ChplSortControls, ChplUpdateIndicator, ChplTooltip,
+} from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { standard as standardPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'value', text: 'Value', sortable: true },
-  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
-  { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'requiredDay', text: 'Required Date', sortable: true },
-  { property: 'extensionEndDay', text: 'Extension End Date', sortable: true },
-  { property: 'endDay', text: 'End Date', sortable: true },
-  { text: 'Rule' },
-  { text: 'Applicable Criteria' },
-  { text: 'Group' },
-  { text: 'Action', invisible: true },
+const sortOptions = [
+  { property: 'value', text: 'Value' },
+  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation' },
+  { property: 'startDay', text: 'Start Date' },
+  { property: 'requiredDay', text: 'Required Date' },
+  { property: 'extensionEndDay', text: 'Extension End Date' },
+  { property: 'endDay', text: 'End Date' },
 ];
 
 const useStyles = makeStyles({
@@ -76,14 +70,13 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialStandards, filterContext.filters, filterContext.searchTerm]);
+  }, [initialStandards, filterContext]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = standards.sort(sortComparator(property, descending));
+    setStandards((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setStandards(updated);
   };
 
   return (
@@ -94,14 +87,20 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       <div>
         <ChplFilterChips />
       </div>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mx={8} my={2}>
-        <Box display="flex" flexDirection="row" gridGap={1}>
-          <Typography variant="subtitle2">Search Results:</Typography>
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
           <ChplSystemMaintenanceActivity
             fetch={useFetchStandardsActivity}
             title="Standards"
@@ -117,74 +116,100 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
               Add
             </Button>
           )}
-        </div>
+        </Box>
       </Box>
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          aria-label="Standards table"
-        >
-          <ChplSortableHeaders
-            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
-            onTableSort={handleTableSort}
-            orderBy={orderBy}
-            order={order}
-            stickyHeader
-          />
-          <TableBody>
-            { standards
-              .map((item) => (
-                <TableRow key={`${item.id}-${item.value}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.value }
-                    { item.retired && ' (Expired)'}
-                    <ChplUpdateIndicator
-                      requiredDay={item.requiredDay}
-                      endDay={item.endDay}
-                      additionalInformation={item.additionalInformation}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    { item.regulatoryTextCitation }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.startDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.requiredDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.extensionEndDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.endDay) }
-                  </TableCell>
-                  <TableCell>
-                    { item.rule?.name ?? '' }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                  <TableCell>
-                    { item.groupName ?? '' }
-                  </TableCell>
-                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                    <TableCell align="right">
-                      <Button
-                        onClick={() => dispatch({ action: 'edit', payload: item })}
-                        id={`edit-standard-${item.value}`}
-                        variant="contained"
-                        color="secondary"
-                        endIcon={<EditOutlinedIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { standards
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}-${item.value}`}
+              title="Value"
+              titleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}
+              additionalTitleContent={(
+                <ChplUpdateIndicator
+                  requiredDay={item.requiredDay}
+                  endDay={item.endDay}
+                  additionalInformation={item.additionalInformation}
+                />
+              )}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Regulatory Text Citation',
+                    value: item.regulatoryTextCitation || 'N/A',
+                    xs: 6,
+                    sm: 3,
+                    iconButton: (
+                      <ChplTooltip title="Use this value in a upload file">
+                        <IconButton color="primary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </ChplTooltip>
+                    ),
+                  },
+                  {
+                    label: 'Rule',
+                    value: item.rule?.name ?? 'N/A',
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'Group',
+                    value: item.groupName ?? 'N/A',
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 6,
+                    sm: 2,
+                  },
+                ],
+                [
+                  {
+                    label: 'Start Date',
+                    value: getDisplayDateFormat(item.startDay),
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'Required Date',
+                    value: getDisplayDateFormat(item.requiredDay),
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'Extension End Date',
+                    value: getDisplayDateFormat(item.extensionEndDay),
+                    xs: 6,
+                    sm: 3,
+                  },
+                  {
+                    label: 'End Date',
+                    value: getDisplayDateFormat(item.endDay),
+                    xs: 6,
+                    sm: 2,
+                  },
+                ],
+              ]}
+              actions={
+                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <Button
+                    onClick={() => dispatch({ action: 'edit', payload: item })}
+                    id={`edit-standard-${item.value}`}
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    endIcon={<EditOutlinedIcon />}
+                  >
+                    Edit
+                  </Button>
+                )
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }

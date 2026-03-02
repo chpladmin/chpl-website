@@ -6,35 +6,21 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplApiKeysView from './api-keys-view';
 
 import { useFetchApiKeys, useDeleteKey } from 'api/api-keys';
 import { eventTrack } from 'services/analytics.service';
-import { BreadcrumbContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 
 function ChplApiKeys() {
   const { analytics } = useAnalyticsContext();
-  const { append, display } = useContext(BreadcrumbContext);
   const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading, isSuccess } = useFetchApiKeys();
   const { mutate } = useDeleteKey();
   const [apiKeys, setApiKeys] = useState([]);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="apiKeys.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        API Keys
-      </Button>,
-    );
-    display('apiKeys.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -68,7 +54,15 @@ function ChplApiKeys() {
 
   return (
     <Card>
-      <CardHeader title="API Keys" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            API Keys
+            <CodeOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         <ChplApiKeysView
           apiKeys={apiKeys}

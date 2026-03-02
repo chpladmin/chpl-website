@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplQmsStandardEdit from './qms-standard-edit';
@@ -17,10 +18,8 @@ import {
   usePostQmsStandard,
   usePutQmsStandard,
 } from 'api/standards';
-import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplQmsStandards() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchQmsStandards();
   const deleteQmsStandard = useDeleteQmsStandard();
   const postQmsStandard = usePostQmsStandard();
@@ -33,30 +32,6 @@ function ChplQmsStandards() {
   let handleDispatch;
 
   useEffect(() => {
-    append(
-      <Button
-        key="qmsStandards.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        QMS Standards
-      </Button>,
-    );
-    append(
-      <Button
-        key="qmsStandards.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        QMS Standards
-      </Button>,
-    );
-    display('qmsStandards.viewall.disabled');
-  }, []);
-
-  useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setQmsStandards(data);
   }, [data, isLoading, isSuccess]);
@@ -66,10 +41,6 @@ function ChplQmsStandards() {
       case 'cancel':
         setActiveQmsStandard(undefined);
         setIsProcessing(false);
-        display('qmsStandards.viewall.disabled');
-        hide('qmsStandards.viewall');
-        hide('qmsStandards.add.disabled');
-        hide('qmsStandards.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -81,8 +52,6 @@ function ChplQmsStandards() {
             });
             setActiveQmsStandard(undefined);
             setIsProcessing(false);
-            display('qmsStandards.viewall.disabled');
-            hide('qmsStandards.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -93,8 +62,6 @@ function ChplQmsStandards() {
       case 'edit':
         setActiveQmsStandard(payload);
         setErrors([]);
-        display('qmsStandards.viewall');
-        hide('qmsStandards.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -107,8 +74,6 @@ function ChplQmsStandards() {
               });
               setActiveQmsStandard(undefined);
               setIsProcessing(false);
-              display('qmsStandards.viewall.disabled');
-              hide('qmsStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
@@ -123,8 +88,6 @@ function ChplQmsStandards() {
               });
               setActiveQmsStandard(undefined);
               setIsProcessing(false);
-              display('qmsStandards.viewall.disabled');
-              hide('qmsStandards.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
@@ -140,7 +103,12 @@ function ChplQmsStandards() {
   if (activeQmsStandard) {
     return (
       <Card>
-        <CardHeader title={`${activeQmsStandard.id ? 'Edit' : 'Add'} QMS Standard`} />
+        <CardHeader title={(
+          <>
+            <AssignmentTurnedInOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeQmsStandard.id ? 'Edit' : 'Add'} QMS Standard`}
+          </>
+)} />
         <CardContent>
           <ChplQmsStandardEdit
             qmsStandard={activeQmsStandard}
@@ -161,7 +129,15 @@ function ChplQmsStandards() {
 
   return (
     <Card>
-      <CardHeader title="QMS Standards" />
+      <CardHeader
+        style={{ paddingLeft: '16px' }}
+        title={(
+          <>
+            QMS Standards
+            <AssignmentTurnedInOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+          </>
+)}
+      />
       <CardContent>
         { (deleteQmsStandard.isLoading || postQmsStandard.isLoading || putQmsStandard.isLoading)
           && (

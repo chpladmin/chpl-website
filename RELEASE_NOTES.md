@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 14.1.0
+_2 March 2026_
+
+### Features
+* Update spacing on Developer Page to remove large blank area
+* Change System Maintenance tables to card mode
+* Remove breadcrumbs from System Maintenance pages
+
+---
+
 ## Version 14.0.0
 _17 February 2026_
 

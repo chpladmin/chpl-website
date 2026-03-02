@@ -1,5 +1,7 @@
 import React from 'react';
-import { arrayOf, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 
 import ChplChangeRequests from './change-requests';
 
@@ -11,6 +13,7 @@ function ChplChangeRequestsWrapper(props) {
     disallowedFilters = [],
     bonusQuery = '',
     dispatch = () => {},
+    useFooterSpacing = true,
   } = props;
 
   return (
@@ -23,6 +26,7 @@ function ChplChangeRequestsWrapper(props) {
           disallowedFilters={disallowedFilters}
           bonusQuery={bonusQuery}
           dispatch={dispatch}
+          useFooterSpacing={useFooterSpacing}
         />
       </BreadcrumbWrapper>
     </AppWrapper>
@@ -35,4 +39,5 @@ ChplChangeRequestsWrapper.propTypes = {
   disallowedFilters: arrayOf(string),
   bonusQuery: string,
   dispatch: func,
+  useFooterSpacing: bool,
 };

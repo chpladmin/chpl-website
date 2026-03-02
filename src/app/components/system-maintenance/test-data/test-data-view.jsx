@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  Box,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { text: 'Name' },
-  { text: 'Applicable Criteria' },
-];
-
 const useStyles = makeStyles({
   ...utilStyles,
-  widerColumn: {
-    minWidth: '200px',
-  },
 });
 
 function ChplTestDataView({ testData: initialTestData }) {
@@ -44,29 +33,38 @@ function ChplTestDataView({ testData: initialTestData }) {
 
   return (
     <>
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          aria-label="Test Data table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            stickyHeader
-          />
-          <TableBody>
-            { testData
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={`${classes.firstColumn} ${classes.widerColumn}`}>
-                    { item.name }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">
+            Test Data
+          </Typography>
+          <Typography variant="body2">
+            {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gridGap={4}>
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { testData
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Name"
+              titleValue={item.name}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                    xs: 12,
+                    sm: 12,
+                  },
+                ],
+              ]}
+            />
+          ))}
+      </Box>
     </>
   );
 }

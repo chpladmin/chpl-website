@@ -160,6 +160,7 @@ function ChplDeveloperView({ dispatch }) {
                 disallowedFilters={['submittedDateTime', 'searchTerm']}
                 bonusQuery={`&developerId=${developer.id}`}
                 dispatch={dispatch}
+                useFooterSpacing={false}
               />
             )}
             <ChplDirectReviews developer={developer} />

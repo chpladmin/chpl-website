@@ -1,26 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  IconButton,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { ucdProcessType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const headers = [
-  { property: 'name', text: 'Name', sortable: true },
-  { text: 'Action', invisible: true },
+const sortOptions = [
+  { property: 'name', text: 'Name' },
 ];
 
 const useStyles = makeStyles({
@@ -31,81 +29,90 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessesView(props) {
-  const { dispatch } = props;
+function ChplUcdProcessesView({ dispatch, ucdProcesses: initialUcdProcesses }) {
   const { hasAnyRole } = useContext(UserContext);
   const [ucdProcesses, setUcdProcesses] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
+  const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
-    setUcdProcesses(props.ucdProcesses
+    setUcdProcesses(initialUcdProcesses
       .map((item) => ({
         ...item,
       }))
       .sort(sortComparator('name')));
-  }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
+  }, [initialUcdProcesses]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = ucdProcesses.sort(sortComparator(property, descending));
+    setUcdProcesses((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
-    setUcdProcesses(updated);
   };
 
   return (
     <>
-      { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-        <div className={classes.tableResultsHeaderContainer}>
-          <Button
-            onClick={() => dispatch({ action: 'edit', payload: {} })}
-            id="add-new-ucd-process"
-            variant="contained"
-            color="primary"
-            endIcon={<AddIcon />}
-          >
-            Add
-          </Button>
-        </div>
-      )}
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          aria-label="UCD Process table"
-        >
-          <ChplSortableHeaders
-            headers={headers.filter((h) => hasAnyRole(['chpl-admin', 'chpl-onc']) || !h.invisible)}
-            onTableSort={handleTableSort}
+      <Box className={classes.headerContainer}>
+        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+          <Typography variant="subtitle2">
+            UCD Processes
+          </Typography>
+          <Typography variant="body2">
+            {`(${ucdProcesses.length} Result${ucdProcesses.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gridGap={4}>
+          <ChplSortControls
+            sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
-            stickyHeader
+            onSort={handleSort}
           />
-          <TableBody>
-            { ucdProcesses
-              .map((item) => (
-                <TableRow key={`${item.id}`}>
-                  <TableCell className={classes.firstColumn}>
-                    { item.name }
-                  </TableCell>
-                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                    <TableCell align="right">
-                      <Button
-                        onClick={() => dispatch({ action: 'edit', payload: item })}
-                        id={`edit-ucd-process-${item.id}`}
-                        variant="contained"
-                        color="secondary"
-                        endIcon={<EditOutlinedIcon />}
-                      >
-                        Edit
-                      </Button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+            <Button
+              onClick={() => dispatch({ action: 'edit', payload: {} })}
+              id="add-new-ucd-process"
+              variant="contained"
+              color="primary"
+              endIcon={<AddIcon />}
+            >
+              Add
+            </Button>
+          )}
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { ucdProcesses
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              title="Name"
+              titleValue={item.name}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+              )}
+              actions={
+                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                  <Button
+                    onClick={() => dispatch({ action: 'edit', payload: item })}
+                    id={`edit-ucd-process-${item.id}`}
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    endIcon={<EditOutlinedIcon />}
+                  >
+                    Edit
+                  </Button>
+                )
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }
