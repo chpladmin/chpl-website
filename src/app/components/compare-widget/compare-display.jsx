@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  Box,
   Button,
   CardContent,
   Chip,
   Divider,
-  Menu,
-  MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -60,12 +57,12 @@ const ChplCompareDisplay = React.forwardRef((props, ref) => {
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent id="no-products-selected" ref={ref}>         
+      <CardContent id="no-products-selected" ref={ref}>
         <Typography gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
         <Typography variant="body2" className={classes.wordWrap}>Please select products to compare using the button found on either search results or product detail pages.</Typography>
       </CardContent>
     );
-  } 
+  }
 
   return (
     <CardContent className={classes.cardcontentPadding} ref={ref}>
@@ -109,5 +106,7 @@ const ChplCompareDisplay = React.forwardRef((props, ref) => {
     </CardContent>
   );
 });
+
+ChplCompareDisplay.displayName = 'ChplCompareDisplay';
 
 export default ChplCompareDisplay;

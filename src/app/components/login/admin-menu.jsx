@@ -5,7 +5,6 @@ import {
   Collapse,
   List,
   ListItem,
-  ListItemText,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -42,8 +41,6 @@ const useStyles = makeStyles({
     padding: '8px 16px 8px 32px',
     cursor: 'pointer',
     color: '#0066cc',
-    textDecoration: 'none',
-    cursor: 'pointer',
     fontSize: '14px',
     textDecoration: 'underline!important',
     '&:hover': {
@@ -106,7 +103,7 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
               {openSection === 'administration' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItem>
             <Collapse in={openSection === 'administration'} timeout="auto" unmountOnExit>
-              <List component="div" >
+              <List component="div">
                 {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
                   <ListItem className={classes.menuItem} onClick={onClose}>
                     <ChplLink
@@ -202,7 +199,7 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
                     <ChplLink
                       href="rest/ff4j-console/home"
                       text="FF4j"
-                      external={true}
+                      external
                     />
                   </ListItem>
                 )}
@@ -213,14 +210,13 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
 
         {/* Users Section */}
 
-
         {/* Organizations Section */}
         {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
           <>
             <ListItem
               className={classes.sectionHeader}
               onClick={() => toggleSection('organizations')}
-                divider
+              divider
             >
               <Typography className={classes.sectionHeaderText}>Organizations</Typography>
               {openSection === 'organizations' ? <ExpandLessIcon /> : <ExpandMoreIcon />}

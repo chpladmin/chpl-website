@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
   whiteButton: {
     color: '#fff!important',
-    textTransform: "capitalize!important",
-    fontSize: '0.875rem'
+    textTransform: 'capitalize!important',
+    fontSize: '0.875rem',
   },
   menuPaper: {
     marginTop: '8px',
@@ -213,7 +213,7 @@ function ChplDesktopNav({
         { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
           && domainIsOn
           && (
-            <MenuItem divider onClick={closeResources}> 
+            <MenuItem divider onClick={closeResources}>
               <ChplLink
                 href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
                 text="CHPL Developer User Guide"

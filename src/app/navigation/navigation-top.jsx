@@ -7,6 +7,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
+
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
 import ChplDesktopNav from 'navigation/desktop-nav';
@@ -14,7 +16,6 @@ import ChplMobileNavDrawer from 'navigation/mobile-nav-drawer';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, palette } from 'themes';
-import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
 
 const useStyles = makeStyles({
   appBar: {
@@ -135,7 +136,7 @@ function ChplNavigationTop() {
   };
 
   const searchChpl = () => {
-      $state.go('search');
+    $state.go('search');
   };
 
   return (
@@ -150,29 +151,37 @@ function ChplNavigationTop() {
         </AppBar>
       )}
       <AppBar position="fixed" className={!isProduction ? `${classes.appBar} ${classes.appBarWithBanner}` : classes.appBar}>
-        <Toolbar style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '64px' }}>
+        <Toolbar style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '64px',
+        }}
+        >
           <Box display="flex" alignItems="center" onClick={home} style={{ cursor: 'pointer' }}>
             <div className={classes.logoContainer}>
               <img src={ChplLogo} alt="Certified Health IT Product List Logo" className={classes.logo} />
               <div className={classes.shimmer} />
             </div>
           </Box>
-          <Box className={classes.rightSide} style={{ display: 'flex', alignItems: 'center', flexWrap: 'nowrap', flexShrink: 0 }}>
-          <ChplDesktopNav
-            onHomeClick={home}
-            onSearchClick={searchChpl}
-            hasAnyRole={hasAnyRole}
-            domainIsOn={domainIsOn}
-            analytics={analytics}
-          />
-          <ChplMobileNavDrawer
-            onHomeClick={home}
-            onSearchClick={searchChpl}
-            hasAnyRole={hasAnyRole}
-            domainIsOn={domainIsOn}
-          />
-          <ChplToggle />
-          <ChplAnnouncementsFab />
+          <Box
+            className={classes.rightSide}
+            style={{
+              display: 'flex', alignItems: 'center', flexWrap: 'nowrap', flexShrink: 0,
+            }}
+          >
+            <ChplDesktopNav
+              onHomeClick={home}
+              onSearchClick={searchChpl}
+              hasAnyRole={hasAnyRole}
+              domainIsOn={domainIsOn}
+              analytics={analytics}
+            />
+            <ChplMobileNavDrawer
+              onHomeClick={home}
+              onSearchClick={searchChpl}
+              hasAnyRole={hasAnyRole}
+              domainIsOn={domainIsOn}
+            />
+            <ChplToggle />
+            <ChplAnnouncementsFab />
           </Box>
         </Toolbar>
       </AppBar>
@@ -180,8 +189,7 @@ function ChplNavigationTop() {
         className={!isProduction ? classes.offsetWithBanner : classes.offset}
         style={!isProduction
           ? { minHeight: '64px', marginTop: '25px' }
-          : { minHeight: '64px' }
-        }
+          : { minHeight: '64px' }}
       />
     </>
   );

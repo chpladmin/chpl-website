@@ -15,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuIcon from '@material-ui/icons/Menu';
-import { node, func, bool } from 'prop-types';
+import { func, bool } from 'prop-types';
 
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
@@ -119,9 +119,9 @@ function ChplMobileNavDrawer({
         classes={{ paper: classes.drawerPaper }}
       >
         <div className={classes.drawerHeader}>
-        <Typography variant='h6'>CHPL Navigation</Typography>
-          <IconButton onClick={() => setMobileMenuOpen(false)} color='primary' aria-label="close menu">
-            <CloseIcon color='primary' />
+          <Typography variant="h6">CHPL Navigation</Typography>
+          <IconButton onClick={() => setMobileMenuOpen(false)} color="primary" aria-label="close menu">
+            <CloseIcon color="primary" />
           </IconButton>
         </div>
         <Divider className={classes.drawerDivider} />

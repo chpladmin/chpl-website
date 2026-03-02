@@ -4,7 +4,6 @@ import {
   Popover,
   makeStyles,
 } from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
 import { func } from 'prop-types';
 import { getAccessToken, setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
@@ -39,8 +38,8 @@ const useStyles = makeStyles({
   },
   whiteButton: {
     color: '#fff!important',
-    textTransform: "capitalize!important",
-    fontSize: '0.875rem'
+    textTransform: 'capitalize!important',
+    fontSize: '0.875rem',
   },
 });
 
