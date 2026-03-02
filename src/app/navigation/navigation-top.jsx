@@ -60,6 +60,12 @@ const useStyles = makeStyles({
   logo: {
     height: '40px',
     display: 'block',
+    [theme.breakpoints.down('sm')]: {
+      height: '32px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '20px',
+    },
   },
   shimmer: {
     position: 'absolute',
@@ -159,15 +165,14 @@ function ChplNavigationTop() {
             domainIsOn={domainIsOn}
             analytics={analytics}
           />
-
-          <ChplToggle />
-          <ChplAnnouncementsFab />
           <ChplMobileNavDrawer
             onHomeClick={home}
             onSearchClick={searchChpl}
             hasAnyRole={hasAnyRole}
             domainIsOn={domainIsOn}
           />
+          <ChplToggle />
+          <ChplAnnouncementsFab />
           </Box>
         </Toolbar>
       </AppBar>

@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemText,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -39,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '8px',
+    justifyContent: 'space-between',
+    padding: '8px 4px 0px 14px',
   },
   drawerItem: {
     color: '#fff',
@@ -50,7 +51,30 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '32px',
   },
   drawerDivider: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: palette.divider,
+  },
+  widgetContainer: {
+    backgroundColor: '#fff',
+    padding: '8px',
+    maxWidth: '280px',
+    overflow: 'hidden',
+    '& .MuiCardContent-root': {
+      padding: '8px !important',
+      width: '100% !important',
+      maxWidth: '264px !important',
+    },
+    '& .MuiChip-root': {
+      maxWidth: '100%',
+    },
+    '& .MuiTypography-root': {
+      wordBreak: 'break-word',
+    },
+    '& .MuiBox-root': {
+      maxWidth: '100%',
+    },
+    '& button': {
+      fontSize: '0.75rem',
+    },
   },
 }));
 
@@ -85,7 +109,7 @@ function ChplMobileNavDrawer({
           onClick={() => setMobileMenuOpen(true)}
           aria-label="open navigation menu"
         >
-          <MenuIcon />
+          <MenuIcon style={{ color: '#fff' }} />
         </IconButton>
       </Box>
       <Drawer
@@ -95,8 +119,9 @@ function ChplMobileNavDrawer({
         classes={{ paper: classes.drawerPaper }}
       >
         <div className={classes.drawerHeader}>
-          <IconButton onClick={() => setMobileMenuOpen(false)} style={{ color: '#fff' }} aria-label="close menu">
-            <CloseIcon />
+        <Typography variant='h6'>CHPL Navigation</Typography>
+          <IconButton onClick={() => setMobileMenuOpen(false)} color='primary' aria-label="close menu">
+            <CloseIcon color='primary' />
           </IconButton>
         </div>
         <Divider className={classes.drawerDivider} />
@@ -114,7 +139,7 @@ function ChplMobileNavDrawer({
             {mobileCmsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={mobileCmsOpen}>
-            <Box p={2} style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
+            <Box className={classes.widgetContainer}>
               <ChplCmsDisplay />
             </Box>
           </Collapse>
@@ -124,7 +149,7 @@ function ChplMobileNavDrawer({
             {mobileCompareOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItem>
           <Collapse in={mobileCompareOpen}>
-            <Box p={2} style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
+            <Box className={classes.widgetContainer}>
               <ChplCompareDisplay />
             </Box>
           </Collapse>
