@@ -25,6 +25,13 @@ const useStyles = makeStyles(() => ({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
     backgroundColor: '#ffffff',
+    zIndex: 2,
+  },
+  stickyHeader: {
+    position: 'sticky',
+    top: 0,
+    backgroundColor: '#ffffff',
+    zIndex: 3,
   },
 }));
 
@@ -55,6 +62,17 @@ function ChplSortableHeaders({
     onTableSort(event, property, orderDirection);
   };
 
+  const getCellClassName = (index) => {
+    const classNames = [];
+    if (stickyHeader) {
+      classNames.push(classes.stickyHeader);
+    }
+    if (index === 0 && stickyHeader) {
+      classNames.push(classes.stickyColumn);
+    }
+    return classNames.join(' ') || undefined;
+  };
+
   return (
     <TableHead>
       <TableRow>
@@ -65,7 +83,7 @@ function ChplSortableHeaders({
                 key={headCell.property}
                 align="left"
                 sortDirection={orderBy === headCell.property ? order : false}
-                className={(index === 0 && stickyHeader) ? classes.stickyColumn : undefined}
+                className={getCellClassName(index)}
               >
                 <TableSortLabel
                   className={classes.header}
@@ -87,7 +105,7 @@ function ChplSortableHeaders({
               <TableCell
                 align="left"
                 key={headCell.text}
-                className={(index === 0 && stickyHeader) ? classes.stickyColumn : undefined}
+                className={getCellClassName(index)}
               >
                 <span className={headCell.invisible && classes.visuallyHidden}>
                   { headCell.text }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   makeStyles,
@@ -9,7 +9,6 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { BreadcrumbContext } from 'shared/contexts';
 import { qmsStandardType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -31,45 +30,19 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplQmsStandardEdit(props) {
-  const { dispatch, isProcessing } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
+function ChplQmsStandardEdit({ dispatch, isProcessing, qmsStandard: initialQmsStandard, errors: propsErrors = [] }) {
   const [errors, setErrors] = useState([]);
   const [qmsStandard, setQmsStandard] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="qmsStandards.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="qmsStandards.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
+    setQmsStandard(initialQmsStandard);
+  }, [initialQmsStandard]);
 
   useEffect(() => {
-    setQmsStandard(props.qmsStandard);
-    display(props.qmsStandard.id ? 'qmsStandards.edit.disabled' : 'qmsStandards.add.disabled');
-  }, [props.qmsStandard]); // eslint-disable-line react/destructuring-assignment
-
-  useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...qmsStandard,
@@ -80,18 +53,12 @@ function ChplQmsStandardEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('qmsStandards.add.disabled');
-        hide('qmsStandards.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('qmsStandards.add.disabled');
-        hide('qmsStandards.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('qmsStandards.add.disabled');
-        hide('qmsStandards.edit.disabled');
         break;
         // no default
     }
@@ -101,10 +68,10 @@ function ChplQmsStandardEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.qmsStandard?.name || '', // eslint-disable-line react/destructuring-assignment
+      name: initialQmsStandard?.name || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });

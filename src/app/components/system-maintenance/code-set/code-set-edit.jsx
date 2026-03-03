@@ -14,7 +14,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
 } from 'shared/prop-types';
@@ -44,14 +43,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCodeSetEdit(props) {
-  const {
-    criterionOptions,
-    dispatch,
-    isProcessing,
-    codeSet: initialCodeSet,
-  } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
+function ChplCodeSetEdit({
+  criterionOptions,
+  dispatch,
+  isProcessing,
+  codeSet: initialCodeSet,
+  errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -60,39 +58,15 @@ function ChplCodeSetEdit(props) {
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="codeSets.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="codeSets.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
     setCodeSet(initialCodeSet);
     setCriteria(initialCodeSet.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(initialCodeSet.id ? 'codeSets.edit.disabled' : 'codeSets.add.disabled');
   }, [initialCodeSet]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -111,18 +85,12 @@ function ChplCodeSetEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('codeSets.add.disabled');
-        hide('codeSets.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('codeSets.add.disabled');
-        hide('codeSets.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('codeSets.add.disabled');
-        hide('codeSets.edit.disabled');
         break;
         // no default
     }

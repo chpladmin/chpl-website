@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   makeStyles,
@@ -9,7 +9,6 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { BreadcrumbContext } from 'shared/contexts';
 import { accessibilityStandardType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -31,45 +30,19 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAccessibilityStandardEdit(props) {
-  const { dispatch, isProcessing } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
+function ChplAccessibilityStandardEdit({ dispatch, isProcessing, accessibilityStandard: initialAccessibilityStandard, errors: propsErrors = [] }) {
   const [errors, setErrors] = useState([]);
   const [accessibilityStandard, setAccessibilityStandard] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="accessibilityStandards.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="accessibilityStandards.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
+    setAccessibilityStandard(initialAccessibilityStandard);
+  }, [initialAccessibilityStandard]);
 
   useEffect(() => {
-    setAccessibilityStandard(props.accessibilityStandard);
-    display(props.accessibilityStandard.id ? 'accessibilityStandards.edit.disabled' : 'accessibilityStandards.add.disabled');
-  }, [props.accessibilityStandard]); // eslint-disable-line react/destructuring-assignment
-
-  useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...accessibilityStandard,
@@ -80,18 +53,12 @@ function ChplAccessibilityStandardEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('accessibilityStandards.add.disabled');
-        hide('accessibilityStandards.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('accessibilityStandards.add.disabled');
-        hide('accessibilityStandards.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('accessibilityStandards.add.disabled');
-        hide('accessibilityStandards.edit.disabled');
         break;
         // no default
     }
@@ -101,10 +68,10 @@ function ChplAccessibilityStandardEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.accessibilityStandard?.name || '', // eslint-disable-line react/destructuring-assignment
+      name: initialAccessibilityStandard?.name || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });
