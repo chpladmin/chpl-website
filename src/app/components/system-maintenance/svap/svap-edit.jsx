@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Chip,
@@ -14,7 +14,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { BreadcrumbContext } from 'shared/contexts';
 import { criterion as criterionPropType, svap as svapPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -38,9 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapEdit(props) {
-  const { criterionOptions, dispatch, isProcessing } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
+function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [] }) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
@@ -49,39 +46,15 @@ function ChplSvapEdit(props) {
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="svaps.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="svaps.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
-    setSvap(props.svap);
-    setCriteria(props.svap.criteria?.map((c) => ({
+    setSvap(initialSvap);
+    setCriteria(initialSvap.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(props.svap.svapId ? 'svaps.edit.disabled' : 'svaps.add.disabled');
-  }, [props.svap]); // eslint-disable-line react/destructuring-assignment
+  }, [initialSvap]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [propsErrors]);
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
@@ -100,18 +73,12 @@ function ChplSvapEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
         // no default
     }
@@ -127,12 +94,12 @@ function ChplSvapEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      regulatoryTextCitation: props.svap?.regulatoryTextCitation || '', // eslint-disable-line react/destructuring-assignment
-      approvedStandardVersion: props.svap?.approvedStandardVersion || '', // eslint-disable-line react/destructuring-assignment
-      replaced: props.svap?.replaced || false, // eslint-disable-line react/destructuring-assignment
+      regulatoryTextCitation: initialSvap?.regulatoryTextCitation || '',
+      approvedStandardVersion: initialSvap?.approvedStandardVersion || '',
+      replaced: initialSvap?.replaced || false,
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });

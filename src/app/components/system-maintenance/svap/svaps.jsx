@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplSvapEdit from './svap-edit';
@@ -24,7 +25,6 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -40,7 +40,6 @@ const staticFilters = [{
 }];
 
 function ChplSvaps() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchSvaps();
   const deleteSvap = useDeleteSvap();
   const postSvap = usePostSvap();
@@ -54,30 +53,6 @@ function ChplSvaps() {
   const [svaps, setSvaps] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
   let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="svaps.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        SVAP
-      </Button>,
-    );
-    append(
-      <Button
-        key="svaps.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        SVAP
-      </Button>,
-    );
-    display('svaps.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -107,10 +82,6 @@ function ChplSvaps() {
       case 'cancel':
         setActiveSvap(undefined);
         setIsProcessing(false);
-        display('svaps.viewall.disabled');
-        hide('svaps.viewall');
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -122,8 +93,6 @@ function ChplSvaps() {
             });
             setIsProcessing(false);
             setActiveSvap(undefined);
-            display('svaps.viewall.disabled');
-            hide('svaps.viewall');
           },
           onError: (error) => {
             setIsProcessing(false);
@@ -134,8 +103,6 @@ function ChplSvaps() {
       case 'edit':
         setActiveSvap(payload);
         setErrors([]);
-        display('svaps.viewall');
-        hide('svaps.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -148,8 +115,6 @@ function ChplSvaps() {
               });
               setIsProcessing(false);
               setActiveSvap(undefined);
-              display('svaps.viewall.disabled');
-              hide('svaps.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -164,8 +129,6 @@ function ChplSvaps() {
               });
               setIsProcessing(false);
               setActiveSvap(undefined);
-              display('svaps.viewall.disabled');
-              hide('svaps.viewall');
             },
             onError: (error) => {
               setIsProcessing(false);
@@ -181,7 +144,12 @@ function ChplSvaps() {
   if (activeSvap) {
     return (
       <Card>
-        <CardHeader title={`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`} />
+        <CardHeader title={(
+          <>
+            <TrendingUpOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`}
+          </>
+)} />
         <CardContent>
           <ChplSvapEdit
             svap={activeSvap}
@@ -207,7 +175,15 @@ function ChplSvaps() {
       storageKey="storageKey-svapManagement"
     >
       <Card>
-        <CardHeader title="SVAP" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              SVAP
+              <TrendingUpOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+)}
+        />
         <CardContent>
           { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
             && (

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
+import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplTestToolEdit from './test-tool-edit';
@@ -26,7 +27,6 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
-import { BreadcrumbContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -73,7 +73,6 @@ const staticFilters = [{
 }];
 
 function ChplTestTools() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchTestTools();
   const deleteTestTool = useDeleteTestTool();
   const postTestTool = usePostTestTool();
@@ -87,30 +86,6 @@ function ChplTestTools() {
   const [testTools, setTestTools] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="testTools.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        Test Tools
-      </Button>,
-    );
-    append(
-      <Button
-        key="testTools.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        Test Tools
-      </Button>,
-    );
-    display('testTools.viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -140,10 +115,6 @@ function ChplTestTools() {
       case 'cancel':
         setActiveTestTool(undefined);
         setIsProcessing(false);
-        display('testTools.viewall.disabled');
-        hide('testTools.viewall');
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -155,8 +126,6 @@ function ChplTestTools() {
             });
             setActiveTestTool(undefined);
             setIsProcessing(false);
-            display('testTools.viewall.disabled');
-            hide('testTools.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -167,8 +136,6 @@ function ChplTestTools() {
       case 'edit':
         setActiveTestTool(payload);
         setErrors([]);
-        display('testTools.viewall');
-        hide('testTools.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -181,8 +148,6 @@ function ChplTestTools() {
               });
               setActiveTestTool(undefined);
               setIsProcessing(false);
-              display('testTools.viewall.disabled');
-              hide('testTools.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
@@ -197,8 +162,6 @@ function ChplTestTools() {
               });
               setActiveTestTool(undefined);
               setIsProcessing(false);
-              display('testTools.viewall.disabled');
-              hide('testTools.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
@@ -214,7 +177,12 @@ function ChplTestTools() {
   if (activeTestTool) {
     return (
       <Card>
-        <CardHeader title={`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`} />
+        <CardHeader title={(
+          <>
+            <BuildOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+            {`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`}
+          </>
+)} />
         <CardContent>
           <ChplTestToolEdit
             testTool={activeTestTool}
@@ -240,7 +208,15 @@ function ChplTestTools() {
       storageKey="storageKey-testToolsManagement"
     >
       <Card>
-        <CardHeader title="Test Tools" />
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Test Tools
+              <BuildOutlinedIcon style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+          )}
+        />
         <CardContent>
           { (deleteTestTool.isLoading || postTestTool.isLoading || putTestTool.isLoading)
             && (
