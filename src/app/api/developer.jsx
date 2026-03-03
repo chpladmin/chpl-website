@@ -96,6 +96,16 @@ const useFetchRealWorldTestingResults = ({ developer }) => {
   });
 };
 
+const useFetchSbuls = ({ developer }) => {
+  const axios = useAxios();
+  return useQuery(['developers/sbul-urls', developer.id], async () => {
+    const response = await axios.get(`/developers/${developer.id}/sbul-urls`);
+    return response.data;
+  }, {
+    enabled: !!developer?.id,
+  });
+};
+
 const useFetchUsersAtDeveloper = ({ developer, enabled }) => {
   const id = developer?.id;
   const axios = useAxios();
@@ -176,6 +186,7 @@ export {
   useFetchInsights,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
+  useFetchSbuls,
   useFetchUsersAtDeveloper,
   usePostAttestationException,
   usePutDeveloper,
