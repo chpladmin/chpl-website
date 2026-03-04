@@ -61,8 +61,10 @@ function ChplSbulWizardSection2({ dispatch, listings }) {
         <CardContent>
           <List>
             { listings.map((l) => (
-              <ListItem>
-                {l.chplProductNumber}
+              <ListItem
+                key={l.chplProductNumber}
+              >
+                {`${l.chplProductNumber} - ${l.serviceBaseUrlList.value}`}
               </ListItem>
             )) }
           </List>

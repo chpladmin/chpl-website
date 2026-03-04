@@ -31,7 +31,7 @@ function ChplSbulWizard({
     setIsSubmitting(initialIsSubmitting);
   }, [initialIsSubmitting]);
 
-  const canNext = () => stage < 3;
+  const canNext = () => stage === 0 || (stage === 1 && true /* insert logic for selected listings) */);
 
   const canPrevious = () => stage > 0 && stage < 3;
 

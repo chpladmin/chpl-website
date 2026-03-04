@@ -79,7 +79,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
     <div className={classes.fixFooterSpacing}>
       <Container maxWidth="md" className={classes.sbulContainer}>
         <Typography variant="h2" className={classes.fullWidthGridRow}>
-          Section 3 &mdash; Electronic Signature
+          Section 3 &mdash; Service Base URL List
         </Typography>
         <Card className={classes.fullWidthGridRow}>
           <CardContent>
