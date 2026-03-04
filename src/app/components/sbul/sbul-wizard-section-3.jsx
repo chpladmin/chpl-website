@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -14,7 +15,7 @@ import {
   func,
 } from 'prop-types';
 
-import { ChplTextField } from 'components/util';
+import ChplUrlChecker from 'components/url-checker/url-checker';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -58,13 +59,28 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState('');
+  const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
 
   const isSubmitDisabled = () => url.length === 0 || isSubmitting;
 
-  const handleUrl = (event) => {
-    setUrl(event.target.value);
+  const handleDispatch = ({ action, payload }) => {
+    switch (action) {
+      case 'loading':
+        setIsLoading(true);
+        setUrl('');
+        setUrlCheckResponse(undefined);
+        break;
+      case 'complete':
+        setIsLoading(false);
+        setUrl(payload.url);
+        setUrlCheckResponse(payload);
+        console.log(payload);
+        break;
+        // no default
+    }
   };
 
   const handleSubmit = () => {
@@ -131,14 +147,10 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
         </Card>
         <Card className={classes.urlContainer}>
           <CardContent>
-            <ChplTextField
-              id="url"
-              name="url"
-              label="Service Base URL List"
-              required
-              value={url}
-              onChange={handleUrl}
+            <ChplUrlChecker
+              dispatch={handleDispatch}
             />
+            { isLoading && <CircularProgress /> }
           </CardContent>
         </Card>
         <Card className={classes.dateContainer}>
