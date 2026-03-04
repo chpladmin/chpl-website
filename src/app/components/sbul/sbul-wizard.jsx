@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  arrayOf,
   bool,
   func,
   number,
@@ -8,61 +9,29 @@ import {
   string,
 } from 'prop-types';
 
-import ChplAttestationProgress from './attestation-progress';
-import ChplAttestationWizardSection1 from './attestation-wizard-section-1';
-import ChplAttestationWizardSection2 from './attestation-wizard-section-2';
-import ChplAttestationWizardSection3 from './attestation-wizard-section-3';
-import ChplAttestationWizardSection4 from './attestation-wizard-section-4';
+import ChplSbulProgress from './sbul-progress';
+import ChplSbulWizardSection1 from './sbul-wizard-section-1';
+import ChplSbulWizardSection2 from './sbul-wizard-section-2';
+import ChplSbulWizardSection3 from './sbul-wizard-section-3';
+import ChplSbulWizardSection4 from './sbul-wizard-section-4';
 
 import { ChplActionBar } from 'components/action-bar';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const completedFormItems = (section) => section
-  .formItems
-  .reduce((completed, item) => completed && (!item.required || item.submittedResponses.length > 0),
-    section.formItems.length > 0);
-
-const isFormFilledOut = (submission) => submission
-  .reduce((completed, section) => completed && completedFormItems(section),
-    true);
-
-function ChplAttestationWizard({
-  form: initialForm,
+function ChplSbulWizard({
   isSubmitting: initialIsSubmitting = false,
-  developer,
   dispatch,
-  period: initialPeriod,
-  stage: initialStage = 0,
+  listings,
+  stage = 0,
 }) {
-  const [form, setForm] = useState({});
-  const [sections, setSections] = useState([]);
   const [submission, setSubmission] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [period, setPeriod] = useState({});
-  const [stage, setStage] = useState(0);
-
-  useEffect(() => {
-    setForm(initialForm);
-    if (initialForm?.sectionHeadings) {
-      setSections(initialForm.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder));
-      setSubmission(initialForm.sectionHeadings);
-    }
-  }, [initialForm]);
 
   useEffect(() => {
     setIsSubmitting(initialIsSubmitting);
   }, [initialIsSubmitting]);
 
-  useEffect(() => {
-    setPeriod(initialPeriod);
-  }, [initialPeriod]);
-
-  useEffect(() => {
-    setSections(submission);
-    setStage(initialStage);
-  }, [initialStage]);
-
-  const canNext = () => stage === 0 || (stage === 1 && isFormFilledOut(submission));
+  const canNext = () => stage < 3;
 
   const canPrevious = () => stage > 0 && stage < 3;
 
@@ -76,15 +45,10 @@ function ChplAttestationWizard({
 
   const handleProgressDispatch = (action) => dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
 
-  const handleSignatureDispatch = (signature) => {
+  const handleUrlDispatch = (url) => {
     const payload = {
       details: {
-        form: {
-          ...form,
-          sectionHeadings: submission,
-        },
-        attestationPeriod: period,
-        signature,
+        url,
       },
     };
     dispatch('submit', payload);
@@ -92,7 +56,7 @@ function ChplAttestationWizard({
 
   return (
     <>
-      <ChplAttestationProgress
+      <ChplSbulProgress
         dispatch={handleProgressDispatch}
         value={stage}
         canNext={canNext()}
@@ -100,29 +64,25 @@ function ChplAttestationWizard({
       />
       { stage === 0
         && (
-          <ChplAttestationWizardSection1 />
+          <ChplSbulWizardSection1 />
         )}
       { stage === 1
         && (
-          <ChplAttestationWizardSection2
-            instructions={form.instructions}
-            sections={sections}
+          <ChplSbulWizardSection2
+            listings={listings}
             dispatch={handleFormDispatch}
           />
         )}
       { stage === 2
         && (
-          <ChplAttestationWizardSection3
-            developer={developer}
+          <ChplSbulWizardSection3
             isSubmitting={isSubmitting}
-            dispatch={handleSignatureDispatch}
+            dispatch={handleUrlDispatch}
           />
         )}
       { stage === 3
         && (
-          <ChplAttestationWizardSection4
-            developer={developer}
-          />
+          <ChplSbulWizardSection4 />
         )}
       <ChplActionBar
         dispatch={handleActionBarDispatch}
@@ -134,16 +94,11 @@ function ChplAttestationWizard({
   );
 }
 
-export default ChplAttestationWizard;
+export default ChplSbulWizard;
 
-ChplAttestationWizard.propTypes = {
-  form: object.isRequired, // eslint-disable-line react/forbid-prop-types
+ChplSbulWizard.propTypes = {
   isSubmitting: bool,
-  developer: developerPropType.isRequired,
   dispatch: func.isRequired,
-  period: shape({
-    periodStart: string,
-    periodEnd: string,
-  }).isRequired,
+  listings: arrayOf(object).isRequired,
   stage: number,
 };

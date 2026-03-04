@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  attestationContainerList: {
+  sbulContainerList: {
     fontSize: '0.875em',
   },
   fixFooterSpacing:{
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection1() {
+function ChplSbulWizardSection1() {
   const classes = useStyles();
 
   return (
@@ -63,7 +63,7 @@ function ChplAttestationWizardSection1() {
         {' '}
         to submit a ticket as applicable --
       </Typography>
-      <ul className={classes.attestationContainerList}>
+      <ul className={classes.sbulContainerList}>
         <li>For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category.</li>
         <li>For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category.</li>
         <li>For technical assistance with this process, please select the &quot;CHPL&quot; category.</li>
@@ -72,7 +72,7 @@ function ChplAttestationWizardSection1() {
   );
 }
 
-export default ChplAttestationWizardSection1;
+export default ChplSbulWizardSection1;
 
-ChplAttestationWizardSection1.propTypes = {
+ChplSbulWizardSection1.propTypes = {
 };

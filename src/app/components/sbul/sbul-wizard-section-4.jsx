@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardContent,
@@ -7,7 +7,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -17,8 +17,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection4(props) {
-  const { developer } = props;
+function ChplSbulWizardSection4() {
+  const { developer } = useContext(DeveloperContext);
   const classes = useStyles();
 
   return (
@@ -40,8 +40,7 @@ function ChplAttestationWizardSection4(props) {
   );
 }
 
-export default ChplAttestationWizardSection4;
+export default ChplSbulWizardSection4;
 
-ChplAttestationWizardSection4.propTypes = {
-  developer: developerPropType.isRequired,
+ChplSbulWizardSection4.propTypes = {
 };

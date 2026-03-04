@@ -16,13 +16,12 @@ import {
 
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  attestationContainer: {
+  sbulContainer: {
     display: 'grid',
     rowGap: '16px',
     columnGap: '16px',
@@ -47,7 +46,7 @@ const useStyles = makeStyles({
   developerOnlyContainer: {
     gridColumn: '4 / 7',
   },
-  signatureContainer: {
+  urlContainer: {
     gridColumn: '1 / 6',
   },
   dateContainer: {
@@ -55,29 +54,30 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispatch }) {
+function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
+  const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
-  const [signature, setSignature] = useState('');
+  const [url, setUrl] = useState('');
   const classes = useStyles();
 
-  const isSubmitDisabled = () => (signature !== user.fullName) || isSubmitting;
+  const isSubmitDisabled = () => url.length === 0 || isSubmitting;
 
-  const handleSignature = (event) => {
-    setSignature(event.target.value);
+  const handleUrl = (event) => {
+    setUrl(event.target.value);
   };
 
   const handleSubmit = () => {
     eventTrack({
       ...analytics,
-      event: 'Sign Electronically',
+      event: 'Submit Service Base URL List Change Request',
     });
-    dispatch(signature);
+    dispatch(url);
   };
 
   return (
     <div className={classes.fixFooterSpacing}>
-      <Container maxWidth="md" className={classes.attestationContainer}>
+      <Container maxWidth="md" className={classes.sbulContainer}>
         <Typography variant="h2" className={classes.fullWidthGridRow}>
           Section 3 &mdash; Electronic Signature
         </Typography>
@@ -129,16 +129,15 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             </div>
           </CardContent>
         </Card>
-        <Card className={classes.signatureContainer}>
+        <Card className={classes.urlContainer}>
           <CardContent>
             <ChplTextField
-              id="signature"
-              name="signature"
-              label="Electronic Signature"
+              id="url"
+              name="url"
+              label="Service Base URL List"
               required
-              value={signature}
-              onChange={handleSignature}
-              helperText="Enter your name as it appears above"
+              value={url}
+              onChange={handleUrl}
             />
           </CardContent>
         </Card>
@@ -158,13 +157,13 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
         <div className={classes.fullWidthGridRow}>
           <Button
             fullWidth
-            id="sign-electronically"
+            id="submit-cr"
             variant="contained"
             color="primary"
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
-            Sign Electronically
+            Submit Service Base URL List Change Request
             <BorderColorIcon
               className={classes.iconSpacing}
             />
@@ -175,10 +174,9 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
   );
 }
 
-export default ChplAttestationWizardSection3;
+export default ChplSbulWizardSection3;
 
-ChplAttestationWizardSection3.propTypes = {
+ChplSbulWizardSection3.propTypes = {
   isSubmitting: bool,
-  developer: developerPropType.isRequired,
   dispatch: func.isRequired,
 };
