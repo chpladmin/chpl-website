@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useDeleteUserFromDeveloper = () => {
   const axios = useAxios();
@@ -96,6 +97,18 @@ const useFetchRealWorldTestingResults = ({ developer }) => {
   });
 };
 
+const useFetchSbulListings = ({ developer }) => {
+  const axios = useAxios();
+  const query = `certificationCriteriaIds=182&certificationStatuses=Active,Suspended by ONC,Suspended by ONC-ACB&developer=${developer.name}&pageSize=100`;
+  return useQuery(['search/v3', query], async () => {
+    const response = await axios.get(`/search/v3?${query}`);
+    return response.data;
+  }, {
+    ...options.daily,
+    enabled: !!developer?.id,
+  });
+};
+
 const useFetchSbuls = ({ developer }) => {
   const axios = useAxios();
   return useQuery(['developers/sbul-urls', developer.id], async () => {
@@ -186,6 +199,7 @@ export {
   useFetchInsights,
   useFetchRealWorldTestingPlans,
   useFetchRealWorldTestingResults,
+  useFetchSbulListings,
   useFetchSbuls,
   useFetchUsersAtDeveloper,
   usePostAttestationException,

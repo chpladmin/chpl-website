@@ -7,11 +7,10 @@ import {
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
-import ChplAttestationWizard from './attestation-wizard';
+import ChplSbulWizard from './sbul-wizard';
 
-import { useFetchAttestationForm } from 'api/attestations';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
-import { useFetchAttestations } from 'api/developer';
+import { useFetchSbulListings } from 'api/developer';
 import { getDisplayDateFormat } from 'services/date-util';
 import { DeveloperContext, UserContext } from 'shared/contexts';
 
@@ -21,39 +20,31 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationCreate({ dispatch }) {
+function ChplSbulCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [changeRequestType, setChangeRequestType] = useState({});
-  const [form, setForm] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [period, setPeriod] = useState({});
+  const [listings, setListings] = useState([]);
   const [stage, setStage] = useState(0);
-  const { data, isLoading } = useFetchAttestationForm({ period, developer });
-  const { data: { submittablePeriod = {} } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-developer']) });
+  const { data, isLoading, isError } = useFetchSbulListings({ developer });
   const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || !data?.form) {
+    if (isLoading || isError) {
       return;
     }
-    setForm(data.form);
-  }, [isLoading, data]);
-
-  useEffect(() => {
-    if (submittablePeriod) {
-      setPeriod(submittablePeriod);
-    }
-  }, [submittablePeriod]);
+    setListings(data.results);
+  }, [data, isLoading, isError]);
 
   useEffect(() => {
     if (crData.isLoading) {
       return;
     }
-    setChangeRequestType(crData.data.find((type) => type.name === 'Developer Attestation Change Request'));
+    setChangeRequestType(crData.data.find((type) => type.name === 'Service Base URL List Change Request'));
   }, [crData.data, crData.isLoading]);
 
   const handleDispatch = (action, payload) => {
@@ -100,35 +91,22 @@ function ChplAttestationCreate({ dispatch }) {
     <>
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
-          Submit Attestations
+          Submit Service Base URL List
         </Typography>
-        { period
-          && (
-            <Typography gutterBottom variant="body1">
-              <strong>Attestation Period:</strong>
-              {' '}
-              { getDisplayDateFormat(period.periodStart) }
-              {' '}
-              -
-              {' '}
-              { getDisplayDateFormat(period.periodEnd) }
-            </Typography>
-          )}
       </Container>
-      <ChplAttestationWizard
-        form={form}
+      <ChplSbulWizard
         isSubmitting={isSubmitting}
         developer={developer}
         dispatch={handleDispatch}
-        period={period}
+        listings={listings}
         stage={stage}
       />
     </>
   );
 }
 
-export default ChplAttestationCreate;
+export default ChplSbulCreate;
 
-ChplAttestationCreate.propTypes = {
+ChplSbulCreate.propTypes = {
   dispatch: func.isRequired,
 };
