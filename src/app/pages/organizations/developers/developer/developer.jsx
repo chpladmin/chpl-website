@@ -45,8 +45,7 @@ function ChplDeveloperPage({ id }) {
   const [developer, setDeveloper] = useState(undefined);
   const [product, setProduct] = useState(undefined);
   const [version, setVersion] = useState(undefined);
-  // const [state, setState] = useState('view');
-  const [state, setState] = useState('createSbul');
+  const [state, setState] = useState('view');
   const classes = useStyles();
 
   useEffect(() => {
