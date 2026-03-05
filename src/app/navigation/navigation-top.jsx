@@ -3,7 +3,6 @@ import {
   AppBar,
   Box,
   Toolbar,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 
@@ -12,6 +11,7 @@ import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
 import ChplDesktopNav from 'navigation/desktop-nav';
+import ChplEnvironmentBanner from 'navigation/environment-banner';
 import ChplMobileNavDrawer from 'navigation/mobile-nav-drawer';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -22,18 +22,6 @@ const useStyles = makeStyles({
     zIndex: theme.zIndex.drawer + 1,
     backgroundColor: `${palette.navBackground} !important`,
     padding: '0px!important',
-  },
-  envBanner: {
-    backgroundColor: `${palette.error}!important`,
-    width: '100%',
-    color: '#ffffff!important',
-    zIndex: theme.zIndex.drawer + 2,
-    '& .MuiToolbar-root': {
-      minHeight: '25px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
   },
   appBarWithBanner: {
     top: '25px',
@@ -92,6 +80,12 @@ const useStyles = makeStyles({
     flexShrink: 0,
     gap: '4px',
   },
+  mobileOnly: {
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+    },
+  },
 });
 
 function ChplNavigationTop() {
@@ -142,13 +136,7 @@ function ChplNavigationTop() {
   return (
     <>
       {!isProduction && (
-        <AppBar position="fixed" className={classes.envBanner}>
-          <Toolbar style={{ minHeight: '25px' }}>
-            <Typography variant="body2" noWrap style={{ fontWeight: 'bold' }}>
-              ⚠ This is a test environment used for development and quality assurance.
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <ChplEnvironmentBanner />
       )}
       <AppBar position="fixed" className={!isProduction ? `${classes.appBar} ${classes.appBarWithBanner}` : classes.appBar}>
         <Toolbar style={{
@@ -174,12 +162,14 @@ function ChplNavigationTop() {
               domainIsOn={domainIsOn}
               analytics={analytics}
             />
-            <ChplMobileNavDrawer
-              onHomeClick={home}
-              onSearchClick={searchChpl}
-              hasAnyRole={hasAnyRole}
-              domainIsOn={domainIsOn}
-            />
+            <Box className={classes.mobileOnly}>
+              <ChplMobileNavDrawer
+                onHomeClick={home}
+                onSearchClick={searchChpl}
+                hasAnyRole={hasAnyRole}
+                domainIsOn={domainIsOn}
+              />
+            </Box>
             <ChplToggle />
             <ChplAnnouncementsFab />
           </Box>

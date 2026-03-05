@@ -17,7 +17,6 @@ import ChplUsersWrapper from './user/users-wrapper';
 import {
   ChplConfirmation,
   ChplEllipsis,
-  ChplNonProdIndicator,
 } from './util';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
@@ -49,7 +48,6 @@ angular
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
-  .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplRealWorldTestingViewBridge', reactToAngularComponent(ChplRealWorldTestingViewWrapper))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));

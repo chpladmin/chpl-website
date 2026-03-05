@@ -9,9 +9,16 @@ import {
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { func, bool, shape } from 'prop-types';
 
+import {
+  developerGuideRoles,
+  getResourceItems,
+  shortcutItems,
+} from './navigation-menu-items';
+
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
+import { palette } from 'themes';
 
 const useStyles = makeStyles((theme) => ({
   navContainer: {
@@ -25,7 +32,16 @@ const useStyles = makeStyles((theme) => ({
   whiteButton: {
     color: '#fff!important',
     textTransform: 'capitalize!important',
-    fontSize: '0.875rem',
+    fontSize: '1rem',
+    '&:hover': {
+      backgroundColor: `${palette.primaryDark}!important`,
+      color: '#fff!important',
+    },
+    '&[aria-expanded="true"]': {
+      backgroundColor: `${palette.white}!important`,
+      color: `${palette.greyDark}!important`,
+      fontWeight: 'bold',
+    },
   },
   menuPaper: {
     marginTop: '8px',
@@ -59,6 +75,10 @@ function ChplDesktopNav({
   const [resourcesAnchorEl, setResourcesAnchorEl] = useState(null);
   const [shortcutsAnchorEl, setShortcutsAnchorEl] = useState(null);
   const classes = useStyles();
+  const resourceItems = getResourceItems({
+    domainIsOn,
+    includeDeveloperGuide: hasAnyRole(developerGuideRoles),
+  });
 
   const toggleCmsWidget = () => {
     setCmsAnchorEl(cmsAnchorEl ? null : cmsButtonRef.current);
@@ -84,6 +104,22 @@ function ChplDesktopNav({
     setShortcutsAnchorEl(null);
   };
 
+  const getItemAnalytics = (item) => ({
+    ...analytics,
+    event: item.analyticsEvent,
+    ...(item.analyticsCategory ? { category: item.analyticsCategory } : {}),
+  });
+
+  const getDownloadIcon = (item) => {
+    if (!item.showDownloadIcon) {
+      return undefined;
+    }
+    if (item.usePrimaryIconWhenDomainIsOff && !domainIsOn) {
+      return <CloudDownloadIcon color="primary" />;
+    }
+    return <CloudDownloadIcon />;
+  };
+
   return (
     <Box className={classes.navContainer}>
       <Button
@@ -101,6 +137,7 @@ function ChplDesktopNav({
       <Button
         ref={cmsButtonRef}
         onClick={toggleCmsWidget}
+        aria-expanded={cmsAnchorEl ? 'true' : undefined}
         className={classes.whiteButton}
       >
         CMS ID Creator
@@ -125,6 +162,7 @@ function ChplDesktopNav({
       <Button
         ref={compareButtonRef}
         onClick={toggleCompareWidget}
+        aria-expanded={compareAnchorEl ? 'true' : undefined}
         className={classes.whiteButton}
         color="inherit"
       >
@@ -150,6 +188,7 @@ function ChplDesktopNav({
       <Button
         ref={resourcesButtonRef}
         onClick={toggleResources}
+        aria-expanded={resourcesAnchorEl ? 'true' : undefined}
         className={classes.whiteButton}
       >
         Resources
@@ -166,137 +205,23 @@ function ChplDesktopNav({
           className: classes.menuPaper,
         }}
       >
-        <MenuItem divider onClick={closeResources}>
-          <ChplLink
-            href="#/resources/overview"
-            text="Overview"
-            analytics={{
-              ...analytics,
-              event: 'Go to Overview Page',
-            }}
-            external={false}
-            router={{ sref: 'resources.overview' }}
-          />
-        </MenuItem>
-        { domainIsOn
-          ? (
-            <MenuItem divider onClick={closeResources}>
-              <ChplLink
-                href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-                text="CHPL Public User Guide"
-                analytics={{
-                  ...analytics,
-                  event: 'CHPL Public User Guide',
-                  category: 'Resources',
-                }}
-                external={false}
-                router={{ sref: 'resources.overview' }}
-                icon={<CloudDownloadIcon />}
-              />
-            </MenuItem>
-          ) : (
-            <MenuItem divider onClick={closeResources}>
-              <ChplLink
-                href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-                text="CHPL Public User Guide"
-                analytics={{
-                  ...analytics,
-                  event: 'CHPL Public User Guide',
-                  category: 'Resources',
-                }}
-                external={false}
-                router={{ sref: 'resources.overview' }}
-                icon={<CloudDownloadIcon color="primary" />}
-              />
-            </MenuItem>
-          )}
-        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
-          && domainIsOn
-          && (
-            <MenuItem divider onClick={closeResources}>
-              <ChplLink
-                href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
-                text="CHPL Developer User Guide"
-                analytics={{
-                  ...analytics,
-                  event: 'CHPL Developer User Guide',
-                  category: 'Resources',
-                }}
-                external={false}
-                router={{ sref: 'resources.overview' }}
-                icon={<CloudDownloadIcon />}
-              />
-            </MenuItem>
-          )}
-        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])
-          && !domainIsOn
-          && (
-            <MenuItem divider onClick={closeResources}>
-              <ChplLink
-                href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
-                text="CHPL Developer User Guide"
-                analytics={{
-                  ...analytics,
-                  event: 'CHPL Developer User Guide',
-                  category: 'Resources',
-                }}
-                external={false}
-                router={{ sref: 'resources.overview' }}
-                icon={<CloudDownloadIcon />}
-              />
-            </MenuItem>
-          )}
-        <MenuItem divider onClick={closeResources}>
-          <ChplLink
-            href="#/resources/cms-lookup"
-            text="CMS ID Reverse Lookup"
-            analytics={{
-              ...analytics,
-              event: 'Go to CMS ID Reverse Lookup Page',
-            }}
-            external={false}
-            router={{ sref: 'resources.cms-lookup' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeResources}>
-          <ChplLink
-            href="#/resources/download"
-            text="Download the CHPL"
-            analytics={{
-              ...analytics,
-              event: 'Go to Download the CHPL Page',
-            }}
-            external={false}
-            router={{ sref: 'resources.download' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeResources}>
-          <ChplLink
-            href="#/resources/api"
-            text="CHPL API"
-            analytics={{
-              ...analytics,
-              event: 'Go to CHPL API Page',
-            }}
-            external={false}
-            router={{ sref: 'resources.api' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeResources}>
-          <ChplLink
-            href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
-            text="Contact Us"
-            analytics={{
-              ...analytics,
-              event: 'Go to Contact Us Page',
-            }}
-            external={false}
-          />
-        </MenuItem>
+        {resourceItems.map((item) => (
+          <MenuItem key={item.key} divider onClick={closeResources}>
+            <ChplLink
+              href={item.href}
+              text={item.text}
+              analytics={getItemAnalytics(item)}
+              external={false}
+              router={item.router}
+              icon={getDownloadIcon(item)}
+            />
+          </MenuItem>
+        ))}
       </Menu>
       <Button
         ref={shortcutsButtonRef}
         onClick={toggleShortcuts}
+        aria-expanded={shortcutsAnchorEl ? 'true' : undefined}
         className={classes.whiteButton}
       >
         Shortcuts
@@ -313,126 +238,17 @@ function ChplDesktopNav({
           className: classes.menuPaper,
         }}
       >
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/api-documentation"
-            text="API Information"
-            analytics={{
-              ...analytics,
-              event: 'Go to API Info Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.api-documentation' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/banned-developers"
-            text="Banned Developers"
-            analytics={{
-              ...analytics,
-              event: 'Go to Banned Developers Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.banned-developers' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/charts"
-            text="Charts"
-            analytics={{
-              ...analytics,
-              event: 'Go to Charts Page',
-            }}
-            external={false}
-            router={{ sref: 'charts' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/decertified-products"
-            text="Decertified Products"
-            analytics={{
-              ...analytics,
-              event: 'Go to Decertified Products Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.decertified-products' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/decision-support-interventions"
-            text="Decision Support Interventions"
-            analytics={{
-              ...analytics,
-              event: 'Go to Decision Support Interventions Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.decision-support-interventions' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/inactive-certificates"
-            text="Inactive Certificates"
-            analytics={{
-              ...analytics,
-              event: 'Go to Inactive Certificates Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.inactive-certificates' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/corrective-action"
-            text="Products: Corrective Action"
-            analytics={{
-              ...analytics,
-              event: 'Go to Products: Corrective Action Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.corrective-action' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/real-world-testing"
-            text="Real World Testing"
-            analytics={{
-              ...analytics,
-              event: 'Go to Real World Testing Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.real-world-testing' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/sed"
-            text="SED Information"
-            analytics={{
-              ...analytics,
-              event: 'Go to SED Info Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.sed' }}
-          />
-        </MenuItem>
-        <MenuItem divider onClick={closeShortcuts}>
-          <ChplLink
-            href="#/svap"
-            text="SVAP Information"
-            analytics={{
-              ...analytics,
-              event: 'Go to SVAP Info Page',
-            }}
-            external={false}
-            router={{ sref: 'shortcut.svap' }}
-          />
-        </MenuItem>
+        {shortcutItems.map((item) => (
+          <MenuItem key={item.key} divider onClick={closeShortcuts}>
+            <ChplLink
+              href={item.href}
+              text={item.text}
+              analytics={getItemAnalytics(item)}
+              external={false}
+              router={item.router}
+            />
+          </MenuItem>
+        ))}
       </Menu>
     </Box>
   );

@@ -19,6 +19,12 @@ import { func, bool } from 'prop-types';
 
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
+import { ChplLink } from 'components/util';
+import {
+  developerGuideRoles,
+  getResourceItems,
+  shortcutItems,
+} from 'navigation/navigation-menu-items';
 import { palette } from 'themes';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: 280,
-    backgroundColor: palette.navBackground,
-    color: '#fff',
+    backgroundColor: palette.white,
+    color: palette.greyDark,
   },
   drawerHeader: {
     display: 'flex',
@@ -44,10 +50,10 @@ const useStyles = makeStyles((theme) => ({
     padding: '8px 4px 0px 14px',
   },
   drawerItem: {
-    color: '#fff',
+    color: palette.greyDark,
   },
   drawerNestedItem: {
-    color: '#fff',
+    color: palette.greyDark,
     paddingLeft: '32px',
   },
   drawerDivider: {
@@ -90,15 +96,23 @@ function ChplMobileNavDrawer({
   const [mobileCmsOpen, setMobileCmsOpen] = useState(false);
   const [mobileCompareOpen, setMobileCompareOpen] = useState(false);
   const classes = useStyles();
+  const resourceItems = getResourceItems({
+    domainIsOn,
+    includeDeveloperGuide: hasAnyRole(developerGuideRoles),
+  });
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
 
   const handleHomeClick = () => {
     onHomeClick();
-    setMobileMenuOpen(false);
+    closeMobileMenu();
   };
 
   const handleSearchClick = () => {
     onSearchClick();
-    setMobileMenuOpen(false);
+    closeMobileMenu();
   };
 
   return (
@@ -115,12 +129,12 @@ function ChplMobileNavDrawer({
       <Drawer
         anchor="right"
         open={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
+        onClose={closeMobileMenu}
         classes={{ paper: classes.drawerPaper }}
       >
         <div className={classes.drawerHeader}>
           <Typography variant="h6">CHPL Navigation</Typography>
-          <IconButton onClick={() => setMobileMenuOpen(false)} color="primary" aria-label="close menu">
+          <IconButton onClick={closeMobileMenu} color="primary" aria-label="close menu">
             <CloseIcon color="primary" />
           </IconButton>
         </div>
@@ -160,29 +174,16 @@ function ChplMobileNavDrawer({
           </ListItem>
           <Collapse in={mobileResourcesOpen}>
             <List disablePadding>
-              <ListItem button component="a" href="#/resources/overview" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Overview" />
-              </ListItem>
-              <ListItem button component="a" href={domainIsOn ? 'https://www.astp.hhs.gov/sites/default/files/policy/chpl_public_user_guide.pdf' : 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf'} target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="CHPL Public User Guide" />
-              </ListItem>
-              {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer']) && (
-                <ListItem button component="a" href={domainIsOn ? 'https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf' : 'https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf'} target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                  <ListItemText primary="CHPL Developer User Guide" />
+              {resourceItems.map((item) => (
+                <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
+                  <ChplLink
+                    href={item.href}
+                    text={item.text}
+                    external={false}
+                    router={item.router}
+                  />
                 </ListItem>
-              )}
-              <ListItem button component="a" href="#/resources/cms-lookup" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="CMS ID Reverse Lookup" />
-              </ListItem>
-              <ListItem button component="a" href="#/resources/download" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Download the CHPL" />
-              </ListItem>
-              <ListItem button component="a" href="#/resources/api" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="CHPL API" />
-              </ListItem>
-              <ListItem button component="a" href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Contact Us" />
-              </ListItem>
+              ))}
             </List>
           </Collapse>
           <Divider className={classes.drawerDivider} />
@@ -192,36 +193,16 @@ function ChplMobileNavDrawer({
           </ListItem>
           <Collapse in={mobileShortcutsOpen}>
             <List disablePadding>
-              <ListItem button component="a" href="#/api-documentation" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="API Information" />
-              </ListItem>
-              <ListItem button component="a" href="#/banned-developers" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Banned Developers" />
-              </ListItem>
-              <ListItem button component="a" href="#/charts" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Charts" />
-              </ListItem>
-              <ListItem button component="a" href="#/decertified-products" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Decertified Products" />
-              </ListItem>
-              <ListItem button component="a" href="#/decision-support-interventions" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Decision Support Interventions" />
-              </ListItem>
-              <ListItem button component="a" href="#/inactive-certificates" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Inactive Certificates" />
-              </ListItem>
-              <ListItem button component="a" href="#/corrective-action" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Products: Corrective Action" />
-              </ListItem>
-              <ListItem button component="a" href="#/real-world-testing" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="Real World Testing" />
-              </ListItem>
-              <ListItem button component="a" href="#/sed" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="SED Information" />
-              </ListItem>
-              <ListItem button component="a" href="#/svap" onClick={() => setMobileMenuOpen(false)} className={classes.drawerNestedItem}>
-                <ListItemText primary="SVAP Information" />
-              </ListItem>
+              {shortcutItems.map((item) => (
+                <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
+                  <ChplLink
+                    href={item.href}
+                    text={item.text}
+                    external={false}
+                    router={item.router}
+                  />
+                </ListItem>
+              ))}
             </List>
           </Collapse>
           <Divider className={classes.drawerDivider} />
