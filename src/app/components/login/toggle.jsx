@@ -1,9 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
+  Divider,
+  Drawer,
+  IconButton,
   Popover,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import CloseIcon from '@material-ui/icons/Close';
 import { func } from 'prop-types';
 import { getAccessToken, setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
@@ -14,7 +21,7 @@ import ChplAdminMenu from './admin-menu';
 import { usePostRefreshToken } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-import theme from 'themes/theme';
+import { theme, palette } from 'themes';
 
 const useStyles = makeStyles({
   loginSpacing: {
@@ -29,17 +36,42 @@ const useStyles = makeStyles({
       width: '375px',
     },
   },
-  loggedInButton: {
-    backgroundColor: '#0066cc',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#0052a3',
-    },
-  },
   whiteButton: {
     color: '#fff!important',
     textTransform: 'capitalize!important',
-    fontSize: '0.875rem',
+    fontSize: '1rem',
+    '&:hover': {
+      backgroundColor: `${palette.primaryDark}!important`,
+      color: '#fff!important',
+    },
+    '&[aria-expanded="true"]': {
+      backgroundColor: `${palette.white}!important`,
+      color: `${palette.greyDark}!important`,
+      fontWeight: 'bold',
+    },
+  },
+  drawerPaper: {
+    width: 280,
+    maxWidth: '100vw',
+    backgroundColor: palette.white,
+    color: palette.greyDark,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '8px 4px 0px 14px',
+  },
+  drawerContent: {
+    paddingBottom: '8px',
+  },
+  drawerDivider: {
+    backgroundColor: palette.divider,
+  },
+  drawerLoginCard: {
+    width: '100%',
+    maxWidth: '280px',
+    padding: '0 8px 8px',
   },
 });
 
@@ -50,10 +82,13 @@ function ChplToggle({ dispatch = () => {} }) {
   const [cookies] = useCookies(['cognito_id', 'refresh_token']);
   const { mutate } = usePostRefreshToken();
   const [anchor, setAnchor] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
+  const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [state, setState] = useState('SIGNIN');
   const classes = useStyles();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
 
   useEffect(() => {
     getAccessToken().then((token) => (token ? setState('LOGGEDIN') : setState('SIGNIN')));
@@ -85,12 +120,18 @@ function ChplToggle({ dispatch = () => {} }) {
   }, [cookies]);
 
   const handleClick = (e) => {
+    if (isMobile) {
+      setAdminDrawerOpen(true);
+      return;
+    }
     setAnchor(e.currentTarget);
-    setOpen(true);
+    setLoginPopoverOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setLoginPopoverOpen(false);
+    setAdminDrawerOpen(false);
+    setAnchor(null);
   };
 
   const handleDispatch = (action) => {
@@ -107,6 +148,11 @@ function ChplToggle({ dispatch = () => {} }) {
     switch (action) {
       case 'changePassword':
         setState('CHANGEPASSWORD');
+        if (isMobile) {
+          setAdminDrawerOpen(true);
+        } else {
+          setLoginPopoverOpen(true);
+        }
         break;
       case 'logout':
         setState('SIGNIN');
@@ -130,6 +176,7 @@ function ChplToggle({ dispatch = () => {} }) {
       <Button
         id="login-toggle"
         aria-describedby="admin-login-form"
+        aria-expanded={isToggleOpen ? 'true' : undefined}
         onClick={handleClick}
         className={classes.whiteButton}
       >
@@ -137,7 +184,7 @@ function ChplToggle({ dispatch = () => {} }) {
       </Button>
       <Popover
         id="admin-login-form"
-        open={open}
+        open={loginPopoverOpen}
         anchorEl={anchor}
         onClose={handleClose}
         anchorOrigin={{
@@ -163,6 +210,33 @@ function ChplToggle({ dispatch = () => {} }) {
           </div>
         )}
       </Popover>
+      <Drawer
+        anchor="right"
+        open={isMobile && adminDrawerOpen}
+        onClose={handleClose}
+        classes={{ paper: classes.drawerPaper }}
+      >
+        <Box className={classes.drawerContent}>
+          <Box className={classes.drawerHeader}>
+            <Typography variant="h6">Administrator Navigation</Typography>
+            <IconButton onClick={handleClose} aria-label="close admin menu">
+              <CloseIcon color="primary" />
+            </IconButton>
+          </Box>
+          <Divider className={classes.drawerDivider} />
+          {state === 'LOGGEDIN' ? (
+            <ChplAdminMenu onClose={handleClose} onDispatch={handleAdminMenuDispatch} />
+          ) : (
+            <div className={classes.drawerLoginCard}>
+              <ChplLogin
+                dispatch={handleDispatch}
+                setState={setState}
+                state={state}
+              />
+            </div>
+          )}
+        </Box>
+      </Drawer>
     </>
   );
 }
