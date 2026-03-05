@@ -67,7 +67,7 @@ const ChplCompareDisplay = React.forwardRef((props, ref) => {
   return (
     <CardContent className={classes.cardcontentPadding} ref={ref}>
       <div className={classes.chipContainer}>
-        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
+        { [...listings].sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
             <Chip
               className={classes.productChips}

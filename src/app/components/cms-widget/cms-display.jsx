@@ -184,15 +184,15 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
         <Box display="flex" flexDirection="column" boxSizing="border-box">
           <Typography className={classes.wordWrap} gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
           <Typography variant="body2" className={classes.wordWrap}>Please select products to create a CMS ID using the button found on either search results or product detail pages.</Typography>
-          <Typography className={classes.wordWrap}>
+          <Typography variant="body2" align="left" style={{ paddingTop: '4px' }} className={classes.wordWrap}>
             Note: the selected product
             {listings?.length !== 1 ? 's' : ''}
             {' '}
             must meet 100% of the Base Criteria.
           </Typography>
           <Divider />
-          <Box display="flex" flexDirection="column" alignItems="center" gap="8px" paddingTop="8px">
-            <Typography gutterBottom align="center" variant="body2" className={classes.wordWrap}>
+          <Box display="flex" flexDirection="column" gap="8px" paddingTop="8px">
+            <Typography gutterBottom align="left" variant="body2" className={classes.wordWrap}>
               For assistance, view the
               {' '}
               <ChplLink
@@ -214,7 +214,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
               />
 
             </Typography>
-            <Typography align="center" variant="body2" className={classes.wordWrap}>
+            <Typography align="left" variant="body2" className={classes.wordWrap}>
               To view which products were used to create a specific CMS ID, use the
               {' '}
               <ChplLink
@@ -259,7 +259,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
         )}
       { idAnalysis.metPercentages?.criteriaMet < 100
         && (
-          <Typography>
+          <Typography align="left" style={{ paddingTop: '4px' }} variant="body2">
             Note: the selected product
             {listings?.length !== 1 ? 's' : ''}
             {' '}
@@ -326,7 +326,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
         )}
       <Divider />
       <div className={classes.chipContainer}>
-        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
+        { [...listings].sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
             <Chip
               className={classes.productChips}
