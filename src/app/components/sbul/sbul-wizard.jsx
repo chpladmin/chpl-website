@@ -19,19 +19,14 @@ import { ChplActionBar } from 'components/action-bar';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplSbulWizard({
-  isSubmitting: initialIsSubmitting = false,
+  isSubmitting = false,
   dispatch,
   listings,
   stage = 0,
 }) {
-  const [submission, setSubmission] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedListings, setSelectedListings] = useState(new Set());
 
-  useEffect(() => {
-    setIsSubmitting(initialIsSubmitting);
-  }, [initialIsSubmitting]);
-
-  const canNext = () => stage === 0 || (stage === 1 && true /* insert logic for selected listings) */);
+  const canNext = () => stage === 0 || (stage === 1 && selectedListings.size > 0);
 
   const canPrevious = () => stage > 0 && stage < 3;
 
@@ -39,8 +34,16 @@ function ChplSbulWizard({
     dispatch('close');
   };
 
-  const handleFormDispatch = (payload) => {
-    setSubmission(payload);
+  const handleListingDispatch = (payload) => {
+    setSelectedListings((prev) => {
+      const next = new Set(prev);
+      if (next.has(payload)) {
+        next.delete(payload);
+      } else {
+        next.add(payload);
+      }
+      return next;
+    });
   };
 
   const handleProgressDispatch = (action) => dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
@@ -48,6 +51,7 @@ function ChplSbulWizard({
   const handleUrlDispatch = (url) => {
     const payload = {
       details: {
+        selectedListings: listings.filter((l) => selectedListings.has(l.id)),
         url,
       },
     };
@@ -70,7 +74,8 @@ function ChplSbulWizard({
         && (
           <ChplSbulWizardSection2
             listings={listings}
-            dispatch={handleFormDispatch}
+            dispatch={handleListingDispatch}
+            selectedListings={selectedListings}
           />
         )}
       { stage === 2

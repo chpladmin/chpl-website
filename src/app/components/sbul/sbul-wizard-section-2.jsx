@@ -10,15 +10,18 @@ import {
   FormControlLabel,
   FormGroup,
   FormLabel,
-  List,
-  ListItem,
   Radio,
   RadioGroup,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import { array, func, string } from 'prop-types';
+import { array, func, object, string } from 'prop-types';
 
 import { interpretEmphatic, interpretLink } from './attestation-util';
 
@@ -49,8 +52,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSbulWizardSection2({ dispatch, listings }) {
+function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
   const classes = useStyles();
+
+  const toggle = (listing) => {
+    dispatch(listing.id);
+  };
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="md">
@@ -59,15 +66,32 @@ function ChplSbulWizardSection2({ dispatch, listings }) {
       </Typography>
       <Card>
         <CardContent>
-          <List>
-            { listings.map((l) => (
-              <ListItem
-                key={l.chplProductNumber}
-              >
-                {`${l.chplProductNumber} - ${l.serviceBaseUrlList.value}`}
-              </ListItem>
-            )) }
-          </List>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell scope="col">CHPL Product Number</TableCell>
+                <TableCell scope="col">Service Base URL List</TableCell>
+                <TableCell scope="col">Update</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { listings.map((l) => (
+                <TableRow
+                  key={l.chplProductNumber}
+                >
+                  <TableCell>{l.chplProductNumber}</TableCell>
+                  <TableCell>{l.serviceBaseUrlList.value}</TableCell>
+                  <TableCell>
+                    <Checkbox
+                      onChange={() => toggle(l)}
+                      checked={selectedListings.has(l.id)}
+                      color="primary"
+                    />
+                  </TableCell>
+                </TableRow>
+              )) }
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </Container>
@@ -79,4 +103,5 @@ export default ChplSbulWizardSection2;
 ChplSbulWizardSection2.propTypes = {
   listings: array.isRequired, // eslint-disable-line react/forbid-prop-types
   dispatch: func.isRequired,
+  selectedListings: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
