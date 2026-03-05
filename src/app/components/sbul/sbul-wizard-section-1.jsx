@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   sbulContainerList: {
     fontSize: '0.875em',
   },
-  fixFooterSpacing:{
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 500px)',
   },
   forAssistanceContainer: {
@@ -24,7 +24,7 @@ function ChplSbulWizardSection1() {
   const classes = useStyles();
 
   return (
-    <Container  className={classes.fixFooterSpacing} maxWidth="md">
+    <Container className={classes.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2">
         Section 1 &mdash; Introduction
       </Typography>

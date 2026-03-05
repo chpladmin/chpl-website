@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   arrayOf,
   bool,
   func,
   number,
   object,
-  shape,
-  string,
 } from 'prop-types';
 
 import ChplSbulProgress from './sbul-progress';
@@ -16,7 +14,6 @@ import ChplSbulWizardSection3 from './sbul-wizard-section-3';
 import ChplSbulWizardSection4 from './sbul-wizard-section-4';
 
 import { ChplActionBar } from 'components/action-bar';
-import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplSbulWizard({
   isSubmitting = false,

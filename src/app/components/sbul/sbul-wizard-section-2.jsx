@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Box,
   Card,
   CardContent,
   Checkbox,
   Container,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
-  Radio,
-  RadioGroup,
   Table,
   TableBody,
   TableCell,
@@ -20,10 +12,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import { array, func, object, string } from 'prop-types';
-
-import { interpretEmphatic, interpretLink } from './attestation-util';
+import { array, func, object } from 'prop-types';
 
 const useStyles = makeStyles({
   fixFooterSpacing: {

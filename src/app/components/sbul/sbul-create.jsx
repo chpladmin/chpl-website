@@ -11,8 +11,7 @@ import ChplSbulWizard from './sbul-wizard';
 
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { useFetchSbulListings } from 'api/developer';
-import { getDisplayDateFormat } from 'services/date-util';
-import { DeveloperContext, UserContext } from 'shared/contexts';
+import { DeveloperContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -22,7 +21,6 @@ const useStyles = makeStyles({
 
 function ChplSbulCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
-  const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [changeRequestType, setChangeRequestType] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);

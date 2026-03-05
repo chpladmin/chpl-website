@@ -9,7 +9,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
-import usePostUrlChecker from 'api/url-checker';
+import { usePostUrlChecker } from 'api/url-checker';
 import { ChplTextField } from 'components/util';
 
 const validationSchema = yup.object({
