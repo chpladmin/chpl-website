@@ -91,10 +91,12 @@ function ChplMobileNavDrawer({
   domainIsOn,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
-  const [mobileShortcutsOpen, setMobileShortcutsOpen] = useState(false);
-  const [mobileCmsOpen, setMobileCmsOpen] = useState(false);
-  const [mobileCompareOpen, setMobileCompareOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({
+    cms: false,
+    compare: false,
+    resources: false,
+    shortcuts: false,
+  });
   const classes = useStyles();
   const resourceItems = getResourceItems({
     domainIsOn,
@@ -114,6 +116,39 @@ function ChplMobileNavDrawer({
     onSearchClick();
     closeMobileMenu();
   };
+
+  const toggleSection = (section) => {
+    setExpandedSections((previous) => ({
+      ...previous,
+      [section]: !previous[section],
+    }));
+  };
+
+  const widgetSections = [
+    {
+      key: 'cms',
+      title: 'CMS ID Creator',
+      content: <ChplCmsDisplay />,
+    },
+    {
+      key: 'compare',
+      title: 'Compare Products',
+      content: <ChplCompareDisplay />,
+    },
+  ];
+
+  const linkSections = [
+    {
+      key: 'resources',
+      title: 'Resources',
+      items: resourceItems,
+    },
+    {
+      key: 'shortcuts',
+      title: 'Shortcuts',
+      items: shortcutItems,
+    },
+  ];
 
   return (
     <>
@@ -148,64 +183,43 @@ function ChplMobileNavDrawer({
             <ListItemText primary="Search CHPL" />
           </ListItem>
           <Divider className={classes.drawerDivider} />
-          <ListItem button onClick={() => setMobileCmsOpen(!mobileCmsOpen)} className={classes.drawerItem}>
-            <ListItemText primary="CMS ID Creator" />
-            {mobileCmsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </ListItem>
-          <Collapse in={mobileCmsOpen}>
-            <Box className={classes.widgetContainer}>
-              <ChplCmsDisplay />
-            </Box>
-          </Collapse>
-          <Divider className={classes.drawerDivider} />
-          <ListItem button onClick={() => setMobileCompareOpen(!mobileCompareOpen)} className={classes.drawerItem}>
-            <ListItemText primary="Compare Products" />
-            {mobileCompareOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </ListItem>
-          <Collapse in={mobileCompareOpen}>
-            <Box className={classes.widgetContainer}>
-              <ChplCompareDisplay />
-            </Box>
-          </Collapse>
-          <Divider className={classes.drawerDivider} />
-          <ListItem button onClick={() => setMobileResourcesOpen(!mobileResourcesOpen)} className={classes.drawerItem}>
-            <ListItemText primary="Resources" />
-            {mobileResourcesOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </ListItem>
-          <Collapse in={mobileResourcesOpen}>
-            <List disablePadding>
-              {resourceItems.map((item) => (
-                <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
-                  <ChplLink
-                    href={item.href}
-                    text={item.text}
-                    external={false}
-                    router={item.router}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Collapse>
-          <Divider className={classes.drawerDivider} />
-          <ListItem button onClick={() => setMobileShortcutsOpen(!mobileShortcutsOpen)} className={classes.drawerItem}>
-            <ListItemText primary="Shortcuts" />
-            {mobileShortcutsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </ListItem>
-          <Collapse in={mobileShortcutsOpen}>
-            <List disablePadding>
-              {shortcutItems.map((item) => (
-                <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
-                  <ChplLink
-                    href={item.href}
-                    text={item.text}
-                    external={false}
-                    router={item.router}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Collapse>
-          <Divider className={classes.drawerDivider} />
+          {widgetSections.map((section) => (
+            <React.Fragment key={section.key}>
+              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+                <ListItemText primary={section.title} />
+                {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </ListItem>
+              <Collapse in={expandedSections[section.key]}>
+                <Box className={classes.widgetContainer}>
+                  {section.content}
+                </Box>
+              </Collapse>
+              <Divider className={classes.drawerDivider} />
+            </React.Fragment>
+          ))}
+          {linkSections.map((section) => (
+            <React.Fragment key={section.key}>
+              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+                <ListItemText primary={section.title} />
+                {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </ListItem>
+              <Collapse in={expandedSections[section.key]}>
+                <List disablePadding>
+                  {section.items.map((item) => (
+                    <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
+                      <ChplLink
+                        href={item.href}
+                        text={item.text}
+                        external={false}
+                        router={item.router}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Collapse>
+              <Divider className={classes.drawerDivider} />
+            </React.Fragment>
+          ))}
         </List>
       </Drawer>
     </>
