@@ -56,31 +56,36 @@ function ChplSbulCreate({ dispatch }) {
         setStage(payload);
         break;
       case 'submit':
-        setIsSubmitting(true);
-        mutate({
-          ...payload,
-          changeRequestType,
-          developer,
-        }, {
-          onSuccess: () => {
-            setIsSubmitting(false);
-            setStage(3);
-          },
-          onError: (error) => {
-            setIsSubmitting(false);
-            if (error.response.data.error?.startsWith('Email could not be sent to')) {
-              enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
-                variant: 'info',
-              });
+        payload.details.selectedListings.forEach((listing) => {
+          setIsSubmitting(true);
+          mutate({
+            developer,
+            changeRequestType,
+            details: {
+              listing,
+              url: payload.details.url,
+            },
+          }, {
+            onSuccess: () => {
+              setIsSubmitting(false);
               setStage(3);
-            } else {
-              const message = error.response.data?.error
-                    || error.response.data?.errorMessages.join(' ');
-              enqueueSnackbar(message, {
-                variant: 'error',
-              });
-            }
-          },
+            },
+            onError: (error) => {
+              setIsSubmitting(false);
+              if (error.response.data.error?.startsWith('Email could not be sent to')) {
+                enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+                  variant: 'info',
+                });
+                setStage(3);
+              } else {
+                const message = error.response.data?.error
+                      || error.response.data?.errorMessages.join(' ');
+                enqueueSnackbar(message, {
+                  variant: 'error',
+                });
+              }
+            },
+          });
         });
         break;
         // no default

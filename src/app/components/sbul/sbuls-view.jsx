@@ -94,7 +94,7 @@ function ChplSbulsView({ developer, dispatch }) {
               )}
           </>
         </CardContent>
-        { hasAnyRole(['chpl-admin', 'chpl-developer'])// && hasAuthorityOn({ id: developer.id }) && sbulChangeRequestIsOn
+        { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }) && sbulChangeRequestIsOn
           && (
             <CardActions>
               <Button

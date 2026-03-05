@@ -64,9 +64,9 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
 
-  const isSubmitDisabled = () => url.length === 0 || isSubmitting;
+  const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);
 
-  const handleDispatch = ({ action, payload }) => {
+  const handleDispatch = ({ action, payload, url: submittedUrl }) => {
     switch (action) {
       case 'loading':
         setIsLoading(true);
@@ -75,7 +75,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
         break;
       case 'complete':
         setIsLoading(false);
-        setUrl(payload.url);
+        setUrl(submittedUrl);
         setUrlCheckResponse(payload);
         console.log(payload);
         break;

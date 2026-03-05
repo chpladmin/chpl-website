@@ -26,7 +26,7 @@ function ChplUrlChecker({ dispatch }) {
     dispatch({ action: 'loading' });
     mutate(payload, {
       onSuccess: (response) => {
-        dispatch({ action: 'complete', payload: response.data });
+        dispatch({ action: 'complete', payload: response.data, url: payload.url });
       },
       onError: () => {
         enqueueSnackbar('There was an error attempting to check the URL.', {
