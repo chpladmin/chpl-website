@@ -25,6 +25,151 @@ import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { palette } from 'themes';
 
+const sectionConfigs = [
+  {
+    key: 'administration',
+    title: 'Administration',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'],
+    disablePadding: false,
+    items: [
+      {
+        key: 'upload',
+        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+        href: '#/administration/upload',
+        text: 'Upload',
+        router: { sref: 'administration.upload' },
+      },
+      {
+        key: 'confirm-listings',
+        roles: ['chpl-admin', 'chpl-onc-acb'],
+        href: '#/administration/confirm/listings',
+        text: 'Confirm Listings',
+        router: { sref: 'administration.confirm.listings' },
+      },
+      {
+        key: 'reports',
+        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+        href: '#/administration/reports',
+        text: 'Reports',
+        router: { sref: 'administration.reports' },
+      },
+      {
+        key: 'cms',
+        roles: ['chpl-admin', 'chpl-onc', 'chpl-cms-staff'],
+        href: '#/administration/cms',
+        text: 'CMS',
+        router: { sref: 'administration.cms' },
+      },
+      {
+        key: 'change-requests',
+        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+        href: '#/administration/change-requests',
+        text: 'Change Requests',
+        router: { sref: 'administration.change-requests' },
+      },
+      {
+        key: 'system-maintenance',
+        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+        href: '#/administration/system-maintenance',
+        text: 'System Maintenance',
+        router: { sref: 'administration.system-maintenance' },
+      },
+      {
+        key: 'url-checker',
+        roles: ['chpl-admin', 'chpl-onc'],
+        href: '#/administration/url-checker',
+        text: 'URL Checker',
+        router: { sref: 'administration.url-checker' },
+      },
+      {
+        key: 'user-management',
+        roles: ['chpl-admin', 'chpl-onc'],
+        href: '#/users',
+        text: 'User Management',
+        router: { sref: 'users' },
+      },
+      {
+        key: 'ff4j',
+        roles: ['chpl-admin'],
+        href: 'rest/ff4j-console/home',
+        text: 'FF4j',
+        external: true,
+      },
+    ],
+  },
+  {
+    key: 'organizations',
+    title: 'Organizations',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    items: [
+      {
+        key: 'developers',
+        href: '#/organizations/developers',
+        text: 'Developers',
+        router: { sref: 'organizations.developers' },
+      },
+      {
+        key: 'onc-acbs',
+        href: '#/organizations/onc-acbs',
+        text: 'ONC-ACBs',
+        router: { sref: 'organizations.onc-acbs' },
+      },
+      {
+        key: 'onc-atls',
+        roles: ['chpl-admin', 'chpl-onc'],
+        href: '#/organizations/onc-atls',
+        text: 'ONC-ATLs',
+        router: { sref: 'organizations.onc-atls' },
+      },
+    ],
+  },
+  {
+    key: 'activity',
+    title: 'Activity',
+    roles: ['chpl-admin', 'chpl-onc'],
+    items: [
+      {
+        key: 'activity-search',
+        href: '#/reports/activity',
+        text: 'Search',
+        router: { sref: 'reports.activity' },
+      },
+      {
+        key: 'questionable-activity',
+        href: '#/reports/questionable-activity',
+        text: 'Questionable Activity',
+        router: { sref: 'reports.questionable-activity' },
+      },
+    ],
+  },
+  {
+    key: 'surveillance',
+    title: 'Surveillance',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    items: [
+      {
+        key: 'activity-reporting',
+        roles: ['chpl-admin', 'chpl-onc'],
+        href: '#/surveillance/activity-reporting',
+        text: 'Activity Reporting',
+        router: { sref: 'surveillance.activity-reporting' },
+      },
+      {
+        key: 'complaints-reporting',
+        href: '#/surveillance/complaints',
+        text: 'Complaints Reporting',
+        router: { sref: 'surveillance.complaints' },
+      },
+      {
+        key: 'reporting',
+        href: '#/surveillance/reporting',
+        text: 'Reporting',
+        router: { sref: 'surveillance.reporting' },
+      },
+    ],
+  },
+];
+
 const useStyles = makeStyles({
   menuContainer: {
     padding: 0,
@@ -70,24 +215,12 @@ const useStyles = makeStyles({
       backgroundColor: palette.secondary,
     },
   },
-  menuItemText: {
-    fontSize: '14px',
-  },
   footer: {
     display: 'flex',
     flexDirection: 'column',
     padding: '12px',
     gap: '8px',
     borderTop: `1px solid ${palette.divider}`,
-  },
-  link: {
-    color: '#0066cc',
-    textDecoration: 'none',
-    cursor: 'pointer',
-    fontSize: '14px',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
   },
 });
 
@@ -132,6 +265,39 @@ AdminMenuSection.propTypes = {
   title: string.isRequired,
 };
 
+function AdminMenuLinkItem({
+  classes,
+  external = false,
+  href,
+  onClose,
+  router = undefined,
+  text,
+}) {
+  return (
+    <ListItem className={classes.menuItem} onClick={onClose}>
+      <ChplLink
+        href={href}
+        text={text}
+        external={external}
+        router={router}
+      />
+    </ListItem>
+  );
+}
+
+AdminMenuLinkItem.propTypes = {
+  classes: shape({
+    menuItem: string,
+  }).isRequired,
+  external: bool,
+  href: string.isRequired,
+  onClose: func.isRequired,
+  router: shape({
+    sref: string,
+  }),
+  text: string.isRequired,
+};
+
 function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
   const authService = getAngularService('authService');
   const { hasAnyRole } = useContext(UserContext);
@@ -141,6 +307,8 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
+
+  const canAccess = (roles) => !roles || hasAnyRole(roles);
 
   const handleLogout = () => {
     authService.logout();
@@ -155,210 +323,33 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
   return (
     <Box className={classes.menuContainer}>
       <List component="nav">
-        {/* Administration Section */}
-        {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff']) && (
-          <AdminMenuSection
-            classes={classes}
-            section="administration"
-            title="Administration"
-            isOpen={openSection === 'administration'}
-            onToggle={toggleSection}
-            disablePadding={false}
-          >
-            {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/upload"
-                  text="Upload"
-                  external={false}
-                  router={{ sref: 'administration.upload' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc-acb']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/confirm/listings"
-                  text="Confirm Listings"
-                  external={false}
-                  router={{ sref: 'administration.confirm.listings' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/reports"
-                  text="Reports"
-                  external={false}
-                  router={{ sref: 'administration.reports' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-cms-staff']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/cms"
-                  text="CMS"
-                  external={false}
-                  router={{ sref: 'administration.cms' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/change-requests"
-                  text="Change Requests"
-                  external={false}
-                  router={{ sref: 'administration.change-requests' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/system-maintenance"
-                  text="System Maintenance"
-                  external={false}
-                  router={{ sref: 'administration.system-maintenance' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/administration/url-checker"
-                  text="URL Checker"
-                  external={false}
-                  router={{ sref: 'administration.url-checker' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/users"
-                  text="User Management"
-                  external={false}
-                  router={{ sref: 'users' }}
-                />
-              </ListItem>
-            )}
-            {hasAnyRole(['chpl-admin']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="rest/ff4j-console/home"
-                  text="FF4j"
-                  external
-                />
-              </ListItem>
-            )}
-          </AdminMenuSection>
-        )}
-        {/* Organizations Section */}
-        {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-          <AdminMenuSection
-            classes={classes}
-            section="organizations"
-            title="Organizations"
-            isOpen={openSection === 'organizations'}
-            onToggle={toggleSection}
-          >
-            <ListItem className={classes.menuItem} onClick={onClose}>
-              <ChplLink
-                href="#/organizations/developers"
-                text="Developers"
-                external={false}
-                router={{ sref: 'organizations.developers' }}
-              />
-            </ListItem>
-            <ListItem className={classes.menuItem} onClick={onClose}>
-              <ChplLink
-                href="#/organizations/onc-acbs"
-                text="ONC-ACBs"
-                external={false}
-                router={{ sref: 'organizations.onc-acbs' }}
-              />
-            </ListItem>
-            {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/organizations/onc-atls"
-                  text="ONC-ATLs"
-                  external={false}
-                  router={{ sref: 'organizations.onc-atls' }}
-                />
-              </ListItem>
-            )}
-          </AdminMenuSection>
-        )}
-
-        {/* Activity Section */}
-        {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-          <AdminMenuSection
-            classes={classes}
-            section="activity"
-            title="Activity"
-            isOpen={openSection === 'activity'}
-            onToggle={toggleSection}
-          >
-            <ListItem className={classes.menuItem} onClick={onClose}>
-              <ChplLink
-                href="#/reports/activity"
-                text="Search"
-                external={false}
-                router={{ sref: 'reports.activity' }}
-              />
-            </ListItem>
-            <ListItem className={classes.menuItem} onClick={onClose}>
-              <ChplLink
-                href="#/reports/questionable-activity"
-                text="Questionable Activity"
-                external={false}
-                router={{ sref: 'reports.questionable-activity' }}
-              />
-            </ListItem>
-          </AdminMenuSection>
-        )}
-
-        {/* Surveillance Section */}
-        {hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-          <AdminMenuSection
-            classes={classes}
-            section="surveillance"
-            title="Surveillance"
-            isOpen={openSection === 'surveillance'}
-            onToggle={toggleSection}
-          >
-            {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-              <ListItem className={classes.menuItem} onClick={onClose}>
-                <ChplLink
-                  href="#/surveillance/activity-reporting"
-                  text="Activity Reporting"
-                  external={false}
-                  router={{ sref: 'surveillance.activity-reporting' }}
-                />
-              </ListItem>
-            )}
-            <ListItem className={classes.menuItem} onClick={onClose}>
-              <ChplLink
-                href="#/surveillance/complaints"
-                text="Complaints Reporting"
-                external={false}
-                router={{ sref: 'surveillance.complaints' }}
-              />
-            </ListItem>
-            <ListItem className={classes.menuItem} onClick={onClose}>
-              <ChplLink
-                href="#/surveillance/reporting"
-                text="Reporting"
-                external={false}
-                router={{ sref: 'surveillance.reporting' }}
-              />
-            </ListItem>
-          </AdminMenuSection>
-        )}
+        {sectionConfigs
+          .filter((sectionConfig) => canAccess(sectionConfig.roles))
+          .map((sectionConfig) => (
+            <AdminMenuSection
+              key={sectionConfig.key}
+              classes={classes}
+              section={sectionConfig.key}
+              title={sectionConfig.title}
+              isOpen={openSection === sectionConfig.key}
+              onToggle={toggleSection}
+              disablePadding={sectionConfig.disablePadding}
+            >
+              {sectionConfig.items
+                .filter((item) => canAccess(item.roles))
+                .map((item) => (
+                  <AdminMenuLinkItem
+                    key={item.key}
+                    classes={classes}
+                    href={item.href}
+                    text={item.text}
+                    external={item.external}
+                    router={item.router}
+                    onClose={onClose}
+                  />
+                ))}
+            </AdminMenuSection>
+          ))}
       </List>
 
       {/* Footer with Log Out and Change Password */}
