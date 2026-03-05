@@ -16,12 +16,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import {
   arrayOf,
   bool,
   func,
   string,
 } from 'prop-types';
+import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -31,10 +33,11 @@ import {
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
 import { useFetchCertificationStatuses } from 'api/data';
+import { usePostRwtResultsChecker } from 'api/url-checker';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
   acbCertificationId: yup.string()
@@ -91,8 +94,10 @@ function ChplListingEdit({
   warnings = [],
   isProcessing = false,
 }) {
+  const { isProduction, rwtAiIntegrationIsOn } = useContext(FlagContext);
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [statuses, setStatuses] = useState([]);
   const [addingStatus, setAddingStatus] = useState(false);
   const [statusToAdd, setStatusToAdd] = useState('');
@@ -109,6 +114,7 @@ function ChplListingEdit({
   const { data: statusesData, isLoading: statusesIsLoading, isSuccess: statusesIsSuccess } = useFetchCertificationStatuses();
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
   const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
+  const { mutate } = usePostRwtResultsChecker();
   const classes = useStyles();
   let formik;
 
@@ -195,6 +201,25 @@ function ChplListingEdit({
         },
         acknowledgeWarnings,
         acknowledgeBusinessErrors,
+      },
+    });
+  };
+
+  const validate = () => {
+    mutate({
+      listingId: listing.id,
+      url: formik.values.rwtResultsUrl,
+    }, {
+      onSuccess: (response) => {
+        console.log(response);
+        enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
+          variant: 'success',
+        });
+      },
+      onError: () => {
+        enqueueSnackbar('There was an error attempting to check the RWT Results.', {
+          variant: 'error',
+        });
       },
     });
   };
@@ -538,32 +563,50 @@ function ChplListingEdit({
 
             { /* Real-World Testing */}
             <Box display="flex" pt={4} gridGap={8} flexDirection="column">
-              <Typography variant="h6">
+              <Typography gutterBottom variant="h6">
                 Real World Testing
               </Typography>
-              <Box display="flex" pt={2} justifyContent="space-around" gridGap={32} flexDirection="row">
-                <ChplTextField
-                  id="rwt-plans-url"
-                  name="rwtPlansUrl"
-                  label="Real-World Testing Plans URL"
-                  value={formik.values.rwtPlansUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-                  helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-                />
-                <ChplTextField
-                  id="rwt-results-url"
-                  name="rwtResultsUrl"
-                  label="Real-World Testing Results URL"
-                  value={formik.values.rwtResultsUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
-                  helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
-                />
+              <Box display="flex" justifyContent="space-around" gridGap={16} flexDirection="row">
+                <Box display="flex" justifyContent="space-around" gridGap={16} width={rwtAiIntegrationIsOn ? '90%' : '100%'} flexDirection="row">
+                  <ChplTextField
+                    id="rwt-plans-url"
+                    name="rwtPlansUrl"
+                    label="Real-World Testing Plans URL"
+                    value={formik.values.rwtPlansUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                    helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                  />
+                  <ChplTextField
+                    id="rwt-results-url"
+                    name="rwtResultsUrl"
+                    label="Real-World Testing Results URL"
+                    value={formik.values.rwtResultsUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
+                    helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
+                  />
+                </Box>
+                { rwtAiIntegrationIsOn && !isProduction
+                  && (
+                    <Button
+                      id="validate-url"
+                      aria-label="Validate RWT Results URL"
+                      color="primary"
+                      variant="contained"
+                      onClick={validate}
+                      size="small"
+                      disabled={formik.values.rwtResultsUrl.length === 0}
+                      endIcon={<VerifiedUserIcon />}
+                      style={{ padding: '8px !important' }}
+                    >
+                      Validate
+                    </Button>
+                  )}
               </Box>
-              <Box display="flex" pt={4} justifyContent="space-around" gridGap={32} flexDirection="row">
+              <Box display="flex" pt={4} justifyContent="space-around" gridGap={16} flexDirection="row">
                 <ChplTextField
                   id="rwt-plans-check-date"
                   name="rwtPlansCheckDate"
