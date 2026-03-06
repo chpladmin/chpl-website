@@ -60,7 +60,7 @@ function ChplSbulCreate({ dispatch }) {
             developer,
             changeRequestType,
             details: {
-              listing,
+              listing: { id: listing.id },
               url: payload.details.url,
             },
           }, {
