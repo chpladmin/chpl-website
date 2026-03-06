@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   AppBar,
+  ButtonBase,
   Box,
   Toolbar,
   makeStyles,
@@ -45,6 +46,18 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     display: 'inline-block',
     marginRight: '16px',
+  },
+  logoButton: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    padding: 0,
+    minWidth: 0,
+    borderRadius: 0,
+    '&.Mui-focusVisible': {
+      outline: `2px solid ${palette.white}`,
+      outlineOffset: '2px',
+    },
   },
   logo: {
     height: '40px',
@@ -143,12 +156,16 @@ function ChplNavigationTop() {
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '64px',
         }}
         >
-          <Box display="flex" alignItems="center" onClick={home} style={{ cursor: 'pointer' }}>
+          <ButtonBase
+            onClick={home}
+            className={classes.logoButton}
+            aria-label="Go to CHPL home"
+          >
             <div className={classes.logoContainer}>
               <img src={ChplLogo} alt="Certified Health IT Product List Logo" className={classes.logo} />
               <div className={classes.shimmer} />
             </div>
-          </Box>
+          </ButtonBase>
           <Box
             className={classes.rightSide}
             style={{
