@@ -16,6 +16,7 @@ import {
 } from 'prop-types';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
+import ChplUrlCheckerResponse from 'components/url-checker/url-checker-response';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -77,7 +78,6 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
         setIsLoading(false);
         setUrl(submittedUrl);
         setUrlCheckResponse(payload);
-        console.log(payload);
         break;
         // no default
     }
@@ -151,6 +151,12 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
               dispatch={handleDispatch}
             />
             { isLoading && <CircularProgress /> }
+            { urlCheckResponse
+              && (
+                <ChplUrlCheckerResponse
+                  response={urlCheckResponse}
+                />
+              )}
           </CardContent>
         </Card>
         <Card className={classes.dateContainer}>
