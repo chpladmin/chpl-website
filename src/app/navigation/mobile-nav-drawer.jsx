@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Collapse,
@@ -15,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuIcon from '@material-ui/icons/Menu';
-import { func, bool } from 'prop-types';
+import { func } from 'prop-types';
 
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
@@ -25,9 +25,10 @@ import {
   getResourceItems,
   shortcutItems,
 } from 'navigation/navigation-menu-items';
-import { palette } from 'themes';
+import { FlagContext, UserContext } from 'shared/contexts';
+import { palette, theme } from 'themes';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   mobileContainer: {
     display: 'none',
     alignItems: 'center',
@@ -82,14 +83,14 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '0.75rem',
     },
   },
-}));
+});
 
 function ChplMobileNavDrawer({
   onHomeClick,
   onSearchClick,
-  hasAnyRole,
-  domainIsOn,
 }) {
+  const { domainIsOn } = useContext(FlagContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     cms: false,
@@ -97,11 +98,11 @@ function ChplMobileNavDrawer({
     resources: false,
     shortcuts: false,
   });
-  const classes = useStyles();
   const resourceItems = getResourceItems({
     domainIsOn,
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
+  const classes = useStyles();
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -124,31 +125,25 @@ function ChplMobileNavDrawer({
     }));
   };
 
-  const widgetSections = [
-    {
-      key: 'cms',
-      title: 'CMS ID Creator',
-      content: <ChplCmsDisplay />,
-    },
-    {
-      key: 'compare',
-      title: 'Compare Products',
-      content: <ChplCompareDisplay />,
-    },
-  ];
+  const widgetSections = [{
+    key: 'cms',
+    title: 'CMS ID Creator',
+    content: <ChplCmsDisplay />,
+  }, {
+    key: 'compare',
+    title: 'Compare Products',
+    content: <ChplCompareDisplay />,
+  }];
 
-  const linkSections = [
-    {
-      key: 'resources',
-      title: 'Resources',
-      items: resourceItems,
-    },
-    {
-      key: 'shortcuts',
-      title: 'Shortcuts',
-      items: shortcutItems,
-    },
-  ];
+  const linkSections = [{
+    key: 'resources',
+    title: 'Resources',
+    items: resourceItems,
+  }, {
+    key: 'shortcuts',
+    title: 'Shortcuts',
+    items: shortcutItems,
+  }];
 
   return (
     <>
@@ -197,7 +192,7 @@ function ChplMobileNavDrawer({
               <Divider className={classes.drawerDivider} />
             </React.Fragment>
           ))}
-          {linkSections.map((section) => (
+          { linkSections.map((section) => (
             <React.Fragment key={section.key}>
               <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
@@ -205,7 +200,7 @@ function ChplMobileNavDrawer({
               </ListItem>
               <Collapse in={expandedSections[section.key]}>
                 <List disablePadding>
-                  {section.items.map((item) => (
+                  { section.items.map((item) => (
                     <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
                       <ChplLink
                         href={item.href}
@@ -231,6 +226,4 @@ export default ChplMobileNavDrawer;
 ChplMobileNavDrawer.propTypes = {
   onHomeClick: func.isRequired,
   onSearchClick: func.isRequired,
-  hasAnyRole: func.isRequired,
-  domainIsOn: bool.isRequired,
 };

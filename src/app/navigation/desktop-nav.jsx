@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -7,7 +7,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import { func, bool, shape } from 'prop-types';
+import { func } from 'prop-types';
 
 import {
   developerGuideRoles,
@@ -18,9 +18,10 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { palette } from 'themes';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { palette, theme } from 'themes';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   navContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -57,28 +58,28 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: '8px solid white',
     },
   },
-}));
+});
 
 function ChplDesktopNav({
   onHomeClick,
   onSearchClick,
-  hasAnyRole,
-  domainIsOn,
-  analytics,
 }) {
-  const cmsButtonRef = React.useRef(null);
-  const compareButtonRef = React.useRef(null);
-  const resourcesButtonRef = React.useRef(null);
-  const shortcutsButtonRef = React.useRef(null);
+  const analytics = useAnalyticsContext();
+  const { domainIsOn } = useContext(FlagContext);
+  const { hasAnyRole } = useContext(UserContext);
+  const cmsButtonRef = useRef(null);
+  const compareButtonRef = useRef(null);
+  const resourcesButtonRef = useRef(null);
+  const shortcutsButtonRef = useRef(null);
   const [cmsAnchorEl, setCmsAnchorEl] = useState(null);
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesAnchorEl, setResourcesAnchorEl] = useState(null);
   const [shortcutsAnchorEl, setShortcutsAnchorEl] = useState(null);
-  const classes = useStyles();
   const resourceItems = getResourceItems({
     domainIsOn,
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
+  const classes = useStyles();
 
   const toggleCmsWidget = () => {
     setCmsAnchorEl(cmsAnchorEl ? null : cmsButtonRef.current);
@@ -107,7 +108,7 @@ function ChplDesktopNav({
   const getItemAnalytics = (item) => ({
     ...analytics,
     event: item.analyticsEvent,
-    ...(item.analyticsCategory ? { category: item.analyticsCategory } : {}),
+    category: item.analyticsCategory ? item.analyticsCategory : 'Navigation',
   });
 
   const getDownloadIcon = (item) => {
@@ -205,7 +206,7 @@ function ChplDesktopNav({
           className: classes.menuPaper,
         }}
       >
-        {resourceItems.map((item) => (
+        { resourceItems.map((item) => (
           <MenuItem key={item.key} divider onClick={closeResources}>
             <ChplLink
               href={item.href}
@@ -238,7 +239,7 @@ function ChplDesktopNav({
           className: classes.menuPaper,
         }}
       >
-        {shortcutItems.map((item) => (
+        { shortcutItems.map((item) => (
           <MenuItem key={item.key} divider onClick={closeShortcuts}>
             <ChplLink
               href={item.href}
@@ -259,7 +260,4 @@ export default ChplDesktopNav;
 ChplDesktopNav.propTypes = {
   onHomeClick: func.isRequired,
   onSearchClick: func.isRequired,
-  hasAnyRole: func.isRequired,
-  domainIsOn: bool.isRequired,
-  analytics: shape({}).isRequired,
 };

@@ -11,9 +11,9 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   envBanner: {
-    backgroundColor: `${palette.error}!important`,
+    backgroundColor: `${palette.error} !important`,
     width: '100%',
-    color: '#ffffff!important',
+    color: '#ffffff !important',
     zIndex: theme.zIndex.drawer + 2,
     '& .MuiToolbar-root': {
       minHeight: '25px',

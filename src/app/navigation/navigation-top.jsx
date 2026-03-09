@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   ButtonBase,
@@ -15,19 +15,17 @@ import ChplDesktopNav from 'navigation/desktop-nav';
 import ChplEnvironmentBanner from 'navigation/environment-banner';
 import ChplMobileNavDrawer from 'navigation/mobile-nav-drawer';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, palette } from 'themes';
 
 const useStyles = makeStyles({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     backgroundColor: `${palette.navBackground} !important`,
-    padding: '0px!important',
+    padding: '0 !important',
   },
   appBarWithBanner: {
     top: '25px',
   },
-
   '@keyframes shimmer': {
     '0%': {
       transform: 'translateX(-100%)',
@@ -102,17 +100,11 @@ const useStyles = makeStyles({
 });
 
 function ChplNavigationTop() {
-  const analytics = {
-    ...useAnalyticsContext().analytics,
-    category: 'Navigation',
-  };
   const $localStorage = getAngularService('$localStorage');
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
   const networkService = getAngularService('networkService');
-  const { domainIsOn } = useContext(FlagContext);
-  const { hasAnyRole } = useContext(UserContext);
   const [isProduction, setIsProduction] = useState(true);
   const classes = useStyles();
 
@@ -175,16 +167,11 @@ function ChplNavigationTop() {
             <ChplDesktopNav
               onHomeClick={home}
               onSearchClick={searchChpl}
-              hasAnyRole={hasAnyRole}
-              domainIsOn={domainIsOn}
-              analytics={analytics}
             />
             <Box className={classes.mobileOnly}>
               <ChplMobileNavDrawer
                 onHomeClick={home}
                 onSearchClick={searchChpl}
-                hasAnyRole={hasAnyRole}
-                domainIsOn={domainIsOn}
               />
             </Box>
             <ChplToggle />
