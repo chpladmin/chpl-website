@@ -78,20 +78,24 @@ const useStyles = makeStyles({
 function ChplToggle({ dispatch = () => {} }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const { user, setUser } = useContext(UserContext);
+  const {
+    loginWidgetState,
+    setLoginWidgetState,
+    user,
+    setUser,
+  } = useContext(UserContext);
   const [cookies] = useCookies(['cognito_id', 'refresh_token']);
   const { mutate } = usePostRefreshToken();
   const [anchor, setAnchor] = useState(null);
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [state, setState] = useState('SIGNIN');
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
 
   useEffect(() => {
-    getAccessToken().then((token) => (token ? setState('LOGGEDIN') : setState('SIGNIN')));
+    getAccessToken().then((token) => (token ? setLoginWidgetState('LOGGEDIN') : setLoginWidgetState('SIGNIN')));
   }, []);
 
   useEffect(() => {
@@ -112,7 +116,7 @@ function ChplToggle({ dispatch = () => {} }) {
           authService.saveCurrentUser(response.user);
           $rootScope.$broadcast('loggedIn');
           $rootScope.$digest();
-          setState('LOGGEDIN');
+          setLoginWidgetState('LOGGEDIN');
           dispatch('loggedIn');
         },
       });
@@ -141,25 +145,6 @@ function ChplToggle({ dispatch = () => {} }) {
         break;
       default:
         handleClose();
-    }
-  };
-
-  const handleAdminMenuDispatch = ({ action }) => {
-    switch (action) {
-      case 'changePassword':
-        setState('CHANGEPASSWORD');
-        if (isMobile) {
-          setAdminDrawerOpen(true);
-        } else {
-          setLoginPopoverOpen(true);
-        }
-        break;
-      case 'logout':
-        setState('SIGNIN');
-        handleClose();
-        break;
-      default:
-        console.error(`No action found for ${action}`);
     }
   };
 
@@ -198,14 +183,12 @@ function ChplToggle({ dispatch = () => {} }) {
         className={classes.popoverSpacing}
         disableScrollLock
       >
-        {state === 'LOGGEDIN' ? (
-          <ChplAdminMenu onClose={handleClose} onDispatch={handleAdminMenuDispatch} />
+        { loginWidgetState === 'LOGGEDIN' ? (
+          <ChplAdminMenu onClose={handleClose} />
         ) : (
           <div className={classes.loginCard}>
             <ChplLogin
               dispatch={handleDispatch}
-              setState={setState}
-              state={state}
             />
           </div>
         )}
@@ -224,14 +207,12 @@ function ChplToggle({ dispatch = () => {} }) {
             </IconButton>
           </Box>
           <Divider className={classes.drawerDivider} />
-          {state === 'LOGGEDIN' ? (
-            <ChplAdminMenu onClose={handleClose} onDispatch={handleAdminMenuDispatch} />
+          { loginWidgetState === 'LOGGEDIN' ? (
+            <ChplAdminMenu onClose={handleClose} />
           ) : (
             <div className={classes.drawerLoginCard}>
               <ChplLogin
                 dispatch={handleDispatch}
-                setState={setState}
-                state={state}
               />
             </div>
           )}

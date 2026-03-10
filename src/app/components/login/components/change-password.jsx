@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -53,8 +52,8 @@ const validationSchema = yup.object({
     ),
 });
 
-function ChplChangePassword({ dispatch }) {
-  const { user } = useContext(UserContext);
+function ChplChangePassword() {
+  const { user, setLoginWidgetState } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostChangePassword();
@@ -76,7 +75,7 @@ function ChplChangePassword({ dispatch }) {
       event: 'Cancel Password Change',
       category: 'Authentication',
     });
-    dispatch({ action: 'cancel' });
+    setLoginWidgetState('LOGGEDIN');
   };
 
   const changePassword = () => {
@@ -92,7 +91,7 @@ function ChplChangePassword({ dispatch }) {
         });
         const body = 'Password successfully changed';
         enqueueSnackbar(body, { variant: 'success' });
-        dispatch({ action: 'cancel' });
+        setLoginWidgetState('LOGGEDIN');
       },
       onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';
@@ -205,5 +204,4 @@ function ChplChangePassword({ dispatch }) {
 export default ChplChangePassword;
 
 ChplChangePassword.propTypes = {
-  dispatch: func.isRequired,
 };

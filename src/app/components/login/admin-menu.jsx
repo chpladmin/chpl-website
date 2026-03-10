@@ -19,156 +19,133 @@ import {
   shape,
   string,
 } from 'prop-types';
+import { useCookies } from 'react-cookie';
 
+import { usePostLogout } from 'api/auth';
 import { ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const sectionConfigs = [
-  {
-    key: 'administration',
-    title: 'Administration',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'],
-    disablePadding: false,
-    items: [
-      {
-        key: 'upload',
-        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-        href: '#/administration/upload',
-        text: 'Upload',
-        router: { sref: 'administration.upload' },
-      },
-      {
-        key: 'confirm-listings',
-        roles: ['chpl-admin', 'chpl-onc-acb'],
-        href: '#/administration/confirm/listings',
-        text: 'Confirm Listings',
-        router: { sref: 'administration.confirm.listings' },
-      },
-      {
-        key: 'reports',
-        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-        href: '#/administration/reports',
-        text: 'Reports',
-        router: { sref: 'administration.reports' },
-      },
-      {
-        key: 'cms',
-        roles: ['chpl-admin', 'chpl-onc', 'chpl-cms-staff'],
-        href: '#/administration/cms',
-        text: 'CMS',
-        router: { sref: 'administration.cms' },
-      },
-      {
-        key: 'change-requests',
-        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-        href: '#/administration/change-requests',
-        text: 'Change Requests',
-        router: { sref: 'administration.change-requests' },
-      },
-      {
-        key: 'system-maintenance',
-        roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-        href: '#/administration/system-maintenance',
-        text: 'System Maintenance',
-        router: { sref: 'administration.system-maintenance' },
-      },
-      {
-        key: 'url-checker',
-        roles: ['chpl-admin', 'chpl-onc'],
-        href: '#/administration/url-checker',
-        text: 'URL Checker',
-        router: { sref: 'administration.url-checker' },
-      },
-      {
-        key: 'user-management',
-        roles: ['chpl-admin', 'chpl-onc'],
-        href: '#/users',
-        text: 'User Management',
-        router: { sref: 'users' },
-      },
-      {
-        key: 'ff4j',
-        roles: ['chpl-admin'],
-        href: 'rest/ff4j-console/home',
-        text: 'FF4j',
-        external: true,
-      },
-    ],
-  },
-  {
-    key: 'organizations',
-    title: 'Organizations',
+const sectionConfigs = [{
+  key: 'administration',
+  title: 'Administration',
+  roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'],
+  disablePadding: false,
+  items: [{
+    key: 'upload',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    items: [
-      {
-        key: 'developers',
-        href: '#/organizations/developers',
-        text: 'Developers',
-        router: { sref: 'organizations.developers' },
-      },
-      {
-        key: 'onc-acbs',
-        href: '#/organizations/onc-acbs',
-        text: 'ONC-ACBs',
-        router: { sref: 'organizations.onc-acbs' },
-      },
-      {
-        key: 'onc-atls',
-        roles: ['chpl-admin', 'chpl-onc'],
-        href: '#/organizations/onc-atls',
-        text: 'ONC-ATLs',
-        router: { sref: 'organizations.onc-atls' },
-      },
-    ],
-  },
-  {
-    key: 'activity',
-    title: 'Activity',
+    href: '#/administration/upload',
+    text: 'Upload',
+    router: { sref: 'administration.upload' },
+  }, {
+    key: 'confirm-listings',
+    roles: ['chpl-admin', 'chpl-onc-acb'],
+    href: '#/administration/confirm/listings',
+    text: 'Confirm Listings',
+    router: { sref: 'administration.confirm.listings' },
+  }, {
+    key: 'reports',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    href: '#/administration/reports',
+    text: 'Reports',
+    router: { sref: 'administration.reports' },
+  }, {
+    key: 'cms',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-cms-staff'],
+    href: '#/administration/cms',
+    text: 'CMS',
+    router: { sref: 'administration.cms' },
+  }, {
+    key: 'change-requests',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    href: '#/administration/change-requests',
+    text: 'Change Requests',
+    router: { sref: 'administration.change-requests' },
+  }, {
+    key: 'system-maintenance',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    href: '#/administration/system-maintenance',
+    text: 'System Maintenance',
+    router: { sref: 'administration.system-maintenance' },
+  }, {
+    key: 'url-checker',
     roles: ['chpl-admin', 'chpl-onc'],
-    items: [
-      {
-        key: 'activity-search',
-        href: '#/reports/activity',
-        text: 'Search',
-        router: { sref: 'reports.activity' },
-      },
-      {
-        key: 'questionable-activity',
-        href: '#/reports/questionable-activity',
-        text: 'Questionable Activity',
-        router: { sref: 'reports.questionable-activity' },
-      },
-    ],
-  },
-  {
-    key: 'surveillance',
-    title: 'Surveillance',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    items: [
-      {
-        key: 'activity-reporting',
-        roles: ['chpl-admin', 'chpl-onc'],
-        href: '#/surveillance/activity-reporting',
-        text: 'Activity Reporting',
-        router: { sref: 'surveillance.activity-reporting' },
-      },
-      {
-        key: 'complaints-reporting',
-        href: '#/surveillance/complaints',
-        text: 'Complaints Reporting',
-        router: { sref: 'surveillance.complaints' },
-      },
-      {
-        key: 'reporting',
-        href: '#/surveillance/reporting',
-        text: 'Reporting',
-        router: { sref: 'surveillance.reporting' },
-      },
-    ],
-  },
-];
+    href: '#/administration/url-checker',
+    text: 'URL Checker',
+    router: { sref: 'administration.url-checker' },
+  }, {
+    key: 'user-management',
+    roles: ['chpl-admin', 'chpl-onc'],
+    href: '#/users',
+    text: 'User Management',
+    router: { sref: 'users' },
+  }, {
+    key: 'ff4j',
+    roles: ['chpl-admin'],
+    href: 'rest/ff4j-console/home',
+    text: 'FF4j',
+    external: true,
+  }],
+}, {
+  key: 'organizations',
+  title: 'Organizations',
+  roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+  items: [{
+    key: 'developers',
+    href: '#/organizations/developers',
+    text: 'Developers',
+    router: { sref: 'organizations.developers' },
+  }, {
+    key: 'onc-acbs',
+    href: '#/organizations/onc-acbs',
+    text: 'ONC-ACBs',
+    router: { sref: 'organizations.onc-acbs' },
+  }, {
+    key: 'onc-atls',
+    roles: ['chpl-admin', 'chpl-onc'],
+    href: '#/organizations/onc-atls',
+    text: 'ONC-ATLs',
+    router: { sref: 'organizations.onc-atls' },
+  }],
+}, {
+  key: 'activity',
+  title: 'Activity',
+  roles: ['chpl-admin', 'chpl-onc'],
+  items: [{
+    key: 'activity-search',
+    href: '#/reports/activity',
+    text: 'Search',
+    router: { sref: 'reports.activity' },
+  }, {
+    key: 'questionable-activity',
+    href: '#/reports/questionable-activity',
+    text: 'Questionable Activity',
+    router: { sref: 'reports.questionable-activity' },
+  }],
+}, {
+  key: 'surveillance',
+  title: 'Surveillance',
+  roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+  items: [{
+    key: 'activity-reporting',
+    roles: ['chpl-admin', 'chpl-onc'],
+    href: '#/surveillance/activity-reporting',
+    text: 'Activity Reporting',
+    router: { sref: 'surveillance.activity-reporting' },
+  }, {
+    key: 'complaints-reporting',
+    href: '#/surveillance/complaints',
+    text: 'Complaints Reporting',
+    router: { sref: 'surveillance.complaints' },
+  }, {
+    key: 'reporting',
+    href: '#/surveillance/reporting',
+    text: 'Reporting',
+    router: { sref: 'surveillance.reporting' },
+  }],
+}];
 
 const useStyles = makeStyles({
   menuContainer: {
@@ -224,7 +201,6 @@ const useStyles = makeStyles({
   },
 });
 
-// Shared section wrapper keeps collapse behavior consistent across admin menus.
 function AdminMenuSection({
   children,
   classes,
@@ -298,9 +274,18 @@ AdminMenuLinkItem.propTypes = {
   text: string.isRequired,
 };
 
-function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
+function ChplAdminMenu({ onClose = () => {} }) {
+  const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const { hasAnyRole } = useContext(UserContext);
+  const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
+  const { analytics } = useAnalyticsContext();
+  const {
+    hasAnyRole,
+    setLoginWidgetState,
+    user,
+    setUser,
+  } = useContext(UserContext);
+  const postLogout = usePostLogout();
   const [openSection, setOpenSection] = useState(null);
   const classes = useStyles();
 
@@ -310,20 +295,40 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
 
   const canAccess = (roles) => !roles || hasAnyRole(roles);
 
-  const handleLogout = () => {
+  const logout = (e) => {
+    e.stopPropagation();
+    eventTrack({
+      ...analytics,
+      event: 'Log Out',
+      category: 'Authentication',
+    });
+    if (user?.email) {
+      postLogout.mutate({
+        email: user.email,
+      });
+    }
+    setUser({});
+    removeCookie('cognito_id');
+    removeCookie('refresh_token');
+    setLoginWidgetState('SIGNIN');
     authService.logout();
-    onDispatch({ action: 'logout' });
-    onClose();
+    $rootScope.$broadcast('loggedOut');
   };
 
-  const handleChangePassword = () => {
-    onDispatch({ action: 'changePassword' });
+  const changePassword = (e) => {
+    e.stopPropagation();
+    eventTrack({
+      ...analytics,
+      event: 'Change Password',
+      category: 'Authentication',
+    });
+    setLoginWidgetState('CHANGEPASSWORD');
   };
 
   return (
     <Box className={classes.menuContainer}>
       <List component="nav">
-        {sectionConfigs
+        { sectionConfigs
           .filter((sectionConfig) => canAccess(sectionConfig.roles))
           .map((sectionConfig) => (
             <AdminMenuSection
@@ -335,7 +340,7 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
               onToggle={toggleSection}
               disablePadding={sectionConfig.disablePadding}
             >
-              {sectionConfig.items
+              { sectionConfig.items
                 .filter((item) => canAccess(item.roles))
                 .map((item) => (
                   <AdminMenuLinkItem
@@ -351,11 +356,9 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
             </AdminMenuSection>
           ))}
       </List>
-
-      {/* Footer with Log Out and Change Password */}
       <Box className={classes.footer}>
         <Button
-          onClick={handleLogout}
+          onClick={logout}
           variant="outlined"
           endIcon={<ExitToAppIcon />}
           fullWidth
@@ -365,7 +368,7 @@ function ChplAdminMenu({ onClose = () => {}, onDispatch = () => {} }) {
         </Button>
         <Button
           variant="text"
-          onClick={handleChangePassword}
+          onClick={changePassword}
           endIcon={<VpnKeyIcon />}
           fullWidth
           color="primary"
@@ -381,5 +384,4 @@ export default ChplAdminMenu;
 
 ChplAdminMenu.propTypes = {
   onClose: func,
-  onDispatch: func,
 };

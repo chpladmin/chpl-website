@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { func, string } from 'prop-types';
 
 import ChplChangePassword from './components/change-password';
@@ -12,61 +12,37 @@ import { UserContext } from 'shared/contexts';
 
 function ChplLogin({
   dispatch = () => {},
-  setState = () => {},
-  state = 'SIGNIN',
   uuid = '',
 }) {
-  const { user } = useContext(UserContext);
+  const { loginWidgetState, setLoginWidgetState } = useContext(UserContext);
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
 
-  useEffect(() => {
-    if (uuid) {
-      setState('RESETFORGOTTENPASSWORD');
-    } else if (user?.cognitoId && state !== 'CHANGEPASSWORD') {
-      setState('LOGGEDIN');
-    } else if (!user?.cognitoId && state !== 'CHANGEPASSWORD') {
-      setState('SIGNIN');
-    }
-  }, [user, uuid, state, setState]);
-
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
-      case 'cancel':
-        setState('LOGGEDIN');
-        break;
-      case 'changePassword':
-        setState('CHANGEPASSWORD');
-        break;
       case 'forceChangePassword':
         setUserName(payload.userName);
         setSessionId(payload.sessionId);
         dispatch('forceChangePassword');
-        setState('FORCECHANGEPASSWORD');
+        setLoginWidgetState('FORCECHANGEPASSWORD');
         break;
       case 'forgotPassword':
         setUserName(payload?.userName ?? '');
-        setState('FORGOTPASSWORD');
-        break;
-      case 'isLoggedIn':
-        setState('LOGGEDIN');
+        setLoginWidgetState('FORGOTPASSWORD');
         break;
       case 'loggedIn':
-        setState('LOGGEDIN');
+        setLoginWidgetState('LOGGEDIN');
         dispatch('loggedIn');
-        break;
-      case 'loggedOut':
-        setState('SIGNIN');
         break;
       default:
         console.error(`No action found for ${action}`);
     }
   };
 
-  switch (state) {
+  switch (loginWidgetState) {
     case 'CHANGEPASSWORD':
       return (
-        <ChplChangePassword dispatch={handleDispatch} />
+        <ChplChangePassword />
       );
     case 'FORCECHANGEPASSWORD':
       return (
@@ -79,16 +55,14 @@ function ChplLogin({
     case 'FORGOTPASSWORD':
       return (
         <ChplForgotPassword
-          dispatch={handleDispatch}
           userName={userName}
         />
       );
     case 'LOGGEDIN':
-      return <ChplLoggedIn dispatch={handleDispatch} />;
+      return <ChplLoggedIn />;
     case 'RESETFORGOTTENPASSWORD':
       return (
         <ChplResetForgottenPassword
-          dispatch={handleDispatch}
           uuid={uuid}
         />
       );
@@ -102,7 +76,5 @@ export default ChplLogin;
 
 ChplLogin.propTypes = {
   dispatch: func,
-  setState: func,
-  state: string,
   uuid: string,
 };
