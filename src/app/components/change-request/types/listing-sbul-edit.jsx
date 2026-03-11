@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
+  CircularProgress,
   Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 
-import { ChplLink, ChplTextField } from 'components/util';
-import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import ChplUrlChecker from 'components/url-checker/url-checker';
+import ChplUrlCheckerResponse from 'components/url-checker/url-checker-response';
+import { ChplLink } from 'components/util';
+import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -31,18 +32,12 @@ const useStyles = makeStyles({
   },
 });
 
-const validationSchema = yup.object({
-  url: yup.string()
-    .url('URL is not in a valid format')
-    .required('URL is required'),
-});
-
 function ChplChangeRequestListingSbulEdit() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
-  const { hasAnyRole } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
-  let formik;
 
   const getCurrent = () => {
     if (changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList) {
@@ -61,24 +56,26 @@ function ChplChangeRequestListingSbulEdit() {
     return 'No current URL';
   };
 
-  const handleChange = (...args) => {
-    const event = args[0];
-    setChangeRequest((prev) => ({
-      ...prev,
-      details: {
-        ...prev.details,
-        [event.target.name]: event.target.value,
-      },
-    }));
-    formik.handleChange(...args);
+  const handleDispatch = ({ action, payload, url: submittedUrl }) => {
+    switch (action) {
+      case 'loading':
+        setIsLoading(true);
+        setUrlCheckResponse(undefined);
+        break;
+      case 'complete':
+        setIsLoading(false);
+        setChangeRequest((prev) => ({
+          ...prev,
+          details: {
+            ...prev.details,
+            url: submittedUrl,
+          },
+        }));
+        setUrlCheckResponse(payload);
+        break;
+        // no default
+    }
   };
-
-  formik = useFormik({
-    initialValues: {
-      url: changeRequest.details.url || '',
-    },
-    validationSchema,
-  });
 
   return (
     <div className={classes.container}>
@@ -91,18 +88,17 @@ function ChplChangeRequestListingSbulEdit() {
       <Divider />
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
-        <ChplTextField
-          id="url"
-          name="url"
-          label="url"
-          required
-          disabled={!hasAnyRole(['chpl-developer'])}
-          value={formik.values.url}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.url && !!formik.errors.url}
-          helperText={formik.touched.url && formik.errors.url}
+        <ChplUrlChecker
+          dispatch={handleDispatch}
+          url={changeRequest.details.url}
         />
+        { isLoading && <CircularProgress /> }
+        { urlCheckResponse
+          && (
+            <ChplUrlCheckerResponse
+              response={urlCheckResponse}
+            />
+          )}
       </div>
     </div>
   );

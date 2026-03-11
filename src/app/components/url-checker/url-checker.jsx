@@ -3,7 +3,7 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,7 +18,7 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplUrlChecker({ dispatch }) {
+function ChplUrlChecker({ dispatch, url = '' }) {
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostUrlChecker();
 
@@ -39,7 +39,7 @@ function ChplUrlChecker({ dispatch }) {
 
   const formik = useFormik({
     initialValues: {
-      url: '',
+      url,
     },
     onSubmit: () => {
       validate({
@@ -82,4 +82,5 @@ export default ChplUrlChecker;
 
 ChplUrlChecker.propTypes = {
   dispatch: func.isRequired,
+  url: string,
 };
