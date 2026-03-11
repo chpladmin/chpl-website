@@ -1,4 +1,9 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Box,
   Button,
@@ -18,6 +23,7 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -64,6 +70,7 @@ function ChplDesktopNav({
   onHomeClick,
   onSearchClick,
 }) {
+  const $rootScope = getAngularService('$rootScope');
   const analytics = useAnalyticsContext();
   const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -80,6 +87,27 @@ function ChplDesktopNav({
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
   const classes = useStyles();
+
+  useEffect(() => {
+    const deregisterShowCmsWidget = $rootScope.$on('ShowCmsWidget', () => {
+      setCmsAnchorEl(null);
+      setCompareAnchorEl(null);
+      setResourcesAnchorEl(null);
+      setShortcutsAnchorEl(null);
+      setCmsAnchorEl(cmsButtonRef.current);
+    });
+    const deregisterShowCompareWidget = $rootScope.$on('ShowCompareWidget', () => {
+      setCmsAnchorEl(null);
+      setCompareAnchorEl(null);
+      setResourcesAnchorEl(null);
+      setShortcutsAnchorEl(null);
+      setCompareAnchorEl(compareButtonRef.current);
+    });
+    return () => {
+      deregisterShowCmsWidget();
+      deregisterShowCompareWidget();
+    };
+  }, [$rootScope]);
 
   const toggleCmsWidget = () => {
     setCmsAnchorEl(cmsAnchorEl ? null : cmsButtonRef.current);
