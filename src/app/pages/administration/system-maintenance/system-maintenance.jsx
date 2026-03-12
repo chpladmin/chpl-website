@@ -114,7 +114,6 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-  
 });
 
 const maintenanceItems = [{
@@ -186,7 +185,7 @@ const maintenanceItems = [{
   icon: <SubscriptionsOutlinedIcon />,
 }, {
   id: 'svaps',
-  primary: 'SVAP',
+  primary: 'SVAPs',
   secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
   icon: <TrendingUpOutlinedIcon />,
 }, {
@@ -337,7 +336,7 @@ function ChplSystemMaintenance() {
               .map((item) => getNavigationItem(item))}
           </Card>
         </div>
-        <Box width="100%" >
+        <Box width="100%">
           { active === ''
             && (
               <Card>
