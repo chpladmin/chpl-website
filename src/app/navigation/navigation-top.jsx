@@ -2,11 +2,9 @@ import React, { useContext, useState } from 'react';
 import {
   AppBar,
   Button,
-  IconButton,
   Menu,
   MenuItem,
   Toolbar,
-  makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import SearchIcon from '@material-ui/icons/Search';
@@ -18,10 +16,6 @@ import ChplToggle from 'components/login/toggle';
 import { ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-import { theme } from 'themes';
-
-const useStyles = makeStyles({
-});
 
 function ChplNavigationTop() {
   const analytics = {
@@ -39,7 +33,6 @@ function ChplNavigationTop() {
   const [showCompareWidget, setShowCompareWidget] = useState(false);
   const [showResources, setShowResources] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
-  const classes = useStyles();
 
   const home = () => {
     $rootScope.$broadcast('ClearResults', {});
@@ -53,7 +46,7 @@ function ChplNavigationTop() {
   };
 
   const searchChpl = () => {
-      $state.go('search');
+    $state.go('search');
   };
 
   const toggleCmsWidget = (event) => {
@@ -174,7 +167,7 @@ function ChplNavigationTop() {
               && (
                 <MenuItem>
                   <ChplLink
-                    href="https://www.astp.hhs.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
+                    href="https://www.astp.hhs.gov/wp-content/uploads/2026/02/Certified-Health-IT-Product-List-CHPL-Developer-User-Guide.pdf"
                     text="CHPL Developer User Guide"
                     analytics={{
                       ...analytics,
@@ -192,7 +185,7 @@ function ChplNavigationTop() {
               && (
                 <MenuItem>
                   <ChplLink
-                    href="https://www.healthit.gov/sites/default/files/policy/chpl_developer_user_guide.pdf"
+                    href="https://www.healthit.gov/wp-content/uploads/2026/02/Certified-Health-IT-Product-List-CHPL-Developer-User-Guide.pdf"
                     text="CHPL Developer User Guide"
                     analytics={{
                       ...analytics,
