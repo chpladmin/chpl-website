@@ -55,6 +55,9 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
       </Typography>
       <Card>
         <CardContent>
+          <Typography gutterBottom variant="body1">
+            Select the associated listing(s) for which you wish to update the Service Base URL List URL.
+          </Typography>
           <Table>
             <TableHead>
               <TableRow>

@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 
 function ChplSbulsView({ developer, dispatch }) {
   const { analytics } = useAnalyticsContext();
-  const { sbulChangeRequestIsOn } = useContext(FlagContext);
+  const { domainIsOn, sbulChangeRequestIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [sbuls, setSbuls] = useState([]);
   const { data, isError, isLoading } = useFetchSbuls({ developer });
@@ -62,7 +62,32 @@ function ChplSbulsView({ developer, dispatch }) {
         <CardContent className={classes.content}>
           <>
             <Typography variant="body1">
-              Text here
+              Service Base URL List information is displayed here if a health IT developer has listings certified to (g)(10) and therefore must comply with
+              {' '}
+              <ChplLink
+                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/certification-health-it/conditions-ccg/application-programming-interfaces/`}
+                text="API Maintenance of Certification"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to API Maintenance of Certification',
+                }}
+                external={false}
+                inline
+              />
+              {' '}
+              requirements. For more information, please visit the
+              {' '}
+              <ChplLink
+                href="https://onc-healthit.github.io/api-resource-guide/404-conditions-maintenance/#api-service-base-url-publication"
+                text="API Resource Guide"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to API Resource Guide',
+                }}
+                external={false}
+                inline
+              />
+              .
             </Typography>
             { sbuls.length > 0
               && (

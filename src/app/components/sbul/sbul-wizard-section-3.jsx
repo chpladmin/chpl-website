@@ -99,20 +99,11 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
         </Typography>
         <Card className={classes.fullWidthGridRow}>
           <CardContent>
-            <Typography gutterBottom variant="body1">
-              As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
-            </Typography>
-            <Typography gutterBottom variant="body1">
-              I understand that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. This may result in corrective action and enforcement procedures under the Certification Program as necessary.
-            </Typography>
             <Typography variant="body1">
-              I also understand that submitting a false attestation may subject my company and me to liability under Federal law.
+              Please confirm the accessibility of your updated URL by entering the new URL and clicking Validate. If you have any issues with the validation of your URL, please reach out to your ONC-ACB for further assistance.
             </Typography>
           </CardContent>
         </Card>
-        <Typography className={classes.fullWidthGridRow}>
-          Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the “Sign Electronically” button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
-        </Typography>
         <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
           <CardContent>
             <div>

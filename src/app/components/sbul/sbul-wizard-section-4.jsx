@@ -29,7 +29,7 @@ function ChplSbulWizardSection4() {
       <Card>
         <CardContent>
           <Typography variant="body1">
-            Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. An email confirmation has been sent to the registered CHPL users associated with
+            Thank you for submitting a change to your listing(s)’s Service Base URL List URL. An email confirmation has been sent to the registered CHPL users associated with
             {' '}
             {developer.name}
             . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
