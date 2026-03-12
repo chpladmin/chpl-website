@@ -72,6 +72,26 @@ const usePostChangeRequest = () => {
   });
 };
 
+const usePostChangeRequests = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('multiple-change-requests', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries('change-requests/search/v2');
+      queryClient.invalidateQueries('developers/attestations');
+    },
+    onError: (error) => {
+      if (error.response.data.error?.startsWith('Email could not be sent to')) {
+        queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries('change-requests/search/v2');
+        queryClient.invalidateQueries('developers/attestations');
+      }
+      return error;
+    },
+  });
+};
+
 const usePostReportRequest = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('change-requests/report-request', data));
@@ -103,6 +123,7 @@ export {
   useFetchChangeRequestStatusTypes,
   useFetchChangeRequestTypes,
   usePostChangeRequest,
+  usePostChangeRequests,
   usePostReportRequest,
   usePutChangeRequest,
 };

@@ -9,7 +9,7 @@ import { func } from 'prop-types';
 
 import ChplSbulWizard from './sbul-wizard';
 
-import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
+import { useFetchChangeRequestTypes, usePostChangeRequests } from 'api/change-requests';
 import { useFetchSbulListings } from 'api/developer';
 import { DeveloperContext } from 'shared/contexts';
 
@@ -28,7 +28,7 @@ function ChplSbulCreate({ dispatch }) {
   const [stage, setStage] = useState(0);
   const { data, isLoading, isError } = useFetchSbulListings({ developer });
   const crData = useFetchChangeRequestTypes();
-  const { mutate } = usePostChangeRequest();
+  const { mutate } = usePostChangeRequests();
   const classes = useStyles();
 
   useEffect(() => {
@@ -54,6 +54,37 @@ function ChplSbulCreate({ dispatch }) {
         setStage(payload);
         break;
       case 'submit':
+        setIsSubmitting(true);
+        mutate({
+          changeRequests: payload.details.selectedListings.map((listing) => ({
+            developer,
+            changeRequestType,
+            details: {
+              listing: { id: listing.id },
+              url: payload.details.url,
+            },
+          })),
+          onSuccess: () => {
+            setIsSubmitting(false);
+            setStage(3);
+          },
+          onError: (error) => {
+            setIsSubmitting(false);
+            if (error.response.data.error?.startsWith('Email could not be sent to')) {
+              enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+                variant: 'info',
+              });
+              setStage(3);
+            } else {
+              const message = error.response.data?.error
+                    || error.response.data?.errorMessages.join(' ');
+              enqueueSnackbar(message, {
+                variant: 'error',
+              });
+            }
+          },
+        });
+        /*
         payload.details.selectedListings.forEach((listing) => {
           setIsSubmitting(true);
           mutate({
@@ -85,6 +116,7 @@ function ChplSbulCreate({ dispatch }) {
             },
           });
         });
+        */
         break;
         // no default
     }
