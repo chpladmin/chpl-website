@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Card,
   CardContent,
   Checkbox,
@@ -50,42 +51,55 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Typography gutterBottom variant="h2">
-        Section 2 &mdash; Listings
-      </Typography>
-      <Card>
-        <CardContent>
-          <Typography gutterBottom variant="body1">
-            Select the associated listing(s) for which you wish to update the Service Base URL List URL.
-          </Typography>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell scope="col">CHPL Product Number</TableCell>
-                <TableCell scope="col">Service Base URL List</TableCell>
-                <TableCell scope="col">Update</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { listings.map((l) => (
-                <TableRow
-                  key={l.chplProductNumber}
-                >
-                  <TableCell>{l.chplProductNumber}</TableCell>
-                  <TableCell>{l.serviceBaseUrlList.value}</TableCell>
-                  <TableCell>
-                    <Checkbox
-                      onChange={() => toggle(l)}
-                      checked={selectedListings.has(l.id)}
-                      color="primary"
-                    />
-                  </TableCell>
+      <Box className={classes.sbulSectionContainer}>
+        <Typography gutterBottom component="h2" variant="h3">
+          Section 2 &mdash; Listings
+        </Typography>
+      </Box>
+      <Box display="flex" flexDirection="column" gridGap="16px">
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="body1">
+              Select the associated listing(s) for which you wish to update the Service Base URL List URL.
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell scope="col">CHPL Product Number</TableCell>
+                  <TableCell scope="col">Service Base URL List</TableCell>
+                  <TableCell scope="col">Update</TableCell>
                 </TableRow>
-              )) }
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHead>
+              <TableBody>
+                { listings.map((l) => (
+                  <TableRow
+                    key={l.chplProductNumber}
+                  >
+                    <TableCell>{l.chplProductNumber}</TableCell>
+                    <TableCell style={{
+                      maxWidth: '400px', textOverflow: 'ellipsis', overflowWrap: 'anywhere', whiteSpace: 'normal',
+                    }}
+                    >
+                      {l.serviceBaseUrlList.value}
+                    </TableCell>
+                    <TableCell>
+                      <Checkbox
+                        onChange={() => toggle(l)}
+                        checked={selectedListings.has(l.id)}
+                        color="primary"
+                      />
+                    </TableCell>
+                  </TableRow>
+                )) }
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </Box>
     </Container>
   );
 }

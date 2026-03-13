@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -16,7 +16,6 @@ import {
 } from 'prop-types';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
-import ChplUrlCheckerResponse from 'components/url-checker/url-checker-response';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -29,6 +28,9 @@ const useStyles = makeStyles({
     columnGap: '16px',
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
+  },
+  sbulSectionContainer: {
+    marginBottom: '16px',
   },
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 500px)',
@@ -60,24 +62,18 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState('');
-  const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
 
   const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);
 
-  const handleDispatch = ({ action, payload, url: submittedUrl }) => {
+  const handleDispatch = ({ action, url: submittedUrl }) => {
     switch (action) {
       case 'loading':
-        setIsLoading(true);
         setUrl('');
-        setUrlCheckResponse(undefined);
         break;
       case 'complete':
-        setIsLoading(false);
         setUrl(submittedUrl);
-        setUrlCheckResponse(payload);
         break;
         // no default
     }
@@ -93,10 +89,14 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <Container maxWidth="md">
+        <Box className={classes.sbulSectionContainer}>
+          <Typography gutterBottom component="h2" variant="h3">
+            Section 3 &mdash; Listings
+          </Typography>
+        </Box>
+      </Container>
       <Container maxWidth="md" className={classes.sbulContainer}>
-        <Typography variant="h2" className={classes.fullWidthGridRow}>
-          Section 3 &mdash; Service Base URL List
-        </Typography>
         <Card className={classes.fullWidthGridRow}>
           <CardContent>
             <Typography variant="body1">
@@ -141,13 +141,6 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
             <ChplUrlChecker
               dispatch={handleDispatch}
             />
-            { isLoading && <CircularProgress /> }
-            { urlCheckResponse
-              && (
-                <ChplUrlCheckerResponse
-                  response={urlCheckResponse}
-                />
-              )}
           </CardContent>
         </Card>
         <Card className={classes.dateContainer}>

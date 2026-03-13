@@ -15,7 +15,8 @@ import { DeveloperContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   pageHeader: {
-    padding: '8px 0',
+    paddingTop: '32px',
+    paddingBottom: '16px',
   },
 });
 
@@ -123,10 +124,12 @@ function ChplSbulCreate({ dispatch }) {
 
   return (
     <>
-      <Container className={classes.pageHeader} maxWidth="md">
-        <Typography gutterBottom variant="h1">
-          Submit Service Base URL List
-        </Typography>
+      <Container maxWidth="md">
+        <div className={classes.pageHeader}>
+          <Typography gutterBottom component="h1" variant="h2">
+            Submit Service Base URL List
+          </Typography>
+        </div>
       </Container>
       <ChplSbulWizard
         isSubmitting={isSubmitting}
