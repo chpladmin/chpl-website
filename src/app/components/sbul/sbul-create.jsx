@@ -9,7 +9,7 @@ import { func } from 'prop-types';
 
 import ChplSbulWizard from './sbul-wizard';
 
-import { useFetchChangeRequestTypes, usePostChangeRequests } from 'api/change-requests';
+import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { useFetchSbulListings } from 'api/developer';
 import { DeveloperContext } from 'shared/contexts';
 
@@ -28,7 +28,7 @@ function ChplSbulCreate({ dispatch }) {
   const [stage, setStage] = useState(0);
   const { data, isLoading, isError } = useFetchSbulListings({ developer });
   const crData = useFetchChangeRequestTypes();
-  const { mutate } = usePostChangeRequests();
+  const { mutate } = usePostChangeRequest();
   const classes = useStyles();
 
   useEffect(() => {
@@ -55,15 +55,14 @@ function ChplSbulCreate({ dispatch }) {
         break;
       case 'submit':
         setIsSubmitting(true);
-        mutate({
-          changeRequests: payload.details.selectedListings.map((listing) => ({
-            developer,
-            changeRequestType,
-            details: {
-              listing: { id: listing.id },
-              url: payload.details.url,
-            },
-          })),
+        mutate(payload.details.selectedListings.map((listing) => ({
+          developer,
+          changeRequestType,
+          details: {
+            listing: { id: listing.id },
+            url: payload.details.url,
+          },
+        })), {
           onSuccess: () => {
             setIsSubmitting(false);
             setStage(3);
