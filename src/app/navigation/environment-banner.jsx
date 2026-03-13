@@ -5,7 +5,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { string } from 'prop-types';
 
 import { palette, theme } from 'themes';
 
@@ -29,7 +28,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplEnvironmentBanner({ text = 'Do not use | Test Environment | '.repeat(20) }) {
+function ChplEnvironmentBanner() {
+  const text = 'Do not use | Test Environment | '.repeat(20);
   const classes = useStyles();
 
   return (
@@ -46,5 +46,4 @@ function ChplEnvironmentBanner({ text = 'Do not use | Test Environment | '.repea
 export default ChplEnvironmentBanner;
 
 ChplEnvironmentBanner.propTypes = {
-  text: string,
 };

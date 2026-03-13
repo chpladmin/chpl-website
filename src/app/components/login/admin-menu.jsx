@@ -302,17 +302,8 @@ function ChplAdminMenu({ onClose = () => {} }) {
       event: 'Log Out',
       category: 'Authentication',
     });
-    if (user?.email) {
-      postLogout.mutate({
-        email: user.email,
-      });
-    }
-    setUser({});
-    removeCookie('cognito_id');
-    removeCookie('refresh_token');
     setLoginWidgetState('SIGNIN');
     authService.logout();
-    $rootScope.$broadcast('loggedOut');
   };
 
   const changePassword = (e) => {

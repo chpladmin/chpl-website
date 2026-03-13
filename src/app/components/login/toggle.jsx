@@ -13,7 +13,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
 import { func } from 'prop-types';
 import { getAccessToken, setAuthTokens } from 'axios-jwt';
-import { useCookies } from 'react-cookie';
+//import { useCookies } from 'react-cookie';
 
 import ChplLogin from './login';
 import ChplAdminMenu from './admin-menu';
@@ -37,16 +37,16 @@ const useStyles = makeStyles({
     },
   },
   whiteButton: {
-    color: '#fff!important',
-    textTransform: 'capitalize!important',
+    color: '#fff !important',
+    textTransform: 'capitalize !important',
     fontSize: '1rem',
     '&:hover': {
-      backgroundColor: `${palette.primaryDark}!important`,
-      color: '#fff!important',
+      backgroundColor: `${palette.primaryDark} !important`,
+      color: '#fff !important',
     },
     '&[aria-expanded="true"]': {
-      backgroundColor: `${palette.white}!important`,
-      color: `${palette.greyDark}!important`,
+      backgroundColor: `${palette.white} !important`,
+      color: `${palette.greyDark} !important`,
       fontWeight: 'bold',
     },
   },
@@ -84,7 +84,7 @@ function ChplToggle({ dispatch = () => {} }) {
     user,
     setUser,
   } = useContext(UserContext);
-  const [cookies] = useCookies(['cognito_id', 'refresh_token']);
+//  const [cookies] = useCookies(['cognito_id', 'refresh_token']);
   const { mutate } = usePostRefreshToken();
   const [anchor, setAnchor] = useState(null);
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
@@ -98,6 +98,7 @@ function ChplToggle({ dispatch = () => {} }) {
     getAccessToken().then((token) => (token ? setLoginWidgetState('LOGGEDIN') : setLoginWidgetState('SIGNIN')));
   }, []);
 
+  /*
   useEffect(() => {
     if (user) { return; }
     if (cookies.cognito_id && cookies.refresh_token) {
@@ -122,6 +123,7 @@ function ChplToggle({ dispatch = () => {} }) {
       });
     }
   }, [cookies]);
+  */
 
   const handleClick = (e) => {
     if (isMobile) {

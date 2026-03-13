@@ -136,7 +136,7 @@ function ChplDesktopNav({
   const getItemAnalytics = (item) => ({
     ...analytics,
     event: item.analyticsEvent,
-    category: item.analyticsCategory ? item.analyticsCategory : 'Navigation',
+    category: item.analyticsCategory ?? 'Navigation',
   });
 
   const getDownloadIcon = (item) => {
@@ -166,7 +166,7 @@ function ChplDesktopNav({
       <Button
         ref={cmsButtonRef}
         onClick={toggleCmsWidget}
-        aria-expanded={cmsAnchorEl ? 'true' : undefined}
+        aria-expanded={!!cmsAnchorEl}
         className={classes.whiteButton}
       >
         CMS ID Creator
@@ -191,7 +191,7 @@ function ChplDesktopNav({
       <Button
         ref={compareButtonRef}
         onClick={toggleCompareWidget}
-        aria-expanded={compareAnchorEl ? 'true' : undefined}
+        aria-expanded={!!compareAnchorEl}
         className={classes.whiteButton}
         color="inherit"
       >
@@ -217,7 +217,7 @@ function ChplDesktopNav({
       <Button
         ref={resourcesButtonRef}
         onClick={toggleResources}
-        aria-expanded={resourcesAnchorEl ? 'true' : undefined}
+        aria-expanded={!!resourcesAnchorEl}
         className={classes.whiteButton}
       >
         Resources
@@ -250,7 +250,7 @@ function ChplDesktopNav({
       <Button
         ref={shortcutsButtonRef}
         onClick={toggleShortcuts}
-        aria-expanded={shortcutsAnchorEl ? 'true' : undefined}
+        aria-expanded={!!shortcutsAnchorEl}
         className={classes.whiteButton}
       >
         Shortcuts
