@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
   sparkleBase: {
     position: 'absolute',
-    color: palette.warningDark,
+    color: palette.active,
     fontSize: '18px',
   },
   sparkleTopLeft: {
@@ -96,10 +96,7 @@ function ChplSbulWizardSection4() {
               <CheckCircleIcon className={classes.confirmationGraphicIcon} />
             </Box>
           </Box>
-          <Typography variant="h5" className={classes.congratulationsText}>
-            Congratulations!
-          </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" align="center">
             Thank you for submitting a change to your listing(s)’s Service Base URL List URL. An email confirmation has been sent to the registered CHPL users associated with
             {' '}
             {developer.name}
