@@ -6,7 +6,7 @@ import {
   Popover,
   makeStyles,
 } from '@material-ui/core';
-import { func, string } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -63,7 +63,7 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplUrlChecker({ dispatch, url = '' }) {
+function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   const { enqueueSnackbar } = useSnackbar();
   const { mutate, isLoading } = usePostUrlChecker();
   const fieldAnchorRef = useRef(null);
@@ -81,7 +81,7 @@ function ChplUrlChecker({ dispatch, url = '' }) {
       onSuccess: (response) => {
         setHasValidatedOnce(true);
         setUrlCheckResponse(response.data);
-        setIsPopoverOpen(true);
+        setIsPopoverOpen(showResultPopover);
         dispatch({ action: 'complete', payload: response.data, url: payload.url });
       },
       onError: () => {
@@ -107,8 +107,10 @@ function ChplUrlChecker({ dispatch, url = '' }) {
   });
 
   const handleValidate = (event) => {
-    const popoverAnchor = fieldAnchorRef.current || event.currentTarget;
-    setAnchorEl(popoverAnchor);
+    if (showResultPopover) {
+      const popoverAnchor = fieldAnchorRef.current || event.currentTarget;
+      setAnchorEl(popoverAnchor);
+    }
     formik.handleSubmit();
   };
 
@@ -157,7 +159,7 @@ function ChplUrlChecker({ dispatch, url = '' }) {
           >
             { isLoading ? 'Validating' : 'Validate' }
           </Button>
-          { hasValidatedOnce && (
+          { hasValidatedOnce && showResultPopover && (
             <Button
               id="view-last-url-result"
               aria-label="View last URL check result"
@@ -173,25 +175,27 @@ function ChplUrlChecker({ dispatch, url = '' }) {
           )}
         </div>
       </Box>
-      <Popover
-        id="url-checker-response"
-        open={Boolean(anchorEl) && Boolean(urlCheckResponse) && isPopoverOpen}
-        anchorEl={anchorEl}
-        onClose={handleClosePopover}
-        anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'center',
-          horizontal: 'left',
-        }}
-        classes={{
-          paper: classes.popoverPaper,
-        }}
-      >
-        { urlCheckResponse && <ChplUrlCheckerResponse response={urlCheckResponse} /> }
-      </Popover>
+      { showResultPopover && (
+        <Popover
+          id="url-checker-response"
+          open={Boolean(anchorEl) && Boolean(urlCheckResponse) && isPopoverOpen}
+          anchorEl={anchorEl}
+          onClose={handleClosePopover}
+          anchorOrigin={{
+            vertical: 'center',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'center',
+            horizontal: 'left',
+          }}
+          classes={{
+            paper: classes.popoverPaper,
+          }}
+        >
+          { urlCheckResponse && <ChplUrlCheckerResponse response={urlCheckResponse} /> }
+        </Popover>
+      )}
     </>
   );
 }
@@ -200,5 +204,6 @@ export default ChplUrlChecker;
 
 ChplUrlChecker.propTypes = {
   dispatch: func.isRequired,
+  showResultPopover: bool,
   url: string,
 };

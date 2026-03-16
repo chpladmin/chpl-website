@@ -3,11 +3,11 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
@@ -106,15 +106,56 @@ function ChplUrlCheckerPage() {
           <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
           <ChplUrlChecker
             dispatch={handleDispatch}
+            showResultPopover={false}
           />
         </Container>
       </Box>
       <Container className={classes.pageBackground} maxWidth="lg">
         { isLoading
           && (
-            <Box py={4}>
-              <CircularProgress />
-            </Box>
+            <>
+              <Typography className={classes.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
+              <Box className={classes.resultsContainer}>
+                <Card className={classes.resultsCardHalf}>
+                  <CardContent>
+                    <Skeleton variant="text" width="40%" height={36} />
+                    <Skeleton variant="text" width="55%" height={36} />
+                    <Skeleton variant="text" width="35%" height={28} />
+                    <Skeleton variant="text" width="90%" height={28} />
+                  </CardContent>
+                </Card>
+                <Card className={classes.resultsCardHalf}>
+                  <CardContent>
+                    <Skeleton variant="text" width="30%" height={36} />
+                    <Skeleton variant="text" width="95%" height={28} />
+                  </CardContent>
+                </Card>
+              </Box>
+              <Typography className={classes.titlePadding} component="h3" variant="h6" style={{ fontWeight: 600 }}>Assertions</Typography>
+              <Box className={classes.resultsContainer}>
+                <Card className={classes.resultsCard}>
+                  <CardContent>
+                    <Skeleton variant="text" width="70%" height={36} />
+                    <Skeleton variant="text" width="45%" height={28} />
+                    <Skeleton variant="text" width="90%" height={24} />
+                  </CardContent>
+                </Card>
+                <Card className={classes.resultsCard}>
+                  <CardContent>
+                    <Skeleton variant="text" width="85%" height={36} />
+                    <Skeleton variant="text" width="40%" height={28} />
+                    <Skeleton variant="text" width="65%" height={24} />
+                  </CardContent>
+                </Card>
+                <Card className={classes.resultsCard}>
+                  <CardContent>
+                    <Skeleton variant="text" width="55%" height={36} />
+                    <Skeleton variant="text" width="90%" height={28} />
+                    <Skeleton variant="text" width="80%" height={24} />
+                  </CardContent>
+                </Card>
+              </Box>
+            </>
           )}
         { urlCheckResponse
           && (
