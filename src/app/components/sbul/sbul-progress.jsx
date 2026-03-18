@@ -8,6 +8,7 @@ function ChplSbulProgress(props) {
 
   return (
     <ChplProgress
+      buttonContainerTop="100px"
       steps={steps}
       {...props}
     />

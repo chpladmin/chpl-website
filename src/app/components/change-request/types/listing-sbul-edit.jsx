@@ -1,13 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
-  CircularProgress,
   Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
-import ChplUrlCheckerResponse from 'components/url-checker/url-checker-response';
 import { ChplLink } from 'components/util';
 import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
 
@@ -35,8 +33,6 @@ const useStyles = makeStyles({
 function ChplChangeRequestListingSbulEdit() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
 
   const getCurrent = () => {
@@ -56,14 +52,12 @@ function ChplChangeRequestListingSbulEdit() {
     return 'No current URL';
   };
 
-  const handleDispatch = ({ action, payload, url: submittedUrl }) => {
+  const handleDispatch = ({ action, url: submittedUrl }) => {
     switch (action) {
       case 'loading':
-        setIsLoading(true);
-        setUrlCheckResponse(undefined);
+        // no-op; loading state is shown inside the URL checker button
         break;
       case 'complete':
-        setIsLoading(false);
         setChangeRequest((prev) => ({
           ...prev,
           details: {
@@ -71,7 +65,6 @@ function ChplChangeRequestListingSbulEdit() {
             url: submittedUrl,
           },
         }));
-        setUrlCheckResponse(payload);
         break;
         // no default
     }
@@ -92,13 +85,6 @@ function ChplChangeRequestListingSbulEdit() {
           dispatch={handleDispatch}
           url={changeRequest.details.url}
         />
-        { isLoading && <CircularProgress /> }
-        { urlCheckResponse
-          && (
-            <ChplUrlCheckerResponse
-              response={urlCheckResponse}
-            />
-          )}
       </div>
     </div>
   );
