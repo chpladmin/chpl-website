@@ -100,7 +100,7 @@ function ChplSbulWizardSection4() {
             Thank you for submitting a change to your listing(s)’s Service Base URL List URL. An email confirmation has been sent to the registered CHPL users associated with
             {' '}
             {developer.name}
-            . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
+            . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body.
           </Typography>
         </CardContent>
       </Card>
