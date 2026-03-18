@@ -63,7 +63,7 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-function ChplUrlChecker({ dispatch, onValidationComplete, showResultPopover = true, url = '' }) {
+function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   const { enqueueSnackbar } = useSnackbar();
   const { mutate, isLoading } = usePostUrlChecker();
   const fieldAnchorRef = useRef(null);
@@ -82,10 +82,7 @@ function ChplUrlChecker({ dispatch, onValidationComplete, showResultPopover = tr
         setHasValidatedOnce(true);
         setUrlCheckResponse(response.data);
         setIsPopoverOpen(showResultPopover);
-        dispatch({ action: 'complete', url: payload.url });
-        if (onValidationComplete) {
-          onValidationComplete(response.data);
-        }
+        dispatch({ action: 'complete', payload: response.data, url: payload.url });
       },
       onError: () => {
         setIsPopoverOpen(false);
@@ -207,7 +204,6 @@ export default ChplUrlChecker;
 
 ChplUrlChecker.propTypes = {
   dispatch: func.isRequired,
-  onValidationComplete: func,
   showResultPopover: bool,
   url: string,
 };

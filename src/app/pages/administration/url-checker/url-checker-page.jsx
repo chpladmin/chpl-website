@@ -84,7 +84,7 @@ function ChplUrlCheckerPage() {
     <CancelIcon fontSize="large" className={classes.redIcon} />
   ));
 
-  const handleDispatch = ({ action }) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'loading':
         setIsLoading(true);
@@ -92,13 +92,10 @@ function ChplUrlCheckerPage() {
         break;
       case 'complete':
         setIsLoading(false);
+        setUrlCheckResponse(payload);
         break;
         // no default
     }
-  };
-
-  const handleValidationComplete = (response) => {
-    setUrlCheckResponse(response);
   };
 
   return (
@@ -109,7 +106,6 @@ function ChplUrlCheckerPage() {
           <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
           <ChplUrlChecker
             dispatch={handleDispatch}
-            onValidationComplete={handleValidationComplete}
             showResultPopover={false}
           />
         </Container>

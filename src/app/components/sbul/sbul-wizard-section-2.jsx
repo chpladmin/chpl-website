@@ -160,7 +160,7 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
                         maxWidth: '400px', textOverflow: 'ellipsis', overflowWrap: 'anywhere', whiteSpace: 'normal',
                       }}
                       >
-                        {l.serviceBaseUrlList?.value || '—'}
+                        {l.serviceBaseUrlList?.value ?? ''}
                       </TableCell>
                       <TableCell>
                         <Checkbox
