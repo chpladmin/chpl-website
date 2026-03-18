@@ -82,19 +82,19 @@ const useStyles = makeStyles({
     fontSize: '18px',
   },
   alertTopLeft: {
-    top: '10px',
+    top: '6px',
     left: '10px',
     transform: 'rotate(-15deg)',
   },
   alertTopRight: {
-    top: '14px',
-    right: '12px',
+    top: '40x',
+    right: '-8px',
     transform: 'rotate(20deg)',
   },
   alertBottom: {
-    bottom: '8px',
-    right: '20px',
-    transform: 'rotate(-10deg)',
+    bottom: '-5px',
+    right: '47px',
+    transform: 'rotate(4deg)',
   },
   emptyStateMessage: {
     textAlign: 'center',
@@ -104,7 +104,6 @@ const useStyles = makeStyles({
 
 function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
   const classes = useStyles();
-  const updatableListings = listings.filter((listing) => listing.serviceBaseUrlList?.value);
 
   const toggle = (listing) => {
     dispatch(listing.id);
@@ -127,7 +126,7 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
         </Card>
         <Card>
           <CardContent>
-            {updatableListings.length === 0 && (
+            {listings.length === 0 && (
               <Box className={classes.emptyStateContainer}>
                 <Box className={classes.emptyStateGraphic} aria-hidden>
                   <ErrorOutlineIcon className={`${classes.alertBase} ${classes.alertTopLeft}`} />
@@ -142,7 +141,7 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
                 </Typography>
               </Box>
             )}
-            {updatableListings.length > 0 && (
+            {listings.length > 0 && (
               <Table>
                 <TableHead>
                   <TableRow>
@@ -152,7 +151,7 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  { updatableListings.map((l) => (
+                  { listings.map((l) => (
                     <TableRow
                       key={l.chplProductNumber}
                     >
@@ -161,7 +160,7 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
                         maxWidth: '400px', textOverflow: 'ellipsis', overflowWrap: 'anywhere', whiteSpace: 'normal',
                       }}
                       >
-                        {l.serviceBaseUrlList.value}
+                        {l.serviceBaseUrlList?.value || '—'}
                       </TableCell>
                       <TableCell>
                         <Checkbox

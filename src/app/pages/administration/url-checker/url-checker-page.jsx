@@ -84,7 +84,7 @@ function ChplUrlCheckerPage() {
     <CancelIcon fontSize="large" className={classes.redIcon} />
   ));
 
-  const handleDispatch = ({ action, payload }) => {
+  const handleDispatch = ({ action }) => {
     switch (action) {
       case 'loading':
         setIsLoading(true);
@@ -92,10 +92,13 @@ function ChplUrlCheckerPage() {
         break;
       case 'complete':
         setIsLoading(false);
-        setUrlCheckResponse(payload);
         break;
         // no default
     }
+  };
+
+  const handleValidationComplete = (response) => {
+    setUrlCheckResponse(response);
   };
 
   return (
@@ -106,6 +109,7 @@ function ChplUrlCheckerPage() {
           <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
           <ChplUrlChecker
             dispatch={handleDispatch}
+            onValidationComplete={handleValidationComplete}
             showResultPopover={false}
           />
         </Container>
@@ -128,30 +132,6 @@ function ChplUrlCheckerPage() {
                   <CardContent>
                     <Skeleton variant="text" width="30%" height={36} />
                     <Skeleton variant="text" width="95%" height={28} />
-                  </CardContent>
-                </Card>
-              </Box>
-              <Typography className={classes.titlePadding} component="h3" variant="h6" style={{ fontWeight: 600 }}>Assertions</Typography>
-              <Box className={classes.resultsContainer}>
-                <Card className={classes.resultsCard}>
-                  <CardContent>
-                    <Skeleton variant="text" width="70%" height={36} />
-                    <Skeleton variant="text" width="45%" height={28} />
-                    <Skeleton variant="text" width="90%" height={24} />
-                  </CardContent>
-                </Card>
-                <Card className={classes.resultsCard}>
-                  <CardContent>
-                    <Skeleton variant="text" width="85%" height={36} />
-                    <Skeleton variant="text" width="40%" height={28} />
-                    <Skeleton variant="text" width="65%" height={24} />
-                  </CardContent>
-                </Card>
-                <Card className={classes.resultsCard}>
-                  <CardContent>
-                    <Skeleton variant="text" width="55%" height={36} />
-                    <Skeleton variant="text" width="90%" height={28} />
-                    <Skeleton variant="text" width="80%" height={24} />
                   </CardContent>
                 </Card>
               </Box>
