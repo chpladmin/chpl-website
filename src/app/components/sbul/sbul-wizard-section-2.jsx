@@ -87,7 +87,7 @@ const useStyles = makeStyles({
     transform: 'rotate(-15deg)',
   },
   alertTopRight: {
-    top: '40x',
+    top: '40px',
     right: '-8px',
     transform: 'rotate(20deg)',
   },

@@ -56,19 +56,19 @@ const useStyles = makeStyles({
     fontSize: '18px',
   },
   sparkleTopLeft: {
-    top: '10px',
+    top: '6px',
     left: '10px',
     transform: 'rotate(-15deg)',
   },
   sparkleTopRight: {
-    top: '14px',
-    right: '12px',
+    top: '40px',
+    right: '-8px',
     transform: 'rotate(20deg)',
   },
   sparkleBottom: {
-    bottom: '8px',
-    right: '20px',
-    transform: 'rotate(-10deg)',
+    bottom: '-5px',
+    right: '47px',
+    transform: 'rotate(4deg)',
   },
 });
 
