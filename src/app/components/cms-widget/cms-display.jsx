@@ -117,8 +117,10 @@ function ChplCmsDisplay() {
   const { listings, removeListing } = useContext(CmsContext);
   const { domainIsOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
+  const [activeYear, setActiveYear] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
+  const [reportingYears, setReportingYears] = useState([]);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(certId, isDownloading);
   const { mutate, isLoading } = usePostCreateCmsId(listings);
@@ -126,7 +128,11 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
-    setIdAnalysis(data);
+    setReportingYears(data.map((a) => a.year));
+    if (data.length === 1) {
+      setActiveYear(data[0].year);
+      setIdAnalysis(data[0]);
+    }
   }, [data, isFetching, isSuccess]);
 
   useEffect(() => {
@@ -268,6 +274,14 @@ function ChplCmsDisplay() {
               inline
             />
             .
+          </Typography>
+        )}
+      { reportingYears.length === 1
+        && (
+          <Typography>
+            Reporting year:
+            {' '}
+            { reportingYears[0]}
           </Typography>
         )}
       { idAnalysis.products?.length > 0
