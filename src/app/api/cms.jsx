@@ -5,9 +5,9 @@ import options from './options';
 
 const useFetchCmsIdAnalysis = (listings) => {
   const axios = useAxios();
-  const ids = listings.map((l) => l.id).sort((a, b) => a - b).join(',');
-  return useQuery(['certification_ids', ids], async () => {
-    const response = await axios.get(`/certification_ids/search?ids=${ids}`);
+  const listingIds = listings.map((l) => l.id).sort((a, b) => a - b).join(',');
+  return useQuery(['certification=ids', listingIds], async () => {
+    const response = await axios.get(`/certification-ids/search?listingIds=${listingIds}`);
     return response.data;
   }, {
     enabled: listings?.length > 0,
@@ -16,8 +16,8 @@ const useFetchCmsIdAnalysis = (listings) => {
 
 const useFetchCmsIdPdf = (certId, isDownloading) => {
   const axios = useAxios();
-  return useQuery(['certification_ids', certId, 'includeCriteria'], async () => {
-    const response = await axios.get(`/certification_ids/${certId}?includeCriteria=true`);
+  return useQuery(['certification-ids', certId, 'includeCriteria'], async () => {
+    const response = await axios.get(`/certification-ids/${certId}?includeCriteria=true`);
     return response.data;
   }, {
     enabled: !!certId && isDownloading,
@@ -28,9 +28,9 @@ const useFetchListings = ({ cmsIds }) => {
   const axios = useAxios();
   return useQueries({
     queries: cmsIds.map((cmsId) => ({
-      queryKey: ['certification_ids', { cmsId }],
+      queryKey: ['certification-ids', { cmsId }],
       queryFn: async () => {
-        const response = await axios.get(`/certification_ids/${cmsId}`);
+        const response = await axios.get(`/certification-ids/${cmsId}`);
         return response.data;
       },
       keepPreviousData: true,
@@ -42,13 +42,15 @@ const useFetchListings = ({ cmsIds }) => {
 
 const usePostCreateCmsId = (listings) => {
   const axios = useAxios();
-  const ids = listings.map((l) => l.id).sort((a, b) => a - b).join(',');
-  return useMutation(async () => axios.post(`/certification_ids?ids=${ids}`, {}));
+  const listingIds = listings.map((l) => l.id);
+  return useMutation(async () => axios.post('/certification-ids', {
+    listingIds,
+  }));
 };
 
 const usePostReportRequest = () => {
   const axios = useAxios();
-  return useMutation(async () => axios.post('certification_ids/report-request', {}));
+  return useMutation(async () => axios.post('certification-ids/report-request', {}));
 };
 
 export {
