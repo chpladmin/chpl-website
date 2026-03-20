@@ -6,10 +6,15 @@ import {
   Chip,
   CircularProgress,
   Divider,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   IconButton,
   LinearProgress,
   List,
   ListItem,
+  Radio,
+  RadioGroup,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -116,8 +121,8 @@ function ChplCmsDisplay() {
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
   const { domainIsOn } = useContext(FlagContext);
+  const [activeYear, setActiveYear] = useState('');
   const [certId, setCertId] = useState(undefined);
-  const [activeYear, setActiveYear] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const [reportingYears, setReportingYears] = useState([]);
@@ -129,10 +134,8 @@ function ChplCmsDisplay() {
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
     setReportingYears(data.map((a) => a.year));
-    if (data.length === 1) {
-      setActiveYear(data[0].year);
-      setIdAnalysis(data[0]);
-    }
+    setIdAnalysis(data[0]);
+    setActiveYear(data[0].year);
   }, [data, isFetching, isSuccess]);
 
   useEffect(() => {
@@ -170,6 +173,11 @@ function ChplCmsDisplay() {
   const downloadPdf = () => {
     $analytics.eventTrack('Download EHR Certification ID PDF', { category: 'CMS Widget' });
     setIsDownloading(true);
+  };
+
+  const handleYearSelection = (e) => {
+    setActiveYear(e);
+    setIdAnalysis(data.find((d) => d.year === e));
   };
 
   const removeAll = () => {
@@ -283,6 +291,27 @@ function ChplCmsDisplay() {
             {' '}
             { reportingYears[0]}
           </Typography>
+        )}
+      { reportingYears.length > 1
+        && (
+          <FormControl>
+            <FormLabel>Reporting Year</FormLabel>
+            <RadioGroup
+              row
+              onChange={(e) => handleYearSelection(e.currentTarget.value)}
+              value={activeYear}
+            >
+              { reportingYears
+                .map((y) => (
+                  <FormControlLabel
+                    key={y}
+                    value={y}
+                    control={<Radio />}
+                    label={y}
+                  />
+                ))}
+            </RadioGroup>
+          </FormControl>
         )}
       { idAnalysis.products?.length > 0
         && (
