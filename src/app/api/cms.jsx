@@ -40,11 +40,13 @@ const useFetchListings = ({ cmsIds }) => {
   });
 };
 
-const usePostCreateCmsId = (listings) => {
+const usePostCreateCmsId = () => {
   const axios = useAxios();
-  const listingIds = listings.map((l) => l.id);
-  return useMutation(async () => axios.post('/certification-ids', {
-    listingIds,
+  return useMutation(async ({ idAnalysis }) => axios.post('/certification-ids', {
+    listingIds: idAnalysis.products.map((l) => l.productId),
+    year: idAnalysis.year,
+  }, {
+    enabled: idAnalysis?.valid,
   }));
 };
 

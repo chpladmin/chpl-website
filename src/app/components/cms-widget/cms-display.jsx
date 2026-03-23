@@ -128,7 +128,7 @@ function ChplCmsDisplay() {
   const [reportingYears, setReportingYears] = useState([]);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(certId, isDownloading);
-  const { mutate, isLoading } = usePostCreateCmsId(listings);
+  const { mutate, isLoading } = usePostCreateCmsId();
   const classes = useStyles();
 
   useEffect(() => {
@@ -163,7 +163,7 @@ function ChplCmsDisplay() {
 
   const createCertId = async () => {
     $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
-    await mutate({}, {
+    await mutate({ idAnalysis }, {
       onSuccess: (response) => {
         setCertId(response.data.ehrCertificationId);
       },
