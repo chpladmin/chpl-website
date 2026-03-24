@@ -92,7 +92,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
       <Container maxWidth="md">
         <Box className={classes.sbulSectionContainer}>
           <Typography gutterBottom component="h2" variant="h3">
-            Section 3 &mdash; Listings
+            Section 3 &mdash; Service Base URL List entry
           </Typography>
         </Box>
       </Container>
