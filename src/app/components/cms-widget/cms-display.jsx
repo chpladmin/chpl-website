@@ -122,12 +122,11 @@ function ChplCmsDisplay() {
   const { listings, removeListing } = useContext(CmsContext);
   const { domainIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
-  const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const [reportingYears, setReportingYears] = useState([]);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
-  const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(certId, isDownloading);
+  const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
   const { mutate, isLoading } = usePostCreateCmsId();
   const classes = useStyles();
 
@@ -144,10 +143,6 @@ function ChplCmsDisplay() {
     setIsDownloading(false);
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
 
-  useEffect(() => {
-    setCertId(undefined);
-  }, [listings]);
-
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
     $rootScope.$broadcast('compare.compareAll', listings);
@@ -158,14 +153,14 @@ function ChplCmsDisplay() {
 
   const copyToClipboard = () => {
     $analytics.eventTrack('Copy EHR Certification ID to Clipboard', { category: 'CMS Widget' });
-    navigator.clipboard.writeText(certId);
+    navigator.clipboard.writeText(idAnalysis.ehrCertificationId);
   };
 
   const createCertId = async () => {
     $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
     await mutate({ idAnalysis }, {
       onSuccess: (response) => {
-        setCertId(response.data.ehrCertificationId);
+        setIdAnalysis(response.data);
       },
     });
   };
@@ -234,7 +229,7 @@ function ChplCmsDisplay() {
 
   return (
     <CardContent className={classes.cardcontentPadding}>
-      { certId
+      { idAnalysis.ehrCertificationId
         && (
           <>
             <Typography>
@@ -242,7 +237,7 @@ function ChplCmsDisplay() {
             </Typography>
             <div className={classes.certCopyContainer} id="ehr-cert-id">
               <Typography color="primary">
-                { certId }
+                { idAnalysis.ehrCertificationId }
               </Typography>
               <IconButton
                 onClick={copyToClipboard}
@@ -382,7 +377,7 @@ function ChplCmsDisplay() {
         .
       </Typography>
       <div className={classes.buttonContainer}>
-        { !certId
+        { !idAnalysis.ehrCertificationId
           && (
             <Button
               fullWidth
@@ -396,7 +391,7 @@ function ChplCmsDisplay() {
               Create Certification ID
             </Button>
           )}
-        { certId
+        { idAnalysis.ehrCertificationId
           && (
             <Button
               fullWidth

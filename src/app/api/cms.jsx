@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueries } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueries,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -42,12 +47,17 @@ const useFetchListings = ({ cmsIds }) => {
 
 const usePostCreateCmsId = () => {
   const axios = useAxios();
+  const queryClient = useQueryClient();
   return useMutation(async ({ idAnalysis }) => axios.post('/certification-ids', {
     listingIds: idAnalysis.products.map((l) => l.productId),
     year: idAnalysis.year,
   }, {
     enabled: idAnalysis?.valid,
-  }));
+  }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['certification-ids']);
+    },
+  });
 };
 
 const usePostReportRequest = () => {
