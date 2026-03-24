@@ -3,8 +3,8 @@
 
 version: 2
 updates:
-  - package-ecosystem: "yarn"
-    directory:
+  - package-ecosystem: "npm"
+    directories:
       - "/"
     schedule:
       interval: "monthly"
