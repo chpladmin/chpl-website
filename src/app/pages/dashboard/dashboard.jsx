@@ -47,31 +47,31 @@ function ChplDashboard() {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
 
-  // PowerBI reports configuration
   const reports = [
     {
-      title: 'Astp Questionable URLs',
+      title: 'Questionable URLs',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZGUwYjk5NzYtYzI2NS00MWU1LTgyYzEtOGI0ZjdjODU3ODM2IiwidCI6IjMwN2QyMTJhLWZiODYtNDgwNy04NGRkLTg2Nzc2OWI4MDQyYSIsImMiOjF9&navContentPaneEnabled=false&filterPaneEnabled=false',
-      height: 350,
+      height: 365,
     },
     {
-      title: 'Astp Developer Attestations',
+      title: 'Developer Attestations',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZTcxYTAzMzgtOTFhYi00YTRhLThjZjItZGY3ZmQwYzYzMDlhIiwidCI6IjMwN2QyMTJhLWZiODYtNDgwNy04NGRkLTg2Nzc2OWI4MDQyYSIsImMiOjF9&navContentPaneEnabled=false&filterPaneEnabled=false',
       height: 600,
     },
   ];
 
-  // Future report placeholders
-  const futureReports = [
-    { title: 'Non-Conformity Counts', height: 600 },
-    { title: 'Service Base URL', height: 600 },
-    { title: 'Direct Review', height: 600 },
+  const leftColumnReports = [
+    { title: 'Non-Conformity Counts', height: 365 },
+    { title: 'Service Base URL', height: 365 },
+    { title: 'Direct Review', height: 365 },
+    { title: 'Surveillance Activities', height: 365 },
+  ];
+
+  const rightColumnReports = [
     { title: 'Real World Testing Summary', height: 600 },
-    { title: 'Surveillance Activities', height: 600 },
     { title: 'Updated Criteria Status Report', height: 600 },
   ];
 
-  // Track dashboard view
   useEffect(() => {
     eventTrack({
       ...analytics,
@@ -80,7 +80,6 @@ function ChplDashboard() {
     });
   }, [analytics]);
 
-  // Check if user has required role
   if (!hasAnyRole(['chpl-admin'])) {
     return (
       <Box bgcolor={palette.white} p={8}>
@@ -98,7 +97,7 @@ function ChplDashboard() {
     <>
       <Box bgcolor={palette.white} p={8}>
         <Container maxWidth="lg">
-          <Typography variant="h1">ASTP Compliance Dashboard</Typography>
+          <Typography variant="h1">Compliance Dashboard</Typography>
           <Typography variant="body1" color="textSecondary">
             A comprehensive view of ASTP compliance reports and metrics
           </Typography>
@@ -107,7 +106,6 @@ function ChplDashboard() {
       <Box className={classes.container}>
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="flex-start">
-            {/* Left Column - Smaller cards */}
             <Grid item xs={12} md={4}>
               <Grid container spacing={4}>
                 <Grid item xs={12}>
@@ -123,18 +121,19 @@ function ChplDashboard() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12}>
-                  <Card className={classes.reportCard}>
-                    <CardHeader title={futureReports[0].title} />
-                    <CardContent>
-                      <Skeleton variant="rect" height={futureReports[0].height} />
-                    </CardContent>
-                  </Card>
-                </Grid>
+                {leftColumnReports.map((report, index) => (
+                  <Grid item xs={12} key={`left-${index}`}>
+                    <Card className={classes.reportCard}>
+                      <CardHeader title={report.title} />
+                      <CardContent>
+                        <Skeleton variant="rect" height={report.height} />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
 
-            {/* Right Column - Larger card and remaining cards */}
             <Grid item xs={12} md={8}>
               <Grid container spacing={4}>
                 <Grid item xs={12}>
@@ -150,10 +149,8 @@ function ChplDashboard() {
                     </CardContent>
                   </Card>
                 </Grid>
-                
-                {/* Remaining skeleton placeholders */}
-                {futureReports.slice(1).map((report, index) => (
-                  <Grid item xs={12} md={6} key={`skeleton-${index + 1}`}>
+                {rightColumnReports.map((report, index) => (
+                  <Grid item xs={12} key={`right-${index}`}>
                     <Card className={classes.reportCard}>
                       <CardHeader title={report.title} />
                       <CardContent>
