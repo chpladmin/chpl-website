@@ -133,8 +133,10 @@ function ChplCmsDisplay() {
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
     setReportingYears(data.map((a) => a.year));
-    setIdAnalysis(data[0]);
-    setActiveYear(data[0].year);
+    if (activeYear === '') {
+      setIdAnalysis(data[0]);
+      setActiveYear(data[0].year);
+    }
   }, [data, isFetching, isSuccess]);
 
   useEffect(() => {
