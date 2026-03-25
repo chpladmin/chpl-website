@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {
   Box,
   Card,
@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import { useFetchReportMetadata } from 'api/reports';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { UserContext } from 'shared/contexts';
@@ -46,19 +47,19 @@ function ChplDashboard() {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
+  const [reportMetadata, setReportMetadata] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchReportMetadata('astp-dashboard');
 
-  const reports = [
-    {
-      title: 'Questionable URLs',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiZGUwYjk5NzYtYzI2NS00MWU1LTgyYzEtOGI0ZjdjODU3ODM2IiwidCI6IjMwN2QyMTJhLWZiODYtNDgwNy04NGRkLTg2Nzc2OWI4MDQyYSIsImMiOjF9&navContentPaneEnabled=false&filterPaneEnabled=false',
-      height: 365,
-    },
-    {
-      title: 'Developer Attestations',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiZTcxYTAzMzgtOTFhYi00YTRhLThjZjItZGY3ZmQwYzYzMDlhIiwidCI6IjMwN2QyMTJhLWZiODYtNDgwNy04NGRkLTg2Nzc2OWI4MDQyYSIsImMiOjF9&navContentPaneEnabled=false&filterPaneEnabled=false',
-      height: 600,
-    },
-  ];
+  useEffect(() => {
+    if (isLoading || !isSuccess) { return; }
+    setReportMetadata(data || []);
+  }, [data, isLoading, isSuccess]);
+
+  // Default heights for reports (can be overridden by API)
+  const defaultHeights = {
+    'astp-questionable-urls': 365,
+    'astp-developer-attestations': 600,
+  };
 
   const leftColumnReports = [
     { title: 'Non-Conformity Counts', height: 365 },
@@ -93,6 +94,13 @@ function ChplDashboard() {
     );
   }
 
+  const questionableUrlsReport = reportMetadata.find((r) => r.reportKey === 'astp-questionable-urls');
+  const attestationsReport = reportMetadata.find((r) => r.reportKey === 'astp-developer-attestations');
+  
+  // Use API height if available, otherwise use default
+  const questionableUrlsHeight = questionableUrlsReport?.height || defaultHeights['astp-questionable-urls'];
+  const attestationsHeight = attestationsReport?.height || defaultHeights['astp-developer-attestations'];
+
   return (
     <>
       <Box bgcolor={palette.white} p={8}>
@@ -110,14 +118,18 @@ function ChplDashboard() {
               <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <Card className={classes.reportCard}>
-                    <CardHeader title={reports[0].title} />
+                    <CardHeader title={questionableUrlsReport?.title || 'Questionable URLs'} />
                     <CardContent className={classes.reportCardContent}>
-                      <iframe
-                        title={reports[0].title}
-                        className={classes.iframe}
-                        height={reports[0].height}
-                        src={reports[0].url}
-                      />
+                      {isLoading || !questionableUrlsReport ? (
+                        <Skeleton variant="rect" height={questionableUrlsHeight} />
+                      ) : (
+                        <iframe
+                          title={questionableUrlsReport.title}
+                          className={classes.iframe}
+                          height={questionableUrlsHeight}
+                          src={questionableUrlsReport.url}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </Grid>
@@ -138,14 +150,18 @@ function ChplDashboard() {
               <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <Card className={classes.reportCard}>
-                    <CardHeader title={reports[1].title} />
+                    <CardHeader title={attestationsReport?.title || 'Developer Attestations'} />
                     <CardContent className={classes.reportCardContent}>
-                      <iframe
-                        title={reports[1].title}
-                        className={classes.iframe}
-                        height={reports[1].height}
-                        src={reports[1].url}
-                      />
+                      {isLoading || !attestationsReport ? (
+                        <Skeleton variant="rect" height={attestationsHeight} />
+                      ) : (
+                        <iframe
+                          title={attestationsReport.title}
+                          className={classes.iframe}
+                          height={attestationsHeight}
+                          src={attestationsReport.url}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </Grid>
