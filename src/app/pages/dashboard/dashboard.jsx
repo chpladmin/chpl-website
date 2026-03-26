@@ -52,13 +52,15 @@ function ChplDashboard() {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
+    console.log('Dashboard API Response:', JSON.stringify(data, null, 2));
+    console.log('Report Keys:', data?.map(r => r.reportKey));
     setReportMetadata(data || []);
   }, [data, isLoading, isSuccess]);
 
   // Default heights for reports (can be overridden by API)
   const defaultHeights = {
-    'astp-questionable-urls': 365,
-    'astp-developer-attestations': 600,
+    QuestionableUrls: 365,
+    DeveloperAttestations: 600,
   };
 
   const leftColumnReports = [
@@ -94,12 +96,15 @@ function ChplDashboard() {
     );
   }
 
-  const questionableUrlsReport = reportMetadata.find((r) => r.reportKey === 'astp-questionable-urls');
-  const attestationsReport = reportMetadata.find((r) => r.reportKey === 'astp-developer-attestations');
+  const questionableUrlsReport = reportMetadata.find((r) => r.reportKey === 'QuestionableUrls');
+  const attestationsReport = reportMetadata.find((r) => r.reportKey === 'DeveloperAttestations');
   
-  // Use API height if available, otherwise use default
-  const questionableUrlsHeight = questionableUrlsReport?.height || defaultHeights['astp-questionable-urls'];
-  const attestationsHeight = attestationsReport?.height || defaultHeights['astp-developer-attestations'];
+  console.log('Questionable URLs Report:', questionableUrlsReport);
+  console.log('Attestations Report:', attestationsReport);
+  
+  // Use your custom heights (ignoring API heights)
+  const questionableUrlsHeight = defaultHeights.QuestionableUrls;
+  const attestationsHeight = defaultHeights.DeveloperAttestations;
 
   return (
     <>
@@ -120,15 +125,19 @@ function ChplDashboard() {
                   <Card className={classes.reportCard}>
                     <CardHeader title={questionableUrlsReport?.title || 'Questionable URLs'} />
                     <CardContent className={classes.reportCardContent}>
-                      {isLoading || !questionableUrlsReport ? (
+                      {isLoading ? (
                         <Skeleton variant="rect" height={questionableUrlsHeight} />
-                      ) : (
+                      ) : questionableUrlsReport ? (
                         <iframe
                           title={questionableUrlsReport.title}
                           className={classes.iframe}
                           height={questionableUrlsHeight}
                           src={questionableUrlsReport.url}
                         />
+                      ) : (
+                        <Typography variant="body1" color="textSecondary" align="center" style={{ padding: '32px' }}>
+                          Report not available
+                        </Typography>
                       )}
                     </CardContent>
                   </Card>
@@ -152,15 +161,19 @@ function ChplDashboard() {
                   <Card className={classes.reportCard}>
                     <CardHeader title={attestationsReport?.title || 'Developer Attestations'} />
                     <CardContent className={classes.reportCardContent}>
-                      {isLoading || !attestationsReport ? (
+                      {isLoading ? (
                         <Skeleton variant="rect" height={attestationsHeight} />
-                      ) : (
+                      ) : attestationsReport ? (
                         <iframe
                           title={attestationsReport.title}
                           className={classes.iframe}
                           height={attestationsHeight}
                           src={attestationsReport.url}
                         />
+                      ) : (
+                        <Typography variant="body1" color="textSecondary" align="center" style={{ padding: '32px' }}>
+                          Report not available
+                        </Typography>
                       )}
                     </CardContent>
                   </Card>
