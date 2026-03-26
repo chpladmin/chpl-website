@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     border: 'none',
     width: '100%',
     display: 'block',
-    marginBottom: '-69px', // Hide PowerBI zoom controls at bottom
+    marginBottom: '-69px',
   },
 });
 
@@ -52,12 +52,9 @@ function ChplDashboard() {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    console.log('Dashboard API Response:', JSON.stringify(data, null, 2));
-    console.log('Report Keys:', data?.map(r => r.reportKey));
     setReportMetadata(data || []);
   }, [data, isLoading, isSuccess]);
 
-  // Default heights for reports (can be overridden by API)
   const defaultHeights = {
     QuestionableUrls: 365,
     DeveloperAttestations: 600,
@@ -98,11 +95,7 @@ function ChplDashboard() {
 
   const questionableUrlsReport = reportMetadata.find((r) => r.reportKey === 'QuestionableUrls');
   const attestationsReport = reportMetadata.find((r) => r.reportKey === 'DeveloperAttestations');
-  
-  console.log('Questionable URLs Report:', questionableUrlsReport);
-  console.log('Attestations Report:', attestationsReport);
-  
-  // Use your custom heights (ignoring API heights)
+
   const questionableUrlsHeight = defaultHeights.QuestionableUrls;
   const attestationsHeight = defaultHeights.DeveloperAttestations;
 
