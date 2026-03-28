@@ -33,47 +33,86 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const ProgressBar = ({ value, year }) => (
-  <Box
-    pt={2}
-    gridGap={8}
-    pb={2}
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    id="progress-bar"
-  >
-    <Box width="56%">
-      <LinearProgress
-        id="progress-bar-bar"
-        variant="determinate"
-        value={value}
-      />
+const useProgressBarStyles = makeStyles((theme) => ({
+  colorPrimary: {
+    backgroundColor: ({ value }) => {
+      if (value >= 100) return 'rgba(76,175,80,0.2)';
+      if (value < 25) return 'rgba(244,67,54,0.2)';
+      return theme.palette.primary.light;
+    },
+  },
+  barColorPrimary: {
+    backgroundColor: ({ value }) => {
+      if (value >= 100) return theme.palette.success?.main || '#66926d';
+      if (value < 25) return theme.palette.error.main;
+      return theme.palette.primary.main;
+    },
+  },
+  bar1Indeterminate: {
+    backgroundColor: ({ value }) => {
+      if (value < 25) return theme.palette.error.main;
+      return theme.palette.primary.main;
+    },
+  },
+  bar2Indeterminate: {
+    backgroundColor: ({ value }) => {
+      if (value < 25) return theme.palette.error.main;
+      return theme.palette.primary.main;
+    },
+  },
+}));
+
+const ProgressBar = ({ value, year }) => {
+  const progressClasses = useProgressBarStyles({ value });
+  return (
+    <Box
+      pt={2}
+      gridGap={8}
+      pb={2}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      id="progress-bar"
+    >
+      <Box width="150px">
+        <LinearProgress
+          id="progress-bar-bar"
+          variant={value >= 100 ? 'determinate' : 'indeterminate'}
+          value={value >= 100 ? 100 : undefined}
+          classes={{
+            colorPrimary: progressClasses.colorPrimary,
+            barColorPrimary: progressClasses.barColorPrimary,
+            bar1Indeterminate: progressClasses.bar1Indeterminate,
+            bar2Indeterminate: progressClasses.bar2Indeterminate,
+          }}
+          style={{ height: '16px', borderRadius: '8px' }}
+        />
+      </Box>
+      <Box>
+        <Typography
+          variant="h6"
+          color="textPrimary"
+          id="progress-bar-text"
+        >
+          <strong>
+            { value }
+            %
+          </strong>
+          {' '}
+          Base Criteria Met
+          {year !== '2015'
+             && (
+               <>
+                 {' '}
+                 for CY
+                 {year}
+               </>
+             )}
+        </Typography>
+      </Box>
     </Box>
-    <Box>
-      <Typography
-        variant="body2"
-        color="textPrimary"
-        id="progress-bar-text"
-      >
-        <strong>
-          { value }
-          %
-        </strong>
-        {' '}
-        Base Criteria Met
-        {year !== '2015'
-           && (
-             <>
-               {' '}
-               for CY
-               {year}
-             </>
-           )}
-      </Typography>
-    </Box>
-  </Box>
-);
+  );
+};
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -91,6 +130,7 @@ const useStyles = makeStyles({
   },
   cardcontentPadding: {
     padding: '8px',
+    maxWidth: '500px',
   },
   chipContainer: {
     display: 'flex',
@@ -112,9 +152,23 @@ const useStyles = makeStyles({
   },
   missingLists: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
+  },
+  yearSelector: {
+    width: '100%',
+    padding: '12px 16px',
+    borderRadius: '0px 0px 8px 8px',
+    backgroundColor: '#eeeeee',
+    marginTop: '-8px',
+    marginBottom: '16px',
   },
 });
+
+const useRadioStyles = makeStyles(() => ({
+  root: {
+    color: '#66926d',
+  },
+}));
 
 function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
@@ -129,13 +183,17 @@ function ChplCmsDisplay() {
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
   const { mutate, isLoading } = usePostCreateCmsId();
   const classes = useStyles();
+  const radioClasses = useRadioStyles();
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
-    setReportingYears(data.map((a) => a.year));
+    const stripped = data.map(({ ehrCertificationId: _, ...rest }) => rest);
+    setReportingYears(stripped.map((a) => a.year));
     if (activeYear === '') {
-      setIdAnalysis(data[0]);
-      setActiveYear(data[0].year);
+      setIdAnalysis(stripped[0]);
+      setActiveYear(stripped[0].year);
+    } else {
+      setIdAnalysis(stripped.find((d) => d.year === activeYear) || stripped[0]);
     }
   }, [data, isFetching, isSuccess]);
 
@@ -185,34 +243,13 @@ function ChplCmsDisplay() {
   if (!listings || listings.length === 0) {
     return (
       <>
-        <Typography gutterBottom><strong>No products selected.</strong></Typography>
-        <Typography>
-          Note: the selected product
-          {listings?.length !== 1 ? 's' : ''}
-          {' '}
-          must meet 100% of the Base Criteria. For assistance, view the
-          {' '}
-          <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
-            text="CHPL Public User Guide"
-            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          {' '}
-          or
-          {' '}
-          <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
-            text="Base Criteria"
-            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          .
+        <Typography fontWeight="bold" variant="h3" gutterBottom>
+          CMS Certification ID Creator
         </Typography>
         <Divider />
-        <Typography variant="body2">
+        <Typography gutterBottom><strong>No products selected.</strong></Typography>
+        <Divider />
+        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -231,6 +268,10 @@ function ChplCmsDisplay() {
 
   return (
     <CardContent className={classes.cardcontentPadding}>
+      <Typography variant="h2" gutterBottom>
+        CMS Certification ID Creator
+      </Typography>
+      <Divider />
       { idAnalysis.ehrCertificationId
         && (
           <>
@@ -253,58 +294,30 @@ function ChplCmsDisplay() {
             </Typography>
           </>
         )}
-      { idAnalysis.metPercentages?.criteriaMet < 100
-        && (
-          <Typography>
-            Note: the selected product
-            {listings?.length !== 1 ? 's' : ''}
-            {' '}
-            must meet 100% of the Base Criteria. For assistance, view the
-            {' '}
-            <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
-              text="CHPL Public User Guide"
-              analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-              external={false}
-              inline
-            />
-            {' '}
-            or
-            {' '}
-            <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
-              text="Base Criteria"
-              analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-              external={false}
-              inline
-            />
-            .
-          </Typography>
-        )}
-      { reportingYears.length === 1
-        && (
-          <Typography>
-            Reporting year:
-            {' '}
-            { reportingYears[0]}
-          </Typography>
-        )}
       { reportingYears.length > 1
         && (
-          <FormControl>
-            <FormLabel>Reporting Year</FormLabel>
+          <FormControl className={classes.yearSelector} style={{ flexDirection: 'row', alignItems: 'center', gap: '16px' }}>
+            <FormLabel style={{ fontSize: '2rem', fontWeight: 900, marginBottom: 0, whiteSpace: 'nowrap' }}>Reporting Year</FormLabel>
             <RadioGroup
               row
               onChange={(e) => handleYearSelection(e.currentTarget.value)}
               value={activeYear}
+              style={{ gap: '8px' }}
             >
               { reportingYears
                 .map((y) => (
                   <FormControlLabel
                     key={y}
                     value={y}
-                    control={<Radio />}
-                    label={y}
+                    control={<Radio color="primary" size="large" classes={{ root: radioClasses.root }} style={{ transform: 'scale(1.5)', marginRight: '4px' }} />}
+                    label={
+                      <Typography
+                        variant="body1"
+                        style={{ fontWeight: activeYear === y ? 600 : 400 }}
+                      >
+                        {y}
+                      </Typography>
+                    }
                   />
                 ))}
             </RadioGroup>
@@ -312,20 +325,32 @@ function ChplCmsDisplay() {
         )}
       { idAnalysis.products?.length > 0
         && (
-          <ProgressBar
-            value={idAnalysis.metPercentages.criteriaMet}
-            year={idAnalysis.year}
-          />
+          <>
+            <Typography style={{ fontWeight: 800 }}>Validation</Typography>
+            <ProgressBar
+              value={idAnalysis.metPercentages.criteriaMet}
+              year={idAnalysis.year}
+            />
+                  { idAnalysis.metPercentages?.criteriaMet < 100
+        && (
+          <Typography variant="body1" color="textSecondary" style={{ textWrap: 'wrap' }}>
+            Note: the selected product
+            {listings?.length !== 1 ? 's' : ''}
+            {' '}
+            must meet 100% of the Base Criteria.
+            {' '}
+          </Typography>
+        )}
+          </>
         )}
       { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
         && (
           <>
-            <Divider />
             <div className={classes.missingLists}>
               { idAnalysis.missingAnd?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2">Please select a product or products that contain the following criteria:</Typography>
+                    <Typography variant="body2" style={{ fontWeight: 800 }}>Please select a product or products that contain the following criteria:</Typography>
                     <List id="missing-and">
                       { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
                     </List>
@@ -334,7 +359,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingOr?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2">
+                    <Typography variant="body2" style={{ fontWeight: 800 }}>
                       { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
                       { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
                       {' '}
@@ -350,6 +375,7 @@ function ChplCmsDisplay() {
           </>
         )}
       <Divider />
+      <Typography style={{ fontWeight: 800 }}>Product Selected</Typography>
       <div className={classes.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
@@ -365,19 +391,6 @@ function ChplCmsDisplay() {
       </div>
       { (isFetching || isLoading || isDownloading) && <CircularProgress id="cms-id-processing" size={20} /> }
       <Divider />
-      <Typography variant="body2">
-        To view which products were used to create a specific CMS ID, use the
-        {' '}
-        <ChplLink
-          href="#/resources/cms-lookup"
-          text="CMS ID Reverse Lookup"
-          analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
-          external={false}
-          router={{ sref: 'resources.cms-lookup' }}
-          inline
-        />
-        .
-      </Typography>
       <div className={classes.buttonContainer}>
         { !idAnalysis.ehrCertificationId
           && (
@@ -430,7 +443,44 @@ function ChplCmsDisplay() {
           </Button>
         </div>
       </div>
+      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" style={{ gap: '8px' }} alignItems="center">
+        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary"> For assistance, view the
+            {' '}
+            <ChplLink
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+              text="CHPL Public User Guide"
+              analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+              external={false}
+              inline
+            />
+            {' '}
+            or
+            {' '}
+            <ChplLink
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
+              text="Base Criteria"
+              analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+              external={false}
+              inline
+            />
+            .
+        </Typography>
+        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
+          To view which products were used to create a specific CMS ID, use the
+          {' '}
+          <ChplLink
+            href="#/resources/cms-lookup"
+            text="CMS ID Reverse Lookup"
+            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
+            external={false}
+            router={{ sref: 'resources.cms-lookup' }}
+            inline
+          />
+          .
+        </Typography>
+      </Box>  
     </CardContent>
+    
   );
 }
 
