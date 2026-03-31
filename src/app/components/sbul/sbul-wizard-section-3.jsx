@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Button,
@@ -16,6 +16,7 @@ import {
 } from 'prop-types';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
+import UrlCheckerContext from 'components/url-checker/url-checker-context';
 import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -62,7 +63,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
-  const [url, setUrl] = useState('');
+  const { url, setUrl } = useContext(UrlCheckerContext);
   const classes = useStyles();
 
   const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);

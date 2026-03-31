@@ -11,6 +11,7 @@ import ChplSbulWizard from './sbul-wizard';
 
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { useFetchSbulListings } from 'api/developer';
+import UrlCheckerWrapper from 'components/url-checker/url-checker-wrapper';
 import { DeveloperContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
@@ -100,14 +101,16 @@ function ChplSbulCreate({ dispatch }) {
           </Typography>
         </div>
       </Container>
-      <ChplSbulWizard
-        isSubmitting={isSubmitting}
-        developer={developer}
-        dispatch={handleDispatch}
-        listings={listings}
-        stage={stage}
-        errors={errors}
-      />
+      <UrlCheckerWrapper>
+        <ChplSbulWizard
+          isSubmitting={isSubmitting}
+          developer={developer}
+          dispatch={handleDispatch}
+          listings={listings}
+          stage={stage}
+          errors={errors}
+        />
+      </UrlCheckerWrapper>
     </>
   );
 }
