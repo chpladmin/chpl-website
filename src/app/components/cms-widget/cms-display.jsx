@@ -34,7 +34,16 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
+const getProgressColor = (theme, value) => {
+  if (value >= 100) return theme.palette.success?.main || '#66926d';
+  if (value < 25) return theme.palette.error.main;
+  return theme.palette.primary.main;
+};
+
 const useProgressBarStyles = makeStyles((theme) => ({
+  barContainer: {
+    flexShrink: 0,
+  },
   root: {
     height: '16px',
     borderRadius: '8px',
@@ -48,30 +57,10 @@ const useProgressBarStyles = makeStyles((theme) => ({
     },
   },
   barColorPrimary: {
-    backgroundColor: ({ value }) => {
-      if (value >= 100) return theme.palette.success?.main || '#66926d';
-      if (value < 25) return theme.palette.error.main;
-      return theme.palette.primary.main;
-    },
+    backgroundColor: ({ value }) => getProgressColor(theme, value),
   },
   bar1Determinate: {
-    backgroundColor: ({ value }) => {
-      if (value >= 100) return theme.palette.success?.main || '#66926d';
-      if (value < 25) return theme.palette.error.main;
-      return theme.palette.primary.main;
-    },
-  },
-  bar1Indeterminate: {
-    backgroundColor: ({ value }) => {
-      if (value < 25) return theme.palette.error.main;
-      return theme.palette.primary.main;
-    },
-  },
-  bar2Indeterminate: {
-    backgroundColor: ({ value }) => {
-      if (value < 25) return theme.palette.error.main;
-      return theme.palette.primary.main;
-    },
+    backgroundColor: ({ value }) => getProgressColor(theme, value),
   },
 }));
 
@@ -90,7 +79,7 @@ const ProgressBar = ({ value, year }) => {
       justifyContent="space-between"
       id="progress-bar"
     >
-      <Box width="150px" style={{ flexShrink: 0 }}>
+      <Box width="150px" className={progressClasses.barContainer}>
         <LinearProgress
           id="progress-bar-bar"
           variant="determinate"
@@ -139,6 +128,22 @@ ProgressBar.propTypes = {
 
 const useStyles = makeStyles({
   ...utilStyles,
+  emptyStateTitle: {
+    fontWeight: '700 !important',
+  },
+  boldText: {
+    fontWeight: '800 !important',
+  },
+  centeredWrappedText: {
+    textAlign: 'center',
+    textWrap: 'wrap',
+  },
+  preWrapText: {
+    whiteSpace: 'pre-wrap',
+  },
+  redText: {
+    color: 'red',
+  },
   buttonContainer: {
     marginTop: '16px',
     gap: '8px',
@@ -185,13 +190,37 @@ const useStyles = makeStyles({
     marginTop: '-8px',
     marginBottom: '16px',
   },
-});
-
-const useRadioStyles = makeStyles(() => ({
-  root: {
+  yearSelectorLayout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  yearLabel: {
+    fontSize: '2rem',
+    fontWeight: '900 !important',
+    marginBottom: 0,
+    whiteSpace: 'nowrap',
+  },
+  yearRadioGroup: {
+    gap: '8px',
+  },
+  yearOptionLabelActive: {
+    fontWeight: '600 !important',
+  },
+  yearOptionLabel: {
+    fontWeight: '400 !important',
+  },
+  radioRoot: {
     color: '#66926d',
   },
-}));
+  radioScaled: {
+    transform: 'scale(1.5)',
+    marginRight: '4px',
+  },
+  disclaimerContainer: {
+    gap: '8px',
+  },
+});
 
 function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
@@ -206,7 +235,6 @@ function ChplCmsDisplay() {
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
   const { mutate, isLoading } = usePostCreateCmsId();
   const classes = useStyles();
-  const radioClasses = useRadioStyles();
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
@@ -266,13 +294,13 @@ function ChplCmsDisplay() {
   if (!listings || listings.length === 0) {
     return (
       <>
-        <Typography fontWeight="bold" variant="h3" gutterBottom>
+        <Typography className={classes.emptyStateTitle} variant="h3" gutterBottom>
           CMS Certification ID Creator
         </Typography>
         <Divider />
         <Typography gutterBottom><strong>No products selected.</strong></Typography>
         <Divider />
-        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
+        <Typography className={classes.centeredWrappedText} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -312,8 +340,8 @@ function ChplCmsDisplay() {
                 <FileCopyOutlinedIcon />
               </IconButton>
             </div>
-            <Typography gutterBottom style={{ whiteSpace: 'pre-wrap' }} variant="body2">
-              <span style={{ color: 'red' }}>*</span>
+            <Typography gutterBottom className={classes.preWrapText} variant="body2">
+              <span className={classes.redText}>*</span>
               {' '}
               Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
             </Typography>
@@ -322,29 +350,26 @@ function ChplCmsDisplay() {
         )}
       { reportingYears.length > 1
         && (
-          <FormControl className={classes.yearSelector} style={{ flexDirection: 'row', alignItems: 'center', gap: '16px' }}>
-            <FormLabel style={{
-              fontSize: '2rem', fontWeight: 900, marginBottom: 0, whiteSpace: 'nowrap',
-            }}
-            >
+          <FormControl className={`${classes.yearSelector} ${classes.yearSelectorLayout}`}>
+            <FormLabel className={classes.yearLabel}>
               Reporting Year
             </FormLabel>
             <RadioGroup
               row
               onChange={(e) => handleYearSelection(e.currentTarget.value)}
               value={activeYear}
-              style={{ gap: '8px' }}
+              className={classes.yearRadioGroup}
             >
               { reportingYears
                 .map((y) => (
                   <FormControlLabel
                     key={y}
                     value={y}
-                    control={<Radio color="primary" size="large" classes={{ root: radioClasses.root }} style={{ transform: 'scale(1.5)', marginRight: '4px' }} />}
+                    control={<Radio color="primary" size="large" classes={{ root: classes.radioRoot }} className={classes.radioScaled} />}
                     label={(
                       <Typography
                         variant="body1"
-                        style={{ fontWeight: activeYear === y ? 600 : 400 }}
+                        className={activeYear === y ? classes.yearOptionLabelActive : classes.yearOptionLabel}
                       >
                         {y}
                       </Typography>
@@ -357,14 +382,14 @@ function ChplCmsDisplay() {
       { idAnalysis.products?.length > 0
         && (
           <>
-            <Typography style={{ fontWeight: 800 }}>Validation</Typography>
+            <Typography className={classes.boldText}>Validation</Typography>
             <ProgressBar
               value={idAnalysis.metPercentages.criteriaMet}
               year={idAnalysis.year}
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
         && (
-          <Typography variant="body1" color="textSecondary" style={{ whiteSpace: 'pre-wrap' }}>
+          <Typography variant="body1" color="textSecondary" className={classes.preWrapText}>
             Note: the selected product
             {listings?.length !== 1 ? 's' : ''}
             {' '}
@@ -381,7 +406,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingAnd?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" style={{ fontWeight: 800 }}>Please select a product or products that contain the following criteria:</Typography>
+                    <Typography variant="body2" className={classes.boldText}>Please select a product or products that contain the following criteria:</Typography>
                     <List id="missing-and">
                       { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
                     </List>
@@ -390,7 +415,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingOr?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" style={{ fontWeight: 800 }}>
+                    <Typography variant="body2" className={classes.boldText}>
                       { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
                       { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
                       {' '}
@@ -406,7 +431,7 @@ function ChplCmsDisplay() {
           </>
         )}
       <Divider />
-      <Typography style={{ fontWeight: 800 }}>Product Selected</Typography>
+      <Typography className={classes.boldText}>Product Selected</Typography>
       <div className={classes.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
@@ -474,8 +499,8 @@ function ChplCmsDisplay() {
           </Button>
         </div>
       </div>
-      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" style={{ gap: '8px' }} alignItems="center">
-        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
+      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerContainer} alignItems="center">
+        <Typography className={classes.centeredWrappedText} variant="body2" color="textSecondary">
           {' '}
           For assistance, view the
           {' '}
@@ -498,7 +523,7 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
+        <Typography className={classes.centeredWrappedText} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
