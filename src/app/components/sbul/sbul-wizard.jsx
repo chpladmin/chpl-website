@@ -5,6 +5,7 @@ import {
   func,
   number,
   object,
+  string,
 } from 'prop-types';
 
 import ChplSbulProgress from './sbul-progress';
@@ -20,6 +21,7 @@ function ChplSbulWizard({
   dispatch,
   listings,
   stage = 0,
+  errors = [],
 }) {
   const [selectedListings, setSelectedListings] = useState(new Set());
 
@@ -88,9 +90,11 @@ function ChplSbulWizard({
         )}
       <ChplActionBar
         dispatch={handleActionBarDispatch}
+        errors={errors}
         canCancel={stage !== 3}
         canClose={stage === 3}
         canSave={false}
+        isProcessing={isSubmitting}
       />
     </>
   );
@@ -103,4 +107,5 @@ ChplSbulWizard.propTypes = {
   dispatch: func.isRequired,
   listings: arrayOf(object).isRequired,
   stage: number,
+  errors: arrayOf(string),
 };

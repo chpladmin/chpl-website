@@ -24,6 +24,7 @@ function ChplSbulCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { enqueueSnackbar } = useSnackbar();
   const [changeRequestType, setChangeRequestType] = useState({});
+  const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [listings, setListings] = useState([]);
   const [stage, setStage] = useState(0);
@@ -75,48 +76,16 @@ function ChplSbulCreate({ dispatch }) {
                 variant: 'info',
               });
               setStage(3);
+            } else if (error.response.data?.errorMessages?.length > 0) {
+              setErrors(error.response.data.errorMessages);
             } else {
-              const message = error.response.data?.error
-                    || error.response.data?.errorMessages.join(' ');
+              const message = error.response.data?.error;
               enqueueSnackbar(message, {
                 variant: 'error',
               });
             }
           },
         });
-        /*
-        payload.details.selectedListings.forEach((listing) => {
-          setIsSubmitting(true);
-          mutate({
-            developer,
-            changeRequestType,
-            details: {
-              listing: { id: listing.id },
-              url: payload.details.url,
-            },
-          }, {
-            onSuccess: () => {
-              setIsSubmitting(false);
-              setStage(3);
-            },
-            onError: (error) => {
-              setIsSubmitting(false);
-              if (error.response.data.error?.startsWith('Email could not be sent to')) {
-                enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
-                  variant: 'info',
-                });
-                setStage(3);
-              } else {
-                const message = error.response.data?.error
-                      || error.response.data?.errorMessages.join(' ');
-                enqueueSnackbar(message, {
-                  variant: 'error',
-                });
-              }
-            },
-          });
-        });
-        */
         break;
         // no default
     }
@@ -137,6 +106,7 @@ function ChplSbulCreate({ dispatch }) {
         dispatch={handleDispatch}
         listings={listings}
         stage={stage}
+        errors={errors}
       />
     </>
   );
