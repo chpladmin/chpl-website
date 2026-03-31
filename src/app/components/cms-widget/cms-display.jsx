@@ -23,6 +23,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import PropTypes from 'prop-types';
 
 import createPdf from './cms-pdf';
 
@@ -34,6 +35,11 @@ import { CmsContext, FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useProgressBarStyles = makeStyles((theme) => ({
+  root: {
+    height: '16px',
+    borderRadius: '8px',
+    overflow: 'hidden',
+  },
   colorPrimary: {
     backgroundColor: ({ value }) => {
       if (value >= 100) return 'rgba(76,175,80,0.2)';
@@ -42,6 +48,13 @@ const useProgressBarStyles = makeStyles((theme) => ({
     },
   },
   barColorPrimary: {
+    backgroundColor: ({ value }) => {
+      if (value >= 100) return theme.palette.success?.main || '#66926d';
+      if (value < 25) return theme.palette.error.main;
+      return theme.palette.primary.main;
+    },
+  },
+  bar1Determinate: {
     backgroundColor: ({ value }) => {
       if (value >= 100) return theme.palette.success?.main || '#66926d';
       if (value < 25) return theme.palette.error.main;
@@ -63,7 +76,10 @@ const useProgressBarStyles = makeStyles((theme) => ({
 }));
 
 const ProgressBar = ({ value, year }) => {
-  const progressClasses = useProgressBarStyles({ value });
+  const normalizedValue = Number.isFinite(Number(value))
+    ? Math.min(100, Math.max(0, Number(value)))
+    : 0;
+  const progressClasses = useProgressBarStyles({ value: normalizedValue });
   return (
     <Box
       pt={2}
@@ -74,18 +90,17 @@ const ProgressBar = ({ value, year }) => {
       justifyContent="space-between"
       id="progress-bar"
     >
-      <Box width="150px">
+      <Box width="150px" style={{ flexShrink: 0 }}>
         <LinearProgress
           id="progress-bar-bar"
-          variant={value >= 100 ? 'determinate' : 'indeterminate'}
-          value={value >= 100 ? 100 : undefined}
+          variant="determinate"
+          value={normalizedValue}
           classes={{
+            root: progressClasses.root,
             colorPrimary: progressClasses.colorPrimary,
             barColorPrimary: progressClasses.barColorPrimary,
-            bar1Indeterminate: progressClasses.bar1Indeterminate,
-            bar2Indeterminate: progressClasses.bar2Indeterminate,
+            bar1Determinate: progressClasses.bar1Determinate,
           }}
-          style={{ height: '16px', borderRadius: '8px' }}
         />
       </Box>
       <Box>
@@ -112,6 +127,14 @@ const ProgressBar = ({ value, year }) => {
       </Box>
     </Box>
   );
+};
+
+ProgressBar.propTypes = {
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]).isRequired,
+  year: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles({
@@ -195,7 +218,7 @@ function ChplCmsDisplay() {
     } else {
       setIdAnalysis(stripped.find((d) => d.year === activeYear) || stripped[0]);
     }
-  }, [data, isFetching, isSuccess]);
+  }, [activeYear, data, isFetching, isSuccess]);
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
@@ -279,7 +302,7 @@ function ChplCmsDisplay() {
               <strong> Your CMS EHR Certification ID</strong>
             </Typography>
             <div className={classes.certCopyContainer} id="ehr-cert-id">
-              <Typography color="primary">
+              <Typography variant="h5" color="primary">
                 { idAnalysis.ehrCertificationId }
               </Typography>
               <IconButton
@@ -289,15 +312,23 @@ function ChplCmsDisplay() {
                 <FileCopyOutlinedIcon />
               </IconButton>
             </div>
-            <Typography variant="body2">
-              * Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
+            <Typography gutterBottom style={{ whiteSpace: 'pre-wrap' }} variant="body2">
+              <span style={{ color: 'red' }}>*</span>
+              {' '}
+              Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
             </Typography>
+            <Divider />
           </>
         )}
       { reportingYears.length > 1
         && (
           <FormControl className={classes.yearSelector} style={{ flexDirection: 'row', alignItems: 'center', gap: '16px' }}>
-            <FormLabel style={{ fontSize: '2rem', fontWeight: 900, marginBottom: 0, whiteSpace: 'nowrap' }}>Reporting Year</FormLabel>
+            <FormLabel style={{
+              fontSize: '2rem', fontWeight: 900, marginBottom: 0, whiteSpace: 'nowrap',
+            }}
+            >
+              Reporting Year
+            </FormLabel>
             <RadioGroup
               row
               onChange={(e) => handleYearSelection(e.currentTarget.value)}
@@ -310,14 +341,14 @@ function ChplCmsDisplay() {
                     key={y}
                     value={y}
                     control={<Radio color="primary" size="large" classes={{ root: radioClasses.root }} style={{ transform: 'scale(1.5)', marginRight: '4px' }} />}
-                    label={
+                    label={(
                       <Typography
                         variant="body1"
                         style={{ fontWeight: activeYear === y ? 600 : 400 }}
                       >
                         {y}
                       </Typography>
-                    }
+                    )}
                   />
                 ))}
             </RadioGroup>
@@ -331,9 +362,9 @@ function ChplCmsDisplay() {
               value={idAnalysis.metPercentages.criteriaMet}
               year={idAnalysis.year}
             />
-                  { idAnalysis.metPercentages?.criteriaMet < 100
+            { idAnalysis.metPercentages?.criteriaMet < 100
         && (
-          <Typography variant="body1" color="textSecondary" style={{ textWrap: 'wrap' }}>
+          <Typography variant="body1" color="textSecondary" style={{ whiteSpace: 'pre-wrap' }}>
             Note: the selected product
             {listings?.length !== 1 ? 's' : ''}
             {' '}
@@ -444,26 +475,28 @@ function ChplCmsDisplay() {
         </div>
       </div>
       <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" style={{ gap: '8px' }} alignItems="center">
-        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary"> For assistance, view the
-            {' '}
-            <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
-              text="CHPL Public User Guide"
-              analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-              external={false}
-              inline
-            />
-            {' '}
-            or
-            {' '}
-            <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
-              text="Base Criteria"
-              analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-              external={false}
-              inline
-            />
-            .
+        <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
+          {' '}
+          For assistance, view the
+          {' '}
+          <ChplLink
+            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+            text="CHPL Public User Guide"
+            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          {' '}
+          or
+          {' '}
+          <ChplLink
+            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
+            text="Base Criteria"
+            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          .
         </Typography>
         <Typography style={{ textAlign: 'center', textWrap: 'wrap' }} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
@@ -478,9 +511,9 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-      </Box>  
+      </Box>
     </CardContent>
-    
+
   );
 }
 
