@@ -32,43 +32,18 @@ import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, FlagContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
-const getProgressColor = (theme, value) => {
-  if (value >= 100) return theme.palette.success?.main || '#66926d';
-  if (value < 25) return theme.palette.error.main;
-  return theme.palette.primary.main;
+const getProgressColor = (value) => {
+  if (value >= 100) return palette.active;
+  if (value < 25) return palette.error;
+  return palette.primary;
 };
 
-const useProgressBarStyles = makeStyles((theme) => ({
-  barContainer: {
-    flexShrink: 0,
-  },
-  root: {
-    height: '16px',
-    borderRadius: '8px',
-    overflow: 'hidden',
-  },
-  colorPrimary: {
-    backgroundColor: ({ value }) => {
-      if (value >= 100) return 'rgba(76,175,80,0.2)';
-      if (value < 25) return 'rgba(244,67,54,0.2)';
-      return theme.palette.primary.light;
-    },
-  },
-  barColorPrimary: {
-    backgroundColor: ({ value }) => getProgressColor(theme, value),
-  },
-  bar1Determinate: {
-    backgroundColor: ({ value }) => getProgressColor(theme, value),
-  },
-}));
-
-const ProgressBar = ({ value, year }) => {
+const ProgressBar = ({ value, year, classes }) => {
   const normalizedValue = Number.isFinite(Number(value))
     ? Math.min(100, Math.max(0, Number(value)))
     : 0;
-  const progressClasses = useProgressBarStyles({ value: normalizedValue });
   return (
     <Box
       pt={2}
@@ -79,16 +54,16 @@ const ProgressBar = ({ value, year }) => {
       justifyContent="space-between"
       id="progress-bar"
     >
-      <Box width="150px" className={progressClasses.barContainer}>
+      <Box width="150px" className={classes.progressBarWrapperNoShrink}>
         <LinearProgress
           id="progress-bar-bar"
           variant="determinate"
           value={normalizedValue}
           classes={{
-            root: progressClasses.root,
-            colorPrimary: progressClasses.colorPrimary,
-            barColorPrimary: progressClasses.barColorPrimary,
-            bar1Determinate: progressClasses.bar1Determinate,
+            root: classes.linearProgressRootRounded,
+            colorPrimary: classes.linearProgressTrackColorByThreshold,
+            barColorPrimary: classes.linearProgressFillColorByThreshold,
+            bar1Determinate: classes.linearProgressDeterminateFillColorByThreshold,
           }}
         />
       </Box>
@@ -119,6 +94,13 @@ const ProgressBar = ({ value, year }) => {
 };
 
 ProgressBar.propTypes = {
+  classes: PropTypes.shape({
+    linearProgressDeterminateFillColorByThreshold: PropTypes.string.isRequired,
+    linearProgressFillColorByThreshold: PropTypes.string.isRequired,
+    linearProgressRootRounded: PropTypes.string.isRequired,
+    linearProgressTrackColorByThreshold: PropTypes.string.isRequired,
+    progressBarWrapperNoShrink: PropTypes.string.isRequired,
+  }).isRequired,
   value: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
@@ -128,21 +110,42 @@ ProgressBar.propTypes = {
 
 const useStyles = makeStyles({
   ...utilStyles,
+  progressBarWrapperNoShrink: {
+    flexShrink: 0,
+  },
+  linearProgressRootRounded: {
+    height: '16px',
+    borderRadius: '8px',
+    overflow: 'hidden',
+  },
+  linearProgressTrackColorByThreshold: {
+    backgroundColor: ({ progressValue }) => {
+      if (progressValue >= 100) return palette.progressSuccessTrack;
+      if (progressValue < 25) return palette.progressErrorTrack;
+      return palette.primaryLight;
+    },
+  },
+  linearProgressFillColorByThreshold: {
+    backgroundColor: ({ progressValue }) => getProgressColor(progressValue),
+  },
+  linearProgressDeterminateFillColorByThreshold: {
+    backgroundColor: ({ progressValue }) => getProgressColor(progressValue),
+  },
   emptyStateTitle: {
     fontWeight: '700 !important',
   },
-  boldText: {
+  sectionLabelFontWeight800: {
     fontWeight: '800 !important',
   },
-  centeredWrappedText: {
+  centeredWrappedBodyText: {
     textAlign: 'center',
     textWrap: 'wrap',
   },
-  preWrapText: {
+  preserveWhitespacePreWrapText: {
     whiteSpace: 'pre-wrap',
   },
-  redText: {
-    color: 'red',
+  errorAsteriskTextColor: {
+    color: palette.error,
   },
   buttonContainer: {
     marginTop: '16px',
@@ -186,7 +189,7 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '12px 16px',
     borderRadius: '0px 0px 8px 8px',
-    backgroundColor: '#eeeeee',
+    backgroundColor: palette.greyLight,
     marginTop: '-8px',
     marginBottom: '16px',
   },
@@ -204,20 +207,20 @@ const useStyles = makeStyles({
   yearRadioGroup: {
     gap: '8px',
   },
-  yearOptionLabelActive: {
+  reportingYearOptionFontWeight600WhenActive: {
     fontWeight: '600 !important',
   },
-  yearOptionLabel: {
+  reportingYearOptionFontWeight400WhenInactive: {
     fontWeight: '400 !important',
   },
-  radioRoot: {
-    color: '#66926d',
+  reportingYearRadioUsesActivePaletteColor: {
+    color: palette.active,
   },
-  radioScaled: {
+  reportingYearRadioScale150WithRightSpacing: {
     transform: 'scale(1.5)',
     marginRight: '4px',
   },
-  disclaimerContainer: {
+  disclaimerColumnGap8: {
     gap: '8px',
   },
 });
@@ -234,7 +237,7 @@ function ChplCmsDisplay() {
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
   const { mutate, isLoading } = usePostCreateCmsId();
-  const classes = useStyles();
+  const classes = useStyles({ progressValue: idAnalysis?.metPercentages?.criteriaMet });
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
@@ -309,7 +312,7 @@ function ChplCmsDisplay() {
         <Divider />
         <Typography gutterBottom><strong>No products selected.</strong></Typography>
         <Divider />
-        <Typography className={classes.centeredWrappedText} variant="body2" color="textSecondary">
+        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -349,8 +352,8 @@ function ChplCmsDisplay() {
                 <FileCopyOutlinedIcon />
               </IconButton>
             </div>
-            <Typography gutterBottom className={classes.preWrapText} variant="body2">
-              <span className={classes.redText}>*</span>
+            <Typography gutterBottom className={classes.preserveWhitespacePreWrapText} variant="body2">
+              <span className={classes.errorAsteriskTextColor}>*</span>
               {' '}
               Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
             </Typography>
@@ -374,11 +377,11 @@ function ChplCmsDisplay() {
                   <FormControlLabel
                     key={y}
                     value={y}
-                    control={<Radio color="primary" size="large" classes={{ root: classes.radioRoot }} className={classes.radioScaled} />}
+                    control={<Radio color="primary" size="large" classes={{ root: classes.reportingYearRadioUsesActivePaletteColor }} className={classes.reportingYearRadioScale150WithRightSpacing} />}
                     label={(
                       <Typography
                         variant="body1"
-                        className={activeYear === y ? classes.yearOptionLabelActive : classes.yearOptionLabel}
+                        className={activeYear === y ? classes.reportingYearOptionFontWeight600WhenActive : classes.reportingYearOptionFontWeight400WhenInactive}
                       >
                         {y}
                       </Typography>
@@ -391,14 +394,15 @@ function ChplCmsDisplay() {
       { idAnalysis.products?.length > 0
         && (
           <>
-            <Typography className={classes.boldText}>Validation</Typography>
+            <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
             <ProgressBar
+              classes={classes}
               value={idAnalysis.metPercentages.criteriaMet}
               year={idAnalysis.year}
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
         && (
-          <Typography variant="body1" color="textSecondary" className={classes.preWrapText}>
+          <Typography variant="body1" color="textSecondary" className={classes.preserveWhitespacePreWrapText}>
             Note: the selected product
             {listings?.length !== 1 ? 's' : ''}
             {' '}
@@ -415,7 +419,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingAnd?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" className={classes.boldText}>Please select a product or products that contain the following criteria:</Typography>
+                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>Please select a product or products that contain the following criteria:</Typography>
                     <List id="missing-and">
                       { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
                     </List>
@@ -424,7 +428,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingOr?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" className={classes.boldText}>
+                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>
                       { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
                       { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
                       {' '}
@@ -440,7 +444,7 @@ function ChplCmsDisplay() {
           </>
         )}
       <Divider />
-      <Typography className={classes.boldText}>Product Selected</Typography>
+      <Typography className={classes.sectionLabelFontWeight800}>Product Selected</Typography>
       <div className={classes.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
@@ -508,8 +512,8 @@ function ChplCmsDisplay() {
           </Button>
         </div>
       </div>
-      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerContainer} alignItems="center">
-        <Typography className={classes.centeredWrappedText} variant="body2" color="textSecondary">
+      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerColumnGap8} alignItems="center">
+        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
           {' '}
           For assistance, view the
           {' '}
@@ -532,7 +536,7 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-        <Typography className={classes.centeredWrappedText} variant="body2" color="textSecondary">
+        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -547,7 +551,6 @@ function ChplCmsDisplay() {
         </Typography>
       </Box>
     </CardContent>
-
   );
 }
 
