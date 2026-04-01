@@ -76,7 +76,6 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   const validate = (payload) => {
     setUrlCheckResponse(undefined);
     setIsPopoverOpen(false);
-    dispatch({ action: 'loading' });
     mutate(payload, {
       onSuccess: (response) => {
         setHasValidatedOnce(true);

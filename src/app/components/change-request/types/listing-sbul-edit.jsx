@@ -7,7 +7,7 @@ import {
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink } from 'components/util';
-import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
+import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles({
 function ChplChangeRequestListingSbulEdit() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   const getCurrent = () => {
@@ -54,9 +55,6 @@ function ChplChangeRequestListingSbulEdit() {
 
   const handleDispatch = ({ action, url: submittedUrl }) => {
     switch (action) {
-      case 'loading':
-        // no-op; loading state is shown inside the URL checker button
-        break;
       case 'complete':
         setChangeRequest((prev) => ({
           ...prev,
@@ -81,10 +79,19 @@ function ChplChangeRequestListingSbulEdit() {
       <Divider />
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
-        <ChplUrlChecker
-          dispatch={handleDispatch}
-          url={changeRequest.details.url}
-        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+          && (
+            <Typography>
+              { changeRequest.details.url }
+            </Typography>
+          )}
+        { hasAnyRole(['chpl-developer'])
+          && (
+            <ChplUrlChecker
+              dispatch={handleDispatch}
+              url={changeRequest.details.url}
+            />
+          )}
       </div>
     </div>
   );
