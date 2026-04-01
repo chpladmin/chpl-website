@@ -64,6 +64,15 @@ function ChplChangeRequestListingSbulEdit() {
           },
         }));
         break;
+      case 'update':
+        setChangeRequest((prev) => ({
+          ...prev,
+          details: {
+            ...prev.details,
+            url: submittedUrl,
+          },
+        }));
+        break;
         // no default
     }
   };

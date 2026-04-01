@@ -72,6 +72,13 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
+  let formik;
+
+  const handleChange = (...args) => {
+    const event = args[0];
+    dispatch({ action: 'update', url: event.target.value });
+    formik.handleChange(...args);
+  };
 
   const validate = (payload) => {
     setUrlCheckResponse(undefined);
@@ -93,7 +100,7 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
     });
   };
 
-  const formik = useFormik({
+  formik = useFormik({
     initialValues: {
       url,
     },
@@ -135,7 +142,7 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
             name="url"
             label="URL to check"
             value={formik.values.url}
-            onChange={formik.handleChange}
+            onChange={handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.url && !!formik.errors.url}
             helperText={formik.touched.url && formik.errors.url}
