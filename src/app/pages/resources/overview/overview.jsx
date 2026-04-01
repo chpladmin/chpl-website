@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -28,7 +28,7 @@ import {
   ChplLink,
   InternalScrollButton,
 } from 'components/util';
-import { FlagContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -108,7 +108,6 @@ function ChplResourcesOverview() {
     ...useAnalyticsContext().analytics,
     category: 'Overview',
   };
-  const { domainIsOn } = useContext(FlagContext);
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
@@ -254,7 +253,7 @@ function ChplResourcesOverview() {
                   For additional information on how to navigate the CHPL, please refer to the
                   {' '}
                   <ChplLink
-                    href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+                    href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
                     text="CHPL Public User Guide"
                     analytics={{
                       ...analytics,
@@ -359,7 +358,7 @@ function ChplResourcesOverview() {
                   Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on ONC&apos;s
                   {' '}
                   <ChplLink
-                    href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/certification-process`}
+                    href="https://www.healthit.gov/topic/certification-ehrs/certification-process"
                     text="Certification Bodies"
                     analytics={{
                       ...analytics,
@@ -372,7 +371,7 @@ function ChplResourcesOverview() {
                   and
                   {' '}
                   <ChplLink
-                    href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/testing-process-test-methods`}
+                    href="https://www.healthit.gov/topic/certification-ehrs/testing-process-test-methods"
                     text="Testing Laboratories"
                     analytics={{
                       ...analytics,
@@ -399,7 +398,7 @@ function ChplResourcesOverview() {
                           Please refer to the ONC Health IT Certification Program&apos;s
                           {' '}
                           <ChplLink
-                            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certified-health-it-complaint-process`}
+                            href="https://www.healthit.gov/topic/certified-health-it-complaint-process"
                             text="Provider Complaint Process"
                             analytics={{
                               ...analytics,
@@ -472,7 +471,7 @@ function ChplResourcesOverview() {
                   The ONC Certification Program was established to ensure that certified health information technology adheres to the security, functionality, and technology requirements adopted by HHS. ONC-Authorized Certification Bodies (ONC-ACBs) certify health IT products that were successfully tested by an ONC-Authorized Testing Laboratory (ONC-ATL) against the certification criteria adopted by HHS. Products listed on the CHPL have been successfully certified through the
                   {' '}
                   <ChplLink
-                    href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/policy-researchers-implementers/about-onc-health-it-certification-program`}
+                    href="https://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program"
                     text="ONC Health IT Certification Program"
                     analytics={{
                       ...analytics,
@@ -562,7 +561,7 @@ function ChplResourcesOverview() {
                   To be listed on the CHPL, health information technology must first be successfully tested by an ONC-ATL and then certified by an ONC-ACB against at least one
                   {' '}
                   <ChplLink
-                    href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/policy-researchers-implementers/standards-and-certification-regulations`}
+                    href="https://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations"
                     text="certification criterion adopted by HHS"
                     analytics={{
                       ...analytics,
@@ -574,7 +573,7 @@ function ChplResourcesOverview() {
                   . For more information on the ONC Certification Program, ONC-ATLs, and ONC-ACBs, please see the
                   {' '}
                   <ChplLink
-                    href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/policy-researchers-implementers/about-onc-health-it-certification-program`}
+                    href="https://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program"
                     text="ONC Health IT Certification Program page"
                     analytics={{
                       ...analytics,

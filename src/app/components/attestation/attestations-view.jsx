@@ -28,7 +28,7 @@ import { useFetchAttestations } from 'api/developer';
 import { ChplDialogTitle, ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -40,7 +40,6 @@ const useStyles = makeStyles({
 
 function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const { analytics } = useAnalyticsContext();
-  const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsOpen, setAttestationsOpen] = useState(false);
@@ -101,7 +100,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
               Attestations information is displayed here if a health IT developer’s attestation of compliance with the
               {' '}
               <ChplLink
-                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/conditions-maintenance-certification`}
+                href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
                 text="Conditions and Maintenance of Certification requirements"
                 analytics={{
                   ...analytics,
@@ -114,7 +113,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
               was submitted. For more information, please visit the
               {' '}
               <ChplLink
-                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf`}
+                href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
                 text="Attestations Resource Guide"
                 analytics={{
                   ...analytics,
