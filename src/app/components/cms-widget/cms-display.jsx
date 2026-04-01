@@ -244,7 +244,16 @@ function ChplCmsDisplay() {
       setIdAnalysis(stripped[0]);
       setActiveYear(stripped[0].year);
     } else {
-      setIdAnalysis(stripped.find((d) => d.year === activeYear) || stripped[0]);
+      const nextAnalysis = stripped.find((d) => d.year === activeYear) || stripped[0];
+      setIdAnalysis((previous) => {
+        const sameContext = previous?.ehrCertificationId
+          && previous.year === nextAnalysis.year
+          && (previous.products || []).map((p) => p.productId).sort().join(',')
+            === (nextAnalysis.products || []).map((p) => p.productId).sort().join(',');
+        return sameContext
+          ? { ...nextAnalysis, ehrCertificationId: previous.ehrCertificationId }
+          : nextAnalysis;
+      });
     }
   }, [activeYear, data, isFetching, isSuccess]);
 
