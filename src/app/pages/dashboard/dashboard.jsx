@@ -48,7 +48,7 @@ function ChplDashboard() {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [reportMetadata, setReportMetadata] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchReportMetadata('astp-dashboard');
+  const { data, isLoading, isSuccess } = useFetchReportMetadata('onc-dashboard');
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -75,7 +75,7 @@ function ChplDashboard() {
   useEffect(() => {
     eventTrack({
       ...analytics,
-      category: 'ASTP Dashboard',
+      category: 'Compliance Dashboard',
       event: 'View Dashboard',
     });
   }, [analytics]);
@@ -105,7 +105,7 @@ function ChplDashboard() {
         <Container maxWidth="lg">
           <Typography variant="h1">Compliance Dashboard</Typography>
           <Typography variant="body1" color="textSecondary">
-            A comprehensive view of ASTP compliance reports and metrics
+            A comprehensive view of compliance reports and metrics
           </Typography>
         </Container>
       </Box>
