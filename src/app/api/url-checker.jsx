@@ -7,4 +7,12 @@ const usePostUrlChecker = () => {
   return useMutation(async (data) => axios.post('urls/validate', data));
 };
 
-export default usePostUrlChecker;
+const usePostRwtResultsChecker = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('real-world-testing/validate-results-url', data));
+};
+
+export {
+  usePostUrlChecker,
+  usePostRwtResultsChecker,
+};

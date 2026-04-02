@@ -17,7 +17,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { usePostChangeRequest } from 'api/change-requests';
-import usePostUrlChecker from 'api/url-checker';
+import { usePostUrlChecker } from 'api/url-checker';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplLink, ChplTextField } from 'components/util';
 import { ListingContext, UserContext } from 'shared/contexts';
