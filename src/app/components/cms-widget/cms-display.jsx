@@ -241,24 +241,12 @@ function ChplCmsDisplay() {
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
-    const stripped = data.map(({ ehrCertificationId: _, ...rest }) => rest);
-    setReportingYears(stripped.map((a) => a.year));
+    setReportingYears(data.map((a) => a.year));
     if (activeYear === '') {
-      setIdAnalysis(stripped[0]);
-      setActiveYear(stripped[0].year);
-    } else {
-      const nextAnalysis = stripped.find((d) => d.year === activeYear) || stripped[0];
-      setIdAnalysis((previous) => {
-        const sameContext = previous?.ehrCertificationId
-          && previous.year === nextAnalysis.year
-          && (previous.products || []).map((p) => p.productId).sort().join(',')
-            === (nextAnalysis.products || []).map((p) => p.productId).sort().join(',');
-        return sameContext
-          ? { ...nextAnalysis, ehrCertificationId: previous.ehrCertificationId }
-          : nextAnalysis;
-      });
+      setIdAnalysis(data[0]);
+      setActiveYear(data[0].year);
     }
-  }, [activeYear, data, isFetching, isSuccess]);
+  }, [data, isFetching, isSuccess]);
 
   useEffect(() => {
     if (pdfIsFetching || !pdfIsSuccess) { return; }
