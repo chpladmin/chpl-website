@@ -401,15 +401,15 @@ function ChplCmsDisplay() {
               year={idAnalysis.year}
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
-        && (
-          <Typography variant="body1" color="textSecondary" className={classes.preserveWhitespacePreWrapText}>
-            Note: the selected product
-            {listings?.length !== 1 ? 's' : ''}
-            {' '}
-            must meet 100% of the Base Criteria.
-            {' '}
-          </Typography>
-        )}
+              && (
+                <Typography variant="body1" color="textSecondary" className={classes.preserveWhitespacePreWrapText}>
+                  Note: the selected product
+                  {listings?.length !== 1 ? 's' : ''}
+                  {' '}
+                  must meet 100% of the Base Criteria.
+                  {' '}
+                </Typography>
+              )}
           </>
         )}
       { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
