@@ -245,6 +245,8 @@ function ChplCmsDisplay() {
     if (activeYear === '') {
       setIdAnalysis(data[0]);
       setActiveYear(data[0].year);
+    } else {
+      setIdAnalysis(data.find((d) => d.year === activeYear));
     }
   }, [data, isFetching, isSuccess]);
 
