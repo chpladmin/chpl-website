@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useAxios } from 'api/axios';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext } from 'shared/contexts';
 

@@ -199,7 +199,6 @@ const useStyles = makeStyles({
     gap: '16px',
   },
   yearLabel: {
-    fontSize: '2rem',
     fontWeight: '900 !important',
     marginBottom: 0,
     whiteSpace: 'nowrap',
@@ -367,7 +366,7 @@ function ChplCmsDisplay() {
                   <FormControlLabel
                     key={y}
                     value={y}
-                    control={<Radio color="primary" size="large" classes={{ root: classes.reportingYearRadioUsesActivePaletteColor }} className={classes.reportingYearRadioScale150WithRightSpacing} />}
+                    control={<Radio color="primary" classes={{ root: classes.reportingYearRadioUsesActivePaletteColor }} className={classes.reportingYearRadioScale150WithRightSpacing} />}
                     label={(
                       <Typography
                         variant="body1"
