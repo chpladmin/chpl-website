@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplDashboard() {
+function ChplComplianceDashboard() {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -190,4 +190,4 @@ function ChplDashboard() {
   );
 }
 
-export default ChplDashboard;
+export default ChplComplianceDashboard;

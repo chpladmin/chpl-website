@@ -27,7 +27,7 @@ import 'angular-ui-router';
 import administration from './pages/administration/index';
 import /* chartsModule from */ './pages/charts/index';
 import compare from './pages/compare/index';
-import /* dashboardModule from */ './pages/dashboard/index';
+import /* complianceDashboardModule from */ './pages/compliance-dashboard/index';
 import /* componentsModule from */ './components/index';
 import listing from './pages/listing/index';
 import /* navigationModule from */ './navigation/index';
@@ -77,7 +77,7 @@ const dependencies = [
   surveillance.name,
   users.name,
   'chpl.charts',
-  'chpl.dashboard',
+  'chpl.compliance-dashboard',
   'chpl.search',
   'chpl.components',
   'chpl.constants',

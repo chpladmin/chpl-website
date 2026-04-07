@@ -1,4 +1,4 @@
-import './dashboard.module';
+import './compliance-dashboard.module';
 
 function importAll (r) {
   r.keys().forEach(r);
@@ -9,4 +9,4 @@ importAll(
   require.context('./', true, /^(?!.*\.module\.js$)^(?!.*\.spec\.js$).*\.js$/)
 );
 
-export default angular.module('chpl.dashboard');
+export default angular.module('chpl.compliance-dashboard');
