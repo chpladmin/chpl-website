@@ -4,7 +4,7 @@ import ChplCriterionTitle from './criterion-title';
 import ChplDialogTitle from './chpl-dialog-title';
 import ChplEllipsis from './chpl-ellipsis';
 import ChplLink from './chpl-link';
-import ChplNonProdIndicator from './non-prod-indicator';
+import ChplNonProdIndicatorWrapper from './non-prod-indicator-wrapper';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
@@ -25,7 +25,7 @@ export {
   ChplEllipsis,
   ChplLink,
   ChplLoadingTable,
-  ChplNonProdIndicator,
+  ChplNonProdIndicatorWrapper,
   ChplPagination,
   ChplProgress,
   ChplSearchResultCard,

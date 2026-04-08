@@ -65,10 +65,6 @@ export default class NetworkService {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
   }
 
-  getSystemStatus() {
-    return this.$http.get('/rest/system-status');
-  }
-
   getUsers() {
     return this.apiGET('/users');
   }

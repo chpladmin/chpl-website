@@ -21,7 +21,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
-import Image from '../../../../assets/images/CHPL_Logo-01.png';
+import LandingBackgroundLogo from '../../../../assets/images/Certified-HealthIT-Product-List-LogoWhite.svg';
 
 import { useFetchAnnouncements } from 'api/announcements';
 import { ChplFilterSearchBar } from 'components/filter';
@@ -154,10 +154,12 @@ const useStyles = makeStyles({
     },
   },
   landingPageBackground: {
-    backgroundPosition: '48vw 40vh',
+    backgroundPosition: '60vw 40vh',
     backgroundRepeat: 'no-repeat',
-    background: `rgba(2,23,60,1) url(${Image})`,
-    backgroundBlendMode: 'soft-light',
+    backgroundColor: 'rgba(2,23,60,1)',
+    backgroundImage: `linear-gradient(rgba(2,23,60,0.55), rgba(2,23,60,0.55)), url(${LandingBackgroundLogo})`,
+    backgroundBlendMode: 'normal, soft-light',
+    backgroundSize: '500px',
     minHeight: '75vh',
   },
   subHeaders: {
