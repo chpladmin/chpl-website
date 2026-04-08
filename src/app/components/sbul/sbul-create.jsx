@@ -26,12 +26,11 @@ function ChplSbulCreate({ dispatch }) {
   const { enqueueSnackbar } = useSnackbar();
   const [changeRequestType, setChangeRequestType] = useState({});
   const [errors, setErrors] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [listings, setListings] = useState([]);
   const [stage, setStage] = useState(0);
   const { data, isLoading, isError } = useFetchSbulListings({ developer });
   const crData = useFetchChangeRequestTypes();
-  const { mutate } = usePostChangeRequest();
+  const { mutate, isLoading: isSubmitting } = usePostChangeRequest();
   const classes = useStyles();
 
   useEffect(() => {
@@ -57,7 +56,7 @@ function ChplSbulCreate({ dispatch }) {
         setStage(payload);
         break;
       case 'submit':
-        setIsSubmitting(true);
+        setErrors([]);
         mutate(payload.details.selectedListings.map((listing) => ({
           developer,
           changeRequestType,
@@ -67,11 +66,9 @@ function ChplSbulCreate({ dispatch }) {
           },
         })), {
           onSuccess: () => {
-            setIsSubmitting(false);
             setStage(3);
           },
           onError: (error) => {
-            setIsSubmitting(false);
             if (error.response.data.error?.startsWith('Email could not be sent to')) {
               enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
                 variant: 'info',
