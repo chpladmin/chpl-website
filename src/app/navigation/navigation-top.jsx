@@ -9,13 +9,14 @@ import {
 
 import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
 
+import ChplDesktopNav from './desktop-nav';
+import ChplEnvironmentBanner from './environment-banner';
+import ChplMobileNavDrawer from './mobile-nav-drawer';
+
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
-import ChplDesktopNav from 'navigation/desktop-nav';
-import ChplEnvironmentBanner from 'navigation/environment-banner';
-import ChplMobileNavDrawer from 'navigation/mobile-nav-drawer';
 import { getAngularService } from 'services/angular-react-helper';
-import { theme, palette } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   appBar: {
