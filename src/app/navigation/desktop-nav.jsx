@@ -7,6 +7,8 @@ import React, {
 import {
   Box,
   Button,
+  List,
+  ListItem,
   Menu,
   MenuItem,
   makeStyles,
@@ -234,18 +236,22 @@ function ChplDesktopNav({
           className: classes.menuPaper,
         }}
       >
-        { resourceItems.map((item) => (
-          <MenuItem key={item.key} divider onClick={closeResources}>
-            <ChplLink
-              href={item.href}
-              text={item.text}
-              analytics={getItemAnalytics(item)}
-              external={false}
-              router={item.router}
-              icon={getDownloadIcon(item)}
-            />
-          </MenuItem>
-        ))}
+        <MenuItem>
+          <List>
+            { resourceItems.map((item) => (
+              <ListItem key={item.key} divider onClick={closeResources}>
+                <ChplLink
+                  href={item.href}
+                  text={item.text}
+                  analytics={getItemAnalytics(item)}
+                  external={false}
+                  router={item.router}
+                  icon={getDownloadIcon(item)}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </MenuItem>
       </Menu>
       <Button
         ref={shortcutsButtonRef}
@@ -267,17 +273,21 @@ function ChplDesktopNav({
           className: classes.menuPaper,
         }}
       >
-        { shortcutItems.map((item) => (
-          <MenuItem key={item.key} divider onClick={closeShortcuts}>
-            <ChplLink
-              href={item.href}
-              text={item.text}
-              analytics={getItemAnalytics(item)}
-              external={false}
-              router={item.router}
-            />
-          </MenuItem>
-        ))}
+        <MenuItem>
+          <List>
+            { shortcutItems.map((item) => (
+              <ListItem key={item.key} divider onClick={closeShortcuts}>
+                <ChplLink
+                  href={item.href}
+                  text={item.text}
+                  analytics={getItemAnalytics(item)}
+                  external={false}
+                  router={item.router}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </MenuItem>
       </Menu>
     </Box>
   );
