@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { func } from 'prop-types';
 import { useCookies } from 'react-cookie';
 
 import { usePostLogout } from 'api/auth';
@@ -29,11 +28,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplLoggedIn({ dispatch }) {
+function ChplLoggedIn() {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
-  const { user, setUser } = useContext(UserContext);
+  const { setLoginWidgetState, user, setUser } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();
   const classes = useStyles();
@@ -45,7 +44,7 @@ function ChplLoggedIn({ dispatch }) {
       event: 'Change Password',
       category: 'Authentication',
     });
-    dispatch({ action: 'changePassword' });
+    setLoginWidgetState('CHANGEPASSWORD');
   };
 
   const logout = (e) => {
@@ -63,7 +62,7 @@ function ChplLoggedIn({ dispatch }) {
     setUser({});
     removeCookie('cognito_id');
     removeCookie('refresh_token');
-    dispatch({ action: 'loggedOut' });
+    setLoginWidgetState('SIGNIN');
     authService.logout();
     $rootScope.$broadcast('loggedOut');
   };
@@ -98,5 +97,4 @@ function ChplLoggedIn({ dispatch }) {
 export default ChplLoggedIn;
 
 ChplLoggedIn.propTypes = {
-  dispatch: func.isRequired,
 };

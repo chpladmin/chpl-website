@@ -19,8 +19,6 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   const vm = this;
 
   this.$onInit = () => {
-    $rootScope.bodyClass = 'navigation-shown';
-
     if (vm.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       vm.toggleNavClosed();
     } else {
@@ -109,12 +107,10 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
   function toggleNavClosed() {
     vm.navShown = false;
-    $rootScope.bodyClass = 'navigation-hidden';
   }
 
   function toggleNavOpen() {
     vm.navShown = true;
-    $rootScope.bodyClass = 'navigation-shown';
   }
 
   vm.clear = clear;

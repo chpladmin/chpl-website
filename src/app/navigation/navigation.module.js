@@ -82,7 +82,7 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
         },
         (err) => {
           $log.info(err);
-        }
+        },
       );
     }
     return $q.when($localStorage.jwtToken);

@@ -138,10 +138,6 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-  toggleButton: {
-    maxWidth: 'min-content',
-    padding: '4px',
-  },
 });
 
 const maintenanceItems = [{
@@ -219,7 +215,7 @@ const maintenanceItems = [{
   icon: <ChplToolTip title="Subscriptions"><SubscriptionsOutlinedIcon /></ChplToolTip>,
 }, {
   id: 'svaps',
-  primary: 'SVAP',
+  primary: 'SVAPs',
   secondary: 'Add and update SVAP values for use by ONC-ACBs on each listing',
   icon: <ChplToolTip title="SVAP"><TrendingUpOutlinedIcon /></ChplToolTip>,
 }, {
@@ -315,7 +311,7 @@ function ChplSystemMaintenance() {
           </Card>
         </div>
         <Box width="100%">
-          { (active === '' || active === 'home')
+          { active === ''
             && (
               <Card>
                 <CardContent>

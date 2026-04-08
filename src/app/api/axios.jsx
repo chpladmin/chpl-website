@@ -4,12 +4,14 @@ import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
 
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
   const $localStorage = getAngularService('$localStorage');
   const authService = getAngularService('authService');
+  const { setLoginWidgetState } = useContext(UserContext);
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -33,6 +35,7 @@ function AxiosProvider({ children }) {
             return response.data.accessToken;
           })
           .catch(() => {
+            setLoginWidgetState('SIGNIN');
             authService.logout();
           });
       }
@@ -62,6 +65,7 @@ function AxiosProvider({ children }) {
     ax.interceptors.response.use((response) => response,
       (error) => {
         if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+          setLoginWidgetState('SIGNIN');
           authService.logout();
         }
         return Promise.reject(error);

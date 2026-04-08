@@ -18,6 +18,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import { number, string } from 'prop-types';
 
 import createPdf from './cms-pdf';
 
@@ -70,6 +71,11 @@ const ProgressBar = ({ value, year }) => (
   </Box>
 );
 
+ProgressBar.propTypes = {
+  value: number.isRequired,
+  year: string.isRequired,
+};
+
 const useStyles = makeStyles({
   ...utilStyles,
   buttonContainer: {
@@ -86,6 +92,7 @@ const useStyles = makeStyles({
   },
   cardcontentPadding: {
     padding: '8px',
+    width: '400px',
   },
   chipContainer: {
     display: 'flex',
@@ -111,7 +118,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCmsDisplay() {
+const ChplCmsDisplay = React.forwardRef((props, ref) => {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
@@ -173,53 +180,61 @@ function ChplCmsDisplay() {
 
   if (!listings || listings.length === 0) {
     return (
-      <>
-        <Typography gutterBottom><strong>No products selected.</strong></Typography>
-        <Typography>
-          Note: the selected product
-          {listings?.length !== 1 ? 's' : ''}
-          {' '}
-          must meet 100% of the Base Criteria. For assistance, view the
-          {' '}
-          <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
-            text="CHPL Public User Guide"
-            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          {' '}
-          or
-          {' '}
-          <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
-            text="Base Criteria"
-            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          .
-        </Typography>
-        <Divider />
-        <Typography variant="body2">
-          To view which products were used to create a specific CMS ID, use the
-          {' '}
-          <ChplLink
-            href="#/resources/cms-lookup"
-            text="CMS ID Reverse Lookup"
-            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
-            external={false}
-            router={{ sref: 'resources.cms-lookup' }}
-            inline
-          />
-          .
-        </Typography>
-      </>
+      <CardContent id="no-products-selected" ref={ref}>
+        <Box display="flex" flexDirection="column" boxSizing="border-box">
+          <Typography className={classes.wordWrap} gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
+          <Typography variant="body2" className={classes.wordWrap}>Please select products to create a CMS ID using the button found on either search results or product detail pages.</Typography>
+          <Typography variant="body2" align="left" style={{ paddingTop: '4px' }} className={classes.wordWrap}>
+            Note: the selected product
+            {listings?.length !== 1 ? 's' : ''}
+            {' '}
+            must meet 100% of the Base Criteria.
+          </Typography>
+          <Divider />
+          <Box display="flex" flexDirection="column" gap="8px" paddingTop="8px">
+            <Typography gutterBottom align="left" variant="body2" className={classes.wordWrap}>
+              For assistance, view the
+              {' '}
+              <ChplLink
+                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+                text="CHPL Public User Guide"
+                analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+                external={false}
+                inline
+              />
+              {' '}
+              or
+              {' '}
+              <ChplLink
+                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
+                text="Base Criteria"
+                analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+                external={false}
+                inline
+              />
+
+            </Typography>
+            <Typography align="left" variant="body2" className={classes.wordWrap}>
+              To view which products were used to create a specific CMS ID, use the
+              {' '}
+              <ChplLink
+                href="#/resources/cms-lookup"
+                text="CMS ID Reverse Lookup"
+                analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
+                external={false}
+                router={{ sref: 'resources.cms-lookup' }}
+                inline
+              />
+              .
+            </Typography>
+          </Box>
+        </Box>
+      </CardContent>
     );
   }
 
   return (
-    <CardContent className={classes.cardcontentPadding}>
+    <CardContent className={classes.cardcontentPadding} ref={ref}>
       { certId
         && (
           <>
@@ -244,7 +259,7 @@ function ChplCmsDisplay() {
         )}
       { idAnalysis.metPercentages?.criteriaMet < 100
         && (
-          <Typography>
+          <Typography align="left" style={{ paddingTop: '4px' }} variant="body2">
             Note: the selected product
             {listings?.length !== 1 ? 's' : ''}
             {' '}
@@ -311,7 +326,7 @@ function ChplCmsDisplay() {
         )}
       <Divider />
       <div className={classes.chipContainer}>
-        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
+        { [...listings].sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
             <Chip
               className={classes.productChips}
@@ -392,6 +407,8 @@ function ChplCmsDisplay() {
       </div>
     </CardContent>
   );
-}
+});
+
+ChplCmsDisplay.displayName = 'ChplCmsDisplay';
 
 export default ChplCmsDisplay;

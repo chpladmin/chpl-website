@@ -9,6 +9,7 @@ import { UserContext } from 'shared/contexts';
 function UserWrapper({ children = <ChplLogin /> }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
+  const [loginWidgetState, setLoginWidgetState] = useState('SIGNIN');
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -38,6 +39,8 @@ function UserWrapper({ children = <ChplLogin /> }) {
   const userState = {
     hasAnyRole,
     hasAuthorityOn,
+    loginWidgetState,
+    setLoginWidgetState,
     setUser,
     user,
   };
