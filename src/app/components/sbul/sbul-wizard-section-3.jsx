@@ -70,11 +70,11 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
 
   const handleDispatch = ({ action, url: submittedUrl }) => {
     switch (action) {
-      case 'loading':
-        setUrl('');
-        break;
       case 'complete':
         setUrl(submittedUrl);
+        break;
+      case 'update':
+        setUrl('');
         break;
         // no default
     }
