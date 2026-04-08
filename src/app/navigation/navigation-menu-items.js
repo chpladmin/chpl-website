@@ -62,7 +62,7 @@ const shortcutItems = [{
   router: { sref: 'shortcut.svap' },
 }];
 
-const getResourceItems = ({ domainIsOn, includeDeveloperGuide }) => {
+const getResourceItems = ({ includeDeveloperGuide }) => {
   const baseItems = [{
     key: 'overview',
     href: '#/resources/overview',
@@ -71,29 +71,25 @@ const getResourceItems = ({ domainIsOn, includeDeveloperGuide }) => {
     router: { sref: 'resources.overview' },
   }, {
     key: 'public-user-guide',
-    href: domainIsOn
-      ? 'https://www.astp.hhs.gov/sites/default/files/policy/chpl_public_user_guide.pdf'
-      : 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf',
+    href: 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf',
     text: 'CHPL Public User Guide',
     analyticsEvent: 'CHPL Public User Guide',
     analyticsCategory: 'Resources',
     router: { sref: 'resources.overview' },
-    showDownloadIcon: true,
-    usePrimaryIconWhenDomainIsOff: true,
+    wnloadIcon: true,
+    primaryIcon: true,
   }];
 
   if (includeDeveloperGuide) {
     baseItems.push({
       key: 'developer-user-guide',
-      href: domainIsOn
-        ? 'https://www.astp.hhs.gov/wp-content/uploads/2026/02/Certified-Health-IT-Product-List-CHPL-Developer-User-Guide.pdf'
-        : 'https://www.healthit.gov/wp-content/uploads/2026/02/Certified-Health-IT-Product-List-CHPL-Developer-User-Guide.pdf',
+      href: 'https://www.healthit.gov/wp-content/uploads/2026/02/Certified-Health-IT-Product-List-CHPL-Developer-User-Guide.pdf',
       text: 'CHPL Developer User Guide',
       analyticsEvent: 'CHPL Developer User Guide',
       analyticsCategory: 'Resources',
       router: { sref: 'resources.overview' },
       showDownloadIcon: true,
-      usePrimaryIconWhenDomainIsOff: false,
+      primaryIcon: false,
     });
   }
 

@@ -26,7 +26,7 @@ import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -74,7 +74,6 @@ function ChplDesktopNav({
 }) {
   const $rootScope = getAngularService('$rootScope');
   const analytics = useAnalyticsContext();
-  const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const cmsButtonRef = useRef(null);
   const compareButtonRef = useRef(null);
@@ -85,7 +84,6 @@ function ChplDesktopNav({
   const [resourcesAnchorEl, setResourcesAnchorEl] = useState(null);
   const [shortcutsAnchorEl, setShortcutsAnchorEl] = useState(null);
   const resourceItems = getResourceItems({
-    domainIsOn,
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
   const classes = useStyles();
@@ -145,7 +143,7 @@ function ChplDesktopNav({
     if (!item.showDownloadIcon) {
       return undefined;
     }
-    if (item.usePrimaryIconWhenDomainIsOff && !domainIsOn) {
+    if (item.primaryIcon) {
       return <CloudDownloadIcon color="primary" />;
     }
     return <CloudDownloadIcon />;
