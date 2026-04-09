@@ -2,9 +2,9 @@ import { createContext } from 'react';
 
 const FlagContext = createContext({
   demographicChangeRequestIsOn: false,
-  domainIsOn: false,
   insightsConnectionIsOn: false,
   insightsDisplayIsOn: false,
+  rwtAiIntegrationIsOn: false,
   rwtChangeRequestIsOn: false,
   sbulChangeRequestIsOn: false,
 });
