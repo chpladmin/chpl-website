@@ -26,7 +26,7 @@ import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api
 import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext, FlagContext } from 'shared/contexts';
+import { CmsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const ProgressBar = ({ value, year }) => (
@@ -122,7 +122,6 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
-  const { domainIsOn } = useContext(FlagContext);
   const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
@@ -180,56 +179,48 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent id="no-products-selected" ref={ref}>
-        <Box display="flex" flexDirection="column" boxSizing="border-box">
-          <Typography className={classes.wordWrap} gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
-          <Typography variant="body2" className={classes.wordWrap}>Please select products to create a CMS ID using the button found on either search results or product detail pages.</Typography>
-          <Typography variant="body2" align="left" style={{ paddingTop: '4px' }} className={classes.wordWrap}>
-            Note: the selected product
-            {listings?.length !== 1 ? 's' : ''}
-            {' '}
-            must meet 100% of the Base Criteria.
-          </Typography>
-          <Divider />
-          <Box display="flex" flexDirection="column" gap="8px" paddingTop="8px">
-            <Typography gutterBottom align="left" variant="body2" className={classes.wordWrap}>
-              For assistance, view the
-              {' '}
-              <ChplLink
-                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
-                text="CHPL Public User Guide"
-                analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-                external={false}
-                inline
-              />
-              {' '}
-              or
-              {' '}
-              <ChplLink
-                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
-                text="Base Criteria"
-                analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-                external={false}
-                inline
-              />
-
-            </Typography>
-            <Typography align="left" variant="body2" className={classes.wordWrap}>
-              To view which products were used to create a specific CMS ID, use the
-              {' '}
-              <ChplLink
-                href="#/resources/cms-lookup"
-                text="CMS ID Reverse Lookup"
-                analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
-                external={false}
-                router={{ sref: 'resources.cms-lookup' }}
-                inline
-              />
-              .
-            </Typography>
-          </Box>
-        </Box>
-      </CardContent>
+      <>
+        <Typography gutterBottom><strong>No products selected.</strong></Typography>
+        <Typography>
+          Note: the selected product
+          {listings?.length !== 1 ? 's' : ''}
+          {' '}
+          must meet 100% of the Base Criteria. For assistance, view the
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            text="CHPL Public User Guide"
+            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          {' '}
+          or
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
+            text="Base Criteria"
+            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          .
+        </Typography>
+        <Divider />
+        <Typography variant="body2">
+          To view which products were used to create a specific CMS ID, use the
+          {' '}
+          <ChplLink
+            href="#/resources/cms-lookup"
+            text="CMS ID Reverse Lookup"
+            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
+            external={false}
+            router={{ sref: 'resources.cms-lookup' }}
+            inline
+          />
+          .
+        </Typography>
+      </>
     );
   }
 
@@ -266,7 +257,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
             must meet 100% of the Base Criteria. For assistance, view the
             {' '}
             <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
               text="CHPL Public User Guide"
               analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
               external={false}
@@ -276,7 +267,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
             or
             {' '}
             <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition`}
+              href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
               text="Base Criteria"
               analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
               external={false}

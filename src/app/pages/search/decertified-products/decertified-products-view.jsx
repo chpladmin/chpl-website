@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -29,7 +29,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const headers = [
@@ -104,7 +104,6 @@ const useStyles = makeStyles({
 
 function ChplDecertifiedProductsSearchView() {
   const storageKey = 'storageKey-decertifiedProductsView';
-  const { domainIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -165,7 +164,7 @@ function ChplDecertifiedProductsSearchView() {
           This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
           {' '}
           <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
             text="CHPL Public User Guide"
             analytics={{
               ...analytics,
