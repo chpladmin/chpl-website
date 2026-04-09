@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Box,
@@ -38,12 +38,28 @@ const useStyles = makeStyles({
 function ChplAdminMenu({ onClose = () => {} }) {
   const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
-  const {
-    hasAnyRole,
-    setLoginWidgetState,
-  } = useContext(UserContext);
+  const { hasAnyRole, setLoginWidgetState, user } = useContext(UserContext);
+  const [activeConfigs, setActiveConfigs] = useState([]);
   const [openSection, setOpenSection] = useState(null);
   const classes = useStyles();
+
+  useEffect(() => {
+    setActiveConfigs([
+      ...sectionConfigs, {
+        key: 'developers',
+        title: 'Developers',
+        roles: ['chpl-developer'],
+        items: user?.organizations
+          .sort((a, b) => (a.name < b.name ? -1 : 1))
+          .map((d) => ({
+            key: d.id,
+            roles: ['chpl-developer'],
+            href: `#/organizations/developers/${d.id}`,
+            text: d.name,
+            router: { sref: 'organizations.developers.developer', options: { id: d.id } },
+          })),
+      }]);
+  }, []);
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -75,7 +91,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
   return (
     <Box className={classes.menuContainer}>
       <List component="nav">
-        { sectionConfigs
+        { activeConfigs
           .filter((sectionConfig) => canAccess(sectionConfig.roles))
           .map((sectionConfig) => (
             <ChplAdminMenuSection
