@@ -22,7 +22,6 @@ function FlagWrapper({ children }) {
   const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag)?.active;
 
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
-  const domainIsOn = isOn('domain');
   const insightsConnectionIsOn = isOn('insights-connection');
   const insightsDisplayIsOn = isOn('insights-display');
   const rwtAiIntegrationIsOn = isOn('rwt-ai-integration');
@@ -32,7 +31,6 @@ function FlagWrapper({ children }) {
   const flagState = {
     isProduction,
     demographicChangeRequestIsOn,
-    domainIsOn,
     insightsConnectionIsOn,
     insightsDisplayIsOn,
     rwtAiIntegrationIsOn,

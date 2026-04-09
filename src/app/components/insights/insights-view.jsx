@@ -17,7 +17,7 @@ import {
 
 import { useFetchInsights } from 'api/developer';
 import { ChplLink } from 'components/util';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -28,7 +28,6 @@ const useStyles = makeStyles({
 });
 
 function ChplInsightsView({ developer }) {
-  const { domainIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const {
     data,
@@ -52,7 +51,7 @@ function ChplInsightsView({ developer }) {
           Insights information is displayed here. For more information, please visit the
           {' '}
           <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdftopic/certification-ehrs/program`}
+            href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdftopic/certification-ehrs/program"
             text="Insights Guide"
             external={false}
             inline
