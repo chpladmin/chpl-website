@@ -3,7 +3,7 @@ const states = [{
   url: '/compliance-dashboard',
   component: 'chplComplianceDashboardBridge',
   data: {
-    title: 'ASTP Compliance Dashboard',
+    title: 'Compliance Dashboard',
     roles: ['chpl-admin'],
   },
 }];
