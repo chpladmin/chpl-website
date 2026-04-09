@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -21,12 +21,11 @@ import ImageIcon from '@material-ui/icons/Image';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
-import Image from '../../../../assets/images/CHPL_Logo-01.png';
+import LandingBackgroundLogo from '../../../../assets/images/Certified-HealthIT-Product-List-LogoWhite.svg';
 
 import { useFetchAnnouncements } from 'api/announcements';
 import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -154,10 +153,12 @@ const useStyles = makeStyles({
     },
   },
   landingPageBackground: {
-    backgroundPosition: '48vw 40vh',
+    backgroundPosition: '60vw 40vh',
     backgroundRepeat: 'no-repeat',
-    background: `rgba(2,23,60,1) url(${Image})`,
-    backgroundBlendMode: 'soft-light',
+    backgroundColor: 'rgba(2,23,60,1)',
+    backgroundImage: `linear-gradient(rgba(2,23,60,0.55), rgba(2,23,60,0.55)), url(${LandingBackgroundLogo})`,
+    backgroundBlendMode: 'normal, soft-light',
+    backgroundSize: '500px',
     minHeight: '75vh',
   },
   subHeaders: {
@@ -171,7 +172,6 @@ const useStyles = makeStyles({
 
 function ChplLandingPage() {
   const classes = useStyles();
-  const { domainIsOn } = useContext(FlagContext);
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
@@ -184,15 +184,11 @@ function ChplLandingPage() {
   }, [data, isLoading, isSuccess]);
 
   const handlePrevious = () => {
-    setCurrentAnnouncementIndex((prev) =>
-      prev === 0 ? announcements.length - 1 : prev - 1
-    );
+    setCurrentAnnouncementIndex((prev) => (prev === 0 ? announcements.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setCurrentAnnouncementIndex((prev) =>
-      prev === announcements.length - 1 ? 0 : prev + 1
-    );
+    setCurrentAnnouncementIndex((prev) => (prev === announcements.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -247,7 +243,7 @@ function ChplLandingPage() {
                         <ChevronLeftIcon color="primary" />
                       </IconButton>
                       <Fade in key={currentAnnouncementIndex} timeout={500}>
-                        <Box flexGrow={1} flexDirection={"column"}>
+                        <Box flexGrow={1} flexDirection="column">
                           <Typography color="textPrimary" variant="body1">
                             <strong>{announcements[currentAnnouncementIndex].title}</strong>
                           </Typography>
@@ -257,7 +253,13 @@ function ChplLandingPage() {
                             </Typography>
                           )}
                           <Typography variant="caption" aria-live="polite">
-                            Announcement {currentAnnouncementIndex + 1} of {announcements.length}
+                            Announcement
+                            {' '}
+                            {currentAnnouncementIndex + 1}
+                            {' '}
+                            of
+                            {' '}
+                            {announcements.length}
                           </Typography>
                         </Box>
                       </Fade>
@@ -429,7 +431,7 @@ function ChplLandingPage() {
                         <Box display="flex" gridGap={4}>
                           <Typography align="center">
                             <ChplLink
-                              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/sites/default/files/policy/chpl_public_user_guide.pdf`}
+                              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
                               text="Training Guide"
                               external={false}
                               analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'Training Guide' }}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -34,7 +34,7 @@ import {
 import { useFilterContext } from 'components/filter';
 import { ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { FlagContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -129,23 +129,6 @@ const templateOptions = [
   }, {
     key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', additionalRecipients: 'sharon.jankosky@hhs.gov', body: `Hello |DEVELOPERNAME|,
 
-According to our records, the [Attestations Condition and Maintenance of Certification](https://www.astp.hhs.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
-
-The following individuals have been identified by your ONC-Authorized Certification Body (ONC-ACB) as authorized contacts to submit Attestations for your developer organization: |DEVELOPERUSERS|.
-
-For questions related to authorized developer point of contacts, please reach out to your ONC-ACB for further assistance.
-
-Sincerely,  
-The Office of the National Coordinator for Health IT`,
-  },
-];
-
-const templateOptionsOld = [
-  {
-    key: '<blank>', subject: '', additionalRecipients: '', body: '',
-  }, {
-    key: 'Semi-Annual Attestations Not Submitted', subject: 'Semi-Annual Attestations Not Submitted', additionalRecipients: 'sharon.jankosky@hhs.gov', body: `Hello |DEVELOPERNAME|,
-
 According to our records, the [Attestations Condition and Maintenance of Certification](https://www.healthit.gov/condition-ccg/attestations) for |DEVELOPERNAME| has not been submitted for the current Attestations period. As such, ONC is requesting that this be submitted through the CHPL system as soon as possible at [https://chpl.healthit.gov](https://chpl.healthit.gov/).
 
 The following individuals have been identified by your ONC-Authorized Certification Body (ONC-ACB) as authorized contacts to submit Attestations for your developer organization: |DEVELOPERUSERS|.
@@ -160,7 +143,6 @@ The Office of the National Coordinator for Health IT`,
 function ChplMessaging({ dispatch }) {
   const { queryParams, queryString } = useFilterContext();
   const { analytics } = useAnalyticsContext();
-  const { domainIsOn } = useContext(FlagContext);
   const [hasPreviewed, setHasPreviewed] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState('<blank>');
@@ -194,7 +176,7 @@ function ChplMessaging({ dispatch }) {
   }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 
   const applyTemplate = () => {
-    const selected = domainIsOn ? templateOptions.find((o) => o.key === selectedOption) : templateOptionsOld.find((o) => o.key === selectedOption);
+    const selected = templateOptions.find((o) => o.key === selectedOption);
     formik.setFieldValue('subject', selected.subject);
     formik.setFieldValue('additionalRecipients', selected.additionalRecipients);
     formik.setFieldValue('body', selected.body);

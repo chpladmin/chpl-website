@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 14.1.1
+_2 April 2026_
+
+### UI Updates
+* Update logos and adjust landing page background styles to meet ONC naming changes
+
+---
+
 ## Version 14.1.0
 _2 March 2026_
 

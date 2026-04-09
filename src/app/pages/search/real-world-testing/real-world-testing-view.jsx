@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -28,7 +28,7 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -101,7 +101,6 @@ const headers = [
 
 function ChplRealWorldTestingSearchView() {
   const storageKey = 'storageKey-realWorldTestingView';
-  const { domainIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -164,7 +163,7 @@ function ChplRealWorldTestingSearchView() {
           This list includes Health IT Module(s) eligible for Real World Testing, which is an annual
           {' '}
           <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/conditions-maintenance-certification`}
+            href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
             text="Condition and Maintenance of Certification requirement"
             analytics={{
               ...analytics,
@@ -177,7 +176,7 @@ function ChplRealWorldTestingSearchView() {
           for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
           {' '}
           <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/curesrule/`}
+            href="https://www.healthit.gov/curesrule/"
             text="ONC&apos;s Cures Act Final Rule"
             analytics={{
               ...analytics,
@@ -200,7 +199,7 @@ function ChplRealWorldTestingSearchView() {
           For more information, please visit the
           {' '}
           <ChplLink
-            href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/topic/certification-ehrs/real-world-testing`}
+            href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing"
             text="Real World Testing resources"
             analytics={{
               ...analytics,
