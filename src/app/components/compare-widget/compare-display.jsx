@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ChplCompareDisplay = React.forwardRef((props, ref) => {
+function ChplCompareDisplay() {
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
@@ -57,7 +57,7 @@ const ChplCompareDisplay = React.forwardRef((props, ref) => {
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent id="no-products-selected" ref={ref}>
+      <CardContent id="no-products-selected">
         <Typography gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
         <Typography variant="body2" className={classes.wordWrap}>Please select products to compare using the button found on either search results or product detail pages.</Typography>
       </CardContent>
@@ -65,7 +65,7 @@ const ChplCompareDisplay = React.forwardRef((props, ref) => {
   }
 
   return (
-    <CardContent className={classes.cardcontentPadding} ref={ref}>
+    <CardContent className={classes.cardcontentPadding}>
       <div className={classes.chipContainer}>
         { [...listings].sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
@@ -105,8 +105,6 @@ const ChplCompareDisplay = React.forwardRef((props, ref) => {
       </div>
     </CardContent>
   );
-});
-
-ChplCompareDisplay.displayName = 'ChplCompareDisplay';
+}
 
 export default ChplCompareDisplay;
