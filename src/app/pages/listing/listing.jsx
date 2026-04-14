@@ -24,7 +24,6 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingRwtPlans from 'components/change-request/types/listing-rwt-plans';
 import ChplListingRwtResults from 'components/change-request/types/listing-rwt-results';
-import ChplListingSbul from 'components/change-request/types/listing-sbul';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
 import ChplTooltip from 'components/util/chpl-tooltip';
@@ -90,7 +89,6 @@ function ChplListingPage({ id }) {
   const [listing, setListing] = useState(undefined);
   const [rwtPlansChange, setRwtPlansChange] = useState(false);
   const [rwtResultsChange, setRwtResultsChange] = useState(false);
-  const [sbulChange, setSbulChange] = useState(false);
   const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const classes = useStyles();
   let analyticsData;
@@ -179,7 +177,6 @@ function ChplListingPage({ id }) {
     setListing,
     setRwtPlansChange,
     setRwtResultsChange,
-    setSbulChange,
   };
 
   analyticsData = {
@@ -219,16 +216,6 @@ function ChplListingPage({ id }) {
       <AnalyticsContext.Provider value={analyticsData}>
         <ListingContext.Provider value={listingState}>
           <ChplListingRwtResults />
-        </ListingContext.Provider>
-      </AnalyticsContext.Provider>
-    );
-  }
-
-  if (sbulChange) {
-    return (
-      <AnalyticsContext.Provider value={analyticsData}>
-        <ListingContext.Provider value={listingState}>
-          <ChplListingSbul />
         </ListingContext.Provider>
       </AnalyticsContext.Provider>
     );
