@@ -8,13 +8,11 @@ import {
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { func } from 'prop-types';
-import { useCookies } from 'react-cookie';
 
 import ChplAdminMenuLinkItem from './navigation/admin-menu-link-item';
 import ChplAdminMenuSection from './navigation/admin-menu-section';
 import sectionConfigs from './navigation/admin-menu-data';
 
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
@@ -37,15 +35,12 @@ const useStyles = makeStyles({
 });
 
 function ChplAdminMenu({ onClose = () => {} }) {
-  const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
-  const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const {
     hasAnyRole,
+    logout,
     setLoginWidgetState,
     user,
-    setUser,
   } = useContext(UserContext);
   const [activeConfigs, setActiveConfigs] = useState([]);
   const [openSection, setOpenSection] = useState(null);
@@ -74,21 +69,6 @@ function ChplAdminMenu({ onClose = () => {} }) {
   };
 
   const canAccess = (roles) => !roles || hasAnyRole(roles);
-
-  const logout = (e) => {
-    e.stopPropagation();
-    eventTrack({
-      ...analytics,
-      event: 'Log Out',
-      category: 'Authentication',
-    });
-    setUser({});
-    removeCookie('cognito_id');
-    removeCookie('refresh_token');
-    setLoginWidgetState('SIGNIN');
-    authService.logout();
-    $rootScope.$broadcast('loggedOut');
-  };
 
   const changePassword = (e) => {
     e.stopPropagation();

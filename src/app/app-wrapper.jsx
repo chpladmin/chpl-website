@@ -20,9 +20,9 @@ import theme from 'themes/theme';
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
     <ThemeProvider theme={theme}>
-      <UserWrapper>
-        <SnackbarWrapper>
-          <ApiWrapper showQueryTools={showQueryTools}>
+      <ApiWrapper showQueryTools={showQueryTools}>
+        <UserWrapper>
+          <SnackbarWrapper>
             <FlagWrapper>
               <CompareWrapper>
                 <CmsWrapper>
@@ -41,9 +41,9 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
                 </CmsWrapper>
               </CompareWrapper>
             </FlagWrapper>
-          </ApiWrapper>
-        </SnackbarWrapper>
-      </UserWrapper>
+          </SnackbarWrapper>
+        </UserWrapper>
+      </ApiWrapper>
     </ThemeProvider>
   );
 }

@@ -8,10 +8,7 @@ import {
 } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { useCookies } from 'react-cookie';
 
-import { usePostLogout } from 'api/auth';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
@@ -29,12 +26,8 @@ const useStyles = makeStyles({
 });
 
 function ChplLoggedIn() {
-  const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
-  const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
-  const { setLoginWidgetState, user, setUser } = useContext(UserContext);
+  const { logout, setLoginWidgetState, user } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
-  const postLogout = usePostLogout();
   const classes = useStyles();
 
   const changePassword = (e) => {
@@ -45,26 +38,6 @@ function ChplLoggedIn() {
       category: 'Authentication',
     });
     setLoginWidgetState('CHANGEPASSWORD');
-  };
-
-  const logout = (e) => {
-    e.stopPropagation();
-    eventTrack({
-      ...analytics,
-      event: 'Log Out',
-      category: 'Authentication',
-    });
-    if (user?.email) {
-      postLogout.mutate({
-        email: user.email,
-      });
-    }
-    setUser({});
-    removeCookie('cognito_id');
-    removeCookie('refresh_token');
-    setLoginWidgetState('SIGNIN');
-    authService.logout();
-    $rootScope.$broadcast('loggedOut');
   };
 
   return (
