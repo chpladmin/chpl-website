@@ -69,7 +69,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ChplCmsDisplay = React.forwardRef((props, ref) => {
+function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
@@ -176,7 +176,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
   }
 
   return (
-    <CardContent className={classes.cardcontentPadding} ref={ref}>
+    <CardContent className={classes.cardcontentPadding}>
       { certId
         && (
           <>
@@ -349,8 +349,6 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
       </div>
     </CardContent>
   );
-});
-
-ChplCmsDisplay.displayName = 'ChplCmsDisplay';
+}
 
 export default ChplCmsDisplay;
