@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 14.1.2
+_13 April 2026_
+
+### User Interface Updates
+* Remove references to ASTP
+* Link to listing and developer pages in some chart drill-through views
+
+---
+
 ## Version 14.1.1
 _2 April 2026_
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Card,
@@ -10,7 +10,7 @@ import {
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import StarsIcon from '@material-ui/icons/Stars';
 
-import { developer as developerPropType } from 'shared/prop-types';
+import { DeveloperContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -56,8 +56,8 @@ const useStyles = makeStyles({
     fontSize: '18px',
   },
   sparkleTopLeft: {
-    top: '6px',
-    left: '10px',
+    top: '10px',
+    left: '6px',
     transform: 'rotate(-15deg)',
   },
   sparkleTopRight: {
@@ -70,10 +70,15 @@ const useStyles = makeStyles({
     right: '47px',
     transform: 'rotate(4deg)',
   },
+  congratulationsText: {
+    textAlign: 'center',
+    color: palette.primaryDark,
+    fontWeight: 600,
+  },
 });
 
-function ChplAttestationWizardSection4(props) {
-  const { developer } = props;
+function ChplSbulWizardSection4() {
+  const { developer } = useContext(DeveloperContext);
   const classes = useStyles();
 
   return (
@@ -92,10 +97,10 @@ function ChplAttestationWizardSection4(props) {
             </Box>
           </Box>
           <Typography variant="body1" align="center">
-            Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. An email confirmation has been sent to the registered CHPL users associated with
+            Thank you for submitting a change to your listing(s)’s Service Base URL List URL. An email confirmation has been sent to the registered CHPL users associated with
             {' '}
             {developer.name}
-            . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
+            . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body.
           </Typography>
         </CardContent>
       </Card>
@@ -103,8 +108,7 @@ function ChplAttestationWizardSection4(props) {
   );
 }
 
-export default ChplAttestationWizardSection4;
+export default ChplSbulWizardSection4;
 
-ChplAttestationWizardSection4.propTypes = {
-  developer: developerPropType.isRequired,
+ChplSbulWizardSection4.propTypes = {
 };

@@ -109,7 +109,7 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
     if (errors.length > 0 || warnings.length > 0) {
       setOpen(true);
     }
-  }, []);
+  }, [errors, warnings]);
 
   const toggleDrawer = () => {
     setOpen((p) => !p);
