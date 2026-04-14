@@ -13,6 +13,7 @@ import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
 import ChplInsightsView from 'components/insights/insights-view';
 import ChplProducts from 'components/products/products';
 import ChplRealWorldTestingView from 'components/real-world-testing/real-world-testing-view';
+import ChplSbulsView from 'components/sbul/sbuls-view';
 import ChplUsers from 'components/user/users';
 import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -136,16 +137,20 @@ function ChplDeveloperView({ dispatch }) {
                 canSplit={() => can('split-developer')}
                 isSplitting={false}
               />
+              <ChplAttestationsView
+                developer={developer}
+                dispatch={dispatch}
+              />
+              <ChplRealWorldTestingView
+                developer={developer}
+              />
               { insightsDisplayIsOn
                 && (
                   <ChplInsightsView
                     developer={developer}
                   />
                 )}
-              <ChplRealWorldTestingView
-                developer={developer}
-              />
-              <ChplAttestationsView
+              <ChplSbulsView
                 developer={developer}
                 dispatch={dispatch}
               />
