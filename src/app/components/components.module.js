@@ -6,7 +6,6 @@ import { ChplApiKeyConfirm } from './api-key';
 import ChplAttestationEditWrapper from './attestation/attestation-edit-wrapper';
 import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
-import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
 import { ChplConfirmListingsWrapper } from './listing/confirm';
@@ -41,7 +40,6 @@ angular
   .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
-  .component('chplCmsDisplayWrapperBridge', reactToAngularComponent(ChplCmsDisplayWrapper))
   .component('chplCompareDisplayWrapperBridge', reactToAngularComponent(ChplCompareDisplayWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
