@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  Box,
   CardContent,
   Chip,
   CircularProgress,
   Divider,
   IconButton,
-  LinearProgress,
   List,
   ListItem,
   Typography,
@@ -18,8 +16,8 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import { number, string } from 'prop-types';
 
+import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
 import createPdf from './cms-pdf';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
@@ -28,53 +26,6 @@ import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
-
-const ProgressBar = ({ value, year }) => (
-  <Box
-    pt={2}
-    gridGap={8}
-    pb={2}
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    id="progress-bar"
-  >
-    <Box width="56%">
-      <LinearProgress
-        id="progress-bar-bar"
-        variant="determinate"
-        value={value}
-      />
-    </Box>
-    <Box>
-      <Typography
-        variant="body2"
-        color="textPrimary"
-        id="progress-bar-text"
-      >
-        <strong>
-          { value }
-          %
-        </strong>
-        {' '}
-        Base Criteria Met
-        {year !== '2015'
-           && (
-             <>
-               {' '}
-               for CY
-               {year}
-             </>
-           )}
-      </Typography>
-    </Box>
-  </Box>
-);
-
-ProgressBar.propTypes = {
-  value: number.isRequired,
-  year: string.isRequired,
-};
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -278,7 +229,7 @@ const ChplCmsDisplay = React.forwardRef((props, ref) => {
         )}
       { idAnalysis.products?.length > 0
         && (
-          <ProgressBar
+          <ChplCmsDisplayProgressBar
             value={idAnalysis.metPercentages.criteriaMet}
             year={idAnalysis.year}
           />
