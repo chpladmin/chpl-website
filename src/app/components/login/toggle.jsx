@@ -12,14 +12,11 @@ import {
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
 import { func } from 'prop-types';
-import { getAccessToken, setAuthTokens } from 'axios-jwt';
-//import { useCookies } from 'react-cookie';
+import { getAccessToken } from 'axios-jwt';
 
 import ChplLogin from './login';
 import ChplAdminMenu from './admin-menu';
 
-import { usePostRefreshToken } from 'api/auth';
-import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { theme, palette } from 'themes';
 
@@ -76,16 +73,7 @@ const useStyles = makeStyles({
 });
 
 function ChplToggle({ dispatch = () => {} }) {
-  const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
-  const {
-    loginWidgetState,
-    setLoginWidgetState,
-    user,
-    setUser,
-  } = useContext(UserContext);
-//  const [cookies] = useCookies(['cognito_id', 'refresh_token']);
-  const { mutate } = usePostRefreshToken();
+  const { loginWidgetState, setLoginWidgetState, user } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
@@ -97,33 +85,6 @@ function ChplToggle({ dispatch = () => {} }) {
   useEffect(() => {
     getAccessToken().then((token) => (token ? setLoginWidgetState('LOGGEDIN') : setLoginWidgetState('SIGNIN')));
   }, []);
-
-  /*
-  useEffect(() => {
-    if (user) { return; }
-    if (cookies.cognito_id && cookies.refresh_token) {
-      mutate({
-        cognitoId: cookies.cognito_id,
-        refreshToken: cookies.refresh_token,
-      }, {
-        onSuccess: (response) => {
-          authService.saveToken(response.accessToken);
-          authService.saveRefreshToken(response.refreshToken);
-          setAuthTokens({
-            accessToken: response.accessToken,
-            refreshToken: response.refreshToken,
-          });
-          setUser(response.user);
-          authService.saveCurrentUser(response.user);
-          $rootScope.$broadcast('loggedIn');
-          $rootScope.$digest();
-          setLoginWidgetState('LOGGEDIN');
-          dispatch('loggedIn');
-        },
-      });
-    }
-  }, [cookies]);
-  */
 
   const handleClick = (e) => {
     if (isMobile) {
