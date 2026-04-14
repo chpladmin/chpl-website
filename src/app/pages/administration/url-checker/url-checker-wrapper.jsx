@@ -1,13 +1,13 @@
 import React from 'react';
 
-import ChplUrlChecker from './url-checker';
+import ChplUrlCheckerPage from './url-checker-page';
 
 import AppWrapper from 'app-wrapper';
 
 function ChplUrlCheckerWrapper() {
   return (
     <AppWrapper>
-      <ChplUrlChecker />
+      <ChplUrlCheckerPage />
     </AppWrapper>
   );
 }
