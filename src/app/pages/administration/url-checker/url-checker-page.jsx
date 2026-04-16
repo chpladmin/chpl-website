@@ -1,26 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import { useSnackbar } from 'notistack';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 
-import { usePostChangeRequest } from 'api/change-requests';
-import { usePostUrlChecker } from 'api/url-checker';
-import { ChplActionBar } from 'components/action-bar';
-import { ChplLink, ChplTextField } from 'components/util';
-import { ListingContext, UserContext } from 'shared/contexts';
+import ChplUrlChecker from 'components/url-checker/url-checker';
+import { ChplLink } from 'components/util';
+import { UserContext } from 'shared/contexts';
 import { utilStyles, palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -79,169 +72,66 @@ const useStyles = makeStyles({
   },
 });
 
-const validationSchema = yup.object({
-  url: yup.string()
-    .required('Field is required')
-    .url('Improper format (http://www.example.com)'),
-});
-
-function ChplListingSbul() {
+function ChplUrlCheckerPage() {
   const { hasAnyRole } = useContext(UserContext);
-  const {
-    listing,
-    setSbulChange,
-  } = useContext(ListingContext);
-  const { enqueueSnackbar } = useSnackbar();
-  const { mutate: submitCR } = usePostChangeRequest();
-  const {
-    data, isLoading, isSuccess, mutate,
-  } = usePostUrlChecker();
-  const [currentUrl, setCurrentUrl] = useState(undefined);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [hasValidated, setHasValidated] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
   const classes = useStyles();
-  let formik;
 
-  useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setUrlCheckResponse(data.data);
-  }, [data, isLoading, isSuccess]);
+  const displayStatusIcon = (passed) => (passed ? (
+    <CheckCircleIcon fontSize="large" className={classes.greenIcon} />
+  ) : (
+    <CancelIcon fontSize="large" className={classes.redIcon} />
+  ));
 
-  useEffect(() => {
-    const url = listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList;
-    formik.setFieldValue('url', url ?? '');
-    setCurrentUrl(url);
-  }, [listing]);
-
-  const handleDispatch = (action) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
-      case 'cancel':
-        setSbulChange(false);
+      case 'loading':
+        setIsLoading(true);
+        setUrlCheckResponse(undefined);
         break;
-      case 'save':
-        setIsProcessing(true);
-        submitCR({
-          developer: listing.developer,
-          changeRequestType: {
-            id: 4,
-            name: 'Service Base URL List Change Request',
-          },
-          details: {
-            listing,
-            url: formik.values.url,
-          },
-        }, {
-          onSuccess: () => {
-            setIsProcessing(false);
-            enqueueSnackbar('URL change request has been submitted successfully.', {
-              variant: 'success',
-            });
-            setSbulChange(false);
-          },
-          onError: (error) => {
-            setIsProcessing(false);
-            if (error.response.data.error) {
-              setErrorMessages([error.response.data.error]);
-            } else if (error.response.data.errorMessages) {
-              setErrorMessages(error.response.data.errorMessages);
-            } else {
-              setErrorMessages(['An error occurred. Please try again, or contact your ONC-ACB for assistance']);
-            }
-          },
-        });
+      case 'complete':
+        setIsLoading(false);
+        setUrlCheckResponse(payload);
         break;
         // no default
     }
-  };
-
-  const isActionDisabled = () => !formik.isValid || !hasValidated;
-
-  const validate = (urlToValidate) => {
-    setUrlCheckResponse(undefined);
-    mutate(urlToValidate, {
-      onSuccess: () => {
-        setHasValidated(true);
-      },
-      onError: () => {
-        setHasValidated(true);
-        enqueueSnackbar('There was an error attempting to check the URL.', {
-          variant: 'error',
-        });
-      },
-    });
-  };
-
-  formik = useFormik({
-    initialValues: {
-      url: '',
-    },
-    onSubmit: () => {
-      const urlToValidate = {
-        url: formik.values.url,
-      };
-      validate(urlToValidate);
-    },
-    validationSchema,
-  });
-
-  const displayStatusIcon = (passed) => {
-    if (passed) {
-      return (
-        <CheckCircleIcon fontSize="large" className={classes.greenIcon} />
-      );
-    }
-    return (
-      <CancelIcon fontSize="large" className={classes.redIcon} />
-    );
   };
 
   return (
     <>
       <Box className={classes.titleBackground}>
         <Container maxWidth="lg">
-          <Typography className={classes.titlePadding} variant="h1">
-            Service Base URL List Update
-          </Typography>
-          <Typography>
-            Current URL:
-            {' '}
-            { currentUrl ?? 'None' }
-          </Typography>
-          <Box display="flex" alignItems="flex-start">
-            <ChplTextField
-              id="url"
-              name="url"
-              label="New URL"
-              value={formik.values.url}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.url && !!formik.errors.url}
-              helperText={formik.touched.url && formik.errors.url}
-              required
-            />
-            <Button
-              id="validate-url"
-              aria-label="Validate URL"
-              color="primary"
-              variant="contained"
-              onClick={formik.handleSubmit}
-              size="small"
-              style={{ marginLeft: '-4px', fontSize: 'small', padding: '9px' }}
-              endIcon={<VerifiedUserIcon />}
-            >
-              Validate
-            </Button>
-          </Box>
+          <Typography className={classes.titlePadding} variant="h1">URL Checker</Typography>
+          <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
+          <ChplUrlChecker
+            dispatch={handleDispatch}
+            showResultPopover={false}
+          />
         </Container>
       </Box>
       <Container className={classes.pageBackground} maxWidth="lg">
         { isLoading
           && (
-            <Box py={4}>
-              <CircularProgress />
-            </Box>
+            <>
+              <Typography className={classes.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
+              <Box className={classes.resultsContainer}>
+                <Card className={classes.resultsCardHalf}>
+                  <CardContent>
+                    <Skeleton variant="text" width="40%" height={36} />
+                    <Skeleton variant="text" width="55%" height={36} />
+                    <Skeleton variant="text" width="35%" height={28} />
+                    <Skeleton variant="text" width="90%" height={28} />
+                  </CardContent>
+                </Card>
+                <Card className={classes.resultsCardHalf}>
+                  <CardContent>
+                    <Skeleton variant="text" width="30%" height={36} />
+                    <Skeleton variant="text" width="95%" height={28} />
+                  </CardContent>
+                </Card>
+              </Box>
+            </>
           )}
         { urlCheckResponse
           && (
@@ -254,18 +144,16 @@ function ChplListingSbul() {
                       Status:
                     </Typography>
                     <Typography variant="h6" className={classes.statusText}>
-                      { urlCheckResponse.passed ? 'Passed' : 'Failure' }
-                      { displayStatusIcon(urlCheckResponse.passed) }
+                      {urlCheckResponse.passed ? 'Passed' : 'Failure'}
+                      {displayStatusIcon(urlCheckResponse.passed)}
                     </Typography>
-                    { urlCheckResponse.errorMessage
+                    {urlCheckResponse.errorMessage
                       && (
                         <>
                           <Typography variant="body2">
                             Error Message:
                           </Typography>
-                          <Typography variant="body2">
-                            { urlCheckResponse.errorMessage }
-                          </Typography>
+                          <Typography variant="body2">{urlCheckResponse.errorMessage}</Typography>
                         </>
                       )}
                   </CardContent>
@@ -276,7 +164,7 @@ function ChplListingSbul() {
                       URL:
                     </Typography>
                     <Typography>
-                      { urlCheckResponse.url }
+                      {urlCheckResponse.url}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -288,16 +176,16 @@ function ChplListingSbul() {
                     <Box className={classes.resultsContainer}>
                       <Card className={classes.resultsCard}>
                         <CardContent>
-                          { urlCheckResponse.httpResponseAssertion?.actualValue ? (
+                          {urlCheckResponse.httpResponseAssertion?.actualValue ? (
                             <>
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 HTTP Status Code:
                               </Typography>
                               <Box className={classes.statusText}>
                                 <Typography>
-                                  { urlCheckResponse.httpResponseAssertion.actualValue }
+                                  {urlCheckResponse.httpResponseAssertion.actualValue}
                                 </Typography>
-                                { displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed) }
+                                {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
                               </Box>
                               <Typography variant="body2">
                                 <ChplLink
@@ -317,7 +205,7 @@ function ChplListingSbul() {
                                 <Typography>
                                   The HTTP response code could not be retrieved or is unavailable.
                                 </Typography>
-                                { displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed) }
+                                {displayStatusIcon(urlCheckResponse.httpResponseAssertion.passed)}
                               </Box>
                             </>
                           )}
@@ -328,14 +216,14 @@ function ChplListingSbul() {
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Response Time (in milliseconds):
                           </Typography>
-                          { urlCheckResponse.responseTimeAssertion?.actualValue
+                          {urlCheckResponse.responseTimeAssertion?.actualValue
                             ? (
                               <>
                                 <Box className={classes.statusText}>
                                   <Typography>
-                                    { urlCheckResponse.responseTimeAssertion.actualValue }
+                                    {urlCheckResponse.responseTimeAssertion.actualValue}
                                   </Typography>
-                                  { displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed) }
+                                  {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
                                 </Box>
                               </>
                             ) : (
@@ -344,7 +232,7 @@ function ChplListingSbul() {
                                   <Typography>
                                     The response time is empty or unavailable.
                                   </Typography>
-                                  { displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed) }
+                                  {displayStatusIcon(urlCheckResponse.responseTimeAssertion.passed)}
                                 </Box>
                               </>
                             )}
@@ -352,18 +240,18 @@ function ChplListingSbul() {
                       </Card>
                       <Card className={classes.resultsCard}>
                         <CardContent>
-                          { urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
+                          {urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
                             <>
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 Body Content:
                               </Typography>
                               <Box className={classes.statusText}>
                                 <Typography>
-                                  { urlCheckResponse.bodyNotEmptyAssertion.actualValue
+                                  {urlCheckResponse.bodyNotEmptyAssertion.actualValue
                                     ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
                                     : 'Empty body content'}
                                 </Typography>
-                                { displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed) }
+                                {displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed)}
                               </Box>
                             </>
                           ) : (
@@ -375,7 +263,7 @@ function ChplListingSbul() {
                                 <Typography>
                                   The body content is empty or unavailable.
                                 </Typography>
-                                { displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed) }
+                                {displayStatusIcon(urlCheckResponse.bodyNotEmptyAssertion.passed)}
                               </Box>
                             </>
                           )}
@@ -386,18 +274,12 @@ function ChplListingSbul() {
                 )}
             </>
           )}
-        <ChplActionBar
-          dispatch={handleDispatch}
-          isDisabled={isActionDisabled()}
-          isProcessing={isProcessing}
-          errors={errorMessages}
-        />
       </Container>
     </>
   );
 }
 
-export default ChplListingSbul;
+export default ChplUrlCheckerPage;
 
-ChplListingSbul.propTypes = {
+ChplUrlCheckerPage.propTypes = {
 };
