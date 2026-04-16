@@ -16,6 +16,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FeedbackIcon from '@material-ui/icons/Feedback';
+import { useSnackbar } from 'notistack';
 
 import {
   useFetchPendingListing,
@@ -69,8 +70,7 @@ const getStatus = (listing, classes) => {
 };
 
 function ChplConfirmListings({ onProcess }) {
-  const DateUtil = getAngularService('DateUtil');
-  const toaster = getAngularService('toaster');
+  const { enqueueSnackbar } = useSnackbar();
   const [errors, setErrors] = useState([]);
   const [idsToReject, setIdsToReject] = useState([]);
   const [listingIdToLoad, setListingIdToLoad] = useState(undefined);
@@ -132,10 +132,8 @@ function ChplConfirmListings({ onProcess }) {
           if (error?.data?.error) {
             message += `. ${error.data.error}`;
           }
-          toaster.pop({
-            type: 'error',
-            title: 'Error',
-            body: message,
+          enqueueSnackbar(message, {
+            variant: 'error',
           });
         },
       });
