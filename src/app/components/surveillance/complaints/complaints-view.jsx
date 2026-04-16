@@ -33,7 +33,7 @@ import { ChplEllipsis, ChplPagination, ChplSortableHeaders } from 'components/ut
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -76,7 +76,6 @@ function ChplComplaintsView(props) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [activeComplaint, setActiveComplaint] = useState(undefined);
   const [complaints, setComplaints] = useState([]);
@@ -95,39 +94,6 @@ function ChplComplaintsView(props) {
     query: `${queryString()}&${bonusQuery}`,
   });
   const classes = useStyles();
-  let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="surveillance.disabled"
-        variant="text"
-        disabled
-      >
-        Surveillance
-      </Button>,
-    );
-    append(
-      <Button
-        key="viewall.disabled"
-        variant="text"
-        disabled
-      >
-        Complaints Reporting
-      </Button>,
-    );
-    append(
-      <Button
-        key="viewall"
-        variant="text"
-        onClick={() => handleDispatch({ action: 'close' })}
-      >
-        Complaints Reporting
-      </Button>,
-    );
-    display && display('surveillance.disabled');
-    display && display('viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -186,7 +152,7 @@ function ChplComplaintsView(props) {
     });
   };
 
-  handleDispatch = ({ action, payload }) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'add':
         eventTrack({
@@ -194,17 +160,9 @@ function ChplComplaintsView(props) {
           event: 'Add New Complaint',
         });
         setActiveComplaint({});
-        display && display('viewall');
-        hide && hide('viewall.disabled');
         break;
       case 'close':
         setActiveComplaint(undefined);
-        display && display('viewall.disabled');
-        hide && hide('viewall');
-        hide && hide('add.disabled');
-        hide && hide('edit.disabled');
-        hide && hide('view');
-        hide && hide('view.disabled');
         break;
       case 'view':
         eventTrack({
@@ -213,8 +171,6 @@ function ChplComplaintsView(props) {
           label: payload.complainantType.name,
         });
         setActiveComplaint(payload);
-        display && display('viewall');
-        hide && hide('viewall.disabled');
         break;
       // no default
     }
@@ -230,14 +186,11 @@ function ChplComplaintsView(props) {
     setOrder(orderDirection);
   };
 
-  const showBreadcrumbs = () => !bonusQuery;
-
   if (activeComplaint) {
     return (
       <ChplComplaint
         complaint={activeComplaint}
         dispatch={handleDispatch}
-        showBreadcrumbs={showBreadcrumbs()}
         canEdit={canEdit}
       />
     );
