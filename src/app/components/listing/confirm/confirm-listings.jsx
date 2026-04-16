@@ -24,7 +24,7 @@ import {
 } from 'api/pending-listings';
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
 import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -234,7 +234,7 @@ function ChplConfirmListings({ onProcess }) {
                         <TableCell className={classes.linkWrap}>{listing.developer}</TableCell>
                         <TableCell className={classes.linkWrap}>{listing.product}</TableCell>
                         <TableCell className={classes.linkWrap}>{listing.version}</TableCell>
-                        <TableCell className={classes.linkWrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
+                        <TableCell className={classes.linkWrap}>{getDisplayDateFormat(listing.certificationDate)}</TableCell>
                         <TableCell>
                           { listing.displayStatus }
                           { listing.status !== 'UPLOAD_FAILURE' && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
