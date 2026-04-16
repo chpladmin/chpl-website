@@ -10,7 +10,6 @@ import {
   FormControlLabel,
   FormLabel,
   IconButton,
-  LinearProgress,
   List,
   ListItem,
   Radio,
@@ -23,114 +22,18 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import PropTypes from 'prop-types';
 
+import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
 import createPdf from './cms-pdf';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
-import { ChplLink } from 'components/util';
-import ChplEllipsis from 'components/util/chpl-ellipsis';
+import { ChplEllipsis, ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const getProgressColor = (value) => {
-  if (value >= 100) return palette.active;
-  if (value < 25) return palette.error;
-  return palette.primary;
-};
-
-const ProgressBar = ({ value, year, classes }) => {
-  const normalizedValue = Number.isFinite(Number(value))
-    ? Math.min(100, Math.max(0, Number(value)))
-    : 0;
-  return (
-    <Box
-      pt={2}
-      gridGap={8}
-      pb={2}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      id="progress-bar"
-    >
-      <Box width="150px" className={classes.progressBarWrapperNoShrink}>
-        <LinearProgress
-          id="progress-bar-bar"
-          variant="determinate"
-          value={normalizedValue}
-          classes={{
-            root: classes.linearProgressRootRounded,
-            colorPrimary: classes.linearProgressTrackColorByThreshold,
-            barColorPrimary: classes.linearProgressFillColorByThreshold,
-            bar1Determinate: classes.linearProgressDeterminateFillColorByThreshold,
-          }}
-        />
-      </Box>
-      <Box>
-        <Typography
-          variant="h6"
-          color="textPrimary"
-          id="progress-bar-text"
-        >
-          <strong>
-            { value }
-            %
-          </strong>
-          {' '}
-          Base Criteria Met
-          {year !== '2015'
-             && (
-               <>
-                 {' '}
-                 for CY
-                 {year}
-               </>
-             )}
-        </Typography>
-      </Box>
-    </Box>
-  );
-};
-
-ProgressBar.propTypes = {
-  classes: PropTypes.shape({
-    linearProgressDeterminateFillColorByThreshold: PropTypes.string.isRequired,
-    linearProgressFillColorByThreshold: PropTypes.string.isRequired,
-    linearProgressRootRounded: PropTypes.string.isRequired,
-    linearProgressTrackColorByThreshold: PropTypes.string.isRequired,
-    progressBarWrapperNoShrink: PropTypes.string.isRequired,
-  }).isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
-  year: PropTypes.string.isRequired,
-};
-
 const useStyles = makeStyles({
   ...utilStyles,
-  progressBarWrapperNoShrink: {
-    flexShrink: 0,
-  },
-  linearProgressRootRounded: {
-    height: '16px',
-    borderRadius: '8px',
-    overflow: 'hidden',
-  },
-  linearProgressTrackColorByThreshold: {
-    backgroundColor: ({ progressValue }) => {
-      if (progressValue >= 100) return palette.progressSuccessTrack;
-      if (progressValue < 25) return palette.progressErrorTrack;
-      return palette.primaryLight;
-    },
-  },
-  linearProgressFillColorByThreshold: {
-    backgroundColor: ({ progressValue }) => getProgressColor(progressValue),
-  },
-  linearProgressDeterminateFillColorByThreshold: {
-    backgroundColor: ({ progressValue }) => getProgressColor(progressValue),
-  },
   emptyStateTitle: {
     fontWeight: '700 !important',
   },
@@ -383,9 +286,8 @@ function ChplCmsDisplay() {
         && (
           <>
             <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
-            <ProgressBar
-              classes={classes}
-              value={idAnalysis.metPercentages.criteriaMet}
+            <ChplCmsDisplayProgressBar
+              value={idAnalysis.metPercentages?.criteriaMet}
               year={idAnalysis.year}
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
