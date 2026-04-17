@@ -84,7 +84,7 @@ function ChplNavigationBottom() {
             </Box>
           </Box>
           <Box display="flex" alignItems="center" flexDirection="row" gridGap={4}>
-            <Typography className={classes.footerText} variant="body1">Owned by the Assistant Secretary for Technology Policy</Typography>
+            <Typography className={classes.footerText} variant="body1">Owned by the Office of the National Coordinator for Health Information Technology</Typography>
           </Box>
         </Box>
       </Container>

@@ -17,14 +17,15 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuIcon from '@material-ui/icons/Menu';
 import { func } from 'prop-types';
 
-import ChplCmsDisplay from 'components/cms-widget/cms-display';
-import ChplCompareDisplay from 'components/compare-widget/compare-display';
-import { ChplLink } from 'components/util';
 import {
   developerGuideRoles,
   getResourceItems,
   shortcutItems,
-} from 'navigation/navigation-menu-items';
+} from './navigation-menu-items';
+
+import ChplCmsDisplay from 'components/cms-widget/cms-display';
+import ChplCompareDisplay from 'components/compare-widget/compare-display';
+import { ChplLink } from 'components/util';
 import { FlagContext, UserContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 

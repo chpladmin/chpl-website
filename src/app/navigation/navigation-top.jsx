@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   AppBar,
   Box,
-  Button,
   ButtonBase,
-  Menu,
-  MenuItem,
   Toolbar,
   makeStyles,
 } from '@material-ui/core';
 
-import ChplLogo from '../../assets/images/CertifiedHealthIT_Logo.svg';
+import ChplLogo from '../../assets/images/Certified-HealthIT-Product-List-Upper-Left-Logo.svg';
 
 import ChplDesktopNav from './desktop-nav';
 import ChplEnvironmentBanner from './environment-banner';
@@ -19,7 +16,7 @@ import ChplMobileNavDrawer from './mobile-nav-drawer';
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
