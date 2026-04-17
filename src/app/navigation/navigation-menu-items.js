@@ -75,7 +75,6 @@ const getResourceItems = ({ includeDeveloperGuide }) => {
     text: 'CHPL Public User Guide',
     analyticsEvent: 'CHPL Public User Guide',
     analyticsCategory: 'Resources',
-    router: { sref: 'resources.overview' },
     showDownloadIcon: true,
     primaryIcon: true,
   }];
@@ -87,7 +86,6 @@ const getResourceItems = ({ includeDeveloperGuide }) => {
       text: 'CHPL Developer User Guide',
       analyticsEvent: 'CHPL Developer User Guide',
       analyticsCategory: 'Resources',
-      router: { sref: 'resources.overview' },
       showDownloadIcon: true,
       primaryIcon: false,
     });
