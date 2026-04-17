@@ -220,7 +220,7 @@ function ChplDesktopNav({
         aria-expanded={!!resourcesAnchorEl}
         className={classes.whiteButton}
       >
-        Resources
+        CHPL Resources
       </Button>
       <Menu
         anchorEl={resourcesAnchorEl}

@@ -76,7 +76,7 @@ const getResourceItems = ({ includeDeveloperGuide }) => {
     analyticsEvent: 'CHPL Public User Guide',
     analyticsCategory: 'Resources',
     router: { sref: 'resources.overview' },
-    wnloadIcon: true,
+    showDownloadIcon: true,
     primaryIcon: true,
   }];
 

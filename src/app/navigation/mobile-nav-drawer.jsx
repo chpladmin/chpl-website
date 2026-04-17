@@ -137,7 +137,7 @@ function ChplMobileNavDrawer({
 
   const linkSections = [{
     key: 'resources',
-    title: 'Resources',
+    title: 'CHPL Resources',
     items: resourceItems,
   }, {
     key: 'shortcuts',
