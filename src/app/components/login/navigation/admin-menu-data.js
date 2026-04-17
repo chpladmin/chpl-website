@@ -54,9 +54,8 @@ const sectionConfigs = [{
   }, {
     key: 'ff4j',
     roles: ['chpl-admin'],
-    href: 'rest/ff4j-console/home',
+    href: '/rest/ff4j-console/home',
     text: 'FF4j',
-    external: true,
   }],
 }, {
   key: 'organizations',
