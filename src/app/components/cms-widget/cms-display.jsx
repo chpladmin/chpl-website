@@ -204,6 +204,29 @@ function ChplCmsDisplay() {
         <Typography gutterBottom><strong>No products selected.</strong></Typography>
         <Divider />
         <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
+          {' '}
+          Note: the selected products must meet 100% of the Base Criteria. For assistance, view the
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            text="CHPL Public User Guide"
+            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          {' '}
+          or
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
+            text="Base Criteria"
+            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          .
+        </Typography>
+        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
