@@ -39,7 +39,7 @@ const checkCriterionIsMet = (key, criteriaMet) => {
 
 const getPdfCriteria = (year) => {
   /* eslint-disable object-curly-spacing */
-  if (year === '2025') {
+  if (year === '2025' || year === '2026') {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
@@ -61,16 +61,6 @@ const getPdfCriteria = (year) => {
       {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
       {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
       {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
-    ];
-  }
-  if (year === '2026') {
-    return [
-      {key: null, description: 'Demographics'},
-      {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
-      {key: null, description: 'Transitions of Care'},
-      {key: '170.315 (b)(1)', description: '#170.315(b)(1)'},
-      {key: null, description: 'Application Access-All Data Request'},
-      {key: '170.315 (g)(9)', description: '#170.315(g)(9)'},
     ];
   }
   return [ // prior to 2025
