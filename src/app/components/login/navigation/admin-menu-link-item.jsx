@@ -45,7 +45,7 @@ function ChplAdminMenuLinkItem({
         text={text}
         external={external}
         router={router}
-        hoverUnderline
+        indicateOnHover
       />
     </ListItem>
   );

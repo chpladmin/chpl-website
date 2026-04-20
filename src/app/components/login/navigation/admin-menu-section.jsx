@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Collapse,
+  IconButton,
   List,
   ListItem,
   makeStyles,
@@ -58,11 +59,19 @@ function ChplAdminMenuSection({
         divider
       >
         <Typography className={classes.sectionHeaderText}>{title}</Typography>
-        {isOpen
-          ? <ExpandLessIcon className={classes.sectionChevron} />
-          : <ExpandMoreIcon className={classes.sectionChevron} />}
+        <IconButton
+          className={classes.sectionChevron}
+          aria-label={isOpen ? `Collapse ${title}` : `Expand ${title}`}
+          aria-expanded={isOpen}
+          size="small"
+          onClick={(e) => { e.stopPropagation(); onToggle(section); }}
+        >
+          {isOpen
+            ? <ExpandLessIcon style={{color: 'black'}} />
+            : <ExpandMoreIcon color="primary" />}
+        </IconButton>
       </ListItem>
-      <Collapse in={isOpen} timeout="auto" unmountOnExit>
+      <Collapse in={isOpen} timeout={{ enter: 400, exit: 400 }} unmountOnExit>
         <List component="div" disablePadding={disablePadding}>
           {children}
         </List>
