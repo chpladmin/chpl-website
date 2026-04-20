@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -292,26 +292,26 @@ function ChplSystemMaintenance() {
       </Box>
       <Container maxWidth="lg">
         <div className={classes.container}>
-        <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
-          <Card className={classes.navigationFlex}>
-            <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
-              <Button
-                onClick={() => setNavOpen((prev) => !prev)}
-                variant="text"
-                color="primary"
-                size="medium"
-                className={classes.menuItems}
-              >
-                { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
-              </Button>
-            </ChplToolTip>
-            {maintenanceItems
-              .filter((item) => !item.roles || hasAnyRole(item.roles))
-              .map((item) => getNavigationItem(item))}
-          </Card>
-        </div>
-        <Box width="100%">
-          { active === ''
+          <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
+            <Card className={classes.navigationFlex}>
+              <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
+                <Button
+                  onClick={() => setNavOpen((prev) => !prev)}
+                  variant="text"
+                  color="primary"
+                  size="medium"
+                  className={classes.menuItems}
+                >
+                  { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
+                </Button>
+              </ChplToolTip>
+              {maintenanceItems
+                .filter((item) => !item.roles || hasAnyRole(item.roles))
+                .map((item) => getNavigationItem(item))}
+            </Card>
+          </div>
+          <Box width="100%">
+            { active === ''
             && (
               <Card>
                 <CardContent>
@@ -334,25 +334,25 @@ function ChplSystemMaintenance() {
                 </CardContent>
               </Card>
             )}
-          { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
-          { active === 'announcements' && <ChplAnnouncements /> }
-          { active === 'apiKeys' && <ChplApiKeys /> }
-          { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
-          { active === 'codeSets' && <ChplCodeSets /> }
-          { active === 'conformanceMethods' && <ChplConformanceMethods /> }
-          { active === 'cqms' && <ChplCqms /> }
-          { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
-          { active === 'g1g2' && <ChplG1g2 /> }
-          { active === 'optionalStandards' && <ChplOptionalStandards /> }
-          { active === 'qmsStandards' && <ChplQmsStandards /> }
-          { active === 'standards' && <ChplStandards /> }
-          { active === 'subscriptions' && <ChplManageSubscriptions /> }
-          { active === 'svaps' && <ChplSvaps /> }
-          { active === 'systemJobs' && <ChplSystemJobs /> }
-          { active === 'testData' && <ChplTestData /> }
-          { active === 'testTools' && <ChplTestTools /> }
-          { active === 'ucdProcesses' && <ChplUcdProcesses /> }
-        </Box>
+            { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
+            { active === 'announcements' && <ChplAnnouncements /> }
+            { active === 'apiKeys' && <ChplApiKeys /> }
+            { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
+            { active === 'codeSets' && <ChplCodeSets /> }
+            { active === 'conformanceMethods' && <ChplConformanceMethods /> }
+            { active === 'cqms' && <ChplCqms /> }
+            { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
+            { active === 'g1g2' && <ChplG1g2 /> }
+            { active === 'optionalStandards' && <ChplOptionalStandards /> }
+            { active === 'qmsStandards' && <ChplQmsStandards /> }
+            { active === 'standards' && <ChplStandards /> }
+            { active === 'subscriptions' && <ChplManageSubscriptions /> }
+            { active === 'svaps' && <ChplSvaps /> }
+            { active === 'systemJobs' && <ChplSystemJobs /> }
+            { active === 'testData' && <ChplTestData /> }
+            { active === 'testTools' && <ChplTestTools /> }
+            { active === 'ucdProcesses' && <ChplUcdProcesses /> }
+          </Box>
         </div>
       </Container>
     </AnalyticsContext.Provider>
