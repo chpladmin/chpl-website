@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext } from 'shared/contexts';
@@ -8,6 +9,7 @@ function CmsWrapper({ children }) {
   const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
   const [listings, setListings] = useState([]);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setListings($localStorage?.cmsWidget?.products ?? []);
@@ -23,6 +25,7 @@ function CmsWrapper({ children }) {
   }, [$rootScope, setListings]);
 
   const addListing = (listing) => {
+    queryClient.invalidateQueries(['certification-ids']);
     $rootScope.$broadcast('cms.addListing', {
       ...listing,
       product: listing.product.name ? listing.product.name : listing.product,
@@ -36,6 +39,7 @@ function CmsWrapper({ children }) {
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
   const removeListing = (listing) => {
+    queryClient.invalidateQueries(['certification-ids']);
     $rootScope.$broadcast('cms.removeListing', listing);
     $rootScope.$broadcast('ShowCmsWidget');
     $rootScope.$digest();

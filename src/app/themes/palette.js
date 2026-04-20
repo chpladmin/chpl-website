@@ -13,6 +13,8 @@ const palette = {
   primaryLight: '#c6d5e5',
   primary: '#156dac',
   primaryDark: '#122953',
+  progressErrorTrack: 'rgba(244,67,54,0.2)',
+  progressSuccessTrack: 'rgba(76,175,80,0.2)',
   secondaryLight: '#fff',
   secondary: '#f5f9fd',
   secondaryDark: '#c2c6ca',
