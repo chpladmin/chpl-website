@@ -65,7 +65,6 @@ const useStyles = makeStyles({
     zIndex: 1300,
     minWidth: '160px',
     padding: '8px 0',
-    cursor: 'none'
   },
   dropdownRight: {
     position: 'absolute',
@@ -77,11 +76,9 @@ const useStyles = makeStyles({
     zIndex: 1300,
     minWidth: '160px',
     padding: '8px 0',
-    cursor: 'none'
   },
   dropdownItem: {
     padding: '6px 16px',
-    cursor: 'pointer',
     whiteSpace: 'nowrap',
     '& span': {
       display: 'flex',

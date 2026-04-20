@@ -16,7 +16,6 @@ import { palette } from 'themes';
 const useStyles = makeStyles({
   menuItem: {
     padding: '8px 16px 8px 32px',
-    cursor: 'pointer',
     color: palette.primary,
     fontSize: '14px',
     '& a': {
