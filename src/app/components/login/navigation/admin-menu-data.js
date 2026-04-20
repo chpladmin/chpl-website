@@ -1,26 +1,29 @@
 const sectionConfigs = [{
+  key: 'activity',
+  title: 'Activity',
+  roles: ['chpl-admin', 'chpl-onc'],
+  items: [{
+    key: 'questionable-activity',
+    href: '#/reports/questionable-activity',
+    text: 'Questionable Activity',
+    router: { sref: 'reports.questionable-activity' },
+  }, {
+    key: 'activity-search',
+    href: '#/reports/activity',
+    text: 'Search',
+    router: { sref: 'reports.activity' },
+  }],
+}, {
   key: 'administration',
   title: 'Administration',
   roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff'],
   disablePadding: false,
   items: [{
-    key: 'upload',
+    key: 'change-requests',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    href: '#/administration/upload',
-    text: 'Upload',
-    router: { sref: 'administration.upload' },
-  }, {
-    key: 'confirm-listings',
-    roles: ['chpl-admin', 'chpl-onc-acb'],
-    href: '#/administration/confirm/listings',
-    text: 'Confirm Listings',
-    router: { sref: 'administration.confirm.listings' },
-  }, {
-    key: 'reports',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    href: '#/administration/reports',
-    text: 'Reports',
-    router: { sref: 'administration.reports' },
+    href: '#/administration/change-requests',
+    text: 'Change Requests',
+    router: { sref: 'administration.change-requests' },
   }, {
     key: 'cms',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-cms-staff'],
@@ -28,23 +31,40 @@ const sectionConfigs = [{
     text: 'CMS',
     router: { sref: 'administration.cms' },
   }, {
-    key: 'change-requests',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-    href: '#/administration/change-requests',
-    text: 'Change Requests',
-    router: { sref: 'administration.change-requests' },
-  }, {
     key: 'compliance-dashboard',
     roles: ['chpl-admin'],
     href: '#/compliance-dashboard',
     text: 'Compliance Dashboard',
     router: { sref: 'compliance-dashboard' },
   }, {
+    key: 'confirm-listings',
+    roles: ['chpl-admin', 'chpl-onc-acb'],
+    href: '#/administration/confirm/listings',
+    text: 'Confirm Listings',
+    router: { sref: 'administration.confirm.listings' },
+  }, {
+    key: 'ff4j',
+    roles: ['chpl-admin'],
+    href: '/rest/ff4j-console/home',
+    text: 'FF4j',
+  }, {
+    key: 'reports',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    href: '#/administration/reports',
+    text: 'Reports',
+    router: { sref: 'administration.reports' },
+  }, {
     key: 'system-maintenance',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     href: '#/administration/system-maintenance',
     text: 'System Maintenance',
     router: { sref: 'administration.system-maintenance' },
+  }, {
+    key: 'upload',
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
+    href: '#/administration/upload',
+    text: 'Upload',
+    router: { sref: 'administration.upload' },
   }, {
     key: 'url-checker',
     roles: ['chpl-admin', 'chpl-onc'],
@@ -57,11 +77,6 @@ const sectionConfigs = [{
     href: '#/users',
     text: 'User Management',
     router: { sref: 'users' },
-  }, {
-    key: 'ff4j',
-    roles: ['chpl-admin'],
-    href: '/rest/ff4j-console/home',
-    text: 'FF4j',
   }],
 }, {
   key: 'organizations',
@@ -83,21 +98,6 @@ const sectionConfigs = [{
     href: '#/organizations/onc-atls',
     text: 'ONC-ATLs',
     router: { sref: 'organizations.onc-atls' },
-  }],
-}, {
-  key: 'activity',
-  title: 'Activity',
-  roles: ['chpl-admin', 'chpl-onc'],
-  items: [{
-    key: 'activity-search',
-    href: '#/reports/activity',
-    text: 'Search',
-    router: { sref: 'reports.activity' },
-  }, {
-    key: 'questionable-activity',
-    href: '#/reports/questionable-activity',
-    text: 'Questionable Activity',
-    router: { sref: 'reports.questionable-activity' },
   }],
 }, {
   key: 'surveillance',

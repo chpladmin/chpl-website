@@ -116,7 +116,7 @@ const getResourceItems = ({ includeDeveloperGuide }) => {
       text: 'Contact Us',
       analyticsEvent: 'Go to Contact Us Page',
     },
-  ];
+  ].sort((a, b) => (a.text < b.text ? -1 : 1));
 };
 
 export {
