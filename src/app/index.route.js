@@ -1,6 +1,7 @@
 import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state';
 import chartsStates from './pages/charts/charts.state';
 import compareStates from './pages/compare/compare.state';
+import complianceDashboardStates from './pages/compliance-dashboard/compliance-dashboard.state';
 import listingStates from './pages/listing/listing.state';
 import organizationsStates from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
@@ -33,6 +34,7 @@ function otherwise($injector, $location) {
     .config(administrationStates)
     .config(chartsStates)
     .config(compareStates)
+    .config(complianceDashboardStates)
     .config(listingStates)
     .config(organizationsStates)
     .config(registrationStates)
