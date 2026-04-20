@@ -65,7 +65,7 @@ export default class NetworkService {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
   }
 
-  getUsers() {
+  getUsers() { // delete
     return this.apiGET('/users');
   }
 
