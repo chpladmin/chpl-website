@@ -19,17 +19,13 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     color: palette.primary,
     fontSize: '14px',
-    textDecoration: 'underline',
     '& a': {
       color: `${palette.primary}!important`,
-      textDecoration: 'underline!important',
     },
     '& .MuiSvgIcon-root': {
       color: palette.primary,
     },
-    '&:hover': {
-      backgroundColor: palette.secondary,
-    },
+
   },
 });
 
@@ -49,6 +45,7 @@ function ChplAdminMenuLinkItem({
         text={text}
         external={external}
         router={router}
+        hoverUnderline
       />
     </ListItem>
   );
