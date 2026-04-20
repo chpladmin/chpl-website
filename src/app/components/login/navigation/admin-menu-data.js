@@ -34,6 +34,12 @@ const sectionConfigs = [{
     text: 'Change Requests',
     router: { sref: 'administration.change-requests' },
   }, {
+    key: 'compliance-dashboard',
+    roles: ['chpl-admin'],
+    href: '#/compliance-dashboard',
+    text: 'Compliance Dashboard',
+    router: { sref: 'compliance-dashboard' },
+  }, {
     key: 'system-maintenance',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     href: '#/administration/system-maintenance',
