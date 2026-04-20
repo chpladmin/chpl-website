@@ -2,6 +2,7 @@ const ctxs = [];
 ctxs.push({ module: 'chpl.administration', ctx: require.context('./pages/administration/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.charts', ctx: require.context('./pages/charts/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.compare', ctx: require.context('./pages/compare/', true, /.*\.html$/) });
+ctxs.push({ module: 'chpl.compliance-dashboard', ctx: require.context('./pages/compliance-dashboard/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.components', ctx: require.context('./components/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.listing', ctx: require.context('./pages/listing/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.navigation', ctx: require.context('./navigation/', true, /.*\.html$/) });
