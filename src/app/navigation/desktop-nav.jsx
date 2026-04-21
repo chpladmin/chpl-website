@@ -7,10 +7,10 @@ import React, {
 import {
   Box,
   Button,
+  ClickAwayListener,
   Menu,
   makeStyles,
 } from '@material-ui/core';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { func } from 'prop-types';
 
@@ -86,7 +86,7 @@ const useStyles = makeStyles({
       gap: '8px',
     },
     '& a': {
-      color: `${palette.primary}!important`,
+      color: `${palette.primary} !important`,
     },
   },
 });
@@ -110,20 +110,10 @@ function ChplDesktopNav({
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
 
-/*
- * MUI Menu appends to document.body via a Portal and calculates its
- * position in two passes; in this Angular/React hybrid, Angular's $rootScope.$apply
- * can re-render the nav wrapper mid-calculation, causing the dropdown to appear in
- * the wrong position on first open after navigation. The Box approach keeps everything
- * in the component's own DOM subtree, making it immune to Angular's render cycle.
- * The useEffect also listens for HideCompareWidget/HideCmsWidget $rootScope events so
- * dropdowns close automatically when Angular routes away from the current page.
- */
   const classes = useStyles();
 
   useEffect(() => {
     const deregisterShowCmsWidget = $rootScope.$on('ShowCmsWidget', () => {
-      setCmsAnchorEl(null);
       setCompareAnchorEl(null);
       setResourcesOpen(false);
       setShortcutsOpen(false);
@@ -134,7 +124,6 @@ function ChplDesktopNav({
     });
     const deregisterShowCompareWidget = $rootScope.$on('ShowCompareWidget', () => {
       setCmsAnchorEl(null);
-      setCompareAnchorEl(null);
       setResourcesOpen(false);
       setShortcutsOpen(false);
       setCompareAnchorEl(compareButtonRef.current);

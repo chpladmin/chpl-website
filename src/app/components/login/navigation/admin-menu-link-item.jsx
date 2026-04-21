@@ -19,12 +19,11 @@ const useStyles = makeStyles({
     color: palette.primary,
     fontSize: '14px',
     '& a': {
-      color: `${palette.primary}!important`,
+      color: `${palette.primary} !important`,
     },
     '& .MuiSvgIcon-root': {
       color: palette.primary,
     },
-
   },
 });
 

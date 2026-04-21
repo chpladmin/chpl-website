@@ -19,7 +19,7 @@ import { palette } from 'themes';
 
 const useStyles = makeStyles({
   menuContainer: {
-    padding: '0px!important',
+    padding: 0,
     minWidth: '280px',
     width: '280px',
     color: palette.greyDark,
