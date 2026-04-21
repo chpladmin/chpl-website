@@ -196,7 +196,7 @@ function ChplCmsDisplay() {
 
   if (!listings || listings.length === 0) {
     return (
-      <>
+      <CardContent className={classes.cardcontentPadding}>
         <Typography className={classes.emptyStateTitle} variant="h3" gutterBottom>
           CMS Certification ID Creator
         </Typography>
@@ -239,7 +239,7 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-      </>
+      </CardContent>
     );
   }
 
@@ -319,26 +319,7 @@ function ChplCmsDisplay() {
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
-                  must meet 100% of the Base Criteria. For assistance, view the
-                  {' '}
-                  <ChplLink
-                    href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-                    text="CHPL Public User Guide"
-                    analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-                    external={false}
-                    inline
-                  />
-                  {' '}
-                  or
-                  {' '}
-                  <ChplLink
-                    href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
-                    text="Base Criteria"
-                    analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-                    external={false}
-                    inline
-                  />
-                  .
+                  must meet 100% of the Base Criteria.
                 </Typography>
               )}
           </>
