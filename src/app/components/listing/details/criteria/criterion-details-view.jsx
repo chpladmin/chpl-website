@@ -36,7 +36,7 @@ import {
   certificationResult,
   qmsStandard,
 } from 'shared/prop-types';
-import { getDisplayDateFormat } from 'services/date-util';
+import { getDisplayDateFormat, jsJoda } from 'services/date-util';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -76,13 +76,13 @@ function ChplCriterionDetailsView({
 }) {
   const { hasAnyRole, user } = useContext(UserContext);
   const { listing } = useContext(ListingContext);
-  const { data: allCodeSets } = useFetchCodeSets();
+  const { data: allCodeSets, isError, isLoading } = useFetchCodeSets();
   const classes = useStyles();
 
   const getCodeSetStatus = () => {
     if (!allCodeSets || !criterion.codeSets) return null;
     const criterionId = criterion.criterion.id;
-    const today = new Date().toISOString().split('T')[0];
+    const today = jsJoda.LocalDate.now(jsJoda.ZoneId.of('America/New_York')).toString();
     const listingCodeSetIds = new Set(criterion.codeSets.map((cs) => cs.codeSet.id));
     const applicableCodeSets = allCodeSets.filter(
       (cs) => cs.criteria?.some((c) => c.id === criterionId) && cs.requiredDay,
@@ -97,6 +97,73 @@ function ChplCriterionDetailsView({
       .filter((cs) => listingCodeSetIds.has(cs.id))
       .sort((a, b) => (a.requiredDay > b.requiredDay ? -1 : 1))[0];
     return { status: 'up-to-date', requiredDay: latestRequired?.requiredDay };
+  };
+
+  const getCodeSetDisplayValue = () => {
+    if (isLoading) {
+      return <Typography variant="body2">Loading...</Typography>;
+    }
+    if (isError) {
+      return null;
+    }
+    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
+      return (
+        <>
+          <List>
+            { criterion.codeSets.map((cs) => (
+              <ListItem key={cs.id}>
+                { cs.codeSet.name }
+              </ListItem>
+            ))}
+          </List>
+          { criterion.codeSets?.length === 0 && 'None' }
+        </>
+      );
+    }
+    const codeSetStatus = getCodeSetStatus();
+    if (!codeSetStatus) return null;
+    return (
+      <Box display="flex" alignItems="center" gridGap={8}>
+        { codeSetStatus.status === 'up-to-date' && (
+          <>
+            <Chip
+              icon={<RadioButtonCheckedIcon />}
+              label="Up-to-date"
+              className={classes.upToDate}
+            />
+            <Typography variant="body2">
+              This listing meets the current code set requirement.
+              { codeSetStatus.requiredDay && (
+                <>
+                  {' The required date for this criteria is '}
+                  { getDisplayDateFormat(codeSetStatus.requiredDay) }
+                  {'.'}
+                </>
+              )}
+            </Typography>
+          </>
+        )}
+        { codeSetStatus.status === 'not-up-to-date' && (
+          <>
+            <Chip
+              icon={<RadioButtonUncheckedIcon />}
+              label="Not up-to-date"
+              className={classes.notUpToDate}
+            />
+            <Typography variant="body2">
+              This listing&apos;s code set does not meet the requirement that took effect
+              { codeSetStatus.requiredDay && (
+                <>
+                  {' '}
+                  { getDisplayDateFormat(codeSetStatus.requiredDay) }
+                </>
+              )}
+              . Contact the developer for more information.
+            </Typography>
+          </>
+        )}
+      </Box>
+    );
   };
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -182,64 +249,7 @@ function ChplCriterionDetailsView({
                       Code Sets
                     </TableCell>
                     <TableCell>
-                      { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (
-                        <>
-                          <List>
-                            { criterion.codeSets.map((cs) => (
-                              <ListItem key={cs.id}>
-                                { cs.codeSet.name }
-                              </ListItem>
-                            ))}
-                          </List>
-                          { criterion.codeSets?.length === 0 && 'None' }
-                        </>
-                      )}
-                      { !hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && (() => {
-                        const codeSetStatus = getCodeSetStatus();
-                        if (!codeSetStatus) return null;
-                        return (
-                          <Box display="flex" alignItems="center" gridGap={8}>
-                            { codeSetStatus.status === 'up-to-date' && (
-                              <>
-                                <Chip
-                                  icon={<RadioButtonCheckedIcon />}
-                                  label="Up-to-date"
-                                  className={classes.upToDate}
-                                />
-                                <Typography variant="body2">
-                                  This listing meets the current code set requirement.
-                                  { codeSetStatus.requiredDay && (
-                                    <>
-                                      {' The required date for this criteria is '}
-                                      { getDisplayDateFormat(codeSetStatus.requiredDay) }
-                                      {'.'}
-                                    </>
-                                  )}
-                                </Typography>
-                              </>
-                            )}
-                            { codeSetStatus.status === 'not-up-to-date' && (
-                              <>
-                                <Chip
-                                  icon={<RadioButtonUncheckedIcon />}
-                                  label="Not up-to-date"
-                                  className={classes.notUpToDate}
-                                />
-                                <Typography variant="body2">
-                                  {'This listing\u2019s code set does not meet the requirement that took effect'}
-                                  { codeSetStatus.requiredDay && (
-                                    <>
-                                      {' '}
-                                      { getDisplayDateFormat(codeSetStatus.requiredDay) }
-                                    </>
-                                  )}
-                                  {'. Contact the developer for more information.'}
-                                </Typography>
-                              </>
-                            )}
-                          </Box>
-                        );
-                      })()}
+                      { getCodeSetDisplayValue() }
                     </TableCell>
                   </TableRow>
                 )}
