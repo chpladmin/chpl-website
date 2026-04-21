@@ -30,7 +30,7 @@ function CmsWrapper({ children }) {
     queryClient.invalidateQueries(['certification-ids']);
     $rootScope.$broadcast('cms.addListing', {
       ...listing,
-      name: listing.product.name ? listing.product.name : listing.product,
+      name: listing.product.name,
     });
     $rootScope.$broadcast('ShowCmsWidget');
     $rootScope.$digest();

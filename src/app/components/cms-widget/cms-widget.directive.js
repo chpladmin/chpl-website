@@ -33,11 +33,11 @@
       });
       $scope.$on('$destroy', removeAll);
       var addListing = $scope.$on('cms.addListing', (evt, listing) => {
-        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
+        vm.toggleProduct(listing.id, listing.product.name, listing.chplProductNumber);
       });
       $scope.$on('$destroy', addListing);
       var removeListing = $scope.$on('cms.removeListing', (evt, listing) => {
-        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
+        vm.toggleProduct(listing.id, listing.product.name, listing.chplProductNumber);
       });
       $scope.$on('$destroy', removeListing);
     };
