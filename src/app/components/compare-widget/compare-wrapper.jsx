@@ -14,8 +14,8 @@ function CompareWrapper({ children }) {
   }, []);
 
   useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('compare.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
-    const deregisterRemoveWatcher = $rootScope.$on('compare.removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
+    const deregisterAddWatcher = $rootScope.$on('compare.addListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
+    const deregisterRemoveWatcher = $rootScope.$on('compare.removeListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
     return () => {
       deregisterAddWatcher();
       deregisterRemoveWatcher();

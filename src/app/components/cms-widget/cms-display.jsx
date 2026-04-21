@@ -358,7 +358,7 @@ function ChplCmsDisplay() {
       <Divider />
       <Typography className={classes.sectionLabelFontWeight800}>Product Selected</Typography>
       <div className={classes.chipContainer}>
-        { [...listings].sort((a, b) => (a.name < b.name ? -1 : 1))
+        { [...listings].sort((a, b) => (a.product < b.product ? -1 : 1))
           .map((listing) => (
             <Chip
               className={classes.productChips}
