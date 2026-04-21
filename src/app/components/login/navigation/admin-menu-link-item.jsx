@@ -16,19 +16,13 @@ import { palette } from 'themes';
 const useStyles = makeStyles({
   menuItem: {
     padding: '8px 16px 8px 32px',
-    cursor: 'pointer',
     color: palette.primary,
     fontSize: '14px',
-    textDecoration: 'underline',
     '& a': {
-      color: `${palette.primary}!important`,
-      textDecoration: 'underline!important',
+      color: `${palette.primary} !important`,
     },
     '& .MuiSvgIcon-root': {
       color: palette.primary,
-    },
-    '&:hover': {
-      backgroundColor: palette.secondary,
     },
   },
 });
@@ -49,6 +43,7 @@ function ChplAdminMenuLinkItem({
         text={text}
         external={external}
         router={router}
+        indicateOnHover
       />
     </ListItem>
   );

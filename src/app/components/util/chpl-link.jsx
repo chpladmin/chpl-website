@@ -16,6 +16,12 @@ const useStyles = makeStyles({
     gap: '4px',
     justifyContent: 'space-between',
   },
+  indicateOnHover: {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   disclaimerIcon: {
     marginTop: '4px',
   },
@@ -32,6 +38,7 @@ function ChplLink({
   analytics = {},
   external = true,
   href: initialHref,
+  indicateOnHover = false,
   inline = false,
   router = {},
   text: initialText = '',
@@ -65,7 +72,7 @@ function ChplLink({
 
   if (inline && !external) {
     return (
-      <a href={href} onClick={track}>
+      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
         {text}
       </a>
     );
@@ -73,7 +80,7 @@ function ChplLink({
 
   return (
     <span className={classes.chplLink}>
-      <a href={href} onClick={track}>
+      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
         {text}
       </a>
       { icon }
@@ -95,6 +102,7 @@ ChplLink.propTypes = {
   href: string.isRequired,
   analytics: analyticsConfig,
   external: bool,
+  indicateOnHover: bool,
   inline: bool,
   router: routerConfig,
   icon: node,

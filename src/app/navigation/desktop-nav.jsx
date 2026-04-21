@@ -7,10 +7,8 @@ import React, {
 import {
   Box,
   Button,
-  List,
-  ListItem,
+  ClickAwayListener,
   Menu,
-  MenuItem,
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
@@ -41,7 +39,6 @@ const useStyles = makeStyles({
   whiteButton: {
     color: '#fff!important',
     textTransform: 'capitalize!important',
-    fontSize: '1rem',
     '&:hover': {
       backgroundColor: `${palette.primaryDark}!important`,
       color: '#fff!important',
@@ -54,16 +51,42 @@ const useStyles = makeStyles({
   },
   menuPaper: {
     marginTop: '8px',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: '-8px',
-      left: '20px',
-      width: 0,
-      height: 0,
-      borderLeft: '8px solid transparent',
-      borderRight: '8px solid transparent',
-      borderBottom: '8px solid white',
+  },
+  dropdownWrapper: {
+    position: 'relative',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: 'calc(100% + 8px)',
+    left: 0,
+    backgroundColor: palette.white,
+    borderRadius: '4px',
+    boxShadow: '0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)',
+    zIndex: 1300,
+    minWidth: '160px',
+    padding: '8px 0',
+  },
+  dropdownRight: {
+    position: 'absolute',
+    top: 'calc(100% + 8px)',
+    right: 0,
+    backgroundColor: palette.white,
+    borderRadius: '4px',
+    boxShadow: '0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)',
+    zIndex: 1300,
+    minWidth: '160px',
+    padding: '8px 0',
+  },
+  dropdownItem: {
+    padding: '6px 16px',
+    whiteSpace: 'nowrap',
+    '& span': {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+    },
+    '& a': {
+      color: `${palette.primary} !important`,
     },
   },
 });
@@ -81,31 +104,38 @@ function ChplDesktopNav({
   const shortcutsButtonRef = useRef(null);
   const [cmsAnchorEl, setCmsAnchorEl] = useState(null);
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
-  const [resourcesAnchorEl, setResourcesAnchorEl] = useState(null);
-  const [shortcutsAnchorEl, setShortcutsAnchorEl] = useState(null);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const resourceItems = getResourceItems({
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
+
   const classes = useStyles();
 
   useEffect(() => {
     const deregisterShowCmsWidget = $rootScope.$on('ShowCmsWidget', () => {
-      setCmsAnchorEl(null);
       setCompareAnchorEl(null);
-      setResourcesAnchorEl(null);
-      setShortcutsAnchorEl(null);
+      setResourcesOpen(false);
+      setShortcutsOpen(false);
       setCmsAnchorEl(cmsButtonRef.current);
+    });
+    const deregisterHideCmsWidget = $rootScope.$on('HideCmsWidget', () => {
+      setCmsAnchorEl(null);
     });
     const deregisterShowCompareWidget = $rootScope.$on('ShowCompareWidget', () => {
       setCmsAnchorEl(null);
-      setCompareAnchorEl(null);
-      setResourcesAnchorEl(null);
-      setShortcutsAnchorEl(null);
+      setResourcesOpen(false);
+      setShortcutsOpen(false);
       setCompareAnchorEl(compareButtonRef.current);
+    });
+    const deregisterHideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
+      setCompareAnchorEl(null);
     });
     return () => {
       deregisterShowCmsWidget();
+      deregisterHideCmsWidget();
       deregisterShowCompareWidget();
+      deregisterHideCompareWidget();
     };
   }, [$rootScope]);
 
@@ -117,20 +147,21 @@ function ChplDesktopNav({
     setCompareAnchorEl(compareAnchorEl ? null : compareButtonRef.current);
   };
 
+
   const toggleResources = () => {
-    setResourcesAnchorEl(resourcesAnchorEl ? null : resourcesButtonRef.current);
+    setResourcesOpen((prev) => !prev);
   };
 
   const closeResources = () => {
-    setResourcesAnchorEl(null);
+    setResourcesOpen(false);
   };
 
   const toggleShortcuts = () => {
-    setShortcutsAnchorEl(shortcutsAnchorEl ? null : shortcutsButtonRef.current);
+    setShortcutsOpen((prev) => !prev);
   };
 
   const closeShortcuts = () => {
-    setShortcutsAnchorEl(null);
+    setShortcutsOpen(false);
   };
 
   const getItemAnalytics = (item) => ({
@@ -214,79 +245,73 @@ function ChplDesktopNav({
       >
         <ChplCompareDisplay />
       </Menu>
-      <Button
-        ref={resourcesButtonRef}
-        onClick={toggleResources}
-        aria-expanded={!!resourcesAnchorEl}
-        className={classes.whiteButton}
-      >
-        CHPL Resources
-      </Button>
-      <Menu
-        anchorEl={resourcesAnchorEl}
-        open={!!resourcesAnchorEl}
-        onClose={closeResources}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        disableScrollLock
-        PaperProps={{
-          className: classes.menuPaper,
-        }}
-      >
-        <MenuItem>
-          <List>
-            { resourceItems.map((item) => (
-              <ListItem key={item.key} divider onClick={closeResources}>
-                <ChplLink
-                  href={item.href}
-                  text={item.text}
-                  analytics={getItemAnalytics(item)}
-                  external={false}
-                  router={item.router}
-                  icon={getDownloadIcon(item)}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </MenuItem>
-      </Menu>
-      <Button
-        ref={shortcutsButtonRef}
-        onClick={toggleShortcuts}
-        aria-expanded={!!shortcutsAnchorEl}
-        className={classes.whiteButton}
-      >
-        Shortcuts
-      </Button>
-      <Menu
-        anchorEl={shortcutsAnchorEl}
-        open={!!shortcutsAnchorEl}
-        onClose={closeShortcuts}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        disableScrollLock
-        PaperProps={{
-          className: classes.menuPaper,
-        }}
-      >
-        <MenuItem>
-          <List>
-            { shortcutItems.map((item) => (
-              <ListItem key={item.key} divider onClick={closeShortcuts}>
-                <ChplLink
-                  href={item.href}
-                  text={item.text}
-                  analytics={getItemAnalytics(item)}
-                  external={false}
-                  router={item.router}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </MenuItem>
-      </Menu>
+      <ClickAwayListener onClickAway={closeResources}>
+        <Box className={classes.dropdownWrapper}>
+          <Button
+            ref={resourcesButtonRef}
+            onClick={toggleResources}
+            aria-expanded={resourcesOpen}
+            className={classes.whiteButton}
+          >
+            CHPL Resources
+          </Button>
+          { resourcesOpen && (
+            <Box className={classes.dropdown} role="menu">
+              { resourceItems.map((item) => (
+                <Box
+                  key={item.key}
+                  className={classes.dropdownItem}
+                  onClick={closeResources}
+                  role="menuitem"
+                >
+                  <ChplLink
+                    href={item.href}
+                    text={item.text}
+                    analytics={getItemAnalytics(item)}
+                    external={false}
+                    router={item.router}
+                    icon={getDownloadIcon(item)}
+                    indicateOnHover
+                  />
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
+      </ClickAwayListener>
+      <ClickAwayListener onClickAway={closeShortcuts}>
+        <Box className={classes.dropdownWrapper}>
+          <Button
+            ref={shortcutsButtonRef}
+            onClick={toggleShortcuts}
+            aria-expanded={shortcutsOpen}
+            className={classes.whiteButton}
+          >
+            Shortcuts
+          </Button>
+          { shortcutsOpen && (
+            <Box className={classes.dropdownRight} role="menu">
+              { shortcutItems.map((item) => (
+                <Box
+                  key={item.key}
+                  className={classes.dropdownItem}
+                  onClick={closeShortcuts}
+                  role="menuitem"
+                >
+                  <ChplLink
+                    href={item.href}
+                    text={item.text}
+                    analytics={getItemAnalytics(item)}
+                    external={false}
+                    router={item.router}
+                    indicateOnHover
+                  />
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
+      </ClickAwayListener>
     </Box>
   );
 }

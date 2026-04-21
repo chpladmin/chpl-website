@@ -36,7 +36,6 @@ const useStyles = makeStyles({
   whiteButton: {
     color: '#fff !important',
     textTransform: 'capitalize !important',
-    fontSize: '1rem',
     '&:hover': {
       backgroundColor: `${palette.primaryDark} !important`,
       color: '#fff !important',
