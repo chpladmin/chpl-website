@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import {
   Box,
   Card,
-  Chip,
   IconButton,
   List,
   ListItem,
@@ -17,13 +16,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { arrayOf } from 'prop-types';
 
+import ChplCodeSetIndicator from './code-set-indicator/code-set-indicator';
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
-import { useFetchCodeSets } from 'api/standards';
 import {
   ChplEllipsis,
   ChplLink,
@@ -36,24 +33,9 @@ import {
   certificationResult,
   qmsStandard,
 } from 'shared/prop-types';
-import { getDisplayDateFormat, jsJoda } from 'services/date-util';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
-  upToDate: {
-    backgroundColor: palette.active,
-    color: palette.white,
-    '& .MuiChip-icon': {
-      color: palette.white,
-    },
-  },
-  notUpToDate: {
-    backgroundColor: palette.error,
-    color: palette.white,
-    '& .MuiChip-icon': {
-      color: palette.white,
-    },
-  },
   infoIcon: {
     float: 'right',
   },
@@ -74,97 +56,9 @@ function ChplCriterionDetailsView({
   qmsStandards,
   accessibilityStandards,
 }) {
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { listing } = useContext(ListingContext);
-  const { data: allCodeSets, isError, isLoading } = useFetchCodeSets();
   const classes = useStyles();
-
-  const getCodeSetStatus = () => {
-    if (!allCodeSets || !criterion.codeSets) return null;
-    const criterionId = criterion.criterion.id;
-    const today = jsJoda.LocalDate.now(jsJoda.ZoneId.of('America/New_York')).toString();
-    const listingCodeSetIds = new Set(criterion.codeSets.map((cs) => cs.codeSet.id));
-    const applicableCodeSets = allCodeSets.filter(
-      (cs) => cs.criteria?.some((c) => c.id === criterionId) && cs.requiredDay,
-    );
-    const missingRequired = applicableCodeSets.find(
-      (cs) => cs.requiredDay <= today && !listingCodeSetIds.has(cs.id),
-    );
-    if (missingRequired) {
-      return { status: 'not-up-to-date', requiredDay: missingRequired.requiredDay };
-    }
-    const latestRequired = applicableCodeSets
-      .filter((cs) => listingCodeSetIds.has(cs.id))
-      .sort((a, b) => (a.requiredDay > b.requiredDay ? -1 : 1))[0];
-    return { status: 'up-to-date', requiredDay: latestRequired?.requiredDay };
-  };
-
-  const getCodeSetDisplayValue = () => {
-    if (isLoading) {
-      return <Typography variant="body2">Loading...</Typography>;
-    }
-    if (isError) {
-      return null;
-    }
-    if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      return (
-        <>
-          <List>
-            { criterion.codeSets.map((cs) => (
-              <ListItem key={cs.id}>
-                { cs.codeSet.name }
-              </ListItem>
-            ))}
-          </List>
-          { criterion.codeSets?.length === 0 && 'None' }
-        </>
-      );
-    }
-    const codeSetStatus = getCodeSetStatus();
-    if (!codeSetStatus) return null;
-    return (
-      <Box display="flex" alignItems="center" gridGap={8}>
-        { codeSetStatus.status === 'up-to-date' && (
-          <>
-            <Chip
-              icon={<RadioButtonCheckedIcon />}
-              label="Up-to-date"
-              className={classes.upToDate}
-            />
-            <Typography variant="body2">
-              This listing meets the current code set requirement.
-              { codeSetStatus.requiredDay && (
-                <>
-                  {' The required date for this criteria is '}
-                  { getDisplayDateFormat(codeSetStatus.requiredDay) }
-                  {'.'}
-                </>
-              )}
-            </Typography>
-          </>
-        )}
-        { codeSetStatus.status === 'not-up-to-date' && (
-          <>
-            <Chip
-              icon={<RadioButtonUncheckedIcon />}
-              label="Not up-to-date"
-              className={classes.notUpToDate}
-            />
-            <Typography variant="body2">
-              This listing&apos;s code set does not meet the requirement that took effect
-              { codeSetStatus.requiredDay && (
-                <>
-                  {' '}
-                  { getDisplayDateFormat(codeSetStatus.requiredDay) }
-                </>
-              )}
-              . Contact the developer for more information.
-            </Typography>
-          </>
-        )}
-      </Box>
-    );
-  };
 
   if (criterion.criterion.certificationEdition === '2011') {
     return null;
@@ -249,7 +143,9 @@ function ChplCriterionDetailsView({
                       Code Sets
                     </TableCell>
                     <TableCell>
-                      { getCodeSetDisplayValue() }
+                      <ChplCodeSetIndicator
+                        criterion={criterion}
+                      />
                     </TableCell>
                   </TableRow>
                 )}
