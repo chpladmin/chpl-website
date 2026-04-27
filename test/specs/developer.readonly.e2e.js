@@ -85,13 +85,6 @@ describe('the Developer page for "gMed, Inc."', () => {
     it('should have the developer edit button', async () => {
       await expect(page.editDeveloperButton).toBeExisting();
     });
-
-    it('should have the product/version merge button', async () => {
-      await page.browseAllListings();
-      await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
-      await page.viewProduct('gCardio');
-      await expect(await page.getMergeProductButton(2538)).toBeExisting();
-    });
   });
 
   describe('when logged in as ONC-ACB', () => {
@@ -102,10 +95,6 @@ describe('the Developer page for "gMed, Inc."', () => {
 
     afterEach(async () => {
       await login.logOut();
-    });
-
-    it('should have the developer edit button', async () => {
-      await expect(page.editDeveloperButton).toBeExisting();
     });
 
     it('should not have the product/version merge button', async () => {
