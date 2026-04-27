@@ -61,7 +61,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
             text: d.name,
             router: { sref: 'organizations.developers.developer', options: { id: d.id } },
           })),
-      }]);
+      }].sort((a, b) => (a.title < b.title ? -1 : 1)));
   }, []);
 
   const toggleSection = (section) => {

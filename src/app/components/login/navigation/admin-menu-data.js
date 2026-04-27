@@ -120,6 +120,15 @@ const sectionConfigs = [{
     text: 'Reporting',
     router: { sref: 'surveillance.reporting' },
   }],
+}, {
+  key: 'insights',
+  title: 'Insights',
+  roles: ['chpl-developer'],
+  items: [{
+    key: 'insights',
+    href: 'https://www.healthit.gov/insights',
+    text: 'Insights',
+  }],
 }];
 
 export default sectionConfigs;
