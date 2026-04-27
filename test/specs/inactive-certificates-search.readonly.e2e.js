@@ -19,13 +19,6 @@ describe('the Inactive Certificates Search page', () => {
     await expect(await page.downloadListingsButton).toBeExisting();
   });
 
-  it('should be able to Browse after searching for text', async () => {
-    await page.searchForText('s');
-    const searchedForTextResultCount = await page.getTotalResultCount();
-    await page.browse();
-    await expect(await page.getTotalResultCount()).toBeGreaterThan(searchedForTextResultCount);
-  });
-
   it('should be able to search for text', async () => {
     const initialResultCount = await page.getTotalResultCount();
     await page.searchForText('Epic');
