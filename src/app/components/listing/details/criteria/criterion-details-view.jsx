@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Button,
   Card,
   IconButton,
   List,
@@ -27,7 +26,7 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
-import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
   certificationResult,
@@ -56,9 +55,8 @@ function ChplCriterionDetailsView({
   qmsStandards,
   accessibilityStandards,
 }) {
-  const { hasAnyRole, hasAuthorityOn, user } = useContext(UserContext);
-  const { listing, setSbulChange } = useContext(ListingContext);
-  const { sbulChangeRequestIsOn } = useContext(FlagContext);
+  const { hasAnyRole, user } = useContext(UserContext);
+  const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -71,10 +69,6 @@ function ChplCriterionDetailsView({
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
             || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
-
-  const submitSbulChange = () => {
-    setSbulChange(true);
-  };
 
   return (
     <>
@@ -698,14 +692,6 @@ function ChplCriterionDetailsView({
                         </IconButton>
                       </ChplTooltip>
                       Service Base URL List
-                      { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: listing.developer.id }) && sbulChangeRequestIsOn
-                        && (
-                          <Button
-                            onClick={() => submitSbulChange()}
-                          >
-                            Submit change
-                          </Button>
-                        )}
                     </TableCell>
                     <TableCell>
                       { criterion.serviceBaseUrlList
