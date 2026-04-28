@@ -73,7 +73,6 @@ function ChplComplianceDashboard() {
     { title: 'Service Base URL', height: 365 },
     { title: 'Direct Review', height: 365 },
     { title: 'Surveillance Activities', height: 365 },
-    { title: 'Important Dates', height: 450 },
   ];
 
   const rightColumnReports = [
