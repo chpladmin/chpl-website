@@ -12,7 +12,6 @@ import ChplDemographicsProgress from './demographics-progress';
 import ChplDemographicsWizardSection1 from './demographics-wizard-section-1';
 import ChplDemographicsWizardSection2 from './demographics-wizard-section-2';
 import ChplDemographicsWizardSection3 from './demographics-wizard-section-3';
-import ChplDemographicsWizardSection4 from './demographics-wizard-section-4';
 
 import { ChplActionBar } from 'components/action-bar';
 
@@ -23,9 +22,9 @@ function ChplDemographicsWizard({
   errors = [],
 }) {
 
-  const canNext = () => stage === 0 || (stage === 1 && selectedListings.size > 0);
+  const canNext = () => stage === 0;
 
-  const canPrevious = () => stage > 0 && stage < 3;
+  const canPrevious = () => stage > 0 && stage < 2;
 
   const handleActionBarDispatch = () => {
     dispatch('close');
@@ -33,12 +32,8 @@ function ChplDemographicsWizard({
 
   const handleProgressDispatch = (action) => dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
 
-  const handleUrlDispatch = (url) => {
-    const payload = {
-      details: {
-        url,
-      },
-    };
+  const handleEditDispatch = (payload) => {
+    console.log({ payload });
     dispatch('submit', payload);
   };
 
@@ -57,24 +52,19 @@ function ChplDemographicsWizard({
       { stage === 1
         && (
           <ChplDemographicsWizardSection2
+            isSubmitting={isSubmitting}
+            dispatch={handleEditDispatch}
           />
         )}
       { stage === 2
         && (
-          <ChplDemographicsWizardSection3
-            isSubmitting={isSubmitting}
-            dispatch={handleUrlDispatch}
-          />
-        )}
-      { stage === 3
-        && (
-          <ChplDemographicsWizardSection4 />
+          <ChplDemographicsWizardSection3 />
         )}
       <ChplActionBar
         dispatch={handleActionBarDispatch}
         errors={errors}
-        canCancel={stage !== 3}
-        canClose={stage === 3}
+        canCancel={stage !== 2}
+        canClose={stage === 2}
         canSave={false}
         isProcessing={isSubmitting}
       />

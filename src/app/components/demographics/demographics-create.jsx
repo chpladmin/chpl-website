@@ -50,7 +50,7 @@ function ChplDemographicsCreate({ dispatch }) {
         console.log({ payload });
         mutate(payload, {
           onSuccess: () => {
-            setStage(3);
+            setStage(2);
           },
           onError: (error) => {
             if (error.response.data.error?.startsWith('Email could not be sent to')) {

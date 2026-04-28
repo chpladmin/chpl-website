@@ -4,7 +4,7 @@ import { bool, func, number } from 'prop-types';
 import { ChplProgress } from 'components/util';
 
 function ChplDemographicsProgress(props) {
-  const steps = ['Introduction', 'Listings', 'Service Base URL List', 'Confirmation'];
+  const steps = ['Introduction', 'Demographics', 'Confirmation'];
 
   return (
     <ChplProgress

@@ -1,185 +1,114 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
-import Moment from 'react-moment';
-import {
-  bool,
-  func,
-} from 'prop-types';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import StarsIcon from '@material-ui/icons/Stars';
 
-import ChplUrlChecker from 'components/url-checker/url-checker';
-import UrlCheckerContext from 'components/url-checker/url-checker-context';
-import { eventTrack } from 'services/analytics.service';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
+import { DeveloperContext } from 'shared/contexts';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  demographicsContainer: {
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 400px)',
+  },
+  cardContent: {
     display: 'grid',
     rowGap: '16px',
-    columnGap: '16px',
-    justifyContent: 'stretch',
-    gridTemplateColumns: 'repeat(6, 1fr)',
+    padding: '24px',
   },
-  demographicsSectionContainer: {
-    marginBottom: '16px',
+  confirmationGraphic: {
+    position: 'relative',
+    width: '124px',
+    height: '124px',
+    borderRadius: '50%',
+    margin: '0 auto',
+    background: `linear-gradient(145deg, ${palette.secondary}, ${palette.primaryLight})`,
+    border: `1px solid ${palette.secondaryDark}`,
+    boxShadow: '0 8px 18px rgb(21 109 172 / 18%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 500px)',
+  confirmationGraphicCore: {
+    width: '86px',
+    height: '86px',
+    borderRadius: '50%',
+    backgroundColor: palette.white,
+    border: `2px solid ${palette.primaryLight}`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  nameContainer: {
-    gridColumn: '1 / 3',
+  confirmationGraphicIcon: {
+    color: palette.primary,
+    fontSize: '46px',
   },
-  nameOnlyContainer: {
-    gridColumn: '1 / 4',
+  sparkleBase: {
+    position: 'absolute',
+    color: palette.active,
+    fontSize: '18px',
   },
-  titleContainer: {
-    gridColumn: '3 / 5',
+  sparkleTopLeft: {
+    top: '10px',
+    left: '6px',
+    transform: 'rotate(-15deg)',
   },
-  developerContainer: {
-    gridColumn: '5 / 7',
+  sparkleTopRight: {
+    top: '40px',
+    right: '-8px',
+    transform: 'rotate(20deg)',
   },
-  developerOnlyContainer: {
-    gridColumn: '4 / 7',
+  sparkleBottom: {
+    bottom: '-5px',
+    right: '47px',
+    transform: 'rotate(4deg)',
   },
-  urlContainer: {
-    gridColumn: '1 / 6',
-  },
-  dateContainer: {
-    gridColumn: '6 / 7',
+  congratulationsText: {
+    textAlign: 'center',
+    color: palette.primaryDark,
+    fontWeight: 600,
   },
 });
 
-function ChplDemographicsWizardSection3({ isSubmitting = false, dispatch }) {
+function ChplDemographicsWizardSection3() {
   const { developer } = useContext(DeveloperContext);
-  const { analytics } = useAnalyticsContext();
-  const { user } = useContext(UserContext);
-  const { url, setUrl } = useContext(UrlCheckerContext);
   const classes = useStyles();
 
-  const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);
-
-  const handleDispatch = ({ action, url: submittedUrl }) => {
-    switch (action) {
-      case 'complete':
-        setUrl(submittedUrl);
-        break;
-      case 'update':
-        setUrl('');
-        break;
-        // no default
-    }
-  };
-
-  const handleSubmit = () => {
-    eventTrack({
-      ...analytics,
-      event: 'Submit Service Base URL List Change Request',
-    });
-    dispatch(url);
-  };
-
   return (
-    <div className={classes.fixFooterSpacing}>
-      <Container maxWidth="md">
-        <Box className={classes.demographicsSectionContainer}>
-          <Typography gutterBottom component="h2" variant="h3">
-            Section 3 &mdash; Service Base URL List entry
+    <Container className={classes.fixFooterSpacing} maxWidth="md">
+      <Typography gutterBottom variant="h2" className={classes.fullWidthGridRow}>
+        Section 3 &mdash; Confirmation
+      </Typography>
+      <Card>
+        <CardContent className={classes.cardContent}>
+          <Box className={classes.confirmationGraphic} aria-hidden>
+            <StarsIcon className={`${classes.sparkleBase} ${classes.sparkleTopLeft}`} />
+            <StarsIcon className={`${classes.sparkleBase} ${classes.sparkleTopRight}`} />
+            <StarsIcon className={`${classes.sparkleBase} ${classes.sparkleBottom}`} />
+            <Box className={classes.confirmationGraphicCore}>
+              <CheckCircleIcon className={classes.confirmationGraphicIcon} />
+            </Box>
+          </Box>
+          <Typography variant="body1" align="center">
+            Thank you for submitting a change to your demographics information. An email confirmation has been sent to the registered CHPL users associated with
+            {' '}
+            {developer.name}
+            . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body.
           </Typography>
-        </Box>
-      </Container>
-      <Container maxWidth="md" className={classes.demographicsContainer}>
-        <Card className={classes.fullWidthGridRow}>
-          <CardContent>
-            <Typography variant="body1">
-              Please confirm the accessibility of your updated URL by entering the new URL and clicking Validate. If you have any issues with the validation of your URL, please reach out to your ONC-ACB for further assistance.
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
-          <CardContent>
-            <div>
-              <Typography gutterBottom variant="subtitle1">
-                Name:
-              </Typography>
-              <Typography variant="body1">{user.fullName}</Typography>
-            </div>
-          </CardContent>
-        </Card>
-        { user.title && (
-          <Card className={classes.titleContainer}>
-            <CardContent>
-              <div>
-                <Typography gutterBottom variant="subtitle1">
-                  Title:
-                </Typography>
-                <Typography variant="body1">{user.title}</Typography>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
-          <CardContent>
-            <div>
-              <Typography gutterBottom variant="subtitle1">
-                Health IT Developer:
-              </Typography>
-              <Typography variant="body1">{developer.name}</Typography>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className={classes.urlContainer}>
-          <CardContent>
-            <ChplUrlChecker
-              dispatch={handleDispatch}
-            />
-          </CardContent>
-        </Card>
-        <Card className={classes.dateContainer}>
-          <CardContent>
-            <Typography gutterBottom variant="subtitle1">
-              Date:
-            </Typography>
-            <Typography variant="body1">
-              <Moment
-                date={Date.now()}
-                format="DD MMM yyyy"
-              />
-            </Typography>
-          </CardContent>
-        </Card>
-        <div className={classes.fullWidthGridRow}>
-          <Button
-            fullWidth
-            id="submit-cr"
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            disabled={isSubmitDisabled()}
-          >
-            Submit Service Base URL List Change Request
-            <BorderColorIcon
-              className={classes.iconSpacing}
-            />
-          </Button>
-        </div>
-      </Container>
-    </div>
+        </CardContent>
+      </Card>
+    </Container>
   );
 }
 
 export default ChplDemographicsWizardSection3;
 
 ChplDemographicsWizardSection3.propTypes = {
-  isSubmitting: bool,
-  dispatch: func.isRequired,
 };

@@ -1,127 +1,177 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardContent,
-  Checkbox,
   Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import WarningIcon from '@material-ui/icons/Warning';
-import { array, func, object } from 'prop-types';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import Moment from 'react-moment';
+import { bool, func } from 'prop-types';
 
-import { palette } from 'themes';
+import ChplUrlChecker from 'components/url-checker/url-checker';
+import UrlCheckerContext from 'components/url-checker/url-checker-context';
+import { eventTrack } from 'services/analytics.service';
+import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 450px)',
-  },
-  nonCaps: {
-    textTransform: 'none',
-  },
-  questionParagraph: {
-    marginBottom: '8px',
-  },
-  radioGroup: {
-    textTransform: 'none',
-  },
-  warningBox: {
-    padding: '16px',
-    backgroundColor: '#fdfde7',
-    border: '1px solid #afafaf',
-    borderRadius: '4px',
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: '4px',
-    marginBottom: '16px',
-    gridGap: '16px',
-    alignItems: 'center',
-  },
-  emptyStateContainer: {
+  ...utilStyles,
+  demographicsContainer: {
     display: 'grid',
-    rowGap: '12px',
-    justifyItems: 'center',
-    padding: '8px 0',
+    rowGap: '16px',
+    columnGap: '16px',
+    justifyContent: 'stretch',
+    gridTemplateColumns: 'repeat(6, 1fr)',
   },
-  emptyStateGraphic: {
-    position: 'relative',
-    width: '124px',
-    height: '124px',
-    borderRadius: '50%',
-    margin: '0 auto',
-    background: `linear-gradient(145deg, ${palette.warningLight}, ${palette.white})`,
-    boxShadow: '0 8px 18px rgb(156 159 12 / 22%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  demographicsSectionContainer: {
+    marginBottom: '16px',
   },
-  emptyStateGraphicCore: {
-    width: '86px',
-    height: '86px',
-    borderRadius: '50%',
-    backgroundColor: palette.white,
-    border: `2px solid ${palette.warning}`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 500px)',
   },
-  emptyStateGraphicIcon: {
-    color: palette.warning,
-    fontSize: '46px',
+  nameContainer: {
+    gridColumn: '1 / 2',
   },
-  alertBase: {
-    position: 'absolute',
-    color: palette.warningDark,
-    fontSize: '18px',
+  nameOnlyContainer: {
+    gridColumn: '1 / 3',
   },
-  alertTopLeft: {
-    top: '6px',
-    left: '10px',
-    transform: 'rotate(-15deg)',
+  titleContainer: {
+    gridColumn: '2 / 4',
   },
-  alertTopRight: {
-    top: '40px',
-    right: '-8px',
-    transform: 'rotate(20deg)',
+  developerContainer: {
+    gridColumn: '4 / 6',
   },
-  alertBottom: {
-    bottom: '-5px',
-    right: '47px',
-    transform: 'rotate(4deg)',
+  developerOnlyContainer: {
+    gridColumn: '3 / 6',
   },
-  emptyStateMessage: {
-    textAlign: 'center',
-    maxWidth: '520px',
+  dateContainer: {
+    gridColumn: '6 / 7',
   },
 });
 
-function ChplDemographicsWizardSection2({ dispatch }) {
+function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
+  const { developer } = useContext(DeveloperContext);
+  const { analytics } = useAnalyticsContext();
+  const { user } = useContext(UserContext);
+  const { url, setUrl } = useContext(UrlCheckerContext);
   const classes = useStyles();
 
-  const toggle = (listing) => {
-    dispatch(listing.id);
+  const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);
+
+  const handleDispatch = ({ action, url: submittedUrl }) => {
+    switch (action) {
+      case 'complete':
+        setUrl(submittedUrl);
+        break;
+      case 'update':
+        setUrl('');
+        break;
+        // no default
+    }
+  };
+
+  const handleSubmit = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Submit Developer Demographics Change Request',
+    });
+    dispatch(url);
   };
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Box className={classes.demographicsSectionContainer}> { /* no class  */ }
-        <Typography gutterBottom component="h2" variant="h3">
-          Section 2 &mdash; Listings
-        </Typography>
-      </Box>
-    </Container>
+    <div className={classes.fixFooterSpacing}>
+      <Container maxWidth="md">
+        <Box className={classes.demographicsSectionContainer}>
+          <Typography gutterBottom component="h2" variant="h3">
+            Section 2 &mdash; Demographics entry
+          </Typography>
+        </Box>
+      </Container>
+      <Container maxWidth="md" className={classes.demographicsContainer}>
+        <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
+          <CardContent>
+            <div>
+              <Typography gutterBottom variant="subtitle1">
+                Name:
+              </Typography>
+              <Typography variant="body1">{user.fullName}</Typography>
+            </div>
+          </CardContent>
+        </Card>
+        { user.title && (
+          <Card className={classes.titleContainer}>
+            <CardContent>
+              <div>
+                <Typography gutterBottom variant="subtitle1">
+                  Title:
+                </Typography>
+                <Typography variant="body1">{user.title}</Typography>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
+          <CardContent>
+            <div>
+              <Typography gutterBottom variant="subtitle1">
+                Health IT Developer:
+              </Typography>
+              <Typography variant="body1">{developer.name}</Typography>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className={classes.dateContainer}>
+          <CardContent>
+            <Typography gutterBottom variant="subtitle1">
+              Date:
+            </Typography>
+            <Typography variant="body1">
+              <Moment
+                date={Date.now()}
+                format="DD MMM yyyy"
+              />
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={classes.demographics}>
+          <CardContent>
+            fields here
+          </CardContent>
+        </Card>
+        <Card className={classes.urlContainer}>
+          <CardContent>
+            <ChplUrlChecker
+              dispatch={handleDispatch}
+            />
+          </CardContent>
+        </Card>
+        <div className={classes.fullWidthGridRow}>
+          <Button
+            fullWidth
+            id="submit-cr"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled()}
+          >
+            Submit Demographics Change Request
+            <BorderColorIcon
+              className={classes.iconSpacing}
+            />
+          </Button>
+        </div>
+      </Container>
+    </div>
   );
 }
 
 export default ChplDemographicsWizardSection2;
 
 ChplDemographicsWizardSection2.propTypes = {
+  isSubmitting: bool,
   dispatch: func.isRequired,
 };
