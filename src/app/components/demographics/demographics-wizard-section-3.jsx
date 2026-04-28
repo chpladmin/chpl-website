@@ -23,14 +23,14 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  sbulContainer: {
+  demographicsContainer: {
     display: 'grid',
     rowGap: '16px',
     columnGap: '16px',
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
   },
-  sbulSectionContainer: {
+  demographicsSectionContainer: {
     marginBottom: '16px',
   },
   fixFooterSpacing: {
@@ -59,7 +59,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
+function ChplDemographicsWizardSection3({ isSubmitting = false, dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { user } = useContext(UserContext);
@@ -91,13 +91,13 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   return (
     <div className={classes.fixFooterSpacing}>
       <Container maxWidth="md">
-        <Box className={classes.sbulSectionContainer}>
+        <Box className={classes.demographicsSectionContainer}>
           <Typography gutterBottom component="h2" variant="h3">
             Section 3 &mdash; Service Base URL List entry
           </Typography>
         </Box>
       </Container>
-      <Container maxWidth="md" className={classes.sbulContainer}>
+      <Container maxWidth="md" className={classes.demographicsContainer}>
         <Card className={classes.fullWidthGridRow}>
           <CardContent>
             <Typography variant="body1">
@@ -177,9 +177,9 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   );
 }
 
-export default ChplSbulWizardSection3;
+export default ChplDemographicsWizardSection3;
 
-ChplSbulWizardSection3.propTypes = {
+ChplDemographicsWizardSection3.propTypes = {
   isSubmitting: bool,
   dispatch: func.isRequired,
 };

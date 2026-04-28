@@ -9,10 +9,10 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  sbulContainerList: {
+  demographicsContainerList: {
     fontSize: '0.875em',
   },
-  sbulSectionContainer: {
+  demographicsSectionContainer: {
     marginBottom: '16px',
   },
   fixFooterSpacing: {
@@ -24,12 +24,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSbulWizardSection1() {
+function ChplDemographicsWizardSection1() {
   const classes = useStyles();
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Box className={classes.sbulSectionContainer}>
+      <Box className={classes.demographicsSectionContainer}>
         <Typography component="h2" variant="h3">
           Section 1 &mdash; Introduction
         </Typography>
@@ -48,7 +48,7 @@ function ChplSbulWizardSection1() {
   );
 }
 
-export default ChplSbulWizardSection1;
+export default ChplDemographicsWizardSection1;
 
-ChplSbulWizardSection1.propTypes = {
+ChplDemographicsWizardSection1.propTypes = {
 };

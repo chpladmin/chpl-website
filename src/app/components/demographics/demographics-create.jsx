@@ -7,10 +7,9 @@ import {
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
-import ChplSbulWizard from './sbul-wizard';
+import ChplDemographicsWizard from './demographics-wizard';
 
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
-import { useFetchSbulListings } from 'api/developer';
 import UrlCheckerWrapper from 'components/url-checker/url-checker-wrapper';
 import { DeveloperContext } from 'shared/contexts';
 
@@ -21,30 +20,21 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSbulCreate({ dispatch }) {
+function ChplDemographicsCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { enqueueSnackbar } = useSnackbar();
   const [changeRequestType, setChangeRequestType] = useState({});
   const [errors, setErrors] = useState([]);
-  const [listings, setListings] = useState([]);
   const [stage, setStage] = useState(0);
-  const { data, isLoading, isError } = useFetchSbulListings({ developer });
   const crData = useFetchChangeRequestTypes();
   const { mutate, isLoading: isSubmitting } = usePostChangeRequest();
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || isError) {
-      return;
-    }
-    setListings(data.results);
-  }, [data, isLoading, isError]);
-
-  useEffect(() => {
     if (crData.isLoading) {
       return;
     }
-    setChangeRequestType(crData.data.find((type) => type.name === 'Service Base URL List Change Request'));
+    setChangeRequestType(crData.data.find((type) => type.name === 'Developer Demographics Change Request'));
   }, [crData.data, crData.isLoading]);
 
   const handleDispatch = (action, payload) => {
@@ -57,14 +47,8 @@ function ChplSbulCreate({ dispatch }) {
         break;
       case 'submit':
         setErrors([]);
-        mutate(payload.details.selectedListings.map((listing) => ({
-          developer,
-          changeRequestType,
-          details: {
-            listing: { id: listing.id },
-            url: payload.details.url,
-          },
-        })), {
+        console.log({ payload });
+        mutate(payload, {
           onSuccess: () => {
             setStage(3);
           },
@@ -94,16 +78,15 @@ function ChplSbulCreate({ dispatch }) {
       <Container maxWidth="md">
         <div className={classes.pageHeader}>
           <Typography gutterBottom component="h1" variant="h2">
-            Submit Service Base URL List
+            Submit Demographics Change
           </Typography>
         </div>
       </Container>
       <UrlCheckerWrapper>
-        <ChplSbulWizard
+        <ChplDemographicsWizard
           isSubmitting={isSubmitting}
           developer={developer}
           dispatch={handleDispatch}
-          listings={listings}
           stage={stage}
           errors={errors}
         />
@@ -112,8 +95,8 @@ function ChplSbulCreate({ dispatch }) {
   );
 }
 
-export default ChplSbulCreate;
+export default ChplDemographicsCreate;
 
-ChplSbulCreate.propTypes = {
+ChplDemographicsCreate.propTypes = {
   dispatch: func.isRequired,
 };

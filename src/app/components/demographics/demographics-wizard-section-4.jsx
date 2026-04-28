@@ -77,7 +77,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSbulWizardSection4() {
+function ChplDemographicsWizardSection4() {
   const { developer } = useContext(DeveloperContext);
   const classes = useStyles();
 
@@ -108,7 +108,7 @@ function ChplSbulWizardSection4() {
   );
 }
 
-export default ChplSbulWizardSection4;
+export default ChplDemographicsWizardSection4;
 
-ChplSbulWizardSection4.propTypes = {
+ChplDemographicsWizardSection4.propTypes = {
 };

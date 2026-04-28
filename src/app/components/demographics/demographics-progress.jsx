@@ -3,7 +3,7 @@ import { bool, func, number } from 'prop-types';
 
 import { ChplProgress } from 'components/util';
 
-function ChplSbulProgress(props) {
+function ChplDemographicsProgress(props) {
   const steps = ['Introduction', 'Listings', 'Service Base URL List', 'Confirmation'];
 
   return (
@@ -15,9 +15,9 @@ function ChplSbulProgress(props) {
   );
 }
 
-export default ChplSbulProgress;
+export default ChplDemographicsProgress;
 
-ChplSbulProgress.propTypes = {
+ChplDemographicsProgress.propTypes = {
   dispatch: func.isRequired,
   value: number.isRequired,
   canNext: bool.isRequired,
