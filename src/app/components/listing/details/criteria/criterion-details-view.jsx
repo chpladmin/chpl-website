@@ -133,7 +133,7 @@ function ChplCriterionDetailsView({
                 && (
                   <TableRow key="codeSet">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="Complies with the month/year Code set for this criterion.">
+                      <ChplTooltip title="Meets current code set requirement.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
