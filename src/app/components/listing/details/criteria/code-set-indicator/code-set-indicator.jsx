@@ -58,6 +58,7 @@ function ChplCodeSetIndicator({ criterion }) {
       </Typography>
       <ChplUpdateIndicator
         endDay={endDay}
+        additionalInformation="Contact the developer for more information."
       />
     </Box>
   );
