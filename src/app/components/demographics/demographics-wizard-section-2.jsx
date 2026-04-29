@@ -12,6 +12,7 @@ import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Moment from 'react-moment';
 import { bool, func } from 'prop-types';
 
+import ChplDeveloperEdit from 'components/developer/developer-edit';
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import UrlCheckerContext from 'components/url-checker/url-checker-context';
 import { eventTrack } from 'services/analytics.service';
@@ -50,6 +51,9 @@ const useStyles = makeStyles({
   },
   dateContainer: {
     gridColumn: '6 / 7',
+  },
+  editContainer: {
+    gridColumn: '1 / 7',
   },
 });
 
@@ -137,9 +141,14 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
             </Typography>
           </CardContent>
         </Card>
-        <Card className={classes.demographics}>
+        <Card className={classes.editContainer}>
           <CardContent>
-            fields here
+            <ChplDeveloperEdit
+              dispatch={handleDispatch}
+              errorMessages={[]}
+              isInvalid={false}
+              isSplitting={false}
+            />
           </CardContent>
         </Card>
         <Card className={classes.urlContainer}>
