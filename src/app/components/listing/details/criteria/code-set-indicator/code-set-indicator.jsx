@@ -9,10 +9,11 @@ import {
 
 import { useFetchCodeSets } from 'api/standards';
 import { ChplUpdateIndicator } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { certificationResult } from 'shared/prop-types';
 
 function ChplCodeSetIndicator({ criterion }) {
+  const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
   const { data, isError, isLoading } = useFetchCodeSets();
   const [relevantCodeSets, setRelevantCodeSets] = useState([]);
@@ -27,6 +28,7 @@ function ChplCodeSetIndicator({ criterion }) {
     const missingDays = relevantCodeSets
       .filter((cs) => !criterion.codeSets.some((ccs) => ccs.codeSet.id === cs.id))
       .map((cs) => cs.requiredDay)
+      .filter((cs) => listing.certificationDay < cs)
       .sort((a, b) => (a < b ? -1 : 1));
     setEndDay(missingDays[0]);
   }, [criterion, relevantCodeSets]);
