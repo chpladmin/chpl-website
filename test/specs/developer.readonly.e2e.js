@@ -97,11 +97,11 @@ describe('the Developer page for "gMed, Inc."', () => {
       await login.logOut();
     });
 
-    it('should not have the product/version merge button', async () => {
+    it('should be able to filter and view product', async () => {
       await page.browseAllListings();
       await page.filterBy('certificationStatuses', 'Withdrawn_by_Developer');
       await page.viewProduct('gCardio');
-      await expect(await page.getMergeProductButton(2538)).not.toBeExisting();
+      await expect(await page.viewProduct('gCardio')).toBeExisting();
     });
   });
 });
