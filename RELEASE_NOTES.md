@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 14.2.0
+_27 April 2026_
+
+### Features
+* Support multiple years in CMS ID generation
+* Add basic Compliance Dashboard page
+
+### User Interface Updates
+* Display roll-up of Service Base URL List on Developer page
+
+### Flagged Features
+* Enable creation of multiple Service Base URL List Change Requests at once
+
+---
+
 ## Version 14.1.2
 _13 April 2026_
 
