@@ -325,7 +325,7 @@ function ChplCmsDisplay() {
               )}
           </>
         )}
-      { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
+      { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0 || idAnalysis.missingUpToDate?.length > 0)
         && (
           <>
             <div className={classes.missingLists}>
@@ -350,6 +350,20 @@ function ChplCmsDisplay() {
                     </Typography>
                     <List id="missing-or">
                       { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
+                    </List>
+                  </div>
+                )}
+              { idAnalysis.missingUpToDate?.length > 0
+                && (
+                  <div>
+                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>
+                      { (idAnalysis.missingAnd.length > 0 || idAnalysis.missingOr.length > 0) && 'In addition, a product or products' }
+                      { idAnalysis.missingAnd.length === 0 && idAnalysis.missingOr.length === 0 && 'Please select a product or products' }
+                      {' '}
+                      that contain the following up to date criteria:
+                    </Typography>
+                    <List id="missing-up-to-date">
+                      { idAnalysis.missingUpToDate.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
                     </List>
                   </div>
                 )}
