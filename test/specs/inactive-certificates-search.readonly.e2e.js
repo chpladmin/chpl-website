@@ -6,7 +6,6 @@ describe('the Inactive Certificates Search page', () => {
   beforeEach(async () => {
     page = new InactiveCertificatesSearchPage();
     await page.open();
-    await page.isTableVisible();
   });
 
   it('should have table headers in a defined order', async () => {
