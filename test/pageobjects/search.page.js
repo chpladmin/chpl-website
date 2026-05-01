@@ -39,6 +39,12 @@ class SearchPage extends Page {
      $(this.elements.skeletonElement)
     ).isExisting();
   }
+
+  async isTableVisible() {
+    return (await 
+     $(this.elements.table)
+    ).isExisting();
+  }
  
   async getTableHeaders() {
     return (await
