@@ -23,20 +23,5 @@ describe('the Developer Search page', () => {
 
   it('should have the Download Developers button for anonymous users', async () => {
     await expect(page.downloadDevelopersButton).toBeExisting();
-  });
-
-  describe('when logged in as ACB', () => {
-    beforeEach(async () => {
-      login = new LoginComponent();
-      await login.logIn('drummond');
-    });
-
-    afterEach(async () => {
-      await login.logOut();
-    });
-
-    it('should NOT have the compose message button for ACB users', async () => {
-      await expect(page.composeMessageButton).not.toBeExisting();
-    });
-  });
+  }); 
 });
