@@ -20,8 +20,10 @@ class SearchPage extends Page {
     };
   }
 
-  open(path) {
-    return super.open(path);
+  async open(path) {
+    await super.open(path);
+    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
+    await (browser.waitUntil(() => this.isTableVisible()));
   }
 
   async getBodyText() {

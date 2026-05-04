@@ -13,8 +13,6 @@ class SedSearchPage extends SearchPage {
 
   async open() {
     await super.open('sed');
-    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
-    await (browser.waitUntil(() => this.isTableVisible()));
   }
 
   get downloadListingsButton() {

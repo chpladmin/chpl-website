@@ -13,8 +13,7 @@ class ListingSearchPage extends SearchPage {
   }
 
   async open() {
-    await super.open('search');
-    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
+    await super.open('search');  
   }
 
   get composeMessageButton() {

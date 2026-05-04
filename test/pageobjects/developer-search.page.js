@@ -14,7 +14,6 @@ class DeveloperSearchPage extends SearchPage {
 
   async open() {
     await super.open('organizations/developers');
-    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
   }
 
   get composeMessageButton() {

@@ -13,8 +13,6 @@ class DecertifiedProductsSearchPage extends SearchPage {
 
   async open() {
     await super.open('decertified-products');
-    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
-    await (browser.waitUntil(() => this.isTableVisible()));
   }
 
   get downloadListingsButton() {

@@ -13,8 +13,6 @@ class ApiDocumentationSearchPage extends SearchPage {
 
   async open() {
     await super.open('api-documentation');
-    await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
-    await (browser.waitUntil(() => this.isTableVisible()));
   }
 
   get downloadListingsButton() {
