@@ -129,7 +129,8 @@ function ChplToggle({ dispatch = () => {} }) {
     <>
       <Button
         id="login-toggle"
-        aria-describedby="admin-login-form"
+        aria-controls={!isMobile && loginPopoverOpen ? 'admin-login-form' : undefined}
+        aria-haspopup="dialog"
         aria-expanded={isToggleOpen ? 'true' : undefined}
         onClick={handleClick}
         className={classes.whiteButton}

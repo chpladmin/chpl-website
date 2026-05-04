@@ -140,11 +140,33 @@ function ChplDesktopNav({
   }, [$rootScope]);
 
   const toggleCmsWidget = () => {
-    setCmsAnchorEl(cmsAnchorEl ? null : cmsButtonRef.current);
+    if (cmsAnchorEl) {
+      setCmsAnchorEl(null);
+      return;
+    }
+    setCompareAnchorEl(null);
+    setResourcesOpen(false);
+    setShortcutsOpen(false);
+    setCmsAnchorEl(cmsButtonRef.current);
+  };
+
+  const closeCmsWidget = () => {
+    setCmsAnchorEl(null);
   };
 
   const toggleCompareWidget = () => {
-    setCompareAnchorEl(compareAnchorEl ? null : compareButtonRef.current);
+    if (compareAnchorEl) {
+      setCompareAnchorEl(null);
+      return;
+    }
+    setCmsAnchorEl(null);
+    setResourcesOpen(false);
+    setShortcutsOpen(false);
+    setCompareAnchorEl(compareButtonRef.current);
+  };
+
+  const closeCompareWidget = () => {
+    setCompareAnchorEl(null);
   };
 
 
@@ -205,15 +227,18 @@ function ChplDesktopNav({
       <Menu
         anchorEl={cmsAnchorEl}
         open={!!cmsAnchorEl}
-        onClose={toggleCmsWidget}
+        onClose={closeCmsWidget}
         getContentAnchorEl={null}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
+        hideBackdrop
+        style={{ pointerEvents: 'none' }}
         PaperProps={{
           className: classes.menuPaper,
           style: {
             width: '400px',
+            pointerEvents: 'auto',
           },
         }}
       >
@@ -231,15 +256,18 @@ function ChplDesktopNav({
       <Menu
         anchorEl={compareAnchorEl}
         open={!!compareAnchorEl}
-        onClose={toggleCompareWidget}
+        onClose={closeCompareWidget}
         getContentAnchorEl={null}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
+        hideBackdrop
+        style={{ pointerEvents: 'none' }}
         PaperProps={{
           className: classes.menuPaper,
           style: {
             width: '400px',
+            pointerEvents: 'auto',
           },
         }}
       >
