@@ -67,7 +67,7 @@ const sectionConfigs = [{
     router: { sref: 'administration.upload' },
   }, {
     key: 'url-checker',
-    roles: ['chpl-admin', 'chpl-onc'],
+    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
     href: '#/administration/url-checker',
     text: 'URL Checker',
     router: { sref: 'administration.url-checker' },
