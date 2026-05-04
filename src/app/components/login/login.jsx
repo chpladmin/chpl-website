@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { func, string } from 'prop-types';
 
 import ChplChangePassword from './components/change-password';
@@ -17,6 +17,12 @@ function ChplLogin({
   const { loginWidgetState, setLoginWidgetState } = useContext(UserContext);
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    if (uuid) {
+      setLoginWidgetState('RESETFORGOTTENPASSWORD');
+    }
+  }, [uuid]);
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
