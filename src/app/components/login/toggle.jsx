@@ -27,8 +27,15 @@ const useStyles = makeStyles({
   popoverSpacing: {
     marginLeft: '8px',
   },
+  '@global': {
+    '#admin-login-paper.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
+      width: '300px !important',
+      maxWidth: '300px !important',
+      right: 'auto !important',
+    },
+  },
   loginCard: {
-    width: '300px',
+    width: '300px!important',
     [theme.breakpoints.up('md')]: {
       width: '375px',
     },
@@ -144,6 +151,9 @@ function ChplToggle({ dispatch = () => {} }) {
         }}
         className={classes.popoverSpacing}
         disableScrollLock
+        PaperProps={{
+          id: 'admin-login-paper',
+        }}
       >
         { loginWidgetState === 'LOGGEDIN' ? (
           <ChplAdminMenu onClose={handleClose} />
