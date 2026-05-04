@@ -23,7 +23,9 @@ class SearchPage extends Page {
   async open(path) {
     await super.open(path);
     await (browser.waitUntil(async () => !(await this.isSkeletonVisible())));
-    await (browser.waitUntil(() => this.isTableVisible()));
+    if (await $(this.elements.table).isExisting()) {
+      await browser.waitUntil(() => this.isTableVisible());
+    }
   }
 
   async getBodyText() {
