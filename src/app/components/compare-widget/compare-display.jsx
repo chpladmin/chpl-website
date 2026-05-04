@@ -67,14 +67,14 @@ function ChplCompareDisplay() {
   return (
     <CardContent className={classes.cardcontentPadding}>
       <div className={classes.chipContainer}>
-        { [...listings].sort((a, b) => (a.name < b.name ? -1 : 1))
+        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
             <Chip
               className={classes.productChips}
               color="primary"
               variant="outlined"
               key={listing.id}
-              label={<ChplEllipsis text={listing.name} />}
+              label={<ChplEllipsis text={listing.name.name} />}
               onDelete={() => removeListing(listing)}
             />
           ))}

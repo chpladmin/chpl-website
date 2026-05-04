@@ -72,13 +72,13 @@
           $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
         }
         vm.compareWidget.products.push({id, name, chplProductNumber: number});
-        $rootScope.$broadcast('compare.addListing', {id, name, chplProductNumber: number});
+        $rootScope.$broadcast('compare.addedListing', {id, name, chplProductNumber: number});
       }
     }
 
     function clearProducts () {
       vm.compareWidget?.products.forEach((listing) => {
-        $rootScope.$broadcast('compare.removeListing', listing);
+        $rootScope.$broadcast('compare.removedListing', listing);
       });
       vm.compareWidget = {
         products: [],

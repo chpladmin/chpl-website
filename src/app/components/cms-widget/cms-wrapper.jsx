@@ -16,8 +16,8 @@ function CmsWrapper({ children }) {
   }, []);
 
   useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('cms.addListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
-    const deregisterRemoveWatcher = $rootScope.$on('cms.removeListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
+    const deregisterAddWatcher = $rootScope.$on('cms.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
+    const deregisterRemoveWatcher = $rootScope.$on('cms.removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
     const deregisterRemoveAllWatcher = $rootScope.$on('cms.removeAll', () => setListings([]));
     return () => {
       deregisterAddWatcher();
