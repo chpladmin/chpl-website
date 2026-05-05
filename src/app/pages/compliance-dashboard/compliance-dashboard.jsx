@@ -66,11 +66,11 @@ function ChplComplianceDashboard() {
     QuestionableUrls: 365,
     DeveloperAttestations: 600,
     ImportantDates: 450,
+    ServiceBaseUrlList: 600,
   };
 
   const leftColumnReports = [
     { title: 'Non-Conformity Counts', height: 365 },
-    { title: 'Service Base URL', height: 365 },
     { title: 'Direct Review', height: 365 },
     { title: 'Surveillance Activities', height: 365 },
   ];
@@ -104,10 +104,12 @@ function ChplComplianceDashboard() {
   const questionableUrlsReport = reportMetadata.find((r) => r.reportKey === 'QuestionableUrls');
   const attestationsReport = reportMetadata.find((r) => r.reportKey === 'DeveloperAttestations');
   const importantDatesReport = reportMetadata.find((r) => r.reportKey === 'ImportantDates');
+  const serviceBaseUrlReport = reportMetadata.find((r) => r.reportKey === 'ServiceBaseUrlList');
 
   const questionableUrlsHeight = defaultHeights.QuestionableUrls;
   const attestationsHeight = defaultHeights.DeveloperAttestations;
   const importantDatesHeight = defaultHeights.ImportantDates;
+  const serviceBaseUrlHeight = defaultHeights.ServiceBaseUrlList;
 
   return (
     <>
@@ -193,6 +195,27 @@ function ChplComplianceDashboard() {
                           className={classes.iframe}
                           height={attestationsHeight}
                           src={attestationsReport.url}
+                        />
+                      ) : (
+                        <Typography variant="body1" color="textSecondary" align="center" style={{ padding: '32px' }}>
+                          Report not available
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={12}>
+                  <Card className={classes.reportCard}>
+                    <CardHeader title={serviceBaseUrlReport?.title || 'Service Base URL List'} />
+                    <CardContent className={classes.reportCardContent}>
+                      {isLoading ? (
+                        <Skeleton variant="rect" height={serviceBaseUrlHeight} />
+                      ) : serviceBaseUrlReport ? (
+                        <iframe
+                          title={serviceBaseUrlReport.title}
+                          className={classes.iframe}
+                          height={serviceBaseUrlHeight}
+                          src={serviceBaseUrlReport.url}
                         />
                       ) : (
                         <Typography variant="body1" color="textSecondary" align="center" style={{ padding: '32px' }}>
