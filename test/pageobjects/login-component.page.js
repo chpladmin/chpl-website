@@ -53,7 +53,10 @@ class LoginComponent {
     if (!(await (await $(this.elements.component)).isDisplayed())) {
       await this.toggleLoginComponent();
     }
-    await (await (await $(this.elements.component)).$(this.elements.logout)).click();
+    const logoutBtn = await (await $(this.elements.component)).$(this.elements.logout);
+    await logoutBtn.scrollIntoView();
+    await logoutBtn.waitForClickable();
+    await logoutBtn.click();
     await (await $(this.elements.login)).waitForDisplayed();
     await browser.keys('Escape');
     await browser.waitUntil(async () => !((await (await $(this.elements.component)).isDisplayed())));

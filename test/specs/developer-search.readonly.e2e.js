@@ -1,7 +1,5 @@
 import DeveloperSearchPage from '../pageobjects/developer-search.page';
-import LoginComponent from '../pageobjects/login-component.page';
 
-let login;
 let page;
 
 describe('the Developer Search page', () => {
