@@ -21,10 +21,6 @@ export default class NetworkService {
     });
   }
 
-  deleteUser(userId) {
-    return this.apiDELETE(`/users/${userId}`);
-  }
-
   getAcbs(editable) {
     return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
   }
@@ -63,14 +59,6 @@ export default class NetworkService {
 
   getReportMetadata(reportKey) {
     return this.apiGET(`/report-data/report-metadata/${reportKey}`);
-  }
-
-  getUsers() { // delete
-    return this.apiGET('/users');
-  }
-
-  inviteUser(invitationObject) {
-    return this.apiPOST('/users/invitation', invitationObject);
   }
 
   logout(logoutRequest) {

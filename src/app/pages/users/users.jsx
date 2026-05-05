@@ -1,55 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   CircularProgress,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
-import { useFetchUsers } from 'api/users';
+import { useFetchUsers, usePostCreateInvitation } from 'api/users';
 import ChplUsers from 'components/user/users';
-import {
-  AnalyticsContext,
-  UserContext,
-  useAnalyticsContext,
-} from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    gap: '16px',
-    padding: '32px 0',
-    backgroundColor: palette.background,
-    [theme.breakpoints.up('md')]: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
-      alignItems: 'start',
-    },
-  },
-  favoriteContainer: {
-    display: 'flex',
-    alignItems: 'baseline',
-  },
-  loadingScreen: {
-    height: '100vh',
-  },
-  pageHeader: {
-    padding: '32px 0',
-    backgroundColor: palette.white,
-  },
-});
+import { UserContext } from 'shared/contexts';
 
 function ChplUsersPage() {
-  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
-  const { data, isLoading, isSuccess } = useFetchUsers();
   const { enqueueSnackbar } = useSnackbar();
+  const { data, isLoading, isSuccess } = useFetchUsers();
+  const { mutate: invite } = usePostCreateInvitation();
   const [users, setUsers] = useState([]);
   const [groupNames, setGroupNames] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (hasAnyRole(['chpl-admin'])) {
@@ -69,37 +35,45 @@ function ChplUsersPage() {
 
   const handleDispatch = (action, payload) => {
     switch (action) {
-      default:
-        enqueueSnackbar('Standard Deleted', {
-          variant: 'error',
+      case 'cancel':
+      case 'edit':
+      case 'refresh':
+        // no-op
+        break;
+      case 'invite':
+        invite({ groupName: payload.groupName, email: payload.email }, {
+          onSuccess: () => {
+            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
+              variant: 'success',
+            });
+          },
+          onError: () => {
+            enqueueSnackbar('Email was not sent', {
+              variant: 'error',
+            });
+          },
         });
+        break;
+      default:
         console.error('no action found', action, payload);
     }
   };
 
-  const analyticsData = {
-    analytics: {
-      ...analytics,
-      category: 'User Management',
-    },
-  };
-
   if (isLoading || !isSuccess) {
-    return (
-      <div className={classes.loadingScreen}>
-        <CircularProgress />
-      </div>
-    );
+    return <CircularProgress />;
   }
 
   return (
-    <AnalyticsContext.Provider value={analyticsData}>
+    <>
+      <Typography>
+        CHPL Users - test
+      </Typography>
       <ChplUsers
+        dispatch={handleDispatch}
         users={users}
         groupNames={groupNames}
-        dispatch={handleDispatch}
       />
-    </AnalyticsContext.Provider>
+    </>
   );
 }
 
