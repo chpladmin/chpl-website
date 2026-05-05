@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     },
   },
   loginCard: {
-    width: '300px!important',
+    width: '300px !important',
     [theme.breakpoints.up('md')]: {
       width: '375px',
     },
