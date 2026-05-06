@@ -158,6 +158,13 @@ function ChplDesktopNav({
     };
   }, [$rootScope]);
 
+  const closeAllNavOverlays = () => {
+    setCmsAnchorEl(null);
+    setCompareAnchorEl(null);
+    setResourcesOpen(false);
+    setShortcutsOpen(false);
+  };
+
   const toggleCmsWidget = () => {
     if (cmsAnchorEl) {
       setCmsAnchorEl(null);
@@ -167,7 +174,7 @@ function ChplDesktopNav({
     if (!anchor) {
       return;
     }
-    setCompareAnchorEl(null);
+    closeAllNavOverlays();
     setCmsAnchorEl(anchor);
   };
 
@@ -189,7 +196,7 @@ function ChplDesktopNav({
     if (!anchor) {
       return;
     }
-    setCmsAnchorEl(null);
+    closeAllNavOverlays();
     setCompareAnchorEl(anchor);
   };
 
@@ -202,7 +209,13 @@ function ChplDesktopNav({
 
 
   const toggleResources = () => {
-    setResourcesOpen((prev) => !prev);
+    setResourcesOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        closeAllNavOverlays();
+      }
+      return next;
+    });
   };
 
   const closeResources = () => {
@@ -210,7 +223,13 @@ function ChplDesktopNav({
   };
 
   const toggleShortcuts = () => {
-    setShortcutsOpen((prev) => !prev);
+    setShortcutsOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        closeAllNavOverlays();
+      }
+      return next;
+    });
   };
 
   const closeShortcuts = () => {
@@ -236,13 +255,19 @@ function ChplDesktopNav({
   return (
     <Box className={classes.navContainer}>
       <Button
-        onClick={onHomeClick}
+        onClick={() => {
+          closeAllNavOverlays();
+          onHomeClick();
+        }}
         className={classes.whiteButton}
       >
         Home
       </Button>
       <Button
-        onClick={onSearchClick}
+        onClick={() => {
+          closeAllNavOverlays();
+          onSearchClick();
+        }}
         className={classes.whiteButton}
       >
         Search CHPL

@@ -29,13 +29,12 @@ const useStyles = makeStyles({
   },
   '@global': {
     '#admin-login-paper.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
-      width: '300px !important',
       maxWidth: '300px !important',
       right: 'auto !important',
     },
   },
   loginCard: {
-    width: '300px !important',
+    maxWidth: '300px !important',
     [theme.breakpoints.up('md')]: {
       width: '375px',
     },
