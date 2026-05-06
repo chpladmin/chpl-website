@@ -11,10 +11,6 @@ export default class NetworkService {
     return this.apiPOST('/key/confirm', hash);
   }
 
-  confirmUser(userObject) {
-    return this.apiPOST('/users/confirm', userObject);
-  }
-
   deleteSurveillance(surveillanceId, reason) {
     return this.apiDELETE(`/surveillance/${surveillanceId}`, {
       reason,
