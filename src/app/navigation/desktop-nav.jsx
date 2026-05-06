@@ -8,7 +8,7 @@ import {
   Box,
   Button,
   ClickAwayListener,
-  Menu,
+  Popover,
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
@@ -112,21 +112,40 @@ function ChplDesktopNav({
 
   const classes = useStyles();
 
+  // These widgets can be opened by click handlers and root-scope broadcasts.
+  // When that happens during a render/layout transition, ref.current may not be a usable anchor.
+  // We only return anchors that are mounted and visible to avoid invalid anchorEl warnings.
+  const getVisibleAnchor = (ref) => {
+    const el = ref.current;
+    if (!el || !el.isConnected || el.offsetParent === null) {
+      return null;
+    }
+    return el;
+  };
+
   useEffect(() => {
     const deregisterShowCmsWidget = $rootScope.$on('ShowCmsWidget', () => {
+      const anchor = getVisibleAnchor(cmsButtonRef);
+      if (!anchor) {
+        return;
+      }
       setCompareAnchorEl(null);
       setResourcesOpen(false);
       setShortcutsOpen(false);
-      setCmsAnchorEl(cmsButtonRef.current);
+      setCmsAnchorEl(anchor);
     });
     const deregisterHideCmsWidget = $rootScope.$on('HideCmsWidget', () => {
       setCmsAnchorEl(null);
     });
     const deregisterShowCompareWidget = $rootScope.$on('ShowCompareWidget', () => {
-      setCmsAnchorEl(null);
+      const anchor = getVisibleAnchor(compareButtonRef);
+      if (!anchor) {
+        return;
+      }
+      setCmsAnchorEl(null); 
       setResourcesOpen(false);
       setShortcutsOpen(false);
-      setCompareAnchorEl(compareButtonRef.current);
+      setCompareAnchorEl(anchor);
     });
     const deregisterHideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
       setCompareAnchorEl(null);
@@ -140,11 +159,45 @@ function ChplDesktopNav({
   }, [$rootScope]);
 
   const toggleCmsWidget = () => {
-    setCmsAnchorEl(cmsAnchorEl ? null : cmsButtonRef.current);
+    if (cmsAnchorEl) {
+      setCmsAnchorEl(null);
+      return;
+    }
+    const anchor = getVisibleAnchor(cmsButtonRef);
+    if (!anchor) {
+      return;
+    }
+    setCompareAnchorEl(null);
+    setCmsAnchorEl(anchor);
+  };
+
+  const closeCmsWidget = (event, reason) => {
+    if (reason === 'backdropClick') {
+      return;
+    }
+    setCmsAnchorEl(null);
   };
 
   const toggleCompareWidget = () => {
-    setCompareAnchorEl(compareAnchorEl ? null : compareButtonRef.current);
+    if (compareAnchorEl) {
+      setCompareAnchorEl(null);
+      return;
+    }
+
+    // Skip opening if the compare button is not currently a valid visible anchor.
+    const anchor = getVisibleAnchor(compareButtonRef);
+    if (!anchor) {
+      return;
+    }
+    setCmsAnchorEl(null);
+    setCompareAnchorEl(anchor);
+  };
+
+  const closeCompareWidget = (event, reason) => {
+    if (reason === 'backdropClick') {
+      return;
+    }
+    setCompareAnchorEl(null);
   };
 
 
@@ -202,23 +255,29 @@ function ChplDesktopNav({
       >
         CMS ID Creator
       </Button>
-      <Menu
+      {/*
+        Use Popover (not Menu) because this is a custom widget panel, not a menu list.
+        Menu tries to apply menu semantics/focus behavior that caused ref warnings with this content.
+      */}
+      <Popover
         anchorEl={cmsAnchorEl}
         open={!!cmsAnchorEl}
-        onClose={toggleCmsWidget}
-        getContentAnchorEl={null}
+        onClose={closeCmsWidget}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
+        hideBackdrop
+        style={{ pointerEvents: 'none' }}
         PaperProps={{
           className: classes.menuPaper,
           style: {
             width: '400px',
+            pointerEvents: 'auto',
           },
         }}
       >
         <ChplCmsDisplay />
-      </Menu>
+      </Popover>
       <Button
         ref={compareButtonRef}
         onClick={toggleCompareWidget}
@@ -228,23 +287,25 @@ function ChplDesktopNav({
       >
         Compare Products
       </Button>
-      <Menu
+      <Popover
         anchorEl={compareAnchorEl}
         open={!!compareAnchorEl}
-        onClose={toggleCompareWidget}
-        getContentAnchorEl={null}
+        onClose={closeCompareWidget}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
+        hideBackdrop
+        style={{ pointerEvents: 'none' }}
         PaperProps={{
           className: classes.menuPaper,
           style: {
             width: '400px',
+            pointerEvents: 'auto',
           },
         }}
       >
         <ChplCompareDisplay />
-      </Menu>
+      </Popover>
       <ClickAwayListener onClickAway={closeResources}>
         <Box className={classes.dropdownWrapper}>
           <Button
