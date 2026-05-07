@@ -133,7 +133,7 @@ function ChplCriterionDetailsView({
                 && (
                   <TableRow key="codeSet">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="Meets current code set requirement.">
+                      <ChplTooltip title="This refers to the minimum standard code set requirement for the certification criterion, where applicable. The displayed value indicates if the criterion is current or an update is required.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
