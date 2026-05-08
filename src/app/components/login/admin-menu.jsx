@@ -14,7 +14,7 @@ import ChplAdminMenuSection from './navigation/admin-menu-section';
 import sectionConfigs from './navigation/admin-menu-data';
 
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -36,6 +36,7 @@ const useStyles = makeStyles({
 
 function ChplAdminMenu({ onClose = () => {} }) {
   const { analytics } = useAnalyticsContext();
+  const { isOn } = useContext(FlagContext);
   const {
     hasAnyRole,
     logout,
@@ -61,7 +62,9 @@ function ChplAdminMenu({ onClose = () => {} }) {
             text: d.name,
             router: { sref: 'organizations.developers.developer', options: { id: d.id } },
           })),
-      }].sort((a, b) => (a.title < b.title ? -1 : 1)));
+      }]
+      .filter((s) => !s.flag || isOn(s.flag))
+      .sort((a, b) => (a.title < b.title ? -1 : 1)));
   }, []);
 
   const toggleSection = (section) => {

@@ -124,10 +124,11 @@ const sectionConfigs = [{
   key: 'insights',
   title: 'Insights',
   roles: ['chpl-developer'],
+  flag: 'insights-connection',
   items: [{
     key: 'insights',
-    href: 'https://www.healthit.gov/insights',
-    text: 'Insights',
+    href: 'https://healthit.gov/insights-condition-submission/',
+    text: 'Insights Reporting',
   }],
 }];
 
