@@ -154,7 +154,7 @@ const createPdf = (data) => {
     40,
     bodyStartY + 30,
     doc.splitTextToSize(
-      '* Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
+      'Note: Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
       775,
     ),
   );
