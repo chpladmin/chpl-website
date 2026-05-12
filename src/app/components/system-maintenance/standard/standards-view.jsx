@@ -19,7 +19,10 @@ import {
   useFilterContext,
 } from 'components/filter';
 import {
-  ChplSearchResultCard, ChplSortControls, ChplUpdateIndicator, ChplTooltip,
+  ChplSearchResultCard,
+  ChplSortControls,
+  ChplUpdateIndicator,
+  ChplTooltip,
 } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
