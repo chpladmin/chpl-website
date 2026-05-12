@@ -18,26 +18,32 @@ import {
 function ChplSearchResultCard({
   title,
   titleValue,
-  titleIconButton,
-  headerActions,
+  titleIconButton = undefined,
+  additionalTitleContent = undefined,
   fieldGroups = [],
-  actions,
+  actions = undefined,
 }) {
   return (
     <Card style={{ marginBottom: '12px', marginLeft: '8px', marginRight: '8px' }}>
-      <CardContent style={{ padding: '8px', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+      <CardContent style={{
+        padding: '8px',
+        display: 'flex',
+        gap: '8px',
+        alignItems: 'flex-end',
+      }}
+      >
         <Box display="flex" flexDirection="column" flex={1} gap={2}>
-        {title && (
           <>
             <Box display="flex" alignItems="center" gap={1}>
               <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
-                {title}
+                { title }
               </Typography>
-              {titleIconButton && (
-                <Box>
-                  {titleIconButton}
-                </Box>
-              )}
+              { titleIconButton
+                && (
+                  <Box>
+                    { titleIconButton }
+                  </Box>
+                )}
             </Box>
             <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px' }} alignItems="center">
               <Box
@@ -48,48 +54,52 @@ function ChplSearchResultCard({
                 alignItems="center"
               >
                 <Typography variant="h5">
-                  {titleValue}
+                  { titleValue }
                 </Typography>
-                {headerActions}
+                { additionalTitleContent
+                  && (
+                    <Box>
+                      { additionalTitleContent }
+                    </Box>
+                  )}
               </Box>
             </Grid>
           </>
-        )}
-        {fieldGroups.map((group) => (
-          <Grid
-            key={group.map((f) => f.label).join('-')}
-            container
-            spacing={2}
-            alignItems="flex-start"
-          >
-            {group.map((field) => (
-              <Grid
-                key={field.label}
-                item
-                xs={field.xs || 12}
-                sm={field.sm || field.xs || 12}
-                style={field.style}
-              >
-                <Box display="flex" alignItems="center" gap={1}>
-                  <Box flex={1}>
-                    <Typography variant="body2" style={{ fontWeight: '600' }}>
-                      {field.label}
-                      {field.iconButton && (
-                        field.iconButton
-                      )}
-                    </Typography>
-                    <Typography variant="body1">
-                      {field.value ?? field.fallback ?? 'N/A'}
-                    </Typography>
+          { fieldGroups.map((group) => (
+            <Grid
+              key={group.map((f) => f.label).join('-')}
+              container
+              spacing={2}
+              alignItems="flex-start"
+            >
+              { group.map((field) => (
+                <Grid
+                  key={field.label}
+                  item
+                  xs={field.xs || 12}
+                  sm={field.sm || field.xs || 12}
+                  style={field.style}
+                >
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Box flex={1}>
+                      <Typography variant="body2" style={{ fontWeight: '600' }}>
+                        { field.label }
+                        { field.iconButton
+                          && (
+                            field.iconButton
+                          )}
+                      </Typography>
+                      <Typography variant="body1">
+                        { field.value ?? field.fallback ?? 'N/A' }
+                      </Typography>
+                    </Box>
                   </Box>
-
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        ))}
+                </Grid>
+              ))}
+            </Grid>
+          ))}
         </Box>
-        {actions && (
+        { actions && (
           <Box display="flex" justifyContent="flex-end" mt={1} style={{ maxHeight: 'fit-content' }}>
             {actions}
           </Box>
@@ -102,10 +112,10 @@ function ChplSearchResultCard({
 export default ChplSearchResultCard;
 
 ChplSearchResultCard.propTypes = {
-  title: string,
-  titleValue: oneOfType([string, node]),
+  title: string.isRequired,
+  titleValue: oneOfType([string, node]).isRequired,
   titleIconButton: node,
-  headerActions: node,
+  additionalTitleContent: node,
   fieldGroups: arrayOf(
     arrayOf(
       shape({
@@ -118,6 +128,6 @@ ChplSearchResultCard.propTypes = {
         iconButton: node,
       }),
     ),
-  ),
+  ).isRequired,
   actions: node,
 };
