@@ -56,25 +56,9 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     alignItems: 'center',
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-  pendingChip: {
-    fontSize: '.7rem',
-    backgroundColor: '#3e0d59',
-    color: palette.white,
-  },
-  stagedChip: {
-    fontSize: '.7rem',
-    backgroundColor: '#0d5928',
-    color: palette.white,
-  },
   criterionNumber: {
     textTransform: 'none',
     fontWeight: '700',
-  },
-  editCriterion: {
-    margin: '8px 0px',
   },
   rotate: {
     transform: 'rotate(180deg)',
