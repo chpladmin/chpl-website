@@ -13,7 +13,7 @@ import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchCodeSetsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard, ChplTooltip } from 'components/util';
+import { ChplSearchResultCard, ChplUpdateIndicator, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -81,6 +81,12 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
                     <InfoIcon fontSize="small" />
                   </IconButton>
                 </ChplTooltip>
+              )}
+              additionalTitleContent={(
+                <ChplUpdateIndicator
+                  endDay={item.requiredDay}
+                  additionalInformation="Contact the developer for more information."
+                />
               )}
               fieldGroups={[
                 [

@@ -33,9 +33,9 @@ const useStyles = makeStyles({
 });
 
 function ChplUpdateIndicator({
-  requiredDay = undefined,
-  endDay = undefined,
   additionalInformation = undefined,
+  endDay = undefined,
+  requiredDay = undefined,
 }) {
   const { criterion } = useContext(CriterionContext);
   const { listing } = useContext(ListingContext);
@@ -128,7 +128,7 @@ function ChplUpdateIndicator({
 export default ChplUpdateIndicator;
 
 ChplUpdateIndicator.propTypes = {
-  requiredDay: string,
-  endDay: string,
   additionalInformation: string,
+  endDay: string,
+  requiredDay: string,
 };

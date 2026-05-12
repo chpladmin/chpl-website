@@ -18,6 +18,7 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { arrayOf } from 'prop-types';
 
+import ChplCodeSetIndicator from './code-set-indicator/code-set-indicator';
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
 import {
@@ -55,7 +56,7 @@ function ChplCriterionDetailsView({
   qmsStandards,
   accessibilityStandards,
 }) {
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
@@ -128,11 +129,11 @@ function ChplCriterionDetailsView({
                     <TableCell><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
                   </TableRow>
                 )}
-              { criterion.success && criterion.criterion.attributes?.codeSet && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+              { criterion.success && criterion.criterion.attributes?.codeSet
                 && (
                   <TableRow key="codeSet">
                     <TableCell component="th" scope="row">
-                      <ChplTooltip title="Complies with the month/year Code set for this criterion.">
+                      <ChplTooltip title="This refers to the minimum standard code set requirement for the certification criterion, where applicable. The displayed value indicates if the criterion is current or an update is required.">
                         <IconButton className={classes.infoIcon}>
                           <InfoIcon
                             className={classes.infoIconColor}
@@ -142,14 +143,9 @@ function ChplCriterionDetailsView({
                       Code Sets
                     </TableCell>
                     <TableCell>
-                      <List>
-                        { criterion.codeSets.map((cs) => (
-                          <ListItem key={cs.id}>
-                            { cs.codeSet.name }
-                          </ListItem>
-                        ))}
-                      </List>
-                      { criterion.codeSets?.length === 0 && 'None' }
+                      <ChplCodeSetIndicator
+                        criterion={criterion}
+                      />
                     </TableCell>
                   </TableRow>
                 )}
