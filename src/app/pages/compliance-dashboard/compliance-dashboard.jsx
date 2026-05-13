@@ -38,11 +38,19 @@ const useStyles = makeStyles({
     display: 'block',
     marginBottom: '-69px',
   },
+  importantDatesIframe: {
+    border: 'none',
+    width: '100%',
+    display: 'block',
+    marginBottom: '-69px',
+    marginTop: '-48px',
+  },
 });
 
 const reports = [{
   reportKey: 'ImportantDates',
   isWide: false,
+  uniqueClass: 'importantDatesIframe',
 }, {
   reportKey: 'DashboardNonconformities',
   isWide: false,
@@ -87,7 +95,7 @@ function ChplComplianceDashboard() {
     };
 
     return (
-      <Grid item xs={12} key={displayData.reportKey}>
+      <Grid item xs={12} key={report.reportKey}>
         <Card className={classes.reportCard}>
           <CardHeader title={displayData.title} />
           <CardContent className={classes.reportCardContent}>
@@ -96,7 +104,7 @@ function ChplComplianceDashboard() {
             ) : (
               <iframe
                 title={displayData.title}
-                className={classes.iframe}
+                className={report.uniqueClass ? classes[report.uniqueClass] : classes.iframe}
                 height={displayData.height}
                 src={displayData.url}
               />
