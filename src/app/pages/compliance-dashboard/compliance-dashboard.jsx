@@ -38,11 +38,7 @@ const useStyles = makeStyles({
     display: 'block',
     marginBottom: '-69px',
   },
-  importantDatesIframe: {
-    border: 'none',
-    width: '100%',
-    display: 'block',
-    marginBottom: '-69px',
+  lessTopMargin: {
     marginTop: '-48px',
   },
 });
@@ -50,7 +46,7 @@ const useStyles = makeStyles({
 const reports = [{
   reportKey: 'ImportantDates',
   isWide: false,
-  uniqueClass: 'importantDatesIframe',
+  uniqueClass: 'lessTopMargin',
 }, {
   reportKey: 'DashboardNonconformities',
   isWide: false,
@@ -104,7 +100,7 @@ function ChplComplianceDashboard() {
             ) : (
               <iframe
                 title={displayData.title}
-                className={report.uniqueClass ? classes[report.uniqueClass] : classes.iframe}
+                className={`${classes.iframe} ${report.uniqueClass ? classes[report.uniqueClass] : ''}`}
                 height={displayData.height}
                 src={displayData.url}
               />
