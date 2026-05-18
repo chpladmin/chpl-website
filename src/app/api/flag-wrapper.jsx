@@ -29,6 +29,7 @@ function FlagWrapper({ children }) {
   const sbulChangeRequestIsOn = isOn('sbul-change-request');
 
   const flagState = {
+    isOn,
     isProduction,
     demographicChangeRequestIsOn,
     insightsConnectionIsOn,

@@ -1,12 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import {
+  Badge,
+  CardHeader,
+  IconButton,
+  Menu,
+  makeStyles,
+} from '@material-ui/core';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { useFetchAnnouncements } from 'api/announcements';
 import { palette } from 'themes';
 
+const useStyles = makeStyles({
+  announcementHeader: {
+    backgroundColor: palette.white,
+    padding: '16px',
+    fontWeight: 'bold',
+    color: palette.black,
+  },
+  badge: {
+    border: `2px solid ${palette.primaryDark}`,
+  },
+});
+
 function ChplAnnouncementsFab() {
-  const [expanded, setExpanded] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [announcements, setAnnouncements] = useState([]);
+  const classes = useStyles();
 
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
 
@@ -16,135 +36,72 @@ function ChplAnnouncementsFab() {
   }, [data, isLoading, isSuccess]);
 
   const handleToggle = (event) => {
-    event.stopPropagation();
-    setExpanded((prev) => !prev);
+    setAnchorEl(anchorEl ? null : event.currentTarget);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const panel = document.getElementById('announcements-panel');
-      if (panel && !panel.contains(event.target)) {
-        setExpanded(false);
-      }
-    };
-    if (expanded) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [expanded]);
 
   return (
     <>
-      <button
-        style={{
-          position: 'sticky',
-          zIndex: 96000,
-          backgroundColor: 'transparent',
-          color: palette.white,
-          border: 'none',
-          cursor: 'pointer',
-          boxShadow: 'none',
-          padding: '14px',
-          borderRadius: '50%',
-        }}
+      <IconButton
         onClick={handleToggle}
         aria-label="Show announcements"
+        style={{ color: palette.white }}
       >
-        <span
-          style={{
-            backgroundColor: palette.primary,
-            color: palette.white,
-            borderRadius: '50%',
-            padding: '2px 6px',
-            fontSize: '12px',
-            position: 'absolute',
-            border: `2px ${palette.primaryDark} solid`,
-            top: '-2px',
-            right: '4px',
-          }}
+        <Badge
+          badgeContent={announcements.length}
+          color="primary"
+          overlap="rectangular"
+          classes={{ badge: classes.badge }}
         >
-          {announcements.length}
-        </span>
-        <NotificationsIcon style={{ fontSize: 18, color: palette.white }} />
-      </button>
-
-      {expanded && (
-        <div
-          id="announcements-panel"
-          style={{
+          <NotificationsIcon style={{ fontSize: 18 }} />
+        </Badge>
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleToggle}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        disableScrollLock
+        PaperProps={{
+          style: {
             width: '325px',
-            top: '64px',
-            right: 0,
-            position: 'fixed',
             maxWidth: 'calc(100vw - 48px)',
             maxHeight: 'calc(100vh - 100px)',
-            zIndex: 9998,
-            display: 'flex',
-            flexDirection: 'column',
-            border: `2px solid ${palette.primary}`,
-            background: palette.white,
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-          }}
-          role="region"
-          aria-label="Announcements panel"
-          aria-live="polite"
-        >
-          <div
-            style={{
-              padding: '16px',
-              backgroundColor: palette.primary,
-              color: palette.white,
-              borderRadius: '8px 8px 0px 0px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <h3 style={{
-              margin: 0, fontSize: '1.75rem', fontWeight: 'bold', fontFamily: 'inherit',
-            }}
-            >
-              Announcement
-              {announcements.length !== 1 ? 's' : ''}
-            </h3>
-            <button
-              onClick={handleToggle}
-              style={{
-                background: 'none', border: 'none', color: palette.white, fontSize: '20px', cursor: 'pointer',
-              }}
-              aria-label="Close announcements panel"
-            >
-              ×
-            </button>
-          </div>
-          <div role="main" style={{ flex: 1, overflowY: 'auto' }}>
-            {announcements.length === 0 ? (
-              <div style={{ textAlign: 'center', color: '#999', padding: '32px 16px' }}>
-                <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>No current announcements</p>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {announcements.map((announcement, index) => (
-                  <div
-                    key={announcement.id || index}
-                    style={{
-                      padding: '16px', wordWrap: 'break-word', whiteSpace: 'pre-wrap', borderBottom: '1px solid #e0e0e0',
-                    }}
-                  >
-                    <h4 style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>
-                      <strong>{announcement.title}</strong>
-                    </h4>
-                    {announcement.text && (
-                      <span>{announcement.text}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          },
+        }}
+      >
+        <CardHeader
+          fontWeight="bold"
+          className={classes.announcementHeader}
+          title={`Announcement${announcements.length !== 1 ? 's' : ''}`}
+        />
+        <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+          {announcements.length === 0 ? (
+            <div style={{ textAlign: 'center', color: '#999', padding: '32px 16px' }}>
+              <p style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>No current announcements</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {announcements.map((announcement, index) => (
+                <div
+                  key={announcement.id || index}
+                  style={{
+                    padding: '16px', wordWrap: 'break-word', whiteSpace: 'pre-wrap', borderBottom: '1px solid #e0e0e0',
+                  }}
+                >
+                  <h4 style={{ fontFamily: 'inherit', fontSize: 'inherit', margin: 0 }}>
+                    <strong>{announcement.title}</strong>
+                  </h4>
+                  {announcement.text && (
+                    <span>{announcement.text}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </Menu>
     </>
   );
 }

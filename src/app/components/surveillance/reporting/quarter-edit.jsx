@@ -10,6 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { func, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
@@ -227,7 +228,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                 fullWidth
                 variant="text"
                 color="primary"
-                endIcon={<ArrowForwardIcon />}
+                endIcon={<ArrowBackIcon />}
                 className={classes.menuItems}
               >
                 <Box display="flex" flexDirection="row" gridGap={4}>

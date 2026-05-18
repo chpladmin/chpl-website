@@ -31,8 +31,10 @@ const useStyles = makeStyles({
     gridRowGap: '16px',
   },
   loginHeader: {
-    backgroundColor: palette.secondary,
+    backgroundColor: palette.white,
     padding: '16px',
+    fontWeight: 'bold',
+    color: palette.black,
   },
   buttonProgress: {
     position: 'absolute',
@@ -152,8 +154,8 @@ function ChplSignin({ dispatch }) {
   });
 
   return (
-    <Card>
-      <CardHeader className={classes.loginHeader} title="Login required" />
+    <Card style={{ border: 'none' }}>
+      <CardHeader fontWeight="bold" className={classes.loginHeader} title="Login required" />
       <CardContent className={classes.grid}>
         <ChplTextField
           id="user-name"
