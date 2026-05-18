@@ -44,6 +44,10 @@ const util = {
   noWrap: {
     whiteSpace: 'nowrap',
   },
+  wordWrap: {
+    wordWrap: 'break-word',
+    overflowWrap: 'break-word',
+  },
   removedText: {
     fontStyle: 'italic',
   },

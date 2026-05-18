@@ -9,6 +9,7 @@ const palette = {
   greyLight: '#efefef',
   greyMain: '#afafaf',
   greyDark: '#101010',
+  navBackground: '#001439',
   primaryLight: '#c6d5e5',
   primary: '#156dac',
   primaryDark: '#122953',

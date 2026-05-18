@@ -4,7 +4,6 @@
 .settings/
 .vscode/
 node_modules/
-test_reports/
 .sass-cache/
 prod-website.sh
 generate-release-notes.sh
@@ -14,11 +13,7 @@ ready-for-integration.sh
 reset-qa.sh
 reset-local.sh
 update-pr.sh
-e2e/config/credentials.js
-test/config/credentials.js
 yarn-error.log
-e2e/config/urls.js
-test/config/urls.js
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -28,3 +23,4 @@ test/config/urls.js
 !.yarn/versions
 dist/
 .github/copilot-instructions.md
+test_reports/
