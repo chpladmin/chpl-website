@@ -5,13 +5,16 @@ import {
   AccordionSummary,
   Box,
   Container,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import ChplCriterionDetailsView from './criterion-details-view';
+import ChplTooltip from 'components/util/chpl-tooltip';
 
 import { eventTrack } from 'services/analytics.service';
 import { CriterionContext, useAnalyticsContext } from 'shared/contexts';
@@ -62,6 +65,9 @@ const useStyles = makeStyles({
   },
   rotate: {
     transform: 'rotate(180deg)',
+  },
+  updateRequired: {
+    color: palette.error,
   },
 });
 
@@ -169,6 +175,16 @@ function ChplCriterion({
                 { criterion.criterion.title }
               </Typography>
             </Box>
+              { criterion.upToDate === false
+              && (
+                <Box>
+                  <ChplTooltip title="Requirement not met">
+                    <IconButton size='small' aria-label="Requirement not met for this criterion">
+                      <WarningIcon className={classes.updateRequired} />
+                    </IconButton>
+                  </ChplTooltip>
+                </Box>
+              )}
           </Box>
         </AccordionSummary>
         { (listing.edition === null || listing.edition.name !== '2011')
