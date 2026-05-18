@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
   Box,
+  Button,
   CardContent,
   Chip,
   CircularProgress,
@@ -196,7 +196,7 @@ function ChplCmsDisplay() {
 
   if (!listings || listings.length === 0) {
     return (
-      <>
+      <CardContent className={classes.cardcontentPadding}>
         <Typography className={classes.emptyStateTitle} variant="h3" gutterBottom>
           CMS Certification ID Creator
         </Typography>
@@ -239,7 +239,7 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-      </>
+      </CardContent>
     );
   }
 
@@ -315,12 +315,11 @@ function ChplCmsDisplay() {
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
               && (
-                <Typography variant="body1" color="textSecondary" className={classes.preserveWhitespacePreWrapText}>
+                <Typography>
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
                   must meet 100% of the Base Criteria.
-                  {' '}
                 </Typography>
               )}
           </>

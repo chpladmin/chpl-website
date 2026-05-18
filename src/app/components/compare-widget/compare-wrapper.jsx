@@ -4,10 +4,9 @@ import { node } from 'prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
 
-function CompareWrapper(props) {
+function CompareWrapper({ children }) {
   const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
-  const { children } = props;
   const [listings, setListings] = useState([]);
 
   useEffect(() => {

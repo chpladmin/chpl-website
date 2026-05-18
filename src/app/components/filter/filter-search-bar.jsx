@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.grey,
     padding: '16px 32px',
     display: 'grid',
+    borderRadius: '8px',
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',

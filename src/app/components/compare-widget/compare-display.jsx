@@ -25,6 +25,7 @@ const useStyles = makeStyles({
   },
   cardcontentPadding: {
     padding: '8px',
+    width: '400px',
   },
   chipContainer: {
     display: 'flex',
@@ -56,7 +57,10 @@ function ChplCompareDisplay() {
 
   if (!listings || listings.length === 0) {
     return (
-      <Typography>No products selected</Typography>
+      <CardContent id="no-products-selected">
+        <Typography gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
+        <Typography variant="body2" className={classes.wordWrap}>Please select products to compare using the button found on either search results or product detail pages.</Typography>
+      </CardContent>
     );
   }
 
