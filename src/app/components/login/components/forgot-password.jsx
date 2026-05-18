@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -8,15 +8,15 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import SendIcon from '@material-ui/icons/Send';
-import { func, string } from 'prop-types';
+import { string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import { usePostForgotPassword } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
-import { useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -37,8 +37,9 @@ const validationSchema = yup.object({
     .email('Email format is invalid'),
 });
 
-function ChplForgotPassword({ dispatch, userName }) {
+function ChplForgotPassword({ userName }) {
   const { analytics } = useAnalyticsContext();
+  const { setLoginWidgetState } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostForgotPassword();
 
@@ -53,7 +54,7 @@ function ChplForgotPassword({ dispatch, userName }) {
       category: 'Authentication',
     });
     e.stopPropagation();
-    dispatch({ action: 'loggedOut' });
+    setLoginWidgetState('SIGNIN');
   };
 
   const catchEnter = (e, target) => {
@@ -72,7 +73,7 @@ function ChplForgotPassword({ dispatch, userName }) {
       onSuccess: () => {
         const body = `Forgotten password email sent to ${formik.values.email}; please check your email`;
         enqueueSnackbar(body, { variant: 'success' });
-        dispatch({ action: 'loggedOut' });
+        setLoginWidgetState('SIGNIN');
         formik.resetForm();
       },
       onError: () => {
@@ -139,6 +140,5 @@ function ChplForgotPassword({ dispatch, userName }) {
 export default ChplForgotPassword;
 
 ChplForgotPassword.propTypes = {
-  dispatch: func.isRequired,
   userName: string.isRequired,
 };

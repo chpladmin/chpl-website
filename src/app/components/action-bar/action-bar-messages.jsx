@@ -30,6 +30,7 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
     width: '250px',
+    zIndex: 1298,
   },
   toggle: {
     width: '32px',

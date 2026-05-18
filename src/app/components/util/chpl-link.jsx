@@ -3,7 +3,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { bool, string } from 'prop-types';
+import { bool, node, string } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -15,6 +15,12 @@ const useStyles = makeStyles({
     overflowWrap: 'anywhere',
     gap: '4px',
     justifyContent: 'space-between',
+  },
+  indicateOnHover: {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   disclaimerIcon: {
     marginTop: '4px',
@@ -32,9 +38,11 @@ function ChplLink({
   analytics = {},
   external = true,
   href: initialHref,
+  indicateOnHover = false,
   inline = false,
   router = {},
   text: initialText = '',
+  icon = undefined,
 }) {
   const classes = useStyles();
   const [href, setHref] = useState('');
@@ -64,7 +72,7 @@ function ChplLink({
 
   if (inline && !external) {
     return (
-      <a href={href} onClick={track}>
+      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
         {text}
       </a>
     );
@@ -72,9 +80,10 @@ function ChplLink({
 
   return (
     <span className={classes.chplLink}>
-      <a href={href} onClick={track}>
+      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
         {text}
       </a>
+      { icon }
       { external
         && (
           <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
@@ -93,6 +102,8 @@ ChplLink.propTypes = {
   href: string.isRequired,
   analytics: analyticsConfig,
   external: bool,
+  indicateOnHover: bool,
   inline: bool,
   router: routerConfig,
+  icon: node,
 };

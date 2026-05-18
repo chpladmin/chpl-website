@@ -5,10 +5,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext } from 'shared/contexts';
 
-function CmsWrapper(props) {
+function CmsWrapper({ children }) {
   const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
-  const { children } = props;
   const [listings, setListings] = useState([]);
   const queryClient = useQueryClient();
 
@@ -19,9 +18,11 @@ function CmsWrapper(props) {
   useEffect(() => {
     const deregisterAddWatcher = $rootScope.$on('cms.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
     const deregisterRemoveWatcher = $rootScope.$on('cms.removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
+    const deregisterRemoveAllWatcher = $rootScope.$on('cms.removeAll', () => setListings([]));
     return () => {
       deregisterAddWatcher();
       deregisterRemoveWatcher();
+      deregisterRemoveAllWatcher();
     };
   }, [$rootScope, setListings]);
 
