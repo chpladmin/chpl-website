@@ -16,6 +16,7 @@ import ChplUrlCheckerResponse from './url-checker-response';
 
 import { usePostUrlChecker } from 'api/url-checker';
 import { ChplTextField } from 'components/util';
+import palette from '../../themes/palette';
 
 const useStyles = makeStyles({
   buttonGroup: {
@@ -136,7 +137,7 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   return (
     <>
       <Box display="flex" alignItems="flex-start">
-        <Box ref={fieldAnchorRef} flexGrow={1}>
+        <Box ref={fieldAnchorRef} flexGrow={1} style={{ backgroundColor: palette.white }} borderRadius={4}> 
           <ChplTextField
             id="url"
             name="url"

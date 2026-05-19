@@ -1,30 +1,17 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Container,
   makeStyles,
-  Typography,
 } from '@material-ui/core';
 
 import ChplUploadListings from 'components/upload/upload-listings';
 import ChplUploadPromotingInteroperability from 'components/upload/upload-promoting-interoperability';
 import ChplUploadRealWorldTesting from 'components/upload/upload-real-world-testing';
 import { UserContext } from 'shared/contexts';
-import { palette, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  pageHeader: {
-    padding: '32px 0',
-    backgroundColor: palette.white,
-  },
-  pageBody: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: palette.background,
-    padding: '32px 0',
-    minHeight: 'calc(100vh - 268px)',
-  },
   uploadCards: {
     width: '48%',
   },
@@ -46,39 +33,24 @@ function ChplUpload() {
   const classes = useStyles();
 
   return (
-    <Box bgcolor={palette.background}>
-      <div className={classes.pageHeader}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h1"
-          >
-            Upload your files
-          </Typography>
-        </Container>
-      </div>
-      <div className={classes.pageBody} tabIndex="-1">
-        <Container maxWidth="lg">
-          <Box className={classes.uploadCardColumns}>
-            <Box className={classes.uploadCardContainer}>
-              { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-                && (
-                  <Box className={classes.uploadCards}>
-                    <ChplUploadListings />
-                  </Box>
-                )}
-              <Box className={classes.uploadCards}>
-                <ChplUploadRealWorldTesting />
-              </Box>
-              { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                && (
-                  <Box className={classes.uploadCards}>
-                    <ChplUploadPromotingInteroperability />
-                  </Box>
-                )}
+    <Box className={classes.uploadCardColumns}>
+      <Box className={classes.uploadCardContainer}>
+        { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+          && (
+            <Box className={classes.uploadCards}>
+              <ChplUploadListings />
             </Box>
-          </Box>
-        </Container>
-      </div>
+          )}
+        <Box className={classes.uploadCards}>
+          <ChplUploadRealWorldTesting />
+        </Box>
+        { hasAnyRole(['chpl-admin', 'chpl-onc'])
+          && (
+            <Box className={classes.uploadCards}>
+              <ChplUploadPromotingInteroperability />
+            </Box>
+          )}
+      </Box>
     </Box>
   );
 }
