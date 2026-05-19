@@ -45,28 +45,22 @@ const useStyles = makeStyles({
 
 const reports = [{
   reportKey: 'ImportantDates',
-  isWide: false,
   uniqueClass: 'lessTopMargin',
 }, {
   reportKey: 'DashboardNonconformities',
-  isWide: false,
 }, {
   reportKey: 'QuestionableUrls',
-  isWide: false,
+}, {
+  reportKey: 'DashboardRealWorldTesting',
 }, {
   reportKey: 'DirectReviews',
-  isWide: false,
 }, {
   reportKey: 'SurveillanceActivities',
-  isWide: false,
 }, {
   reportKey: 'DeveloperAttestations',
   isWide: true,
 }, {
   reportKey: 'ServiceBaseUrlList',
-  isWide: true,
-}, {
-  reportKey: 'DashboardRealWorldTesting',
   isWide: true,
 }, {
   reportKey: 'UpdatedCriteriaStatusReport',
@@ -87,7 +81,7 @@ function ChplComplianceDashboard() {
     const displayData = reportMetadata.find((r) => r.reportKey === report.reportKey) ?? {
       isLoading: true,
       title: `Not yet implemented - ${report.reportKey}`,
-      height: 600,
+      height: report.isWide ? 600 : 400,
     };
 
     return (
