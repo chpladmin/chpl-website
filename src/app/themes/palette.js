@@ -1,6 +1,7 @@
 const palette = {
   active: '#66926d',
   background: '#f9f9f9',
+  backgroundPage: '#e5e5e5',
   black: '#000',
   divider: '#c2c6ca',
   error: '#c44f65',
