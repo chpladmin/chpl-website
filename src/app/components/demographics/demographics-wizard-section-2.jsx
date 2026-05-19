@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -132,6 +132,10 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
   const classes = useStyles();
   let formik;
 
+  useEffect(() => {
+    setUrl(developer.website);
+  }, []);
+
   const getEnhancedEditField = (editProps) => getEditField({
     ...editProps,
     formik,
@@ -140,6 +144,7 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
   const handleDispatch = ({ action, url: submittedUrl }) => {
     switch (action) {
       case 'complete':
+        formik.setFieldValue('website', submittedUrl);
         setUrl(submittedUrl);
         break;
       case 'update':
@@ -154,10 +159,12 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
       ...analytics,
       event: 'Submit Developer Demographics Change Request',
     });
-    dispatch(url);
+    dispatch({
+      ...formik.values,
+    });
   };
 
-  const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);
+  const isSubmitDisabled = () => (!url || url.length === 0 || !formik.isValid || isSubmitting);
 
   formik = useFormik({
     initialValues: {
@@ -172,9 +179,6 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
       zipcode: developer.address?.zipcode || '',
       country: developer.address?.country || '',
       website: developer.website || '',
-    },
-    onSubmit: () => {
-      save();
     },
     validationSchema,
   });

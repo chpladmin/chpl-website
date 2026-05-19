@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   arrayOf,
   bool,
   func,
   number,
-  object,
   string,
 } from 'prop-types';
 
@@ -21,7 +20,6 @@ function ChplDemographicsWizard({
   stage = 0,
   errors = [],
 }) {
-
   const canNext = () => stage === 0;
 
   const canPrevious = () => stage > 0 && stage < 2;
@@ -33,7 +31,6 @@ function ChplDemographicsWizard({
   const handleProgressDispatch = (action) => dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
 
   const handleEditDispatch = (payload) => {
-    console.log({ payload });
     dispatch('submit', payload);
   };
 

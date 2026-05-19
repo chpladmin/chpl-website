@@ -47,8 +47,20 @@ function ChplDemographicsCreate({ dispatch }) {
         break;
       case 'submit':
         setErrors([]);
-        console.log({ payload });
-        mutate(payload, {
+        mutate({
+          developer,
+          changeRequestType,
+          details: {
+            ...developer,
+            ...payload,
+            contact: {
+              ...payload,
+            },
+            address: {
+              ...payload,
+            },
+          },
+        }, {
           onSuccess: () => {
             setStage(2);
           },
