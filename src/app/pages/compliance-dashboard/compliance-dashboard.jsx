@@ -15,14 +15,9 @@ import { useFetchReportMetadata } from 'api/reports';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { UserContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
-  container: {
-    padding: theme.spacing(8),
-    backgroundColor: palette.greyLight,
-    minHeight: 'calc(100vh - 238px)',
-  },
   reportCard: {
     height: 'auto',
     display: 'flex',
@@ -112,18 +107,7 @@ function ChplComplianceDashboard() {
   const serviceBaseUrlHeight = defaultHeights.ServiceBaseUrlList;
 
   return (
-    <>
-      <Box bgcolor={palette.white} p={8}>
-        <Container maxWidth="lg">
-          <Typography variant="h1">Compliance Dashboard</Typography>
-          <Typography variant="body1" color="textSecondary">
-            A comprehensive view of compliance reports and metrics
-          </Typography>
-        </Container>
-      </Box>
-      <Box className={classes.container}>
-        <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="flex-start">
+    <Grid container spacing={4} alignItems="flex-start">
             <Grid item xs={12} md={4}>
               <Grid container spacing={4}>
                 <Grid item xs={12}>
@@ -238,9 +222,6 @@ function ChplComplianceDashboard() {
               </Grid>
             </Grid>
           </Grid>
-        </Container>
-      </Box>
-    </>
   );
 }
 
