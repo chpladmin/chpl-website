@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   CircularProgress,
-  Typography,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
@@ -64,16 +63,11 @@ function ChplUsersPage() {
   }
 
   return (
-    <>
-      <Typography>
-        CHPL Users - test
-      </Typography>
-      <ChplUsers
-        dispatch={handleDispatch}
-        users={users}
-        groupNames={groupNames}
-      />
-    </>
+    <ChplUsers
+      dispatch={handleDispatch}
+      users={users}
+      groupNames={groupNames}
+    />
   );
 }
 
