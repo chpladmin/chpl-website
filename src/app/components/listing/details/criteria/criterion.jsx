@@ -14,8 +14,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WarningIcon from '@material-ui/icons/Warning';
 
 import ChplCriterionDetailsView from './criterion-details-view';
-import ChplTooltip from 'components/util/chpl-tooltip';
 
+import ChplTooltip from 'components/util/chpl-tooltip';
 import { eventTrack } from 'services/analytics.service';
 import { CriterionContext, useAnalyticsContext } from 'shared/contexts';
 import {
@@ -175,11 +175,11 @@ function ChplCriterion({
                 { criterion.criterion.title }
               </Typography>
             </Box>
-              { criterion.upToDate === false
+              { !criterion.upToDate
               && (
                 <Box>
                   <ChplTooltip title="Requirement not met">
-                    <IconButton size='small' aria-label="Requirement not met for this criterion">
+                    <IconButton size="small" aria-label="Requirement not met for this criterion">
                       <WarningIcon className={classes.updateRequired} />
                     </IconButton>
                   </ChplTooltip>
