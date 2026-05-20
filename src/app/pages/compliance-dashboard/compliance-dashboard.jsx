@@ -47,11 +47,11 @@ const reports = [{
   reportKey: 'ImportantDates',
   uniqueClass: 'lessTopMargin',
 }, {
-  reportKey: 'DashboardNonconformities',
+  reportKey: 'Nonconformities',
 }, {
   reportKey: 'QuestionableUrls',
 }, {
-  reportKey: 'DashboardRealWorldTesting',
+  reportKey: 'RealWorldTesting',
 }, {
   reportKey: 'DirectReviews',
 }, {
