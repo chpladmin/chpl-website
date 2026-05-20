@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplPageBody({ children, maxWidth }) {
+function ChplPageBody({ children, maxWidth = 'lg' }) {
   const classes = useStyles();
 
   return (
@@ -33,8 +33,4 @@ export default ChplPageBody;
 ChplPageBody.propTypes = {
   children: node.isRequired,
   maxWidth: oneOf(['xs', 'sm', 'md', 'lg', 'xl', false]),
-};
-
-ChplPageBody.defaultProps = {
-  maxWidth: 'lg',
 };

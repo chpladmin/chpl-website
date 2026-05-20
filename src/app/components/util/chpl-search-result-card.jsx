@@ -33,38 +33,41 @@ function ChplSearchResultCard({
       }}
       >
         <Box display="flex" flexDirection="column" flex={1} gap={2}>
-          <>
-            <Box display="flex" alignItems="center" gap={1}>
-              <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
-                { title }
-              </Typography>
-              { titleIconButton
-                && (
-                  <Box>
-                    { titleIconButton }
+          { (title || titleValue)
+            && (
+              <>
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
+                    { title }
+                  </Typography>
+                  { titleIconButton
+                    && (
+                      <Box>
+                        { titleIconButton }
+                      </Box>
+                    )}
+                </Box>
+                <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px' }} alignItems="center">
+                  <Box
+                    display="flex"
+                    flex={1}
+                    gridGap={2}
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Typography variant="h5">
+                      { titleValue }
+                    </Typography>
+                    { additionalTitleContent
+                      && (
+                        <Box>
+                          { additionalTitleContent }
+                        </Box>
+                      )}
                   </Box>
-                )}
-            </Box>
-            <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px' }} alignItems="center">
-              <Box
-                display="flex"
-                flex={1}
-                gridGap={2}
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography variant="h5">
-                  { titleValue }
-                </Typography>
-                { additionalTitleContent
-                  && (
-                    <Box>
-                      { additionalTitleContent }
-                    </Box>
-                  )}
-              </Box>
-            </Grid>
-          </>
+                </Grid>
+              </>
+            )}
           { fieldGroups.map((group) => (
             <Grid
               key={group.map((f) => f.label).join('-')}
@@ -112,8 +115,8 @@ function ChplSearchResultCard({
 export default ChplSearchResultCard;
 
 ChplSearchResultCard.propTypes = {
-  title: string.isRequired,
-  titleValue: oneOfType([string, node]).isRequired,
+  title: string,
+  titleValue: oneOfType([string, node]),
   titleIconButton: node,
   additionalTitleContent: node,
   fieldGroups: arrayOf(
