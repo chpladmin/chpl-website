@@ -71,6 +71,14 @@ function ChplChangeRequestDemographicsEdit() {
       details: {
         ...prev.details,
         [event.target.name]: event.target.value,
+        address: {
+          ...prev.details.address,
+          [event.target.name]: event.target.value,
+        },
+        contact: {
+          ...prev.details.contact,
+          [event.target.name]: event.target.value,
+        },
       },
     }));
     formik.handleChange(...args);
