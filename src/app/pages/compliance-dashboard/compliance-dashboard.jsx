@@ -63,7 +63,7 @@ const reports = [{
   reportKey: 'ServiceBaseUrlList',
   isWide: true,
 }, {
-  reportKey: 'UpdatedCriteriaStatusReport',
+  reportKey: 'UpdatedCriteriaStatus',
   isWide: true,
 }];
 
