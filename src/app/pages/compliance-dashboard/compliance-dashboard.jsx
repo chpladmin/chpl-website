@@ -44,26 +44,26 @@ const useStyles = makeStyles({
 });
 
 const reports = [{
-  reportKey: 'ImportantDates',
+  title: 'Important Dates',
   uniqueClass: 'lessTopMargin',
 }, {
-  reportKey: 'Nonconformities',
+  title: 'Non-Conformities',
 }, {
-  reportKey: 'QuestionableUrls',
+  title: 'Questionable URLs',
 }, {
-  reportKey: 'RealWorldTesting',
+  title: 'Real World Testing',
 }, {
-  reportKey: 'DirectReviews',
+  title: 'Direct Reviews',
 }, {
-  reportKey: 'SurveillanceActivities',
+  title: 'Surveillance Activities',
 }, {
-  reportKey: 'DeveloperAttestations',
+  title: 'Developer Attestations',
   isWide: true,
 }, {
-  reportKey: 'ServiceBaseUrlList',
+  title: 'Service Base URL List',
   isWide: true,
 }, {
-  reportKey: 'UpdatedCriteriaStatus',
+  title: 'Updated Criteria Status',
   isWide: true,
 }];
 
@@ -78,18 +78,18 @@ function ChplComplianceDashboard() {
   }, [data, isLoading, isSuccess]);
 
   const buildCard = (report) => {
-    const displayData = reportMetadata.find((r) => r.reportKey === report.reportKey) ?? {
+    const displayData = reportMetadata.find((r) => r.title === report.title) ?? {
       isLoading: true,
-      title: `Not yet implemented - ${report.reportKey}`,
+      title: `Not yet implemented - ${report.title}`,
       height: report.isWide ? 600 : 400,
     };
 
     return (
-      <Grid item xs={12} key={report.reportKey}>
+      <Grid item xs={12} key={report.title}>
         <Card className={classes.reportCard}>
           <CardHeader title={displayData.title} />
           <CardContent className={classes.reportCardContent}>
-            {displayData.isLoading ? (
+            { displayData.isLoading ? (
               <Skeleton variant="rect" height={displayData.height} />
             ) : (
               <iframe
