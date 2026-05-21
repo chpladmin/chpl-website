@@ -154,6 +154,14 @@ const createPdf = (data) => {
     40,
     bodyStartY + 30,
     doc.splitTextToSize(
+      'For the specified year, the certification criteria listed reflect any updated requirements where applicable.',
+      775,
+    ),
+  );
+  doc.text(
+    40,
+    bodyStartY + 50,
+    doc.splitTextToSize(
       'Note: Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
       775,
     ),
@@ -162,7 +170,7 @@ const createPdf = (data) => {
   // Add Certification ID to PDF
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text(200, bodyStartY + 70, `CMS EHR Certification ID: ${data.ehrCertificationId}`);
+  doc.text(200, bodyStartY + 100, `CMS EHR Certification ID: ${data.ehrCertificationId}`);
 
   // Add products table to PDF
   doc.setFontSize(10);
@@ -187,7 +195,7 @@ const createPdf = (data) => {
         0: { cellWidth: 175 },
         1: { cellWidth: 'auto' },
       },
-      startY: idx === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
+      startY: idx === 0 ? bodyStartY + 120 : doc.autoTable.previous.finalY + 10,
       margin: 20,
       pageBreak: 'avoid',
       tableWidth: 'auto',
