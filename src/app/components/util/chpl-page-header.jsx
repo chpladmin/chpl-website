@@ -1,5 +1,9 @@
 import React from 'react';
-import { Box, Container, Typography } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  Typography,
+} from '@material-ui/core';
 import { node, string } from 'prop-types';
 
 import { palette } from 'themes';

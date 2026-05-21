@@ -16,7 +16,7 @@ import ChplUrlCheckerResponse from './url-checker-response';
 
 import { usePostUrlChecker } from 'api/url-checker';
 import { ChplTextField } from 'components/util';
-import palette from '../../themes/palette';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   buttonGroup: {
