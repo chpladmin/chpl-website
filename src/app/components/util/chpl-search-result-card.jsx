@@ -117,6 +117,7 @@ export default ChplSearchResultCard;
 ChplSearchResultCard.propTypes = {
   title: string, // Optional - job views only use fieldGroups without title section
   titleValue: oneOfType([string, node]), // Optional - job views only use fieldGroups without title section
+  // Note: Consolidating title/titleValue into a single prop would require updating 17+ system maintenance pages
   titleIconButton: node,
   additionalTitleContent: node,
   fieldGroups: arrayOf(

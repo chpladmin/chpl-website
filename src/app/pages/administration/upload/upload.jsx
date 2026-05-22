@@ -15,17 +15,6 @@ const useStyles = makeStyles({
   uploadCards: {
     width: '48%',
   },
-  uploadCardContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: '16px',
-  },
-  uploadCardColumns: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
 });
 
 function ChplUpload() {
@@ -33,8 +22,17 @@ function ChplUpload() {
   const classes = useStyles();
 
   return (
-    <Box className={classes.uploadCardColumns}>
-      <Box className={classes.uploadCardContainer}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={2}
+    >
+      <Box
+        display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
+        gap={2}
+      >
         { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
           && (
             <Box className={classes.uploadCards}>
