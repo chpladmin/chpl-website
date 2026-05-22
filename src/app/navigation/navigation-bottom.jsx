@@ -32,12 +32,15 @@ const useStyles = makeStyles({
   },
   footerContentContainer: {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     marginTop: '4px',
-    [theme.breakpoints.up('xs')]: {
+    gap: '8px',
+    alignItems: 'center',
+    [theme.breakpoints.up('lg')]: {
+      flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: '8px',
+      gap: '4px',
+      justifyContent: 'space-between',
     },
   },
   footerText: {
@@ -54,7 +57,7 @@ function ChplNavigationBottom() {
     <Box className={classes.footer}>
       <Container maxWidth="lg" disableGutters>
         <Box className={classes.footerContentContainer}>
-          <Box display="flex" flexDirection="row" alignItems="baseline" gridGap={4}>
+          <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gridGap={4} >
             <Typography className={classes.footerText} variant="body1">Helpful Links</Typography>
             <Box color="#fff" display="flex" gridGap={2}>
               <a className={classes.footerText} href="#/search">Home</a>
@@ -66,7 +69,7 @@ function ChplNavigationBottom() {
               <a className={classes.footerText} href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
             </Box>
           </Box>
-          <Box display="flex" flexDirection="row" alignItems="baseline" gridGap={4}>
+          <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gridGap={4}>
             <Typography className={classes.footerText} variant="body1">Affiliate Websites</Typography>
             <Box display="flex" alignItems="center" gridGap={16}>
               <a href="https://www.whitehouse.gov/">
@@ -83,7 +86,7 @@ function ChplNavigationBottom() {
               </a>
             </Box>
           </Box>
-          <Box display="flex" alignItems="center" flexDirection="row" gridGap={4}>
+          <Box display="flex" alignItems="center" textAlign={{xs: 'center', md: 'left' }} flexDirection={{ xs: 'column', md: 'row' }} gridGap={4}>
             <Typography className={classes.footerText} variant="body1">Owned by the Office of the National Coordinator for Health Information Technology</Typography>
           </Box>
         </Box>

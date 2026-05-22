@@ -25,13 +25,13 @@ function ChplUpload() {
     <Box
       display="flex"
       flexDirection="column"
-      gap={2}
+      gridGap="8px"
     >
       <Box
         display="flex"
         flexDirection="row"
         flexWrap="wrap"
-        gap={2}
+        gridGap="8px"
       >
         { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
           && (
