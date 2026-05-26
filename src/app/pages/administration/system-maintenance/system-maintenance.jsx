@@ -1,16 +1,16 @@
 import React, { useContext, useState } from 'react';
 import {
-  Card,
-  CardContent,
   Box,
   Button,
+  Card,
+  CardContent,
   Container,
+  Divider,
   List,
   ListItem,
+  ListItemText,
   Typography,
   makeStyles,
-  Divider,
-  ListItemText,
 } from '@material-ui/core';
 import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
 import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
@@ -63,16 +63,6 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  pageHeader: {
-    backgroundColor: '#ffffff',
-    padding: '32px',
-    marginBottom: '16px',
-  },
-  pageTitle: {
-    fontSize: '1.25em',
-    fontWeight: 'bold',
-    maxWidth: '100%',
-  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -283,15 +273,7 @@ function ChplSystemMaintenance() {
 
   return (
     <AnalyticsContext.Provider value={data}>
-      <Box className={classes.pageHeader}>
-        <Container maxWidth="lg">
-          <Typography variant="h1" className={classes.pageTitle}>
-            System Maintenance
-          </Typography>
-        </Container>
-      </Box>
-      <Container maxWidth="lg">
-        <div className={classes.container}>
+      <div className={classes.container}>
           <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
             <Card className={classes.navigationFlex}>
               <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
@@ -354,7 +336,6 @@ function ChplSystemMaintenance() {
             { active === 'ucdProcesses' && <ChplUcdProcesses /> }
           </Box>
         </div>
-      </Container>
     </AnalyticsContext.Provider>
   );
 }

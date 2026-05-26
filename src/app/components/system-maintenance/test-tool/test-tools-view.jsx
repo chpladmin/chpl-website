@@ -105,8 +105,8 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.value}`}
-              title="Value"
-              titleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
+              cardTitle="Value"
+              cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
               titleIconButton={(
                 <ChplTooltip title="Use this value in a upload file">
                   <IconButton color="primary" size="small">
