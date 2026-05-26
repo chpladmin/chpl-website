@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "14.3.0",
+  "version": "14.4.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -10,9 +10,7 @@
     "start:prod": "webpack-dev-server --env.server --env.NODE_ENV=production",
     "start:prod:dev": "webpack-dev-server --env.server --env.useDev --env.NODE_ENV=production",
     "lint": "eslint src",
-    "lint:fix": "eslint --fix",
-    "wdio": "wdio run ./wdio.conf.js",
-    "wdio:clean": "rm -r test_reports/e2e/* || true"
+    "lint:fix": "eslint --fix"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
@@ -26,6 +24,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@tanstack/react-query": "4.42.0",
     "@tanstack/react-query-devtools": "4.42.0",
+    "@uirouter/react": "^1.0.8",
     "angular": "^1.8.3",
     "angular-animate": "^1.8.3",
     "angular-aria": "^1.8.3",
@@ -70,12 +69,6 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.21.4",
-    "@testing-library/webdriverio": "^3.2.1",
-    "@wdio/cli": "^9.12.1",
-    "@wdio/jasmine-framework": "^9.12.1",
-    "@wdio/junit-reporter": "^9.11.0",
-    "@wdio/local-runner": "^9.12.1",
-    "@wdio/spec-reporter": "^9.11.0",
     "angular-mocks": "^1.8.3",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^26.6.3",
@@ -104,7 +97,6 @@
     "http-proxy-middleware": "~3.0.3",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
-    "jasmine-core": "^3.99.1",
     "jscodeshift": "^0.13.1",
     "mini-css-extract-plugin": "^0.4.5",
     "postcss": "^5.2.18",
@@ -119,8 +111,6 @@
     "style-loader": "^0.21.0",
     "uglify-save-license": "~0.4.1",
     "url-loader": "^1.1.2",
-    "wdio-chromedriver-service": "^8.1.1",
-    "wdio-wait-for": "^3.1.0",
     "webpack": "5.94.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.3",
@@ -131,5 +121,5 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.14.1"
 }

@@ -41,6 +41,13 @@ const useStyles = makeStyles({
     display: 'block',
     marginBottom: '-69px',
   },
+  importantDatesIframe: {
+    border: 'none',
+    width: '100%',
+    display: 'block',
+    marginTop: '-48px',
+    marginBottom: '-69px',
+  },
 });
 
 function ChplComplianceDashboard() {
@@ -58,6 +65,7 @@ function ChplComplianceDashboard() {
   const defaultHeights = {
     QuestionableUrls: 365,
     DeveloperAttestations: 600,
+    ImportantDates: 450,
     ServiceBaseUrlList: 600,
   };
 
@@ -95,10 +103,12 @@ function ChplComplianceDashboard() {
 
   const questionableUrlsReport = reportMetadata.find((r) => r.reportKey === 'QuestionableUrls');
   const attestationsReport = reportMetadata.find((r) => r.reportKey === 'DeveloperAttestations');
+  const importantDatesReport = reportMetadata.find((r) => r.reportKey === 'ImportantDates');
   const serviceBaseUrlReport = reportMetadata.find((r) => r.reportKey === 'ServiceBaseUrlList');
 
   const questionableUrlsHeight = defaultHeights.QuestionableUrls;
   const attestationsHeight = defaultHeights.DeveloperAttestations;
+  const importantDatesHeight = defaultHeights.ImportantDates;
   const serviceBaseUrlHeight = defaultHeights.ServiceBaseUrlList;
 
   return (
@@ -116,6 +126,27 @@ function ChplComplianceDashboard() {
           <Grid container spacing={4} alignItems="flex-start">
             <Grid item xs={12} md={4}>
               <Grid container spacing={4}>
+                <Grid item xs={12}>
+                  <Card className={classes.reportCard}>
+                    <CardHeader title={importantDatesReport?.title || 'Important Dates'} />
+                    <CardContent className={classes.reportCardContent}>
+                      {isLoading ? (
+                        <Skeleton variant="rect" height={importantDatesHeight} />
+                      ) : importantDatesReport ? (
+                        <iframe
+                          title={importantDatesReport.title}
+                          className={classes.importantDatesIframe}
+                          height={importantDatesHeight}
+                          src={importantDatesReport.url}
+                        />
+                      ) : (
+                        <Typography variant="body1" color="textSecondary" align="center" style={{ padding: '32px' }}>
+                          Report not available
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
                 <Grid item xs={12}>
                   <Card className={classes.reportCard}>
                     <CardHeader title={questionableUrlsReport?.title || 'Questionable URLs'} />
