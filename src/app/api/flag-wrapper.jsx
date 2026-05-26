@@ -21,6 +21,7 @@ function FlagWrapper({ children }) {
 
   const isOn = (flag) => flags?.length > 0 && flags.find((f) => f.key === flag)?.active;
 
+  const cmsDisabledIsOn = isOn('cms-disabled');
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
   const insightsConnectionIsOn = isOn('insights-connection');
   const insightsDisplayIsOn = isOn('insights-display');
@@ -31,6 +32,7 @@ function FlagWrapper({ children }) {
   const flagState = {
     isOn,
     isProduction,
+    cmsDisabledIsOn,
     demographicChangeRequestIsOn,
     insightsConnectionIsOn,
     insightsDisplayIsOn,

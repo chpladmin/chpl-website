@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Container,
@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { usePostReportRequest } from 'api/cms';
+import { FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -23,6 +24,7 @@ const useStyles = makeStyles({
 });
 
 function ChplCms() {
+  const { cmsDisabledIsOn } = useContext(FlagContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
   const classes = useStyles();
@@ -42,6 +44,17 @@ function ChplCms() {
       },
     });
   };
+
+  if (cmsDisabledIsOn) {
+    return (
+      <Container className={classes.fixFooterSpacing} maxWidth="lg">
+        <Typography className={classes.titlePadding} variant="h1">CMS Management</Typography>
+        <Typography variant="body1">
+          This feature is not enabled at this time
+        </Typography>
+      </Container>
+    );
+  }
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="lg">

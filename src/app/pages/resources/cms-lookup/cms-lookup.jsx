@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -27,7 +27,7 @@ import { ChplLink } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage as useStorage } from 'services/storage.service';
-import { useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const csvOptions = {
@@ -81,6 +81,7 @@ const useStyles = makeStyles({
 
 function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
+  const { cmsDisabledIsOn } = useContext(FlagContext);
   const analytics = {
     ...useAnalyticsContext().analytics,
     category: 'CMS ID Reverse Lookup',
@@ -139,6 +140,21 @@ function ChplCmsLookup() {
         // no default
     }
   };
+
+  if (cmsDisabledIsOn) {
+    return (
+      <Container className={classes.fixFooterSpacing} maxWidth="lg">
+        <div className={classes.pageHeader}>
+          <Typography variant="h1">CMS ID Reverse Lookup</Typography>
+        </div>
+        <div className={classes.pageBody} id="main-content" tabIndex="-1">
+          <Typography variant="body1">
+            This feature is not enabled at this time
+          </Typography>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container className={classes.fixFooterSpacing} maxWidth="lg">
