@@ -24,31 +24,25 @@ function ChplUpload() {
   return (
     <Box
       display="flex"
-      flexDirection="column"
+      flexDirection="row"
+      flexWrap="wrap"
       gridGap="8px"
     >
-      <Box
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        gridGap="8px"
-      >
-        { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-          && (
-            <Box className={classes.uploadCards}>
-              <ChplUploadListings />
-            </Box>
-          )}
-        <Box className={classes.uploadCards}>
-          <ChplUploadRealWorldTesting />
-        </Box>
-        { hasAnyRole(['chpl-admin', 'chpl-onc'])
-          && (
-            <Box className={classes.uploadCards}>
-              <ChplUploadPromotingInteroperability />
-            </Box>
-          )}
+      { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+        && (
+          <Box className={classes.uploadCards}>
+            <ChplUploadListings />
+          </Box>
+        )}
+      <Box className={classes.uploadCards}>
+        <ChplUploadRealWorldTesting />
       </Box>
+      { hasAnyRole(['chpl-admin', 'chpl-onc'])
+        && (
+          <Box className={classes.uploadCards}>
+            <ChplUploadPromotingInteroperability />
+          </Box>
+        )}
     </Box>
   );
 }
