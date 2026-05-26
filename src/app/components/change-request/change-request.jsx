@@ -238,12 +238,11 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
   const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const crstQuery = useFetchChangeRequestStatusTypes();
-  const { mutate } = usePutChangeRequest();
+  const { mutate, isLoading: isProcessing } = usePutChangeRequest();
   const classes = useStyles();
 
   let formik;
@@ -475,14 +474,13 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['chpl-developer']));
 
   save = (request) => {
-    setIsProcessing(true);
+    console.log({ request });
     mutate({
       acknowledgeWarnings,
       changeRequest: request,
     }, {
       onSuccess: () => {
         dispatch('close');
-        setIsProcessing(false);
         setWarnings([]);
       },
       onError: (error) => {
@@ -491,11 +489,9 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
             variant: 'info',
           });
           dispatch('close');
-          setIsProcessing(false);
           setWarnings([]);
         } else if (error.response.data.warningMessages?.length > 0) {
           setShowAcknowledgement(true);
-          setIsProcessing(false);
           setWarnings(error.response.data.warningMessages);
         } else {
           const message = error.response.data?.error
@@ -504,7 +500,6 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
             variant: 'error',
           });
           formik.resetForm();
-          setIsProcessing(false);
           setWarnings([]);
         }
       },
