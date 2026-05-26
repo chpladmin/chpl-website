@@ -8,7 +8,6 @@ import {
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
@@ -35,17 +34,6 @@ const sortOptions = [
 ];
 
 const useStyles = makeStyles({
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -55,6 +43,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
+    backgroundColor: '#ffffff',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
@@ -64,8 +53,6 @@ const useStyles = makeStyles({
   },
   cardsContainer: {
     margin: '0px 24px',
-    maxHeight: 'calc(100vh - 400px)',
-    overflow: 'auto',
   },
 });
 
@@ -125,25 +112,6 @@ function ChplDecisionSupportInterventionsSearchView() {
 
   return (
     <>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">Decision Support Interventions</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1">
-            This list includes all health IT products that have been certified to the following Criterion:
-          </Typography>
-          <ul>
-            <li>&sect;170.315 (b)(11): Decision Support Interventions</li>
-          </ul>
-          <Typography variant="body1" gutterBottom>
-            Certified Health IT developers are required to apply intervention risk management practices to Predictive DSIs they supply as part of their (b)(11)-certified products. These practices, including risk analysis, risk mitigation, and governance, are summarized and made publicly available through URLs listed in the Risk Management Summary Information column.
-          </Typography>
-          <Typography variant="body1">
-            Please note that by default, only listings that are active or suspended are shown in the search results.
-          </Typography>
-        </div>
-      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
@@ -229,28 +197,28 @@ function ChplDecisionSupportInterventionsSearchView() {
                                 />
                               ),
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                             {
                               label: 'Product',
                               value: item.product.name,
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                             {
                               label: 'Version',
                               value: item.version.name,
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
-                          ],
-                          [
                             {
                               label: 'Status',
                               value: getStatusIcon(item.certificationStatus),
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
+                          ],
+                          [
                             {
                               label: 'Risk Management Summary Information',
                               value: item.riskManagementSummaryInformationValue
@@ -267,7 +235,7 @@ function ChplDecisionSupportInterventionsSearchView() {
                                 )
                                 : 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
                               xs: 12,
-                              sm: 8,
+                              sm: 12,
                             },
                           ],
                         ]}

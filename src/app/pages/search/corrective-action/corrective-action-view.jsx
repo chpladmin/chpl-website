@@ -8,7 +8,6 @@ import {
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
@@ -43,16 +42,6 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -62,6 +51,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
+    backgroundColor: '#ffffff',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
@@ -71,8 +61,6 @@ const useStyles = makeStyles({
   },
   cardsContainer: {
     margin: '0px 24px',
-    maxHeight: 'calc(100vh - 400px)',
-    overflow: 'auto',
   },
 });
 
@@ -132,73 +120,62 @@ function ChplCorrectiveActionSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">Products: Corrective Action Status</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1" gutterBottom>
-          This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as &quot;Surveillance NCs&quot;, while non-conformities identified though an ONC Direct Review are noted as &quot;Direct Review NCs&quot;. Not all non-conformities affect a product&apos;s functionality, and the existence of a non-conformity does not by itself mean that a product is &quot;defective.&quot; Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product&apos;s CHPL ID.
-        </Typography>
-        <Typography variant="body1">
-          Please note that by default, only listings that are active or suspended are shown in the search results.
-        </Typography>
-        { !isLoading && !directReviewsAvailable
-          && (
-            <>
-              <Typography variant="body1" gutterBottom>
-                This information is temporarily unavailable. Please check back later.
-              </Typography>
-              <Typography variant="body1">
-                Surveillance and Direct Review information can be downloaded from the
-                {' '}
-                <ChplLink
-                  href="#/resources/download"
-                  text="Download the CHPL"
-                  analytics={{
-                    ...analytics,
-                    event: 'Navigate to Download the CHPL',
-                  }}
-                  external={false}
-                  router={{ sref: 'resources.download' }}
-                  inline
-                />
-              </Typography>
-            </>
-          )}
-      </div>
-      { directReviewsAvailable
+      {!isLoading && !directReviewsAvailable
+        && (
+          <>
+            <Typography variant="body1" gutterBottom>
+              This information is temporarily unavailable. Please check back later.
+            </Typography>
+            <Typography variant="body1">
+              Surveillance and Direct Review information can be downloaded from the
+              {' '}
+              <ChplLink
+                href="#/resources/download"
+                text="Download the CHPL"
+                analytics={{
+                  ...analytics,
+                  event: 'Navigate to Download the CHPL',
+                }}
+                external={false}
+                router={{ sref: 'resources.download' }}
+                inline
+              />
+            </Typography>
+          </>
+        )}
+      {directReviewsAvailable
         && (
           <>
             <ChplFilterSearchBar />
             <div>
               <ChplFilterChips />
             </div>
-            { isLoading
+            {isLoading
               && (
                 <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
                   <CircularProgress />
                 </Box>
               )}
-            { !isLoading
+            {!isLoading
               && (
                 <>
                   <div className={classes.resultsHeaderContainer}>
                     <div className={classes.resultsContainer}>
                       <Typography variant="subtitle2">Search Results:</Typography>
-                      { listings.length === 0
+                      {listings.length === 0
                         && (
                           <Typography>
                             No results found
                           </Typography>
                         )}
-                      { listings.length > 0
+                      {listings.length > 0
                         && (
                           <Typography variant="body2">
                             {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                           </Typography>
                         )}
                     </div>
-                    { listings.length > 0
+                    {listings.length > 0
                       && (
                         <Box display="flex" alignItems="center" gap={2}>
                           <ChplSortControls
@@ -214,11 +191,11 @@ function ChplCorrectiveActionSearchView() {
                         </Box>
                       )}
                   </div>
-                  { listings.length > 0
+                  {listings.length > 0
                     && (
                       <>
                         <Box className={classes.cardsContainer}>
-                          { listings.map((item) => (
+                          {listings.map((item) => (
                             <ChplSearchResultCard
                               key={item.id}
                               cardTitle="CHPL ID"
@@ -254,53 +231,53 @@ function ChplCorrectiveActionSearchView() {
                                       />
                                     ),
                                     xs: 12,
-                                    sm: 6,
+                                    sm: 4,
                                   },
                                   {
                                     label: 'Product',
                                     value: item.product.name,
                                     xs: 12,
-                                    sm: 6,
+                                    sm: 4,
                                   },
-                                ],
-                                [
                                   {
                                     label: 'Version',
                                     value: item.version.name,
                                     xs: 12,
-                                    sm: 6,
-                                  },
-                                  {
-                                    label: 'Status',
-                                    value: getStatusIcon(item.certificationStatus),
-                                    xs: 12,
-                                    sm: 6,
+                                    sm: 4,
                                   },
                                 ],
                                 [
                                   {
                                     label: '# Open Surveillance NCs',
                                     value: item.openSurveillanceNonConformityCount,
-                                    xs: 6,
-                                    sm: 3,
+                                    xs: 4,
+                                    sm: 4,
                                   },
                                   {
                                     label: '# Closed Surveillance NCs',
                                     value: item.closedSurveillanceNonConformityCount,
-                                    xs: 6,
-                                    sm: 3,
+                                    xs: 4,
+                                    sm: 4,
                                   },
+                                  {
+                                    label: 'Status',
+                                    value: getStatusIcon(item.certificationStatus),
+                                    xs: 4,
+                                    sm: 4,
+                                  },
+                                ],
+                                [
                                   {
                                     label: '# Open Direct Review NCs',
                                     value: item.openDirectReviewNonConformityCount,
                                     xs: 6,
-                                    sm: 3,
+                                    sm: 4,
                                   },
                                   {
                                     label: '# Closed Direct Review NCs',
                                     value: item.closedDirectReviewNonConformityCount,
                                     xs: 6,
-                                    sm: 3,
+                                    sm: 4,
                                   },
                                 ],
                               ]}

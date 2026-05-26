@@ -39,14 +39,6 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -56,6 +48,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
+    backgroundColor: '#ffffff',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
@@ -65,8 +58,6 @@ const useStyles = makeStyles({
   },
   cardsContainer: {
     margin: '0px 24px',
-    maxHeight: 'calc(100vh - 400px)',
-    overflow: 'auto',
   },
 });
 
@@ -181,27 +172,6 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
 
   return (
     <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">API Information</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1">
-          This list includes all health IT products that have been certified to at least one of the following API Criteria:
-        </Typography>
-        <ul>
-          { displayCriteria.map((cc) => (
-            <li key={cc.id}>
-              {`§${cc.longDisplay}`}
-            </li>
-          ))}
-        </ul>
-        <Typography variant="body1" gutterBottom>
-          The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
-        </Typography>
-        <Typography variant="body1">
-          Please note that by default, only listings that are active or suspended are shown in the search results.
-        </Typography>
-      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
@@ -287,33 +257,33 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                 />
                               ),
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                             {
                               label: 'Product',
                               value: item.product.name,
-                              xs: 12,
-                              sm: 4,
+                              xs: 6,
+                              sm: 3
                             },
                             {
                               label: 'Version',
                               value: item.version.name,
-                              xs: 12,
-                              sm: 4,
+                              xs: 6,
+                              sm: 3,
                             },
+                             {
+                              label: 'Status',
+                              value: getStatusIcon(item.certificationStatus),
+                              xs: 6,
+                              sm: 3,
+                            }, 
                           ],
                           [
                             {
-                              label: 'Status',
-                              value: getStatusIcon(item.certificationStatus),
-                              xs: 12,
-                              sm: 4,
-                            },
-                            {
                               label: 'API Documentation',
                               value: item.apiDocumentationNode,
-                              xs: 12,
-                              sm: 4,
+                              xs: 6,
+                              sm: 3,
                             },
                             {
                               label: 'Service Base URL List',
@@ -335,11 +305,9 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                   </dl>
                                 )
                                 : 'N/A',
-                              xs: 12,
-                              sm: 4,
+                              xs: 4,
+                              sm: 3,
                             },
-                          ],
-                          [
                             {
                               label: 'Mandatory Disclosures URL',
                               value: item.mandatoryDisclosures
@@ -355,8 +323,8 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                   />
                                 )
                                 : 'N/A',
-                              xs: 12,
-                              sm: 12,
+                              xs: 4,
+                              sm: 3,
                             },
                           ],
                         ]}

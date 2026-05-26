@@ -55,6 +55,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
+    backgroundColor: '#ffffff',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
@@ -64,8 +65,6 @@ const useStyles = makeStyles({
   },
   cardsContainer: {
     margin: '0px 24px',
-    maxHeight: 'calc(100vh - 400px)',
-    overflow: 'auto',
   },
 });
 
@@ -124,45 +123,6 @@ function ChplBannedDevelopersSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">
-          Developers Under Certification Ban
-        </Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1" gutterBottom>
-            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program - including new products as well as upgraded versions of current products. ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:
-          </Typography>
-          <ol>
-            <li>
-              <strong>Developer Failure to Take Appropriate Corrective Action</strong>
-              {' '}
-              A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.
-            </li>
-            <li>
-              <strong>Product Withdrawn While Under Surveillance</strong>
-              {' '}
-              A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
-            </li>
-          </ol>
-          <Typography variant="body1">
-            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product’s details page to confirm its certification status by
-            {' '}
-            <ChplLink
-              href="#/search"
-              text="searching for the product"
-              analytics={{
-                ...analytics,
-                event: 'Navigate to searching for the product',
-              }}
-              external={false}
-              router={{ sref: 'search' }}
-              inline
-            />
-          </Typography>
-        </div>
-      </div>
       <ChplFilterSearchBar
         placeholder="Search by Developer Name or Code..."
       />

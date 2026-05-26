@@ -8,7 +8,6 @@ import {
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
@@ -39,16 +38,6 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -57,6 +46,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
+    backgroundColor: '#ffffff',
     padding: '16px 32px',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
@@ -125,38 +115,6 @@ function ChplDecertifiedProductsSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">Decertified Products</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1" gutterBottom>
-          This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
-          {' '}
-          <ChplLink
-            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-            text="CHPL Public User Guide"
-            analytics={{
-              ...analytics,
-              event: 'Go to CHPL Public User Guide',
-            }}
-            external={false}
-            inline
-          />
-          . For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the
-          {' '}
-          <ChplLink
-            href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html"
-            text="CMS FAQ"
-            analytics={{
-              ...analytics,
-              event: 'Go to CMS FAQ',
-            }}
-            external={false}
-            inline
-          />
-          . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
-        </Typography>
-      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
