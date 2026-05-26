@@ -58,7 +58,7 @@ function ChplSortControls({
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={<SortIcon />}
           color="primary"
-          style={{ padding: '8px 16px', fontSize:'12px' }}
+          style={{ padding: '0px 16px', fontSize:'12px' }}
         >
           {getCurrentSortLabel()}
         </Button>

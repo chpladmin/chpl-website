@@ -49,6 +49,7 @@ function ChplPagination({
       page={page}
       rowsPerPage={rowsPerPage}
       rowsPerPageOptions={rowsPerPageOptions}
+      style={{ position: 'sticky', bottom: 64,}}
     />
   );
 }

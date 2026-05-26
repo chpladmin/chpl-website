@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  Box,
+  CircularProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -18,8 +14,8 @@ import ChplSedPopup from 'components/listing/details/sed/sed-popup';
 import {
   ChplLink,
   ChplPagination,
-  ChplLoadingTable,
-  ChplSortableHeaders
+  ChplSearchResultCard,
+  ChplSortControls,
 } from 'components/util';
 import {
   ChplFilterChips,
@@ -37,9 +33,6 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -54,57 +47,35 @@ const useStyles = makeStyles({
       gridTemplateColumns: '2fr 1fr',
     },
   },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
-    },
-  },
-  tableContainer: {
-    overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
-    margin: '0px 32px',
-    width: 'auto',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
+  resultsHeaderContainer: {
+    display: 'flex',
+    flexDirection: 'row',
     gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
+    marginBottom: '16px',
     alignItems: 'center',
     justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
+    flexWrap: 'wrap',
+    padding: '16px 32px',
+    boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
-    display: 'grid',
+    display: 'flex',
     gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
     alignItems: 'center',
   },
-  wrap: {
-    flexFlow: 'wrap',
+  cardsContainer: {
+    margin: '0px 24px',
+    maxHeight: 'calc(100vh - 400px)',
+    overflow: 'auto',
   },
 });
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const headers = [
-  { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-  { property: 'developer', text: 'Developer', sortable: true },
-  { property: 'product', text: 'Product', sortable: true },
-  { property: 'version', text: 'Version', sortable: true },
-  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
-  { text: 'Actions', invisible: true },
+const sortOptions = [
+  { property: 'chpl_id', text: 'CHPL ID' },
+  { property: 'developer', text: 'Developer' },
+  { property: 'product', text: 'Product' },
+  { property: 'version', text: 'Version' },
 ];
 
 function ChplSedSearchView() {
@@ -153,7 +124,7 @@ function ChplSedSearchView() {
     setDownloadLink(`${API}/certified_products/sed_details?api_key=${authService.getApiKey()}`);
   }, [API, authService]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -202,13 +173,15 @@ function ChplSedSearchView() {
       </div>
       { isLoading
         && (
-          <ChplLoadingTable className={classes.tableContainer} />
+          <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+            <CircularProgress />
+          </Box>
         )}
       { !isLoading
         && (
           <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+            <div className={classes.resultsHeaderContainer}>
+              <div className={classes.resultsContainer}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
                   && (
@@ -225,47 +198,46 @@ function ChplSedSearchView() {
               </div>
               { listings.length > 0
                 && (
-                  <ChplDownloadListings
-                    listings={listings}
-                  />
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <ChplSortControls
+                      sortOptions={sortOptions}
+                      orderBy={orderBy}
+                      order={sortDescending ? 'desc' : 'asc'}
+                      onSort={handleSort}
+                    />
+                    <ChplDownloadListings
+                      listings={listings}
+                    />
+                  </Box>
                 )}
             </div>
             { listings.length > 0
               && (
                 <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="SED Searchs table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
-                        stickyHeader
-                      />
-                      <TableBody>
-                        { listings
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell className={classes.stickyColumn}>
-                                <strong>
-                                  <ChplLink
-                                    href={`#/listing/${item.id}`}
-                                    text={item.chplProductNumber}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Navigate to Listing Details Page',
-                                      label: item.chplProductNumber,
-                                      aggregationName: item.product.name,
-                                    }}
-                                    external={false}
-                                    router={{ sref: 'listing', options: { id: item.id } }}
-                                  />
-                                </strong>
-                              </TableCell>
-                              <TableCell>
+                  <Box className={classes.cardsContainer}>
+                    { listings.map((item) => (
+                      <ChplSearchResultCard
+                        key={item.id}
+                        cardTitle="CHPL ID"
+                        cardTitleValue={(
+                          <ChplLink
+                            href={`#/listing/${item.id}`}
+                            text={item.chplProductNumber}
+                            analytics={{
+                              ...analytics,
+                              event: 'Navigate to Listing Details Page',
+                              label: item.chplProductNumber,
+                              aggregationName: item.product.name,
+                            }}
+                            external={false}
+                            router={{ sref: 'listing', options: { id: item.id } }}
+                          />
+                        )}
+                        fieldGroups={[
+                          [
+                            {
+                              label: 'Developer',
+                              value: (
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
                                   text={item.developer.name}
@@ -277,24 +249,44 @@ function ChplSedSearchView() {
                                   external={false}
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
-                              </TableCell>
-                              <TableCell>{item.product.name}</TableCell>
-                              <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
-                              <TableCell>
-                                <ChplActionButton
-                                  listing={item}
-                                >
-                                  <ChplSedPopup
-                                    id={item.id}
-                                  />
-                                </ChplActionButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                              ),
+                              xs: 12,
+                              sm: 6,
+                            },
+                            {
+                              label: 'Product',
+                              value: item.product.name,
+                              xs: 12,
+                              sm: 6,
+                            },
+                          ],
+                          [
+                            {
+                              label: 'Version',
+                              value: item.version.name,
+                              xs: 12,
+                              sm: 6,
+                            },
+                            {
+                              label: 'Status',
+                              value: getStatusIcon(item.certificationStatus),
+                              xs: 12,
+                              sm: 6,
+                            },
+                          ],
+                        ]}
+                        actions={(
+                          <ChplActionButton
+                            listing={item}
+                          >
+                            <ChplSedPopup
+                              id={item.id}
+                            />
+                          </ChplActionButton>
+                        )}
+                      />
+                    ))}
+                  </Box>
                   <ChplPagination
                     count={recordCount}
                     page={pageNumber}

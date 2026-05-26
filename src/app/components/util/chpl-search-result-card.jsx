@@ -28,7 +28,7 @@ function ChplSearchResultCard({
       <CardContent style={{
         padding: '8px',
         display: 'flex',
-        gap: '8px',
+        gridGap: '8px',
         alignItems: 'flex-end',
       }}
       >

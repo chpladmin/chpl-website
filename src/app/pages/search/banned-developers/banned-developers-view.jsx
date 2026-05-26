@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  Box,
+  CircularProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -17,8 +13,8 @@ import {
 import {
   ChplLink,
   ChplPagination,
-  ChplLoadingTable,
-  ChplSortableHeaders,
+  ChplSearchResultCard,
+  ChplSortControls,
 } from 'components/util';
 import {
   ChplFilterChips,
@@ -28,6 +24,11 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
+
+const sortOptions = [
+  { property: 'developer_name', text: 'Developer' },
+  { property: 'decertification_date', text: 'Decertification Date' },
+];
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -45,46 +46,26 @@ const useStyles = makeStyles({
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
-    },
-  },
-  tableContainer: {
-    overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
-    margin: '0px 32px',
-    width: 'auto',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
+  resultsHeaderContainer: {
+    display: 'flex',
+    flexDirection: 'row',
     gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
+    marginBottom: '16px',
     alignItems: 'center',
     justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
+    flexWrap: 'wrap',
+    padding: '16px 32px',
+    boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
-    display: 'grid',
+    display: 'flex',
     gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
     alignItems: 'center',
   },
-  wrap: {
-    flexFlow: 'wrap',
+  cardsContainer: {
+    margin: '0px 24px',
+    maxHeight: 'calc(100vh - 400px)',
+    overflow: 'auto',
   },
 });
 
@@ -128,14 +109,7 @@ function ChplBannedDevelopersSearchView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = [
-    { property: 'developer_name', text: 'Developer', sortable: true },
-    { property: 'decertification_date', text: 'Decertification Date', sortable: true, reverseDefault: true },
-    { text: 'ONC-ACB' },
-  ];
-
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -197,13 +171,15 @@ function ChplBannedDevelopersSearchView() {
       </div>
       { isLoading
         && (
-          <ChplLoadingTable className={classes.tableContainer} />
+          <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+            <CircularProgress />
+          </Box>
         )}
       { !isLoading
         && (
           <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+            <div className={classes.resultsHeaderContainer}>
+              <div className={classes.resultsContainer}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { developers.length === 0
                   && (
@@ -218,52 +194,56 @@ function ChplBannedDevelopersSearchView() {
                     </Typography>
                   )}
               </div>
+              { developers.length > 0
+                && (
+                  <ChplSortControls
+                    sortOptions={sortOptions}
+                    orderBy={orderBy}
+                    order={sortDescending ? 'desc' : 'asc'}
+                    onSort={handleSort}
+                  />
+                )}
             </div>
             { developers.length > 0
               && (
                 <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Developers Under Certification Ban table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
-                        stickyHeader
+                  <Box className={classes.cardsContainer}>
+                    { developers.map((item) => (
+                      <ChplSearchResultCard
+                        key={item.id}
+                        cardTitle="Developer"
+                        cardTitleValue={(
+                          <ChplLink
+                            href={`#/organizations/developers/${item.id}`}
+                            text={item.name}
+                            analytics={{
+                              ...analytics,
+                              event: 'Navigate to Developer Page',
+                              label: item.name,
+                            }}
+                            external={false}
+                            router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                          />
+                        )}
+                        fieldGroups={[
+                          [
+                            {
+                              label: 'Decertification Date',
+                              value: item.decertificationDate,
+                              xs: 12,
+                              sm: 6,
+                            },
+                            {
+                              label: 'ONC-ACB',
+                              value: item.oncAcbDisplay,
+                              xs: 12,
+                              sm: 6,
+                            },
+                          ],
+                        ]}
                       />
-                      <TableBody>
-                        { developers
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell className={classes.stickyColumn}>
-                                <strong>
-                                  <ChplLink
-                                    href={`#/organizations/developers/${item.id}`}
-                                    text={item.name}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Navigate to Developer Page',
-                                      label: item.name,
-                                    }}
-                                    external={false}
-                                    router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                                  />
-                                </strong>
-                              </TableCell>
-                              <TableCell>
-                                { item.decertificationDate }
-                              </TableCell>
-                              <TableCell>
-                                { item.oncAcbDisplay }
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                    ))}
+                  </Box>
                   <ChplPagination
                     count={recordCount}
                     page={pageNumber}
