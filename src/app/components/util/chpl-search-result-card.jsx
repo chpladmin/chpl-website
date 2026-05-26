@@ -16,8 +16,8 @@ import {
 } from 'prop-types';
 
 function ChplSearchResultCard({
-  title,
-  titleValue,
+  cardTitle,
+  cardTitleValue,
   titleIconButton = undefined,
   additionalTitleContent = undefined,
   fieldGroups = [],
@@ -33,12 +33,12 @@ function ChplSearchResultCard({
       }}
       >
         <Box display="flex" flexDirection="column" flex={1} gap={2}>
-          { (title || titleValue)
+          { (cardTitle || cardTitleValue)
             && (
               <>
                 <Box display="flex" alignItems="center" gap={1}>
                   <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
-                    { title }
+                    { cardTitle }
                   </Typography>
                   { titleIconButton
                     && (
@@ -56,7 +56,7 @@ function ChplSearchResultCard({
                     alignItems="center"
                   >
                     <Typography variant="h5">
-                      { titleValue }
+                      { cardTitleValue }
                     </Typography>
                     { additionalTitleContent
                       && (
@@ -115,9 +115,8 @@ function ChplSearchResultCard({
 export default ChplSearchResultCard;
 
 ChplSearchResultCard.propTypes = {
-  title: string, // Optional - job views only use fieldGroups without title section
-  titleValue: oneOfType([string, node]), // Optional - job views only use fieldGroups without title section
-  // Note: Consolidating title/titleValue into a single prop would require updating 17+ system maintenance pages
+  carditle: string,
+  titleValue: oneOfType([string, node]), 
   titleIconButton: node,
   additionalTitleContent: node,
   fieldGroups: arrayOf(

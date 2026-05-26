@@ -87,8 +87,8 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Display Value"
-              titleValue={item.displayValue}
+              cardTitle="Display Value"
+              cardTitleValue={item.displayValue}
               fieldGroups={[
                 [
                   {
