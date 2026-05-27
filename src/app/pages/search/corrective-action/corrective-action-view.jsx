@@ -42,6 +42,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -120,30 +130,41 @@ function ChplCorrectiveActionSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
-      {!isLoading && !directReviewsAvailable
-        && (
-          <>
-            <Typography variant="body1" gutterBottom>
-              This information is temporarily unavailable. Please check back later.
-            </Typography>
-            <Typography variant="body1">
-              Surveillance and Direct Review information can be downloaded from the
-              {' '}
-              <ChplLink
-                href="#/resources/download"
-                text="Download the CHPL"
-                analytics={{
-                  ...analytics,
-                  event: 'Navigate to Download the CHPL',
-                }}
-                external={false}
-                router={{ sref: 'resources.download' }}
-                inline
-              />
-            </Typography>
-          </>
-        )}
-      {directReviewsAvailable
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">Products: Corrective Action Status</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Typography variant="body1" gutterBottom>
+          This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as &quot;Surveillance NCs&quot;, while non-conformities identified though an ONC Direct Review are noted as &quot;Direct Review NCs&quot;. Not all non-conformities affect a product&apos;s functionality, and the existence of a non-conformity does not by itself mean that a product is &quot;defective.&quot; Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product&apos;s CHPL ID.
+        </Typography>
+        <Typography variant="body1">
+          Please note that by default, only listings that are active or suspended are shown in the search results.
+        </Typography>
+        { !isLoading && !directReviewsAvailable
+          && (
+            <>
+              <Typography variant="body1" gutterBottom>
+                This information is temporarily unavailable. Please check back later.
+              </Typography>
+              <Typography variant="body1">
+                Surveillance and Direct Review information can be downloaded from the
+                {' '}
+                <ChplLink
+                  href="#/resources/download"
+                  text="Download the CHPL"
+                  analytics={{
+                    ...analytics,
+                    event: 'Navigate to Download the CHPL',
+                  }}
+                  external={false}
+                  router={{ sref: 'resources.download' }}
+                  inline
+                />
+              </Typography>
+            </>
+          )}
+      </div>
+      { directReviewsAvailable
         && (
           <>
             <ChplFilterSearchBar />
@@ -230,54 +251,52 @@ function ChplCorrectiveActionSearchView() {
                                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                       />
                                     ),
-                                    xs: 12,
-                                    sm: 4,
+                                    xs: 6,
+                                    sm: 3,
                                   },
                                   {
                                     label: 'Product',
                                     value: item.product.name,
-                                    xs: 12,
-                                    sm: 4,
+                                    xs: 6,
+                                    sm: 3,
                                   },
                                   {
                                     label: 'Version',
                                     value: item.version.name,
-                                    xs: 12,
-                                    sm: 4,
+                                    xs: 6,
+                                    sm: 3,
+                                  },
+                                 {
+                                    label: 'Status',
+                                    value: getStatusIcon(item.certificationStatus),
+                                    xs: 6,
+                                    sm: 3,
                                   },
                                 ],
                                 [
                                   {
                                     label: '# Open Surveillance NCs',
                                     value: item.openSurveillanceNonConformityCount,
-                                    xs: 4,
-                                    sm: 4,
+                                    xs: 6,
+                                    sm: 3,
                                   },
                                   {
                                     label: '# Closed Surveillance NCs',
                                     value: item.closedSurveillanceNonConformityCount,
-                                    xs: 4,
-                                    sm: 4,
+                                    xs: 6,
+                                    sm: 3,
                                   },
-                                  {
-                                    label: 'Status',
-                                    value: getStatusIcon(item.certificationStatus),
-                                    xs: 4,
-                                    sm: 4,
-                                  },
-                                ],
-                                [
                                   {
                                     label: '# Open Direct Review NCs',
                                     value: item.openDirectReviewNonConformityCount,
                                     xs: 6,
-                                    sm: 4,
+                                    sm: 3,
                                   },
                                   {
                                     label: '# Closed Direct Review NCs',
                                     value: item.closedDirectReviewNonConformityCount,
                                     xs: 6,
-                                    sm: 4,
+                                    sm: 3,
                                   },
                                 ],
                               ]}

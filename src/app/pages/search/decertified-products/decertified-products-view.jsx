@@ -38,6 +38,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -115,6 +125,38 @@ function ChplDecertifiedProductsSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">Decertified Products</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Typography variant="body1" gutterBottom>
+          This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            text="CHPL Public User Guide"
+            analytics={{
+              ...analytics,
+              event: 'Go to CHPL Public User Guide',
+            }}
+            external={false}
+            inline
+          />
+          . For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the
+          {' '}
+          <ChplLink
+            href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html"
+            text="CMS FAQ"
+            analytics={{
+              ...analytics,
+              event: 'Go to CMS FAQ',
+            }}
+            external={false}
+            inline
+          />
+          . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
+        </Typography>
+      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
@@ -200,19 +242,25 @@ function ChplDecertifiedProductsSearchView() {
                                 />
                               ),
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                             {
                               label: 'Product',
                               value: item.product.name,
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                              {
                               label: 'Version',
                               value: item.version.name,
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
+                            },
+                                                        {
+                              label: 'Status',
+                              value: getStatusIcon(item.certificationStatus),
+                              xs: 12,
+                              sm: 3,
                             },
                           ],
                           [
@@ -220,13 +268,7 @@ function ChplDecertifiedProductsSearchView() {
                               label: 'Decertification Date',
                               value: getDisplayDateFormat(item.decertificationDate),
                               xs: 12,
-                              sm: 4,
-                            },
-                            {
-                              label: 'Status',
-                              value: getStatusIcon(item.certificationStatus),
-                              xs: 12,
-                              sm: 4,
+                              sm: 12,
                             },
                           ],
                         ]}

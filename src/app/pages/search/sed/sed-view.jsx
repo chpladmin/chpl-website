@@ -32,6 +32,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -122,6 +132,34 @@ function ChplSedSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">SED Information</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <div>
+          <Typography variant="body1">
+            This list includes all health IT products that have been certified with Safety Enhanced Design (SED).
+          </Typography>
+          <Typography variant="body1">
+            Please note that by default, only listings that are active or suspended are shown in the search results.
+          </Typography>
+        </div>
+        <div>
+          <h2>SED Information Dataset</h2>
+          <Typography variant="body1" gutterBottom>
+            Please note the SED Details file contains information for certified product listings and is not filtered based on search results.
+          </Typography>
+          <ChplLink
+            href={downloadLink}
+            text="Download SED Details"
+            analytics={{
+              ...analytics,
+              event: 'Download SED Details',
+            }}
+            external={false}
+          />
+        </div>
+      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />

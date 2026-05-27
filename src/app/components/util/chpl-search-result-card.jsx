@@ -16,8 +16,8 @@ import {
 } from 'prop-types';
 
 function ChplSearchResultCard({
-  title,
-  titleValue,
+  cardTitle,
+  cardTitleValue,
   titleIconButton = undefined,
   additionalTitleContent = undefined,
   fieldGroups = [],
@@ -36,7 +36,7 @@ function ChplSearchResultCard({
           <>
             <Box display="flex" alignItems="center" gap={1}>
               <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
-                { title }
+                { cardTitle }
               </Typography>
               { titleIconButton
                 && (
@@ -54,7 +54,7 @@ function ChplSearchResultCard({
                 alignItems="center"
               >
                 <Typography variant="h5">
-                  { titleValue }
+                  { cardTitleValue }
                 </Typography>
                 { additionalTitleContent
                   && (
@@ -112,8 +112,8 @@ function ChplSearchResultCard({
 export default ChplSearchResultCard;
 
 ChplSearchResultCard.propTypes = {
-  title: string.isRequired,
-  titleValue: oneOfType([string, node]).isRequired,
+  cardTitle: string.isRequired,
+  cardTitleValue: oneOfType([string, node]).isRequired,
   titleIconButton: node,
   additionalTitleContent: node,
   fieldGroups: arrayOf(

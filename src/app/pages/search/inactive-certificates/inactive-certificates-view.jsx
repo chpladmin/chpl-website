@@ -38,6 +38,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -114,6 +124,38 @@ function ChplInactiveCertificatesSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">Inactive Certificates</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Typography variant="body1" gutterBottom>
+          This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            text="CHPL Public User Guide"
+            analytics={{
+              ...analytics,
+              event: 'Go to CHPL Public User Guide',
+            }}
+            external={false}
+            inline
+          />
+          . For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the
+          {' '}
+          <ChplLink
+            href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html"
+            text="CMS FAQ"
+            analytics={{
+              ...analytics,
+              event: 'Go to CMS FAQ',
+            }}
+            external={false}
+            inline
+          />
+          . For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
+        </Typography>
+      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
@@ -199,33 +241,33 @@ function ChplInactiveCertificatesSearchView() {
                                 />
                               ),
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                             {
                               label: 'Product',
                               value: item.product.name,
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
                            {
                               label: 'Version',
                               value: item.version.name,
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
-                          ],
-                          [
                             {
                               label: 'Status',
                               value: getStatusIcon(item.certificationStatus),
                               xs: 12,
-                              sm: 4,
+                              sm: 3,
                             },
+                          ],
+                          [
                             {
                               label: 'Decertification Date',
                               value: getDisplayDateFormat(item.decertificationDate),
                               xs: 12,
-                              sm: 4,
+                              sm: 6,
                             },
                           ],
                         ]}

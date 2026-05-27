@@ -39,6 +39,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -172,6 +182,27 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">API Information</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Typography variant="body1">
+          This list includes all health IT products that have been certified to at least one of the following API Criteria:
+        </Typography>
+        <ul>
+          { displayCriteria.map((cc) => (
+            <li key={cc.id}>
+              {`§${cc.longDisplay}`}
+            </li>
+          ))}
+        </ul>
+        <Typography variant="body1" gutterBottom>
+          The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
+        </Typography>
+        <Typography variant="body1">
+          Please note that by default, only listings that are active or suspended are shown in the search results.
+        </Typography>
+      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
@@ -306,7 +337,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                 )
                                 : 'N/A',
                               xs: 4,
-                              sm: 3,
+                              sm: 4,
                             },
                             {
                               label: 'Mandatory Disclosures URL',
@@ -324,7 +355,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                 )
                                 : 'N/A',
                               xs: 4,
-                              sm: 3,
+                              sm: 4,
                             },
                           ],
                         ]}

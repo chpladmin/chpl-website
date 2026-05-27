@@ -40,6 +40,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -166,6 +176,102 @@ function ChplSvapSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">SVAP Information</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <div>
+          <Typography variant="body1" gutterBottom>
+            This search features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
+            {' '}
+            <ChplLink
+              href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
+              text="Standards Version Advancement Process (SVAP)"
+              analytics={{
+                ...analytics,
+                event: 'Go to Standards Version Advancement Process (SVAP)',
+              }}
+              external={false}
+              inline
+            />
+            . The SVAP, introduced in the ONC&apos;s
+            {' '}
+            <ChplLink
+              href="https://www.healthit.gov/topic/information-blocking"
+              text="Cures Act Final Rule"
+              analytics={{
+                ...analytics,
+                event: 'Go to Cures Act Final Rule',
+              }}
+              external={false}
+              inline
+            />
+            , aims to streamline the adoption of newer standards, improving communication and data exchange across healthcare systems.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
+            {' '}
+            <ChplLink
+              href="https://www.healthit.gov/topic/information-blocking"
+              text="Cures Act Final Rule"
+              analytics={{
+                ...analytics,
+                event: 'Go to Cures Act Final Rule',
+              }}
+              external={false}
+              inline
+            />
+            . The SVAP Search serves as a valuable resource for healthcare providers seeking Health IT solutions that employ the latest interoperability standards.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            SVAP information and related data are available on the CHPL website and can also be accessed through the
+            {' '}
+            <ChplLink
+              href="#/resources/download"
+              text="Download the CHPL"
+              analytics={{
+                ...analytics,
+                event: 'Navigate to Download the CHPL',
+              }}
+              external={false}
+              router={{ sref: 'resources.download' }}
+              inline
+            />
+            {' '}
+            page. For more details, please visit the
+            {' '}
+            <ChplLink
+              href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
+              text="SVAP Resources"
+              analytics={{
+                ...analytics,
+                event: 'Go to SVAP Resources',
+              }}
+              external={false}
+              inline
+            />
+            .
+          </Typography>
+          <Typography variant="body1">
+            Please note that by default, only listings that are active or suspended are shown in the search results.
+          </Typography>
+        </div>
+        <div>
+          <h2>SVAP Dataset</h2>
+          <Typography variant="body1" gutterBottom>
+            Entire search of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
+          </Typography>
+          <ChplLink
+            href={downloadLink}
+            text="Download SVAP Summary"
+            analytics={{
+              ...analytics,
+              event: 'Download SVAP Summary',
+            }}
+            external={false}
+          />
+        </div>
+      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />

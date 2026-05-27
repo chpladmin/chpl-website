@@ -37,6 +37,16 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 158px)',
   },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
+  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -114,6 +124,82 @@ function ChplRealWorldTestingSearchView() {
 
   return (
     <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">Real World Testing</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <Typography
+          variant="body1"
+        >
+          This list includes Health IT Module(s) eligible for Real World Testing, which is an annual
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
+            text="Condition and Maintenance of Certification requirement"
+            analytics={{
+              ...analytics,
+              event: 'Go to Condition and Maintenance of Certification requirement',
+            }}
+            external={false}
+            inline
+          />
+          {' '}
+          for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/curesrule/"
+            text="ONC&apos;s Cures Act Final Rule"
+            analytics={{
+              ...analytics,
+              event: 'Go to ONC&apos;s Cures Act Final Rule',
+            }}
+            external={false}
+            inline
+          />
+          {' '}
+          must successfully test their real world use.
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          For more information, please visit the
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing"
+            text="Real World Testing resources"
+            analytics={{
+              ...analytics,
+              event: 'Go to Real World Testing resources',
+            }}
+            external={false}
+            inline
+          />
+          . Real World Testing summary data is also available through
+          {' '}
+          <ChplLink
+            href="#/resources/download"
+            text="Download the CHPL"
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Download the CHPL',
+            }}
+            external={false}
+            router={{ sref: 'resources.download' }}
+            inline
+          />
+          .
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          Please note that by default, only listings that are active or suspended are shown in the search results.
+        </Typography>
+      </div>
       <ChplFilterSearchBar />
       <div>
         <ChplFilterChips />
