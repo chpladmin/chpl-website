@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 14.4.0
+_26 May 2026_
+
+### Features
+* Add Important Dates report to compliance dashboard
+* Enhance code set status display in criterion details view
+* Convert main navigation to new UI
+
+### UI updates
+* Make formatting updates to Developer Statistics dashboard chart
+
+---
+
 ## Version 14.3.0
 _11 May 2026_
 
