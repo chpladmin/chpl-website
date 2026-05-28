@@ -5,8 +5,10 @@ import {
 } from '@material-ui/core';
 
 import { ChangeRequestContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -39,15 +41,10 @@ function ChplChangeRequestDemographicsView() {
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
         <div className={classes.detailsSubContainer}>
-          <Typography>
+          <Typography className={classes.fullWidthGridRow}>
             Full Name:
             {' '}
             { changeRequest.developer.contact.fullName }
-          </Typography>
-          <Typography>
-            Title:
-            {' '}
-            { changeRequest.developer.contact.title }
           </Typography>
           <Typography>
             Email:
@@ -108,15 +105,10 @@ function ChplChangeRequestDemographicsView() {
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
         <div className={classes.detailsSubContainer}>
-          <Typography>
+          <Typography className={classes.fullWidthGridRow}>
             Full Name:
             {' '}
             { changeRequest.details.contact.fullName }
-          </Typography>
-          <Typography>
-            Title:
-            {' '}
-            { changeRequest.details.contact.title }
           </Typography>
           <Typography>
             Email:

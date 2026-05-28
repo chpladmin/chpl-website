@@ -11,8 +11,10 @@ import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -41,7 +43,6 @@ const validationSchema = yup.object({
     .required('Full name is required'),
   phoneNumber: yup.string()
     .required('Phone is required'),
-  title: yup.string(),
   city: yup.string()
     .required('City is required'),
   country: yup.string()
@@ -89,7 +90,6 @@ function ChplChangeRequestDemographicsEdit() {
       email: changeRequest.details.contact.email || '',
       fullName: changeRequest.details.contact.fullName || '',
       phoneNumber: changeRequest.details.contact.phoneNumber || '',
-      title: changeRequest.details.contact.title || '',
       city: changeRequest.details.address.city || '',
       country: changeRequest.details.address.country || '',
       line1: changeRequest.details.address.line1 || '',
@@ -113,15 +113,10 @@ function ChplChangeRequestDemographicsEdit() {
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
         <div className={classes.detailsSubContainer}>
-          <Typography>
+          <Typography className={classes.fullWidthGridRow}>
             Full Name:
             {' '}
             { changeRequest.developer.contact.fullName }
-          </Typography>
-          <Typography>
-            Title:
-            {' '}
-            { changeRequest.developer.contact.title }
           </Typography>
           <Typography>
             Email:
@@ -202,17 +197,7 @@ function ChplChangeRequestDemographicsEdit() {
             onBlur={formik.handleBlur}
             error={formik.touched.fullName && !!formik.errors.fullName}
             helperText={formik.touched.fullName && formik.errors.fullName}
-          />
-          <ChplTextField
-            id="title"
-            name="title"
-            label="Title"
-            disabled={!hasAnyRole(['chpl-developer'])}
-            value={formik.values.title}
-            onChange={handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.title && !!formik.errors.title}
-            helperText={formik.touched.title && formik.errors.title}
+            className={classes.fullWidthGridRow}
           />
           <ChplTextField
             id="email"
