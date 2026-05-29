@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Divider,
   FormControlLabel,
@@ -9,6 +9,8 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplUrlChecker from 'components/url-checker/url-checker';
+import UrlCheckerContext from 'components/url-checker/url-checker-context';
 import { ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -61,9 +63,14 @@ const validationSchema = yup.object({
 
 function ChplChangeRequestDemographicsEdit() {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
+  const { url, setUrl } = useContext(UrlCheckerContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    setUrl(changeRequest.details.website);
+  }, []);
 
   const handleChange = (...args) => {
     const event = args[0];
@@ -83,6 +90,19 @@ function ChplChangeRequestDemographicsEdit() {
       },
     }));
     formik.handleChange(...args);
+  };
+
+  const handleDispatch = ({ action, url: submittedUrl }) => {
+    switch (action) {
+      case 'complete':
+        formik.setFieldValue('website', submittedUrl);
+        setUrl(submittedUrl);
+        break;
+      case 'update':
+        setUrl('');
+        break;
+        // no default
+    }
   };
 
   formik = useFormik({
@@ -162,11 +182,12 @@ function ChplChangeRequestDemographicsEdit() {
             { changeRequest.developer.address.country }
           </Typography>
         </div>
-        <Typography>
-          Website:
-          {' '}
-          { changeRequest.developer.website }
-        </Typography>
+        <div className={classes.fullWidthGridRow}>
+          <ChplUrlChecker
+            dispatch={handleDispatch}
+            url={formik.values.website}
+          />
+        </div>
       </div>
       <Divider />
       <div className={classes.detailsContainer}>
