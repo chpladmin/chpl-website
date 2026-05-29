@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplOncOrganizations from './onc-organizations';
 
 import AppWrapper from 'app-wrapper';
-import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 
 function ChplOncOrganizationsWrapper() {
+  const [title, setTitle] = useState('ONC Organizations');
+
+  useEffect(() => {
+    const orgType = window.location.href.includes('onc-acbs') ? 'acb' : 'atl';
+    setTitle(orgType === 'acb' ? 'ONC-ACBs' : 'ONC-ATLs');
+  }, []);
+
   return (
     <AppWrapper>
-      <BreadcrumbWrapper title="ONC Organizations">
+      <ChplPageHeader text={title} />
+      <ChplPageBody>
         <ChplOncOrganizations />
-      </BreadcrumbWrapper>
+      </ChplPageBody>
     </AppWrapper>
   );
 }

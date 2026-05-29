@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -9,7 +8,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { bool, func } from 'prop-types';
+import { func } from 'prop-types';
 import Moment from 'react-moment';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -35,12 +34,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import {
-  BreadcrumbContext,
-  ChangeRequestContext,
-  UserContext,
-  useAnalyticsContext,
-} from 'shared/contexts';
+import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -226,9 +220,8 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
   }
 };
 
-function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, dispatch }) {
+function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   const { analytics } = useAnalyticsContext();
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
@@ -247,50 +240,6 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
 
   let formik;
   let save;
-
-  useEffect(() => {
-    if (showBreadcrumbs) {
-      append(
-        <Button
-          key="view"
-          variant="text"
-          onClick={() => setIsEditing(false)}
-        >
-          View Change Request
-        </Button>,
-      );
-      append(
-        <Button
-          key="edit.disabled"
-          variant="text"
-          disabled
-        >
-          Edit Change Request
-        </Button>,
-      );
-      append(
-        <Button
-          key="view.disabled"
-          variant="text"
-          disabled
-        >
-          View Change Request
-        </Button>,
-      );
-    }
-  }, [showBreadcrumbs]);
-
-  useEffect(() => {
-    if (isEditing) {
-      display('view');
-      display('edit.disabled');
-      hide('view.disabled');
-    } else {
-      display('view.disabled');
-      hide('edit.disabled');
-      hide('view');
-    }
-  }, [isEditing]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -751,5 +700,4 @@ export default ChplChangeRequest;
 ChplChangeRequest.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
-  showBreadcrumbs: bool,
 };

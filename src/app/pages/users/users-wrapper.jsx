@@ -1,22 +1,21 @@
 import React from 'react';
 
-import ChplUpload from './upload';
+import ChplUsersPage from './users';
 
 import AppWrapper from 'app-wrapper';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 
-function ChplUploadPageWrapper() {
+function ChplUsersWrapper() {
   return (
     <AppWrapper>
-      <ChplPageHeader text="Upload your files" />
+      <ChplPageHeader text="CHPL Users" />
       <ChplPageBody>
-        <ChplUpload />
+        <ChplUsersPage />
       </ChplPageBody>
     </AppWrapper>
   );
 }
 
-export default ChplUploadPageWrapper;
+export default ChplUsersWrapper;
 
-ChplUploadPageWrapper.propTypes = {
-};
+ChplUsersWrapper.propTypes = { };

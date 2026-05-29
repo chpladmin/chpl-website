@@ -19,21 +19,6 @@ const states = [{
   },
   data: { title: 'CHPL Registration' },
 }, {
-  name: 'registration.confirm-user',
-  url: '/confirm-user/{hash}',
-  component: 'chplRegistrationConfirmUser',
-  params: {
-    hash: { squash: true, value: null },
-  },
-  resolve: {
-    hash: ($transition$) => {
-      'ngInject';
-
-      return $transition$.params().hash;
-    },
-  },
-  data: { title: 'CHPL Registration' },
-}, {
   name: 'registration.api-key',
   url: '/api-key/{hash}',
   component: 'chplApiKeyConfirmBridge',
