@@ -121,8 +121,8 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}-${item.value}`}
-              title="Value"
-              titleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
+              cardTitle="Value"
+              cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
               additionalTitleContent={(
                 <ChplUpdateIndicator
                   requiredDay={item.requiredDay}

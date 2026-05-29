@@ -126,8 +126,8 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}-${item.value}`}
-              title="Value"
-              titleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}
+              cardTitle="Value"
+              cardTitleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}
               additionalTitleContent={(
                 <ChplUpdateIndicator
                   requiredDay={item.requiredDay}

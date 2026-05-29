@@ -91,8 +91,8 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Name"
-              titleValue={item.name}
+              cardTitle="Name"
+              cardTitleValue={item.name}
               fieldGroups={[
                 [
                   {

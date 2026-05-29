@@ -57,8 +57,7 @@ function ChplCms() {
   }
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="lg">
-      <Typography className={classes.titlePadding} variant="h1">CMS Management</Typography>
+    <>
       <Typography className={classes.titlePadding} variant="h2">Download the latest CMS listing</Typography>
       <Button
         onClick={downloadFile}
@@ -70,7 +69,7 @@ function ChplCms() {
         {' '}
         <GetAppIcon className={classes.iconSpacing} />
       </Button>
-    </Container>
+      </>
   );
 }
 

@@ -1,74 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button,
-} from '@material-ui/core';
+import React, { useState } from 'react';
 import { bool, func } from 'prop-types';
 
 import ChplComplaintEdit from './complaint-edit';
 import ChplComplaintView from './complaint-view';
 
-import { BreadcrumbContext } from 'shared/contexts';
 import { complaint as complaintPropType } from 'shared/prop-types';
 
-function ChplComplaint({ complaint, dispatch, showBreadcrumbs = true, canEdit = true }) {
-  const { append, display, hide } = useContext(BreadcrumbContext);
+function ChplComplaint({ complaint, dispatch, canEdit = true }) {
   const [isEditing, setIsEditing] = useState(false);
-
-  useEffect(() => {
-    if (showBreadcrumbs) {
-      append(
-        <Button
-          key="view"
-          variant="text"
-          onClick={() => setIsEditing(false)}
-        >
-          View Complaint
-        </Button>,
-      );
-      append(
-        <Button
-          key="add.disabled"
-          variant="text"
-          disabled
-        >
-          Add Complaint
-        </Button>,
-      );
-      append(
-        <Button
-          key="edit.disabled"
-          variant="text"
-          disabled
-        >
-          Edit Complaint
-        </Button>,
-      );
-      append(
-        <Button
-          key="view.disabled"
-          variant="text"
-          disabled
-        >
-          View Complaint
-        </Button>,
-      );
-    }
-  }, [showBreadcrumbs]);
-
-  useEffect(() => {
-    if (isEditing) {
-      display && display('view');
-      display && display('edit.disabled');
-      hide && hide('view.disabled');
-    } else if (complaint.id) {
-      display && display('view.disabled');
-      hide && hide('add.disabled');
-      hide && hide('edit.disabled');
-      hide && hide('view');
-    } else {
-      display && display('add.disabled');
-    }
-  }, [complaint, isEditing]);
 
   const handleDispatch = ({ action }) => {
     switch (action) {
@@ -109,6 +48,5 @@ export default ChplComplaint;
 ChplComplaint.propTypes = {
   complaint: complaintPropType.isRequired,
   dispatch: func.isRequired,
-  showBreadcrumbs: bool,
   canEdit: bool,
 };
