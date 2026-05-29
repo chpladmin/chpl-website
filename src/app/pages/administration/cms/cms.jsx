@@ -48,7 +48,6 @@ function ChplCms() {
   if (cmsDisabledIsOn) {
     return (
       <Container className={classes.fixFooterSpacing} maxWidth="lg">
-        <Typography className={classes.titlePadding} variant="h1">CMS Management</Typography>
         <Typography variant="body1">
           This feature is not enabled at this time
         </Typography>
@@ -69,7 +68,7 @@ function ChplCms() {
         {' '}
         <GetAppIcon className={classes.iconSpacing} />
       </Button>
-      </>
+    </>
   );
 }
 
