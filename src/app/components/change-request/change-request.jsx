@@ -240,7 +240,7 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
   const [isEditing, setIsEditing] = useState(false);
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [warnings, setWarnings] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
+  const { data, isLoading, isSuccess } = useFetchChangeRequest({ id, enabled: !isEditing });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate, isLoading: isProcessing } = usePutChangeRequest();
   const classes = useStyles();
@@ -474,7 +474,6 @@ function ChplChangeRequest({ changeRequest: { id }, showBreadcrumbs = true, disp
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['chpl-developer']));
 
   save = (request) => {
-    console.log({ request });
     mutate({
       acknowledgeWarnings,
       changeRequest: request,
