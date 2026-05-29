@@ -4,6 +4,8 @@ import ChplCriterionTitle from './criterion-title';
 import ChplDialogTitle from './chpl-dialog-title';
 import ChplEllipsis from './chpl-ellipsis';
 import ChplLink from './chpl-link';
+import ChplPageBody from './chpl-page-body';
+import ChplPageHeader from './chpl-page-header';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
@@ -24,6 +26,8 @@ export {
   ChplEllipsis,
   ChplLink,
   ChplLoadingTable,
+  ChplPageBody,
+  ChplPageHeader,
   ChplPagination,
   ChplProgress,
   ChplSearchResultCard,

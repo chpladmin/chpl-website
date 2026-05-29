@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -14,25 +13,10 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink } from 'components/util';
 import { UserContext } from 'shared/contexts';
-import { utilStyles, palette, theme } from 'themes';
+import { utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  titlePadding: {
-    paddingTop: '16px',
-    paddingBottom: '16px',
-  },
-  titleBackground: {
-    backgroundColor: palette.white,
-    paddingBottom: '16px',
-    marginTop: '-16px',
-    padding: '16px 32px',
-    boxShadow: 'rgb(149 157 165 / 10%) 0 4px 8px',
-  },
-  pageBackground: {
-    backgroundColor: palette.lightGray,
-    minHeight: 'calc(100vh - 64px)',
-  },
   resultsCard: {
     width: '32.3%',
     overflowWrap: 'break-word',
@@ -100,17 +84,10 @@ function ChplUrlCheckerPage() {
 
   return (
     <>
-      <Box className={classes.titleBackground}>
-        <Container maxWidth="lg">
-          <Typography className={classes.titlePadding} variant="h1">URL Checker</Typography>
-          <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
-          <ChplUrlChecker
-            dispatch={handleDispatch}
-            showResultPopover={false}
-          />
-        </Container>
-      </Box>
-      <Container className={classes.pageBackground} maxWidth="lg">
+      <ChplUrlChecker
+        dispatch={handleDispatch}
+        showResultPopover={false}
+      />
         { isLoading
           && (
             <>
@@ -274,7 +251,6 @@ function ChplUrlCheckerPage() {
                 )}
             </>
           )}
-      </Container>
     </>
   );
 }

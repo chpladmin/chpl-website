@@ -87,8 +87,8 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Name"
-              titleValue={item.name}
+              cardTitle="Name"
+              cardTitleValue={item.name}
               titleIconButton={(
                 <ChplTooltip title="Use this value in a upload file">
                   <IconButton color="primary" size="small">

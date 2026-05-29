@@ -136,8 +136,8 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
                       .map((item) => (
                         <ChplSearchResultCard
                           key={item.id}
-                          title="Title"
-                          titleValue={item.title}
+                          cardTitle="Title"
+                          cardTitleValue={item.title}
                           fieldGroups={[
                             [
                               {

@@ -31,16 +31,11 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
+  developerView: {
     display: 'grid',
-    gridTemplateColumns: ' 1fr',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
+    borderRadius: 4,
+    gridTemplateRows: '1fr',
+    backgroundColor: 'palette.white',
   },
   pageContent: {
     display: 'grid',
@@ -198,12 +193,7 @@ function ChplDevelopersView() {
 
   return (
     <>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">
-          Developers
-        </Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+      <div className={classes.developerView} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           placeholder="Search by Developer Name or Code..."
           toggleMultipleFilters={bonusQuickFilters}
