@@ -1,5 +1,4 @@
 import { AnalyticsContext, AnalyticsProvider, useAnalyticsContext } from './analytics-context';
-import BreadcrumbContext from './breadcrumb-context';
 import BrowserContext from './browser-context';
 import ChangeRequestContext from './change-request-context';
 import CmsContext from './cms-context';
@@ -14,7 +13,6 @@ import UserContext from './user-context';
 export {
   AnalyticsContext,
   AnalyticsProvider,
-  BreadcrumbContext,
   BrowserContext,
   ChangeRequestContext,
   CmsContext,

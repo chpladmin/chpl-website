@@ -73,8 +73,8 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
           .map((item) => (
             <ChplSearchResultCard
               key={item.id}
-              title="CHPL Entry Value"
-              titleValue={item.name}
+              cardTitle="CHPL Entry Value"
+              cardTitleValue={item.name}
               titleIconButton={(
                 <ChplTooltip title="Use this value in a upload file">
                   <IconButton color="primary" size="small">

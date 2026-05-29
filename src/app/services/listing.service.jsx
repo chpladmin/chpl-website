@@ -3,13 +3,13 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import CancelIcon from '@material-ui/icons/Cancel';
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-import CancelIcon from '@material-ui/icons/Cancel';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import StopIcon from '@material-ui/icons/Stop';
 
 import { ChplTooltip } from 'components/util';

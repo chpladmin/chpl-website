@@ -98,8 +98,8 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Name"
-              titleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}
+              cardTitle="Name"
+              cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}
               titleIconButton={(
                 <ChplTooltip title="Use this value in a upload file">
                   <IconButton color="primary" size="small">

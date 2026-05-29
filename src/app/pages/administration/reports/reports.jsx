@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
-  Container,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -25,13 +23,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 188px)',
-  },
-  titlePadding: {
-    paddingTop: '16px',
-    paddingBottom: '16px',
   },
 });
 
@@ -118,8 +109,7 @@ function ChplReports() {
   };
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="lg">
-      <Typography className={classes.titlePadding} variant="h1">Scheduled Reports</Typography>
+    <>
       { !job
         && (
           <div className={classes.containerTrigger}>
@@ -160,7 +150,7 @@ function ChplReports() {
             dispatch={handleDispatch}
           />
         )}
-    </Container>
+    </>
   );
 }
 

@@ -14,16 +14,18 @@ import {
 } from '@material-ui/core';
 import {
   Timeline,
-  TimelineItem,
-  TimelineSeparator,
   TimelineConnector,
   TimelineContent,
   TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
 } from '@material-ui/lab';
 import { bool, func } from 'prop-types';
+import BlockIcon from '@material-ui/icons/Block';
+import CallMergeIcon from '@material-ui/icons/CallMerge';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
+import ErrorIcon from '@material-ui/icons/Error';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
@@ -146,14 +148,14 @@ const getStatusData = (statuses, classes) => {
                         {status.status.name === 'Suspended by ONC'
                          && (
                            <>
-                             <i className="fa status-bad fa-exclamation-circle" />
+                             <ErrorIcon color="error" />
                              {' '}
                            </>
                          )}
                         {status.status.name === 'Under certification ban by ONC'
                          && (
                            <>
-                             <i className="fa status-bad fa-ban" />
+                             <BlockIcon color="error" />
                              {' '}
                            </>
                          )}
