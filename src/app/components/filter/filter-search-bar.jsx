@@ -48,7 +48,7 @@ function ChplFilterSearchBar({
   const classes = useStyles();
 
   return (
-    <div className={classes.searchContainer}>
+    <div className={classes.searchContainer} data-filter-search-bar="true">
       { !hideSearchTerm
         && (
           <ChplFilterSearchTerm

@@ -20,7 +20,10 @@ const useStyles = makeStyles(() => ({
   filterContainer: {
     display: 'flex',
     padding: '16px 32px',
-    backgroundColor: '#fafdff',
+    marginTop: '-4px', 
+    position: 'relative',
+    zIndex: 1,
+    backgroundColor: '#fff',
     borderBottom: '1px solid #bbb',
     flexWrap: 'wrap',
     flexFlow: 'column',
