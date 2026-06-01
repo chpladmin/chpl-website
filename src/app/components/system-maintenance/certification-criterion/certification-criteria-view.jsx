@@ -123,8 +123,8 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Number"
-              titleValue={`${item.removed ? 'Removed | ' : ''}${item.number}`}
+              cardTitle="Number"
+              cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.number}`}
               fieldGroups={[
                 [
                   {

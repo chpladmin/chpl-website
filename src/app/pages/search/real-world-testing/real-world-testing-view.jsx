@@ -341,7 +341,7 @@ function ChplRealWorldTestingSearchView() {
                                 )
                                 : 'N/A',
                               xs: 12,
-                              sm: 6,
+                              sm: 4,
                             },
                           ],
                         ]}

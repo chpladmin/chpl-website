@@ -126,6 +126,8 @@ function ChplUserTriggersView({
                     return (
                       <ChplSearchResultCard
                         key={`${item.name}-${item.job.name}`}
+                        cardTitle="Report Name"
+                        cardTitleValue={item.name}
                         fieldGroups={fieldGroups}
                         actions={
                           <ChplTooltip

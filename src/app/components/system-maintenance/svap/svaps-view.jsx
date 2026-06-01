@@ -115,8 +115,8 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
-              title="Approved Standard Version"
-              titleValue={item.approvedStandardVersion}
+              cardTitle="Approved Standard Version"
+              cardTitleValue={item.approvedStandardVersion}
               fieldGroups={[
                 [
                   {

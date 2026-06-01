@@ -243,28 +243,26 @@ function ChplSedSearchView() {
                                   router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                 />
                               ),
-                              xs: 12,
-                              sm: 6,
+                              xs: 6,
+                              sm: 3,
                             },
                             {
                               label: 'Product',
                               value: item.product.name,
-                              xs: 12,
-                              sm: 6,
+                              xs: 6,
+                              sm: 3,
                             },
-                          ],
-                          [
                             {
                               label: 'Version',
                               value: item.version.name,
-                              xs: 12,
-                              sm: 6,
+                              xs: 6,
+                              sm: 3,
                             },
                             {
                               label: 'Status',
                               value: getStatusIcon(item.certificationStatus),
-                              xs: 12,
-                              sm: 6,
+                              xs: 6,
+                              sm: 3,
                             },
                           ],
                         ]}

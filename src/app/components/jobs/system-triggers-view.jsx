@@ -152,6 +152,8 @@ function ChplSystemTriggersView({
                     { triggers.map((item) => (
                       <ChplSearchResultCard
                         key={item.nextRunDate}
+                        cardTitle="Job Name"
+                        cardTitleValue={item.name}
                         fieldGroups={[
                           [
                             { label: 'Job Name', value: item.name, xs: 12, sm: 6 },

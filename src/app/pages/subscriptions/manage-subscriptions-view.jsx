@@ -244,8 +244,8 @@ function ChplManageSubscriptionsView({ analytics }) {
                       { subscriptions.map((item) => (
                         <ChplSearchResultCard
                           key={`${item.subscriberId}-${item.subscribedObjectId}`}
-                          title="CHPL Product"
-                          titleValue={(
+                          cardTitle="CHPL Product"
+                          cardTitleValue={(
                             <ChplLink
                               href={`#/listing/${item.subscribedObjectId}`}
                               text={item.subscribedObjectName}

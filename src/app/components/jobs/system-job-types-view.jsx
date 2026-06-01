@@ -83,6 +83,8 @@ function ChplSystemJobTypesView(props) {
           { jobTypes.map((item) => (
             <ChplSearchResultCard
               key={item.name}
+              cardTitle="Job Name"
+              cardTitleValue={item.name}
               fieldGroups={[
                 [
                   { label: 'Job Name', value: item.name, xs: 12, sm: 6 },
