@@ -6,7 +6,7 @@ import {
 import ChplChangeRequests from './change-requests';
 
 import AppWrapper from 'app-wrapper';
-import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 
 function ChplChangeRequestsWrapper(props) {
   const {
@@ -18,17 +18,15 @@ function ChplChangeRequestsWrapper(props) {
 
   return (
     <AppWrapper>
-      <BreadcrumbWrapper
-        disabled={!!bonusQuery}
-        title="Change Requests"
-      >
+      <ChplPageHeader text="Change Requests" />
+      <ChplPageBody>
         <ChplChangeRequests
           disallowedFilters={disallowedFilters}
           bonusQuery={bonusQuery}
           dispatch={dispatch}
           useFooterSpacing={useFooterSpacing}
         />
-      </BreadcrumbWrapper>
+      </ChplPageBody>
     </AppWrapper>
   );
 }

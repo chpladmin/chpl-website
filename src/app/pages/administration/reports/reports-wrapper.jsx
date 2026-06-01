@@ -3,11 +3,15 @@ import React from 'react';
 import ChplReports from './reports';
 
 import AppWrapper from 'app-wrapper';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 
 function ChplReportsWrapper() {
   return (
     <AppWrapper>
-      <ChplReports />
+      <ChplPageHeader text="Scheduled Reports" />
+      <ChplPageBody>
+        <ChplReports />
+      </ChplPageBody>
     </AppWrapper>
   );
 }
