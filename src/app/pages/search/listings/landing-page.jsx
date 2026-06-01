@@ -33,6 +33,13 @@ const useStyles = makeStyles({
     marginBottom: '8px',
     color: palette.white,
   },
+  heroSection: {
+    paddingTop: '64px',
+    paddingBottom: '80px',
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: '48px',
+    },
+  },
   infoBox: {
     marginTop: '16px',
     padding: '16px',
@@ -193,7 +200,7 @@ function ChplLandingPage() {
 
   return (
     <>
-      <Box width="100%" pt={16} pb={24}>
+      <Box width="100%" className={classes.heroSection}>
         <Container maxWidth="md">
           <Typography align="center" variant="h1" gutterBottom>
             Welcome to the Certified Health IT Product List
