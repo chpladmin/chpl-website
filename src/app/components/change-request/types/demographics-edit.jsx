@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   Divider,
   FormControlLabel,
@@ -10,7 +10,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
-import UrlCheckerContext from 'components/url-checker/url-checker-context';
 import { ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -63,14 +62,9 @@ const validationSchema = yup.object({
 
 function ChplChangeRequestDemographicsEdit() {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
-  const { url, setUrl } = useContext(UrlCheckerContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
   let formik;
-
-  useEffect(() => {
-    setUrl(changeRequest.details.website);
-  }, []);
 
   const handleChange = (...args) => {
     const event = args[0];
@@ -92,24 +86,14 @@ function ChplChangeRequestDemographicsEdit() {
     formik.handleChange(...args);
   };
 
-  const handleDispatch = ({ action, url: submittedUrl }) => {
-    switch (action) {
-      case 'complete':
-        formik.setFieldValue('website', submittedUrl);
-        setUrl(submittedUrl);
-        setChangeRequest((prev) => ({
-          ...prev,
-          details: {
-            ...prev.details,
-            website: submittedUrl,
-          },
-        }));
-        break;
-      case 'update':
-        setUrl('');
-        break;
-        // no default
-    }
+  const handleDispatch = ({ url: submittedUrl }) => {
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        website: submittedUrl,
+      },
+    }));
   };
 
   formik = useFormik({
@@ -124,7 +108,6 @@ function ChplChangeRequestDemographicsEdit() {
       state: changeRequest.details.address.state || '',
       zipcode: changeRequest.details.address.zipcode || '',
       selfDeveloper: !!changeRequest.details.selfDeveloper,
-      website: changeRequest.details.website,
     },
     validationSchema,
   });
@@ -329,7 +312,7 @@ function ChplChangeRequestDemographicsEdit() {
         <div className={classes.fullWidthGridRow}>
           <ChplUrlChecker
             dispatch={handleDispatch}
-            url={formik.values.website}
+            url={changeRequest.details.website}
           />
         </div>
       </div>
