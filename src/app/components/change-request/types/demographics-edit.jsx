@@ -97,6 +97,13 @@ function ChplChangeRequestDemographicsEdit() {
       case 'complete':
         formik.setFieldValue('website', submittedUrl);
         setUrl(submittedUrl);
+        setChangeRequest((prev) => ({
+          ...prev,
+          details: {
+            ...prev.details,
+            website: submittedUrl,
+          },
+        }));
         break;
       case 'update':
         setUrl('');
@@ -182,12 +189,11 @@ function ChplChangeRequestDemographicsEdit() {
             { changeRequest.developer.address.country }
           </Typography>
         </div>
-        <div className={classes.fullWidthGridRow}>
-          <ChplUrlChecker
-            dispatch={handleDispatch}
-            url={formik.values.website}
-          />
-        </div>
+        <Typography className={classes.fullWidthGridRow}>
+          Website:
+          {' '}
+          { changeRequest.developer.website }
+        </Typography>
       </div>
       <Divider />
       <div className={classes.detailsContainer}>
@@ -319,19 +325,13 @@ function ChplChangeRequestDemographicsEdit() {
             helperText={formik.touched.country && formik.errors.country}
           />
         </div>
-        <Typography gutterBottom variant="subtitle1">Submitted website</Typography>
-        <ChplTextField
-          id="website"
-          name="website"
-          label="Website"
-          required
-          disabled={!hasAnyRole(['chpl-developer'])}
-          value={formik.values.website}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.website && !!formik.errors.website}
-          helperText={formik.touched.website && formik.errors.website}
-        />
+        <Typography gutterBottom variant="subtitle1">Website</Typography>
+        <div className={classes.fullWidthGridRow}>
+          <ChplUrlChecker
+            dispatch={handleDispatch}
+            url={formik.values.website}
+          />
+        </div>
       </div>
     </div>
   );
