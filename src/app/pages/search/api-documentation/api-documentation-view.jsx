@@ -14,6 +14,8 @@ import ChplDownloadListings from 'components/download-listings/download-listings
 import {
   ChplLink,
   ChplPagination,
+  ChplPageBody,
+  ChplPageHeader,
   ChplSearchResultCard,
   ChplSortControls,
 } from 'components/util';
@@ -36,19 +38,6 @@ const sortOptions = [
 ];
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 158px)',
-  },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -181,15 +170,15 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">API Information</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1">
-          This list includes all health IT products that have been certified to at least one of the following API Criteria:
-        </Typography>
-        <ul>
+    <>
+      <ChplPageHeader
+        text="API Information"
+        subtitle={(
+          <>
+            This list includes all health IT products that have been certified to at least one of the following API Criteria.
+            <br />
+            Please note that by default, only listings that are active or suspended are shown in the search results.
+          <ul>
           { displayCriteria.map((cc) => (
             <li key={cc.id}>
               {`§${cc.longDisplay}`}
@@ -199,24 +188,25 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
         <Typography variant="body1" gutterBottom>
           The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
         </Typography>
-        <Typography variant="body1">
-          Please note that by default, only listings that are active or suspended are shown in the search results.
-        </Typography>
-      </div>
-      <ChplFilterSearchBar />
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-            <CircularProgress />
-          </Box>
+          </>
         )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.resultsHeaderContainer}>
+      />
+      <ChplPageBody>
+        <div id="main-content" tabIndex="-1">
+        <ChplFilterSearchBar />
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+              <CircularProgress />
+            </Box>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.resultsHeaderContainer}>
               <div className={classes.resultsContainer}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
@@ -248,11 +238,11 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                   </Box>
                 )}
             </div>
-            { listings.length > 0
-              && (
-                <>
-                  <Box className={classes.cardsContainer}>
-                    { listings.map((item) => (
+              { listings.length > 0
+                && (
+                  <>
+                    <Box className={classes.cardsContainer}>
+                      { listings.map((item) => (
                       <ChplSearchResultCard
                         key={item.id}
                         cardTitle="CHPL ID"
@@ -361,21 +351,23 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                         ]}
                         actions={<ChplActionButton listing={item} />}
                       />
-                    ))}
-                  </Box>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                  />
-                </>
-              )}
-          </>
-        )}
-    </div>
+                      ))}
+                    </Box>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                    />
+                  </>
+                )}
+            </>
+          )}
+        </div>
+      </ChplPageBody>
+    </>
   );
 }
 

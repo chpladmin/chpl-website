@@ -13,6 +13,8 @@ import ChplSedPopup from 'components/listing/details/sed/sed-popup';
 import {
   ChplLink,
   ChplPagination,
+  ChplPageBody,
+  ChplPageHeader,
   ChplSearchResultCard,
   ChplSortControls,
 } from 'components/util';
@@ -29,19 +31,6 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 158px)',
-  },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -51,6 +40,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
+    backgroundColor: '#ffffff',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
@@ -131,19 +121,19 @@ function ChplSedSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">SED Information</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1">
+    <>
+      <ChplPageHeader
+        text="SED Information"
+        subtitle={(
+          <>
             This list includes all health IT products that have been certified with Safety Enhanced Design (SED).
-          </Typography>
-          <Typography variant="body1">
+            <br />
             Please note that by default, only listings that are active or suspended are shown in the search results.
-          </Typography>
-        </div>
+          </>
+        )}
+      />
+      <ChplPageBody>
+        <div id="main-content" tabIndex="-1">
         <div>
           <h2>SED Information Dataset</h2>
           <Typography variant="body1" gutterBottom>
@@ -159,21 +149,21 @@ function ChplSedSearchView() {
             external={false}
           />
         </div>
-      </div>
-      <ChplFilterSearchBar />
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-            <CircularProgress />
-          </Box>
-        )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.resultsHeaderContainer}>
+        </div>
+        <ChplFilterSearchBar />
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+              <CircularProgress />
+            </Box>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.resultsHeaderContainer}>
               <div className={classes.resultsContainer}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
@@ -288,9 +278,10 @@ function ChplSedSearchView() {
                   />
                 </>
               )}
-          </>
-        )}
-    </div>
+            </>
+          )}
+      </ChplPageBody>
+    </>
   );
 }
 

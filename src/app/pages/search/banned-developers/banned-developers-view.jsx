@@ -13,6 +13,8 @@ import {
 import {
   ChplLink,
   ChplPagination,
+  ChplPageBody,
+  ChplPageHeader,
   ChplSearchResultCard,
   ChplSortControls,
 } from 'components/util';
@@ -32,20 +34,6 @@ const sortOptions = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 158px)',
-  },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gridTemplateColumns: ' 1fr',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -122,31 +110,14 @@ function ChplBannedDevelopersSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">
-          Developers Under Certification Ban
-        </Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1" gutterBottom>
-            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program - including new products as well as upgraded versions of current products. ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:
-          </Typography>
-          <ol>
-            <li>
-              <strong>Developer Failure to Take Appropriate Corrective Action</strong>
-              {' '}
-              A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.
-            </li>
-            <li>
-              <strong>Product Withdrawn While Under Surveillance</strong>
-              {' '}
-              A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
-            </li>
-          </ol>
-          <Typography variant="body1">
-            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product's details page to confirm its certification status by
+    <>
+      <ChplPageHeader
+        text="Developers Under Certification Ban"
+        subtitle={(
+          <>
+            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program, including new products as well as upgraded versions of current products.
+            <br />
+            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
             {' '}
             <ChplLink
               href="#/search"
@@ -159,25 +130,42 @@ function ChplBannedDevelopersSearchView() {
               router={{ sref: 'search' }}
               inline
             />
-          </Typography>
-        </div>
-      </div>
-      <ChplFilterSearchBar
-        placeholder="Search by Developer Name or Code..."
-      />
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-            <CircularProgress />
-          </Box>
+            .
+            <br />
+            ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:
+            <ol>
+              <li>
+                <strong>Developer Failure to Take Appropriate Corrective Action</strong>
+                {' '}
+                A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.
+              </li>
+              <li>
+                <strong>Product Withdrawn While Under Surveillance</strong>
+                {' '}
+                A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
+              </li>
+            </ol>
+          </>
         )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.resultsHeaderContainer}>
+      />
+      <ChplPageBody>
+        <div id="main-content" tabIndex="-1">
+        <ChplFilterSearchBar
+          placeholder="Search by Developer Name or Code..."
+        />
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+              <CircularProgress />
+            </Box>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.resultsHeaderContainer}>
               <div className={classes.resultsContainer}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { developers.length === 0
@@ -253,9 +241,11 @@ function ChplBannedDevelopersSearchView() {
                   />
                 </>
               )}
-          </>
-        )}
-    </div>
+            </>
+          )}
+        </div>
+      </ChplPageBody>
+    </>
   );
 }
 

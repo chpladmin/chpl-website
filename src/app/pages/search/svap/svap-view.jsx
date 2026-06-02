@@ -13,6 +13,8 @@ import ChplDownloadListings from 'components/download-listings/download-listings
 import {
   ChplLink,
   ChplPagination,
+  ChplPageBody,
+  ChplPageHeader,
   ChplSearchResultCard,
   ChplSortControls,
 } from 'components/util';
@@ -37,19 +39,6 @@ const sortOptions = [
 ];
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 158px)',
-  },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   resultsHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -59,6 +48,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
+    backgroundColor: '#ffffff',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
   },
   resultsContainer: {
@@ -175,13 +165,11 @@ function ChplSvapSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">SVAP Information</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1" gutterBottom>
+    <>
+      <ChplPageHeader
+        text="SVAP Information"
+        subtitle={(
+          <>
             This search features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
             {' '}
             <ChplLink
@@ -207,8 +195,7 @@ function ChplSvapSearchView() {
               inline
             />
             , aims to streamline the adoption of newer standards, improving communication and data exchange across healthcare systems.
-          </Typography>
-          <Typography variant="body1" gutterBottom>
+            <br />
             Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
             {' '}
             <ChplLink
@@ -222,8 +209,7 @@ function ChplSvapSearchView() {
               inline
             />
             . The SVAP Search serves as a valuable resource for healthcare providers seeking Health IT solutions that employ the latest interoperability standards.
-          </Typography>
-          <Typography variant="body1" gutterBottom>
+            <br />
             SVAP information and related data are available on the CHPL website and can also be accessed through the
             {' '}
             <ChplLink
@@ -251,11 +237,13 @@ function ChplSvapSearchView() {
               inline
             />
             .
-          </Typography>
-          <Typography variant="body1">
+            <br />
             Please note that by default, only listings that are active or suspended are shown in the search results.
-          </Typography>
-        </div>
+          </>
+        )}
+      />
+      <ChplPageBody>
+        <div id="main-content" tabIndex="-1" />
         <div>
           <h2>SVAP Dataset</h2>
           <Typography variant="body1" gutterBottom>
@@ -271,21 +259,20 @@ function ChplSvapSearchView() {
             external={false}
           />
         </div>
-      </div>
-      <ChplFilterSearchBar />
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-            <CircularProgress />
-          </Box>
-        )}
-      { !isLoading
-        && (
-          <>
-            <div className={classes.resultsHeaderContainer}>
+        <ChplFilterSearchBar />
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+              <CircularProgress />
+            </Box>
+          )}
+        { !isLoading
+          && (
+            <>
+              <div className={classes.resultsHeaderContainer}>
               <div className={classes.resultsContainer}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
@@ -419,9 +406,10 @@ function ChplSvapSearchView() {
                   />
                 </>
               )}
-          </>
-        )}
-    </div>
+            </>
+          )}
+      </ChplPageBody>
+    </>
   );
 }
 
