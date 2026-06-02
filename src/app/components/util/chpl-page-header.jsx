@@ -16,7 +16,7 @@ function ChplPageHeader({ text, subtitle }) {
           {text}
         </Typography>
         {subtitle && (
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" color="textSecondary" component="div">
             {subtitle}
           </Typography>
         )}
