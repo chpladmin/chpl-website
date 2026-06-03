@@ -6,6 +6,7 @@ import {
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
@@ -140,6 +141,7 @@ function ChplInactiveCertificatesSearchView() {
                 pageStart={pageStart}
                 pageEnd={pageEnd}
               >
+                <ChplCertificationStatusLegend />
                 <ChplSortControls
                   sortOptions={sortOptions}
                   orderBy={orderBy}
