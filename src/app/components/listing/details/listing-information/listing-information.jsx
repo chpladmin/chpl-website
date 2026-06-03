@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -15,7 +14,7 @@ import {
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
-import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -41,9 +40,7 @@ const useStyles = makeStyles({
 });
 
 function ChplListingInformation({ listing: initialListing }) {
-  const { hasAnyRole, hasAuthorityOn, user } = useContext(UserContext);
-  const { setRwtPlansChange, setRwtResultsChange } = useContext(ListingContext);
-  const { rwtChangeRequestIsOn } = useContext(FlagContext);
+  const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
 
@@ -66,14 +63,6 @@ function ChplListingInformation({ listing: initialListing }) {
   };
 
   if (!listing) { return <CircularProgress />; }
-
-  const submitRwtPlansChange = () => {
-    setRwtPlansChange(true);
-  };
-
-  const submitRwtResultsChange = () => {
-    setRwtResultsChange(true);
-  };
 
   return (
     <Box gridGap={16} display="flex" flexDirection="column">
@@ -414,22 +403,6 @@ function ChplListingInformation({ listing: initialListing }) {
                          <Typography gutterBottom>{getDisplayDateFormat(listing.rwtResultsCheckDate)}</Typography>
                        </>
                      )}
-                      { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: listing.developer.id }) && rwtChangeRequestIsOn
-                        && (
-                          <Button
-                            onClick={() => submitRwtPlansChange()}
-                          >
-                            Submit Plans change
-                          </Button>
-                        )}
-                      { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: listing.developer.id }) && rwtChangeRequestIsOn
-                        && (
-                          <Button
-                            onClick={() => submitRwtResultsChange()}
-                          >
-                            Submit Results change
-                          </Button>
-                        )}
                   </Box>
                 )}
             </Box>
