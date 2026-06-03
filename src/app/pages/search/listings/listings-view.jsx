@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  CircularProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -16,6 +15,7 @@ import ChplCertificationStatusLegend from 'components/certification-status/certi
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
+  ChplLoadingCards,
   ChplPagination,
   ChplPageBody,
   ChplPageHeader,
@@ -143,12 +143,7 @@ function ChplListingsView() {
         <div>
           <ChplFilterChips />
         </div>
-        { isLoading
-          && (
-            <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-              <CircularProgress />
-            </Box>
-          )}
+        { isLoading && (<ChplLoadingCards />)}
         { !isLoading
           && (
             <>

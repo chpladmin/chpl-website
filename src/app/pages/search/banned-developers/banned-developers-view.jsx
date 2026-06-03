@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  CircularProgress,
   Typography,
 } from '@material-ui/core';
 
@@ -10,6 +9,7 @@ import {
 } from 'api/search';
 import {
   ChplLink,
+  ChplLoadingCards,
   ChplPagination,
   ChplPageBody,
   ChplPageHeader,
@@ -134,12 +134,7 @@ function ChplBannedDevelopersSearchView() {
           <div>
             <ChplFilterChips />
           </div>
-          {isLoading
-            && (
-              <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-                <CircularProgress />
-              </Box>
-            )}
+          {isLoading && (<ChplLoadingCards />)}
           {!isLoading
             && (
               <>
