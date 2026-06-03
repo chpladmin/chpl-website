@@ -5,6 +5,7 @@ import {
   CardContent,
   Grid,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import {
   arrayOf,
@@ -15,6 +16,16 @@ import {
   string,
 } from 'prop-types';
 
+const useStyles = makeStyles((theme) => ({
+  card: {
+    marginBottom: '12px',
+    transition: theme.transitions.create('box-shadow'),
+    '&:hover': {
+      boxShadow: theme.shadows[4],
+    },
+  },
+}));
+
 function ChplSearchResultCard({
   cardTitle,
   cardTitleValue,
@@ -23,8 +34,9 @@ function ChplSearchResultCard({
   fieldGroups = [],
   actions = undefined,
 }) {
+  const classes = useStyles();
   return (
-    <Card style={{ marginBottom: '12px' }}>
+    <Card className={classes.card}>
       <CardContent style={{
         padding: '16px 32px',
         display: 'flex',
