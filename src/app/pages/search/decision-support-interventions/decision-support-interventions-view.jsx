@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 
@@ -15,6 +14,7 @@ import {
   ChplPageBody,
   ChplPageHeader,
   ChplSearchResultCard,
+  ChplSearchResultControls,
   ChplSortControls,
 } from 'components/util';
 import {
@@ -26,7 +26,6 @@ import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { theme } from 'themes';
 
 const sortOptions = [
   { property: 'chpl_id', text: 'CHPL ID' },
@@ -36,23 +35,6 @@ const sortOptions = [
 ];
 
 const useStyles = makeStyles({
-  resultsHeaderContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '8px',
-    marginBottom: '16px',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    padding: '16px 32px',
-    backgroundColor: '#ffffff',
-    boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
-  },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
-  },
   cardsContainer: {
     margin: '0px 24px',
   },
@@ -144,38 +126,22 @@ function ChplDecisionSupportInterventionsSearchView() {
         { !isLoading
           && (
             <>
-              <div className={classes.resultsHeaderContainer}>
-              <div className={classes.resultsContainer}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { listings.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { listings.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
-              </div>
-              { listings.length > 0
-                && (
-                  <Box display="flex" alignItems="center" gap={2}>
-                    <ChplSortControls
-                      sortOptions={sortOptions}
-                      orderBy={orderBy}
-                      order={sortDescending ? 'desc' : 'asc'}
-                      onSort={handleSort}
-                    />
-                    <ChplDownloadListings
-                      listings={listings}
-                      toggled={toggledCsvDefaults}
-                    />
-                  </Box>
-                )}
-            </div>
+              <ChplSearchResultControls
+                recordCount={recordCount}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+              >
+                <ChplSortControls
+                  sortOptions={sortOptions}
+                  orderBy={orderBy}
+                  order={sortDescending ? 'desc' : 'asc'}
+                  onSort={handleSort}
+                />
+                <ChplDownloadListings
+                  listings={listings}
+                  toggled={toggledCsvDefaults}
+                />
+              </ChplSearchResultControls>
             { listings.length > 0
               && (
                 <>

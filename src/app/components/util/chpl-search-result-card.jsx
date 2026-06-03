@@ -24,12 +24,11 @@ function ChplSearchResultCard({
   actions = undefined,
 }) {
   return (
-    <Card style={{ marginBottom: '12px', marginLeft: '8px', marginRight: '8px' }}>
+    <Card style={{  marginBottom: '12px'}}>
       <CardContent style={{
         padding: '16px 32px',
         display: 'flex',
         gridGap: '8px',
-        alignItems: 'flex-end',
       }}
       >
         <Box display="flex" flexDirection="column" flex={1} gap={2}>
@@ -47,25 +46,24 @@ function ChplSearchResultCard({
                       </Box>
                     )}
                 </Box>
-                <Grid container spacing={2} style={{ padding: '4px', marginBottom: '4px' }} alignItems="center">
-                  <Box
-                    display="flex"
-                    flex={1}
-                    gridGap={2}
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Typography variant="h5">
-                      { cardTitleValue }
-                    </Typography>
-                    { additionalTitleContent
-                      && (
-                        <Box>
-                          { additionalTitleContent }
-                        </Box>
-                      )}
-                  </Box>
-                </Grid>
+                <Box
+                  display="flex"
+                  flex={1}
+                  gridGap={2}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  style={{ padding: '4px 0px', marginBottom: '4px' }}
+                >
+                  <Typography variant="h5">
+                    { cardTitleValue }
+                  </Typography>
+                  { additionalTitleContent
+                    && (
+                      <Box>
+                        { additionalTitleContent }
+                      </Box>
+                    )}
+                </Box>
               </>
             )}
           { fieldGroups.map((group) => (
@@ -92,8 +90,8 @@ function ChplSearchResultCard({
                             field.iconButton
                           )}
                       </Typography>
-                      <Typography variant="body1">
-                        { field.value ?? field.fallback ?? 'N/A' }
+                      <Typography variant="body1" component="div">
+                        { field.value != null && field.value !== '' ? field.value : (field.fallback ?? 'N/A') }
                       </Typography>
                     </Box>
                   </Box>
@@ -115,8 +113,8 @@ function ChplSearchResultCard({
 export default ChplSearchResultCard;
 
 ChplSearchResultCard.propTypes = {
-  carditle: string,
-  titleValue: oneOfType([string, node]), 
+  cardTitle: string,
+  cardTitleValue: oneOfType([string, node]),
   titleIconButton: node,
   additionalTitleContent: node,
   fieldGroups: arrayOf(

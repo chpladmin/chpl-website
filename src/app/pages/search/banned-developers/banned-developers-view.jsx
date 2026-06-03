@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 
-import { theme, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 import {
   useFetchBannedDevelopers,
 } from 'api/search';
@@ -16,6 +15,7 @@ import {
   ChplPageBody,
   ChplPageHeader,
   ChplSearchResultCard,
+  ChplSearchResultControls,
   ChplSortControls,
 } from 'components/util';
 import {
@@ -34,23 +34,6 @@ const sortOptions = [
 
 const useStyles = makeStyles({
   ...utilStyles,
-  resultsHeaderContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '8px',
-    marginBottom: '16px',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    padding: '16px 32px',
-    backgroundColor: '#ffffff',
-    boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
-  },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
-  },
   cardsContainer: {
     margin: '0px 24px',
   },
@@ -165,32 +148,18 @@ function ChplBannedDevelopersSearchView() {
         { !isLoading
           && (
             <>
-              <div className={classes.resultsHeaderContainer}>
-              <div className={classes.resultsContainer}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { developers.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { developers.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
-              </div>
-              { developers.length > 0
-                && (
-                  <ChplSortControls
-                    sortOptions={sortOptions}
-                    orderBy={orderBy}
-                    order={sortDescending ? 'desc' : 'asc'}
-                    onSort={handleSort}
-                  />
-                )}
-            </div>
+              <ChplSearchResultControls
+                recordCount={recordCount}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+              >
+                <ChplSortControls
+                  sortOptions={sortOptions}
+                  orderBy={orderBy}
+                  order={sortDescending ? 'desc' : 'asc'}
+                  onSort={handleSort}
+                />
+              </ChplSearchResultControls>
             { developers.length > 0
               && (
                 <>
