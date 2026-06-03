@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   makeStyles,
 } from '@material-ui/core';
@@ -45,14 +45,13 @@ function ChplLink({
   icon = undefined,
 }) {
   const classes = useStyles();
-  const [href, setHref] = useState('');
-  const [text, setText] = useState('');
   const $state = getAngularService('$state');
-
-  useEffect(() => {
-    setHref(prependLink(initialHref));
-    setText(initialText || initialHref);
-  }, [initialHref, initialText]);
+  // Derive href/text directly from props instead of mirroring them into state via useEffect.
+  // React docs flag prop->state sync as an anti-pattern (https://react.dev/learn/you-might-not-need-an-effect).
+  // The previous useState+useEffect version rendered twice on mount: first with href='' (empty <a href="">),
+  // then re-rendered with the real URL after the effect fired — causing a brief flicker / broken link on first paint.
+  const href = prependLink(initialHref);
+  const text = initialText || initialHref;
 
   let clicked = false;
   const track = (e) => {
