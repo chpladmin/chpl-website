@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    gap: '8px',
+    gap: '4px',
     marginBottom: '16px',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
   results: {
     display: 'flex',
-    gap: '8px',
+    gap: '4px',
     alignItems: 'center',
   },
 });
@@ -56,7 +56,7 @@ function ChplSearchResultControls({
       </div>
       { recordCount > 0 && children
         && (
-          <Box display="flex" alignItems="center" gap={2}>
+          <Box display="flex" alignItems="center" gridGap="2px">
             { children }
           </Box>
         )}
