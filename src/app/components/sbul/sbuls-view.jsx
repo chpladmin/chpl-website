@@ -56,90 +56,88 @@ function ChplSbulsView({ developer, dispatch }) {
   }
 
   return (
-    <>
-      <Card>
-        <CardHeader title="Service Base URL List" />
-        <CardContent className={classes.content}>
-          <>
-            <Typography variant="body1">
-              Service Base URL List information is displayed here if a health IT developer has listings certified to (g)(10) and therefore must comply with
-              {' '}
-              <ChplLink
-                href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/certification-health-it/conditions-ccg/application-programming-interfaces/`}
-                text="API Maintenance of Certification"
-                analytics={{
-                  ...analytics,
-                  event: 'Go to API Maintenance of Certification',
-                }}
-                external={false}
-                inline
-              />
-              {' '}
-              requirements. For more information, please visit the
-              {' '}
-              <ChplLink
-                href="https://onc-healthit.github.io/api-resource-guide/404-conditions-maintenance/#api-service-base-url-publication"
-                text="API Resource Guide"
-                analytics={{
-                  ...analytics,
-                  event: 'Go to API Resource Guide',
-                }}
-                external={false}
-                inline
-              />
-              .
-            </Typography>
-            { sbuls.length > 0
-              && (
-                <Card>
-                  <TableContainer>
-                    <Table
-                      aria-label="Service Base URL List Information"
-                    >
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>URL</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        { sbuls
-                          .map((item) => (
-                            <TableRow key={item.url}>
-                              <TableCell>
-                                <ChplLink
-                                  href={item.url}
-                                />
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Card>
-              )}
-          </>
-        </CardContent>
-        { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }) && sbulChangeRequestIsOn
-          && (
-            <CardActions>
-              <Button
-                color="primary"
-                id="create-sbul-change-request-button"
-                variant="contained"
-                onClick={createSbulChangeRequest}
-              >
-                Submit Service Base URL List change
-              </Button>
-            </CardActions>
-          )}
-      </Card>
-    </>
+    <Card>
+      <CardHeader title="Service Base URL List" />
+      <CardContent className={classes.content}>
+        <>
+          <Typography variant="body1">
+            Service Base URL List information is displayed here if a health IT developer has listings certified to (g)(10) and therefore must comply with
+            {' '}
+            <ChplLink
+              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/certification-health-it/conditions-ccg/application-programming-interfaces/`}
+              text="API Maintenance of Certification"
+              analytics={{
+                ...analytics,
+                event: 'Go to API Maintenance of Certification',
+              }}
+              external={false}
+              inline
+            />
+            {' '}
+            requirements. For more information, please visit the
+            {' '}
+            <ChplLink
+              href="https://onc-healthit.github.io/api-resource-guide/404-conditions-maintenance/#api-service-base-url-publication"
+              text="API Resource Guide"
+              analytics={{
+                ...analytics,
+                event: 'Go to API Resource Guide',
+              }}
+              external={false}
+              inline
+            />
+            .
+          </Typography>
+          { sbuls.length > 0
+            && (
+              <Card>
+                <TableContainer>
+                  <Table
+                    aria-label="Service Base URL List Information"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>URL</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      { sbuls
+                        .map((item) => (
+                          <TableRow key={item.url}>
+                            <TableCell>
+                              <ChplLink
+                                href={item.url}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Card>
+            )}
+        </>
+      </CardContent>
+      { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }) && sbulChangeRequestIsOn
+        && (
+          <CardActions>
+            <Button
+              color="primary"
+              id="create-sbul-change-request-button"
+              variant="contained"
+              onClick={createSbulChangeRequest}
+            >
+              Submit Service Base URL List change
+            </Button>
+          </CardActions>
+        )}
+    </Card>
   );
 }
 
 export default ChplSbulsView;
 
 ChplSbulsView.propTypes = {
-  dispatch: func.isRequired,
   developer: developerPropType.isRequired,
+  dispatch: func.isRequired,
 };
