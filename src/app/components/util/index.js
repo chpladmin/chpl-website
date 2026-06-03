@@ -9,6 +9,7 @@ import ChplPageHeader from './chpl-page-header';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
+import ChplLoadingCards from './chpl-loading-cards';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
@@ -26,6 +27,7 @@ export {
   ChplDialogTitle,
   ChplEllipsis,
   ChplLink,
+  ChplLoadingCards,
   ChplLoadingTable,
   ChplPageBody,
   ChplPageHeader,
