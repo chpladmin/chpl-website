@@ -12,6 +12,7 @@ import ChplLoadingTable from './loading-table';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
+import ChplSearchResultControls from './chpl-search-result-controls';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 import ChplUpdateIndicator from './update-indicator';
@@ -31,6 +32,7 @@ export {
   ChplPagination,
   ChplProgress,
   ChplSearchResultCard,
+  ChplSearchResultControls,
   ChplSortControls,
   ChplSortableHeaders,
   ChplTextField,

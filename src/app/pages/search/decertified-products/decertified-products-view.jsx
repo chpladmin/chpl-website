@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
 
 import { useFetchListings } from 'api/search';
@@ -35,13 +35,6 @@ const sortOptions = [
   { property: 'version', text: 'Version' },
 ];
 
-const useStyles = makeStyles({
-  cardsContainer: {
-    margin: '0px 24px',
-    overflow: 'auto',
-  },
-});
-
 function ChplDecertifiedProductsSearchView() {
   const storageKey = 'storageKey-decertifiedProductsView';
   const { analytics } = useAnalyticsContext();
@@ -51,7 +44,6 @@ function ChplDecertifiedProductsSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
   const toggledCsvDefaults = ['decertificationDate'];
 
   const filterContext = useFilterContext();
@@ -100,31 +92,33 @@ function ChplDecertifiedProductsSearchView() {
         text="Decertified Products"
         subtitle={(
           <>
-            This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). This may occur when a certificate is terminated by ONC, withdrawn by an ONC-ACB, or withdrawn by an ONC-ACB at the developer&apos;s request while the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
-            {' '}
-            <ChplLink
-              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-              text="CHPL Public User Guide"
-              analytics={{
-                ...analytics,
-                event: 'Go to CHPL Public User Guide',
-              }}
-              external={false}
-              inline
-            />
-            . For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the
-            {' '}
-            <ChplLink
-              href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html"
-              text="CMS FAQ"
-              analytics={{
-                ...analytics,
-                event: 'Go to CMS FAQ',
-              }}
-              external={false}
-              inline
-            />
-            . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
+            <Typography variant="body1" gutterBottom>
+              This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). This may occur when a certificate is terminated by ONC, withdrawn by an ONC-ACB, or withdrawn by an ONC-ACB at the developer&apos;s request while the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
+              {' '}
+              <ChplLink
+                href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+                text="CHPL Public User Guide"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to CHPL Public User Guide',
+                }}
+                external={false}
+                inline
+              />
+              . For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the
+              {' '}
+              <ChplLink
+                href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html"
+                text="CMS FAQ"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to CMS FAQ',
+                }}
+                external={false}
+                inline
+              />
+              . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
+            </Typography>
           </>
         )}
       />
@@ -159,10 +153,10 @@ function ChplDecertifiedProductsSearchView() {
                   toggled={toggledCsvDefaults}
                 />
               </ChplSearchResultControls>
-            { listings.length > 0
+              { listings.length > 0
               && (
                 <>
-                  <Box className={classes.cardsContainer}>
+                  <Box>
                     { listings.map((item) => (
                       <ChplSearchResultCard
                         key={item.id}
@@ -207,13 +201,13 @@ function ChplDecertifiedProductsSearchView() {
                               xs: 12,
                               sm: 3,
                             },
-                             {
+                            {
                               label: 'Version',
                               value: item.version.name,
                               xs: 12,
                               sm: 3,
                             },
-                                                        {
+                            {
                               label: 'Status',
                               value: getStatusIcon(item.certificationStatus),
                               xs: 12,

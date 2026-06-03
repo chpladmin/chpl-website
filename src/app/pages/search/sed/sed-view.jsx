@@ -3,7 +3,6 @@ import {
   Box,
   CircularProgress,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 
 import { useFetchListings } from 'api/search';
@@ -30,12 +29,6 @@ import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
-  cardsContainer: {
-    margin: '0px 24px',
-  },
-});
-
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const sortOptions = [
   { property: 'chpl_id', text: 'CHPL ID' },
@@ -56,7 +49,6 @@ function ChplSedSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchListings({
@@ -109,41 +101,38 @@ function ChplSedSearchView() {
         text="SED Information"
         subtitle={(
           <>
-            This list includes all health IT products that have been certified with Safety Enhanced Design (SED).
-            <br />
-            Please note that by default, only listings that are active or suspended are shown in the search results.
+            <Typography variant="body1" gutterBottom>
+              This list includes all health IT products that have been certified with Safety Enhanced Design (SED). Please note that by default, only listings that are active or suspended are shown in the search results.
+            </Typography>
+            <Typography gutterBottom component="h2" variant="h5">SED Information Dataset</Typography>
+            <Typography variant="body1" gutterBottom>
+              Please note the SED Details file contains information for certified product listings and is not filtered based on search results.
+              <ChplLink
+                href={downloadLink}
+                text="Download SED Details"
+                analytics={{
+                  ...analytics,
+                  event: 'Download SED Details',
+                }}
+                external={false}
+              />
+            </Typography>
           </>
         )}
       />
       <ChplPageBody>
         <div id="main-content" tabIndex="-1">
-        <div>
-          <h2>SED Information Dataset</h2>
-          <Typography variant="body1" gutterBottom>
-            Please note the SED Details file contains information for certified product listings and is not filtered based on search results.
-          </Typography>
-          <ChplLink
-            href={downloadLink}
-            text="Download SED Details"
-            analytics={{
-              ...analytics,
-              event: 'Download SED Details',
-            }}
-            external={false}
-          />
-        </div>
-        </div>
-        <ChplFilterSearchBar />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
+          <ChplFilterSearchBar />
+          <div>
+            <ChplFilterChips />
+          </div>
+          { isLoading
           && (
             <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
               <CircularProgress />
             </Box>
           )}
-        { !isLoading
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -161,10 +150,10 @@ function ChplSedSearchView() {
                   listings={listings}
                 />
               </ChplSearchResultControls>
-            { listings.length > 0
+              { listings.length > 0
               && (
                 <>
-                  <Box className={classes.cardsContainer}>
+                  <Box>
                     { listings.map((item) => (
                       <ChplSearchResultCard
                         key={item.id}
@@ -247,6 +236,7 @@ function ChplSedSearchView() {
               )}
             </>
           )}
+        </div>
       </ChplPageBody>
     </>
   );

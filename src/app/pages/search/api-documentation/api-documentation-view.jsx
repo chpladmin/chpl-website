@@ -3,13 +3,11 @@ import {
   Box,
   CircularProgress,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
@@ -37,12 +35,6 @@ const sortOptions = [
   { property: 'version', text: 'Version' },
 ];
 
-const useStyles = makeStyles({
-  cardsContainer: {
-    margin: '0px 24px',
-  },
-});
-
 const criteriaLookup = {
   56: { display: '170.315 (g)(7)', sort: 0 },
   57: { display: 'Removed | 170.315 (g)(8)', sort: 1 },
@@ -53,7 +45,6 @@ const criteriaLookup = {
   213: { display: '170.315 (g)(32)', sort: 6 },
   214: { display: '170.315 (g)(33)', sort: 7 },
 };
-
 
 const parseApiDocumentation = ({ apiDocumentation, chplProductNumber, product }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
@@ -107,7 +98,6 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
   const toggledCsvDefaults = ['apiDocumentation'];
 
   const filterContext = useFilterContext();
@@ -158,35 +148,38 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
         text="API Information"
         subtitle={(
           <>
-            This list includes all health IT products that have been certified to at least one of the following API Criteria.
-            <br />
-            Please note that by default, only listings that are active or suspended are shown in the search results.
-          <ul>
-          { displayCriteria.map((cc) => (
-            <li key={cc.id}>
-              {`§${cc.longDisplay}`}
-            </li>
-          ))}
-        </ul>
-        <Typography variant="body1" gutterBottom>
-          The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
-        </Typography>
+            <Typography variant="body1" gutterBottom>
+              This list includes all health IT products that have been certified to at least one of the following API Criteria.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Please note that by default, only listings that are active or suspended are shown in the search results.
+            </Typography>
+            <ul>
+              { displayCriteria.map((cc) => (
+                <li key={cc.id}>
+                  {`§${cc.longDisplay}`}
+                </li>
+              ))}
+            </ul>
+            <Typography variant="body1" gutterBottom>
+              The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
+            </Typography>
           </>
         )}
       />
       <ChplPageBody>
         <div id="main-content" tabIndex="-1">
-        <ChplFilterSearchBar />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
+          <ChplFilterSearchBar />
+          <div>
+            <ChplFilterChips />
+          </div>
+          { isLoading
           && (
             <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
               <CircularProgress />
             </Box>
           )}
-        { !isLoading
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -208,116 +201,116 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
               { listings.length > 0
                 && (
                   <>
-                    <Box className={classes.cardsContainer}>
+                    <Box>
                       { listings.map((item) => (
-                      <ChplSearchResultCard
-                        key={item.id}
-                        cardTitle="CHPL ID"
-                        cardTitleValue={(
-                          <ChplLink
-                            href={`#/listing/${item.id}`}
-                            text={item.chplProductNumber}
-                            analytics={{
-                              ...analytics,
-                              event: 'Navigate to Listing Details Page',
-                              label: item.chplProductNumber,
-                              aggregationName: item.product.name,
-                            }}
-                            external={false}
-                            router={{ sref: 'listing', options: { id: item.id } }}
-                          />
+                        <ChplSearchResultCard
+                          key={item.id}
+                          cardTitle="CHPL ID"
+                          cardTitleValue={(
+                            <ChplLink
+                              href={`#/listing/${item.id}`}
+                              text={item.chplProductNumber}
+                              analytics={{
+                                ...analytics,
+                                event: 'Navigate to Listing Details Page',
+                                label: item.chplProductNumber,
+                                aggregationName: item.product.name,
+                              }}
+                              external={false}
+                              router={{ sref: 'listing', options: { id: item.id } }}
+                            />
                         )}
-                        fieldGroups={[
-                          [
-                            {
-                              label: 'Developer',
-                              value: (
-                                <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Developer Page',
-                                    label: item.developer.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                />
-                              ),
-                              xs: 12,
-                              sm: 3,
-                            },
-                            {
-                              label: 'Product',
-                              value: item.product.name,
-                              xs: 6,
-                              sm: 3
-                            },
-                            {
-                              label: 'Version',
-                              value: item.version.name,
-                              xs: 6,
-                              sm: 3,
-                            },
-                             {
-                              label: 'Status',
-                              value: getStatusIcon(item.certificationStatus),
-                              xs: 6,
-                              sm: 3,
-                            }, 
-                          ],
-                          [
-                            {
-                              label: 'API Documentation',
-                              value: item.apiDocumentationNode,
-                              xs: 6,
-                              sm: 3,
-                            },
-                            {
-                              label: 'Service Base URL List',
-                              value: item.serviceBaseUrlListValue
-                                ? (
-                                  <dl>
-                                    <dt>170.315 (g)(10)</dt>
-                                    <dd>
-                                      <ChplLink
-                                        href={item.serviceBaseUrlListValue}
-                                        analytics={{
-                                          ...analytics,
-                                          event: 'Go to Service Base URL List',
-                                          label: item.chplProductNumber,
-                                          aggregationName: item.product.name,
-                                        }}
-                                      />
-                                    </dd>
-                                  </dl>
-                                )
-                                : 'N/A',
-                              xs: 4,
-                              sm: 4,
-                            },
-                            {
-                              label: 'Mandatory Disclosures URL',
-                              value: item.mandatoryDisclosures
-                                ? (
+                          fieldGroups={[
+                            [
+                              {
+                                label: 'Developer',
+                                value: (
                                   <ChplLink
-                                    href={item.mandatoryDisclosures}
+                                    href={`#/organizations/developers/${item.developer.id}`}
+                                    text={item.developer.name}
                                     analytics={{
                                       ...analytics,
-                                      event: 'Go to Mandatory Disclosures',
-                                      label: item.chplProductNumber,
-                                      aggregationName: item.product.name,
+                                      event: 'Navigate to Developer Page',
+                                      label: item.developer.name,
                                     }}
+                                    external={false}
+                                    router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                   />
-                                )
-                                : 'N/A',
-                              xs: 4,
-                              sm: 4,
-                            },
-                          ],
-                        ]}
-                        actions={<ChplActionButton listing={item} />}
-                      />
+                                ),
+                                xs: 12,
+                                sm: 3,
+                              },
+                              {
+                                label: 'Product',
+                                value: item.product.name,
+                                xs: 6,
+                                sm: 3,
+                              },
+                              {
+                                label: 'Version',
+                                value: item.version.name,
+                                xs: 6,
+                                sm: 3,
+                              },
+                              {
+                                label: 'Status',
+                                value: getStatusIcon(item.certificationStatus),
+                                xs: 6,
+                                sm: 3,
+                              },
+                            ],
+                            [
+                              {
+                                label: 'API Documentation',
+                                value: item.apiDocumentationNode,
+                                xs: 6,
+                                sm: 3,
+                              },
+                              {
+                                label: 'Service Base URL List',
+                                value: item.serviceBaseUrlListValue
+                                  ? (
+                                    <dl>
+                                      <dt>170.315 (g)(10)</dt>
+                                      <dd>
+                                        <ChplLink
+                                          href={item.serviceBaseUrlListValue}
+                                          analytics={{
+                                            ...analytics,
+                                            event: 'Go to Service Base URL List',
+                                            label: item.chplProductNumber,
+                                            aggregationName: item.product.name,
+                                          }}
+                                        />
+                                      </dd>
+                                    </dl>
+                                  )
+                                  : 'N/A',
+                                xs: 4,
+                                sm: 4,
+                              },
+                              {
+                                label: 'Mandatory Disclosures URL',
+                                value: item.mandatoryDisclosures
+                                  ? (
+                                    <ChplLink
+                                      href={item.mandatoryDisclosures}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Go to Mandatory Disclosures',
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
+                                      }}
+                                    />
+                                  )
+                                  : 'N/A',
+                                xs: 4,
+                                sm: 4,
+                              },
+                            ],
+                          ]}
+                          actions={<ChplActionButton listing={item} />}
+                        />
                       ))}
                     </Box>
                     <ChplPagination

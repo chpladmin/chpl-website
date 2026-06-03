@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
 
-import { utilStyles } from 'themes';
 import {
   useFetchBannedDevelopers,
 } from 'api/search';
@@ -32,13 +31,6 @@ const sortOptions = [
   { property: 'decertification_date', text: 'Decertification Date' },
 ];
 
-const useStyles = makeStyles({
-  ...utilStyles,
-  cardsContainer: {
-    margin: '0px 24px',
-  },
-});
-
 function ChplBannedDevelopersSearchView() {
   const storageKey = 'storageKey-bannedDevelopersView';
   const { analytics } = useAnalyticsContext();
@@ -48,7 +40,6 @@ function ChplBannedDevelopersSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchBannedDevelopers({
@@ -98,24 +89,28 @@ function ChplBannedDevelopersSearchView() {
         text="Developers Under Certification Ban"
         subtitle={(
           <>
-            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program, including new products as well as upgraded versions of current products.
+            <Typography variant="body1" gutterBottom>
+              This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program, including new products as well as upgraded versions of current products. Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
+              <ChplLink
+                href="#/search"
+                text="searching for the product"
+                analytics={{
+                  ...analytics,
+                  event: 'Navigate to searching for the product',
+                }}
+                external={false}
+                router={{ sref: 'search' }}
+                inline
+              />
+              .
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              A developer may be precluded from certifying products for two reasons:
+            </Typography>
             <br />
-            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
-            {' '}
-            <ChplLink
-              href="#/search"
-              text="searching for the product"
-              analytics={{
-                ...analytics,
-                event: 'Navigate to searching for the product',
-              }}
-              external={false}
-              router={{ sref: 'search' }}
-              inline
-            />
-            .
-            <br />
-            ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:
             <ol>
               <li>
                 <strong>Developer Failure to Take Appropriate Corrective Action</strong>
@@ -133,85 +128,85 @@ function ChplBannedDevelopersSearchView() {
       />
       <ChplPageBody>
         <div id="main-content" tabIndex="-1">
-        <ChplFilterSearchBar
-          placeholder="Search by Developer Name or Code..."
-        />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
-          && (
-            <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-              <CircularProgress />
-            </Box>
-          )}
-        { !isLoading
-          && (
-            <>
-              <ChplSearchResultControls
-                recordCount={recordCount}
-                pageStart={pageStart}
-                pageEnd={pageEnd}
-              >
-                <ChplSortControls
-                  sortOptions={sortOptions}
-                  orderBy={orderBy}
-                  order={sortDescending ? 'desc' : 'asc'}
-                  onSort={handleSort}
-                />
-              </ChplSearchResultControls>
-            { developers.length > 0
-              && (
-                <>
-                  <Box className={classes.cardsContainer}>
-                    { developers.map((item) => (
-                      <ChplSearchResultCard
-                        key={item.id}
-                        cardTitle="Developer"
-                        cardTitleValue={(
-                          <ChplLink
-                            href={`#/organizations/developers/${item.id}`}
-                            text={item.name}
-                            analytics={{
-                              ...analytics,
-                              event: 'Navigate to Developer Page',
-                              label: item.name,
-                            }}
-                            external={false}
-                            router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                          />
-                        )}
-                        fieldGroups={[
-                          [
-                            {
-                              label: 'Decertification Date',
-                              value: item.decertificationDate,
-                              xs: 12,
-                              sm: 6,
-                            },
-                            {
-                              label: 'ONC-ACB',
-                              value: item.oncAcbDisplay,
-                              xs: 12,
-                              sm: 6,
-                            },
-                          ],
-                        ]}
-                      />
-                    ))}
-                  </Box>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
+          <ChplFilterSearchBar
+            placeholder="Search by Developer Name or Code..."
+          />
+          <div>
+            <ChplFilterChips />
+          </div>
+          {isLoading
+            && (
+              <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+                <CircularProgress />
+              </Box>
+            )}
+          {!isLoading
+            && (
+              <>
+                <ChplSearchResultControls
+                  recordCount={recordCount}
+                  pageStart={pageStart}
+                  pageEnd={pageEnd}
+                >
+                  <ChplSortControls
+                    sortOptions={sortOptions}
+                    orderBy={orderBy}
+                    order={sortDescending ? 'desc' : 'asc'}
+                    onSort={handleSort}
                   />
-                </>
-              )}
-            </>
-          )}
+                </ChplSearchResultControls>
+                {developers.length > 0
+                  && (
+                    <>
+                      <Box>
+                        {developers.map((item) => (
+                          <ChplSearchResultCard
+                            key={item.id}
+                            cardTitle="Developer"
+                            cardTitleValue={(
+                              <ChplLink
+                                href={`#/organizations/developers/${item.id}`}
+                                text={item.name}
+                                analytics={{
+                                  ...analytics,
+                                  event: 'Navigate to Developer Page',
+                                  label: item.name,
+                                }}
+                                external={false}
+                                router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                              />
+                            )}
+                            fieldGroups={[
+                              [
+                                {
+                                  label: 'Decertification Date',
+                                  value: item.decertificationDate,
+                                  xs: 12,
+                                  sm: 6,
+                                },
+                                {
+                                  label: 'ONC-ACB',
+                                  value: item.oncAcbDisplay,
+                                  xs: 12,
+                                  sm: 6,
+                                },
+                              ],
+                            ]}
+                          />
+                        ))}
+                      </Box>
+                      <ChplPagination
+                        count={recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                      />
+                    </>
+                  )}
+              </>
+            )}
         </div>
       </ChplPageBody>
     </>

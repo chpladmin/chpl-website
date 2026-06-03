@@ -3,7 +3,6 @@ import {
   Box,
   CircularProgress,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 
 import { useFetchListings } from 'api/search';
@@ -40,12 +39,6 @@ const sortOptions = [
   { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs' },
 ];
 
-const useStyles = makeStyles({
-  cardsContainer: {
-    margin: '0px 24px',
-  },
-});
-
 function ChplCorrectiveActionSearchView() {
   const storageKey = 'storageKey-correctiveActionView';
   const { analytics } = useAnalyticsContext();
@@ -56,7 +49,6 @@ function ChplCorrectiveActionSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
   const toggledCsvDefaults = ['compliance'];
 
   const filterContext = useFilterContext();
@@ -106,15 +98,21 @@ function ChplCorrectiveActionSearchView() {
         text="Products: Corrective Action Status"
         subtitle={(
           <>
-            This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as &quot;Surveillance NCs&quot;, while non-conformities identified though an ONC Direct Review are noted as &quot;Direct Review NCs&quot;. Not all non-conformities affect a product&apos;s functionality, and the existence of a non-conformity does not by itself mean that a product is &quot;defective.&quot; Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product&apos;s CHPL ID.
-            <br />
-            Please note that by default, only listings that are active or suspended are shown in the search results.
+            <Typography variant="body1" gutterBottom>
+              This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as &quot;Surveillance NCs&quot;, while non-conformities identified though an ONC Direct Review are noted as &quot;Direct Review NCs&quot;.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Not all non-conformities affect a product&apos;s functionality, and the existence of a non-conformity does not by itself mean that a product is &quot;defective.&quot; Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product&apos;s CHPL ID.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Please note that by default, only listings that are active or suspended are shown in the search results.
+            </Typography>
           </>
         )}
       />
       <ChplPageBody>
         <div id="main-content" tabIndex="-1">
-        { !isLoading && !directReviewsAvailable
+          { !isLoading && !directReviewsAvailable
           && (
             <>
               <Typography variant="body1" gutterBottom>
@@ -138,7 +136,7 @@ function ChplCorrectiveActionSearchView() {
             </>
           )}
         </div>
-      { directReviewsAvailable
+        { directReviewsAvailable
         && (
           <>
             <ChplFilterSearchBar />
@@ -173,7 +171,7 @@ function ChplCorrectiveActionSearchView() {
                   {listings.length > 0
                     && (
                       <>
-                        <Box className={classes.cardsContainer}>
+                        <Box>
                           {listings.map((item) => (
                             <ChplSearchResultCard
                               key={item.id}
@@ -224,7 +222,7 @@ function ChplCorrectiveActionSearchView() {
                                     xs: 6,
                                     sm: 3,
                                   },
-                                 {
+                                  {
                                     label: 'Status',
                                     value: getStatusIcon(item.certificationStatus),
                                     xs: 6,

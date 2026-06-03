@@ -61,9 +61,6 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     border: `1px solid ${palette.greyMain}`,
   },
-  cardsContainer: {
-    margin: '0px -8px',
-  },
 });
 
 function ChplListingsView() {
@@ -151,7 +148,7 @@ function ChplListingsView() {
             <Box display="flex" justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
               <CircularProgress />
             </Box>
-        )}
+          )}
         { !isLoading
           && (
             <>
@@ -193,7 +190,7 @@ function ChplListingsView() {
               { listings.length > 0
                 && (
                   <>
-                    <Box className={classes.cardsContainer}>
+                    <Box>
                       { listings.map((item) => (
                         <ChplSearchResultCard
                           key={item.id}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
 
 import { useFetchListings } from 'api/search';
@@ -34,13 +34,6 @@ const sortOptions = [
   { property: 'version', text: 'Version' },
 ];
 
-const useStyles = makeStyles({
-  cardsContainer: {
-    margin: '0px 24px',
-  },
-});
-
-
 function ChplDecisionSupportInterventionsSearchView() {
   const storageKey = 'storageKey-decisionSupportInterventionsView';
   const { analytics } = useAnalyticsContext();
@@ -50,7 +43,6 @@ function ChplDecisionSupportInterventionsSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
   const toggledCsvDefaults = ['riskManagementSummaryInformation'];
 
   const filterContext = useFilterContext();
@@ -100,14 +92,18 @@ function ChplDecisionSupportInterventionsSearchView() {
         text="Decision Support Interventions"
         subtitle={(
           <>
-            This list includes all health IT products that have been certified to the following Criterion.
-            <br />
-            Certified Health IT developers are required to apply intervention risk management practices to Predictive DSIs they supply as part of their (b)(11)-certified products. These practices, including risk analysis, risk mitigation, and governance, are summarized and made publicly available through URLs listed in the Risk Management Summary Information column.
-            <br />
-            Please note that by default, only listings that are active or suspended are shown in the search results.
+            <Typography variant="body1" gutterBottom>
+              This list includes all health IT products that have been certified to the following Criterion.
+            </Typography>
             <ul>
               <li>&sect;170.315 (b)(11): Decision Support Interventions</li>
             </ul>
+            <Typography variant="body1" gutterBottom>
+              Certified Health IT developers are required to apply intervention risk management practices to Predictive DSIs they supply as part of their (b)(11)-certified products. These practices, including risk analysis, risk mitigation, and governance, are summarized and made publicly available through URLs listed in the Risk Management Summary Information column.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Please note that by default, only listings that are active or suspended are shown in the search results.
+            </Typography>
           </>
         )}
       />
@@ -142,10 +138,10 @@ function ChplDecisionSupportInterventionsSearchView() {
                   toggled={toggledCsvDefaults}
                 />
               </ChplSearchResultControls>
-            { listings.length > 0
+              { listings.length > 0
               && (
                 <>
-                  <Box className={classes.cardsContainer}>
+                  <Box>
                     { listings.map((item) => (
                       <ChplSearchResultCard
                         key={item.id}

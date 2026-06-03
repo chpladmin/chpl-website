@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
 
 import { useFetchListings } from 'api/search';
@@ -34,13 +34,6 @@ const sortOptions = [
   { property: 'version', text: 'Version' },
 ];
 
-const useStyles = makeStyles({
-  cardsContainer: {
-    margin: '0px 24px',
-  },
-});
-
-
 function ChplRealWorldTestingSearchView() {
   const storageKey = 'storageKey-realWorldTestingView';
   const { analytics } = useAnalyticsContext();
@@ -50,7 +43,6 @@ function ChplRealWorldTestingSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
   const toggledCsvDefaults = ['rwt'];
 
   const filterContext = useFilterContext();
@@ -99,64 +91,64 @@ function ChplRealWorldTestingSearchView() {
         text="Real World Testing"
         subtitle={(
           <>
-            This list includes Health IT Module(s) eligible for Real World Testing, which is an annual
-            {' '}
-            <ChplLink
-              href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
-              text="Condition and Maintenance of Certification requirement"
-              analytics={{
-                ...analytics,
-                event: 'Go to Condition and Maintenance of Certification requirement',
-              }}
-              external={false}
-              inline
-            />
-            {' '}
-            for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
-            {' '}
-            <ChplLink
-              href="https://www.healthit.gov/curesrule/"
-              text="ONC&apos;s Cures Act Final Rule"
-              analytics={{
-                ...analytics,
-                event: 'Go to ONC&apos;s Cures Act Final Rule',
-              }}
-              external={false}
-              inline
-            />
-            {' '}
-            must successfully test their real world use.
+            <Typography variant="body1" gutterBottom>
+              This list includes Health IT Module(s) eligible for Real World Testing, which is an annual
+              {' '}
+              <ChplLink
+                href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
+                text="Condition and Maintenance of Certification requirement"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Condition and Maintenance of Certification requirement',
+                }}
+                external={false}
+                inline
+              />
+              {' '}
+              for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
+              {' '}
+              <ChplLink
+                href="https://www.healthit.gov/curesrule/"
+                text="ONC&apos;s Cures Act Final Rule"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to ONC&apos;s Cures Act Final Rule',
+                }}
+                external={false}
+                inline
+              />
+              {' '}
+              must successfully test their real world use. If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
+            </Typography>
             <br />
-            If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
-            <br />
-            For more information, please visit the
-            {' '}
-            <ChplLink
-              href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing"
-              text="Real World Testing resources"
-              analytics={{
-                ...analytics,
-                event: 'Go to Real World Testing resources',
-              }}
-              external={false}
-              inline
-            />
-            . Real World Testing summary data is also available through
-            {' '}
-            <ChplLink
-              href="#/resources/download"
-              text="Download the CHPL"
-              analytics={{
-                ...analytics,
-                event: 'Navigate to Download the CHPL',
-              }}
-              external={false}
-              router={{ sref: 'resources.download' }}
-              inline
-            />
-            .
-            <br />
-            Please note that by default, only listings that are active or suspended are shown in the search results.
+            <Typography variant="body1" gutterBottom>
+              For more information, please visit the
+              {' '}
+              <ChplLink
+                href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing"
+                text="Real World Testing resources"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Real World Testing resources',
+                }}
+                external={false}
+                inline
+              />
+              . Real World Testing summary data is also available through
+              {' '}
+              <ChplLink
+                href="#/resources/download"
+                text="Download the CHPL"
+                analytics={{
+                  ...analytics,
+                  event: 'Navigate to Download the CHPL',
+                }}
+                external={false}
+                router={{ sref: 'resources.download' }}
+                inline
+              />
+              . Please note that by default, only listings that are active or suspended are shown in the search results.
+            </Typography>
           </>
         )}
       />
@@ -191,10 +183,10 @@ function ChplRealWorldTestingSearchView() {
                   toggled={toggledCsvDefaults}
                 />
               </ChplSearchResultControls>
-            { listings.length > 0
+              { listings.length > 0
               && (
                 <>
-                  <Box className={classes.cardsContainer}>
+                  <Box>
                     {listings.map((item) => (
                       <ChplSearchResultCard
                         key={item.id}
