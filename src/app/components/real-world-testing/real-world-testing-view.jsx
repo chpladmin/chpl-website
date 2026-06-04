@@ -107,7 +107,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
                 variant="contained"
                 onClick={createRwtResultsChangeRequest}
               >
-                Submit RWT Results URL List change
+                Submit RWT Results URL change
               </Button>
             </CardActions>
           )}
