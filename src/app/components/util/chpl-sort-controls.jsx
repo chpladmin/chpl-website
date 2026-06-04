@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import {
   arrayOf,
+  bool,
   func,
   oneOf,
   shape,
@@ -30,10 +31,12 @@ function ChplSortControls({
   currentOrderRef.current = order;
 
   const handleSortChange = (property) => {
-    const newOrder = orderBy === property 
+    const option = sortOptions.find((opt) => opt.property === property);
+    const defaultOrder = option?.reverseDefault ? 'desc' : 'asc';
+    const newOrder = orderBy === property
       ? (currentOrderRef.current === 'asc' ? 'desc' : 'asc')  // Toggle if same
-      : 'asc';  // Start with asc if different
-    
+      : defaultOrder;
+
     currentOrderRef.current = newOrder;
     onSort(property, newOrder);
     setSortMenuAnchor(null);
@@ -58,7 +61,7 @@ function ChplSortControls({
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={<SortIcon />}
           color="primary"
-          style={{ padding: '0px 16px', fontSize:'12px' }}
+          style={{ padding: '0 16px', fontSize:'12px' }}
         >
           {getCurrentSortLabel()}
         </Button>
@@ -96,6 +99,7 @@ ChplSortControls.propTypes = {
   sortOptions: arrayOf(shape({
     property: string.isRequired,
     text: string.isRequired,
+    reverseDefault: bool,
   })).isRequired,
   orderBy: string.isRequired,
   order: oneOf(['asc', 'desc']).isRequired,

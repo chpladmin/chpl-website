@@ -34,10 +34,10 @@ const sortOptions = [
   { property: 'developer', text: 'Developer' },
   { property: 'product', text: 'Product' },
   { property: 'version', text: 'Version' },
-  { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs' },
-  { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs' },
-  { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs' },
-  { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs' },
+  { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs', reverseDefault: true },
+  { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', reverseDefault: true },
+  { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', reverseDefault: true },
+  { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', reverseDefault: true },
 ];
 
 function ChplCorrectiveActionSearchView() {

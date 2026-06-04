@@ -24,6 +24,21 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: theme.shadows[4],
     },
   },
+  cardContent: {
+    padding: '16px 32px',
+    display: 'flex',
+    gap: '16px',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
+  cardBody: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    flex: 1,
+  },
 }));
 
 function ChplSearchResultCard({
@@ -37,13 +52,8 @@ function ChplSearchResultCard({
   const classes = useStyles();
   return (
     <Card className={classes.card}>
-      <CardContent style={{
-        padding: '16px 32px',
-        display: 'flex',
-        gridGap: '8px',
-      }}
-      >
-        <Box display="flex" flexDirection="column" flex={1} >
+      <CardContent className={classes.cardContent}>
+        <Box className={classes.cardBody}>
           { (cardTitle || cardTitleValue)
             && (
               <>
