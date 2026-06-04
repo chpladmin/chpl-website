@@ -26,16 +26,19 @@ function ChplSortControls({
 }) {
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
   const currentOrderRef = useRef(order);
-  
+
   // Keep ref in sync with prop
   currentOrderRef.current = order;
 
   const handleSortChange = (property) => {
     const option = sortOptions.find((opt) => opt.property === property);
     const defaultOrder = option?.reverseDefault ? 'desc' : 'asc';
-    const newOrder = orderBy === property
-      ? (currentOrderRef.current === 'asc' ? 'desc' : 'asc')  // Toggle if same
-      : defaultOrder;
+    let newOrder;
+    if (orderBy === property) {
+      newOrder = currentOrderRef.current === 'asc' ? 'desc' : 'asc';
+    } else {
+      newOrder = defaultOrder;
+    }
 
     currentOrderRef.current = newOrder;
     onSort(property, newOrder);
@@ -61,7 +64,7 @@ function ChplSortControls({
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={<SortIcon />}
           color="primary"
-          style={{ padding: '0 16px', fontSize:'12px' }}
+          style={{ padding: '0 16px', fontSize: '12px' }}
         >
           {getCurrentSortLabel()}
         </Button>

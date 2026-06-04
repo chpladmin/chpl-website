@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '16px 32px',
     display: 'flex',
     gap: '16px',
-     alignItems: 'normal',
+    alignItems: 'normal',
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
