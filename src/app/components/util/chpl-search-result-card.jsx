@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
     padding: '16px 32px',
     display: 'flex',
     gap: '16px',
+     alignItems: 'normal',
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
+      alignItems: 'flex-start',
     },
   },
   cardBody: {
@@ -56,37 +58,34 @@ function ChplSearchResultCard({
         <Box className={classes.cardBody}>
           { (cardTitle || cardTitleValue)
             && (
-              <>
-                <Box display="flex" alignItems="center" gridGap="8px">
-                  <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
-                    { cardTitle }
-                  </Typography>
-                  { titleIconButton
-                    && (
-                      <Box>
-                        { titleIconButton }
-                      </Box>
-                    )}
+              <Box
+                display="flex"
+                flex={1}
+                gridGap="8px"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Box display="flex" flexDirection="column" flex={1} gridGap="4px">
+                  <Box display="flex" alignItems="center" gridGap="8px">
+                    <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
+                      { cardTitle }
+                    </Typography>
+                    { titleIconButton
+                      && (
+                        <Box>
+                          { titleIconButton }
+                        </Box>
+                      )}
+                  </Box>
+                  { cardTitleValue }
                 </Box>
-                <Box
-                  display="flex"
-                  flex={1}
-                  gridGap="8px"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  style={{ padding: '4px 0px', marginBottom: '4px' }}
-                >
-                  <Typography variant="h5">
-                    { cardTitleValue }
-                  </Typography>
-                  { additionalTitleContent
-                    && (
-                      <Box>
-                        { additionalTitleContent }
-                      </Box>
-                    )}
-                </Box>
-              </>
+                { additionalTitleContent
+                  && (
+                    <Box>
+                      { additionalTitleContent }
+                    </Box>
+                  )}
+              </Box>
             )}
           { fieldGroups.map((group) => (
             <Grid
