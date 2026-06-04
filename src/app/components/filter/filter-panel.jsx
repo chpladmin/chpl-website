@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     rowGap: '16px',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
@@ -38,8 +38,12 @@ const useStyles = makeStyles({
     padding: '16px',
   },
   filterPanelSecondary: {
-    borderLeft: '1px solid #599bde',
     padding: '16px',
+    borderTop: '1px solid #599bde',
+    [theme.breakpoints.up('md')]: {
+      borderTop: 'none',
+      borderLeft: '1px solid #599bde',
+    },
   },
   filterBold: {
     fontWeight: '600',
@@ -140,7 +144,6 @@ function ChplFilterPanel() {
         event: 'Close Advanced Search',
       });
     }
-    setAnchor(null);
     setOpen(false);
     setActiveCategoryKey('');
   };
@@ -234,6 +237,7 @@ function ChplFilterPanel() {
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
+        TransitionProps={{ onExited: () => setAnchor(null) }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
