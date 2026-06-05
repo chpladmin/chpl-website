@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 
 function ChplSbulsView({ developer, dispatch }) {
   const { analytics } = useAnalyticsContext();
-  const { domainIsOn, sbulChangeRequestIsOn } = useContext(FlagContext);
+  const { sbulChangeRequestIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [sbuls, setSbuls] = useState([]);
   const { data, isError, isLoading } = useFetchSbuls({ developer });
@@ -64,7 +64,7 @@ function ChplSbulsView({ developer, dispatch }) {
             Service Base URL List information is displayed here if a health IT developer has listings certified to (g)(10) and therefore must comply with
             {' '}
             <ChplLink
-              href={`${domainIsOn ? 'https://www.astp.hhs.gov' : 'https://www.healthit.gov'}/certification-health-it/conditions-ccg/application-programming-interfaces/`}
+              href="https://www.healthit.gov/certification-health-it/conditions-ccg/application-programming-interfaces/"
               text="API Maintenance of Certification"
               analytics={{
                 ...analytics,
