@@ -11,8 +11,8 @@ import options from './options';
 const useFetchCmsIdAnalysis = (listings) => {
   const axios = useAxios();
   const listingIds = listings.map((l) => l.id).sort((a, b) => a - b).join(',');
-  return useQuery(['certification-ids', listingIds], async () => {
-    const response = await axios.get(`/certification-ids/search?listingIds=${listingIds}`);
+  return useQuery(['certification-ids', listingIds], async ({ signal }) => {
+    const response = await axios.get(`/certification-ids/search?listingIds=${listingIds}`, { signal });
     return response.data;
   }, {
     enabled: listings?.length > 0,
