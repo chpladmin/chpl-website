@@ -137,7 +137,7 @@ function ChplRwtResultsWizardSection2({ dispatch, listings, selectedListings }) 
                   </Box>
                 </Box>
                 <Typography variant="body2" className={classes.emptyStateMessage} aria-live="polite">
-                  You do not have an associated listing to update a Service Base URL List URL.
+                  You do not have an associated listing to update a Real World Testings Result URL.
                 </Typography>
               </Box>
             )}
