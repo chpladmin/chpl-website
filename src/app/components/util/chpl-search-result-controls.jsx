@@ -20,7 +20,12 @@ const useStyles = makeStyles({
     padding: '16px 32px',
     backgroundColor: palette.white,
     borderRadius: '0px 0px 8px 8px',
+    borderTop: `1px solid ${palette.greyBorder}`,
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
+    [theme.breakpoints.down('sm')]: {
+      gap: '12px',
+      padding: '16px',
+    },
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -30,6 +35,26 @@ const useStyles = makeStyles({
     display: 'flex',
     gap: '4px',
     alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  actions: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '2px',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap',
+      gap: '8px',
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      flexWrap: 'nowrap',
+      gap: '2px',
+      width: 'auto',
+      '& > *': {
+        flex: '0 1 auto',
+        width: 'auto',
+      },
+    },
   },
 });
 
@@ -60,7 +85,7 @@ function ChplSearchResultControls({
       </div>
       { recordCount > 0 && children
         && (
-          <Box display="flex" alignItems="center" flexDirection="row" gridGap="2px">
+          <Box className={classes.actions}>
             { children }
           </Box>
         )}

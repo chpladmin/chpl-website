@@ -1,11 +1,35 @@
 import React from 'react';
 import {
   TablePagination,
+  makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, number } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
+import { theme } from 'themes';
+
+const desktopStickyBottom = {
+  md: 80,
+  lg: 72,
+  xl: 64,
+};
+
+const useStyles = makeStyles({
+  pagination: {
+    position: 'relative',
+    [theme.breakpoints.up('md')]: {
+      position: 'sticky',
+      bottom: desktopStickyBottom.md,
+    },
+    [theme.breakpoints.up('lg')]: {
+      bottom: desktopStickyBottom.lg,
+    },
+    [theme.breakpoints.up('xl')]: {
+      bottom: desktopStickyBottom.xl,
+    },
+  },
+});
 
 function ChplPagination({
   count,
@@ -16,6 +40,7 @@ function ChplPagination({
   setRowsPerPage,
 }) {
   const { analytics } = useAnalyticsContext();
+  const classes = useStyles();
 
   const handlePageChange = (event, newPage) => {
     if (analytics) {
@@ -29,27 +54,29 @@ function ChplPagination({
   };
 
   const handleRowsPerPageChange = (event) => {
+    const nextRowsPerPage = parseInt(event.target.value, 10);
     if (analytics) {
       eventTrack({
         ...analytics,
         event: 'Change Rows Per Page',
-        label: event.target.value,
+        label: nextRowsPerPage,
       });
     }
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(nextRowsPerPage);
     setPage(0);
   };
 
   return (
     <TablePagination
+      className={classes.pagination}
       component="div"
+      labelRowsPerPage="Results per page:"
       onPageChange={handlePageChange}
       onRowsPerPageChange={handleRowsPerPageChange}
       count={count}
       page={page}
       rowsPerPage={rowsPerPage}
       rowsPerPageOptions={rowsPerPageOptions}
-      style={{ position: 'sticky', bottom: 64 }}
     />
   );
 }

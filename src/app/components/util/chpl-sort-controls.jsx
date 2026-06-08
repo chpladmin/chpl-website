@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   Menu,
   MenuItem,
+  makeStyles,
 } from '@material-ui/core';
 import {
   arrayOf,
@@ -18,12 +19,36 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import SortIcon from '@material-ui/icons/Sort';
 
+import { theme } from 'themes';
+
+const useStyles = makeStyles({
+  container: {
+    marginRight: '16px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      marginRight: 0,
+    },
+  },
+  buttonGroup: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+  primaryButton: {
+    [theme.breakpoints.down('sm')]: {
+      flex: '1 1 auto',
+      justifyContent: 'flex-start',
+    },
+  },
+});
+
 function ChplSortControls({
   sortOptions,
   orderBy,
   order,
   onSort,
 }) {
+  const classes = useStyles();
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
   const currentOrderRef = useRef(order);
 
@@ -58,9 +83,10 @@ function ChplSortControls({
   };
 
   return (
-    <Box display="flex" alignItems="center" mr={2}>
-      <ButtonGroup color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
+    <Box className={classes.container} display="flex" alignItems="center">
+      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
         <Button
+          className={classes.primaryButton}
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={<SortIcon />}
           color="primary"
