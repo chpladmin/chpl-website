@@ -169,7 +169,7 @@ const useStyles = makeStyles({
     minHeight: '75vh',
   },
   subHeaders: {
-    color: '#fff',
+    color: palette.white,
     padding: '0 16px',
     [theme.breakpoints.up('sm')]: {
       padding: '0',
@@ -220,7 +220,7 @@ function ChplLandingPage() {
             </Box>
             {announcements.length > 0 && (
               <>
-                <Typography style={{ color: '#fff' }} className={classes.announcement} variant="h2" id="announcements-heading">
+                <Typography className={classes.announcement} variant="h2" id="announcements-heading">
                   Announcement
                   {announcements.length > 1 ? 's' : ''}
                 </Typography>

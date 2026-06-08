@@ -26,6 +26,17 @@ $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
     --light: #f9f9f9;
     --dark: #1c1c1c;
     --medium-grey: #6b6b6b;
+    --neutral-medium: #cccccc;
+    --grey-lighter: #eeeeee;
+    --text-strong: #333333;
+    --text-muted: #777777;
+    --text-disabled: #4d4d4d;
+    --link-blue: #1a67a9;
+    --loading-highlight: #ffdd3c;
+    --warning-bright: #f5d43c;
+    --input-border: #6c9cbf;
+    --surface-subtle: #f5f5f5;
+    --border-subtle: #e3e3e3;
     --swagger-put-content: #ede0f8;
     --swagger-put-badge: #6b23a4;
     --background-error: 196, 79, 101;
@@ -42,8 +53,8 @@ $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 
 .browsehappy {
     margin: .2em 0;
-    background: #ccc;
-    color: #000;
+    background: var(--neutral-medium);
+    color: var(--black);
     padding: .2em 0;
 }
 
@@ -61,7 +72,7 @@ body {
 }
 
 a {
-    color: #1a67a9;
+    color: var(--link-blue);
     text-decoration: underline;
 }
 
@@ -124,17 +135,17 @@ h6 {
 }
 
 #loading-bar .bar {
-    background: #ffdd3c;
+    background: var(--loading-highlight);
 }
 
 #loading-bar .peg {
-    box-shadow: #ffdd3c 1px 0 6px 1px;
+    box-shadow: var(--loading-highlight) 1px 0 6px 1px;
 }
 
 #loading-bar-spinner .spinner-icon {
     border: 10px solid transparent;
-    border-top-color: #ffdd3c;
-    border-left-color: #ffdd3c;
+    border-top-color: var(--loading-highlight);
+    border-left-color: var(--loading-highlight);
     top: 50%;
     left: 50%;
     margin-top: -64px;
@@ -162,29 +173,29 @@ h6 {
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: #333 !important;
+    color: var(--text-strong) !important;
 }
 
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: #333 !important;
+    color: var(--text-strong) !important;
     opacity: 1;
 }
 
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: #333 !important;
+    color: var(--text-strong) !important;
     opacity: 1;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #333 !important;
+    color: var(--text-strong) !important;
 }
 
 :placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
-    color: #333 !important;
+    color: var(--text-strong) !important;
 }
 
 .btn-default[disabled] {
-    color: #000;
+    color: var(--black);
 }
 
 .btn[disabled] {
@@ -200,7 +211,7 @@ option[disabled] {
 }
 
 .status-warning {
-    color: #f5d43c;
+    color: var(--warning-bright);
 }
 
 .status-bad {
@@ -221,7 +232,7 @@ option[disabled] {
 }
 
 #filters button a {
-    color: #f5d43c;
+    color: var(--warning-bright);
     text-decoration: none;
 }
 
@@ -322,23 +333,23 @@ option[disabled] {
 
 .style-guide-block {
     width: 100%;
-    background: #ccc;
+    background: var(--neutral-medium);
 }
 
 .additional-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: #777777;
+    color: var(--text-muted);
 }
 
 .additional-input::-moz-placeholder { /* Firefox 19+ */
-    color: #777777;
+    color: var(--text-muted);
 }
 
 .additional-input:-ms-input-placeholder { /* IE 10+ */
-    color: #777777;
+    color: var(--text-muted);
 }
 
 .additional-input:-moz-placeholder { /* Firefox 18- */
-    color: #777777;
+    color: var(--text-muted);
 }
 
 .fade-in {
@@ -385,7 +396,7 @@ option[label^="Retired"] {
     .btn-link {
 
         i {
-            color: #4d4d4d;
+            color: var(--text-disabled);
         }
     }
 
@@ -394,9 +405,9 @@ option[label^="Retired"] {
     }
 
     .alert-success {
-        color: #000;
-        background-color: #eee;
-        border-color: #000;
+        color: var(--black);
+        background-color: var(--grey-lighter);
+        border-color: var(--black);
     }
 
     .table-striped {
@@ -404,11 +415,11 @@ option[label^="Retired"] {
         tbody {
 
             tr:nth-of-type(odd) {
-                background-color: #eee;
+                background-color: var(--grey-lighter);
             }
 
             tr:nth-of-type(even) {
-                background-color: #fff;
+                background-color: var(--white);
             }
         }
     }
@@ -553,7 +564,7 @@ p {
 
 .panel-default {
     margin: 15px;
-    background-color: #fff;
+    background-color: var(--white);
     border: 1px solid var(--grey);
     border-radius: 5px;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
@@ -578,7 +589,7 @@ p {
 
 .form-control {
     font-size: 16px;
-    border-color: #6c9cbf;
+    border-color: var(--input-border);
     line-height: 1.38;
     letter-spacing: .18px;
     width: calc(100% - 5px);
@@ -616,8 +627,8 @@ p {
 
 .well-sm {
     padding: 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #e3e3e3;
+    background-color: var(--surface-subtle);
+    border: 1px solid var(--border-subtle);
     margin-right: 0%;
     border-radius: 5px;
 }
@@ -642,7 +653,7 @@ label {
 .repeatable-item {
     padding: 5px;
     background-color: var(--light);
-    border: 1px solid #e3e3e3;
+    border: 1px solid var(--border-subtle);
     border-radius: 4px;
     margin-bottom: 5px;
 }
@@ -656,7 +667,7 @@ label {
 
 [uib-datepicker-popup-wrap] .btn {
     border-radius: 3px;
-    border-color: #ccc;
+    border-color: var(--neutral-medium);
 }
 
 .pagination > .disabled > span,

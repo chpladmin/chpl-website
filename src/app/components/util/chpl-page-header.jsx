@@ -25,10 +25,11 @@ function ChplPageHeader({ text, subtitle }) {
           {subtitle && (
             <Button
               size="small"
+              color="primary"
               onClick={() => setExpanded((prev) => !prev)}
-              endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
             >
-              Details
+              {expanded ? 'Hide Details' : 'Show Details'}
             </Button>
           )}
         </Box>

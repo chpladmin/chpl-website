@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { node, number } from 'prop-types';
 
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
     borderRadius: '0px 0px 8px 8px',
     boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
     [theme.breakpoints.up('md')]: {

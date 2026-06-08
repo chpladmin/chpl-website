@@ -38,7 +38,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -70,7 +70,7 @@ const useStyles = makeStyles({
     position: 'sticky',
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
   },
   tableDeveloperCell: {
     display: 'flex',

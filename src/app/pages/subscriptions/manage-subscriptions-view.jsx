@@ -35,7 +35,7 @@ import {
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const sortOptions = [
   { property: 'subscriber_email', text: 'Email' },
@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
   pageBody: {
     display: 'grid',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: palette.background,
   },
   pageContent: {
     display: 'grid',
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
     position: 'sticky',
     left: 0,
     boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: palette.background,
     overflowWrap: 'anywhere',
     [theme.breakpoints.up('sm')]: {
       minWidth: '150px',
@@ -74,7 +74,7 @@ const useStyles = makeStyles({
   },
   tableContainer: {
     overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
+    border: `.5px solid ${palette.divider}`,
     margin: '0px 32px',
     width: 'auto',
   },

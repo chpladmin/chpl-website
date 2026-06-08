@@ -39,6 +39,7 @@ import {
   UserContext,
   useAnalyticsContext,
 } from 'shared/contexts';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   content: {
@@ -74,14 +75,14 @@ const useStyles = makeStyles({
     },
   },
   statusHistorySummary: {
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     boxShadow: 'none',
     borderRadius: '8px',
   },
   statusHistory: {
     boxShadow: 'none',
     borderRadius: '8px',
-    border: '.5px solid #c2c6ca',
+    border: `.5px solid ${palette.divider}`,
     fontWeight: 'bold',
     marginTop: '8px',
   },

@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     width: '100%',
     backgroundColor: `${palette.navBackground} !important`,
     padding: '4px 32px',
-    borderTop: '1px solid #000d25',
+    borderTop: `1px solid ${palette.navDivider}`,
     zIndex: 999,
     left: 0,
     right: 0,
@@ -44,9 +44,9 @@ const useStyles = makeStyles({
     },
   },
   footerText: {
-    color: '#fff',
+    color: palette.white,
     '&:hover': {
-      color: '#fff',
+      color: palette.white,
     },
   },
 });
@@ -59,7 +59,7 @@ function ChplNavigationBottom() {
         <Box className={classes.footerContentContainer}>
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gridGap={4} >
             <Typography className={classes.footerText} variant="body1">Helpful Links</Typography>
-            <Box color="#fff" display="flex" gridGap={2}>
+            <Box color={palette.white} display="flex" gridGap={2}>
               <a className={classes.footerText} href="#/search">Home</a>
               {' | '}
               <a className={classes.footerText} href="http://www.hhs.gov/privacy.html">Privacy Policy</a>

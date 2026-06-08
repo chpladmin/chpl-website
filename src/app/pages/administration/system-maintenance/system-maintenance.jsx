@@ -59,7 +59,7 @@ import {
   UserContext,
   useAnalyticsContext,
 } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -123,8 +123,8 @@ const useStyles = makeStyles({
     textTransform: 'none',
     fontSize: '11.5px',
     '&.Mui-disabled': {
-      color: '#000',
-      backgroundColor: '#f9f9f9',
+      color: palette.black,
+      backgroundColor: palette.background,
       fontWeight: 600,
     },
   },

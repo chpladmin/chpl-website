@@ -20,13 +20,13 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   advancedSearchButton: {
-    color: '#000',
+    color: palette.black,
   },
   directionText: {
     marginBottom: '8px',
   },
   filterPanelContainer: {
-    background: '#fff',
+    background: palette.white,
     display: 'grid',
     gridTemplateColumns: '1fr',
     rowGap: '16px',
@@ -39,10 +39,10 @@ const useStyles = makeStyles({
   },
   filterPanelSecondary: {
     padding: '16px',
-    borderTop: '1px solid #599bde',
+    borderTop: `1px solid ${palette.primaryBorder}`,
     [theme.breakpoints.up('md')]: {
       borderTop: 'none',
-      borderLeft: '1px solid #599bde',
+      borderLeft: `1px solid ${palette.primaryBorder}`,
     },
   },
   filterBold: {
@@ -84,7 +84,7 @@ const useStyles = makeStyles({
   },
   searchInput: {
     flexGrow: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
     padding: '4px',
     borderRadius: '4px',
     border: `1px solid ${palette.grey}`,
@@ -255,7 +255,7 @@ function ChplFilterPanel() {
             marginTop: '0px',
             border: `1px solid ${palette.grey}`,
             boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
-            backgroundColor: '#fff',
+            backgroundColor: palette.white,
           },
         }}
       >

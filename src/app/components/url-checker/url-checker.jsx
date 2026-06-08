@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   popoverPaper: {
     maxWidth: '420px',
     padding: '12px 16px',
-    border: '1px solid #d9e2ec',
+    border: `1px solid ${palette.dividerLight}`,
     boxShadow: '0 8px 24px rgb(15 23 42 / 14%)',
     position: 'relative',
     overflow: 'visible',
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
       height: 0,
       borderTop: '10px solid transparent',
       borderBottom: '10px solid transparent',
-      borderRight: '10px solid #d9e2ec',
+      borderRight: `10px solid ${palette.dividerLight}`,
     },
     '&:after': {
       content: '""',
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
       height: 0,
       borderTop: '9px solid transparent',
       borderBottom: '9px solid transparent',
-      borderRight: '9px solid #ffffff',
+      borderRight: `9px solid ${palette.white}`,
     },
   },
 });
