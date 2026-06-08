@@ -15,6 +15,7 @@ const useFetchCmsIdAnalysis = (listings) => {
     const response = await axios.get(`/certification-ids/search?listingIds=${listingIds}`, { signal });
     return response.data;
   }, {
+    ...options.daily,
     enabled: listings?.length > 0,
   });
 };
@@ -38,9 +39,8 @@ const useFetchListings = ({ cmsIds }) => {
         const response = await axios.get(`/certification-ids/${cmsId}`);
         return response.data;
       },
-      keepPreviousData: true,
-      enabled: cmsIds?.length > 0,
       ...options.daily,
+      enabled: cmsIds?.length > 0,
     })),
   });
 };
