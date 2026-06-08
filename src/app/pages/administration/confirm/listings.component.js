@@ -1,7 +1,6 @@
 const ConfirmListingsComponent = {
   template: `<div class="row" ui-view>
-  <div style="min-height: calc(100vh - 167px);" class="col-md-12">
-    <h1>View Products in the process of upload</h1>
+  <div class="col-md-12">
     <chpl-confirm-listings-wrapper-bridge
       on-process="::$ctrl.handleProcess"
     ></chpl-confirm-listings-wrapper-bridge>

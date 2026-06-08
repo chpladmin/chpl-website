@@ -10,6 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -38,8 +39,8 @@ const validationSchema = yup.object({
 });
 
 function ChplApiKeyRegistration() {
+  const { enqueueSnackbar } = useSnackbar();
   const networkService = getAngularService('networkService');
-  const toaster = getAngularService('toaster');
   const { analytics } = useAnalyticsContext();
   const classes = useStyles();
   let formik = {};
@@ -55,22 +56,19 @@ function ChplApiKeyRegistration() {
     networkService.requestApiKey({ email: values.email, name: values.nameOrganization })
       .then((response) => {
         if (response.success) {
-          toaster.pop({
-            type: 'success',
-            body: `To confirm your email address, an email was sent to: ${values.email}  Please follow the instructions in the email to obtain your API key.`,
+          enqueueSnackbar(`To confirm your email address, an email was sent to: ${values.email}  Please follow the instructions in the email to obtain your API key.`, {
+            variant: 'success',
           });
           formik.resetForm();
         }
       }, (error) => {
         if (error.data.error) {
-          toaster.pop({
-            type: 'error',
-            body: error.data.error,
+          enqueueSnackbar(error.data.error, {
+            variant: 'error',
           });
         } else {
-          toaster.pop({
-            type: 'error',
-            body: error.data.errorMessages[0],
+          enqueueSnackbar(error.data.errorMessages[0], {
+            variant: 'error',
           });
         }
       });

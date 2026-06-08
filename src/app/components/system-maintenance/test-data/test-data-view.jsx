@@ -50,8 +50,8 @@ function ChplTestDataView({ testData: initialTestData }) {
           .map((item) => (
             <ChplSearchResultCard
               key={`${item.id}`}
-              title="Name"
-              titleValue={item.name}
+              cardTitle="Name"
+              cardTitleValue={item.name}
               fieldGroups={[
                 [
                   {

@@ -78,8 +78,8 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
         {apiKeys.map((key) => (
           <ChplSearchResultCard
             key={key.key}
-            title="User"
-            titleValue={key.name}
+            cardTitle="User"
+            cardTitleValue={key.name}
             fieldGroups={[
               [
                 {
