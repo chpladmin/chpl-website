@@ -68,21 +68,31 @@ function ChplChangeRequestDemographicsEdit() {
 
   const handleChange = (...args) => {
     const event = args[0];
-    setChangeRequest((prev) => ({
-      ...prev,
-      details: {
-        ...prev.details,
-        [event.target.name]: event.target.value,
-        address: {
-          ...prev.details.address,
-          [event.target.name]: event.target.value,
+    if (event.target.name === 'selfDeveloper') {
+      setChangeRequest((prev) => ({
+        ...prev,
+        details: {
+          ...prev.details,
+          selfDeveloper: event.target.checked,
         },
-        contact: {
-          ...prev.details.contact,
+      }));
+    } else {
+      setChangeRequest((prev) => ({
+        ...prev,
+        details: {
+          ...prev.details,
           [event.target.name]: event.target.value,
+          address: {
+            ...prev.details.address,
+            [event.target.name]: event.target.value,
+          },
+          contact: {
+            ...prev.details.contact,
+            [event.target.name]: event.target.value,
+          },
         },
-      },
-    }));
+      }));
+    }
     formik.handleChange(...args);
   };
 
