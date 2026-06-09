@@ -319,7 +319,7 @@ function ChplCmsDisplay() {
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
-                  must meet 100% of the Base Criteria.
+                  must meet 100% of the Base Criteria for the specified year.
                 </Typography>
               )}
           </>
