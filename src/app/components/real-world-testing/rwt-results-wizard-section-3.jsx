@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -166,6 +167,7 @@ function ChplRwtResultsWizardSection3({ isSubmitting = false, dispatch }) {
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
+            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
             Submit Real World Testing Results URL Change Request
             <BorderColorIcon
               className={classes.iconSpacing}
