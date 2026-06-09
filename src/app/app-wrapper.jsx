@@ -15,6 +15,8 @@ import CompareWrapper from 'components/compare-widget/compare-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 import { SnackbarWrapper } from 'components/util';
+import ChplNavigationBottom from 'navigation/navigation-bottom';
+import ChplNavigationTop from 'navigation/navigation-top';
 import theme from 'themes/theme';
 
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
@@ -34,7 +36,9 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
                         domain: '.healthit.gov',
                       }}
                       >
+                        <ChplNavigationTop />
                         {children}
+                        <ChplNavigationBottom />
                       </CookiesProvider>
                     </AnalyticsProvider>
                   </BrowserWrapper>
