@@ -346,6 +346,7 @@ function ChplCmsDisplay() {
                       {' '}
                       with at least 1 criteria from the following group
                       { idAnalysis.missingOr.length > 1 && 's' }
+                      :
                     </Typography>
                     <List id="missing-or">
                       { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
