@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Divider,
   FormControlLabel,
@@ -282,6 +283,7 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
+            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
             Submit Demographics Change Request
             <BorderColorIcon
               className={classes.iconSpacing}

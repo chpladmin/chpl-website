@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -166,6 +167,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
+            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
             Submit Service Base URL List Change Request
             <BorderColorIcon
               className={classes.iconSpacing}

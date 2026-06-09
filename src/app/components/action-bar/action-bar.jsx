@@ -63,18 +63,8 @@ const useStyles = makeStyles({
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
-  buttonProgress: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
-  },
   errorCheckbox: {
     color: palette.white,
-  },
-  iconSpacing: {
-    marginLeft: '4px',
   },
 });
 
@@ -270,7 +260,7 @@ function ChplActionBar({
                   disabled={isDisabled || isProcessing}
                   className={classes.actionBarButton}
                 >
-                  {isProcessing && <CircularProgress size={24} className={classes.buttonProgress} />}
+                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
                   Confirm
                   <SaveIcon
                     className={classes.iconSpacing}
