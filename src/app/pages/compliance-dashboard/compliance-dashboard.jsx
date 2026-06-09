@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
-  Container,
   Grid,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   reportCard: {
@@ -102,17 +98,17 @@ function ChplComplianceDashboard() {
 
   return (
     <Grid container spacing={4} alignItems="flex-start">
-            <Grid item xs={12} md={4}>
-              <Grid container spacing={4}>
-                { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={8}>
-              <Grid container spacing={4}>
-                { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
-              </Grid>
-            </Grid>
-          </Grid>
+      <Grid item xs={12} md={4}>
+        <Grid container spacing={4}>
+          { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+        </Grid>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <Grid container spacing={4}>
+          { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 
