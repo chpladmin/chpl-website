@@ -42,7 +42,7 @@ const reports = [{
   title: 'Important Dates',
   uniqueClass: 'lessTopMargin',
 }, {
-  title: 'Non-Conformities',
+  title: 'Non-conformities',
 }, {
   title: 'Questionable URLs',
 }, {
