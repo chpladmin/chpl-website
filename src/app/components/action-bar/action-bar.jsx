@@ -4,7 +4,6 @@ import {
   Checkbox,
   CircularProgress,
   FormControlLabel,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -20,7 +19,7 @@ import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
 import { UserContext } from 'shared/contexts';
-import { palette, utilStyles, theme } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -168,7 +167,7 @@ function ChplActionBar({
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <div className={classes.actionBar}>
         {isConfirming
           && (
@@ -352,7 +351,7 @@ function ChplActionBar({
         errors={errors}
         warnings={warnings}
       />
-    </ThemeProvider>
+    </>
   );
 }
 
