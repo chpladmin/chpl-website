@@ -32,8 +32,6 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const CMS_LOADING_STYLE_TEST_DELAY_MS = 3000;
-
 const useStyles = makeStyles({
   ...utilStyles,
   emptyStateTitle: {
@@ -79,6 +77,7 @@ const useStyles = makeStyles({
     width: '40px',
     border: `1px solid ${palette.white}`,
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.24)',
+    pointerEvents: 'none',
     zIndex: 1,
   },
   chipContainer: {
@@ -150,25 +149,10 @@ function ChplCmsDisplay() {
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const [reportingYears, setReportingYears] = useState([]);
-  const [showProcessing, setShowProcessing] = useState(false);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
   const { mutate, isLoading } = usePostCreateCmsId();
   const classes = useStyles({ progressValue: idAnalysis?.metPercentages?.criteriaMet });
-  const isProcessing = isFetching || isLoading || isDownloading;
-
-  useEffect(() => {
-    if (isProcessing) {
-      setShowProcessing(true);
-      return undefined;
-    }
-
-    const timeout = setTimeout(() => {
-      setShowProcessing(false);
-    }, CMS_LOADING_STYLE_TEST_DELAY_MS);
-
-    return () => clearTimeout(timeout);
-  }, [isProcessing]);
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
@@ -415,7 +399,7 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
-      { showProcessing
+      { (isFetching || isLoading || isDownloading)
         && (
           <div className={classes.loadingOverlay}>
             <CircularProgress id="cms-id-processing" size={40} />
