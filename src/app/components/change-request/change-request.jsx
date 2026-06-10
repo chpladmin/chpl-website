@@ -309,7 +309,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     switch (response) {
       case 'yes':
         if (confirmationMessage === 'All associated ONC-ACBs have been consulted regarding this change') {
-          formik.submitForm();
+          save();
         }
         break;
       case 'no':
@@ -338,7 +338,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
       save(payload);
     } else {
       formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
-      formik.submitForm();
+      save();
     }
   };
 
@@ -402,7 +402,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
           setConfirmationMessage('All associated ONC-ACBs have been consulted regarding this change');
           setIsConfirming(true);
         } else {
-          formik.submitForm();
+          save();
         }
         break;
       case 'toggleWarningAcknowledgement':
@@ -423,9 +423,26 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['chpl-developer']));
 
   save = (request) => {
+    let updated;
+    if (request) {
+      updated = request;
+    } else {
+      updated = {
+        ...changeRequest,
+        currentStatus: {
+          comment: formik.values.comment,
+          changeRequestStatusType: formik.values.changeRequestStatusType,
+        },
+      };
+      eventTrack({
+        ...analytics,
+        event: 'Save Change Request',
+        label: changeRequest.developer.name,
+      });
+    }
     mutate({
       acknowledgeWarnings,
-      changeRequest: request,
+      changeRequest: updated,
     }, {
       onSuccess: () => {
         dispatch('close');
@@ -447,7 +464,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
           enqueueSnackbar(message, {
             variant: 'error',
           });
-          formik.resetForm();
           setWarnings([]);
         }
       },
@@ -458,21 +474,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     initialValues: {
       comment: '',
       changeRequestStatusType: '',
-    },
-    onSubmit: () => {
-      const updated = {
-        ...changeRequest,
-        currentStatus: {
-          comment: formik.values.comment,
-          changeRequestStatusType: formik.values.changeRequestStatusType,
-        },
-      };
-      eventTrack({
-        ...analytics,
-        event: 'Save Change Request',
-        label: changeRequest.developer.name,
-      });
-      save(updated);
     },
     validationSchema,
   });
