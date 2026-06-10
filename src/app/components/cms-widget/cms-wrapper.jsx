@@ -7,7 +7,6 @@ import { CmsContext } from 'shared/contexts';
 
 function CmsWrapper({ children }) {
   const $localStorage = getAngularService('$localStorage');
-  const $rootScope = getAngularService('$rootScope');
   const [listings, setListings] = useState([]);
   const queryClient = useQueryClient();
 
@@ -15,25 +14,12 @@ function CmsWrapper({ children }) {
     setListings($localStorage?.cmsWidget?.products ?? []);
   }, []);
 
-  useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('cms.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
-    const deregisterRemoveWatcher = $rootScope.$on('cms.removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
-    const deregisterRemoveAllWatcher = $rootScope.$on('cms.removeAll', () => setListings([]));
-    return () => {
-      deregisterAddWatcher();
-      deregisterRemoveWatcher();
-      deregisterRemoveAllWatcher();
-    };
-  }, [$rootScope, setListings]);
-
   const addListing = (listing) => {
-    queryClient.invalidateQueries(['certification-ids']);
-    $rootScope.$broadcast('cms.addListing', {
+    setListings((prev) => [...prev, {
       ...listing,
-      product: listing.product.name ? listing.product.name : listing.product,
-    });
-    $rootScope.$broadcast('ShowCmsWidget');
-    $rootScope.$digest();
+      name: listing.product.name,
+    }]);
+    queryClient.invalidateQueries(['certification-ids']);
   };
 
   const canDisplayButton = (listing) => listing.curesUpdate || listing.edition === null;
@@ -41,10 +27,8 @@ function CmsWrapper({ children }) {
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
   const removeListing = (listing) => {
+    setListings((prev) => [...prev].filter((l) => l.id !== listing.id));
     queryClient.invalidateQueries(['certification-ids']);
-    $rootScope.$broadcast('cms.removeListing', listing);
-    $rootScope.$broadcast('ShowCmsWidget');
-    $rootScope.$digest();
   };
 
   const cmsState = {
