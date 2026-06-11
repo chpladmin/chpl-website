@@ -65,6 +65,20 @@ const useStyles = makeStyles({
   cardcontentPadding: {
     padding: '8px',
     maxWidth: '500px',
+    position: 'relative',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '100%',
+    height: '40px', 
+    width: '40px',
+    border: `1px solid ${palette.white}`,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.24)',
+    pointerEvents: 'none',
+    zIndex: 1,
   },
   chipContainer: {
     display: 'flex',
@@ -385,7 +399,12 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
-      { (isFetching || isLoading || isDownloading) && <CircularProgress id="cms-id-processing" size={20} /> }
+      { (isFetching || isLoading || isDownloading)
+        && (
+          <div className={classes.loadingOverlay}>
+            <CircularProgress id="cms-id-processing" size={40} />
+          </div>
+        )}
       <Divider />
       <div className={classes.buttonContainer}>
         { !idAnalysis.ehrCertificationId
