@@ -244,7 +244,6 @@ function ChplSvapSearchView() {
                 pageStart={pageStart}
                 pageEnd={pageEnd}
               >
-                <ChplCertificationStatusLegend />
                 {hasAnyRole(['chpl-admin', 'chpl-onc'])
                   && (
                     <>
@@ -318,6 +317,7 @@ function ChplSvapSearchView() {
                               {
                                 label: 'Status',
                                 value: getStatusIcon(item.certificationStatus),
+                                iconButton: <ChplCertificationStatusLegend />,
                                 xs: 12,
                                 sm: 3,
                               },

@@ -183,7 +183,6 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                 pageStart={pageStart}
                 pageEnd={pageEnd}
               >
-                <ChplCertificationStatusLegend />
                 <ChplSortControls
                   sortOptions={sortOptions}
                   orderBy={orderBy}
@@ -252,6 +251,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                               {
                                 label: 'Status',
                                 value: getStatusIcon(item.certificationStatus),
+                                iconButton: <ChplCertificationStatusLegend />,
                                 xs: 6,
                                 sm: 3,
                               },

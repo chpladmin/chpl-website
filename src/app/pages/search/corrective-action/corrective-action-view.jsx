@@ -153,7 +153,6 @@ function ChplCorrectiveActionSearchView() {
                     pageStart={pageStart}
                     pageEnd={pageEnd}
                   >
-                    <ChplCertificationStatusLegend />
                     <ChplSortControls
                       sortOptions={sortOptions}
                       orderBy={orderBy}
@@ -222,6 +221,7 @@ function ChplCorrectiveActionSearchView() {
                                   {
                                     label: 'Status',
                                     value: getStatusIcon(item.certificationStatus),
+                                    iconButton: <ChplCertificationStatusLegend />,
                                     xs: 6,
                                     sm: 3,
                                   },

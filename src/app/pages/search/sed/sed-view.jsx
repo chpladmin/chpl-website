@@ -136,7 +136,6 @@ function ChplSedSearchView() {
                 pageStart={pageStart}
                 pageEnd={pageEnd}
               >
-                <ChplCertificationStatusLegend />
                 <ChplSortControls
                   sortOptions={sortOptions}
                   orderBy={orderBy}
@@ -204,6 +203,7 @@ function ChplSedSearchView() {
                             {
                               label: 'Status',
                               value: getStatusIcon(item.certificationStatus),
+                              iconButton: <ChplCertificationStatusLegend />,
                               xs: 6,
                               sm: 3,
                             },
