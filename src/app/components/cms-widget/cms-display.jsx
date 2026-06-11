@@ -17,6 +17,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
@@ -135,9 +136,14 @@ function ChplCmsDisplay() {
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
   const [reportingYears, setReportingYears] = useState([]);
-  const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
+  const {
+    data,
+    isFetching,
+    isLoading: isLoadingAnalysis,
+    isSuccess,
+  } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
-  const { mutate, isLoading } = usePostCreateCmsId();
+  const { mutate, isLoading: isCreatingCmsId } = usePostCreateCmsId();
   const classes = useStyles({ progressValue: idAnalysis?.metPercentages?.criteriaMet });
 
   useEffect(() => {
@@ -274,7 +280,13 @@ function ChplCmsDisplay() {
             <Divider />
           </>
         )}
-      { reportingYears.length > 1
+      { isLoadingAnalysis
+        && (
+          <FormControl className={`${classes.yearSelector} ${classes.yearSelectorLayout}`}>
+            <Skeleton variant="text" width="100%" height={32} />
+          </FormControl>
+        )}
+      { !isLoadingAnalysis && reportingYears.length > 1
         && (
           <FormControl className={`${classes.yearSelector} ${classes.yearSelectorLayout}`}>
             <FormLabel className={classes.yearLabel}>
@@ -370,7 +382,7 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
-      { (isFetching || isLoading || isDownloading) && <CircularProgress id="cms-id-processing" size={20} /> }
+      { (isFetching || isCreatingCmsId || isDownloading) && <CircularProgress id="cms-id-processing" size={20} /> }
       <Divider />
       <div className={classes.buttonContainer}>
         { !idAnalysis.ehrCertificationId
