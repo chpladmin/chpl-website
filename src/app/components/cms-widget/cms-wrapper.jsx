@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { node } from 'prop-types';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { useLocalStorage } from 'services/storage.service';
 import { CmsContext } from 'shared/contexts';
 
 function CmsWrapper({ children }) {
-  const $localStorage = getAngularService('$localStorage');
-  const [listings, setListings] = useState([]);
+  const [listings, setListings] = useLocalStorage('cms', []);
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    setListings($localStorage?.cmsWidget?.products ?? []);
-  }, []);
 
   const addListing = (listing) => {
     setListings((prev) => [...prev, {

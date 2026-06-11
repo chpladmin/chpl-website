@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { node } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { useLocalStorage } from 'services/storage.service';
 import { CompareContext } from 'shared/contexts';
 
 function CompareWrapper({ children }) {
-  const $localStorage = getAngularService('$localStorage');
-  const [listings, setListings] = useState([]);
-
-  useEffect(() => {
-    setListings($localStorage?.compareWidget?.products ?? []);
-  }, []);
+  const [listings, setListings] = useLocalStorage('compare', []);
 
   const addListing = (listing) => {
     setListings((prev) => [...prev, {
