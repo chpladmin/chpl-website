@@ -3,7 +3,9 @@ import {
   TablePagination,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, number } from 'prop-types';
+import {
+  arrayOf, bool, func, number,
+} from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -36,6 +38,7 @@ function ChplPagination({
   page,
   rowsPerPage,
   rowsPerPageOptions,
+  sticky = true,
   setPage,
   setRowsPerPage,
 }) {
@@ -68,7 +71,7 @@ function ChplPagination({
 
   return (
     <TablePagination
-      className={classes.pagination}
+      className={sticky ? classes.pagination : undefined}
       component="div"
       labelRowsPerPage="Results per page:"
       onPageChange={handlePageChange}
@@ -88,6 +91,7 @@ ChplPagination.propTypes = {
   page: number.isRequired,
   rowsPerPage: number.isRequired,
   rowsPerPageOptions: arrayOf(number).isRequired,
+  sticky: bool,
   setPage: func.isRequired,
   setRowsPerPage: func.isRequired,
 };

@@ -17,7 +17,9 @@ import {
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
-import { arrayOf, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 
 import ChplChangeRequest from './change-request';
 import ChplChangeRequestsDownload from './change-requests-download';
@@ -85,7 +87,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
+function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embedded = false }) {
   const storageKey = 'storageKey-changeRequestsView';
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -184,6 +186,172 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
+  const content = (
+    <>
+      <ChplFilterSearchBar
+        placeholder="Search by Developer..."
+        hideSearchTerm={disallowedFilters.includes('searchTerm')}
+      />
+      <div>
+        <ChplFilterChips />
+      </div>
+      { isLoading
+        && (
+          <div className={classes.noResultsContainer}>
+            <CircularProgress />
+          </div>
+        )}
+      { !isLoading
+        && (
+          <>
+            { isError
+              && (
+                <>
+                  <div className={classes.noResultsContainer}>
+                    No results were found, due to invalid parameters:
+                  </div>
+                  <ul>
+                    {error.response.data.errorMessages?.map((msg) => (
+                      <li key={msg}>{msg}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            { isSuccess
+              && (
+                <>
+                  <div className={classes.tableResultsHeaderContainer}>
+                    <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                      <Typography variant="subtitle2">Search Results:</Typography>
+                      { changeRequests.length === 0
+                        && (
+                          <>
+                            No results found
+                          </>
+                        )}
+                      { changeRequests.length > 0
+                        && (
+                          <Typography variant="body2">
+                            {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                          </Typography>
+                        )}
+                    </div>
+                    { changeRequests.length > 0
+                      && (
+                        <ButtonGroup size="small" className={classes.wrap}>
+                          <ChplChangeRequestsDownload
+                            bonusQuery={bonusQuery}
+                            queryParams={queryParams()}
+                            recordCount={data.recordCount}
+                          />
+                        </ButtonGroup>
+                      )}
+                  </div>
+                  { changeRequests.length > 0
+                    && (
+                      <>
+                        <TableContainer className={classes.container} component={Paper}>
+                          <Table
+                            stickyHeader
+                            aria-label="Change Requests table"
+                          >
+                            <ChplSortableHeaders
+                              headers={headers}
+                              onTableSort={handleTableSort}
+                              orderBy={orderBy}
+                              order={order}
+                              stickyHeader
+                            />
+                            <TableBody>
+                              {changeRequests
+                                .map((item) => (
+                                  <TableRow key={item.id}>
+                                    { !hasAnyRole(['chpl-developer'])
+                                     && (
+                                       <TableCell className={classes.tableFirstColumn}>
+                                         <div className={classes.tableDeveloperCell}>
+                                           <div>
+                                             <ChplAvatar
+                                               text={item.developer.name}
+                                             />
+                                           </div>
+                                           <div className={classes.developerName}>
+                                             <ChplLink
+                                               href={`#/organizations/developers/${item.developer.id}`}
+                                               text={item.developer.name}
+                                               analytics={{
+                                                 ...analytics,
+                                                 event: 'Navigate to Developer Page',
+                                               }}
+                                               external={false}
+                                               router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                             />
+                                           </div>
+                                         </div>
+                                       </TableCell>
+                                     )}
+                                    <TableCell>{item.changeRequestType.name}</TableCell>
+                                    { !hasAnyRole(['chpl-developer'])
+                                     && <TableCell>{getDisplayDateFormat(item.submittedDateTime)}</TableCell>}
+                                    <TableCell>{item.currentStatus.name}</TableCell>
+                                    <TableCell>
+                                      <Moment
+                                        withTitle
+                                        titleFormat="DD MMM yyyy"
+                                        fromNow
+                                      >
+                                        {item.currentStatus.statusChangeDateTime}
+                                      </Moment>
+                                    </TableCell>
+                                    { !hasAnyRole(['chpl-developer'])
+                                     && (
+                                       <TableCell>
+                                         { item.certificationBodies.length === 0
+                                           ? (
+                                             <>
+                                               None
+                                             </>
+                                           ) : (
+                                             <>
+                                               { item.certificationBodies.map((acb) => acb.name).join('; ') }
+                                             </>
+                                           )}
+                                       </TableCell>
+                                     )}
+                                    <TableCell align="right">
+                                      <Button
+                                        onClick={() => viewChangeRequest(item)}
+                                        variant="outlined"
+                                        color="primary"
+                                      >
+                                        View
+                                        {' '}
+                                        <VisibilityIcon className={classes.iconSpacing} />
+                                      </Button>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                        <ChplPagination
+                          count={data.recordCount}
+                          page={pageNumber}
+                          rowsPerPage={pageSize}
+                          rowsPerPageOptions={[10, 50, 100, 250]}
+                          setPage={setPageNumber}
+                          setRowsPerPage={setPageSize}
+                          sticky={!embedded}
+                        />
+                      </>
+                    )}
+                </>
+              )}
+          </>
+        )}
+    </>
+  );
+
   return (
     <Card>
       { bonusQuery
@@ -191,166 +359,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
           <CardHeader title="Change Requests" />
         )}
       <CardContent>
-        <ChplFilterSearchBar
-          placeholder="Search by Developer..."
-          hideSearchTerm={disallowedFilters.includes('searchTerm')}
-        />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
-          && (
-            <div className={classes.noResultsContainer}>
-              <CircularProgress />
-            </div>
-          )}
-        { !isLoading
-          && (
-            <>
-              { isError
-                && (
-                  <>
-                    <div className={classes.noResultsContainer}>
-                      No results were found, due to invalid parameters:
-                    </div>
-                    <ul>
-                      {error.response.data.errorMessages?.map((msg) => (
-                        <li key={msg}>{msg}</li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              { isSuccess
-                && (
-                  <>
-                    <div className={classes.tableResultsHeaderContainer}>
-                      <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                        <Typography variant="subtitle2">Search Results:</Typography>
-                        { changeRequests.length === 0
-                          && (
-                            <>
-                              No results found
-                            </>
-                          )}
-                        { changeRequests.length > 0
-                          && (
-                            <Typography variant="body2">
-                              {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-                            </Typography>
-                          )}
-                      </div>
-                      { changeRequests.length > 0
-                        && (
-                          <ButtonGroup size="small" className={classes.wrap}>
-                            <ChplChangeRequestsDownload
-                              bonusQuery={bonusQuery}
-                              queryParams={queryParams()}
-                              recordCount={data.recordCount}
-                            />
-                          </ButtonGroup>
-                        )}
-                    </div>
-                    { changeRequests.length > 0
-                      && (
-                        <>
-                          <TableContainer className={classes.container} component={Paper}>
-                            <Table
-                              stickyHeader
-                              aria-label="Change Requests table"
-                            >
-                              <ChplSortableHeaders
-                                headers={headers}
-                                onTableSort={handleTableSort}
-                                orderBy={orderBy}
-                                order={order}
-                                stickyHeader
-                              />
-                              <TableBody>
-                                {changeRequests
-                                  .map((item) => (
-                                    <TableRow key={item.id}>
-                                      { !hasAnyRole(['chpl-developer'])
-                                       && (
-                                         <TableCell className={classes.tableFirstColumn}>
-                                           <div className={classes.tableDeveloperCell}>
-                                             <div>
-                                               <ChplAvatar
-                                                 text={item.developer.name}
-                                               />
-                                             </div>
-                                             <div className={classes.developerName}>
-                                               <ChplLink
-                                                 href={`#/organizations/developers/${item.developer.id}`}
-                                                 text={item.developer.name}
-                                                 analytics={{
-                                                   ...analytics,
-                                                   event: 'Navigate to Developer Page',
-                                                 }}
-                                                 external={false}
-                                                 router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                               />
-                                             </div>
-                                           </div>
-                                         </TableCell>
-                                       )}
-                                      <TableCell>{item.changeRequestType.name}</TableCell>
-                                      { !hasAnyRole(['chpl-developer'])
-                                       && <TableCell>{getDisplayDateFormat(item.submittedDateTime)}</TableCell>}
-                                      <TableCell>{item.currentStatus.name}</TableCell>
-                                      <TableCell>
-                                        <Moment
-                                          withTitle
-                                          titleFormat="DD MMM yyyy"
-                                          fromNow
-                                        >
-                                          {item.currentStatus.statusChangeDateTime}
-                                        </Moment>
-                                      </TableCell>
-                                      { !hasAnyRole(['chpl-developer'])
-                                       && (
-                                         <TableCell>
-                                           { item.certificationBodies.length === 0
-                                             ? (
-                                               <>
-                                                 None
-                                               </>
-                                             ) : (
-                                               <>
-                                                 { item.certificationBodies.map((acb) => acb.name).join('; ') }
-                                               </>
-                                             )}
-                                         </TableCell>
-                                       )}
-                                      <TableCell align="right">
-                                        <Button
-                                          onClick={() => viewChangeRequest(item)}
-                                          variant="outlined"
-                                          color="primary"
-                                        >
-                                          View
-                                          {' '}
-                                          <VisibilityIcon className={classes.iconSpacing} />
-                                        </Button>
-                                      </TableCell>
-                                    </TableRow>
-                                  ))}
-                              </TableBody>
-                            </Table>
-                          </TableContainer>
-                          <ChplPagination
-                            count={data.recordCount}
-                            page={pageNumber}
-                            rowsPerPage={pageSize}
-                            rowsPerPageOptions={[10, 50, 100, 250]}
-                            setPage={setPageNumber}
-                            setRowsPerPage={setPageSize}
-                          />
-                        </>
-                      )}
-                  </>
-                )}
-            </>
-          )}
+        { content }
       </CardContent>
     </Card>
   );
@@ -362,4 +371,5 @@ ChplChangeRequestsView.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
   dispatch: func.isRequired,
+  embedded: bool,
 };
