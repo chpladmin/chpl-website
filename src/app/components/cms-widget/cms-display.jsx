@@ -29,7 +29,7 @@ import createPdf from './cms-pdf';
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplEllipsis, ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext, FlagContext } from 'shared/contexts';
+import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -145,6 +145,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
+  const { listings: compareListings, addListing: addCompareListing, removeListing: removeCompareListing } = useContext(CompareContext);
   const { cmsDisabledIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
   const [idAnalysis, setIdAnalysis] = useState({});
@@ -174,7 +175,8 @@ function ChplCmsDisplay() {
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
-    $rootScope.$broadcast('compare.compareAll', listings);
+    compareListings.forEach((l) => removeCompareListing(l));
+    listings.forEach((l) => addCompareListing(l));
     $rootScope.$broadcast('HideCmsWidget');
     $rootScope.$broadcast('ShowCompareWidget');
     $rootScope.$digest();
