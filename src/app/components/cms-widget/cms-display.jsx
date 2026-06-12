@@ -206,7 +206,7 @@ function ChplCmsDisplay() {
 
   const removeAll = () => {
     $analytics.eventTrack('Remove all Listings', { category: 'CMS Widget' });
-    $rootScope.$broadcast('cms.removeAll');
+    listings.forEach((l) => removeListing(l));
   };
 
   if (cmsDisabledIsOn) {

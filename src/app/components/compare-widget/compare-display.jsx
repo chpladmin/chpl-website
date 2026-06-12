@@ -40,6 +40,7 @@ const useStyles = makeStyles({
 });
 
 function ChplCompareDisplay() {
+  const $analytics = getAngularService('$analytics');
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
@@ -52,7 +53,8 @@ function ChplCompareDisplay() {
   };
 
   const removeAll = () => {
-    $rootScope.$broadcast('compare.removeAll');
+    $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
+    listings.forEach((l) => removeListing(l));
   };
 
   if (!listings || listings.length === 0) {
