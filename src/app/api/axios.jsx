@@ -62,14 +62,21 @@ function AxiosProvider({ children }) {
       return updated;
     });
 
-    ax.interceptors.response.use((response) => response,
+    ax.interceptors.response.use(
+      (response) => {
+        if (response.headers['chpl-id-changed'] || response.headers['cache-cleared']) {
+          console.log(response.headers['chpl-id-changed'], response.headers['cache-cleared']);
+        }
+        return response;
+      },
       (error) => {
         if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
           setLoginWidgetState('SIGNIN');
           authService.logout();
         }
         return Promise.reject(error);
-      });
+      },
+    );
 
     return ax;
   }, []);
