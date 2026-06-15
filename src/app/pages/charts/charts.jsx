@@ -88,12 +88,12 @@ function ChplCharts() {
     setReportMetadata(data);
   }, [data, isLoading, isSuccess]);
 
-  const handleReportChange = (reportKey) => {
-    setActiveReport(reportMetadata.find((metadata) => metadata.reportKey === reportKey));
+  const handleReportChange = (title) => {
+    setActiveReport(reportMetadata.find((metadata) => metadata.title === title));
     eventTrack({
       ...analytics,
       category: 'Charts',
-      event: `Navigate to ${reportMetadata.find((metadata) => metadata.reportKey === reportKey)?.title || 'Charts'}`,
+      event: `Navigate to ${reportMetadata.find((metadata) => metadata.title === title)?.title || 'Charts'}`,
     });
   };
 
@@ -124,11 +124,11 @@ function ChplCharts() {
                       .sort((a, b) => (a.title < b.title ? -1 : 1))
                       .map((report) => (
                         <Button
-                          key={`${report.reportKey}-button`}
+                          key={`${report.title}-button`}
                           color="primary"
-                          className={`${classes.menuButton} ${activeReport?.reportKey === report.reportKey ? 'active' : ''}`}
-                          onClick={() => handleReportChange(report.reportKey)}
-                          id={`report-${report.reportKey}`}
+                          className={`${classes.menuButton} ${activeReport?.title === report.title ? 'active' : ''}`}
+                          onClick={() => handleReportChange(report.title)}
+                          id={`report-${report.title}`}
                           fullWidth
                           variant="text"
                         >
@@ -152,9 +152,9 @@ function ChplCharts() {
                     <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
                       {reportMetadata && reportMetadata.map((report) => (
                         <Card
-                          key={report.reportKey}
+                          key={report.title}
                           className={classes.card}
-                          onClick={() => handleReportChange(report.reportKey)}
+                          onClick={() => handleReportChange(report.title)}
                         >
                           <CardContent className={classes.cardContent}>
                             {report.icon}
@@ -169,7 +169,7 @@ function ChplCharts() {
               { activeReport && (
                 <Card
                   style={{ width: '100%' }}
-                  key={activeReport.reportKey}
+                  key={activeReport.title}
                 >
                   <CardContent>
                     <iframe
