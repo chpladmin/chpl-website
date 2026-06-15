@@ -11,6 +11,7 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import ChplEllipsis from 'components/util/chpl-ellipsis';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -40,7 +41,6 @@ const useStyles = makeStyles({
 });
 
 function ChplCompareDisplay() {
-  const $analytics = getAngularService('$analytics');
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
@@ -53,7 +53,10 @@ function ChplCompareDisplay() {
   };
 
   const removeAll = () => {
-    $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
+    eventTrack({
+      event: 'Remove all Listings',
+      category: 'Compare Widget',
+    });
     listings.forEach((l) => removeListing(l));
   };
 
