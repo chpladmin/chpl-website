@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     alignItems: 'stretch',
     flexDirection: 'column',
     '&:last-child': {
-      paddingBottom: 0,
+      paddingBottom: '16px',
     },
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
