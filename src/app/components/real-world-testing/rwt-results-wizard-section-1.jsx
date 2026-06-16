@@ -37,14 +37,12 @@ function ChplRwtResultsWizardSection1() {
       <Card>
         <CardContent>
           <Typography gutterBottom variant="body1">
-            The API Maintenance of Certification requirement for the publication of Service Base URL Lists at 45 CFR 170.404(b)(2) states that a health IT developer must publish, at no charge, the Service Base URL Lists and related organization details that can be used by patients to access their electronic health information.
+            Real World Testing Results 45 CFR 170.405(b)(2)(ii)
           </Typography>
-          <Typography gutterBottom variant="body1">
-            Ensuring these Service Base URL Lists are available for use by patients is important for ongoing compliance with this requirement.
-          </Typography>
-          <Typography variant="body1">
-            Nulla at elit enim. Sed at sem volutpat, pellentesque massa eget, feugiat erat. Ut facilisis suscipit iaculis. Vestibulum a blandit neque, ut dapibus risus. In id consectetur lorem. Aenean ut lacus eu quam hendrerit iaculis eget a nisi. Sed fermentum ipsum dolor, vel scelerisque nulla varius quis.
-          </Typography>
+          <ul>
+            <li>A health IT developer must post an annual Real World Testing results report to its ONC-ACB by a date that enables the ONC-ACB to publish a publicly available hyperlink to the results report on CHPL no later than March 15 of each calendar year.</li>
+            <li>The Real World Testing results report must address each of its Certified Health IT Module(s) that meet applicable certification criteria.</li>
+          </ul>
         </CardContent>
       </Card>
     </Container>
