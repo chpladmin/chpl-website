@@ -91,6 +91,7 @@ function ChplBannedDevelopersSearchView() {
           <>
             <Typography variant="body1" gutterBottom>
               This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program, including new products as well as upgraded versions of current products. Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
+              {' '}
               <ChplLink
                 href="#/search"
                 text="searching for the product"

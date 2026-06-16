@@ -24,6 +24,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
+import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -171,21 +172,6 @@ function ChplCorrectiveActionSearchView() {
                           {listings.map((item) => (
                             <ChplSearchResultCard
                               key={item.id}
-                              cardTitle="CHPL ID"
-                              cardTitleValue={(
-                                <ChplLink
-                                  href={`#/listing/${item.id}`}
-                                  text={item.chplProductNumber}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Listing Details Page',
-                                    label: item.chplProductNumber,
-                                    aggregationName: item.product.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'listing', options: { id: item.id } }}
-                                />
-                              )}
                               fieldGroups={[
                                 [
                                   {
@@ -203,27 +189,42 @@ function ChplCorrectiveActionSearchView() {
                                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                       />
                                     ),
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                   {
                                     label: 'Product',
                                     value: item.product.name,
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                   {
                                     label: 'Version',
                                     value: item.version.name,
-                                    xs: 6,
-                                    sm: 3,
+                                  },
+                                ],
+                                [
+                                  {
+                                    label: 'CHPL ID',
+                                    value: (
+                                      <ChplLink
+                                        href={`#/listing/${item.id}`}
+                                        text={item.chplProductNumber}
+                                        analytics={{
+                                          ...analytics,
+                                          event: 'Navigate to Listing Details Page',
+                                          label: item.chplProductNumber,
+                                          aggregationName: item.product.name,
+                                        }}
+                                        external={false}
+                                        router={{ sref: 'listing', options: { id: item.id } }}
+                                      />
+                                    ),
+                                  },
+                                  {
+                                    label: 'Certification Date',
+                                    value: getDisplayDateFormat(item.certificationDate),
                                   },
                                   {
                                     label: 'Status',
                                     value: getStatusIcon(item.certificationStatus),
                                     iconButton: <ChplCertificationStatusLegend />,
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                 ],
                                 [

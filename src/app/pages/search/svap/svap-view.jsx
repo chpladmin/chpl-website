@@ -27,6 +27,7 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
+import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -146,6 +147,7 @@ function ChplSvapSearchView() {
           <>
             <Typography variant="body1" gutterBottom>
               This search features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
+              {' '}
               <ChplLink
                 href="https://www.healthit.gov/topic/standards-version-advancement-process-svap"
                 text="Standards Version Advancement Process (SVAP)"
@@ -267,21 +269,6 @@ function ChplSvapSearchView() {
                       {listings.map((item) => (
                         <ChplSearchResultCard
                           key={item.id}
-                          cardTitle="CHPL ID"
-                          cardTitleValue={(
-                            <ChplLink
-                              href={`#/listing/${item.id}`}
-                              text={item.chplProductNumber}
-                              analytics={{
-                                ...analytics,
-                                event: 'Navigate to Listing Details Page',
-                                label: item.chplProductNumber,
-                                aggregationName: item.product.name,
-                              }}
-                              external={false}
-                              router={{ sref: 'listing', options: { id: item.id } }}
-                            />
-                          )}
                           fieldGroups={[
                             [
                               {
@@ -299,27 +286,42 @@ function ChplSvapSearchView() {
                                     router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                   />
                                 ),
-                                xs: 12,
-                                sm: 3,
                               },
                               {
                                 label: 'Product',
                                 value: item.product.name,
-                                xs: 12,
-                                sm: 3,
                               },
                               {
                                 label: 'Version',
                                 value: item.version.name,
-                                xs: 12,
-                                sm: 3,
+                              },
+                            ],
+                            [
+                              {
+                                label: 'CHPL ID',
+                                value: (
+                                  <ChplLink
+                                    href={`#/listing/${item.id}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Navigate to Listing Details Page',
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                    }}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                  />
+                                ),
+                              },
+                              {
+                                label: 'Certification Date',
+                                value: getDisplayDateFormat(item.certificationDate),
                               },
                               {
                                 label: 'Status',
                                 value: getStatusIcon(item.certificationStatus),
                                 iconButton: <ChplCertificationStatusLegend />,
-                                xs: 12,
-                                sm: 3,
                               },
                             ],
                             [

@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Grid,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -18,28 +17,124 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    marginBottom: '12px',
+    marginBottom: theme.spacing(1.5),
     transition: theme.transitions.create('box-shadow'),
     '&:hover': {
       boxShadow: theme.shadows[4],
     },
   },
   cardContent: {
-    padding: '16px 32px',
+    padding: theme.spacing(2, 8),
     display: 'flex',
-    gap: '16px',
-    alignItems: 'normal',
+    gap: theme.spacing(2),
+    alignItems: 'stretch',
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
     },
   },
-  cardBody: {
+  contentBody: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: theme.spacing(1.5),
     flex: 1,
+  },
+  detailsRow: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    gap: theme.spacing(1.5, 3),
+    paddingTop: theme.spacing(1.25),
+  },
+  field: {
+    alignItems: 'flex-start',
+    display: 'flex',
+    flex: '0 1 auto',
+    flexDirection: 'column',
+    gap: theme.spacing(0.25),
+    minWidth: 0,
+  },
+  fieldValue: {
+    fontSize: '1.1em',
+    fontWeight: 400,
+    lineHeight: 1.25,
+    minWidth: 0,
+    '& a': {
+      fontSize: '1.15em',
+      fontWeight: 700,
+    },
+  },
+  titleSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    minWidth: 0,
+  },
+  primaryRow: {
+    alignItems: 'flex-start',
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.spacing(1.25, 3.5),
+    minWidth: 0,
+  },
+  fieldLabel: {
+    color: theme.palette.text.primary,
+    fontSize: '0.85em',
+    fontWeight: 600,
+    lineHeight: 1.1,
+  },
+  fieldLabelIcon: {
+    alignItems: 'center',
+    display: 'inline-flex',
+    height: '16px',
+    '& button': {
+      height: '18px',
+      padding: 0,
+      width: '18px',
+    },
+    '& svg': {
+      fontSize: '16px',
+    },
+  },
+  fieldLabelRow: {
+    alignItems: 'center',
+    display: 'flex',
+    gap: theme.spacing(0.5),
+    minHeight: '16px',
+  },
+  titleField: {
+    flex: '1 1 200px',
+    '& $fieldValue': {
+      fontSize: '1.12em',
+      fontWeight: 600,
+    },
+  },
+  titleFieldWide: {
+    flex: '1.75 1 320px',
+    '& $fieldValue': {
+      fontSize: '1.12em',
+      fontWeight: 600,
+    },
+  },
+  actionsContainer: {
+    alignItems: 'flex-end',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1.5),
+    justifyContent: 'space-between',
+    minHeight: '100%',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'stretch',
+      width: '100%',
+    },
+  },
+  titleValue: {
+    fontSize: '1.35em',
+    fontWeight: 700,
+    lineHeight: 1.25,
+    minWidth: 0,
   },
 }));
 
@@ -55,78 +150,69 @@ function ChplSearchResultCard({
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardContent}>
-        <Box className={classes.cardBody}>
+        <Box className={classes.contentBody}>
           { (cardTitle || cardTitleValue)
             && (
-              <Box
-                display="flex"
-                flex={1}
-                gridGap="8px"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Box display="flex" flexDirection="column" flex={1} gridGap="4px">
-                  <Box display="flex" alignItems="center" gridGap="8px">
-                    <Typography variant="body1" style={{ fontWeight: 'bold' }} display="block" flex={1}>
-                      { cardTitle }
+              <Box className={classes.titleSection}>
+                <Box className={classes.primaryRow}>
+                  <Box className={cardTitle ? classes.titleFieldWide : classes.titleField}>
+                    <Box className={classes.fieldLabelRow}>
+                      <Typography className={classes.fieldLabel}>
+                        { cardTitle || 'Product' }
+                      </Typography>
+                      { titleIconButton
+                        && (
+                          <Box className={classes.fieldLabelIcon}>
+                            { titleIconButton }
+                          </Box>
+                        )}
+                    </Box>
+                    <Typography className={classes.titleValue}>
+                      { cardTitleValue }
                     </Typography>
-                    { titleIconButton
+                  </Box>
+                  { additionalTitleContent
+                    && (
+                      <Box>
+                        { additionalTitleContent }
+                      </Box>
+                    )}
+                </Box>
+              </Box>
+            )}
+          { fieldGroups.map((group, groupIndex) => (
+            <Box
+              key={group.map((f) => f.label).join('-')}
+              className={groupIndex < 2 ? classes.primaryRow : classes.detailsRow}
+            >
+              { group.map((field) => (
+                <Box
+                  key={field.label}
+                  className={classes.field}
+                  style={{ flex: '1 1 200px', ...field.style }}
+                >
+                  <Box className={classes.fieldLabelRow}>
+                    <Typography className={classes.fieldLabel}>
+                      { field.label }
+                    </Typography>
+                    { field.iconButton
                       && (
-                        <Box>
-                          { titleIconButton }
+                        <Box className={classes.fieldLabelIcon}>
+                          { field.iconButton }
                         </Box>
                       )}
                   </Box>
-                  { cardTitleValue }
+                  <Typography className={classes.fieldValue}>
+                    { field.value ?? field.fallback ?? 'N/A' }
+                  </Typography>
                 </Box>
-                { additionalTitleContent
-                  && (
-                    <Box>
-                      { additionalTitleContent }
-                    </Box>
-                  )}
-              </Box>
-            )}
-          { fieldGroups.map((group) => (
-            <Grid
-              key={group.map((f) => f.label).join('-')}
-              container
-              spacing={2}
-              alignItems="flex-start"
-              style={{ height: 'fit-content' }}
-            >
-              { group.map((field) => (
-                <Grid
-                  key={field.label}
-                  item
-                  xs={field.xs || 12}
-                  sm={field.sm || field.xs || 12}
-                  style={field.style}
-                >
-                  <Box display="flex" alignItems="center" gridGap="8px">
-                    <Box flex={1}>
-                      <Typography variant="body2" style={{ fontWeight: '600' }}>
-                        { field.label }
-                        { field.iconButton
-                          && (
-                            field.iconButton
-                          )}
-                      </Typography>
-                      <Typography variant="body1" component="div">
-                        { field.value != null && field.value !== '' ? field.value : (field.fallback ?? 'N/A') }
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Grid>
               ))}
-            </Grid>
+            </Box>
           ))}
         </Box>
-        { actions && (
-          <Box display="flex" justifyContent="flex-end" mt={1} style={{ maxHeight: 'fit-content' }}>
-            {actions}
-          </Box>
-        )}
+        <Box className={classes.actionsContainer}>
+          { actions }
+        </Box>
       </CardContent>
     </Card>
   );

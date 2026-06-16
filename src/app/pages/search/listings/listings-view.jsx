@@ -188,22 +188,6 @@ function ChplListingsView() {
                       { listings.map((item) => (
                         <ChplSearchResultCard
                           key={item.id}
-                          cardTitle="CHPL ID"
-                          cardTitleValue={(
-                            <ChplLink
-                              href={`#/listing/${item.id}`}
-                              text={item.chplProductNumber}
-                              analytics={{
-                                ...analytics,
-                                event: 'Navigate to Listing Details Page',
-                                label: item.chplProductNumber,
-                                aggregationName: item.product.name,
-                              }}
-                              external={false}
-                              inline
-                              router={{ sref: 'listing', options: { id: item.id } }}
-                            />
-                          )}
                           fieldGroups={[
                             [
                               {
@@ -222,35 +206,43 @@ function ChplListingsView() {
                                     router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                   />
                                 ),
-                                xs: 6,
-                                sm: 3,
                               },
                               {
                                 label: 'Product',
                                 value: item.product.name,
-                                xs: 6,
-                                sm: 3,
                               },
                               {
                                 label: 'Version',
                                 value: item.version.name,
-                                xs: 6,
-                                sm: 3,
+                              },
+                            ],
+                            [
+                              {
+                                label: 'CHPL ID',
+                                value: (
+                                  <ChplLink
+                                    href={`#/listing/${item.id}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Navigate to Listing Details Page',
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.product.name,
+                                    }}
+                                    external={false}
+                                    inline
+                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                  />
+                                ),
+                              },
+                              {
+                                label: 'Certification Date',
+                                value: getDisplayDateFormat(item.certificationDate),
                               },
                               {
                                 label: 'Status',
                                 value: getStatusIcon(item.certificationStatus),
                                 iconButton: <ChplCertificationStatusLegend />,
-                                xs: 6,
-                                sm: 3,
-                              },
-                            ],
-                            [
-                              {
-                                label: 'Certification Date',
-                                value: getDisplayDateFormat(item.certificationDate),
-                                xs: 6,
-                                sm: 3,
                               },
                             ],
                           ]}

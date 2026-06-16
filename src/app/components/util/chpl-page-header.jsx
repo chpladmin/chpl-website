@@ -19,7 +19,7 @@ function ChplPageHeader({ text, subtitle }) {
     <Box position="relative" boxShadow={2} bgcolor={palette.white} p={8}>
       <Container maxWidth="lg">
         <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap">
-          <Typography variant="h1">
+          <Typography gutterBottom variant="h1">
             {text}
           </Typography>
           {subtitle && (
@@ -35,7 +35,7 @@ function ChplPageHeader({ text, subtitle }) {
         </Box>
         {subtitle && (
           <Collapse in={expanded}>
-            <Typography variant="body1" style={{ color: palette.greyDark }} component="div">
+            <Typography variant="body2" style={{ color: palette.greyDark }} component="div">
               {subtitle}
             </Typography>
           </Collapse>
