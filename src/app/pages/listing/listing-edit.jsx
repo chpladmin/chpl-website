@@ -94,7 +94,7 @@ function ChplListingEditPage() {
         mutate(request, {
           onSuccess: (response) => {
             if (!response.status || response.status === 200) {
-              $state.go('^');
+              //$state.go('^');
             } else {
               setIsProcessing(false);
               setErrors([response.error]);

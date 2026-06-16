@@ -6,46 +6,7 @@ import ChplNavigationTopWrapper from './navigation-top-wrapper';
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
 /** @ngInclude */
-function authInterceptor($injector, $localStorage, $log, $q, API, authService, toaster) {
-  // Notify if a cache is being cleared
-  function parseCacheCleared(value) {
-    const caches = value.split(',');
-    let body;
-    let title;
-    for (let i = 0; i < caches.length; i += 1) {
-      switch (caches[i]) {
-        case 'listingCollection':
-          title = 'Update processing';
-          body = 'Your changes may not be reflected immediately in the search results and shortcuts pages. Please contact CHPL admin if you have any concerns';
-          break;
-          // no default
-      }
-    }
-    toaster.pop({
-      type: 'warning',
-      title,
-      body,
-    });
-  }
-
-  // Notify if the CHPL ID changed
-  function parseChplIdChanged(id) {
-    let body;
-    let title;
-    if (id.indexOf(',') > -1) {
-      title = 'CHPL IDs Changed';
-      body = 'Your activity caused CHPL Product Numbers to change';
-    } else {
-      title = 'CHPL ID Changed';
-      body = 'Your activity caused a CHPL Product Number to change';
-    }
-    toaster.pop({
-      type: 'success',
-      title,
-      body,
-    });
-  }
-
+function authInterceptor($injector, $localStorage, $log, $q, API, authService) {
   // If a token was sent back, save it
   function parseToken(data) {
     let response = data;
@@ -109,12 +70,6 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService, t
     },
 
     response(response) {
-      if (response.headers && response.headers()['cache-cleared']) {
-        parseCacheCleared(response.headers()['cache-cleared']);
-      }
-      if (response.headers && response.headers()['chpl-id-changed']) {
-        parseChplIdChanged(response.headers()['chpl-id-changed']);
-      }
       if (response.config.url.indexOf(API) === 0) {
         response.data = parseToken(response.data);
       }
@@ -130,7 +85,6 @@ angular.module('chpl.navigation', [
   'chpl.services',
   'chpl.constants',
   'feature-flags',
-  'toaster',
   'ui.router',
 ])
   .factory('authInterceptor', authInterceptor)

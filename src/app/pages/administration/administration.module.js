@@ -18,7 +18,6 @@ angular
     'ngIdle',
     'ngFileUpload',
     'ngSanitize',
-    'toaster',
     'ui.bootstrap',
     'ui.router',
   ])

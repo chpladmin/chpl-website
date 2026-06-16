@@ -3467,13 +3467,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angularjs-toaster@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "angularjs-toaster@npm:2.2.0"
-  checksum: 10/0deb3b767326ddef3194162b63ececc871c6116f70c43f731c0a06d6ce712631b72f0349be4f9d0e256fe08c893e105784e858726f40b78a3aec6dbc1aa7315f
-  languageName: node
-  linkType: hard
-
 "angulartics-google-tag-manager@npm:^0.0.1":
   version: 0.0.1
   resolution: "angulartics-google-tag-manager@npm:0.0.1"
@@ -5198,7 +5191,6 @@ __metadata:
     angular-ui-bootstrap: "npm:2.5.6"
     angular-ui-router: "npm:^1.0.30"
     angular-zxcvbn: "npm:^3.2.2"
-    angularjs-toaster: "npm:^2.2.0"
     angulartics: "npm:^1.6.0"
     angulartics-google-tag-manager: "npm:^0.0.1"
     axios: "npm:^1.7.7"

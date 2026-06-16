@@ -27,7 +27,6 @@ angular
     'ngFileUpload',
     'ngResource',
     'ngStorage',
-    'toaster',
     'ui.bootstrap',
     'ui.router',
   ])
