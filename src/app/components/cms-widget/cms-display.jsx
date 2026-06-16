@@ -29,7 +29,7 @@ import createPdf from './cms-pdf';
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplEllipsis, ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext } from 'shared/contexts';
+import { CmsContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -145,6 +145,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
+  const { cmsDisabledIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
@@ -207,6 +208,16 @@ function ChplCmsDisplay() {
     $analytics.eventTrack('Remove all Listings', { category: 'CMS Widget' });
     $rootScope.$broadcast('cms.removeAll');
   };
+
+  if (cmsDisabledIsOn) {
+    return (
+      <CardContent>
+        <Typography>
+          Access to the CMS ID Creator has been paused. Please check back periodically for updates.
+        </Typography>
+      </CardContent>
+    );
+  }
 
   if (!listings || listings.length === 0) {
     return (

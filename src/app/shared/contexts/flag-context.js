@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 
 const FlagContext = createContext({
+  cmsDisabledIsOn: false,
   demographicChangeRequestIsOn: false,
   insightsConnectionIsOn: false,
   insightsDisplayIsOn: false,
