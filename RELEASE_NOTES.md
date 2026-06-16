@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 14.5.0
+_8 June 2026_
+
+### Features
+* Display available dashboard reports, including new Non-conformity chart
+
+### User Interface Updates
+* Rewrite User Management page in ReactJS
+
+### Bug Fixes
+* Re-enable drill through option on Criteria Attributes chart
+
+---
+
 ## Version 14.4.0
 _26 May 2026_
 

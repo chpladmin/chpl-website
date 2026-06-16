@@ -1,3 +1,7 @@
+import ChplUsersPage from './users-wrapper';
+
+import { reactToAngularComponent } from 'services/angular-react-helper';
+
 export default angular
   .module('chpl.users', [
     'chpl.components',
@@ -5,4 +9,5 @@ export default angular
     'toaster',
     'ui.bootstrap',
     'ui.router',
-  ]);
+  ])
+  .component('chplUsersPageBridge', reactToAngularComponent(ChplUsersPage));

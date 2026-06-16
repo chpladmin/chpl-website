@@ -11,18 +11,10 @@ export default class NetworkService {
     return this.apiPOST('/key/confirm', hash);
   }
 
-  confirmUser(userObject) {
-    return this.apiPOST('/users/confirm', userObject);
-  }
-
   deleteSurveillance(surveillanceId, reason) {
     return this.apiDELETE(`/surveillance/${surveillanceId}`, {
       reason,
     });
-  }
-
-  deleteUser(userId) {
-    return this.apiDELETE(`/users/${userId}`);
   }
 
   getAcbs(editable) {
@@ -59,18 +51,6 @@ export default class NetworkService {
 
   getRelatedListings(id) {
     return this.apiGET(`/products/${id}/listings`);
-  }
-
-  getReportMetadata(reportKey) {
-    return this.apiGET(`/report-data/report-metadata/${reportKey}`);
-  }
-
-  getUsers() {
-    return this.apiGET('/users');
-  }
-
-  inviteUser(invitationObject) {
-    return this.apiPOST('/users/invitation', invitationObject);
   }
 
   logout(logoutRequest) {

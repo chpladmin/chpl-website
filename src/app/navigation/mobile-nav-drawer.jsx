@@ -26,7 +26,7 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -86,11 +86,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplMobileNavDrawer({
-  onHomeClick,
-  onSearchClick,
-}) {
-  const { domainIsOn } = useContext(FlagContext);
+function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
@@ -100,7 +96,6 @@ function ChplMobileNavDrawer({
     shortcuts: false,
   });
   const resourceItems = getResourceItems({
-    domainIsOn,
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
   const classes = useStyles();

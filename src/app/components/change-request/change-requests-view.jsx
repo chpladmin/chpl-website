@@ -37,7 +37,7 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { BreadcrumbContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -88,7 +88,6 @@ const useStyles = makeStyles({
 function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
   const storageKey = 'storageKey-changeRequestsView';
   const { analytics } = useAnalyticsContext();
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -107,29 +106,6 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
     query: `${queryString()}${bonusQuery}`,
   });
   const classes = useStyles();
-  let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="viewall.disabled"
-        variant="text"
-        disabled
-      >
-        Change Requests
-      </Button>,
-    );
-    append(
-      <Button
-        key="viewall"
-        variant="text"
-        onClick={() => handleDispatch('close')}
-      >
-        Change Requests
-      </Button>,
-    );
-    display('viewall.disabled');
-  }, []);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -164,15 +140,10 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
     { text: 'Actions', invisible: true },
   ];
 
-  handleDispatch = (action, payload) => {
+  const handleDispatch = (action, payload) => {
     switch (action) {
       case 'close':
         setChangeRequest(undefined);
-        display('viewall.disabled');
-        hide('viewall');
-        hide('edit.disabled');
-        hide('view');
-        hide('view.disabled');
         break;
       case 'editAttestation':
         dispatch('editAttestation', payload);
@@ -191,8 +162,6 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
     setOrder(orderDirection);
   };
 
-  const showBreadcrumbs = () => !bonusQuery;
-
   const viewChangeRequest = (cr) => {
     eventTrack({
       ...analytics,
@@ -201,8 +170,6 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
       aggregationGroup: cr.developer.name,
     });
     setChangeRequest(cr);
-    display('viewall');
-    hide('viewall.disabled');
   };
 
   if (changeRequest) {
@@ -210,7 +177,6 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch }) {
       <ChplChangeRequest
         changeRequest={changeRequest}
         dispatch={handleDispatch}
-        showBreadcrumbs={showBreadcrumbs()}
       />
     );
   }

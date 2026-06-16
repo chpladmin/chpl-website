@@ -1,6 +1,14 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAxios } from './axios';
+
+const useFetchUsers = () => {
+  const axios = useAxios();
+  return useQuery(['users'], async () => {
+    const response = await axios.get('users');
+    return response.data;
+  });
+};
 
 const usePostAuthorizeUser = () => {
   const axios = useAxios();
@@ -22,6 +30,7 @@ const usePutUser = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`users/${data.cognitoId}`, data), {
     onSuccess: () => {
+      queryClient.invalidateQueries(['users']);
       queryClient.invalidateQueries(['acbs', 'users']);
       queryClient.invalidateQueries(['developers', 'users']);
     },
@@ -29,6 +38,7 @@ const usePutUser = () => {
 };
 
 export {
+  useFetchUsers,
   usePostAuthorizeUser,
   usePostCreateInvitation,
   usePostCreateInvitedUser,

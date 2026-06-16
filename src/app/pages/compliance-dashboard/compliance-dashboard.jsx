@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
-  Container,
   Grid,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  container: {
-    padding: theme.spacing(8),
-    backgroundColor: palette.greyLight,
-    minHeight: 'calc(100vh - 238px)',
-  },
   reportCard: {
     height: 'auto',
     display: 'flex',
@@ -47,7 +38,7 @@ const reports = [{
   title: 'Important Dates',
   uniqueClass: 'lessTopMargin',
 }, {
-  title: 'Non-Conformities',
+  title: 'Non-conformities',
 }, {
   title: 'Questionable URLs',
 }, {
@@ -106,32 +97,18 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <>
-      <Box bgcolor={palette.white} p={8}>
-        <Container maxWidth="lg">
-          <Typography variant="h1">Compliance Dashboard</Typography>
-          <Typography variant="body1" color="textSecondary">
-            A comprehensive view of compliance reports and metrics
-          </Typography>
-        </Container>
-      </Box>
-      <Box className={classes.container}>
-        <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="flex-start">
-            <Grid item xs={12} md={4}>
-              <Grid container spacing={4}>
-                { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={8}>
-              <Grid container spacing={4}>
-                { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
-              </Grid>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </>
+    <Grid container spacing={4} alignItems="flex-start">
+      <Grid item xs={12} md={4}>
+        <Grid container spacing={4}>
+          { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+        </Grid>
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <Grid container spacing={4}>
+          { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "14.4.0",
+  "version": "14.5.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -45,7 +45,6 @@
     "bootstrap-sass": "3.4.3",
     "cytoscape": "^3.24.0",
     "export-to-csv": "https://github.com/andlar/export-to-csv.git#commit=65d6d661266a0b9dbbd8feab1f9b72936dda3cac",
-    "font-awesome": "^4.7.0",
     "formik": "^2.2.9",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",

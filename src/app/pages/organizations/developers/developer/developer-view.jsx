@@ -7,7 +7,7 @@ import { func } from 'prop-types';
 
 import { useFetchUsersAtDeveloper } from 'api/developer';
 import ChplAttestationsView from 'components/attestation/attestations-view';
-import ChplChangeRequests from 'components/change-request/change-requests-wrapper'; // figure out how to not need breadcrumbs
+import ChplChangeRequests from 'components/change-request/change-requests';
 import ChplDeveloperViewDetails from 'components/developer/developer-view';
 import ChplDirectReviews from 'components/direct-reviews/direct-reviews';
 import ChplInsightsView from 'components/insights/insights-view';
@@ -143,6 +143,7 @@ function ChplDeveloperView({ dispatch }) {
               />
               <ChplRealWorldTestingView
                 developer={developer}
+                dispatch={dispatch}
               />
               { insightsDisplayIsOn
                 && (

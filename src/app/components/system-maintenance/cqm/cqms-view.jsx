@@ -77,8 +77,8 @@ function ChplCqmsView({ cqms: initialCqms }) {
           .map((item) => (
             <ChplSearchResultCard
               key={item.display}
-              title="ID"
-              titleValue={item.display}
+              cardTitle="ID"
+              cardTitleValue={item.display}
               titleIconButton={(
                 <ChplTooltip title="Use this value in a upload file">
                   <IconButton color="primary" size="small">

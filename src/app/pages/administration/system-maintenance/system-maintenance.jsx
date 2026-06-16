@@ -1,16 +1,16 @@
 import React, { useContext, useState } from 'react';
 import {
-  Card,
-  CardContent,
   Box,
   Button,
+  Card,
+  CardContent,
   Container,
+  Divider,
   List,
   ListItem,
+  ListItemText,
   Typography,
   makeStyles,
-  Divider,
-  ListItemText,
 } from '@material-ui/core';
 import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
 import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
@@ -63,16 +63,6 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  pageHeader: {
-    backgroundColor: '#ffffff',
-    padding: '32px',
-    marginBottom: '16px',
-  },
-  pageTitle: {
-    fontSize: '1.25em',
-    fontWeight: 'bold',
-    maxWidth: '100%',
-  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -245,7 +235,7 @@ function ChplSystemMaintenance() {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [active, setActive] = useState('');
-  const [navOpen, setNavOpen] = useState(true); // or false to start closed
+  const [navOpen, setNavOpen] = useState(true);
   const classes = useStyles();
   let navigate;
   let data;
@@ -283,15 +273,7 @@ function ChplSystemMaintenance() {
 
   return (
     <AnalyticsContext.Provider value={data}>
-      <Box className={classes.pageHeader}>
-        <Container maxWidth="lg">
-          <Typography variant="h1" className={classes.pageTitle}>
-            System Maintenance
-          </Typography>
-        </Container>
-      </Box>
-      <Container maxWidth="lg">
-        <div className={classes.container}>
+      <div className={classes.container}>
           <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
             <Card className={classes.navigationFlex}>
               <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
@@ -305,35 +287,35 @@ function ChplSystemMaintenance() {
                   { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
                 </Button>
               </ChplToolTip>
-              {maintenanceItems
+              { maintenanceItems
                 .filter((item) => !item.roles || hasAnyRole(item.roles))
                 .map((item) => getNavigationItem(item))}
             </Card>
           </div>
           <Box width="100%">
-            { active === ''
-            && (
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" component="h2" gutterBottom>
-                    <strong>System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.</strong>
-                  </Typography>
-                  <Divider />
-                  <List>
-                    { maintenanceItems
-                      .filter((item) => item.showInList !== false && (!item.roles || hasAnyRole(item.roles)))
-                      .map((item, index) => (
-                        <React.Fragment key={item.id}>
-                          <ListItem>
-                            <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
-                          </ListItem>
-                          { index < maintenanceItems.length - 1 && <Divider component="li" /> }
-                        </React.Fragment>
-                      )) }
-                  </List>
-                </CardContent>
-              </Card>
-            )}
+            { (active === '' || active === 'home')
+              && (
+                <Card>
+                  <CardContent>
+                    <Typography variant="h6" component="h2" gutterBottom>
+                      <strong>System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.</strong>
+                    </Typography>
+                    <Divider />
+                    <List>
+                      { maintenanceItems
+                        .filter((item) => item.showInList !== false && (!item.roles || hasAnyRole(item.roles)))
+                        .map((item, index) => (
+                          <React.Fragment key={item.id}>
+                            <ListItem>
+                              <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
+                            </ListItem>
+                            { index < maintenanceItems.length - 1 && <Divider component="li" /> }
+                          </React.Fragment>
+                        )) }
+                    </List>
+                  </CardContent>
+                </Card>
+              )}
             { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
             { active === 'announcements' && <ChplAnnouncements /> }
             { active === 'apiKeys' && <ChplApiKeys /> }
@@ -354,7 +336,6 @@ function ChplSystemMaintenance() {
             { active === 'ucdProcesses' && <ChplUcdProcesses /> }
           </Box>
         </div>
-      </Container>
     </AnalyticsContext.Provider>
   );
 }

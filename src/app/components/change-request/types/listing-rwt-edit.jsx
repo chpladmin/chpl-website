@@ -8,6 +8,7 @@ import { bool, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink, ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
@@ -33,9 +34,6 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  url: yup.string()
-    .url('URL is not in a valid format')
-    .required('URL is required'),
   checkDate: yup.date()
     .when('mustHaveDate', {
       is: (mustHaveDate) => mustHaveDate,
@@ -83,9 +81,18 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false, title, value }) 
     formik.handleChange(...args);
   };
 
+  const handleDispatch = ({ url: submittedUrl }) => {
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        url: submittedUrl,
+      },
+    }));
+  };
+
   formik = useFormik({
     initialValues: {
-      url: changeRequest.details.url || '',
       checkDate: changeRequest.details.checkDate || '',
       mustHaveDate: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) && isAccepting,
     },
@@ -103,18 +110,23 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false, title, value }) 
       <Divider />
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
-        <ChplTextField
-          id="url"
-          name="url"
-          label="url"
-          required
-          disabled={!hasAnyRole(['chpl-developer'])}
-          value={formik.values.url}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.url && !!formik.errors.url}
-          helperText={formik.touched.url && formik.errors.url}
-        />
+        { hasAnyRole(['chpl-developer'])
+          && (
+            <ChplUrlChecker
+              dispatch={handleDispatch}
+              url={changeRequest.details.url}
+            />
+          )}
+        { !hasAnyRole(['chpl-developer'])
+          && (
+            <ChplTextField
+              id="url"
+              name="url"
+              label="url"
+              disabled
+              value={changeRequest.details.url}
+            />
+          )}
         { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
           && (
             <ChplTextField

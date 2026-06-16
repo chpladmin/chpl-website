@@ -14,16 +14,18 @@ import {
 } from '@material-ui/core';
 import {
   Timeline,
-  TimelineItem,
-  TimelineSeparator,
   TimelineConnector,
   TimelineContent,
   TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
 } from '@material-ui/lab';
 import { bool, func } from 'prop-types';
+import BlockIcon from '@material-ui/icons/Block';
+import CallMergeIcon from '@material-ui/icons/CallMerge';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
+import ErrorIcon from '@material-ui/icons/Error';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
@@ -146,14 +148,14 @@ const getStatusData = (statuses, classes) => {
                         {status.status.name === 'Suspended by ONC'
                          && (
                            <>
-                             <i className="fa status-bad fa-exclamation-circle" />
+                             <ErrorIcon color="error" />
                              {' '}
                            </>
                          )}
                         {status.status.name === 'Under certification ban by ONC'
                          && (
                            <>
-                             <i className="fa status-bad fa-ban" />
+                             <BlockIcon color="error" />
                              {' '}
                            </>
                          )}
@@ -202,7 +204,7 @@ function ChplDeveloperView(props) {
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const classes = useStyles();
 
   const can = (action) => {
@@ -210,7 +212,7 @@ function ChplDeveloperView(props) {
       return canEdit && !isSplitting
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses)) // allowed for ACB iff Developer is "Active"
-          || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+            || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn && hasAuthorityOn(developer))); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
       return canJoin && !isSplitting
@@ -246,6 +248,14 @@ function ChplDeveloperView(props) {
       event: 'Split Developer',
     });
     dispatch('split');
+  };
+
+  const createDemographicsCr = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Create Demographics CR',
+    });
+    dispatch('createDemographics');
   };
 
   return (
@@ -362,7 +372,7 @@ function ChplDeveloperView(props) {
             <ButtonGroup
               color="primary"
             >
-              {can('edit')
+              { can('edit') && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
                && (
                  <ChplTooltip title={`Edit ${developer.name} Information`}>
                    <Button
@@ -375,7 +385,18 @@ function ChplDeveloperView(props) {
                    </Button>
                  </ChplTooltip>
                )}
-              {can('split')
+              { can('edit') && hasAnyRole(['chpl-developer'])
+               && (
+                   <Button
+                     variant="contained"
+                     aria-label={`Submit ${developer.name} Demographics Change`}
+                     id="developer-component-edit"
+                     onClick={createDemographicsCr}
+                   >
+                     Submit Demographics Change
+                   </Button>
+               )}
+              { can('split')
                && (
                  <ChplTooltip title={`Split ${developer.name}`}>
                    <Button
@@ -388,7 +409,7 @@ function ChplDeveloperView(props) {
                    </Button>
                  </ChplTooltip>
                )}
-              {can('join')
+              { can('join')
                && (
                  <ChplTooltip title={`Join ${developer.name}`}>
                    <Button
