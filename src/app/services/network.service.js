@@ -53,10 +53,6 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}/listings`);
   }
 
-  getReportMetadata(reportKey) {
-    return this.apiGET(`/report-data/report-metadata/${reportKey}`);
-  }
-
   logout(logoutRequest) {
     return this.apiPOST('/auth/logout', logoutRequest);
   }
