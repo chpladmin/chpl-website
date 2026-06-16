@@ -10,7 +10,6 @@ import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper'
 import ChplListingView from './listing/listing-view-wrapper';
 import { ChplConfirmListingsWrapper } from './listing/confirm';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
-import ChplRealWorldTestingViewWrapper from './real-world-testing/real-world-testing-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import ChplUsersWrapper from './user/users-wrapper';
 import {
@@ -46,6 +45,5 @@ angular
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
-  .component('chplRealWorldTestingViewBridge', reactToAngularComponent(ChplRealWorldTestingViewWrapper))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
