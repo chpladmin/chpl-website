@@ -149,7 +149,7 @@ function ChplCmsLookup() {
         </div>
         <div className={classes.pageBody} id="main-content" tabIndex="-1">
           <Typography variant="body1">
-            This feature is not enabled at this time
+            Access to the CMS ID Creator has been paused. Please check back periodically for updates.
           </Typography>
         </div>
       </Container>

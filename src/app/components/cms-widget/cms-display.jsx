@@ -199,7 +199,7 @@ function ChplCmsDisplay() {
     return (
       <CardContent>
         <Typography>
-          This feature is not enabled at this time
+          Access to the CMS ID Creator has been paused. Please check back periodically for updates.
         </Typography>
       </CardContent>
     );
