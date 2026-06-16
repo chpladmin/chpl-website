@@ -37,10 +37,7 @@ function ChplDemographicsWizardSection1() {
       <Card>
         <CardContent>
           <Typography gutterBottom variant="body1">
-            The API Maintenance of Certification requirement for the publication of Service Base URL Lists at 45 CFR 170.404(b)(2) states that a health IT developer must publish, at no charge, the Service Base URL Lists and related organization details that can be used by patients to access their electronic health information.
-          </Typography>
-          <Typography variant="body1">
-            Ensuring these Service Base URL Lists are available for use by patients is important for ongoing compliance with this requirement.
+            Use this portal to update any contact personnel name change, as well as website, address, phone number, or email updates.
           </Typography>
         </CardContent>
       </Card>
