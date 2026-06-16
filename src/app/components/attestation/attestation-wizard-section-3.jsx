@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -164,6 +165,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
+            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
             Sign Electronically
             <BorderColorIcon
               className={classes.iconSpacing}

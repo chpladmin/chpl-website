@@ -53,28 +53,14 @@ function ChplChangeRequestListingSbulEdit() {
     return 'No current URL';
   };
 
-  const handleDispatch = ({ action, url: submittedUrl }) => {
-    switch (action) {
-      case 'complete':
-        setChangeRequest((prev) => ({
-          ...prev,
-          details: {
-            ...prev.details,
-            url: submittedUrl,
-          },
-        }));
-        break;
-      case 'update':
-        setChangeRequest((prev) => ({
-          ...prev,
-          details: {
-            ...prev.details,
-            url: submittedUrl,
-          },
-        }));
-        break;
-        // no default
-    }
+  const handleDispatch = ({ url: submittedUrl }) => {
+    setChangeRequest((prev) => ({
+      ...prev,
+      details: {
+        ...prev.details,
+        url: submittedUrl,
+      },
+    }));
   };
 
   return (
