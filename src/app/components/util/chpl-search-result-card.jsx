@@ -15,7 +15,9 @@ import {
   string,
 } from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
+import { theme } from 'themes';
+
+const useStyles = makeStyles({
   card: {
     marginBottom: theme.spacing(1.5),
     transition: theme.transitions.create('box-shadow'),
@@ -136,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 1.25,
     minWidth: 0,
   },
-}));
+});
 
 function ChplSearchResultCard({
   cardTitle,

@@ -35,10 +35,10 @@ function ChplBannedDevelopersSearchView() {
   const storageKey = 'storageKey-bannedDevelopersView';
   const { analytics } = useAnalyticsContext();
   const [developers, setDevelopers] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer_name');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'decertification_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();
@@ -90,7 +90,25 @@ function ChplBannedDevelopersSearchView() {
         subtitle={(
           <>
             <Typography variant="body1" gutterBottom>
-              This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program, including new products as well as upgraded versions of current products. Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
+              This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program, including new products as well as upgraded versions of current products. ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              A developer may be precluded from certifying products for two reasons:
+            </Typography>
+            <ol>
+              <li>
+                <strong>Developer Failure to Take Appropriate Corrective Action</strong>
+                {' '}
+                A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.
+              </li>
+              <li>
+                <strong>Product Withdrawn While Under Surveillance</strong>
+                {' '}
+                A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
+              </li>
+            </ol>
+            <Typography>
+              Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
               {' '}
               <ChplLink
                 href="#/search"
@@ -105,25 +123,6 @@ function ChplBannedDevelopersSearchView() {
               />
               .
             </Typography>
-            <Typography variant="body1" gutterBottom>
-              ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              A developer may be precluded from certifying products for two reasons:
-            </Typography>
-            <br />
-            <ol>
-              <li>
-                <strong>Developer Failure to Take Appropriate Corrective Action</strong>
-                {' '}
-                A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.
-              </li>
-              <li>
-                <strong>Product Withdrawn While Under Surveillance</strong>
-                {' '}
-                A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
-              </li>
-            </ol>
           </>
         )}
       />

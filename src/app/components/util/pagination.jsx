@@ -4,13 +4,17 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
-  arrayOf, bool, func, number,
+  arrayOf,
+  bool,
+  func,
+  number,
 } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
+// Sticky bottom offset in pixels for different breakpoints
 const desktopStickyBottom = {
   md: 80,
   lg: 72,

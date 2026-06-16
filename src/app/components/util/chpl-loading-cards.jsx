@@ -3,41 +3,113 @@ import {
   Box,
   Card,
   CardContent,
-  Grid,
+  makeStyles,
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { number } from 'prop-types';
 
-function ChplLoadingCards({ cards = 5, fieldsPerRow = 4, rows = 2 }) {
+import { theme } from 'themes';
+
+const useStyles = makeStyles({
+  card: {
+    marginBottom: theme.spacing(1.5),
+  },
+  cardContent: {
+    padding: theme.spacing(2, 8),
+  },
+  contentBody: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1.5),
+    flex: 1,
+  },
+  primaryRow: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.spacing(1.25, 3.5),
+  },
+  detailsRow: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.spacing(1.5, 3),
+    paddingTop: theme.spacing(1.25),
+  },
+  field: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(0.25),
+    flex: '1 1 200px',
+  },
+  actionsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: theme.spacing(1.5),
+  },
+  controlsHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+  },
+});
+
+function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
+  const classes = useStyles();
+
+  const renderField = () => (
+    <Box className={classes.field}>
+      <Skeleton variant="text" width="45%" height={14} />
+      <Skeleton variant="text" width="70%" height={20} />
+    </Box>
+  );
+
+  const renderRow = (isPrimary = true) => (
+    <Box className={isPrimary ? classes.primaryRow : classes.detailsRow}>
+      {[...Array(fieldsPerRow)].map((_, idx) => (
+        <React.Fragment key={idx}>
+          {renderField()}
+        </React.Fragment>
+      ))}
+    </Box>
+  );
+
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} px={4}>
+      {/* Search controls header */}
+      <Box className={classes.controlsHeader}>
         <Skeleton variant="text" width="30%" height={32} />
         <Skeleton variant="text" width="20%" height={32} />
       </Box>
+
+      {/* Loading cards */}
       {[...Array(cards)].map((_, cardIdx) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <Card key={cardIdx} style={{ marginBottom: '12px' }}>
-          <CardContent style={{ padding: '16px 32px', display: 'flex', gridGap: '8px' }}>
-            <Box display="flex" flexDirection="column" flex={1} gridGap={16}>
-              <Skeleton variant="text" width="20%" height={28} />
-              <Skeleton variant="text" width="40%" height={24} />
-              {[...Array(rows)].map((__, rowIdx) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Grid container spacing={2} key={rowIdx}>
-                  {[...Array(fieldsPerRow)].map((___, fieldIdx) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <Grid item xs={12} sm={Math.floor(12 / fieldsPerRow)} key={fieldIdx}>
-                      <Skeleton variant="text" width="50%" height={18} />
-                      <Skeleton variant="text" width="80%" height={24} />
-                    </Grid>
-                  ))}
-                </Grid>
-              ))}
-            </Box>
-            <Box display="flex" flexDirection="column" alignItems="flex-end" gridGap={8}>
-              <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
-              <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
+        <Card key={cardIdx} className={classes.card}>
+          <CardContent className={classes.cardContent}>
+            <Box display="flex" gap={theme.spacing(2)}>
+              <Box className={classes.contentBody}>
+                {/* Row 1: Primary fields (Developer, Product, Version) */}
+                {renderRow(true)}
+
+                {/* Row 2: Secondary fields (CHPL ID, Cert Date, Status) */}
+                {renderRow(true)}
+
+                {/* Row 3+: Additional details with border */}
+                {rows > 2 && [...Array(rows - 2)].map((_, rowIdx) => (
+                  <React.Fragment key={rowIdx}>
+                    {renderRow(false)}
+                  </React.Fragment>
+                ))}
+              </Box>
+
+              {/* Action buttons */}
+              <Box className={classes.actionsContainer}>
+                <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
+                <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
+              </Box>
             </Box>
           </CardContent>
         </Card>

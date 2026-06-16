@@ -26,7 +26,6 @@ $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
     --light: #f9f9f9;
     --dark: #1c1c1c;
     --medium-grey: #6b6b6b;
-    --neutral-medium: #cccccc;
     --grey-lighter: #eeeeee;
     --text-strong: #333333;
     --text-muted: #777777;
@@ -53,7 +52,7 @@ $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 
 .browsehappy {
     margin: .2em 0;
-    background: var(--neutral-medium);
+    background: #c2c6ca;
     color: var(--black);
     padding: .2em 0;
 }
@@ -333,7 +332,7 @@ option[disabled] {
 
 .style-guide-block {
     width: 100%;
-    background: var(--neutral-medium);
+    background: #c2c6ca;
 }
 
 .additional-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -667,7 +666,7 @@ label {
 
 [uib-datepicker-popup-wrap] .btn {
     border-radius: 3px;
-    border-color: var(--neutral-medium);
+    border-color: #c2c6ca;
 }
 
 .pagination > .disabled > span,

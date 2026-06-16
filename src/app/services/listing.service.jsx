@@ -13,11 +13,11 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import StopIcon from '@material-ui/icons/Stop';
 
 import { ChplTooltip } from 'components/util';
-import { palette } from 'themes'; 
+import { palette } from 'themes';
 
 const getFullButton = (text, icon) => (
   <ChplTooltip title={`Certification Status: ${text}`}>
-    <IconButton style={{ padding: '0px' }} disableFocusRipple disableRipple>
+    <IconButton style={{ padding: 0 }} disableFocusRipple disableRipple>
       { icon }
     </IconButton>
   </ChplTooltip>
