@@ -11,7 +11,7 @@ const AxiosContext = createContext();
 function AxiosProvider({ children }) {
   const $localStorage = getAngularService('$localStorage');
   const authService = getAngularService('authService');
-  const { setLoginWidgetState } = useContext(UserContext);
+  const { enqueueSnackbar, setLoginWidgetState } = useContext(UserContext);
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -64,8 +64,11 @@ function AxiosProvider({ children }) {
 
     ax.interceptors.response.use(
       (response) => {
-        if (response.headers['chpl-id-changed'] || response.headers['cache-cleared']) {
-          console.log(response.headers['chpl-id-changed'], response.headers['cache-cleared']);
+        if (response.headers['chpl-id-changed']) {
+          enqueueSnackbar('chpl-id-changed', { variant: 'success' });
+        }
+        if (response.headers['cache-cleared']) {
+          enqueueSnackbar('cache-cleared', { variant: 'success' });
         }
         return response;
       },
