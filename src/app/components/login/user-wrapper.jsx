@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
 import { clearAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
+import { useSnackbar } from 'notistack';
 
 import ChplLogin from './login';
 
@@ -14,6 +15,7 @@ function UserWrapper({ children = <ChplLogin /> }) {
   const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
+  const { enqueueSnackbar } = useSnackbar();
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();
   const [loginWidgetState, setLoginWidgetState] = useState('SIGNIN');
@@ -68,6 +70,7 @@ function UserWrapper({ children = <ChplLogin /> }) {
   };
 
   const userState = {
+    enqueueSnackbar,
     hasAnyRole,
     hasAuthorityOn,
     loginWidgetState,
