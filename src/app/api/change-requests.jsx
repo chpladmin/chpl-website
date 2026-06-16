@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAxios } from './axios';
 import options from './options';
 
-const useFetchChangeRequest = ({ id }) => {
+const useFetchChangeRequest = ({ id, enabled = true }) => {
   const axios = useAxios();
   return useQuery(['change-requests', id], async () => {
     if (id) {
@@ -12,6 +12,7 @@ const useFetchChangeRequest = ({ id }) => {
     }
     return {};
   }, {
+    enabled,
     keepPreviousData: true,
   });
 };

@@ -24,6 +24,7 @@ import { useDeleteUserFromDeveloper, useFetchDeveloperHierarchy } from 'api/deve
 import { usePostCreateInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import ChplAttestationEdit from 'components/attestation/attestation-edit';
+import ChplDemographicsCreate from 'components/demographics/demographics-create';
 import ChplSbulCreate from 'components/sbul/sbul-create';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -61,6 +62,7 @@ function ChplDeveloperPage({ id }) {
         setState('view');
         break;
       case 'createAttestation':
+      case 'createDemographics':
       case 'createSbul':
       case 'edit':
       case 'join':
@@ -234,6 +236,12 @@ function ChplDeveloperPage({ id }) {
           { state === 'createAttestation'
             && (
               <ChplAttestationCreate
+                dispatch={handleDispatch}
+              />
+            )}
+          { state === 'createDemographics'
+            && (
+              <ChplDemographicsCreate
                 dispatch={handleDispatch}
               />
             )}
