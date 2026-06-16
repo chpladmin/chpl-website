@@ -15,12 +15,15 @@ const useStyles = makeStyles({
     marginBottom: theme.spacing(1.5),
   },
   cardContent: {
-    padding: theme.spacing(2, 8),
+    padding: theme.spacing(4, 8),
+    '&:last-child': {
+      paddingBottom: 0,
+    },
   },
   contentBody: {
     display: 'flex',
     flexDirection: 'column',
-    gap: theme.spacing(1.5),
+    gap: theme.spacing(2),
     flex: 1,
   },
   primaryRow: {

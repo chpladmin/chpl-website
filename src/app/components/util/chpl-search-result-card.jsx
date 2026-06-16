@@ -26,11 +26,14 @@ const useStyles = makeStyles({
     },
   },
   cardContent: {
-    padding: theme.spacing(2, 8),
+    padding: theme.spacing(4, 8),
     display: 'flex',
     gap: theme.spacing(2),
     alignItems: 'stretch',
     flexDirection: 'column',
+    '&:last-child': {
+      paddingBottom: 0,
+    },
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       alignItems: 'flex-start',
@@ -64,7 +67,7 @@ const useStyles = makeStyles({
     lineHeight: 1.25,
     minWidth: 0,
     '& a': {
-      fontSize: '1.15em',
+      fontSize: '1.1em',
       fontWeight: 700,
     },
   },
@@ -105,6 +108,7 @@ const useStyles = makeStyles({
     display: 'flex',
     gap: theme.spacing(0.5),
     minHeight: '16px',
+    paddingTop: theme.spacing(0.25),
   },
   titleField: {
     flex: '1 1 200px',
