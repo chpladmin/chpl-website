@@ -25,6 +25,7 @@ import { usePostCreateInvitation } from 'api/users';
 import ChplAttestationCreate from 'components/attestation/attestation-create';
 import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import ChplDemographicsCreate from 'components/demographics/demographics-create';
+import ChplRwtResultsCreate from 'components/real-world-testing/rwt-results-create';
 import ChplSbulCreate from 'components/sbul/sbul-create';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -63,6 +64,7 @@ function ChplDeveloperPage({ id }) {
         break;
       case 'createAttestation':
       case 'createDemographics':
+      case 'createRwtResults':
       case 'createSbul':
       case 'edit':
       case 'join':
@@ -242,6 +244,12 @@ function ChplDeveloperPage({ id }) {
           { state === 'createDemographics'
             && (
               <ChplDemographicsCreate
+                dispatch={handleDispatch}
+              />
+            )}
+          { state === 'createRwtResults'
+            && (
+              <ChplRwtResultsCreate
                 dispatch={handleDispatch}
               />
             )}

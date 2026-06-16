@@ -143,6 +143,7 @@ function ChplDeveloperView({ dispatch }) {
               />
               <ChplRealWorldTestingView
                 developer={developer}
+                dispatch={dispatch}
               />
               { insightsDisplayIsOn
                 && (
