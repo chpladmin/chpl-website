@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   cardContent: {
     padding: theme.spacing(4, 8),
     '&:last-child': {
-      paddingBottom: 0,
+      paddingBottom: theme.spacing(4),
     },
   },
   contentBody: {
