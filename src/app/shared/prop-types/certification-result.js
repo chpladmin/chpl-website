@@ -40,6 +40,7 @@ const certificationResult = shape({
   testStandards: arrayOf(selectedTestStandard),
   testToolsUsed: arrayOf(selectedTestTool),
   title: string,
+  upToDate: bool,
   useCases: string,
 });
 
