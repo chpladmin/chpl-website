@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { node } from 'prop-types';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -6,6 +6,7 @@ import { useLocalStorage } from 'services/storage.service';
 import { CmsContext } from 'shared/contexts';
 
 function CmsWrapper({ children }) {
+  const [isOpen, setIsOpen] = useState(false);
   const [listings, setListings] = useLocalStorage('cms', []);
   const queryClient = useQueryClient();
 
@@ -30,8 +31,10 @@ function CmsWrapper({ children }) {
     addListing,
     canDisplayButton,
     isInWidget,
+    isOpen,
     listings,
     removeListing,
+    setIsOpen,
   };
 
   return (

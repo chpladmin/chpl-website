@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { node } from 'prop-types';
 
 import { useLocalStorage } from 'services/storage.service';
 import { CompareContext } from 'shared/contexts';
 
 function CompareWrapper({ children }) {
+  const [isOpen, setIsOpen] = useState(false);
   const [listings, setListings] = useLocalStorage('compare', []);
 
   const addListing = (listing) => {
@@ -23,8 +24,10 @@ function CompareWrapper({ children }) {
   const compareState = {
     addListing,
     isInWidget,
+    isOpen,
     listings,
     removeListing,
+    setIsOpen,
   };
 
   return (

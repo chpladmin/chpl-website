@@ -29,7 +29,6 @@ import createPdf from './cms-pdf';
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplEllipsis, ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -74,7 +73,7 @@ const useStyles = makeStyles({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     borderRadius: '100%',
-    height: '40px', 
+    height: '40px',
     width: '40px',
     border: `1px solid ${palette.white}`,
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.24)',
@@ -143,9 +142,13 @@ const useStyles = makeStyles({
 });
 
 function ChplCmsDisplay() {
-  const $rootScope = getAngularService('$rootScope');
-  const { listings, removeListing } = useContext(CmsContext);
-  const { listings: compareListings, addListing: addCompareListing, removeListing: removeCompareListing } = useContext(CompareContext);
+  const { listings, removeListing, setIsOpen } = useContext(CmsContext);
+  const {
+    listings: compareListings,
+    addListing: addCompareListing,
+    removeListing: removeCompareListing,
+    setIsOpen: setCompareIsOpen,
+  } = useContext(CompareContext);
   const { cmsDisabledIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
   const [idAnalysis, setIdAnalysis] = useState({});
@@ -180,9 +183,8 @@ function ChplCmsDisplay() {
     });
     compareListings.forEach((l) => removeCompareListing(l));
     listings.forEach((l) => addCompareListing(l));
-    $rootScope.$broadcast('HideCmsWidget');
-    $rootScope.$broadcast('ShowCompareWidget');
-    $rootScope.$digest();
+    setIsOpen(false);
+    setCompareIsOpen(true);
   };
 
   const copyToClipboard = () => {

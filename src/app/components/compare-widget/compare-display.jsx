@@ -48,7 +48,6 @@ function ChplCompareDisplay() {
 
   const compareAll = () => {
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
-    $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();
   };
 
