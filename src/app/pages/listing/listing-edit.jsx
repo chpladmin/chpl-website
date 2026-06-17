@@ -19,13 +19,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { ArrowDropDown } from '@material-ui/icons';
+import { func } from 'prop-types';
 
 import { usePutListing } from 'api/listing';
 import ChplListingEdit from 'components/listing/listing-edit';
 import ChplListingEditUpload from 'components/listing/listing-edit-upload';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles, palette } from 'themes';
 
@@ -53,15 +53,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingEditPage() {
-  const $state = getAngularService('$state');
+function ChplListingEditPage({ dispatch }) {
   const { analytics } = useAnalyticsContext();
   const { listing } = useContext(ListingContext);
-  const { mutate } = usePutListing();
+  const { mutate, isLoading: isProcessing } = usePutListing();
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isEditing, setIsEditing] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [reasonForChange, setReasonForChange] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedEditMode, setSelectedEditMode] = useState(0);
@@ -77,14 +75,13 @@ function ChplListingEditPage() {
           ...analyticsData.analytics,
           event: 'Cancel editing',
         });
-        $state.go('^');
+        dispatch({ action: 'cancel' });
         break;
       case 'save':
         eventTrack({
           ...analyticsData.analytics,
           event: 'Save changes',
         });
-        setIsProcessing(true);
         setErrors([]);
         setWarnings([]);
         request = {
@@ -94,14 +91,12 @@ function ChplListingEditPage() {
         mutate(request, {
           onSuccess: (response) => {
             if (!response.status || response.status === 200) {
-              //$state.go('^');
+              dispatch({ action: 'cancel' });
             } else {
-              setIsProcessing(false);
               setErrors([response.error]);
             }
           },
           onError: (error) => {
-            setIsProcessing(false);
             setErrors(error.response.data.errorMessages ?? []);
             setWarnings(error.response.data.warningMessages ?? []);
           },
@@ -140,8 +135,6 @@ function ChplListingEditPage() {
     analytics: {
       ...analytics,
       category: 'Edit Listing',
-      label: listing.chplProductNumber,
-      aggregationName: listing.product.name,
     },
   };
 
@@ -251,4 +244,5 @@ function ChplListingEditPage() {
 export default ChplListingEditPage;
 
 ChplListingEditPage.propTypes = {
+  dispatch: func.isRequired,
 };

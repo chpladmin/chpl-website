@@ -4,21 +4,6 @@ const states = [{
   component: 'chplListing',
   data: { title: 'CHPL Listing Details' },
 }, {
-  name: 'listing.edit',
-  url: '/edit',
-  component: 'chplListingEditBridge',
-  data: {
-    title: 'CHPL Listing Details - Edit',
-    roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
-  },
-  resolve: {
-    listing: (networkService, $transition$) => {
-      'ngInject';
-
-      return networkService.getListing($transition$.params().id);
-    },
-  },
-}, {
   name: 'product',
   url: '/product/{id}',
   redirectTo: (trans) => ({
