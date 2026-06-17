@@ -46,8 +46,6 @@ const reports = [{
 }, {
   title: 'Direct Reviews',
 }, {
-  title: 'Surveillance Activities',
-}, {
   title: 'Developer Attestations',
   isWide: true,
 }, {
@@ -55,6 +53,9 @@ const reports = [{
   isWide: true,
 }, {
   title: 'Updated Criteria Status',
+  isWide: true,
+}, {
+  title: 'Surveillance Activities',
   isWide: true,
 }];
 
