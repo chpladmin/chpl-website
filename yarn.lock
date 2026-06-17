@@ -3467,22 +3467,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angulartics-google-tag-manager@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "angulartics-google-tag-manager@npm:0.0.1"
-  peerDependencies:
-    angulartics: ^1.0.0
-  checksum: 10/84920ba93d34182e414f4a242d6d30fd30f3fbdcefa29404b04c611771446c706826eba600618ed89a0d316489863df5d68b1012287b4248c07c22aa00c49eab
-  languageName: node
-  linkType: hard
-
-"angulartics@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "angulartics@npm:1.6.0"
-  checksum: 10/d4a3121d5dc5dc96a68d1cadf722bf8cf366d9f1b88ab6a184e5085dc42f117ce1585077cc04ae4c96bbdf80b0f69816d04a3a74b3f175d2eeace78da3c57248
-  languageName: node
-  linkType: hard
-
 "ansi-colors@npm:^3.0.0":
   version: 3.2.4
   resolution: "ansi-colors@npm:3.2.4"
@@ -5191,8 +5175,6 @@ __metadata:
     angular-ui-bootstrap: "npm:2.5.6"
     angular-ui-router: "npm:^1.0.30"
     angular-zxcvbn: "npm:^3.2.2"
-    angulartics: "npm:^1.6.0"
-    angulartics-google-tag-manager: "npm:^0.0.1"
     axios: "npm:^1.7.7"
     axios-jwt: "npm:^4.0.3"
     babel-eslint: "npm:^8.2.6"

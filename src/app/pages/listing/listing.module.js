@@ -4,7 +4,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 
 angular
   .module('chpl.listing', [
-    'angulartics',
     'chpl.services',
     'feature-flags',
     'ngSanitize',

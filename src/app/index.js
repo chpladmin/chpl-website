@@ -7,8 +7,6 @@ import 'swagger-ui-react/swagger-ui.css';
 import angular from 'angular';
 import /* angularConfirm from */ 'angular-confirm';
 import /* angularLoadingBar from */ 'angular-loading-bar';
-import /* angulartics from */ 'angulartics';
-import /* angularticsGoogleTagManager from */ 'angulartics-google-tag-manager';
 import 'angular-feature-flags';
 import /* ngAnimate from */ 'angular-animate';
 import /* ngAria from */ 'angular-aria';
@@ -52,8 +50,6 @@ require('./index.constants');
 
 const dependencies = [
   'angular-loading-bar',
-  'angulartics',
-  'angulartics.google.tagmanager',
   'feature-flags',
   'ngAnimate',
   'ngAria',
