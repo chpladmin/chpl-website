@@ -45,11 +45,6 @@ function ChplCompareDisplay() {
   const { listings, removeListing } = useContext(CompareContext);
   const classes = useStyles();
 
-  const getPopoverMaxHeight = (anchor) => {
-    const anchorBottom = anchor?.getBoundingClientRect().bottom ?? 72;
-    return `calc(100vh - ${Math.ceil(anchorBottom + 24)}px)`;
-  };
-
   const compareAll = () => {
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
