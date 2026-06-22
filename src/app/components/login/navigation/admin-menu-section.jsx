@@ -16,6 +16,8 @@ import {
   string,
 } from 'prop-types';
 
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -50,12 +52,22 @@ function ChplAdminMenuSection({
   title,
 }) {
   const classes = useStyles();
+  const { analytics } = useAnalyticsContext();
+
+  const handleToggle = () => {
+    eventTrack({
+      ...analytics,
+      event: isOpen ? `Collapse ${title}` : `Expand ${title}`,
+      category: 'Navigation',
+    });
+    onToggle(section);
+  };
 
   return (
     <>
       <ListItem
         className={classes.sectionHeader}
-        onClick={() => onToggle(section)}
+        onClick={handleToggle}
         divider
       >
         <Typography className={classes.sectionHeaderText}>{title}</Typography>
@@ -64,7 +76,7 @@ function ChplAdminMenuSection({
           aria-label={isOpen ? `Collapse ${title}` : `Expand ${title}`}
           aria-expanded={isOpen}
           size="small"
-          onClick={(e) => { e.stopPropagation(); onToggle(section); }}
+          onClick={(e) => { e.stopPropagation(); handleToggle(); }}
         >
           {isOpen
             ? <ExpandLessIcon style={{color: 'black'}} />
