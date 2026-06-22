@@ -109,7 +109,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const handleHomeClick = () => {
     eventTrack({
       ...analytics,
-      event: 'Go to Home Page',
+      event: 'Navigate to Home Page',
       label: 'Home',
       category: 'Navigation',
     });
@@ -120,7 +120,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const handleSearchClick = () => {
     eventTrack({
       ...analytics,
-      event: 'Go to Search Page',
+      event: 'Navigate to Search Page',
       label: 'Search CHPL',
       category: 'Navigation',
     });
