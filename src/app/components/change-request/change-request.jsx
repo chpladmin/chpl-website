@@ -231,12 +231,11 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [warnings, setWarnings] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
+  const { data, isLoading, isSuccess } = useFetchChangeRequest({ id, enabled: !isEditing });
   const crstQuery = useFetchChangeRequestStatusTypes();
-  const { mutate } = usePutChangeRequest();
+  const { mutate, isLoading: isProcessing } = usePutChangeRequest();
   const classes = useStyles();
 
   let formik;
@@ -310,7 +309,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     switch (response) {
       case 'yes':
         if (confirmationMessage === 'All associated ONC-ACBs have been consulted regarding this change') {
-          formik.submitForm();
+          save();
         }
         break;
       case 'no':
@@ -339,7 +338,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
       save(payload);
     } else {
       formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
-      formik.submitForm();
+      save();
     }
   };
 
@@ -403,7 +402,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
           setConfirmationMessage('All associated ONC-ACBs have been consulted regarding this change');
           setIsConfirming(true);
         } else {
-          formik.submitForm();
+          save();
         }
         break;
       case 'toggleWarningAcknowledgement':
@@ -424,49 +423,11 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['chpl-developer']));
 
   save = (request) => {
-    setIsProcessing(true);
-    mutate({
-      acknowledgeWarnings,
-      changeRequest: request,
-    }, {
-      onSuccess: () => {
-        dispatch('close');
-        setIsProcessing(false);
-        setWarnings([]);
-      },
-      onError: (error) => {
-        if (error.response.data.error?.startsWith('Email could not be sent to')) {
-          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
-            variant: 'info',
-          });
-          dispatch('close');
-          setIsProcessing(false);
-          setWarnings([]);
-        } else if (error.response.data.warningMessages?.length > 0) {
-          setShowAcknowledgement(true);
-          setIsProcessing(false);
-          setWarnings(error.response.data.warningMessages);
-        } else {
-          const message = error.response.data?.error
-                || error.response.data?.errorMessages.join(' ');
-          enqueueSnackbar(message, {
-            variant: 'error',
-          });
-          formik.resetForm();
-          setIsProcessing(false);
-          setWarnings([]);
-        }
-      },
-    });
-  };
-
-  formik = useFormik({
-    initialValues: {
-      comment: '',
-      changeRequestStatusType: '',
-    },
-    onSubmit: () => {
-      const updated = {
+    let updated;
+    if (request) {
+      updated = request;
+    } else {
+      updated = {
         ...changeRequest,
         currentStatus: {
           comment: formik.values.comment,
@@ -478,7 +439,41 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
         event: 'Save Change Request',
         label: changeRequest.developer.name,
       });
-      save(updated);
+    }
+    mutate({
+      acknowledgeWarnings,
+      changeRequest: updated,
+    }, {
+      onSuccess: () => {
+        dispatch('close');
+        setWarnings([]);
+      },
+      onError: (error) => {
+        if (error.response.data.error?.startsWith('Email could not be sent to')) {
+          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+            variant: 'info',
+          });
+          dispatch('close');
+          setWarnings([]);
+        } else if (error.response.data.warningMessages?.length > 0) {
+          setShowAcknowledgement(true);
+          setWarnings(error.response.data.warningMessages);
+        } else {
+          const message = error.response.data?.error
+                || error.response.data?.errorMessages.join(' ');
+          enqueueSnackbar(message, {
+            variant: 'error',
+          });
+          setWarnings([]);
+        }
+      },
+    });
+  };
+
+  formik = useFormik({
+    initialValues: {
+      comment: '',
+      changeRequestStatusType: '',
     },
     validationSchema,
   });

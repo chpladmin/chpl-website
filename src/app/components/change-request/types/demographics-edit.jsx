@@ -9,10 +9,13 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -41,7 +44,6 @@ const validationSchema = yup.object({
     .required('Full name is required'),
   phoneNumber: yup.string()
     .required('Phone is required'),
-  title: yup.string(),
   city: yup.string()
     .required('City is required'),
   country: yup.string()
@@ -66,14 +68,42 @@ function ChplChangeRequestDemographicsEdit() {
 
   const handleChange = (...args) => {
     const event = args[0];
+    if (event.target.name === 'selfDeveloper') {
+      setChangeRequest((prev) => ({
+        ...prev,
+        details: {
+          ...prev.details,
+          selfDeveloper: event.target.checked,
+        },
+      }));
+    } else {
+      setChangeRequest((prev) => ({
+        ...prev,
+        details: {
+          ...prev.details,
+          [event.target.name]: event.target.value,
+          address: {
+            ...prev.details.address,
+            [event.target.name]: event.target.value,
+          },
+          contact: {
+            ...prev.details.contact,
+            [event.target.name]: event.target.value,
+          },
+        },
+      }));
+    }
+    formik.handleChange(...args);
+  };
+
+  const handleDispatch = ({ url: submittedUrl }) => {
     setChangeRequest((prev) => ({
       ...prev,
       details: {
         ...prev.details,
-        [event.target.name]: event.target.value,
+        website: submittedUrl,
       },
     }));
-    formik.handleChange(...args);
   };
 
   formik = useFormik({
@@ -81,7 +111,6 @@ function ChplChangeRequestDemographicsEdit() {
       email: changeRequest.details.contact.email || '',
       fullName: changeRequest.details.contact.fullName || '',
       phoneNumber: changeRequest.details.contact.phoneNumber || '',
-      title: changeRequest.details.contact.title || '',
       city: changeRequest.details.address.city || '',
       country: changeRequest.details.address.country || '',
       line1: changeRequest.details.address.line1 || '',
@@ -89,7 +118,6 @@ function ChplChangeRequestDemographicsEdit() {
       state: changeRequest.details.address.state || '',
       zipcode: changeRequest.details.address.zipcode || '',
       selfDeveloper: !!changeRequest.details.selfDeveloper,
-      website: changeRequest.details.website,
     },
     validationSchema,
   });
@@ -105,15 +133,10 @@ function ChplChangeRequestDemographicsEdit() {
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
         <div className={classes.detailsSubContainer}>
-          <Typography>
+          <Typography className={classes.fullWidthGridRow}>
             Full Name:
             {' '}
             { changeRequest.developer.contact.fullName }
-          </Typography>
-          <Typography>
-            Title:
-            {' '}
-            { changeRequest.developer.contact.title }
           </Typography>
           <Typography>
             Email:
@@ -159,7 +182,7 @@ function ChplChangeRequestDemographicsEdit() {
             { changeRequest.developer.address.country }
           </Typography>
         </div>
-        <Typography>
+        <Typography className={classes.fullWidthGridRow}>
           Website:
           {' '}
           { changeRequest.developer.website }
@@ -194,17 +217,7 @@ function ChplChangeRequestDemographicsEdit() {
             onBlur={formik.handleBlur}
             error={formik.touched.fullName && !!formik.errors.fullName}
             helperText={formik.touched.fullName && formik.errors.fullName}
-          />
-          <ChplTextField
-            id="title"
-            name="title"
-            label="Title"
-            disabled={!hasAnyRole(['chpl-developer'])}
-            value={formik.values.title}
-            onChange={handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.title && !!formik.errors.title}
-            helperText={formik.touched.title && formik.errors.title}
+            className={classes.fullWidthGridRow}
           />
           <ChplTextField
             id="email"
@@ -305,19 +318,13 @@ function ChplChangeRequestDemographicsEdit() {
             helperText={formik.touched.country && formik.errors.country}
           />
         </div>
-        <Typography gutterBottom variant="subtitle1">Submitted website</Typography>
-        <ChplTextField
-          id="website"
-          name="website"
-          label="Website"
-          required
-          disabled={!hasAnyRole(['chpl-developer'])}
-          value={formik.values.website}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.website && !!formik.errors.website}
-          helperText={formik.touched.website && formik.errors.website}
-        />
+        <Typography gutterBottom variant="subtitle1">Website</Typography>
+        <div className={classes.fullWidthGridRow}>
+          <ChplUrlChecker
+            dispatch={handleDispatch}
+            url={changeRequest.details.website}
+          />
+        </div>
       </div>
     </div>
   );

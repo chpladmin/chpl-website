@@ -205,7 +205,7 @@ function ChplDeveloperView(props) {
   const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const classes = useStyles();
 
   const can = (action) => {
@@ -213,7 +213,7 @@ function ChplDeveloperView(props) {
       return canEdit && !isSplitting
         && (hasAnyRole(['chpl-admin', 'chpl-onc']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['chpl-onc-acb']) && isActive(developer.statuses)) // allowed for ACB iff Developer is "Active"
-          || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+            || (hasAnyRole(['chpl-developer']) && isActive(developer.statuses) && demographicChangeRequestIsOn && hasAuthorityOn(developer))); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'join') {
       return canJoin && !isSplitting
@@ -249,6 +249,14 @@ function ChplDeveloperView(props) {
       event: 'Split Developer',
     });
     dispatch('split');
+  };
+
+  const createDemographicsCr = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Create Demographics CR',
+    });
+    dispatch('createDemographics');
   };
 
   return (
@@ -365,7 +373,7 @@ function ChplDeveloperView(props) {
             <ButtonGroup
               color="primary"
             >
-              {can('edit')
+              { can('edit') && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
                && (
                  <ChplTooltip title={`Edit ${developer.name} Information`}>
                    <Button
@@ -378,7 +386,18 @@ function ChplDeveloperView(props) {
                    </Button>
                  </ChplTooltip>
                )}
-              {can('split')
+              { can('edit') && hasAnyRole(['chpl-developer'])
+               && (
+                   <Button
+                     variant="contained"
+                     aria-label={`Submit ${developer.name} Demographics Change`}
+                     id="developer-component-edit"
+                     onClick={createDemographicsCr}
+                   >
+                     Submit Demographics Change
+                   </Button>
+               )}
+              { can('split')
                && (
                  <ChplTooltip title={`Split ${developer.name}`}>
                    <Button
@@ -391,7 +410,7 @@ function ChplDeveloperView(props) {
                    </Button>
                  </ChplTooltip>
                )}
-              {can('join')
+              { can('join')
                && (
                  <ChplTooltip title={`Join ${developer.name}`}>
                    <Button

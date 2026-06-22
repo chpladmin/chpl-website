@@ -87,10 +87,7 @@ const validationSchema = yup.object({
 
 function ChplListingRwtPlans() {
   const { hasAnyRole } = useContext(UserContext);
-  const {
-    listing,
-    setRwtPlansChange,
-  } = useContext(ListingContext);
+  const { listing } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: submitCR } = usePostChangeRequest();
   const {
@@ -117,9 +114,6 @@ function ChplListingRwtPlans() {
 
   const handleDispatch = (action) => {
     switch (action) {
-      case 'cancel':
-        setRwtPlansChange(false);
-        break;
       case 'save':
         setIsProcessing(true);
         submitCR({
@@ -138,7 +132,6 @@ function ChplListingRwtPlans() {
             enqueueSnackbar('URL change request has been submitted successfully.', {
               variant: 'success',
             });
-            setRwtPlansChange(false);
           },
           onError: (error) => {
             setIsProcessing(false);
