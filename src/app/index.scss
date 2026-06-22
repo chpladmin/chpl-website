@@ -26,16 +26,6 @@ $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
     --light: #f9f9f9;
     --dark: #1c1c1c;
     --medium-grey: #6b6b6b;
-    --grey-lighter: #eeeeee;
-    --text-strong: #333333;
-    --text-muted: #777777;
-    --text-disabled: #4d4d4d;
-    --link-blue: #1a67a9;
-    --loading-highlight: #ffdd3c;
-    --warning-bright: #f5d43c;
-    --input-border: #6c9cbf;
-    --surface-subtle: #f5f5f5;
-    --border-subtle: #e3e3e3;
     --swagger-put-content: #ede0f8;
     --swagger-put-badge: #6b23a4;
     --background-error: 196, 79, 101;
@@ -52,8 +42,8 @@ $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 
 .browsehappy {
     margin: .2em 0;
-    background: #c2c6ca;
-    color: var(--black);
+    background: #ccc;
+    color: #000;
     padding: .2em 0;
 }
 
@@ -71,7 +61,7 @@ body {
 }
 
 a {
-    color: var(--link-blue);
+    color: #1a67a9;
     text-decoration: underline;
 }
 
@@ -134,17 +124,17 @@ h6 {
 }
 
 #loading-bar .bar {
-    background: var(--loading-highlight);
+    background: #ffdd3c;
 }
 
 #loading-bar .peg {
-    box-shadow: var(--loading-highlight) 1px 0 6px 1px;
+    box-shadow: #ffdd3c 1px 0 6px 1px;
 }
 
 #loading-bar-spinner .spinner-icon {
     border: 10px solid transparent;
-    border-top-color: var(--loading-highlight);
-    border-left-color: var(--loading-highlight);
+    border-top-color: #ffdd3c;
+    border-left-color: #ffdd3c;
     top: 50%;
     left: 50%;
     margin-top: -64px;
@@ -172,29 +162,29 @@ h6 {
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: var(--text-strong) !important;
+    color: #333 !important;
 }
 
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: var(--text-strong) !important;
+    color: #333 !important;
     opacity: 1;
 }
 
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: var(--text-strong) !important;
+    color: #333 !important;
     opacity: 1;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: var(--text-strong) !important;
+    color: #333 !important;
 }
 
 :placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
-    color: var(--text-strong) !important;
+    color: #333 !important;
 }
 
 .btn-default[disabled] {
-    color: var(--black);
+    color: #000;
 }
 
 .btn[disabled] {
@@ -210,7 +200,7 @@ option[disabled] {
 }
 
 .status-warning {
-    color: var(--warning-bright);
+    color: #f5d43c;
 }
 
 .status-bad {
@@ -231,7 +221,7 @@ option[disabled] {
 }
 
 #filters button a {
-    color: var(--warning-bright);
+    color: #f5d43c;
     text-decoration: none;
 }
 
@@ -332,23 +322,23 @@ option[disabled] {
 
 .style-guide-block {
     width: 100%;
-    background: #c2c6ca;
+    background: #ccc;
 }
 
 .additional-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: var(--text-muted);
+    color: #777777;
 }
 
 .additional-input::-moz-placeholder { /* Firefox 19+ */
-    color: var(--text-muted);
+    color: #777777;
 }
 
 .additional-input:-ms-input-placeholder { /* IE 10+ */
-    color: var(--text-muted);
+    color: #777777;
 }
 
 .additional-input:-moz-placeholder { /* Firefox 18- */
-    color: var(--text-muted);
+    color: #777777;
 }
 
 .fade-in {
@@ -395,7 +385,7 @@ option[label^="Retired"] {
     .btn-link {
 
         i {
-            color: var(--text-disabled);
+            color: #4d4d4d;
         }
     }
 
@@ -404,9 +394,9 @@ option[label^="Retired"] {
     }
 
     .alert-success {
-        color: var(--black);
-        background-color: var(--grey-lighter);
-        border-color: var(--black);
+        color: #000;
+        background-color: #eee;
+        border-color: #000;
     }
 
     .table-striped {
@@ -414,11 +404,11 @@ option[label^="Retired"] {
         tbody {
 
             tr:nth-of-type(odd) {
-                background-color: var(--grey-lighter);
+                background-color: #eee;
             }
 
             tr:nth-of-type(even) {
-                background-color: var(--white);
+                background-color: #fff;
             }
         }
     }
@@ -563,7 +553,7 @@ p {
 
 .panel-default {
     margin: 15px;
-    background-color: var(--white);
+    background-color: #fff;
     border: 1px solid var(--grey);
     border-radius: 5px;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
@@ -588,7 +578,7 @@ p {
 
 .form-control {
     font-size: 16px;
-    border-color: var(--input-border);
+    border-color: #6c9cbf;
     line-height: 1.38;
     letter-spacing: .18px;
     width: calc(100% - 5px);
@@ -626,8 +616,8 @@ p {
 
 .well-sm {
     padding: 10px;
-    background-color: var(--surface-subtle);
-    border: 1px solid var(--border-subtle);
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
     margin-right: 0%;
     border-radius: 5px;
 }
@@ -652,7 +642,7 @@ label {
 .repeatable-item {
     padding: 5px;
     background-color: var(--light);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid #e3e3e3;
     border-radius: 4px;
     margin-bottom: 5px;
 }
@@ -666,7 +656,7 @@ label {
 
 [uib-datepicker-popup-wrap] .btn {
     border-radius: 3px;
-    border-color: #c2c6ca;
+    border-color: #ccc;
 }
 
 .pagination > .disabled > span,

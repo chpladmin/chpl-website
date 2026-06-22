@@ -72,7 +72,8 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
 
   const renderRow = (isPrimary = true) => (
     <Box className={isPrimary ? classes.primaryRow : classes.detailsRow}>
-      {[...Array(fieldsPerRow)].map((_, idx) => (
+      {[...Array(fieldsPerRow)].map((_item, idx) => (
+        // eslint-disable-next-line react/no-array-index-key
         <React.Fragment key={idx}>
           {renderField()}
         </React.Fragment>
@@ -82,33 +83,29 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
 
   return (
     <Box>
-      {/* Search controls header */}
       <Box className={classes.controlsHeader}>
         <Skeleton variant="text" width="30%" height={32} />
         <Skeleton variant="text" width="20%" height={32} />
       </Box>
 
-      {/* Loading cards */}
-      {[...Array(cards)].map((_, cardIdx) => (
+      {[...Array(cards)].map((_card, cardIdx) => (
+        // eslint-disable-next-line react/no-array-index-key
         <Card key={cardIdx} className={classes.card}>
           <CardContent className={classes.cardContent}>
             <Box display="flex" gap={theme.spacing(2)}>
               <Box className={classes.contentBody}>
-                {/* Row 1: Primary fields (Developer, Product, Version) */}
                 {renderRow(true)}
 
-                {/* Row 2: Secondary fields (CHPL ID, Cert Date, Status) */}
                 {renderRow(true)}
 
-                {/* Row 3+: Additional details with border */}
-                {rows > 2 && [...Array(rows - 2)].map((_, rowIdx) => (
+                {rows > 2 && [...Array(rows - 2)].map((_row, rowIdx) => (
+                  // eslint-disable-next-line react/no-array-index-key
                   <React.Fragment key={rowIdx}>
                     {renderRow(false)}
                   </React.Fragment>
                 ))}
               </Box>
 
-              {/* Action buttons */}
               <Box className={classes.actionsContainer}>
                 <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
                 <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />

@@ -46,10 +46,6 @@ function ChplLink({
 }) {
   const classes = useStyles();
   const $state = getAngularService('$state');
-  // Derive href/text directly from props instead of mirroring them into state via useEffect.
-  // React docs flag prop->state sync as an anti-pattern (https://react.dev/learn/you-might-not-need-an-effect).
-  // The previous useState+useEffect version rendered twice on mount: first with href='' (empty <a href="">),
-  // then re-rendered with the real URL after the effect fired — causing a brief flicker / broken link on first paint.
   const href = prependLink(initialHref);
   const text = initialText || initialHref;
 

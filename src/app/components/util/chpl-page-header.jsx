@@ -35,7 +35,7 @@ function ChplPageHeader({ text, subtitle }) {
         </Box>
         {subtitle && (
           <Collapse in={expanded}>
-            <Box mt={1}>
+            <Box mt={2}>
               <Typography variant="body2" style={{ color: palette.greyDark }} component="div">
                 {subtitle}
               </Typography>

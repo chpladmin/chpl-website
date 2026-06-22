@@ -107,27 +107,27 @@ function ChplBannedDevelopersSearchView() {
                 A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
               </li>
             </ol>
-            <Typography>
-              Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
-              {' '}
-              <ChplLink
-                href="#/search"
-                text="searching for the product"
-                analytics={{
-                  ...analytics,
-                  event: 'Navigate to searching for the product',
-                }}
-                external={false}
-                router={{ sref: 'search' }}
-                inline
-              />
-              .
-            </Typography>
           </>
         )}
       />
       <ChplPageBody>
         <div id="main-content" tabIndex="-1">
+          <Typography variant="body1" gutterBottom>
+            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product&apos;s details page to confirm its certification status by
+            {' '}
+            <ChplLink
+              href="#/search"
+              text="searching for the product"
+              analytics={{
+                ...analytics,
+                event: 'Navigate to searching for the product',
+              }}
+              external={false}
+              router={{ sref: 'search' }}
+              inline
+            />
+            .
+          </Typography>
           <ChplFilterSearchBar
             placeholder="Search by Developer Name or Code..."
           />

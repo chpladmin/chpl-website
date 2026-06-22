@@ -14,25 +14,12 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
-// Sticky bottom offset in pixels for different breakpoints
-const desktopStickyBottom = {
-  md: 80,
-  lg: 72,
-  xl: 64,
-};
-
 const useStyles = makeStyles({
   pagination: {
     position: 'relative',
-    [theme.breakpoints.up('md')]: {
-      position: 'sticky',
-      bottom: desktopStickyBottom.md,
-    },
-    [theme.breakpoints.up('lg')]: {
-      bottom: desktopStickyBottom.lg,
-    },
     [theme.breakpoints.up('xl')]: {
-      bottom: desktopStickyBottom.xl,
+      position: 'sticky',
+      bottom: 64,
     },
   },
 });
