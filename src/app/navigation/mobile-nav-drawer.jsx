@@ -89,7 +89,7 @@ const useStyles = makeStyles({
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const { hasAnyRole } = useContext(UserContext);
-  const analytics = useAnalyticsContext();
+  const { analytics } = useAnalyticsContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     cms: false,
@@ -110,6 +110,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     eventTrack({
       ...analytics,
       event: 'Go to Home Page',
+      label: 'Home',
       category: 'Navigation',
     });
     onHomeClick();
@@ -120,6 +121,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     eventTrack({
       ...analytics,
       event: 'Go to Search Page',
+      label: 'Search CHPL',
       category: 'Navigation',
     });
     onSearchClick();
@@ -131,6 +133,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     eventTrack({
       ...analytics,
       event: isCurrentlyOpen ? `Collapse ${title}` : `Expand ${title}`,
+      label: title,
       category: 'Navigation',
     });
     setExpandedSections((previous) => ({

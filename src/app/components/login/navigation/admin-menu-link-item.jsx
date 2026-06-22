@@ -43,6 +43,7 @@ function ChplAdminMenuLinkItem({
     eventTrack({
       ...analytics,
       event: `Go to ${text} Page`,
+      label: text,
       category: 'Navigation',
     });
     onClose();

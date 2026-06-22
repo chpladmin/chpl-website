@@ -58,6 +58,7 @@ function ChplAdminMenuSection({
     eventTrack({
       ...analytics,
       event: isOpen ? `Collapse ${title}` : `Expand ${title}`,
+      label: title,
       category: 'Navigation',
     });
     onToggle(section);
