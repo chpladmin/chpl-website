@@ -22,9 +22,10 @@ import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -35,13 +36,6 @@ const useStyles = makeStyles({
     padding: '16px',
     fontWeight: 'bold',
     color: palette.black,
-  },
-  buttonProgress: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
   },
 });
 

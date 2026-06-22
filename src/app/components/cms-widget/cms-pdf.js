@@ -39,7 +39,7 @@ const checkCriterionIsMet = (key, criteriaMet) => {
 
 const getPdfCriteria = (year) => {
   /* eslint-disable object-curly-spacing */
-  if (year === '2025') {
+  if (year === '2025' || year === '2026') {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
@@ -63,7 +63,7 @@ const getPdfCriteria = (year) => {
       {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
     ];
   }
-  return [
+  return [ // prior to 2025
     {key: null, description: 'Demographics'},
     {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
     {key: null, description: 'Implantable Device List'},
@@ -154,7 +154,15 @@ const createPdf = (data) => {
     40,
     bodyStartY + 30,
     doc.splitTextToSize(
-      '* Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
+      'For the specified year, the certification criteria listed reflect any updated requirements where applicable.',
+      775,
+    ),
+  );
+  doc.text(
+    40,
+    bodyStartY + 50,
+    doc.splitTextToSize(
+      'Note: Please check any program-specific requirements to confirm the CMS EHR Certification ID includes all necessary products, such as additional Health IT Modules that may be needed to report objectives and measures under the Promoting Interoperability program.',
       775,
     ),
   );
@@ -162,7 +170,7 @@ const createPdf = (data) => {
   // Add Certification ID to PDF
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text(200, bodyStartY + 70, `CMS EHR Certification ID: ${data.ehrCertificationId}`);
+  doc.text(200, bodyStartY + 100, `CMS EHR Certification ID: ${data.ehrCertificationId}`);
 
   // Add products table to PDF
   doc.setFontSize(10);
@@ -187,7 +195,7 @@ const createPdf = (data) => {
         0: { cellWidth: 175 },
         1: { cellWidth: 'auto' },
       },
-      startY: idx === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
+      startY: idx === 0 ? bodyStartY + 120 : doc.autoTable.previous.finalY + 10,
       margin: 20,
       pageBreak: 'avoid',
       tableWidth: 'auto',

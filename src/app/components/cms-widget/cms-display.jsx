@@ -29,7 +29,7 @@ import createPdf from './cms-pdf';
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplEllipsis, ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext } from 'shared/contexts';
+import { CmsContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -65,6 +65,20 @@ const useStyles = makeStyles({
   cardcontentPadding: {
     padding: '8px',
     maxWidth: '500px',
+    position: 'relative',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '100%',
+    height: '40px', 
+    width: '40px',
+    border: `1px solid ${palette.white}`,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.24)',
+    pointerEvents: 'none',
+    zIndex: 1,
   },
   chipContainer: {
     display: 'flex',
@@ -131,6 +145,7 @@ function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
+  const { cmsDisabledIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
   const [idAnalysis, setIdAnalysis] = useState({});
   const [isDownloading, setIsDownloading] = useState(false);
@@ -193,6 +208,16 @@ function ChplCmsDisplay() {
     $analytics.eventTrack('Remove all Listings', { category: 'CMS Widget' });
     $rootScope.$broadcast('cms.removeAll');
   };
+
+  if (cmsDisabledIsOn) {
+    return (
+      <CardContent>
+        <Typography>
+          Access to the CMS ID Creator has been paused. Please check back periodically for updates.
+        </Typography>
+      </CardContent>
+    );
+  }
 
   if (!listings || listings.length === 0) {
     return (
@@ -319,12 +344,12 @@ function ChplCmsDisplay() {
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
-                  must meet 100% of the Base Criteria.
+                  must meet 100% of the Base Criteria for the specified year.
                 </Typography>
               )}
           </>
         )}
-      { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
+      { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0 || idAnalysis.missingUpToDate?.length > 0)
         && (
           <>
             <div className={classes.missingLists}>
@@ -346,9 +371,24 @@ function ChplCmsDisplay() {
                       {' '}
                       with at least 1 criteria from the following group
                       { idAnalysis.missingOr.length > 1 && 's' }
+                      :
                     </Typography>
                     <List id="missing-or">
                       { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
+                    </List>
+                  </div>
+                )}
+              { idAnalysis.missingUpToDate?.length > 0
+                && (
+                  <div>
+                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>
+                      { (idAnalysis.missingAnd.length > 0 || idAnalysis.missingOr.length > 0) && 'In addition, a product or products' }
+                      { idAnalysis.missingAnd.length === 0 && idAnalysis.missingOr.length === 0 && 'Please select a product or products' }
+                      {' '}
+                      that contain the following up to date criteria:
+                    </Typography>
+                    <List id="missing-up-to-date">
+                      { idAnalysis.missingUpToDate.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
                     </List>
                   </div>
                 )}
@@ -370,7 +410,12 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
-      { (isFetching || isLoading || isDownloading) && <CircularProgress id="cms-id-processing" size={20} /> }
+      { (isFetching || isLoading || isDownloading)
+        && (
+          <div className={classes.loadingOverlay}>
+            <CircularProgress id="cms-id-processing" size={40} />
+          </div>
+        )}
       <Divider />
       <div className={classes.buttonContainer}>
         { !idAnalysis.ehrCertificationId
