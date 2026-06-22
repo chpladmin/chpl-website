@@ -7,7 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 import { eventTrack } from 'services/analytics.service';
-import { CmsContext, useAnalyticsContext } from 'shared/contexts';
+import { CmsContext, FlagContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -24,6 +24,7 @@ function ChplCmsButton({ listing }) {
     isInWidget,
     removeListing,
   } = useContext(CmsContext);
+  const { cmsDisabledIsOn } = useContext(FlagContext);
 
   const handleClick = () => {
     eventTrack({
@@ -39,7 +40,7 @@ function ChplCmsButton({ listing }) {
     }
   };
 
-  if (!canDisplayButton(listing)) {
+  if (!canDisplayButton(listing) || cmsDisabledIsOn) {
     return null;
   }
 
