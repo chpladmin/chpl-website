@@ -21,7 +21,7 @@ import ChplSedTaskView from './sed-task-view';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -61,6 +61,7 @@ function ChplSed({ listing }) {
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
+  const { hti5ErdIsOn } = useContext(FlagContext);
   const { user } = useContext(UserContext);
   const [hasSed, setHasSed] = useState(false);
   const classes = useStyles();
@@ -127,45 +128,83 @@ function ChplSed({ listing }) {
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
           <Card className={classes.tableScrolling}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Certification Criteria</TableCell>
-                  <TableCell>UCD Process</TableCell>
-                  <TableCell>UCD Process Details</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { sed.ucdProcesses
-                  .sort(sortUcdProcesses)
-                  .map((ucd) => (
-                    <TableRow key={ucd.id}>
-                      <TableCell>
-                        <List>
-                          {ucd.criteria
-                            .sort(sortCriteria)
-                            .map((criterion) => (
-                              <ListItem key={criterion.id}>
-                                {criterion.removed && 'Removed | '}
-                                {criterion.number}
-                              </ListItem>
-                            ))}
-                        </List>
-                      </TableCell>
-                      <TableCell>
-                        {ucd.name}
-                      </TableCell>
-                      <TableCell>
-                        {ucd.details}
-                      </TableCell>
+            { hti5ErdIsOn
+              && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Certification Criteria</TableCell>
+                      <TableCell>UCD Process</TableCell>
+                      <TableCell>UCD Process Details</TableCell>
                     </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+                  </TableHead>
+                  <TableBody>
+                    { sed.ucdProcesses
+                      .sort(sortUcdProcesses)
+                      .map((ucd) => (
+                        <TableRow key={ucd.id}>
+                          <TableCell>
+                            <List>
+                              {ucd.criteria
+                                .sort(sortCriteria)
+                                .map((criterion) => (
+                                  <ListItem key={criterion.id}>
+                                    {criterion.removed && 'Removed | '}
+                                    {criterion.number}
+                                  </ListItem>
+                                ))}
+                            </List>
+                          </TableCell>
+                          <TableCell>
+                            {ucd.name}
+                          </TableCell>
+                          <TableCell>
+                            {ucd.details}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              )}
+            { !hti5ErdIsOn
+              && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Certification Criteria</TableCell>
+                      <TableCell>UCD Process</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { sed.ucdProcesses
+                      .sort(sortUcdProcesses)
+                      .map((ucd) => (
+                        <TableRow key={ucd.id}>
+                          <TableCell>
+                            <List>
+                              {ucd.criteria
+                                .sort(sortCriteria)
+                                .map((criterion) => (
+                                  <ListItem key={criterion.id}>
+                                    {criterion.removed && 'Removed | '}
+                                    {criterion.number}
+                                  </ListItem>
+                                ))}
+                            </List>
+                          </TableCell>
+                          <TableCell>
+                            {ucd.name}
+                            (or details? API tbd)
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              )}
           </Card>
         </CardContent>
       </Card>
-      { (listing.edition === null || listing.edition.name === '2015')
+      { (listing.edition === null || listing.edition.name === '2015') && !hti5ErdIsOn
         && (
           <Card>
             <CardHeader title="SED Testing Tasks" />
