@@ -107,23 +107,11 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   };
 
   const handleHomeClick = () => {
-    eventTrack({
-      ...analytics,
-      event: 'Navigate to Home Page',
-      label: 'Home',
-      category: 'Navigation',
-    });
     onHomeClick();
     closeMobileMenu();
   };
 
   const handleSearchClick = () => {
-    eventTrack({
-      ...analytics,
-      event: 'Navigate to Search Page',
-      label: 'Search CHPL',
-      category: 'Navigation',
-    });
     onSearchClick();
     closeMobileMenu();
   };
