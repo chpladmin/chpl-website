@@ -16,7 +16,8 @@ import ChplMobileNavDrawer from './mobile-nav-drawer';
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { FlagContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -106,10 +107,16 @@ function ChplNavigationTop() {
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
+  const { analytics } = useAnalyticsContext();
   const { isProduction } = useContext(FlagContext);
   const classes = useStyles();
 
   const home = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Go to Home Page',
+      category: 'Navigation',
+    });
     $rootScope.$broadcast('ClearResults', {});
     $localStorage.clearResults = true;
     sessionStorage.removeItem('storageKey-listingsPage-hasSearched');
@@ -121,6 +128,11 @@ function ChplNavigationTop() {
   };
 
   const searchChpl = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Go to Search Page',
+      category: 'Navigation',
+    });
     $state.go('search');
   };
 
