@@ -84,7 +84,6 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService) {
 angular.module('chpl.navigation', [
   'chpl.services',
   'chpl.constants',
-  'feature-flags',
   'ui.router',
 ])
   .factory('authInterceptor', authInterceptor)

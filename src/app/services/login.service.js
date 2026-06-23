@@ -6,7 +6,7 @@ import { clearAuthTokens } from 'axios-jwt';
 
   /** @ngInclude */
   /** @ngInject */
-  function authService($injector, $localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
+  function authService($injector, $localStorage, $log, $rootScope, $window, API_KEY) {
     const service = {
       getApiKey,
       getCurrentUser,
@@ -90,6 +90,5 @@ import { clearAuthTokens } from 'axios-jwt';
     function saveRefreshToken(token) {
       $localStorage.refreshToken = token;
     }
-
   }
 }());

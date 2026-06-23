@@ -7,7 +7,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 angular
   .module('chpl.subscriptions', [
     'chpl.services',
-    'feature-flags',
   ])
   .component('chplConfirmSubscriptionBridge', reactToAngularComponent(ChplConfirmSubscription))
   .component('chplUnsubscribeAllBridge', reactToAngularComponent(ChplUnsubscribeAll))

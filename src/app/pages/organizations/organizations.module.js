@@ -8,7 +8,6 @@ angular
   .module('chpl.organizations', [
     'chpl.components',
     'chpl.services',
-    'feature-flags',
     'ui.bootstrap',
     'ui.router',
   ])

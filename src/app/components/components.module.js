@@ -20,7 +20,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 angular
   .module('chpl.components', [
     'chpl.services',
-    'feature-flags',
     'ngCytoscape',
     'ngFileUpload',
     'ngResource',

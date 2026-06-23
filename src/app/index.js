@@ -7,7 +7,6 @@ import 'swagger-ui-react/swagger-ui.css';
 import angular from 'angular';
 import /* angularConfirm from */ 'angular-confirm';
 import /* angularLoadingBar from */ 'angular-loading-bar';
-import 'angular-feature-flags';
 import /* ngAnimate from */ 'angular-animate';
 import /* ngAria from */ 'angular-aria';
 import /* ngIdle from */ 'ng-idle';
@@ -50,7 +49,6 @@ require('./index.constants');
 
 const dependencies = [
   'angular-loading-bar',
-  'feature-flags',
   'ngAnimate',
   'ngAria',
   'ngCytoscape',

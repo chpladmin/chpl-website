@@ -3390,13 +3390,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-feature-flags@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "angular-feature-flags@npm:1.6.1"
-  checksum: 10/6a6c114d75c0e4abcfb32b7e41a8b30f2afd4f4389e64bf0e77382584e1044a09a0e13119f1a74af7ee1747459c9abcc06e4a8edf79ff95c13618d37a7645a47
-  languageName: node
-  linkType: hard
-
 "angular-file-saver@npm:^1.1.3":
   version: 1.1.3
   resolution: "angular-file-saver@npm:1.1.3"
@@ -5166,7 +5159,6 @@ __metadata:
     angular-animate: "npm:^1.8.3"
     angular-aria: "npm:^1.8.3"
     angular-confirm: "npm:1.2.6"
-    angular-feature-flags: "npm:^1.6.1"
     angular-file-saver: "npm:^1.1.3"
     angular-loading-bar: "npm:^0.9.0"
     angular-mocks: "npm:^1.8.3"

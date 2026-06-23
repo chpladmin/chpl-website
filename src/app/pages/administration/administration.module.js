@@ -14,7 +14,6 @@ angular
     'angular-confirm',
     'chpl.constants',
     'chpl.services',
-    'feature-flags',
     'ngIdle',
     'ngFileUpload',
     'ngSanitize',

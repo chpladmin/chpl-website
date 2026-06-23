@@ -6,7 +6,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 export default angular
   .module('chpl.reports', [
     'chpl.services',
-    'feature-flags',
     'ui.bootstrap',
     'ui.router',
   ])
