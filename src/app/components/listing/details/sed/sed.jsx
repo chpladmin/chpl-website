@@ -128,7 +128,7 @@ function ChplSed({ listing }) {
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
           <Card className={classes.tableScrolling}>
-            { hti5ErdIsOn
+            { !hti5ErdIsOn
               && (
                 <Table>
                   <TableHead>
@@ -166,7 +166,7 @@ function ChplSed({ listing }) {
                   </TableBody>
                 </Table>
               )}
-            { !hti5ErdIsOn
+            { hti5ErdIsOn
               && (
                 <Table>
                   <TableHead>
@@ -193,8 +193,7 @@ function ChplSed({ listing }) {
                             </List>
                           </TableCell>
                           <TableCell>
-                            {ucd.name}
-                            (or details? API tbd)
+                            {ucd.value}
                           </TableCell>
                         </TableRow>
                       ))}
