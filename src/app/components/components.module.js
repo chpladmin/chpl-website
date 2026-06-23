@@ -1,9 +1,5 @@
 import IndexWrapper from '../index-wrapper';
 
-import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
-import ChplAnnouncementsFabWrapper from './announcements/announcements-fab-wrapper';
-import ChplAttestationEditWrapper from './attestation/attestation-edit-wrapper';
-import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
 import { ChplConfirmListingsWrapper } from './listing/confirm';
@@ -27,10 +23,6 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
-  .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
-  .component('chplAnnouncementsFabBridge', reactToAngularComponent(ChplAnnouncementsFabWrapper))
-  .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
-  .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
