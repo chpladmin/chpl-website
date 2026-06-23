@@ -42,8 +42,7 @@ function ChplAdminMenuLinkItem({
   const handleClick = () => {
     eventTrack({
       ...analytics,
-      event: `Navigate to ${text} Page`,
-      label: text,
+      event: `Go to ${text} Page`,
       category: 'Navigation',
     });
     onClose();

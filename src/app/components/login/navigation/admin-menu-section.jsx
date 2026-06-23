@@ -58,7 +58,6 @@ function ChplAdminMenuSection({
     eventTrack({
       ...analytics,
       event: isOpen ? `Collapse ${title}` : `Expand ${title}`,
-      label: title,
       category: 'Navigation',
     });
     onToggle(section);
@@ -80,7 +79,7 @@ function ChplAdminMenuSection({
           onClick={(e) => { e.stopPropagation(); handleToggle(); }}
         >
           {isOpen
-            ? <ExpandLessIcon style={{color: 'black'}} />
+            ? <ExpandLessIcon style={{ color: 'black' }} />
             : <ExpandMoreIcon color="primary" />}
         </IconButton>
       </ListItem>

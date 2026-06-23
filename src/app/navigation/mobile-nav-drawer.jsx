@@ -133,7 +133,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     eventTrack({
       ...analytics,
       event: isCurrentlyOpen ? `Collapse ${title}` : `Expand ${title}`,
-      label: title,
       category: 'Navigation',
     });
     setExpandedSections((previous) => ({
