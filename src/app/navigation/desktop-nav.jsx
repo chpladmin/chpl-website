@@ -83,6 +83,9 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     padding: '6px 16px',
     whiteSpace: 'nowrap',
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
     '& span': {
       display: 'flex',
       alignItems: 'center',
@@ -90,6 +93,14 @@ const useStyles = makeStyles({
     },
     '& a': {
       color: `${palette.primary} !important`,
+      textDecoration: 'none !important',
+    },
+  },
+  dropdownItemActive: {
+    '& a': {
+      color: `${palette.black} !important`,
+      fontWeight: 'bold !important',
+      textDecoration: 'none !important',
     },
   },
 });
@@ -110,6 +121,7 @@ function ChplDesktopNav({
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [currentHash, setCurrentHash] = useState(window.location.hash);
   const resourceItems = getResourceItems({
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
@@ -159,11 +171,15 @@ function ChplDesktopNav({
     const deregisterHideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
       setCompareAnchorEl(null);
     });
+    const deregisterStateChange = $rootScope.$on('$locationChangeSuccess', () => {
+      setCurrentHash(window.location.hash);
+    });
     return () => {
       deregisterShowCmsWidget();
       deregisterHideCmsWidget();
       deregisterShowCompareWidget();
       deregisterHideCompareWidget();
+      deregisterStateChange();
     };
   }, [$rootScope]);
 
@@ -372,7 +388,7 @@ function ChplDesktopNav({
               { resourceItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={classes.dropdownItem}
+                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
                   onClick={handleMenuItemClick(item, closeResources)}
                   role="menuitem"
                 >
@@ -383,7 +399,6 @@ function ChplDesktopNav({
                     external={false}
                     router={item.router}
                     icon={getDownloadIcon(item)}
-                    indicateOnHover
                   />
                 </Box>
               ))}
@@ -406,7 +421,7 @@ function ChplDesktopNav({
               { shortcutItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={classes.dropdownItem}
+                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
                   onClick={handleMenuItemClick(item, closeShortcuts)}
                   role="menuitem"
                 >
@@ -416,7 +431,6 @@ function ChplDesktopNav({
                     analytics={getItemAnalytics(item)}
                     external={false}
                     router={item.router}
-                    indicateOnHover
                   />
                 </Box>
               ))}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Collapse,
@@ -55,10 +55,27 @@ const useStyles = makeStyles({
   },
   drawerItem: {
     color: palette.greyDark,
+    '&:hover': {
+      backgroundColor: `${palette.secondary} !important`,
+    },
   },
   drawerNestedItem: {
     color: palette.greyDark,
+    cursor: 'pointer',
     paddingLeft: '32px',
+    '&:hover': {
+      backgroundColor: `${palette.secondary} !important`,
+    },
+    '& a': {
+      textDecoration: 'none !important',
+    },
+  },
+  drawerNestedItemActive: {
+    '& a': {
+      color: `${palette.black} !important`,
+      fontWeight: 'bold !important',
+      textDecoration: 'none !important',
+    },
   },
   drawerDivider: {
     backgroundColor: palette.divider,
@@ -93,6 +110,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const analytics = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentHash, setCurrentHash] = useState(window.location.hash);
   const [expandedSections, setExpandedSections] = useState({
     cms: false,
     compare: false,
@@ -107,6 +125,17 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  const $rootScope = getAngularService('$rootScope');
+
+  useEffect(() => {
+    const deregisterStateChange = $rootScope.$on('$locationChangeSuccess', () => {
+      setCurrentHash(window.location.hash);
+    });
+    return () => {
+      deregisterStateChange();
+    };
+  }, [$rootScope]);
 
   const handleHomeClick = () => {
     onHomeClick();
@@ -221,7 +250,12 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
               <Collapse in={expandedSections[section.key]}>
                 <List disablePadding>
                   { section.items.map((item) => (
-                    <ListItem key={item.key} className={classes.drawerNestedItem} onClick={handleLinkItemClick(item)}>
+                    <ListItem
+                      button
+                      key={item.key}
+                      className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
+                      onClick={handleLinkItemClick(item)}
+                    >
                       <ChplLink
                         href={item.href}
                         text={item.text}
