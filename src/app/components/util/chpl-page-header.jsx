@@ -31,8 +31,7 @@ function ChplPageHeader({ text, subtitle }) {
                 const next = !expanded;
                 setExpanded(next);
                 eventTrack({
-                  event: next ? 'show-page-details' : 'hide-page-details',
-                  category: 'Navigation',
+                  event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
                   label: text,
                 });
               }}
