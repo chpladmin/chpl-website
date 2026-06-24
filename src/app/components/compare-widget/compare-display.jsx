@@ -70,6 +70,10 @@ function ChplCompareDisplay() {
 
   return (
     <CardContent className={classes.cardcontentPadding}>
+      <Typography variant="h2" gutterBottom>
+        Compare Products
+      </Typography>
+      <Divider />
       <div className={classes.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
