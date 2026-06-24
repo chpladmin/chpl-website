@@ -80,50 +80,53 @@ function ChplSed({ listing }) {
 
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
-      <Card>
-        <CardHeader title="SED Summary" />
-        <CardContent>
-          <Box className={classes.dataContainer}>
-            <Box width="100%">
-              <Typography variant="subtitle1">
-                Full Usability Report:
-              </Typography>
-              <Typography>
-                { sedReportFileLocation
-                  && (
-                    <ChplLink
-                      href={sedReportFileLocation}
-                      analytics={{
-                        event: 'Go to Full Usability Report',
-                        category: 'Listing Details',
-                        label: listing.chplProductNumber,
-                        aggregationName: product.name,
-                        group: user?.role,
-                      }}
-                    />
-                  )}
-                {!sedReportFileLocation && 'No report on file'}
-              </Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-              <Typography variant="subtitle1">
-                Description of Intended Users:
-              </Typography>
-              <Typography>
-                {sedIntendedUserDescription ?? 'N/A'}
-              </Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-              <Typography variant="subtitle1">
-                Date SED Testing was Completed:
-              </Typography>
-              <Typography>
-                {getDisplayDateFormat(sedTestingEndDay)}
-              </Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+      { !hti5ErdIsOn
+        && (
+          <Card>
+            <CardHeader title="SED Summary" />
+            <CardContent>
+              <Box className={classes.dataContainer}>
+                <Box width="100%">
+                  <Typography variant="subtitle1">
+                    Full Usability Report:
+                  </Typography>
+                  <Typography>
+                    { sedReportFileLocation
+                      && (
+                        <ChplLink
+                          href={sedReportFileLocation}
+                          analytics={{
+                            event: 'Go to Full Usability Report',
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: product.name,
+                            group: user?.role,
+                          }}
+                        />
+                      )}
+                    {!sedReportFileLocation && 'No report on file'}
+                  </Typography>
+                </Box>
+                <Box className={classes.dataBox}>
+                  <Typography variant="subtitle1">
+                    Description of Intended Users:
+                  </Typography>
+                  <Typography>
+                    {sedIntendedUserDescription ?? 'N/A'}
+                  </Typography>
+                </Box>
+                <Box className={classes.dataBox}>
+                  <Typography variant="subtitle1">
+                    Date SED Testing was Completed:
+                  </Typography>
+                  <Typography>
+                    {getDisplayDateFormat(sedTestingEndDay)}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        )}
       <Card>
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
