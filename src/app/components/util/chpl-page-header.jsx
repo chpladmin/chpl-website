@@ -10,6 +10,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { node, string } from 'prop-types';
 
+import { eventTrack } from 'services/analytics.service';
 import { palette } from 'themes';
 
 function ChplPageHeader({ text, subtitle }) {
@@ -26,7 +27,15 @@ function ChplPageHeader({ text, subtitle }) {
             <Button
               size="small"
               color="primary"
-              onClick={() => setExpanded((prev) => !prev)}
+              onClick={() => {
+                const next = !expanded;
+                setExpanded(next);
+                eventTrack({
+                  event: next ? 'show-page-details' : 'hide-page-details',
+                  category: 'Navigation',
+                  label: text,
+                });
+              }}
               endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
             >
               {expanded ? 'Hide Details' : 'Show Details'}
