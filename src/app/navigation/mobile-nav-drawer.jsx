@@ -26,7 +26,9 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -87,6 +89,8 @@ const useStyles = makeStyles({
 });
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
+  const $state = getAngularService('$state');
+  const analytics = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
@@ -119,6 +123,26 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
       ...previous,
       [section]: !previous[section],
     }));
+  };
+
+  const handleLinkItemClick = (item) => (event) => {
+    closeMobileMenu();
+    if (event.target.tagName === 'A') {
+      return;
+    }
+    const itemAnalytics = {
+      ...analytics,
+      event: item.analyticsEvent,
+      category: item.analyticsCategory ?? 'Navigation',
+    };
+    if (itemAnalytics.event) {
+      eventTrack(itemAnalytics);
+    }
+    if (item.router && item.router.sref) {
+      $state.go(item.router.sref, item.router.options);
+    } else {
+      window.location.href = item.href;
+    }
   };
 
   const widgetSections = [{
@@ -197,7 +221,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
               <Collapse in={expandedSections[section.key]}>
                 <List disablePadding>
                   { section.items.map((item) => (
-                    <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
+                    <ListItem key={item.key} className={classes.drawerNestedItem} onClick={handleLinkItemClick(item)}>
                       <ChplLink
                         href={item.href}
                         text={item.text}

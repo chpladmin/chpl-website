@@ -24,6 +24,7 @@ import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -79,6 +80,7 @@ const useStyles = makeStyles({
     padding: '8px 0',
   },
   dropdownItem: {
+    cursor: 'pointer',
     padding: '6px 16px',
     whiteSpace: 'nowrap',
     '& span': {
@@ -97,6 +99,7 @@ function ChplDesktopNav({
   onSearchClick,
 }) {
   const $rootScope = getAngularService('$rootScope');
+  const $state = getAngularService('$state');
   const analytics = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const cmsButtonRef = useRef(null);
@@ -148,7 +151,7 @@ function ChplDesktopNav({
       if (!anchor) {
         return;
       }
-      setCmsAnchorEl(null); 
+      setCmsAnchorEl(null);
       setResourcesOpen(false);
       setShortcutsOpen(false);
       setCompareAnchorEl(anchor);
@@ -213,7 +216,6 @@ function ChplDesktopNav({
     setCompareAnchorEl(null);
   };
 
-
   const toggleResources = () => {
     setResourcesOpen((prev) => {
       const next = !prev;
@@ -247,6 +249,22 @@ function ChplDesktopNav({
     event: item.analyticsEvent,
     category: item.analyticsCategory ?? 'Navigation',
   });
+
+  const handleMenuItemClick = (item, closeMenu) => (event) => {
+    closeMenu();
+    if (event.target.tagName === 'A') {
+      return;
+    }
+    const itemAnalytics = getItemAnalytics(item);
+    if (itemAnalytics.event) {
+      eventTrack(itemAnalytics);
+    }
+    if (item.router && item.router.sref) {
+      $state.go(item.router.sref, item.router.options);
+    } else {
+      window.location.href = item.href;
+    }
+  };
 
   const getDownloadIcon = (item) => {
     if (!item.showDownloadIcon) {
@@ -355,7 +373,7 @@ function ChplDesktopNav({
                 <Box
                   key={item.key}
                   className={classes.dropdownItem}
-                  onClick={closeResources}
+                  onClick={handleMenuItemClick(item, closeResources)}
                   role="menuitem"
                 >
                   <ChplLink
@@ -389,7 +407,7 @@ function ChplDesktopNav({
                 <Box
                   key={item.key}
                   className={classes.dropdownItem}
-                  onClick={closeShortcuts}
+                  onClick={handleMenuItemClick(item, closeShortcuts)}
                   role="menuitem"
                 >
                   <ChplLink
