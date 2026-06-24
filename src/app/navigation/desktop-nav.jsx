@@ -51,6 +51,7 @@ const useStyles = makeStyles({
   },
   menuPaper: {
     marginTop: '8px',
+    overflowY: 'auto',
   },
   dropdownWrapper: {
     position: 'relative',
@@ -121,6 +122,11 @@ function ChplDesktopNav({
       return null;
     }
     return el;
+  };
+
+  const getPopoverMaxHeight = (anchor) => {
+    const anchorBottom = anchor?.getBoundingClientRect().bottom ?? 72;
+    return `calc(100vh - ${Math.ceil(anchorBottom + 24)}px)`;
   };
 
   useEffect(() => {
@@ -297,6 +303,7 @@ function ChplDesktopNav({
           className: classes.menuPaper,
           style: {
             width: '400px',
+            maxHeight: getPopoverMaxHeight(cmsAnchorEl),
             pointerEvents: 'auto',
           },
         }}
@@ -325,6 +332,7 @@ function ChplDesktopNav({
           className: classes.menuPaper,
           style: {
             width: '400px',
+            maxHeight: getPopoverMaxHeight(compareAnchorEl),
             pointerEvents: 'auto',
           },
         }}
