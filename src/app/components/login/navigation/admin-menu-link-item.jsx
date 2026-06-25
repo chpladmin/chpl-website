@@ -11,9 +11,6 @@ import {
 } from 'prop-types';
 
 import { ChplLink } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { eventTrack } from 'services/analytics.service';
-import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -26,8 +23,8 @@ const useStyles = makeStyles({
       backgroundColor: `${palette.secondary} !important`,
     },
     '& a': {
-      color: `${palette.primary} !important`,
-      textDecoration: 'none !important',
+      color: palette.primary,
+      textDecoration: 'none',
     },
     '& .MuiSvgIcon-root': {
       color: palette.primary,
@@ -35,9 +32,9 @@ const useStyles = makeStyles({
   },
   menuItemActive: {
     '& a': {
-      color: `${palette.black} !important`,
-      fontWeight: 'bold !important',
-      textDecoration: 'none !important',
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
     },
   },
 });
@@ -49,18 +46,14 @@ function ChplAdminMenuLinkItem({
   router = undefined,
   text,
 }) {
-  const $rootScope = getAngularService('$rootScope');
-  const $state = getAngularService('$state');
-  const analytics = useAnalyticsContext();
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   const classes = useStyles();
 
   useEffect(() => {
-    const deregister = $rootScope.$on('$locationChangeSuccess', () => {
-      setCurrentHash(window.location.hash);
-    });
-    return () => deregister();
-  }, [$rootScope]);
+    const handleHashChange = () => setCurrentHash(window.location.hash);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const isActive = href && currentHash === href;
 
@@ -69,14 +62,7 @@ function ChplAdminMenuLinkItem({
     if (event.target.tagName === 'A') {
       return;
     }
-    if (analytics.event) {
-      eventTrack(analytics);
-    }
-    if (router && router.sref) {
-      $state.go(router.sref, router.options);
-    } else {
-      window.location.href = href;
-    }
+    window.location.href = href;
   };
 
   return (
