@@ -12,6 +12,8 @@ import {
 
 import { ChplLink } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -48,6 +50,8 @@ function ChplAdminMenuLinkItem({
   text,
 }) {
   const $rootScope = getAngularService('$rootScope');
+  const $state = getAngularService('$state');
+  const analytics = useAnalyticsContext();
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   const classes = useStyles();
 
@@ -60,8 +64,27 @@ function ChplAdminMenuLinkItem({
 
   const isActive = href && currentHash === href;
 
+  const handleRowClick = (event) => {
+    onClose();
+    if (event.target.tagName === 'A') {
+      return;
+    }
+    if (analytics.event) {
+      eventTrack(analytics);
+    }
+    if (router && router.sref) {
+      $state.go(router.sref, router.options);
+    } else {
+      window.location.href = href;
+    }
+  };
+
   return (
-    <ListItem className={`${classes.menuItem}${isActive ? ` ${classes.menuItemActive}` : ''}`} onClick={onClose}>
+    <ListItem
+      button
+      className={`${classes.menuItem}${isActive ? ` ${classes.menuItemActive}` : ''}`}
+      onClick={handleRowClick}
+    >
       <ChplLink
         href={href}
         text={text}
