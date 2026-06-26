@@ -16,7 +16,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useSnackbar } from 'notistack';
 import { bool, string } from 'prop-types';
@@ -204,7 +204,7 @@ function ChplComplaintsView(props) {
           color="secondary"
           variant="contained"
           id="download-results"
-          endIcon={<GetAppIcon />}
+          endIcon={<CloudDownloadOutlinedIcon />}
           size="small"
         >
           Download all complaints
@@ -246,7 +246,7 @@ function ChplComplaintsView(props) {
             color="secondary"
             variant="contained"
             id="download-results"
-            endIcon={<GetAppIcon />}
+            endIcon={<CloudDownloadOutlinedIcon />}
             size="small"
           >
             Download all complaints
@@ -260,7 +260,7 @@ function ChplComplaintsView(props) {
         color="secondary"
         variant="contained"
         id="download-results"
-        endIcon={<GetAppIcon />}
+        endIcon={<CloudDownloadOutlinedIcon />}
         size="small"
       >
         Download all complaints

@@ -10,6 +10,7 @@ import {
 import { arrayOf, string } from 'prop-types';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckIcon from '@material-ui/icons/Check';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
 
@@ -200,6 +201,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
           variant="contained"
           size="small"
           id="download-listings"
+          endIcon={<CloudDownloadOutlinedIcon />}
         >
           Download
           {' '}
