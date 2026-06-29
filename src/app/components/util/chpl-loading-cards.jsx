@@ -65,8 +65,8 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
 
   const renderField = () => (
     <Box className={classes.field}>
-      <Skeleton variant="text" width="45%" height={14} />
-      <Skeleton variant="text" width="70%" height={20} />
+      <Skeleton variant="text" width="45%" height="14px" />
+      <Skeleton variant="text" width="70%" height="20px" />
     </Box>
   );
 
@@ -84,8 +84,8 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
   return (
     <Box>
       <Box className={classes.controlsHeader}>
-        <Skeleton variant="text" width="30%" height={32} />
-        <Skeleton variant="text" width="20%" height={32} />
+        <Skeleton variant="text" width="30%" height="32px" />
+        <Skeleton variant="text" width="20%" height="32px" />
       </Box>
 
       {[...Array(cards)].map((_card, cardIdx) => (
@@ -94,9 +94,9 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
           <CardContent className={classes.cardContent}>
             <Box display="flex" gap={theme.spacing(2)}>
               <Box className={classes.contentBody}>
-                {renderRow(true)}
+                {renderRow()}
 
-                {renderRow(true)}
+                {renderRow()}
 
                 {rows > 2 && [...Array(rows - 2)].map((_row, rowIdx) => (
                   // eslint-disable-next-line react/no-array-index-key
@@ -107,8 +107,8 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
               </Box>
 
               <Box className={classes.actionsContainer}>
-                <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
-                <Skeleton variant="rect" width={120} height={36} style={{ borderRadius: 4 }} />
+                <Skeleton variant="rect" width="120px" height="36px" style={{ borderRadius: '4px' }} />
+                <Skeleton variant="rect" width="120px" height="36px" style={{ borderRadius: '4px' }} />
               </Box>
             </Box>
           </CardContent>

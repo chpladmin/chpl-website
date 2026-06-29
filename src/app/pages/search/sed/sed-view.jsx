@@ -126,9 +126,7 @@ function ChplSedSearchView() {
       <ChplPageBody>
         <div id="main-content" tabIndex="-1">
           <ChplFilterSearchBar />
-          <div>
-            <ChplFilterChips />
-          </div>
+          <ChplFilterChips />
           { isLoading && (<ChplLoadingCards />)}
           { !isLoading
           && (

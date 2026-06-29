@@ -142,9 +142,7 @@ function ChplCorrectiveActionSearchView() {
         && (
           <>
             <ChplFilterSearchBar />
-            <div>
-              <ChplFilterChips />
-            </div>
+            <ChplFilterChips />
             { isLoading && (<ChplLoadingCards />)}
             { !isLoading
               && (

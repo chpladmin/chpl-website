@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     position: 'relative',
     [theme.breakpoints.up('xl')]: {
       position: 'sticky',
-      bottom: 64,
+      bottom: '64px',
     },
   },
 });

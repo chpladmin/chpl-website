@@ -27,6 +27,7 @@ const useStyles = makeStyles({
     margin: '0',
   },
   buttonGroup: {
+    border: `1px solid ${palette.primary}`,
     width: 'auto',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -226,7 +227,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
 
   return (
     <>
-      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
+      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined">
         <Button
           className={classes.downloadButton}
           onClick={handleDownload}
