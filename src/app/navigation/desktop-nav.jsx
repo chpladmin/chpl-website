@@ -92,15 +92,15 @@ const useStyles = makeStyles({
       gap: '8px',
     },
     '& a': {
-      color: `${palette.primary} !important`,
-      textDecoration: 'none !important',
+      color: palette.primary,
+      textDecoration: 'none',
     },
   },
   dropdownItemActive: {
     '& a': {
-      color: `${palette.black} !important`,
-      fontWeight: 'bold !important',
-      textDecoration: 'none !important',
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
     },
   },
 });
@@ -110,7 +110,6 @@ function ChplDesktopNav({
   onSearchClick,
 }) {
   const $rootScope = getAngularService('$rootScope');
-  const $state = getAngularService('$state');
   const analytics = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const cmsButtonRef = useRef(null);
@@ -171,17 +170,19 @@ function ChplDesktopNav({
     const deregisterHideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
       setCompareAnchorEl(null);
     });
-    const deregisterStateChange = $rootScope.$on('$locationChangeSuccess', () => {
-      setCurrentHash(window.location.hash);
-    });
     return () => {
       deregisterShowCmsWidget();
       deregisterHideCmsWidget();
       deregisterShowCompareWidget();
       deregisterHideCompareWidget();
-      deregisterStateChange();
     };
   }, [$rootScope]);
+
+  useEffect(() => {
+    const handleHashChange = () => setCurrentHash(window.location.hash);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const closeAllNavOverlays = () => {
     setCmsAnchorEl(null);
@@ -275,11 +276,7 @@ function ChplDesktopNav({
     if (itemAnalytics.event) {
       eventTrack(itemAnalytics);
     }
-    if (item.router && item.router.sref) {
-      $state.go(item.router.sref, item.router.options);
-    } else {
-      window.location.href = item.href;
-    }
+    window.location.href = item.href;
   };
 
   const getDownloadIcon = (item) => {

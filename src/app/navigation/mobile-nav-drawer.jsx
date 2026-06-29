@@ -26,7 +26,6 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
@@ -67,14 +66,14 @@ const useStyles = makeStyles({
       backgroundColor: `${palette.secondary} !important`,
     },
     '& a': {
-      textDecoration: 'none !important',
+      textDecoration: 'none',
     },
   },
   drawerNestedItemActive: {
     '& a': {
-      color: `${palette.black} !important`,
-      fontWeight: 'bold !important',
-      textDecoration: 'none !important',
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
     },
   },
   drawerDivider: {
@@ -106,7 +105,6 @@ const useStyles = makeStyles({
 });
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
-  const $state = getAngularService('$state');
   const analytics = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -126,16 +124,11 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     setMobileMenuOpen(false);
   };
 
-  const $rootScope = getAngularService('$rootScope');
-
   useEffect(() => {
-    const deregisterStateChange = $rootScope.$on('$locationChangeSuccess', () => {
-      setCurrentHash(window.location.hash);
-    });
-    return () => {
-      deregisterStateChange();
-    };
-  }, [$rootScope]);
+    const handleHashChange = () => setCurrentHash(window.location.hash);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const handleHomeClick = () => {
     onHomeClick();
@@ -167,11 +160,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     if (itemAnalytics.event) {
       eventTrack(itemAnalytics);
     }
-    if (item.router && item.router.sref) {
-      $state.go(item.router.sref, item.router.options);
-    } else {
-      window.location.href = item.href;
-    }
+    window.location.href = item.href;
   };
 
   const widgetSections = [{
