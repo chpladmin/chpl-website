@@ -17,7 +17,7 @@ import { theme } from 'themes';
 const useStyles = makeStyles({
   pagination: {
     position: 'relative',
-    [theme.breakpoints.up('xl')]: {
+    [theme.breakpoints.up('lg')]: {
       position: 'sticky',
       bottom: '64px',
     },

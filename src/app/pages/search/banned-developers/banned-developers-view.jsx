@@ -131,9 +131,7 @@ function ChplBannedDevelopersSearchView() {
           <ChplFilterSearchBar
             placeholder="Search by Developer Name or Code..."
           />
-          <div>
-            <ChplFilterChips />
-          </div>
+          <ChplFilterChips />
           {isLoading && (<ChplLoadingCards />)}
           {!isLoading
             && (
