@@ -194,9 +194,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
         placeholder="Search by Developer..."
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
       />
-      <div>
-        <ChplFilterChips />
-      </div>
+      <ChplFilterChips />
       { isLoading
         && (
           <div className={classes.noResultsContainer}>

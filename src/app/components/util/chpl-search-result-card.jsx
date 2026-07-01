@@ -195,7 +195,7 @@ function ChplSearchResultCard({
                 <Box
                   key={field.label}
                   className={classes.field}
-                  style={{ flex: '1 1 200px', ...field.style }}
+                  style={{ ...field.style, flex: field.style?.flex ?? '1 1 200px' }}
                 >
                   <Box className={classes.fieldLabelRow}>
                     <Typography className={classes.fieldLabel}>
@@ -237,8 +237,6 @@ ChplSearchResultCard.propTypes = {
         label: string.isRequired,
         value: oneOfType([string, number, node]),
         fallback: string,
-        xs: number,
-        sm: number,
         style: shape({}),
         iconButton: node,
       }),
