@@ -124,116 +124,114 @@ function ChplSedSearchView() {
         )}
       />
       <ChplPageBody>
-        <div id="main-content" tabIndex="-1">
-          <ChplFilterSearchBar />
-          <ChplFilterChips />
-          { isLoading && (<ChplLoadingCards />)}
-          { !isLoading
-          && (
-            <>
-              <ChplSearchResultControls
-                recordCount={recordCount}
-                pageStart={pageStart}
-                pageEnd={pageEnd}
-              >
-                <ChplSortControls
-                  sortOptions={sortOptions}
-                  orderBy={orderBy}
-                  order={sortDescending ? 'desc' : 'asc'}
-                  onSort={handleSort}
+        <ChplFilterSearchBar />
+        <ChplFilterChips />
+        { isLoading && (<ChplLoadingCards />)}
+        { !isLoading
+        && (
+          <>
+            <ChplSearchResultControls
+              recordCount={recordCount}
+              pageStart={pageStart}
+              pageEnd={pageEnd}
+            >
+              <ChplSortControls
+                sortOptions={sortOptions}
+                orderBy={orderBy}
+                order={sortDescending ? 'desc' : 'asc'}
+                onSort={handleSort}
+              />
+              <ChplDownloadListings
+                listings={listings}
+              />
+            </ChplSearchResultControls>
+            { listings.length > 0
+            && (
+              <>
+                <Box>
+                  { listings.map((item) => (
+                    <ChplSearchResultCard
+                      key={item.id}
+                      fieldGroups={[
+                        [
+                          {
+                            label: 'Developer',
+                            value: (
+                              <ChplLink
+                                href={`#/organizations/developers/${item.developer.id}`}
+                                text={item.developer.name}
+                                analytics={{
+                                  ...analytics,
+                                  event: 'Navigate to Developer Page',
+                                  label: item.developer.name,
+                                }}
+                                external={false}
+                                router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                              />
+                            ),
+                          },
+                          {
+                            label: 'Product',
+                            value: item.product.name,
+                          },
+                          {
+                            label: 'Version',
+                            value: item.version.name,
+                          },
+                        ],
+                        [
+                          {
+                            label: 'CHPL ID',
+                            value: (
+                              <ChplLink
+                                href={`#/listing/${item.id}`}
+                                text={item.chplProductNumber}
+                                analytics={{
+                                  ...analytics,
+                                  event: 'Navigate to Listing Details Page',
+                                  label: item.chplProductNumber,
+                                  aggregationName: item.product.name,
+                                }}
+                                external={false}
+                                router={{ sref: 'listing', options: { id: item.id } }}
+                              />
+                            ),
+                          },
+                          {
+                            label: 'Certification Date',
+                            value: getDisplayDateFormat(item.certificationDate),
+                          },
+                          {
+                            label: 'Status',
+                            value: getStatusIcon(item.certificationStatus),
+                            iconButton: <ChplCertificationStatusLegend />,
+                          },
+                        ],
+                      ]}
+                      actions={(
+                        <ChplActionButton
+                          listing={item}
+                        >
+                          <ChplSedPopup
+                            id={item.id}
+                          />
+                        </ChplActionButton>
+                      )}
+                    />
+                  ))}
+                </Box>
+                <ChplPagination
+                  count={recordCount}
+                  page={pageNumber}
+                  rowsPerPage={pageSize}
+                  rowsPerPageOptions={[25, 50, 100]}
+                  setPage={setPageNumber}
+                  setRowsPerPage={setPageSize}
                 />
-                <ChplDownloadListings
-                  listings={listings}
-                />
-              </ChplSearchResultControls>
-              { listings.length > 0
-              && (
-                <>
-                  <Box>
-                    { listings.map((item) => (
-                      <ChplSearchResultCard
-                        key={item.id}
-                        fieldGroups={[
-                          [
-                            {
-                              label: 'Developer',
-                              value: (
-                                <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Developer Page',
-                                    label: item.developer.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                />
-                              ),
-                            },
-                            {
-                              label: 'Product',
-                              value: item.product.name,
-                            },
-                            {
-                              label: 'Version',
-                              value: item.version.name,
-                            },
-                          ],
-                          [
-                            {
-                              label: 'CHPL ID',
-                              value: (
-                                <ChplLink
-                                  href={`#/listing/${item.id}`}
-                                  text={item.chplProductNumber}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Listing Details Page',
-                                    label: item.chplProductNumber,
-                                    aggregationName: item.product.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'listing', options: { id: item.id } }}
-                                />
-                              ),
-                            },
-                            {
-                              label: 'Certification Date',
-                              value: getDisplayDateFormat(item.certificationDate),
-                            },
-                            {
-                              label: 'Status',
-                              value: getStatusIcon(item.certificationStatus),
-                              iconButton: <ChplCertificationStatusLegend />,
-                            },
-                          ],
-                        ]}
-                        actions={(
-                          <ChplActionButton
-                            listing={item}
-                          >
-                            <ChplSedPopup
-                              id={item.id}
-                            />
-                          </ChplActionButton>
-                        )}
-                      />
-                    ))}
-                  </Box>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                  />
-                </>
-              )}
-            </>
-          )}
-        </div>
+              </>
+            )}
+          </>
+        )}
       </ChplPageBody>
     </>
   );

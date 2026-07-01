@@ -138,7 +138,6 @@ function ChplListingsView() {
         subtitle="Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated listings."
       />
       <ChplPageBody>
-        <div id="main-content" tabIndex="-1" />
         <ChplFilterSearchBar />
         <ChplFilterChips />
         { isLoading && (<ChplLoadingCards />)}

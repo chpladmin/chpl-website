@@ -127,80 +127,78 @@ function ChplBannedDevelopersSearchView() {
         )}
       />
       <ChplPageBody>
-        <div id="main-content" tabIndex="-1">
-          <ChplFilterSearchBar
-            placeholder="Search by Developer Name or Code..."
-          />
-          <ChplFilterChips />
-          {isLoading && (<ChplLoadingCards />)}
-          {!isLoading
-            && (
-              <>
-                <ChplSearchResultControls
-                  recordCount={recordCount}
-                  pageStart={pageStart}
-                  pageEnd={pageEnd}
-                >
-                  <ChplSortControls
-                    sortOptions={sortOptions}
-                    orderBy={orderBy}
-                    order={sortDescending ? 'desc' : 'asc'}
-                    onSort={handleSort}
-                  />
-                </ChplSearchResultControls>
-                {developers.length > 0
-                  && (
-                    <>
-                      <Box>
-                        {developers.map((item) => (
-                          <ChplSearchResultCard
-                            key={item.id}
-                            cardTitle="Developer"
-                            cardTitleValue={(
-                              <ChplLink
-                                href={`#/organizations/developers/${item.id}`}
-                                text={item.name}
-                                analytics={{
-                                  ...analytics,
-                                  event: 'Navigate to Developer Page',
-                                  label: item.name,
-                                }}
-                                external={false}
-                                router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                              />
-                            )}
-                            fieldGroups={[
-                              [
-                                {
-                                  label: 'Decertification Date',
-                                  value: item.decertificationDate,
-                                  xs: 12,
-                                  sm: 6,
-                                },
-                                {
-                                  label: 'ONC-ACB',
-                                  value: item.oncAcbDisplay,
-                                  xs: 12,
-                                  sm: 6,
-                                },
-                              ],
-                            ]}
-                          />
-                        ))}
-                      </Box>
-                      <ChplPagination
-                        count={recordCount}
-                        page={pageNumber}
-                        rowsPerPage={pageSize}
-                        rowsPerPageOptions={[25, 50, 100]}
-                        setPage={setPageNumber}
-                        setRowsPerPage={setPageSize}
-                      />
-                    </>
-                  )}
-              </>
-            )}
-        </div>
+        <ChplFilterSearchBar
+          placeholder="Search by Developer Name or Code..."
+        />
+        <ChplFilterChips />
+        {isLoading && (<ChplLoadingCards />)}
+        {!isLoading
+          && (
+            <>
+              <ChplSearchResultControls
+                recordCount={recordCount}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+              >
+                <ChplSortControls
+                  sortOptions={sortOptions}
+                  orderBy={orderBy}
+                  order={sortDescending ? 'desc' : 'asc'}
+                  onSort={handleSort}
+                />
+              </ChplSearchResultControls>
+              {developers.length > 0
+                && (
+                  <>
+                    <Box>
+                      {developers.map((item) => (
+                        <ChplSearchResultCard
+                          key={item.id}
+                          cardTitle="Developer"
+                          cardTitleValue={(
+                            <ChplLink
+                              href={`#/organizations/developers/${item.id}`}
+                              text={item.name}
+                              analytics={{
+                                ...analytics,
+                                event: 'Navigate to Developer Page',
+                                label: item.name,
+                              }}
+                              external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                            />
+                          )}
+                          fieldGroups={[
+                            [
+                              {
+                                label: 'Decertification Date',
+                                value: item.decertificationDate,
+                                xs: 12,
+                                sm: 6,
+                              },
+                              {
+                                label: 'ONC-ACB',
+                                value: item.oncAcbDisplay,
+                                xs: 12,
+                                sm: 6,
+                              },
+                            ],
+                          ]}
+                        />
+                      ))}
+                    </Box>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                    />
+                  </>
+                )}
+            </>
+          )}
       </ChplPageBody>
     </>
   );

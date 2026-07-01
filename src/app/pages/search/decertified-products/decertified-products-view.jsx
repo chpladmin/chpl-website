@@ -124,7 +124,6 @@ function ChplDecertifiedProductsSearchView() {
         )}
       />
       <ChplPageBody>
-        <div id="main-content" tabIndex="-1" />
         <ChplFilterSearchBar />
         <ChplFilterChips />
         { isLoading && (<ChplLoadingCards />)}

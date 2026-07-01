@@ -6,6 +6,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  MenuItem,
+  MenuList,
   Paper,
   Table,
   TableBody,
@@ -210,11 +212,11 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
                   <div className={classes.noResultsContainer}>
                     No results were found, due to invalid parameters:
                   </div>
-                  <ul>
+                  <MenuList>
                     {error.response.data.errorMessages?.map((msg) => (
-                      <li key={msg}>{msg}</li>
+                      <MenuItem key={msg}>{msg}</MenuItem>
                     ))}
-                  </ul>
+                  </MenuList>
                 </>
               )}
             { isSuccess

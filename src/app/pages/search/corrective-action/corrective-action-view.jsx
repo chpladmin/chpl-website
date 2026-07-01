@@ -113,31 +113,29 @@ function ChplCorrectiveActionSearchView() {
         )}
       />
       <ChplPageBody>
-        <div id="main-content" tabIndex="-1">
-          { !isLoading && !directReviewsAvailable
-          && (
-            <>
-              <Typography variant="body1" gutterBottom>
-                This information is temporarily unavailable. Please check back later.
-              </Typography>
-              <Typography variant="body1">
-                Surveillance and Direct Review information can be downloaded from the
-                {' '}
-                <ChplLink
-                  href="#/resources/download"
-                  text="Download the CHPL"
-                  analytics={{
-                    ...analytics,
-                    event: 'Navigate to Download the CHPL',
-                  }}
-                  external={false}
-                  router={{ sref: 'resources.download' }}
-                  inline
-                />
-              </Typography>
-            </>
-          )}
-        </div>
+        { !isLoading && !directReviewsAvailable
+        && (
+          <>
+            <Typography variant="body1" gutterBottom>
+              This information is temporarily unavailable. Please check back later.
+            </Typography>
+            <Typography variant="body1">
+              Surveillance and Direct Review information can be downloaded from the
+              {' '}
+              <ChplLink
+                href="#/resources/download"
+                text="Download the CHPL"
+                analytics={{
+                  ...analytics,
+                  event: 'Navigate to Download the CHPL',
+                }}
+                external={false}
+                router={{ sref: 'resources.download' }}
+                inline
+              />
+            </Typography>
+          </>
+        )}
         { directReviewsAvailable
         && (
           <>

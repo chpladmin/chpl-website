@@ -22,7 +22,9 @@ function ChplPageBody({ children, maxWidth = 'lg' }) {
   return (
     <Box className={classes.container}>
       <Container maxWidth={maxWidth}>
-        {children}
+        <div id="main-content" tabIndex="-1">
+          {children}
+        </div>
       </Container>
     </Box>
   );

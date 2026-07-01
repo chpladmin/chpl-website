@@ -170,158 +170,156 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
         )}
       />
       <ChplPageBody>
-        <div id="main-content" tabIndex="-1">
-          <ChplFilterSearchBar />
-          <ChplFilterChips />
-          { isLoading && (<ChplLoadingCards />)}
-          { !isLoading
-          && (
-            <>
-              <ChplSearchResultControls
-                recordCount={recordCount}
-                pageStart={pageStart}
-                pageEnd={pageEnd}
-              >
-                <ChplSortControls
-                  sortOptions={sortOptions}
-                  orderBy={orderBy}
-                  order={sortDescending ? 'desc' : 'asc'}
-                  onSort={handleSort}
-                />
-                <ChplDownloadListings
-                  listings={listings}
-                  toggled={toggledCsvDefaults}
-                />
-              </ChplSearchResultControls>
-              { listings.length > 0
-                && (
-                  <>
-                    <Box>
-                      { listings.map((item) => (
-                        <ChplSearchResultCard
-                          key={item.id}
-                          fieldGroups={[
-                            [
-                              {
-                                label: 'Developer',
-                                value: (
+        <ChplFilterSearchBar />
+        <ChplFilterChips />
+        { isLoading && (<ChplLoadingCards />)}
+        { !isLoading
+        && (
+          <>
+            <ChplSearchResultControls
+              recordCount={recordCount}
+              pageStart={pageStart}
+              pageEnd={pageEnd}
+            >
+              <ChplSortControls
+                sortOptions={sortOptions}
+                orderBy={orderBy}
+                order={sortDescending ? 'desc' : 'asc'}
+                onSort={handleSort}
+              />
+              <ChplDownloadListings
+                listings={listings}
+                toggled={toggledCsvDefaults}
+              />
+            </ChplSearchResultControls>
+            { listings.length > 0
+              && (
+                <>
+                  <Box>
+                    { listings.map((item) => (
+                      <ChplSearchResultCard
+                        key={item.id}
+                        fieldGroups={[
+                          [
+                            {
+                              label: 'Developer',
+                              value: (
+                                <ChplLink
+                                  href={`#/organizations/developers/${item.developer.id}`}
+                                  text={item.developer.name}
+                                  analytics={{
+                                    ...analytics,
+                                    event: 'Navigate to Developer Page',
+                                    label: item.developer.name,
+                                  }}
+                                  external={false}
+                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                />
+                              ),
+                            },
+                            {
+                              label: 'Product',
+                              value: item.product.name,
+                            },
+                            {
+                              label: 'Version',
+                              value: item.version.name,
+                            },
+                          ],
+                          [
+                            {
+                              label: 'CHPL ID',
+                              value: (
+                                <ChplLink
+                                  href={`#/listing/${item.id}`}
+                                  text={item.chplProductNumber}
+                                  analytics={{
+                                    ...analytics,
+                                    event: 'Navigate to Listing Details Page',
+                                    label: item.chplProductNumber,
+                                    aggregationName: item.product.name,
+                                  }}
+                                  external={false}
+                                  router={{ sref: 'listing', options: { id: item.id } }}
+                                />
+                              ),
+                            },
+                            {
+                              label: 'Certification Date',
+                              value: getDisplayDateFormat(item.certificationDate),
+                            },
+                            {
+                              label: 'Status',
+                              value: getStatusIcon(item.certificationStatus),
+                              iconButton: <ChplCertificationStatusLegend />,
+                            },
+                          ],
+                          [
+                            {
+                              label: 'API Documentation',
+                              value: item.apiDocumentationNode,
+                              xs: 6,
+                              sm: 3,
+                            },
+                            {
+                              label: 'Service Base URL List',
+                              value: item.serviceBaseUrlListValue
+                                ? (
+                                  <dl>
+                                    <dt>170.315 (g)(10)</dt>
+                                    <dd>
+                                      <ChplLink
+                                        href={item.serviceBaseUrlListValue}
+                                        analytics={{
+                                          ...analytics,
+                                          event: 'Go to Service Base URL List',
+                                          label: item.chplProductNumber,
+                                          aggregationName: item.product.name,
+                                        }}
+                                      />
+                                    </dd>
+                                  </dl>
+                                )
+                                : 'N/A',
+                              xs: 4,
+                              sm: 4,
+                            },
+                            {
+                              label: 'Mandatory Disclosures URL',
+                              value: item.mandatoryDisclosures
+                                ? (
                                   <ChplLink
-                                    href={`#/organizations/developers/${item.developer.id}`}
-                                    text={item.developer.name}
+                                    href={item.mandatoryDisclosures}
                                     analytics={{
                                       ...analytics,
-                                      event: 'Navigate to Developer Page',
-                                      label: item.developer.name,
-                                    }}
-                                    external={false}
-                                    router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                  />
-                                ),
-                              },
-                              {
-                                label: 'Product',
-                                value: item.product.name,
-                              },
-                              {
-                                label: 'Version',
-                                value: item.version.name,
-                              },
-                            ],
-                            [
-                              {
-                                label: 'CHPL ID',
-                                value: (
-                                  <ChplLink
-                                    href={`#/listing/${item.id}`}
-                                    text={item.chplProductNumber}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Navigate to Listing Details Page',
+                                      event: 'Go to Mandatory Disclosures',
                                       label: item.chplProductNumber,
                                       aggregationName: item.product.name,
                                     }}
-                                    external={false}
-                                    router={{ sref: 'listing', options: { id: item.id } }}
                                   />
-                                ),
-                              },
-                              {
-                                label: 'Certification Date',
-                                value: getDisplayDateFormat(item.certificationDate),
-                              },
-                              {
-                                label: 'Status',
-                                value: getStatusIcon(item.certificationStatus),
-                                iconButton: <ChplCertificationStatusLegend />,
-                              },
-                            ],
-                            [
-                              {
-                                label: 'API Documentation',
-                                value: item.apiDocumentationNode,
-                                xs: 6,
-                                sm: 3,
-                              },
-                              {
-                                label: 'Service Base URL List',
-                                value: item.serviceBaseUrlListValue
-                                  ? (
-                                    <dl>
-                                      <dt>170.315 (g)(10)</dt>
-                                      <dd>
-                                        <ChplLink
-                                          href={item.serviceBaseUrlListValue}
-                                          analytics={{
-                                            ...analytics,
-                                            event: 'Go to Service Base URL List',
-                                            label: item.chplProductNumber,
-                                            aggregationName: item.product.name,
-                                          }}
-                                        />
-                                      </dd>
-                                    </dl>
-                                  )
-                                  : 'N/A',
-                                xs: 4,
-                                sm: 4,
-                              },
-                              {
-                                label: 'Mandatory Disclosures URL',
-                                value: item.mandatoryDisclosures
-                                  ? (
-                                    <ChplLink
-                                      href={item.mandatoryDisclosures}
-                                      analytics={{
-                                        ...analytics,
-                                        event: 'Go to Mandatory Disclosures',
-                                        label: item.chplProductNumber,
-                                        aggregationName: item.product.name,
-                                      }}
-                                    />
-                                  )
-                                  : 'N/A',
-                                xs: 4,
-                                sm: 4,
-                              },
-                            ],
-                          ]}
-                          actions={<ChplActionButton listing={item} />}
-                        />
-                      ))}
-                    </Box>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
-            </>
-          )}
-        </div>
+                                )
+                                : 'N/A',
+                              xs: 4,
+                              sm: 4,
+                            },
+                          ],
+                        ]}
+                        actions={<ChplActionButton listing={item} />}
+                      />
+                    ))}
+                  </Box>
+                  <ChplPagination
+                    count={recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                  />
+                </>
+              )}
+          </>
+        )}
       </ChplPageBody>
     </>
   );
