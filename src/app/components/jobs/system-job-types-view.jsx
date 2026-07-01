@@ -88,10 +88,10 @@ function ChplSystemJobTypesView(props) {
               fieldGroups={[
                 [
                   {
-                    label: 'Job Name', value: item.name, xs: 12, sm: 6,
+                    label: 'Job Name', value: item.name,
                   },
                   {
-                    label: 'Description', value: item.description, xs: 12, sm: 5,
+                    label: 'Description', value: item.description,
                   },
                 ],
               ]}

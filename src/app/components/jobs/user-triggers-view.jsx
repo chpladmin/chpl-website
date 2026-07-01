@@ -106,11 +106,11 @@ function ChplUserTriggersView({
                   { triggers.map((item) => {
                     const fieldGroups = [
                       [
-                        { label: 'Email', value: item.email, xs: 12, sm: 6 },
-                        { label: 'Schedule', value: item.schedule, xs: 12, sm: 6 },
+                        { label: 'Email', value: item.email },
+                        { label: 'Schedule', value: item.schedule },
                       ],
                       [
-                        { label: 'Type', value: item.jobName, xs: 12, sm: item.acbNames ? 6 : 12 },
+                        { label: 'Type', value: item.jobName },
                       ],
                     ];
                     
@@ -118,8 +118,6 @@ function ChplUserTriggersView({
                       fieldGroups[1].push({
                         label: 'ONC-ACB',
                         value: item.acbNames,
-                        xs: 12,
-                        sm: 6,
                       });
                     }
                     

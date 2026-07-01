@@ -210,8 +210,6 @@ function ChplDecisionSupportInterventionsSearchView() {
                                   />
                                 )
                                 : 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
-                              xs: 12,
-                              sm: 12,
                             },
                           ],
                         ]}

@@ -258,8 +258,6 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                             {
                               label: 'API Documentation',
                               value: item.apiDocumentationNode,
-                              xs: 6,
-                              sm: 3,
                             },
                             {
                               label: 'Service Base URL List',
@@ -281,8 +279,6 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                   </dl>
                                 )
                                 : 'N/A',
-                              xs: 4,
-                              sm: 4,
                             },
                             {
                               label: 'Mandatory Disclosures URL',
@@ -299,8 +295,6 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                                   />
                                 )
                                 : 'N/A',
-                              xs: 4,
-                              sm: 4,
                             },
                           ],
                         ]}

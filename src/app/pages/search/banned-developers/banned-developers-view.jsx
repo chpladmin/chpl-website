@@ -173,14 +173,10 @@ function ChplBannedDevelopersSearchView() {
                               {
                                 label: 'Decertification Date',
                                 value: item.decertificationDate,
-                                xs: 12,
-                                sm: 6,
                               },
                               {
                                 label: 'ONC-ACB',
                                 value: item.oncAcbDisplay,
-                                xs: 12,
-                                sm: 6,
                               },
                             ],
                           ]}

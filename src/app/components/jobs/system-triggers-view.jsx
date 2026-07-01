@@ -156,8 +156,8 @@ function ChplSystemTriggersView({
                         cardTitleValue={item.name}
                         fieldGroups={[
                           [
-                            { label: 'Job Name', value: item.name, xs: 12, sm: 6 },
-                            { label: 'Description', value: item.description, xs: 12, sm: 6 },
+                            { label: 'Job Name', value: item.name },
+                            { label: 'Description', value: item.description },
                           ],
                           [
                             {
@@ -173,10 +173,8 @@ function ChplSystemTriggersView({
                               ) : (
                                 <>In Progress</>
                               ),
-                              xs: 12,
-                              sm: 6,
                             },
-                            { label: 'Trigger Schedule Type', value: item.triggerScheduleType, xs: 12, sm: 6 },
+                            { label: 'Trigger Schedule Type', value: item.triggerScheduleType },
                           ],
                         ]}
                         actions={item.action}

@@ -212,8 +212,6 @@ function ChplDecertifiedProductsSearchView() {
                             {
                               label: 'Decertification Date',
                               value: getDisplayDateFormat(item.decertificationDate),
-                              xs: 12,
-                              sm: 12,
                             },
                           ],
                         ]}

@@ -255,8 +255,6 @@ function ChplRealWorldTestingSearchView() {
                                   />
                                 )
                                 : 'N/A',
-                              xs: 12,
-                              sm: 6,
                             },
                             {
                               label: 'Real World Testing Results URL',
@@ -273,8 +271,6 @@ function ChplRealWorldTestingSearchView() {
                                   />
                                 )
                                 : 'N/A',
-                              xs: 12,
-                              sm: 4,
                             },
                           ],
                         ]}

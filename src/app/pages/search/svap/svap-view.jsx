@@ -325,8 +325,6 @@ function ChplSvapSearchView() {
                               {
                                 label: 'SVAP Information',
                                 value: item.svapNode,
-                                xs: 12,
-                                sm: 9,
                               },
                               {
                                 label: 'SVAP Notice',
@@ -343,8 +341,6 @@ function ChplSvapSearchView() {
                                     />
                                   )
                                   : 'N/A',
-                                xs: 12,
-                                sm: 3,
                               },
                             ],
                           ]}

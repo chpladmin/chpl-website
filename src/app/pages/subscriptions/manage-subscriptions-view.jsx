@@ -256,11 +256,11 @@ function ChplManageSubscriptionsView({ analytics }) {
                           )}
                           fieldGroups={[
                             [
-                              { label: 'Email', value: item.subscriberEmail, xs: 12, sm: 6 },
-                              { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate), xs: 12, sm: 6 },
+                              { label: 'Email', value: item.subscriberEmail },
+                              { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate) },
                             ],
                             [
-                              { label: 'Role', value: item.subscriberRole, xs: 12, sm: 6 },
+                              { label: 'Role', value: item.subscriberRole },
                               { 
                                 label: 'Subscription Subjects', 
                                 value: (
@@ -272,8 +272,6 @@ function ChplManageSubscriptionsView({ analytics }) {
                                       ))}
                                   </List>
                                 ),
-                                xs: 12,
-                                sm: 6
                               },
                             ],
                           ]}

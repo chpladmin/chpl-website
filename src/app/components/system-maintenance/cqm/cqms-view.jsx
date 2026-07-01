@@ -91,22 +91,16 @@ function ChplCqmsView({ cqms: initialCqms }) {
                   {
                     label: 'Title',
                     value: item.title || 'N/A',
-                    xs: 12,
-                    sm: 6,
                   },
                   {
                     label: 'Version(s)',
                     value: item.versionDisplay || 'N/A',
-                    xs: 12,
-                    sm: 6,
                   },
                 ],
                 [
                   {
                     label: 'Description',
                     value: item.description || 'N/A',
-                    xs: 12,
-                    sm: 12,
                   },
                 ],
               ]}

@@ -227,26 +227,18 @@ function ChplCorrectiveActionSearchView() {
                                   {
                                     label: '# Open Surveillance NCs',
                                     value: item.openSurveillanceNonConformityCount,
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                   {
                                     label: '# Closed Surveillance NCs',
                                     value: item.closedSurveillanceNonConformityCount,
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                   {
                                     label: '# Open Direct Review NCs',
                                     value: item.openDirectReviewNonConformityCount,
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                   {
                                     label: '# Closed Direct Review NCs',
                                     value: item.closedDirectReviewNonConformityCount,
-                                    xs: 6,
-                                    sm: 3,
                                   },
                                 ],
                               ]}
