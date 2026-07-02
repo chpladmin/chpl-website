@@ -105,7 +105,7 @@ const useStyles = makeStyles({
 });
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
-  const analytics = useAnalyticsContext();
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentHash, setCurrentHash] = useState(window.location.hash);
