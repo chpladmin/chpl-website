@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 14.7.0
+_6 July 2026_
+
+### Features
+* Enhance CMS display to prevent covering up navigation
+
+---
+
 ## Version 14.6.0
 _22 June 2026_
 
