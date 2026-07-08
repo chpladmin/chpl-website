@@ -259,8 +259,12 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'ucdProcesses':
       options = {
-        sort: (p, c) => ((p.name ?? p.ucdProcessName) < (c.name ?? c.ucdProcessName) ? -1 : (p.name ?? p.ucdProcessName) > (c.name ?? c.ucdProcessName) ? 1 : 0),
-        write: (f) => `UCD Process "${f.name ?? f.ucdProcessName}"`,
+        sort: (p, c) => {
+          const pv = p.name ?? p.ucdProcessName ?? p.value;
+          const cv = c.name ?? c.ucdProcessName ?? c.value;
+          return pv < cv ? -1 : (pv > cv ? 1 : 0);
+        },
+        write: (f) => `UCD Process "${f.name ?? f.ucdProcessName ?? f.value}"`,
       };
       break;
     default:
