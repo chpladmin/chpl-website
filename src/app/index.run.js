@@ -1,16 +1,6 @@
 (() => {
   /** @ngInject */
-  function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $window, Title, authService, featureFlags, networkService) {
-    const loadFlags = () => {
-      // get flag state from API
-      featureFlags.set($http.get('/rest/feature-flags'))
-        .then(() => {
-          $rootScope.$broadcast('flags loaded');
-        });
-    };
-
-    loadFlags();
-    
+  function runBlock($anchorScroll, $location, $rootScope, $state, $timeout, $transitions, $window, Title, authService) {
     // Update page title on state change
     $transitions.onSuccess({}, (transition) => {
       let { title } = transition.to().data;
