@@ -29,8 +29,8 @@ import createPdf from './cms-pdf';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplEllipsis, ChplLink } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext, FlagContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -143,9 +143,13 @@ const useStyles = makeStyles({
 });
 
 function ChplCmsDisplay() {
-  const $analytics = getAngularService('$analytics');
-  const $rootScope = getAngularService('$rootScope');
-  const { listings, removeListing } = useContext(CmsContext);
+  const { listings, removeListing, setIsOpen } = useContext(CmsContext);
+  const {
+    listings: compareListings,
+    addListing: addCompareListing,
+    removeListing: removeCompareListing,
+    setIsOpen: setCompareIsOpen,
+  } = useContext(CompareContext);
   const { cmsDisabledIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
   const [idAnalysis, setIdAnalysis] = useState({});
@@ -179,20 +183,29 @@ function ChplCmsDisplay() {
   }, [pdfData, pdfIsFetching, pdfIsSuccess]);
 
   const compareAll = () => {
-    $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
-    $rootScope.$broadcast('compare.compareAll', listings);
-    $rootScope.$broadcast('HideCmsWidget');
-    $rootScope.$broadcast('ShowCompareWidget');
-    $rootScope.$digest();
+    eventTrack({
+      event: 'Compare Listings',
+      category: 'CMS Widget',
+    });
+    compareListings.forEach((l) => removeCompareListing(l));
+    listings.forEach((l) => addCompareListing(l));
+    setIsOpen(false);
+    setCompareIsOpen(true);
   };
 
   const copyToClipboard = () => {
-    $analytics.eventTrack('Copy EHR Certification ID to Clipboard', { category: 'CMS Widget' });
+    eventTrack({
+      event: 'Copy EHR Certification ID to Clipboard',
+      category: 'CMS Widget',
+    });
     navigator.clipboard.writeText(idAnalysis.ehrCertificationId);
   };
 
   const createCertId = async () => {
-    $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
+    eventTrack({
+      event: 'Get EHR Certification ID',
+      category: 'CMS Widget',
+    });
     await mutate({ idAnalysis }, {
       onSuccess: (response) => {
         setIdAnalysis(response.data);
@@ -201,7 +214,10 @@ function ChplCmsDisplay() {
   };
 
   const downloadPdf = () => {
-    $analytics.eventTrack('Download EHR Certification ID PDF', { category: 'CMS Widget' });
+    eventTrack({
+      event: 'Download EHR Certification ID PDF',
+      category: 'CMS Widget',
+    });
     setIsDownloading(true);
   };
 
@@ -211,8 +227,11 @@ function ChplCmsDisplay() {
   };
 
   const removeAll = () => {
-    $analytics.eventTrack('Remove all Listings', { category: 'CMS Widget' });
-    $rootScope.$broadcast('cms.removeAll');
+    eventTrack({
+      event: 'Remove all Listings',
+      category: 'CMS Widget',
+    });
+    listings.forEach((l) => removeListing(l));
   };
 
   if (cmsDisabledIsOn) {

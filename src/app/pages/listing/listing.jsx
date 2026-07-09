@@ -17,6 +17,7 @@ import {
 } from '@material-ui/icons';
 import { number, oneOfType, string } from 'prop-types';
 
+import ChplListingEdit from './listing-edit';
 import ChplListingHistory from './history/listing-history';
 
 import { useFetchListing } from 'api/listing';
@@ -77,13 +78,13 @@ const useStyles = makeStyles({
 });
 
 function ChplListingPage({ id }) {
-  const $state = getAngularService('$state');
   const API = getAngularService('API');
   const { getApiKey, getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole, user } = useContext(UserContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
+  const [isEditing, setIsEditing] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const classes = useStyles();
@@ -134,13 +135,14 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Edit',
     });
-    $state.go('listing.edit');
+    setIsEditing(true);
   };
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
         setActiveSurveillance(undefined);
+        setIsEditing(false);
         break;
       case 'edit':
         setActiveSurveillance(payload);
@@ -188,6 +190,18 @@ function ChplListingPage({ id }) {
         <ListingContext.Provider value={listingState}>
           <ChplSurveillanceEdit
             surveillance={activeSurveillance}
+            dispatch={handleDispatch}
+          />
+        </ListingContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  }
+
+  if (isEditing) {
+    return (
+      <AnalyticsContext.Provider value={analyticsData}>
+        <ListingContext.Provider value={listingState}>
+          <ChplListingEdit
             dispatch={handleDispatch}
           />
         </ListingContext.Provider>

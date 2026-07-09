@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
 import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
@@ -11,6 +12,7 @@ const AxiosContext = createContext();
 function AxiosProvider({ children }) {
   const $localStorage = getAngularService('$localStorage');
   const authService = getAngularService('authService');
+  const { enqueueSnackbar } = useSnackbar();
   const { setLoginWidgetState } = useContext(UserContext);
 
   const axios = useMemo(() => {
@@ -62,14 +64,34 @@ function AxiosProvider({ children }) {
       return updated;
     });
 
-    ax.interceptors.response.use((response) => response,
+    ax.interceptors.response.use(
+      (response) => {
+        if (response.headers['chpl-id-changed']) {
+          if (response.headers['chpl-id-changed'].indexOf(',') > 1) {
+            enqueueSnackbar('CHPL IDs Changed. Your activity caused CHPL Product Numbers to change', {
+              variant: 'success',
+            });
+          } else {
+            enqueueSnackbar('CHPL ID Changed. Your activity caused a CHPL Product Number to change', {
+              variant: 'success',
+            });
+          }
+        }
+        if (response.headers['cache-cleared']) {
+          enqueueSnackbar('Update processing. Your changes may not be reflected immediately in the search results and shortcuts pages. Please contact CHPL admin if you have any concerns', {
+            variant: 'warning',
+          });
+        }
+        return response;
+      },
       (error) => {
         if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
           setLoginWidgetState('SIGNIN');
           authService.logout();
         }
         return Promise.reject(error);
-      });
+      },
+    );
 
     return ax;
   }, []);
