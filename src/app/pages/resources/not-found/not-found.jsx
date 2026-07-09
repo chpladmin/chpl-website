@@ -11,8 +11,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
+import { getAngularService } from 'services/angular-react-helper';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('xl')]: {
       maxWidth: '50%',
     },
-    minHeight: 'calc(100vh - 137px)', 
+    minHeight: 'calc(100vh - 137px)',
   },
   cardActions: {
     padding: '16px',
@@ -38,16 +39,19 @@ const useStyles = makeStyles({
 });
 
 function ChplNotFound() {
-  const $analytics = getAngularService('$analytics');
   const $stateParams = getAngularService('$stateParams');
   const classes = useStyles();
 
   useEffect(() => {
     const { target } = $stateParams;
     if (target) {
-      $analytics.eventTrack('Page Not Found', { category: 'Navigation', label: target });
+      eventTrack({
+        event: 'Page Not Found',
+        category: 'Navigation',
+        label: target,
+      });
     }
-  }, [$analytics, $stateParams]);
+  }, [$stateParams]);
 
   return (
     <ThemeProvider theme={theme}>

@@ -7,12 +7,6 @@ import {
   CircularProgress,
   List,
   ListItem,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -32,7 +26,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
@@ -114,7 +108,6 @@ const useStyles = makeStyles({
 
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
-  const $analytics = getAngularService('$analytics');
   const { enqueueSnackbar } = useSnackbar();
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -153,7 +146,11 @@ function ChplManageSubscriptionsView({ analytics }) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   const handleTableSort = (property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort',
+      category: analytics.category,
+      label: property,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -186,13 +183,13 @@ function ChplManageSubscriptionsView({ analytics }) {
               <SubscriptionsOutlined style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
             </span>
             <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={getDeliveredMessages}
-                  className={classes.notificationsButton }
-                  endIcon={<NotificationsOutlined fontSize="small" />}
-                >
-                  Get Delivered Notifications
+              color="secondary"
+              variant="contained"
+              onClick={getDeliveredMessages}
+              className={classes.notificationsButton}
+              endIcon={<NotificationsOutlined fontSize="small" />}
+            >
+              Get Delivered Notifications
             </Button>
           </Box>
         )}
@@ -261,8 +258,8 @@ function ChplManageSubscriptionsView({ analytics }) {
                             ],
                             [
                               { label: 'Role', value: item.subscriberRole },
-                              { 
-                                label: 'Subscription Subjects', 
+                              {
+                                label: 'Subscription Subjects',
                                 value: (
                                   <List className={classes.listContainer}>
                                     { item.subscriptionSubjects

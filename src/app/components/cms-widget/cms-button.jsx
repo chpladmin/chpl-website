@@ -7,7 +7,12 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 import { eventTrack } from 'services/analytics.service';
-import { CmsContext, FlagContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  CmsContext,
+  CompareContext,
+  FlagContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -23,7 +28,9 @@ function ChplCmsButton({ listing }) {
     canDisplayButton,
     isInWidget,
     removeListing,
+    setIsOpen,
   } = useContext(CmsContext);
+  const { setIsOpen: setCompareIsOpen } = useContext(CompareContext);
   const { cmsDisabledIsOn } = useContext(FlagContext);
 
   const handleClick = () => {
@@ -38,6 +45,8 @@ function ChplCmsButton({ listing }) {
     } else {
       addListing(listing);
     }
+    setIsOpen(true);
+    setCompareIsOpen(false);
   };
 
   if (!canDisplayButton(listing) || cmsDisabledIsOn) {

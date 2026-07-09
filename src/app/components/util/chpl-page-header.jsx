@@ -21,35 +21,37 @@ function ChplPageHeader({ text, subtitle }) {
       <Container maxWidth="lg">
         <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap">
           <Typography variant="h1">
-            {text}
+            { text }
           </Typography>
-          {subtitle && (
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => {
-                const next = !expanded;
-                setExpanded(next);
-                eventTrack({
-                  event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
-                  label: text,
-                });
-              }}
-              endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
-            >
-              {expanded ? 'Hide Details' : 'Show Details'}
-            </Button>
-          )}
+          { subtitle
+            && (
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => {
+                  const next = !expanded;
+                  setExpanded(next);
+                  eventTrack({
+                    event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
+                    label: text,
+                  });
+                }}
+                endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
+              >
+                { expanded ? 'Hide Details' : 'Show Details' }
+              </Button>
+            )}
         </Box>
-        {subtitle && (
-          <Collapse in={expanded}>
-            <Box mt={2}>
-              <Typography variant="body2" style={{ color: palette.greyDark }} component="div">
-                {subtitle}
-              </Typography>
-            </Box>
-          </Collapse>
-        )}
+        { subtitle
+          && (
+            <Collapse in={expanded}>
+              <Box mt={2}>
+                <Typography variant="body1" style={{ color: palette.greyDark }} component="div">
+                  { subtitle }
+                </Typography>
+              </Box>
+            </Collapse>
+          )}
       </Container>
     </Box>
   );

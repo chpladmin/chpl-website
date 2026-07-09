@@ -7,7 +7,7 @@ import CompareArrows from '@material-ui/icons/CompareArrows';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 import { eventTrack } from 'services/analytics.service';
-import { CompareContext, useAnalyticsContext } from 'shared/contexts';
+import { CmsContext, CompareContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -17,7 +17,13 @@ const useStyles = makeStyles({
 
 function ChplCompareButton({ listing }) {
   const { analytics } = useAnalyticsContext();
-  const { addListing, isInWidget, removeListing } = useContext(CompareContext);
+  const { setIsOpen: setCmsIsOpen } = useContext(CmsContext);
+  const {
+    addListing,
+    isInWidget,
+    removeListing,
+    setIsOpen,
+  } = useContext(CompareContext);
   const classes = useStyles();
 
   const handleClick = () => {
@@ -32,6 +38,8 @@ function ChplCompareButton({ listing }) {
     } else {
       addListing(listing);
     }
+    setIsOpen(true);
+    setCmsIsOpen(false);
   };
 
   return (
