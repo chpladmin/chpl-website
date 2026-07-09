@@ -20,17 +20,17 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   advancedSearchButton: {
-    color: '#000',
+    color: palette.black,
   },
   directionText: {
     marginBottom: '8px',
   },
   filterPanelContainer: {
-    background: '#fff',
+    background: palette.white,
     display: 'grid',
     gridTemplateColumns: '1fr',
     rowGap: '16px',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
@@ -38,8 +38,12 @@ const useStyles = makeStyles({
     padding: '16px',
   },
   filterPanelSecondary: {
-    borderLeft: '1px solid #599bde',
     padding: '16px',
+    borderTop: `1px solid ${palette.primaryBorder}`,
+    [theme.breakpoints.up('md')]: {
+      borderTop: 'none',
+      borderLeft: `1px solid ${palette.primaryBorder}`,
+    },
   },
   filterBold: {
     fontWeight: '600',
@@ -53,7 +57,7 @@ const useStyles = makeStyles({
     padding: '0 8px',
     marginTop: '16px',
     [theme.breakpoints.up('xl')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(275px, 1fr))',
     },
   },
   filterHeaderContainer: {
@@ -80,7 +84,7 @@ const useStyles = makeStyles({
   },
   searchInput: {
     flexGrow: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
     padding: '4px',
     borderRadius: '4px',
     border: `1px solid ${palette.grey}`,
@@ -129,7 +133,7 @@ function ChplFilterPanel() {
         event: 'Open Advanced Search',
       });
     }
-    setAnchor(e.currentTarget);
+    setAnchor(e.currentTarget.closest('[data-filter-search-bar="true"]') || e.currentTarget);
     setOpen(true);
   };
 
@@ -140,7 +144,6 @@ function ChplFilterPanel() {
         event: 'Close Advanced Search',
       });
     }
-    setAnchor(null);
     setOpen(false);
     setActiveCategoryKey('');
   };
@@ -215,6 +218,8 @@ function ChplFilterPanel() {
     filterContext.dispatch('toggleDevelopersListingsCriteriaOption', f);
   };
 
+  const panelWidth = anchor?.closest?.('[data-filter-search-bar="true"]')?.getBoundingClientRect?.().width;
+
   return (
     <>
       <Button
@@ -232,24 +237,25 @@ function ChplFilterPanel() {
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
+        TransitionProps={{ onExited: () => setAnchor(null) }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
         PaperProps={{
           style: {
-            width: '93%',
+            width: panelWidth ? `${panelWidth}px` : 'calc(100vw - 32px)',
+            maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
-            marginTop: '20px',
-            marginLeft: '32px',
+            marginTop: '0px',
             border: `1px solid ${palette.grey}`,
             boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
-            backgroundColor: '#fff',
+            backgroundColor: palette.white,
           },
         }}
       >

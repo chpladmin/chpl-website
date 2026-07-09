@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
+  Button,
+  Collapse,
   Container,
   Typography,
 } from '@material-ui/core';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { node, string } from 'prop-types';
 
+import { eventTrack } from 'services/analytics.service';
 import { palette } from 'themes';
 
 function ChplPageHeader({ text, subtitle }) {
+  const [expanded, setExpanded] = useState(true);
+
   return (
     <Box position="relative" boxShadow={2} bgcolor={palette.white} p={8}>
       <Container maxWidth="lg">
@@ -21,7 +28,14 @@ function ChplPageHeader({ text, subtitle }) {
               <Button
                 size="small"
                 color="primary"
-                onClick={() => setExpanded((prev) => !prev)}
+                onClick={() => {
+                  const next = !expanded;
+                  setExpanded(next);
+                  eventTrack({
+                    event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
+                    label: text,
+                  });
+                }}
                 endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
               >
                 { expanded ? 'Hide Details' : 'Show Details' }
@@ -31,9 +45,11 @@ function ChplPageHeader({ text, subtitle }) {
         { subtitle
           && (
             <Collapse in={expanded}>
-              <Typography variant="body1" style={{ color: palette.greyDark }} component="div">
-                { subtitle }
-              </Typography>
+              <Box mt={2}>
+                <Typography variant="body1" style={{ color: palette.greyDark }} component="div">
+                  { subtitle }
+                </Typography>
+              </Box>
             </Collapse>
           )}
       </Container>
