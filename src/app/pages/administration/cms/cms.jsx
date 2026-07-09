@@ -6,7 +6,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 
 import { usePostReportRequest } from 'api/cms';
 import { FlagContext } from 'shared/contexts';
@@ -63,10 +63,9 @@ function ChplCms() {
         color="primary"
         variant="contained"
         id="download-results"
+        endIcon={<CloudDownloadOutlinedIcon />}
       >
         Download the CMS listing
-        {' '}
-        <GetAppIcon className={classes.iconSpacing} />
       </Button>
     </>
   );
