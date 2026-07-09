@@ -7,10 +7,6 @@ export default class NetworkService {
     this.API = API;
   }
 
-  confirmApiKey(hash) {
-    return this.apiPOST('/key/confirm', hash);
-  }
-
   deleteSurveillance(surveillanceId, reason) {
     return this.apiDELETE(`/surveillance/${surveillanceId}`, {
       reason,

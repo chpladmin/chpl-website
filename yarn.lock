@@ -3390,13 +3390,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-feature-flags@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "angular-feature-flags@npm:1.6.1"
-  checksum: 10/6a6c114d75c0e4abcfb32b7e41a8b30f2afd4f4389e64bf0e77382584e1044a09a0e13119f1a74af7ee1747459c9abcc06e4a8edf79ff95c13618d37a7645a47
-  languageName: node
-  linkType: hard
-
 "angular-file-saver@npm:^1.1.3":
   version: 1.1.3
   resolution: "angular-file-saver@npm:1.1.3"
@@ -3464,29 +3457,6 @@ __metadata:
   version: 1.8.3
   resolution: "angular@npm:1.8.3"
   checksum: 10/4a21f1f74790dc2cdceb582386abdc7b55a0463f86aaa59573c940295cb51ed61b8fa610011134280ae0da7f97fbbc660f3a4e4491b24c92b2c32a547073a1c2
-  languageName: node
-  linkType: hard
-
-"angularjs-toaster@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "angularjs-toaster@npm:2.2.0"
-  checksum: 10/0deb3b767326ddef3194162b63ececc871c6116f70c43f731c0a06d6ce712631b72f0349be4f9d0e256fe08c893e105784e858726f40b78a3aec6dbc1aa7315f
-  languageName: node
-  linkType: hard
-
-"angulartics-google-tag-manager@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "angulartics-google-tag-manager@npm:0.0.1"
-  peerDependencies:
-    angulartics: ^1.0.0
-  checksum: 10/84920ba93d34182e414f4a242d6d30fd30f3fbdcefa29404b04c611771446c706826eba600618ed89a0d316489863df5d68b1012287b4248c07c22aa00c49eab
-  languageName: node
-  linkType: hard
-
-"angulartics@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "angulartics@npm:1.6.0"
-  checksum: 10/d4a3121d5dc5dc96a68d1cadf722bf8cf366d9f1b88ab6a184e5085dc42f117ce1585077cc04ae4c96bbdf80b0f69816d04a3a74b3f175d2eeace78da3c57248
   languageName: node
   linkType: hard
 
@@ -5189,7 +5159,6 @@ __metadata:
     angular-animate: "npm:^1.8.3"
     angular-aria: "npm:^1.8.3"
     angular-confirm: "npm:1.2.6"
-    angular-feature-flags: "npm:^1.6.1"
     angular-file-saver: "npm:^1.1.3"
     angular-loading-bar: "npm:^0.9.0"
     angular-mocks: "npm:^1.8.3"
@@ -5198,9 +5167,6 @@ __metadata:
     angular-ui-bootstrap: "npm:2.5.6"
     angular-ui-router: "npm:^1.0.30"
     angular-zxcvbn: "npm:^3.2.2"
-    angularjs-toaster: "npm:^2.2.0"
-    angulartics: "npm:^1.6.0"
-    angulartics-google-tag-manager: "npm:^0.0.1"
     axios: "npm:^1.7.7"
     axios-jwt: "npm:^4.0.3"
     babel-eslint: "npm:^8.2.6"
