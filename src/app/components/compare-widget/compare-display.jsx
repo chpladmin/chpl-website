@@ -11,6 +11,7 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import ChplEllipsis from 'components/util/chpl-ellipsis';
+import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -47,12 +48,15 @@ function ChplCompareDisplay() {
 
   const compareAll = () => {
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
-    $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();
   };
 
   const removeAll = () => {
-    $rootScope.$broadcast('compare.removeAll');
+    eventTrack({
+      event: 'Remove all Listings',
+      category: 'Compare Widget',
+    });
+    listings.forEach((l) => removeListing(l));
   };
 
   if (!listings || listings.length === 0) {
