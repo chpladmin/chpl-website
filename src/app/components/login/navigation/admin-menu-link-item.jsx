@@ -11,6 +11,8 @@ import {
 } from 'prop-types';
 
 import { ChplLink } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -48,6 +50,7 @@ function ChplAdminMenuLinkItem({
 }) {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   const classes = useStyles();
+  const { analytics } = useAnalyticsContext();
 
   useEffect(() => {
     const handleHashChange = () => setCurrentHash(window.location.hash);
@@ -58,6 +61,11 @@ function ChplAdminMenuLinkItem({
   const isActive = href && currentHash === href;
 
   const handleRowClick = (event) => {
+    eventTrack({
+      ...analytics,
+      event: `Go to ${text} Page`,
+      category: 'Navigation',
+    });
     onClose();
     if (event.target.tagName === 'A') {
       return;

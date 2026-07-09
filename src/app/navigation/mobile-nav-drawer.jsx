@@ -107,6 +107,7 @@ const useStyles = makeStyles({
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
+  const { analytics } = useAnalyticsContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   const [expandedSections, setExpandedSections] = useState({
@@ -140,7 +141,13 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     closeMobileMenu();
   };
 
-  const toggleSection = (section) => {
+  const toggleSection = (section, title) => {
+    const isCurrentlyOpen = expandedSections[section];
+    eventTrack({
+      ...analytics,
+      event: isCurrentlyOpen ? `Collapse ${title}` : `Expand ${title}`,
+      category: 'Navigation',
+    });
     setExpandedSections((previous) => ({
       ...previous,
       [section]: !previous[section],
@@ -148,10 +155,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   };
 
   const handleLinkItemClick = (item) => (event) => {
-    closeMobileMenu();
-    if (event.target.tagName === 'A') {
-      return;
-    }
     const itemAnalytics = {
       ...analytics,
       event: item.analyticsEvent,
@@ -159,6 +162,10 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     };
     if (itemAnalytics.event) {
       eventTrack(itemAnalytics);
+    }
+    closeMobileMenu();
+    if (event.target.tagName === 'A') {
+      return;
     }
     window.location.href = item.href;
   };
@@ -218,7 +225,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           <Divider className={classes.drawerDivider} />
           {widgetSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
@@ -232,7 +239,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           ))}
           { linkSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
