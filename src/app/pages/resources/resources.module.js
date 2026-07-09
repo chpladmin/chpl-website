@@ -9,7 +9,6 @@ import ChplResourcesOverview from './overview/overview-wrapper';
 
 angular
   .module('chpl.resources', [
-    'angulartics',
     'chpl.constants',
     'chpl.services',
     'ngStorage',

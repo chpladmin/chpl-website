@@ -1,49 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { node } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { useLocalStorage } from 'services/storage.service';
 import { CompareContext } from 'shared/contexts';
 
 function CompareWrapper({ children }) {
-  const $localStorage = getAngularService('$localStorage');
-  const $rootScope = getAngularService('$rootScope');
-  const [listings, setListings] = useState([]);
-
-  useEffect(() => {
-    setListings($localStorage?.compareWidget?.products ?? []);
-  }, []);
-
-  useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('compare.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
-    const deregisterRemoveWatcher = $rootScope.$on('compare.removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
-    return () => {
-      deregisterAddWatcher();
-      deregisterRemoveWatcher();
-    };
-  }, [$rootScope, setListings]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [listings, setListings] = useLocalStorage('compare', []);
 
   const addListing = (listing) => {
-    $rootScope.$broadcast('compare.addListing', {
+    setListings((prev) => [...prev, {
       ...listing,
-      product: listing.product.name ? listing.product.name : listing.product,
-    });
-    $rootScope.$broadcast('ShowCompareWidget');
-    $rootScope.$digest();
+      name: listing.product.name,
+    }]);
   };
 
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
   const removeListing = (listing) => {
-    $rootScope.$broadcast('compare.removeListing', listing);
-    $rootScope.$broadcast('ShowCompareWidget');
-    $rootScope.$digest();
+    setListings((prev) => [...prev].filter((l) => l.id !== listing.id));
   };
 
   const compareState = {
     addListing,
     isInWidget,
+    isOpen,
     listings,
     removeListing,
+    setIsOpen,
   };
 
   return (

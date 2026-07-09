@@ -23,9 +23,13 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  CmsContext,
+  CompareContext,
+  UserContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -109,8 +113,9 @@ function ChplDesktopNav({
   onHomeClick,
   onSearchClick,
 }) {
-  const $rootScope = getAngularService('$rootScope');
   const analytics = useAnalyticsContext();
+  const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
+  const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
   const { hasAnyRole } = useContext(UserContext);
   const cmsButtonRef = useRef(null);
   const compareButtonRef = useRef(null);
@@ -121,15 +126,10 @@ function ChplDesktopNav({
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [currentHash, setCurrentHash] = useState(window.location.hash);
-  const resourceItems = getResourceItems({
-    includeDeveloperGuide: hasAnyRole(developerGuideRoles),
-  });
+  const resourceItems = getResourceItems({ includeDeveloperGuide: hasAnyRole(developerGuideRoles) });
 
   const classes = useStyles();
 
-  // These widgets can be opened by click handlers and root-scope broadcasts.
-  // When that happens during a render/layout transition, ref.current may not be a usable anchor.
-  // We only return anchors that are mounted and visible to avoid invalid anchorEl warnings.
   const getVisibleAnchor = (ref) => {
     const el = ref.current;
     if (!el || !el.isConnected || el.offsetParent === null) {
@@ -144,39 +144,34 @@ function ChplDesktopNav({
   };
 
   useEffect(() => {
-    const deregisterShowCmsWidget = $rootScope.$on('ShowCmsWidget', () => {
+    if (cmsIsOpen) {
       const anchor = getVisibleAnchor(cmsButtonRef);
       if (!anchor) {
         return;
       }
+      setCmsAnchorEl(anchor);
       setCompareAnchorEl(null);
       setResourcesOpen(false);
       setShortcutsOpen(false);
-      setCmsAnchorEl(anchor);
-    });
-    const deregisterHideCmsWidget = $rootScope.$on('HideCmsWidget', () => {
+    } else {
       setCmsAnchorEl(null);
-    });
-    const deregisterShowCompareWidget = $rootScope.$on('ShowCompareWidget', () => {
+    }
+  }, [cmsIsOpen]);
+
+  useEffect(() => {
+    if (compareIsOpen) {
       const anchor = getVisibleAnchor(compareButtonRef);
       if (!anchor) {
         return;
       }
       setCmsAnchorEl(null);
+      setCompareAnchorEl(anchor);
       setResourcesOpen(false);
       setShortcutsOpen(false);
-      setCompareAnchorEl(anchor);
-    });
-    const deregisterHideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
+    } else {
       setCompareAnchorEl(null);
-    });
-    return () => {
-      deregisterShowCmsWidget();
-      deregisterHideCmsWidget();
-      deregisterShowCompareWidget();
-      deregisterHideCompareWidget();
-    };
-  }, [$rootScope]);
+    }
+  }, [compareIsOpen]);
 
   useEffect(() => {
     const handleHashChange = () => setCurrentHash(window.location.hash);
@@ -186,7 +181,9 @@ function ChplDesktopNav({
 
   const closeAllNavOverlays = () => {
     setCmsAnchorEl(null);
+    setCmsIsOpen(false);
     setCompareAnchorEl(null);
+    setCompareIsOpen(false);
     setResourcesOpen(false);
     setShortcutsOpen(false);
   };
@@ -194,6 +191,7 @@ function ChplDesktopNav({
   const toggleCmsWidget = () => {
     if (cmsAnchorEl) {
       setCmsAnchorEl(null);
+      setCmsIsOpen(false);
       return;
     }
     const anchor = getVisibleAnchor(cmsButtonRef);
@@ -202,35 +200,23 @@ function ChplDesktopNav({
     }
     closeAllNavOverlays();
     setCmsAnchorEl(anchor);
-  };
-
-  const closeCmsWidget = (event, reason) => {
-    if (reason === 'backdropClick') {
-      return;
-    }
-    setCmsAnchorEl(null);
+    setCmsIsOpen(true);
   };
 
   const toggleCompareWidget = () => {
     if (compareAnchorEl) {
       setCompareAnchorEl(null);
+      setCompareIsOpen(false);
       return;
     }
 
-    // Skip opening if the compare button is not currently a valid visible anchor.
     const anchor = getVisibleAnchor(compareButtonRef);
     if (!anchor) {
       return;
     }
     closeAllNavOverlays();
     setCompareAnchorEl(anchor);
-  };
-
-  const closeCompareWidget = (event, reason) => {
-    if (reason === 'backdropClick') {
-      return;
-    }
-    setCompareAnchorEl(null);
+    setCompareIsOpen(true);
   };
 
   const toggleResources = () => {
@@ -317,14 +303,9 @@ function ChplDesktopNav({
       >
         CMS ID Creator
       </Button>
-      {/*
-        Use Popover (not Menu) because this is a custom widget panel, not a menu list.
-        Menu tries to apply menu semantics/focus behavior that caused ref warnings with this content.
-      */}
       <Popover
         anchorEl={cmsAnchorEl}
         open={!!cmsAnchorEl}
-        onClose={closeCmsWidget}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
@@ -353,7 +334,6 @@ function ChplDesktopNav({
       <Popover
         anchorEl={compareAnchorEl}
         open={!!compareAnchorEl}
-        onClose={closeCompareWidget}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock

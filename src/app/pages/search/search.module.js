@@ -13,7 +13,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 
 export default angular
   .module('chpl.search', [
-    'angulartics',
     'chpl.services',
     'ui.bootstrap',
   ])

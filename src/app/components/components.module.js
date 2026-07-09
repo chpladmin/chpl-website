@@ -1,12 +1,6 @@
 import IndexWrapper from '../index-wrapper';
 
-import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
-import ChplAnnouncementsFabWrapper from './announcements/announcements-fab-wrapper';
-import { ChplApiKeyConfirm } from './api-key';
-import ChplAttestationEditWrapper from './attestation/attestation-edit-wrapper';
-import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
-import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
 import { ChplConfirmListingsWrapper } from './listing/confirm';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
@@ -21,25 +15,16 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 
 angular
   .module('chpl.components', [
-    'angulartics',
     'chpl.services',
-    'feature-flags',
     'ngCytoscape',
     'ngFileUpload',
     'ngResource',
     'ngStorage',
-    'toaster',
     'ui.bootstrap',
     'ui.router',
   ])
-  .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
-  .component('chplAnnouncementsFabBridge', reactToAngularComponent(ChplAnnouncementsFabWrapper))
-  .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
-  .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
-  .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
-  .component('chplCompareDisplayWrapperBridge', reactToAngularComponent(ChplCompareDisplayWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))

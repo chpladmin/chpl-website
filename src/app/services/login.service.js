@@ -6,15 +6,11 @@ import { clearAuthTokens } from 'axios-jwt';
 
   /** @ngInclude */
   /** @ngInject */
-  function authService($injector, $localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
+  function authService($injector, $localStorage, $log, $rootScope, $window, API_KEY) {
     const service = {
-      canManageAcb,
-      canManageDeveloper,
       getApiKey,
       getCurrentUser,
-      getFullname,
       getToken,
-      getUserId,
       hasAnyRole,
       logout,
       parseJwt,
@@ -26,44 +22,8 @@ import { clearAuthTokens } from 'axios-jwt';
 
     /// /////////////////////////////////////////////////////////////////////
 
-    function canManageAcb(acb) {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-        return true;
-      }
-      if (hasAnyRole(['chpl-onc-acb'])) {
-        const currentUser = getCurrentUser();
-        return currentUser.organizations
-          .filter((o) => o.id === acb.id)
-          .length > 0;
-      }
-      return false;
-    }
-
-    function canManageDeveloper(developer) {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-        return true;
-      }
-      if (hasAnyRole(['chpl-developer'])) {
-        const currentUser = getCurrentUser();
-        return currentUser.organizations
-          .filter((d) => d.id === developer.id)
-          .length > 0;
-      }
-      return false;
-    }
-
     function getApiKey() {
       return API_KEY;
-    }
-
-    function getFullname() {
-      if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-        const token = getToken();
-        const identity = parseJwt(token).Identity;
-        return identity[2];
-      }
-      logout();
-      return '';
     }
 
     function getCurrentUser() {
@@ -72,21 +32,6 @@ import { clearAuthTokens } from 'axios-jwt';
 
     function getToken() {
       return $localStorage.jwtToken;
-    }
-
-    function getUserId() {
-      const token = getToken();
-      if (token) {
-        if (parseJwt(token).Identity) {
-          const identity = parseJwt(token).Identity;
-          return identity[0];
-        } else {
-          return parseJwt(token).sub;
-        }
-      } else {
-        logout();
-        return '';
-      }
     }
 
     function hasAnyRole(roles) {
@@ -145,6 +90,5 @@ import { clearAuthTokens } from 'axios-jwt';
     function saveRefreshToken(token) {
       $localStorage.refreshToken = token;
     }
-
   }
 }());

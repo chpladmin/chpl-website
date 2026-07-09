@@ -39,17 +39,12 @@
       }
     </script>
   </head>
-  <body ai-cms-widget="" widget="mainWidget" class="{{ bodyClass }}">
+  <body class="{{ bodyClass }}">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9B8823D"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <ai-compare-widget compare-widget="compareWidget">
-      <a href="#{{ currentPage }}#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
-      <ai-navigation-top></ai-navigation-top>
-      <toaster-container toaster-options="{'time-out': 0}"></toaster-container>
-      <div ui-view=""></div>
-      <chpl-navigation-bottom-bridge></chpl-navigation-bottom-bridge>
-    </ai-compare-widget>
+    <a href="#{{ currentPage }}#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div ui-view=""></div>
   </body>
 </html>

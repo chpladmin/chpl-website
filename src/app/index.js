@@ -7,9 +7,6 @@ import 'swagger-ui-react/swagger-ui.css';
 import angular from 'angular';
 import /* angularConfirm from */ 'angular-confirm';
 import /* angularLoadingBar from */ 'angular-loading-bar';
-import /* angulartics from */ 'angulartics';
-import /* angularticsGoogleTagManager from */ 'angulartics-google-tag-manager';
-import 'angular-feature-flags';
 import /* ngAnimate from */ 'angular-animate';
 import /* ngAria from */ 'angular-aria';
 import /* ngIdle from */ 'ng-idle';
@@ -17,7 +14,6 @@ import /* cytoscape from */ 'cytoscape';
 import /* ngCytoscape from */ './lib/ngCytoscape.min';
 import /* ngResource from */ 'angular-resource';
 import /* ngSanitize from */ 'angular-sanitize';
-import /* toaster from */ 'angularjs-toaster';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
 import /* ngStorage from */ 'ngstorage';
@@ -53,9 +49,6 @@ require('./index.constants');
 
 const dependencies = [
   'angular-loading-bar',
-  'angulartics',
-  'angulartics.google.tagmanager',
-  'feature-flags',
   'ngAnimate',
   'ngAria',
   'ngCytoscape',
@@ -63,7 +56,6 @@ const dependencies = [
   'ngResource',
   'ngStorage',
   'ngSanitize',
-  'toaster',
   'ui.bootstrap',
   'ui.router',
   administration.name,
