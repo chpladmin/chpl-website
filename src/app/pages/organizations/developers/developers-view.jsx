@@ -11,6 +11,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 
 import ChplMessaging from './messaging/messaging';
 
@@ -237,6 +238,7 @@ function ChplDevelopersView() {
                         variant="outlined"
                         color="primary"
                         style={{ marginRight: '8px' }}
+                        endIcon={<CloudDownloadOutlinedIcon />}
                       >
                         Download information for
                         {' '}
