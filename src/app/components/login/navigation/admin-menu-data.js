@@ -32,7 +32,7 @@ const sectionConfigs = [{
     router: { sref: 'administration.cms' },
   }, {
     key: 'compliance-dashboard',
-    roles: ['chpl-admin'],
+    roles: ['chpl-admin', 'chpl-onc'],
     href: '#/compliance-dashboard',
     text: 'Compliance Dashboard',
     router: { sref: 'compliance-dashboard' },
