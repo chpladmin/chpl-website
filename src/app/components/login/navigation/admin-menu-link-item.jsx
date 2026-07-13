@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   ListItem,
   makeStyles,
@@ -12,7 +12,7 @@ import {
 
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     color: palette.primary,
     fontSize: '14px',
     '&:hover': {
-      backgroundColor: `${palette.secondary} !important`,
+      backgroundColor: palette.secondary,
     },
     '& a': {
       color: palette.primary,
@@ -48,17 +48,9 @@ function ChplAdminMenuLinkItem({
   router = undefined,
   text,
 }) {
-  const [currentHash, setCurrentHash] = useState(window.location.hash);
-  const classes = useStyles();
+  const { currentHash } = useHashContext();
   const { analytics } = useAnalyticsContext();
-
-  useEffect(() => {
-    const handleHashChange = () => setCurrentHash(window.location.hash);
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  const isActive = href && currentHash === href;
+  const classes = useStyles();
 
   const handleRowClick = (event) => {
     eventTrack({
@@ -76,7 +68,7 @@ function ChplAdminMenuLinkItem({
   return (
     <ListItem
       button
-      className={`${classes.menuItem}${isActive ? ` ${classes.menuItemActive}` : ''}`}
+      className={`${classes.menuItem}${href && currentHash === href ? ` ${classes.menuItemActive}` : ''}`}
       onClick={handleRowClick}
     >
       <ChplLink
