@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   ListItem,
   makeStyles,
@@ -11,6 +11,7 @@ import {
 } from 'prop-types';
 
 import { ChplLink } from 'components/util';
+import { useHashContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
     color: palette.primary,
     fontSize: '14px',
     '&:hover': {
-      backgroundColor: `${palette.secondary} !important`,
+      backgroundColor: palette.secondary,
     },
     '& a': {
       color: palette.primary,
@@ -46,16 +47,8 @@ function ChplAdminMenuLinkItem({
   router = undefined,
   text,
 }) {
-  const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const { currentHash } = useHashContext();
   const classes = useStyles();
-
-  useEffect(() => {
-    const handleHashChange = () => setCurrentHash(window.location.hash);
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  const isActive = href && currentHash === href;
 
   const handleRowClick = (event) => {
     onClose();
@@ -68,7 +61,7 @@ function ChplAdminMenuLinkItem({
   return (
     <ListItem
       button
-      className={`${classes.menuItem}${isActive ? ` ${classes.menuItemActive}` : ''}`}
+      className={`${classes.menuItem}${href && currentHash === href ? ` ${classes.menuItemActive}` : ''}`}
       onClick={handleRowClick}
     >
       <ChplLink

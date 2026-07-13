@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Collapse,
@@ -27,7 +27,7 @@ import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   drawerItem: {
     color: palette.greyDark,
     '&:hover': {
-      backgroundColor: `${palette.secondary} !important`,
+      backgroundColor: palette.secondary,
     },
   },
   drawerNestedItem: {
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     paddingLeft: '32px',
     '&:hover': {
-      backgroundColor: `${palette.secondary} !important`,
+      backgroundColor: palette.secondary,
     },
     '& a': {
       textDecoration: 'none',
@@ -108,7 +108,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const { currentHash } = useHashContext();
   const [expandedSections, setExpandedSections] = useState({
     cms: false,
     compare: false,
@@ -123,12 +123,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
-
-  useEffect(() => {
-    const handleHashChange = () => setCurrentHash(window.location.hash);
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
 
   const handleHomeClick = () => {
     onHomeClick();
