@@ -8,8 +8,8 @@ import { ChplPageBody, ChplPageHeader } from 'components/util';
 function ChplComplianceDashboardWrapper() {
   return (
     <AppWrapper>
-      <ChplPageHeader 
-        text="Compliance Dashboard" 
+      <ChplPageHeader
+        text="Compliance Dashboard"
         subtitle="A comprehensive view of compliance reports and metrics"
       />
       <ChplPageBody>
