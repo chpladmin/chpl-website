@@ -4,7 +4,7 @@ const states = [{
   component: 'chplComplianceDashboardBridge',
   data: {
     title: 'Compliance Dashboard',
-    roles: ['chpl-admin'],
+    roles: ['chpl-admin', 'chpl-onc'],
   },
 }];
 

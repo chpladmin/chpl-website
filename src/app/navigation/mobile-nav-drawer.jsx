@@ -134,28 +134,24 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     closeMobileMenu();
   };
 
-  const toggleSection = (section) => {
+  const toggleSection = (section, title) => {
+    const isCurrentlyOpen = expandedSections[section];
+    eventTrack({
+      ...analytics,
+      event: isCurrentlyOpen ? `Collapse ${title}` : `Expand ${title}`,
+      category: 'Navigation',
+    });
     setExpandedSections((previous) => ({
       ...previous,
       [section]: !previous[section],
     }));
   };
 
-  const handleLinkItemClick = (item) => (event) => {
-    closeMobileMenu();
-    if (event.target.tagName === 'A') {
-      return;
-    }
-    const itemAnalytics = {
-      ...analytics,
-      event: item.analyticsEvent,
-      category: item.analyticsCategory ?? 'Navigation',
-    };
-    if (itemAnalytics.event) {
-      eventTrack(itemAnalytics);
-    }
-    window.location.href = item.href;
-  };
+  const getItemAnalytics = (item) => ({
+    ...analytics,
+    event: item.analyticsEvent,
+    category: item.analyticsCategory ?? 'Navigation',
+  });
 
   const widgetSections = [{
     key: 'cms',
@@ -212,7 +208,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           <Divider className={classes.drawerDivider} />
           {widgetSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
@@ -226,7 +222,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           ))}
           { linkSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
@@ -234,14 +230,14 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
                 <List disablePadding>
                   { section.items.map((item) => (
                     <ListItem
-                      button
                       key={item.key}
                       className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
-                      onClick={handleLinkItemClick(item)}
+                      onClick={closeMobileMenu}
                     >
                       <ChplLink
                         href={item.href}
                         text={item.text}
+                        analytics={getItemAnalytics(item)}
                         external={false}
                         router={item.router}
                       />
