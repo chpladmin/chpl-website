@@ -26,8 +26,8 @@ function ChplPageHeader({ text, subtitle }) {
           { subtitle
             && (
               <Button
-                size="small"
                 color="primary"
+                style={{ fontSize: '1rem' }}
                 onClick={() => {
                   const next = !expanded;
                   setExpanded(next);

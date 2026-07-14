@@ -29,6 +29,7 @@ import {
   CompareContext,
   UserContext,
   useAnalyticsContext,
+  useHashContext,
 } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -125,7 +126,7 @@ function ChplDesktopNav({
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-  const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const { currentHash } = useHashContext();
   const resourceItems = getResourceItems({ includeDeveloperGuide: hasAnyRole(developerGuideRoles) });
 
   const classes = useStyles();
@@ -172,12 +173,6 @@ function ChplDesktopNav({
       setCompareAnchorEl(null);
     }
   }, [compareIsOpen]);
-
-  useEffect(() => {
-    const handleHashChange = () => setCurrentHash(window.location.hash);
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
 
   const closeAllNavOverlays = () => {
     setCmsAnchorEl(null);
