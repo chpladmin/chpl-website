@@ -12,7 +12,7 @@ import {
 
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   pagination: {
@@ -20,6 +20,9 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('lg')]: {
       position: 'sticky',
       bottom: '64px',
+      width: 'fit-content',
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
   },
 });
