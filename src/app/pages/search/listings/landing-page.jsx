@@ -33,6 +33,13 @@ const useStyles = makeStyles({
     marginBottom: '8px',
     color: palette.white,
   },
+  heroSection: {
+    paddingTop: '64px',
+    paddingBottom: '80px',
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: '48px',
+    },
+  },
   infoBox: {
     marginTop: '16px',
     padding: '16px',
@@ -162,7 +169,7 @@ const useStyles = makeStyles({
     minHeight: '75vh',
   },
   subHeaders: {
-    color: '#fff',
+    color: palette.white,
     padding: '0 16px',
     [theme.breakpoints.up('sm')]: {
       padding: '0',
@@ -193,7 +200,7 @@ function ChplLandingPage() {
 
   return (
     <>
-      <Box width="100%" pt={16} pb={24}>
+      <Box width="100%" className={classes.heroSection}>
         <Container maxWidth="md">
           <Typography align="center" variant="h1" gutterBottom>
             Welcome to the Certified Health IT Product List
@@ -213,7 +220,7 @@ function ChplLandingPage() {
             </Box>
             {announcements.length > 0 && (
               <>
-                <Typography style={{ color: '#fff' }} className={classes.announcement} variant="h2" id="announcements-heading">
+                <Typography className={classes.announcement} variant="h2" id="announcements-heading">
                   Announcement
                   {announcements.length > 1 ? 's' : ''}
                 </Typography>

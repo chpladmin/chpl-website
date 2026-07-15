@@ -27,6 +27,9 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      padding: '16px',
+    },
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1fr auto',
     },
@@ -35,6 +38,15 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     gridGap: '8px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'flex-start',
+      width: '100%',
+      '& > *': {
+        flex: '0 0 auto',
+      },
+    },
   },
 });
 
@@ -48,7 +60,7 @@ function ChplFilterSearchBar({
   const classes = useStyles();
 
   return (
-    <div className={classes.searchContainer}>
+    <div className={classes.searchContainer} data-filter-search-bar="true">
       { !hideSearchTerm
         && (
           <ChplFilterSearchTerm

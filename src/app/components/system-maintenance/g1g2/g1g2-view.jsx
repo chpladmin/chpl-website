@@ -98,8 +98,6 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
                   {
                     label: 'Abbreviation',
                     value: item.abbreviation || 'N/A',
-                    xs: 6,
-                    sm: 6,
                     iconButton: (
                       <ChplTooltip title="Use this value in a upload file">
                         <IconButton color="primary" size="small">
@@ -111,8 +109,6 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
                   {
                     label: 'Domain',
                     value: item.domainDisplay || 'N/A',
-                    xs: 6,
-                    sm: 6,
                     iconButton: (
                       <ChplTooltip title="Use this value in a upload file">
                         <IconButton color="primary" size="small">
@@ -124,14 +120,10 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
                   {
                     label: 'Required Test',
                     value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
-                    xs: 6,
-                    sm: 6,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 6,
                   },
                 ],
               ]}

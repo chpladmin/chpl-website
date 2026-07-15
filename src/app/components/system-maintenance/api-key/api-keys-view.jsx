@@ -85,26 +85,18 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
                 {
                   label: 'Email',
                   value: key.email,
-                  xs: 6,
-                  sm: 6,
                 },
                 {
                   label: 'API Key',
                   value: key.key,
-                  xs: 6,
-                  sm: 6,
                 },
                 {
                   label: 'Last Used',
                   value: getDisplayDateFormat(key.lastUsedDate),
-                  xs: 6,
-                  sm: 6,
                 },
                 {
                   label: 'Warning Sent',
                   value: getDisplayDateFormat(key.deleteWarningSentDate),
-                  xs: 6,
-                  sm: 4,
                 },
               ],
             ]}

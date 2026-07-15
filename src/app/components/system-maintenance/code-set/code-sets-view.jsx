@@ -93,28 +93,20 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
                   {
                     label: 'Start Date',
                     value: getDisplayDateFormat(item.startDay),
-                    xs: 6,
-                    sm: 4,
                   },
                   {
                     label: 'Required Date',
                     value: getDisplayDateFormat(item.requiredDay),
-                    xs: 6,
-                    sm: 4,
                   },
                   {
                     label: 'Extension End Date',
                     value: getDisplayDateFormat(item.extensionEndDay),
-                    xs: 6,
-                    sm: 4,
                   },
                 ],
                 [
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 11,
-                    sm: 11,
                   },
                 ],
               ]}
