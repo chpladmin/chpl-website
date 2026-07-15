@@ -9,9 +9,11 @@ import ChplPageHeader from './chpl-page-header';
 import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
+import ChplLoadingCards from './chpl-loading-cards';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
+import ChplSearchResultControls from './chpl-search-result-controls';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 import ChplUpdateIndicator from './update-indicator';
@@ -25,12 +27,14 @@ export {
   ChplDialogTitle,
   ChplEllipsis,
   ChplLink,
+  ChplLoadingCards,
   ChplLoadingTable,
   ChplPageBody,
   ChplPageHeader,
   ChplPagination,
   ChplProgress,
   ChplSearchResultCard,
+  ChplSearchResultControls,
   ChplSortControls,
   ChplSortableHeaders,
   ChplTextField,

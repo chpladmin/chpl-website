@@ -20,8 +20,11 @@ const useStyles = makeStyles(() => ({
   filterContainer: {
     display: 'flex',
     padding: '16px 32px',
-    backgroundColor: '#fafdff',
-    borderBottom: '1px solid #bbb',
+    marginTop: '-4px', 
+    position: 'relative',
+    zIndex: 1,
+    backgroundColor: palette.white,
+    borderBottom: `1px solid ${palette.greyBorder}`,
     flexWrap: 'wrap',
     flexFlow: 'column',
     alignItems: 'flex-start',

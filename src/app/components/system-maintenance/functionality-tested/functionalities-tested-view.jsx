@@ -135,8 +135,6 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
                   {
                     label: 'Regulatory Text Citation',
                     value: item.regulatoryTextCitation || 'N/A',
-                    xs: 6,
-                    sm: 3,
                     iconButton: (
                       <ChplTooltip title="Use this value in a upload file">
                         <IconButton color="primary" size="small">
@@ -148,46 +146,32 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
                   {
                     label: 'Rule',
                     value: item.rule?.name || 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Practice Type',
                     value: item.practiceType?.name || 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 2,
                   },
                 ],
                 [
                   {
                     label: 'Start Date',
                     value: getDisplayDateFormat(item.startDay) || 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'End Date',
                     value: getDisplayDateFormat(item.endDay) || 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Required Date',
                     value: getDisplayDateFormat(item.requiredDay) || 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Extension End Date',
                     value: getDisplayDateFormat(item.extensionEndDay) || 'N/A',
-                    xs: 6,
-                    sm: 2,
                   },
                 ],
               ]}

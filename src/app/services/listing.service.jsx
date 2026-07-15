@@ -17,7 +17,7 @@ import { palette } from 'themes';
 
 const getFullButton = (text, icon) => (
   <ChplTooltip title={`Certification Status: ${text}`}>
-    <IconButton disableRipple>
+    <IconButton style={{ padding: 0 }} disableFocusRipple disableRipple>
       { icon }
     </IconButton>
   </ChplTooltip>
