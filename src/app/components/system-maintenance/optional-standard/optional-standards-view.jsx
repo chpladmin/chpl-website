@@ -94,14 +94,10 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
                   {
                     label: 'Description',
                     value: item.description || 'N/A',
-                    xs: 12,
-                    sm: 12,
                   },
                   {
                     label: 'Citation',
                     value: item.citation || 'N/A',
-                    xs: 6,
-                    sm: 6,
                     iconButton: (
                       <ChplTooltip title="Use this value in a upload file">
                         <IconButton color="primary" size="small">
@@ -113,8 +109,6 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 6,
                   },
                 ],
               ]}

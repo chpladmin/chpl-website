@@ -11,6 +11,8 @@ import {
 } from 'prop-types';
 
 import { ChplLink } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -35,9 +37,19 @@ function ChplAdminMenuLinkItem({
   text,
 }) {
   const classes = useStyles();
+  const { analytics } = useAnalyticsContext();
+
+  const handleClick = () => {
+    eventTrack({
+      ...analytics,
+      event: `Go to ${text} Page`,
+      category: 'Navigation',
+    });
+    onClose();
+  };
 
   return (
-    <ListItem className={classes.menuItem} onClick={onClose}>
+    <ListItem className={classes.menuItem} onClick={handleClick}>
       <ChplLink
         href={href}
         text={text}

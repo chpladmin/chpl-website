@@ -35,14 +35,14 @@ const useStyles = makeStyles({
 });
 
 function ChplSystemJobTypesView(props) {
-  const { dispatch } = props;
+  const { dispatch, jobTypes: initialJobTypes } = props;
   const [jobTypes, setJobTypes] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
-    setJobTypes(props.jobTypes
+    setJobTypes(initialJobTypes
       .sort(sortComparator('name')));
   }, []);
 
@@ -83,13 +83,19 @@ function ChplSystemJobTypesView(props) {
           { jobTypes.map((item) => (
             <ChplSearchResultCard
               key={item.name}
+              cardTitle="Job Name"
+              cardTitleValue={item.name}
               fieldGroups={[
                 [
-                  { label: 'Job Name', value: item.name, xs: 12, sm: 6 },
-                  { label: 'Description', value: item.description, xs: 12, sm: 5 },
+                  {
+                    label: 'Job Name', value: item.name,
+                  },
+                  {
+                    label: 'Description', value: item.description,
+                  },
                 ],
               ]}
-              actions={
+              actions={(
                 <ChplTooltip
                   title="Schedule Job"
                   placement="top"
@@ -102,7 +108,7 @@ function ChplSystemJobTypesView(props) {
                     <PlayArrowIcon />
                   </IconButton>
                 </ChplTooltip>
-              }
+              )}
             />
           ))}
         </Box>

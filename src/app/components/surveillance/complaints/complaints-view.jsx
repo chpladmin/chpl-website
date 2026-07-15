@@ -34,7 +34,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
     flexFlow: 'wrap',
   },
   statusIndicatorOpen: {
-    color: '#66926d',
+    color: palette.active,
   },
   statusIndicatorClosed: {
     color: 'rgba(0, 0, 0, 0.87)',

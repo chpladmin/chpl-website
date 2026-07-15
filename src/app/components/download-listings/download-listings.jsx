@@ -7,12 +7,12 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, string } from 'prop-types';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckIcon from '@material-ui/icons/Check';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
+import { arrayOf, string } from 'prop-types';
 
 import { useFetchSvaps } from 'api/standards';
 import { ChplTooltip } from 'components/util';
@@ -21,11 +21,45 @@ import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
-import { palette } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   noMargin: {
     margin: '0',
+  },
+  buttonGroup: {
+    width: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+  downloadButton: {
+    padding: '0 16px',
+    fontSize: '12px',
+    [theme.breakpoints.down('sm')]: {
+      flex: '1 1 auto',
+      minWidth: 0,
+      justifyContent: 'flex-start',
+      '& .MuiButton-label': {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        textAlign: 'left',
+        whiteSpace: 'normal',
+        lineHeight: 1.2,
+        width: '100%',
+      },
+    },
+  },
+  toggleButton: {
+    minWidth: '40px',
+    padding: '9px 4px',
+    [theme.breakpoints.down('sm')]: {
+      flex: '0 0 44px',
+      minWidth: '44px',
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
 });
 
@@ -193,12 +227,12 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
 
   return (
     <>
-      <ButtonGroup>
+      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined">
         <Button
+          className={classes.downloadButton}
           onClick={handleDownload}
           disabled={!canDownload()}
-          color="secondary"
-          variant="contained"
+          color="primary"
           size="small"
           id="download-listings"
           endIcon={<CloudDownloadOutlinedIcon />}
@@ -215,11 +249,10 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
             aria-controls="download-listings-menu"
             aria-haspopup="true"
             onClick={handleClick}
-            color="secondary"
-            variant="contained"
+            color="primary"
             size="small"
             id="open-download-listings-menu"
-            className={classes.noMargin}
+            className={`${classes.noMargin} ${classes.toggleButton}`}
           >
             <ExpandMoreIcon />
           </Button>

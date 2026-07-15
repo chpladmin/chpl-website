@@ -112,14 +112,10 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
                   {
                     label: 'Removal Date',
                     value: getDisplayDateFormat(item.removalDate),
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 12,
-                    sm: 8,
                   },
                 ],
               ]}

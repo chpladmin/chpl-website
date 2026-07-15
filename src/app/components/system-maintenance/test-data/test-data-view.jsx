@@ -57,8 +57,6 @@ function ChplTestDataView({ testData: initialTestData }) {
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 12,
-                    sm: 12,
                   },
                 ],
               ]}
