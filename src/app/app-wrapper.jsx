@@ -7,7 +7,7 @@ import {
 import { bool, node } from 'prop-types';
 import { CookiesProvider } from 'react-cookie';
 
-import { AnalyticsProvider } from 'shared/contexts';
+import { AnalyticsProvider, HashProvider } from 'shared/contexts';
 import ApiWrapper from 'api/api-wrapper';
 import BrowserWrapper from 'components/browser/browser-wrapper';
 import CmsWrapper from 'components/cms-widget/cms-wrapper';
@@ -30,16 +30,18 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
                 <CmsWrapper>
                   <BrowserWrapper>
                     <AnalyticsProvider>
-                      <CookiesProvider defaultSetOptions={{
-                        path: '/',
-                        expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
-                        domain: '.healthit.gov',
-                      }}
-                      >
-                        <ChplNavigationTop />
-                        {children}
-                        <ChplNavigationBottom />
-                      </CookiesProvider>
+                      <HashProvider>
+                        <CookiesProvider defaultSetOptions={{
+                          path: '/',
+                          expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
+                          domain: '.healthit.gov',
+                        }}
+                        >
+                          <ChplNavigationTop />
+                          {children}
+                          <ChplNavigationBottom />
+                        </CookiesProvider>
+                      </HashProvider>
                     </AnalyticsProvider>
                   </BrowserWrapper>
                 </CmsWrapper>

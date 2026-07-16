@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  Box,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 
 import { useFetchListings } from 'api/search';
@@ -16,9 +10,13 @@ import ChplCertificationStatusLegend from 'components/certification-status/certi
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
+  ChplLoadingCards,
   ChplPagination,
-  ChplLoadingTable,
-  ChplSortableHeaders,
+  ChplPageBody,
+  ChplPageHeader,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
 } from 'components/util';
 import {
   ChplFilterChips,
@@ -26,84 +24,22 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
+import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const headers = [
-  { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-  { property: 'developer', text: 'Developer', sortable: true },
-  { property: 'product', text: 'Product', sortable: true },
-  { property: 'version', text: 'Version', sortable: true },
-  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
-  { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs', sortable: true, reverseDefault: true },
-  { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', sortable: true, reverseDefault: true },
-  { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', sortable: true, reverseDefault: true },
-  { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', sortable: true, reverseDefault: true },
-  { text: 'Actions', invisible: true },
+const sortOptions = [
+  { property: 'chpl_id', text: 'CHPL ID' },
+  { property: 'developer', text: 'Developer' },
+  { property: 'product', text: 'Product' },
+  { property: 'version', text: 'Version' },
+  { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs', reverseDefault: true },
+  { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', reverseDefault: true },
+  { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', reverseDefault: true },
+  { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', reverseDefault: true },
 ];
-
-const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 158px)',
-  },
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
-    },
-  },
-  tableContainer: {
-    overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
-    margin: '0px 32px',
-    width: 'auto',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
-  resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
-  },
-});
 
 function ChplCorrectiveActionSearchView() {
   const storageKey = 'storageKey-correctiveActionView';
@@ -115,7 +51,6 @@ function ChplCorrectiveActionSearchView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
   const toggledCsvDefaults = ['compliance'];
 
   const filterContext = useFilterContext();
@@ -146,7 +81,7 @@ function ChplCorrectiveActionSearchView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -160,115 +95,84 @@ function ChplCorrectiveActionSearchView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">Products: Corrective Action Status</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1" gutterBottom>
-          This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as &quot;Surveillance NCs&quot;, while non-conformities identified though an ONC Direct Review are noted as &quot;Direct Review NCs&quot;. Not all non-conformities affect a product&apos;s functionality, and the existence of a non-conformity does not by itself mean that a product is &quot;defective.&quot; Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product&apos;s CHPL ID.
-        </Typography>
-        <Typography variant="body1">
-          Please note that by default, only listings that are active or suspended are shown in the search results.
-        </Typography>
+    <>
+      <ChplPageHeader
+        text="Products: Corrective Action Status"
+        subtitle={(
+          <>
+            <Typography variant="body1" gutterBottom>
+              This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as &quot;Surveillance NCs&quot;, while non-conformities identified though an ONC Direct Review are noted as &quot;Direct Review NCs&quot;.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Not all non-conformities affect a product&apos;s functionality, and the existence of a non-conformity does not by itself mean that a product is &quot;defective.&quot; Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product&apos;s CHPL ID.
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Please note that by default, only listings that are active or suspended are shown in the search results.
+            </Typography>
+          </>
+        )}
+      />
+      <ChplPageBody>
         { !isLoading && !directReviewsAvailable
-          && (
-            <>
-              <Typography variant="body1" gutterBottom>
-                This information is temporarily unavailable. Please check back later.
-              </Typography>
-              <Typography variant="body1">
-                Surveillance and Direct Review information can be downloaded from the
-                {' '}
-                <ChplLink
-                  href="#/resources/download"
-                  text="Download the CHPL"
-                  analytics={{
-                    ...analytics,
-                    event: 'Navigate to Download the CHPL',
-                  }}
-                  external={false}
-                  router={{ sref: 'resources.download' }}
-                  inline
-                />
-              </Typography>
-            </>
-          )}
-      </div>
-      { directReviewsAvailable
+        && (
+          <>
+            <Typography variant="body1" gutterBottom>
+              This information is temporarily unavailable. Please check back later.
+            </Typography>
+            <Typography variant="body1">
+              Surveillance and Direct Review information can be downloaded from the
+              {' '}
+              <ChplLink
+                href="#/resources/download"
+                text="Download the CHPL"
+                analytics={{
+                  ...analytics,
+                  event: 'Navigate to Download the CHPL',
+                }}
+                external={false}
+                router={{ sref: 'resources.download' }}
+                inline
+              />
+            </Typography>
+          </>
+        )}
+        { directReviewsAvailable
         && (
           <>
             <ChplFilterSearchBar />
-            <div>
-              <ChplFilterChips />
-            </div>
-            { isLoading
-              && (
-                <ChplLoadingTable className={classes.tableContainer} />
-              )}
+            <ChplFilterChips />
+            { isLoading && (<ChplLoadingCards />)}
             { !isLoading
               && (
                 <>
-                  <div className={classes.tableResultsHeaderContainer}>
-                    <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                      <Typography variant="subtitle2">Search Results:</Typography>
-                      { listings.length === 0
-                        && (
-                          <Typography>
-                            No results found
-                          </Typography>
-                        )}
-                      { listings.length > 0
-                        && (
-                          <Typography variant="body2">
-                            {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                          </Typography>
-                        )}
-                    </div>
-                    { listings.length > 0
-                      && (
-                        <ChplDownloadListings
-                          listings={listings}
-                          toggled={toggledCsvDefaults}
-                        />
-                      )}
-                  </div>
-                  { listings.length > 0
+                  <ChplSearchResultControls
+                    recordCount={recordCount}
+                    pageStart={pageStart}
+                    pageEnd={pageEnd}
+                  >
+                    <ChplSortControls
+                      sortOptions={sortOptions}
+                      orderBy={orderBy}
+                      order={sortDescending ? 'desc' : 'asc'}
+                      onSort={handleSort}
+                    />
+                    <ChplDownloadListings
+                      listings={listings}
+                      toggled={toggledCsvDefaults}
+                    />
+                  </ChplSearchResultControls>
+                  {listings.length > 0
                     && (
                       <>
-                        <TableContainer className={classes.tableContainer} component={Paper}>
-                          <Table
-                            stickyHeader
-                            aria-label="Corrective Action Searchs table"
-                          >
-                            <ChplSortableHeaders
-                              headers={headers}
-                              onTableSort={handleTableSort}
-                              orderBy={orderBy}
-                              order={sortDescending ? 'desc' : 'asc'}
-                              stickyHeader
-                            />
-                            <TableBody>
-                              { listings
-                                .map((item) => (
-                                  <TableRow key={item.id}>
-                                    <TableCell className={classes.stickyColumn}>
-                                      <strong>
-                                        <ChplLink
-                                          href={`#/listing/${item.id}`}
-                                          text={item.chplProductNumber}
-                                          analytics={{
-                                            ...analytics,
-                                            event: 'Navigate to Listing Details Page',
-                                            label: item.chplProductNumber,
-                                            aggregationName: item.product.name,
-                                          }}
-                                          external={false}
-                                          router={{ sref: 'listing', options: { id: item.id } }}
-                                        />
-                                      </strong>
-                                    </TableCell>
-                                    <TableCell>
+                        <Box>
+                          {listings.map((item) => (
+                            <ChplSearchResultCard
+                              key={item.id}
+                              fieldGroups={[
+                                [
+                                  {
+                                    label: 'Developer',
+                                    value: (
                                       <ChplLink
                                         href={`#/organizations/developers/${item.developer.id}`}
                                         text={item.developer.name}
@@ -280,22 +184,68 @@ function ChplCorrectiveActionSearchView() {
                                         external={false}
                                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                                       />
-                                    </TableCell>
-                                    <TableCell>{item.product.name}</TableCell>
-                                    <TableCell>{item.version.name}</TableCell>
-                                    <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
-                                    <TableCell>{item.openSurveillanceNonConformityCount}</TableCell>
-                                    <TableCell>{item.closedSurveillanceNonConformityCount}</TableCell>
-                                    <TableCell>{item.openDirectReviewNonConformityCount}</TableCell>
-                                    <TableCell>{item.closedDirectReviewNonConformityCount}</TableCell>
-                                    <TableCell>
-                                      <ChplActionButton listing={item} />
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
+                                    ),
+                                  },
+                                  {
+                                    label: 'Product',
+                                    value: item.product.name,
+                                  },
+                                  {
+                                    label: 'Version',
+                                    value: item.version.name,
+                                  },
+                                ],
+                                [
+                                  {
+                                    label: 'CHPL ID',
+                                    value: (
+                                      <ChplLink
+                                        href={`#/listing/${item.id}`}
+                                        text={item.chplProductNumber}
+                                        analytics={{
+                                          ...analytics,
+                                          event: 'Navigate to Listing Details Page',
+                                          label: item.chplProductNumber,
+                                          aggregationName: item.product.name,
+                                        }}
+                                        external={false}
+                                        router={{ sref: 'listing', options: { id: item.id } }}
+                                      />
+                                    ),
+                                  },
+                                  {
+                                    label: 'Certification Date',
+                                    value: getDisplayDateFormat(item.certificationDate),
+                                  },
+                                  {
+                                    label: 'Status',
+                                    value: getStatusIcon(item.certificationStatus),
+                                    iconButton: <ChplCertificationStatusLegend />,
+                                  },
+                                ],
+                                [
+                                  {
+                                    label: '# Open Surveillance NCs',
+                                    value: item.openSurveillanceNonConformityCount,
+                                  },
+                                  {
+                                    label: '# Closed Surveillance NCs',
+                                    value: item.closedSurveillanceNonConformityCount,
+                                  },
+                                  {
+                                    label: '# Open Direct Review NCs',
+                                    value: item.openDirectReviewNonConformityCount,
+                                  },
+                                  {
+                                    label: '# Closed Direct Review NCs',
+                                    value: item.closedDirectReviewNonConformityCount,
+                                  },
+                                ],
+                              ]}
+                              actions={<ChplActionButton listing={item} />}
+                            />
+                          ))}
+                        </Box>
                         <ChplPagination
                           count={recordCount}
                           page={pageNumber}
@@ -310,7 +260,8 @@ function ChplCorrectiveActionSearchView() {
               )}
           </>
         )}
-    </div>
+      </ChplPageBody>
+    </>
   );
 }
 

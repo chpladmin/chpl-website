@@ -23,11 +23,13 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import {
   CmsContext,
   CompareContext,
   UserContext,
   useAnalyticsContext,
+  useHashContext,
 } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -83,15 +85,27 @@ const useStyles = makeStyles({
     padding: '8px 0',
   },
   dropdownItem: {
+    cursor: 'pointer',
     padding: '6px 16px',
     whiteSpace: 'nowrap',
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
     '& span': {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
     },
     '& a': {
-      color: `${palette.primary} !important`,
+      color: palette.primary,
+      textDecoration: 'none',
+    },
+  },
+  dropdownItemActive: {
+    '& a': {
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
     },
   },
 });
@@ -112,6 +126,7 @@ function ChplDesktopNav({
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const { currentHash } = useHashContext();
   const resourceItems = getResourceItems({ includeDeveloperGuide: hasAnyRole(developerGuideRoles) });
 
   const classes = useStyles();
@@ -233,6 +248,18 @@ function ChplDesktopNav({
     category: item.analyticsCategory ?? 'Navigation',
   });
 
+  const handleMenuItemClick = (item, closeMenu) => (event) => {
+    closeMenu();
+    if (event.target.tagName === 'A') {
+      return;
+    }
+    const itemAnalytics = getItemAnalytics(item);
+    if (itemAnalytics.event) {
+      eventTrack(itemAnalytics);
+    }
+    window.location.href = item.href;
+  };
+
   const getDownloadIcon = (item) => {
     if (!item.showDownloadIcon) {
       return undefined;
@@ -333,8 +360,8 @@ function ChplDesktopNav({
               { resourceItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={classes.dropdownItem}
-                  onClick={closeResources}
+                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
+                  onClick={handleMenuItemClick(item, closeResources)}
                   role="menuitem"
                 >
                   <ChplLink
@@ -344,7 +371,6 @@ function ChplDesktopNav({
                     external={false}
                     router={item.router}
                     icon={getDownloadIcon(item)}
-                    indicateOnHover
                   />
                 </Box>
               ))}
@@ -367,8 +393,8 @@ function ChplDesktopNav({
               { shortcutItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={classes.dropdownItem}
-                  onClick={closeShortcuts}
+                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
+                  onClick={handleMenuItemClick(item, closeShortcuts)}
                   role="menuitem"
                 >
                   <ChplLink
@@ -377,7 +403,6 @@ function ChplDesktopNav({
                     analytics={getItemAnalytics(item)}
                     external={false}
                     router={item.router}
-                    indicateOnHover
                   />
                 </Box>
               ))}

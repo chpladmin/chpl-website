@@ -11,6 +11,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 
 import ChplMessaging from './messaging/messaging';
 
@@ -27,7 +28,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
     display: 'grid',
     borderRadius: 4,
     gridTemplateRows: '1fr',
-    backgroundColor: 'palette.white',
+    backgroundColor: palette.white,
   },
   pageContent: {
     display: 'grid',
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
     position: 'sticky',
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
     overflowWrap: 'anywhere',
     [theme.breakpoints.up('sm')]: {
       minWidth: '275px',
@@ -53,7 +54,7 @@ const useStyles = makeStyles({
   },
   tableContainer: {
     overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
+    border: `.5px solid ${palette.divider}`,
     margin: '0px 32px',
     width: 'auto',
   },
@@ -237,6 +238,7 @@ function ChplDevelopersView() {
                         variant="outlined"
                         color="primary"
                         style={{ marginRight: '8px' }}
+                        endIcon={<CloudDownloadOutlinedIcon />}
                       >
                         Download information for
                         {' '}

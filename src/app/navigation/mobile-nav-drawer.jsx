@@ -27,7 +27,7 @@ import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { UserContext, useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -54,10 +54,27 @@ const useStyles = makeStyles({
   },
   drawerItem: {
     color: palette.greyDark,
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
   },
   drawerNestedItem: {
     color: palette.greyDark,
+    cursor: 'pointer',
     paddingLeft: '32px',
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
+    '& a': {
+      textDecoration: 'none',
+    },
+  },
+  drawerNestedItemActive: {
+    '& a': {
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
+    },
   },
   drawerDivider: {
     backgroundColor: palette.divider,
@@ -88,9 +105,10 @@ const useStyles = makeStyles({
 });
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
-  const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
+  const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { currentHash } = useHashContext();
   const [expandedSections, setExpandedSections] = useState({
     cms: false,
     compare: false,
@@ -211,7 +229,11 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
               <Collapse in={expandedSections[section.key]}>
                 <List disablePadding>
                   { section.items.map((item) => (
-                    <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
+                    <ListItem
+                      key={item.key}
+                      className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
+                      onClick={closeMobileMenu}
+                    >
                       <ChplLink
                         href={item.href}
                         text={item.text}

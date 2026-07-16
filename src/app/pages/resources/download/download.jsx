@@ -13,7 +13,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 import { ChplLink, ChplTextField } from 'components/util';
@@ -238,10 +238,9 @@ function ChplResourcesDownload() {
                         variant="contained"
                         id="download-chpl-data-button"
                         onClick={() => downloadFile('data')}
+                        endIcon={<CloudDownloadOutlinedIcon />}
                       >
                         Data File
-                        {' '}
-                        <GetAppIcon className={classes.iconSpacing} />
                       </Button>
                       { files[selectedOption]?.definition
                         && (
