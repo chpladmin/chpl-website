@@ -127,12 +127,12 @@ function ChplSed({ listing }) {
             </CardContent>
           </Card>
         )}
-      <Card>
-        <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
-        <CardContent>
-          <Card className={classes.tableScrolling}>
-            { !hti5ErdIsOn
-              && (
+      { !hti5ErdIsOn
+        && (
+          <Card>
+            <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
+            <CardContent>
+              <Card className={classes.tableScrolling}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -168,66 +168,66 @@ function ChplSed({ listing }) {
                       ))}
                   </TableBody>
                 </Table>
-              )}
-            { hti5ErdIsOn
-              && (
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Certification Criteria</TableCell>
-                      <TableCell>UCD Process</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { sed.ucdProcesses
-                      .sort(sortUcdProcesses)
-                      .map((ucd) => (
-                        <TableRow key={ucd.id}>
-                          <TableCell>
-                            <List>
-                              {ucd.criteria
-                                .sort(sortCriteria)
-                                .map((criterion) => (
-                                  <ListItem key={criterion.id}>
-                                    {criterion.removed && 'Removed | '}
-                                    {criterion.number}
-                                  </ListItem>
-                                ))}
-                            </List>
-                          </TableCell>
-                          <TableCell>
-                            { ucd.name && `Name: ${ucd.name}` }
-                            { (ucd.name && ucd.details) && <br /> }
-                            { ucd.details && `Details: ${ucd.details}`}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              )}
-          </Card>
-        </CardContent>
-      </Card>
-      { (listing.edition === null || listing.edition.name === '2015') && !hti5ErdIsOn
-        && (
-          <Card>
-            <CardHeader title="SED Testing Tasks" />
-            <CardContent>
-              <Box display="flex" justifyContent="flex-end" pb={4}>
-                <ChplSedDownload
-                  listing={listing}
-                />
-              </Box>
-              { sed.testTasks
-                .sort(sortTestTasks)
-                .map((task) => (
-                  <ChplSedTaskView
-                    key={task.friendlyId ?? task.id}
-                    task={task}
-                  />
-                ))}
+              </Card>
+              { (listing.edition === null || listing.edition.name === '2015') && sed.testTasks
+                && (
+                  <Card>
+                    <CardHeader title="SED Testing Tasks" />
+                    <CardContent>
+                      <Box display="flex" justifyContent="flex-end" pb={4}>
+                        <ChplSedDownload
+                          listing={listing}
+                        />
+                      </Box>
+                      { sed.testTasks
+                        .sort(sortTestTasks)
+                        .map((task) => (
+                          <ChplSedTaskView
+                            key={task.friendlyId ?? task.id}
+                            task={task}
+                          />
+                        ))}
+                    </CardContent>
+                  </Card>
+                )}
             </CardContent>
           </Card>
+        )}
+      { hti5ErdIsOn
+        && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Certification Criteria</TableCell>
+                <TableCell>UCD Process</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { sed.ucdProcesses
+                .sort(sortUcdProcesses)
+                .map((ucd) => (
+                  <TableRow key={ucd.id}>
+                    <TableCell>
+                      <List>
+                        {ucd.criteria
+                          .sort(sortCriteria)
+                          .map((criterion) => (
+                            <ListItem key={criterion.id}>
+                              {criterion.removed && 'Removed | '}
+                              {criterion.number}
+                            </ListItem>
+                          ))}
+                      </List>
+                    </TableCell>
+                    <TableCell>
+                      { ucd.name && `Name: ${ucd.name}` }
+                      { (ucd.name && ucd.details) && <br /> }
+                      { ucd.details && `Details: ${ucd.details}`}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         )}
     </Box>
   );
