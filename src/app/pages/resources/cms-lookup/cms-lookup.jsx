@@ -16,7 +16,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import WarningIcon from '@material-ui/icons/Warning';
 import { ExportToCsv } from 'export-to-csv';
 
@@ -201,7 +201,7 @@ function ChplCmsLookup() {
                   fullWidth
                   id="download-listing-data"
                   onClick={downloadListingData}
-                  endIcon={<GetAppIcon />}
+                  endIcon={<CloudDownloadOutlinedIcon />}
                 >
                   Download Result
                   { listings.length !== 1 ? 's' : '' }

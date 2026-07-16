@@ -10,6 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
@@ -217,6 +218,7 @@ function ChplQuestionableActivityView() {
                     size="small"
                     id="download-filtered-results"
                     onClick={handleClick}
+                    endIcon={<CloudDownloadOutlinedIcon />}
                   >
                     Download Filtered Results
                   </Button>

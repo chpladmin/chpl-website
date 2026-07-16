@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
@@ -471,7 +471,7 @@ function ChplCmsDisplay() {
               variant="contained"
               id="download-cert-id"
               onClick={downloadPdf}
-              endIcon={<CloudDownloadIcon />}
+              endIcon={<CloudDownloadOutlinedIcon />}
             >
               Download PDF
             </Button>

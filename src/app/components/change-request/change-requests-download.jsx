@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  makeStyles,
 } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSnackbar } from 'notistack';
 import { object, number, string } from 'prop-types';
 
 import { usePostReportRequest } from 'api/change-requests';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-});
 
 function ChplChangeRequestsDownload({
   bonusQuery = '',
@@ -25,7 +19,6 @@ function ChplChangeRequestsDownload({
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
   const [query, setQuery] = useState({});
-  const classes = useStyles();
 
   useEffect(() => {
     const updated = {
@@ -65,6 +58,7 @@ function ChplChangeRequestsDownload({
       variant="outlined"
       onClick={download}
       disabled={recordCount === 0}
+      endIcon={<CloudDownloadOutlinedIcon />}
     >
       Download
       {' '}
@@ -72,7 +66,6 @@ function ChplChangeRequestsDownload({
       {' '}
       result
       { recordCount === 1 ? '' : 's' }
-      <GetAppIcon className={classes.iconSpacing} />
     </Button>
   );
 }
