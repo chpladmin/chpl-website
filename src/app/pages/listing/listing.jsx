@@ -9,8 +9,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import {
-  CloudDownload,
   Edit,
   Star,
   StarOutline,
@@ -272,7 +272,7 @@ function ChplListingPage({ id }) {
                         size="small"
                         id={`download-original-csv-${listing.id}`}
                         onClick={downloadOriginalCsv}
-                        endIcon={<CloudDownload />}
+                        endIcon={<CloudDownloadOutlinedIcon />}
                       >
                         Original CSV
                       </Button>
@@ -285,7 +285,7 @@ function ChplListingPage({ id }) {
                         size="small"
                         id={`download-current-csv-${listing.id}`}
                         onClick={downloadCurrentCsv}
-                        endIcon={<CloudDownload />}
+                        endIcon={<CloudDownloadOutlinedIcon />}
                       >
                         Current CSV
                       </Button>
