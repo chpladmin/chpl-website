@@ -196,7 +196,9 @@ function ChplSed({ listing }) {
                             </List>
                           </TableCell>
                           <TableCell>
-                            {ucd.value}
+                            { ucd.name && `Name: ${ucd.name}` }
+                            { (ucd.name && ucd.details) && <br /> }
+                            { ucd.details && `Details: ${ucd.details}`}
                           </TableCell>
                         </TableRow>
                       ))}
