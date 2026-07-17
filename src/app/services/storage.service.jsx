@@ -13,11 +13,7 @@ const useStorage = (key, defaultValue, storage) => {
     storage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
-  const removeItem = () => {
-    storage.removeItem(key);
-  };
-
-  return [value, setValue, removeItem];
+  return [value, setValue];
 };
 
 const useLocalStorage = (key, defaultValue) => useStorage(key, defaultValue, localStorage);

@@ -8,7 +8,6 @@ import ChplLogin from './login';
 import { usePostLogout } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
-import { useLocalStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 function UserWrapper({ children = <ChplLogin /> }) {
@@ -19,9 +18,6 @@ function UserWrapper({ children = <ChplLogin /> }) {
   const [loginWidgetState, setLoginWidgetState] = useState('SIGNIN');
   const [user, setUser] = useState({});
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
-  const [, , removeJwtToken] = useStorage('ngStorage-jwtToken', '');
-  const [, , removeRefreshToken] = useStorage('ngStorage-refreshToken', '');
-  const [, , removeCurrentUser] = useStorage('ngStorage-currentUser', '');
 
   useEffect(() => {
     const update = () => {
@@ -62,9 +58,9 @@ function UserWrapper({ children = <ChplLogin /> }) {
     setUser({});
     removeCookie('cognito_id');
     removeCookie('refresh_token');
-    removeJwtToken();
-    removeRefreshToken();
-    removeCurrentUser();
+    localStorage.removeItem('ngStorage-jwtToken');
+    localStorage.removeItem('ngStorage-refreshToken');
+    localStorage.removeItem('ngStorage-currentUser');
     setLoginWidgetState('SIGNIN');
     clearAuthTokens();
     $rootScope.$broadcast('loggedOut');

@@ -1,11 +1,15 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import Axios from 'axios';
 import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { getAngularService } from 'services/angular-react-helper';
-import { useLocalStorage as useStorage } from 'services/storage.service';
 import { UserContext } from 'shared/contexts';
 
 const AxiosContext = createContext();
@@ -14,8 +18,7 @@ function AxiosProvider({ children }) {
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
   const { setLoginWidgetState } = useContext(UserContext);
-  const [jwtToken, setJwtToken] = useStorage('ngStorage-jwtToken');
-  const [user] = useStorage('ngStorage-currentUser');
+  const [, setJwtToken] = useState(undefined);
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -26,7 +29,7 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      const { cognitoId } = user;
+      const { cognitoId } = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
@@ -54,11 +57,7 @@ function AxiosProvider({ children }) {
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
       let accessToken = '';
-      if (user?.cognitoId) {
-        accessToken = await getAccessToken();
-      } else if (user?.userId) {
-        accessToken = jwtToken;
-      }
+      accessToken = await getAccessToken();
       if (accessToken) {
         updated.headers.Authorization = `Bearer ${accessToken}`;
       }
