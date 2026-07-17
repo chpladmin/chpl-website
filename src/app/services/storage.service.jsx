@@ -4,7 +4,7 @@ const getValue = (key, defaultValue, storage) => {
   const saved = storage.getItem(key);
   const initial = JSON.parse(saved);
   return initial || defaultValue;
-}
+};
 
 const useStorage = (key, defaultValue, storage) => {
   const [value, setValue] = useState(() => getValue(key, defaultValue, storage));
@@ -13,15 +13,15 @@ const useStorage = (key, defaultValue, storage) => {
     storage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
-  return [value, setValue];
+  const removeItem = () => {
+    storage.removeItem(key);
+  };
+
+  return [value, setValue, removeItem];
 };
 
-const useLocalStorage = (key, defaultValue) => {
-  return useStorage(key, defaultValue, localStorage);
-};
+const useLocalStorage = (key, defaultValue) => useStorage(key, defaultValue, localStorage);
 
-const useSessionStorage = (key, defaultValue) => {
-  return useStorage(key, defaultValue, sessionStorage);
-};
+const useSessionStorage = (key, defaultValue) => useStorage(key, defaultValue, sessionStorage);
 
 export { useLocalStorage, useSessionStorage };
