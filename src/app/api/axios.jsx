@@ -5,15 +5,17 @@ import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { getAngularService } from 'services/angular-react-helper';
+import { useLocalStorage as useStorage } from 'services/storage.service';
 import { UserContext } from 'shared/contexts';
 
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
-  const $localStorage = getAngularService('$localStorage');
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
   const { setLoginWidgetState } = useContext(UserContext);
+  const [jwtToken, setJwtToken] = useStorage('ngStorage-jwtToken');
+  const [user] = useStorage('ngStorage-currentUser');
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -24,7 +26,6 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      const user = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
       const { cognitoId } = user;
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
@@ -33,7 +34,7 @@ function AxiosProvider({ children }) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
         return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => {
-            $localStorage.jwtToken = response.data.accessToken;
+            setJwtToken(response.data.accessToken);
             return response.data.accessToken;
           })
           .catch(() => {
@@ -53,10 +54,10 @@ function AxiosProvider({ children }) {
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
       let accessToken = '';
-      if (JSON.parse(localStorage.getItem('ngStorage-currentUser'))?.cognitoId) {
+      if (user?.cognitoId) {
         accessToken = await getAccessToken();
-      } else if (JSON.parse(localStorage.getItem('ngStorage-currentUser'))?.userId) {
-        accessToken = $localStorage.jwtToken;
+      } else if (user?.userId) {
+        accessToken = jwtToken;
       }
       if (accessToken) {
         updated.headers.Authorization = `Bearer ${accessToken}`;
