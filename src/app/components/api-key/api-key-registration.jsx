@@ -14,8 +14,8 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { usePostRequestApiKey } from 'api/api-keys';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
@@ -40,8 +40,8 @@ const validationSchema = yup.object({
 });
 
 function ChplApiKeyRegistration() {
+  const { mutate } = usePostRequestApiKey();
   const { enqueueSnackbar } = useSnackbar();
-  const networkService = getAngularService('networkService');
   const { analytics } = useAnalyticsContext();
   const classes = useStyles();
   let formik = {};
@@ -54,15 +54,16 @@ function ChplApiKeyRegistration() {
   };
 
   const createRequest = (values) => {
-    networkService.requestApiKey({ email: values.email, name: values.nameOrganization })
-      .then((response) => {
+    mutate({ email: values.email, name: values.nameOrganization }, {
+      onSuccess: (response) => {
         if (response.success) {
           enqueueSnackbar(`To confirm your email address, an email was sent to: ${values.email}  Please follow the instructions in the email to obtain your API key.`, {
             variant: 'success',
           });
           formik.resetForm();
         }
-      }, (error) => {
+      },
+      onError: (error) => {
         if (error.data.error) {
           enqueueSnackbar(error.data.error, {
             variant: 'error',
@@ -72,7 +73,8 @@ function ChplApiKeyRegistration() {
             variant: 'error',
           });
         }
-      });
+      },
+    });
   };
 
   formik = useFormik({

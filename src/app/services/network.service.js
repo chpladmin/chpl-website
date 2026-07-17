@@ -7,62 +7,12 @@ export default class NetworkService {
     this.API = API;
   }
 
-  deleteSurveillance(surveillanceId, reason) {
-    return this.apiDELETE(`/surveillance/${surveillanceId}`, {
-      reason,
-    });
-  }
-
-  getAcbs(editable) {
-    return this.apiGET(`/acbs?editable=${editable}`, { forceReload: true });
-  }
-
-  getComplaintsWithSurveillance(surveillanceId) {
-    return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
-  }
-
-  getDeveloper(id) {
-    return this.apiGET(`/developers/${id}`);
-  }
-
-  getDevelopers() {
-    return this.apiGET('/developers');
-  }
-
-  getListing(listingId, forceReload) {
-    return this.apiGET(`/certified_products/${listingId}/details`, { forceReload });
-  }
-
   getListingBasic(listingId, forceReload) {
     return this.apiGET(`/certified_products/${listingId}`, { forceReload });
   }
 
-  getPendingListingById(id) {
-    return this.apiGET(`/listings/pending/${id}`);
-  }
-
-  getProduct(id) {
-    return this.apiGET(`/products/${id}`);
-  }
-
-  getRelatedListings(id) {
-    return this.apiGET(`/products/${id}/listings`);
-  }
-
   logout(logoutRequest) {
     return this.apiPOST('/auth/logout', logoutRequest);
-  }
-
-  requestApiKey(apiKeyRequest) {
-    return this.apiPOST('/key/request', apiKeyRequest);
-  }
-
-  splitProduct(productObject) {
-    return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
-  }
-
-  updateSurveillance(surveillance) {
-    return this.apiPUT(`/surveillance/${surveillance.id}`, surveillance);
   }
 
   /*
