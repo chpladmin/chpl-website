@@ -7,7 +7,7 @@ import {
 import { bool, node } from 'prop-types';
 import { CookiesProvider } from 'react-cookie';
 
-import { AnalyticsProvider } from 'shared/contexts';
+import { AnalyticsProvider, HashProvider } from 'shared/contexts';
 import ApiWrapper from 'api/api-wrapper';
 import BrowserWrapper from 'components/browser/browser-wrapper';
 import CmsWrapper from 'components/cms-widget/cms-wrapper';
@@ -15,35 +15,41 @@ import CompareWrapper from 'components/compare-widget/compare-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 import { SnackbarWrapper } from 'components/util';
+import ChplNavigationBottom from 'navigation/navigation-bottom';
+import ChplNavigationTop from 'navigation/navigation-top';
 import theme from 'themes/theme';
 
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
     <ThemeProvider theme={theme}>
-      <ApiWrapper showQueryTools={showQueryTools}>
-        <UserWrapper>
-          <SnackbarWrapper>
+      <SnackbarWrapper>
+        <ApiWrapper showQueryTools={showQueryTools}>
+          <UserWrapper>
             <FlagWrapper>
               <CompareWrapper>
                 <CmsWrapper>
                   <BrowserWrapper>
                     <AnalyticsProvider>
-                      <CookiesProvider defaultSetOptions={{
-                        path: '/',
-                        expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
-                        domain: '.healthit.gov',
-                      }}
-                      >
-                        {children}
-                      </CookiesProvider>
+                      <HashProvider>
+                        <CookiesProvider defaultSetOptions={{
+                          path: '/',
+                          expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
+                          domain: '.healthit.gov',
+                        }}
+                        >
+                          <ChplNavigationTop />
+                          {children}
+                          <ChplNavigationBottom />
+                        </CookiesProvider>
+                      </HashProvider>
                     </AnalyticsProvider>
                   </BrowserWrapper>
                 </CmsWrapper>
               </CompareWrapper>
             </FlagWrapper>
-          </SnackbarWrapper>
-        </UserWrapper>
-      </ApiWrapper>
+          </UserWrapper>
+        </ApiWrapper>
+      </SnackbarWrapper>
     </ThemeProvider>
   );
 }

@@ -23,8 +23,14 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import {
+  CmsContext,
+  CompareContext,
+  UserContext,
+  useAnalyticsContext,
+  useHashContext,
+} from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -79,15 +85,27 @@ const useStyles = makeStyles({
     padding: '8px 0',
   },
   dropdownItem: {
+    cursor: 'pointer',
     padding: '6px 16px',
     whiteSpace: 'nowrap',
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
     '& span': {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
     },
     '& a': {
-      color: `${palette.primary} !important`,
+      color: palette.primary,
+      textDecoration: 'none',
+    },
+  },
+  dropdownItemActive: {
+    '& a': {
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
     },
   },
 });
@@ -96,8 +114,9 @@ function ChplDesktopNav({
   onHomeClick,
   onSearchClick,
 }) {
-  const $rootScope = getAngularService('$rootScope');
   const analytics = useAnalyticsContext();
+  const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
+  const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
   const { hasAnyRole } = useContext(UserContext);
   const cmsButtonRef = useRef(null);
   const compareButtonRef = useRef(null);
@@ -107,15 +126,11 @@ function ChplDesktopNav({
   const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-  const resourceItems = getResourceItems({
-    includeDeveloperGuide: hasAnyRole(developerGuideRoles),
-  });
+  const { currentHash } = useHashContext();
+  const resourceItems = getResourceItems({ includeDeveloperGuide: hasAnyRole(developerGuideRoles) });
 
   const classes = useStyles();
 
-  // These widgets can be opened by click handlers and root-scope broadcasts.
-  // When that happens during a render/layout transition, ref.current may not be a usable anchor.
-  // We only return anchors that are mounted and visible to avoid invalid anchorEl warnings.
   const getVisibleAnchor = (ref) => {
     const el = ref.current;
     if (!el || !el.isConnected || el.offsetParent === null) {
@@ -130,43 +145,40 @@ function ChplDesktopNav({
   };
 
   useEffect(() => {
-    const deregisterShowCmsWidget = $rootScope.$on('ShowCmsWidget', () => {
+    if (cmsIsOpen) {
       const anchor = getVisibleAnchor(cmsButtonRef);
       if (!anchor) {
         return;
       }
+      setCmsAnchorEl(anchor);
       setCompareAnchorEl(null);
       setResourcesOpen(false);
       setShortcutsOpen(false);
-      setCmsAnchorEl(anchor);
-    });
-    const deregisterHideCmsWidget = $rootScope.$on('HideCmsWidget', () => {
+    } else {
       setCmsAnchorEl(null);
-    });
-    const deregisterShowCompareWidget = $rootScope.$on('ShowCompareWidget', () => {
+    }
+  }, [cmsIsOpen]);
+
+  useEffect(() => {
+    if (compareIsOpen) {
       const anchor = getVisibleAnchor(compareButtonRef);
       if (!anchor) {
         return;
       }
-      setCmsAnchorEl(null); 
+      setCmsAnchorEl(null);
+      setCompareAnchorEl(anchor);
       setResourcesOpen(false);
       setShortcutsOpen(false);
-      setCompareAnchorEl(anchor);
-    });
-    const deregisterHideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
+    } else {
       setCompareAnchorEl(null);
-    });
-    return () => {
-      deregisterShowCmsWidget();
-      deregisterHideCmsWidget();
-      deregisterShowCompareWidget();
-      deregisterHideCompareWidget();
-    };
-  }, [$rootScope]);
+    }
+  }, [compareIsOpen]);
 
   const closeAllNavOverlays = () => {
     setCmsAnchorEl(null);
+    setCmsIsOpen(false);
     setCompareAnchorEl(null);
+    setCompareIsOpen(false);
     setResourcesOpen(false);
     setShortcutsOpen(false);
   };
@@ -174,6 +186,7 @@ function ChplDesktopNav({
   const toggleCmsWidget = () => {
     if (cmsAnchorEl) {
       setCmsAnchorEl(null);
+      setCmsIsOpen(false);
       return;
     }
     const anchor = getVisibleAnchor(cmsButtonRef);
@@ -182,37 +195,24 @@ function ChplDesktopNav({
     }
     closeAllNavOverlays();
     setCmsAnchorEl(anchor);
-  };
-
-  const closeCmsWidget = (event, reason) => {
-    if (reason === 'backdropClick') {
-      return;
-    }
-    setCmsAnchorEl(null);
+    setCmsIsOpen(true);
   };
 
   const toggleCompareWidget = () => {
     if (compareAnchorEl) {
       setCompareAnchorEl(null);
+      setCompareIsOpen(false);
       return;
     }
 
-    // Skip opening if the compare button is not currently a valid visible anchor.
     const anchor = getVisibleAnchor(compareButtonRef);
     if (!anchor) {
       return;
     }
     closeAllNavOverlays();
     setCompareAnchorEl(anchor);
+    setCompareIsOpen(true);
   };
-
-  const closeCompareWidget = (event, reason) => {
-    if (reason === 'backdropClick') {
-      return;
-    }
-    setCompareAnchorEl(null);
-  };
-
 
   const toggleResources = () => {
     setResourcesOpen((prev) => {
@@ -247,6 +247,18 @@ function ChplDesktopNav({
     event: item.analyticsEvent,
     category: item.analyticsCategory ?? 'Navigation',
   });
+
+  const handleMenuItemClick = (item, closeMenu) => (event) => {
+    closeMenu();
+    if (event.target.tagName === 'A') {
+      return;
+    }
+    const itemAnalytics = getItemAnalytics(item);
+    if (itemAnalytics.event) {
+      eventTrack(itemAnalytics);
+    }
+    window.location.href = item.href;
+  };
 
   const getDownloadIcon = (item) => {
     if (!item.showDownloadIcon) {
@@ -286,14 +298,9 @@ function ChplDesktopNav({
       >
         CMS ID Creator
       </Button>
-      {/*
-        Use Popover (not Menu) because this is a custom widget panel, not a menu list.
-        Menu tries to apply menu semantics/focus behavior that caused ref warnings with this content.
-      */}
       <Popover
         anchorEl={cmsAnchorEl}
         open={!!cmsAnchorEl}
-        onClose={closeCmsWidget}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
@@ -322,7 +329,6 @@ function ChplDesktopNav({
       <Popover
         anchorEl={compareAnchorEl}
         open={!!compareAnchorEl}
-        onClose={closeCompareWidget}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         disableScrollLock
@@ -354,8 +360,8 @@ function ChplDesktopNav({
               { resourceItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={classes.dropdownItem}
-                  onClick={closeResources}
+                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
+                  onClick={handleMenuItemClick(item, closeResources)}
                   role="menuitem"
                 >
                   <ChplLink
@@ -365,7 +371,6 @@ function ChplDesktopNav({
                     external={false}
                     router={item.router}
                     icon={getDownloadIcon(item)}
-                    indicateOnHover
                   />
                 </Box>
               ))}
@@ -388,8 +393,8 @@ function ChplDesktopNav({
               { shortcutItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={classes.dropdownItem}
-                  onClick={closeShortcuts}
+                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
+                  onClick={handleMenuItemClick(item, closeShortcuts)}
                   role="menuitem"
                 >
                   <ChplLink
@@ -398,7 +403,6 @@ function ChplDesktopNav({
                     analytics={getItemAnalytics(item)}
                     external={false}
                     router={item.router}
-                    indicateOnHover
                   />
                 </Box>
               ))}

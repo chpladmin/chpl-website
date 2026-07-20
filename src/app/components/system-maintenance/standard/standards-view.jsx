@@ -140,8 +140,6 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                   {
                     label: 'Regulatory Text Citation',
                     value: item.regulatoryTextCitation || 'N/A',
-                    xs: 6,
-                    sm: 3,
                     iconButton: (
                       <ChplTooltip title="Use this value in a upload file">
                         <IconButton color="primary" size="small">
@@ -153,46 +151,32 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                   {
                     label: 'Rule',
                     value: item.rule?.name ?? 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Group',
                     value: item.groupName ?? 'N/A',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 2,
                   },
                 ],
                 [
                   {
                     label: 'Start Date',
                     value: getDisplayDateFormat(item.startDay),
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Required Date',
                     value: getDisplayDateFormat(item.requiredDay),
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Extension End Date',
                     value: getDisplayDateFormat(item.extensionEndDay),
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'End Date',
                     value: getDisplayDateFormat(item.endDay),
-                    xs: 6,
-                    sm: 2,
                   },
                 ],
               ]}

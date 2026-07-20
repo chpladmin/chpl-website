@@ -26,7 +26,8 @@ import {
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { UserContext, useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -53,10 +54,27 @@ const useStyles = makeStyles({
   },
   drawerItem: {
     color: palette.greyDark,
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
   },
   drawerNestedItem: {
     color: palette.greyDark,
+    cursor: 'pointer',
     paddingLeft: '32px',
+    '&:hover': {
+      backgroundColor: palette.secondary,
+    },
+    '& a': {
+      textDecoration: 'none',
+    },
+  },
+  drawerNestedItemActive: {
+    '& a': {
+      color: palette.black,
+      fontWeight: 'bold',
+      textDecoration: 'none',
+    },
   },
   drawerDivider: {
     backgroundColor: palette.divider,
@@ -87,8 +105,10 @@ const useStyles = makeStyles({
 });
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
+  const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { currentHash } = useHashContext();
   const [expandedSections, setExpandedSections] = useState({
     cms: false,
     compare: false,
@@ -114,12 +134,24 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     closeMobileMenu();
   };
 
-  const toggleSection = (section) => {
+  const toggleSection = (section, title) => {
+    const isCurrentlyOpen = expandedSections[section];
+    eventTrack({
+      ...analytics,
+      event: isCurrentlyOpen ? `Collapse ${title}` : `Expand ${title}`,
+      category: 'Navigation',
+    });
     setExpandedSections((previous) => ({
       ...previous,
       [section]: !previous[section],
     }));
   };
+
+  const getItemAnalytics = (item) => ({
+    ...analytics,
+    event: item.analyticsEvent,
+    category: item.analyticsCategory ?? 'Navigation',
+  });
 
   const widgetSections = [{
     key: 'cms',
@@ -176,7 +208,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           <Divider className={classes.drawerDivider} />
           {widgetSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
@@ -190,17 +222,22 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           ))}
           { linkSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
               <Collapse in={expandedSections[section.key]}>
                 <List disablePadding>
                   { section.items.map((item) => (
-                    <ListItem key={item.key} className={classes.drawerNestedItem} onClick={closeMobileMenu}>
+                    <ListItem
+                      key={item.key}
+                      className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
+                      onClick={closeMobileMenu}
+                    >
                       <ChplLink
                         href={item.href}
                         text={item.text}
+                        analytics={getItemAnalytics(item)}
                         external={false}
                         router={item.router}
                       />

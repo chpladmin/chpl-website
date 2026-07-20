@@ -7,12 +7,6 @@ import {
   CircularProgress,
   List,
   ListItem,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -32,10 +26,10 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const sortOptions = [
   { property: 'subscriber_email', text: 'Email' },
@@ -56,7 +50,7 @@ const useStyles = makeStyles({
   },
   pageBody: {
     display: 'grid',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: palette.background,
   },
   pageContent: {
     display: 'grid',
@@ -66,7 +60,7 @@ const useStyles = makeStyles({
     position: 'sticky',
     left: 0,
     boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: palette.background,
     overflowWrap: 'anywhere',
     [theme.breakpoints.up('sm')]: {
       minWidth: '150px',
@@ -74,7 +68,7 @@ const useStyles = makeStyles({
   },
   tableContainer: {
     overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
+    border: `.5px solid ${palette.divider}`,
     margin: '0px 32px',
     width: 'auto',
   },
@@ -114,7 +108,6 @@ const useStyles = makeStyles({
 
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
-  const $analytics = getAngularService('$analytics');
   const { enqueueSnackbar } = useSnackbar();
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -153,7 +146,11 @@ function ChplManageSubscriptionsView({ analytics }) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   const handleTableSort = (property, orderDirection) => {
-    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
+    eventTrack({
+      event: 'Sort',
+      category: analytics.category,
+      label: property,
+    });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
   };
@@ -186,13 +183,13 @@ function ChplManageSubscriptionsView({ analytics }) {
               <SubscriptionsOutlined style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
             </span>
             <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={getDeliveredMessages}
-                  className={classes.notificationsButton }
-                  endIcon={<NotificationsOutlined fontSize="small" />}
-                >
-                  Get Delivered Notifications
+              color="secondary"
+              variant="contained"
+              onClick={getDeliveredMessages}
+              className={classes.notificationsButton}
+              endIcon={<NotificationsOutlined fontSize="small" />}
+            >
+              Get Delivered Notifications
             </Button>
           </Box>
         )}
@@ -256,13 +253,13 @@ function ChplManageSubscriptionsView({ analytics }) {
                           )}
                           fieldGroups={[
                             [
-                              { label: 'Email', value: item.subscriberEmail, xs: 12, sm: 6 },
-                              { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate), xs: 12, sm: 6 },
+                              { label: 'Email', value: item.subscriberEmail },
+                              { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate) },
                             ],
                             [
-                              { label: 'Role', value: item.subscriberRole, xs: 12, sm: 6 },
-                              { 
-                                label: 'Subscription Subjects', 
+                              { label: 'Role', value: item.subscriberRole },
+                              {
+                                label: 'Subscription Subjects',
                                 value: (
                                   <List className={classes.listContainer}>
                                     { item.subscriptionSubjects
@@ -272,8 +269,6 @@ function ChplManageSubscriptionsView({ analytics }) {
                                       ))}
                                   </List>
                                 ),
-                                xs: 12,
-                                sm: 6
                               },
                             ],
                           ]}

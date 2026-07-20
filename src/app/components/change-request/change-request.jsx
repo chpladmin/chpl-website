@@ -36,7 +36,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
-import theme from 'themes/theme';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -51,8 +51,8 @@ const useStyles = makeStyles({
     padding: '16px',
     gap: '16px',
     alignItems: 'end',
-    backgroundColor: '#f5f9fd',
-    borderBottom: '0.5px solid #c2c6ca',
+    backgroundColor: palette.secondary,
+    borderBottom: `0.5px solid ${palette.divider}`,
   },
   cardSubHeaderContainer: {
     display: 'grid',
@@ -84,7 +84,7 @@ const useStyles = makeStyles({
     gap: '8px',
   },
   activeStatus: {
-    color: '#66926d',
+    color: palette.active,
     marginLeft: '4px',
   },
   cardContentContainer: {

@@ -69,6 +69,7 @@ function ChplChangeRequests({
   disallowedFilters,
   bonusQuery,
   dispatch = () => {},
+  embedded = false,
   useFooterSpacing = true,
 }) {
   const { analytics } = useAnalyticsContext();
@@ -121,6 +122,7 @@ function ChplChangeRequests({
             disallowedFilters={disallowedFilters}
             bonusQuery={bonusQuery}
             dispatch={dispatch}
+            embedded={embedded}
           />
         </div>
       </FilterProvider>
@@ -134,5 +136,6 @@ ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
   dispatch: func,
+  embedded: bool,
   useFooterSpacing: bool,
 };

@@ -49,6 +49,8 @@ function ChplCertificationStatusLegend() {
           color="primary"
           variant="outlined"
           onClick={handleClickOpen}
+          style={{ padding: '0.25em', marginLeft: '0.5em' }}
+          size="small"
         >
           <InfoIcon />
         </IconButton>
