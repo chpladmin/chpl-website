@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
 import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
@@ -18,7 +13,6 @@ function AxiosProvider({ children }) {
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
   const { setLoginWidgetState } = useContext(UserContext);
-  const [, setJwtToken] = useState(undefined);
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -36,10 +30,7 @@ function AxiosProvider({ children }) {
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
         return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
-          .then((response) => {
-            setJwtToken(response.data.accessToken);
-            return response.data.accessToken;
-          })
+          .then((response) => response.data.accessToken)
           .catch(() => {
             setLoginWidgetState('SIGNIN');
             authService.logout();
