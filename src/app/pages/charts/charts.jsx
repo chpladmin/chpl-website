@@ -74,6 +74,19 @@ const useStyles = makeStyles({
       },
     },
   },
+  reportCardContent: {
+    padding: '0 !important',
+    overflow: 'hidden',
+    '&:last-child': {
+      paddingBottom: '0 !important',
+    },
+  },
+  iframe: {
+    border: 'none',
+    width: '100%',
+    display: 'block',
+    marginBottom: '-69px',
+  },
 });
 
 function ChplCharts() {
@@ -171,13 +184,12 @@ function ChplCharts() {
                   style={{ width: '100%' }}
                   key={activeReport.title}
                 >
-                  <CardContent>
+                  <CardContent className={classes.reportCardContent}>
                     <iframe
                       title={activeReport.title}
-                      width="100%"
+                      className={classes.iframe}
                       height={activeReport.height}
                       src={activeReport.url}
-                      frameBorder="0"
                       allowFullScreen
                     />
                   </CardContent>
