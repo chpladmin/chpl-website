@@ -130,28 +130,20 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                   {
                     label: 'Title',
                     value: item.title,
-                    xs: 6,
-                    sm: 4,
                   },
                   {
                     label: 'Start Date',
                     value: getDisplayDateFormat(item.startDay),
-                    xs: 6,
-                    sm: 4,
                   },
                   {
                     label: 'End Date',
                     value: getDisplayDateFormat(item.endDay),
-                    xs: 6,
-                    sm: 4,
                   },
                 ],
                 [
                   {
                     label: 'Rule',
                     value: item.rule?.name || 'N/A',
-                    xs: 6,
-                    sm: 4,
                   },
                   {
                     label: 'Certification Companion Guide',
@@ -162,14 +154,10 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                         external={false}
                       />
                     ) : 'N/A',
-                    xs: 6,
-                    sm: 4,
                   },
                   {
                     label: 'Attributes',
                     value: item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A',
-                    xs: 12,
-                    sm: 4,
                   },
                 ],
               ]}

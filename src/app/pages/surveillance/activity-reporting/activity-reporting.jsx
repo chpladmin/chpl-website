@@ -9,7 +9,7 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     gap: '16px',
   },
-  formContent:{
+  formContent: {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
@@ -176,7 +176,7 @@ function ChplSurveillanceActivityReporting() {
               id="download-results"
               disabled={!formik.isValid}
               onClick={formik.handleSubmit}
-              endIcon={<CloudDownloadIcon />}
+              endIcon={<CloudDownloadOutlinedIcon />}
             >
               Download Results
             </Button>

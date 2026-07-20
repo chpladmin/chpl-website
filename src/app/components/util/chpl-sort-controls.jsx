@@ -5,9 +5,11 @@ import {
   ButtonGroup,
   Menu,
   MenuItem,
+  makeStyles,
 } from '@material-ui/core';
 import {
   arrayOf,
+  bool,
   func,
   oneOf,
   shape,
@@ -17,23 +19,52 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import SortIcon from '@material-ui/icons/Sort';
 
+import { theme } from 'themes';
+
+const useStyles = makeStyles({
+  container: {
+    marginRight: '16px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      marginRight: 0,
+    },
+  },
+  buttonGroup: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+  primaryButton: {
+    [theme.breakpoints.down('sm')]: {
+      flex: '1 1 auto',
+      justifyContent: 'flex-start',
+    },
+  },
+});
+
 function ChplSortControls({
   sortOptions,
   orderBy,
   order,
   onSort,
 }) {
+  const classes = useStyles();
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
   const currentOrderRef = useRef(order);
-  
+
   // Keep ref in sync with prop
   currentOrderRef.current = order;
 
   const handleSortChange = (property) => {
-    const newOrder = orderBy === property 
-      ? (currentOrderRef.current === 'asc' ? 'desc' : 'asc')  // Toggle if same
-      : 'asc';  // Start with asc if different
-    
+    const option = sortOptions.find((opt) => opt.property === property);
+    const defaultOrder = option?.reverseDefault ? 'desc' : 'asc';
+    let newOrder;
+    if (orderBy === property) {
+      newOrder = currentOrderRef.current === 'asc' ? 'desc' : 'asc';
+    } else {
+      newOrder = defaultOrder;
+    }
+
     currentOrderRef.current = newOrder;
     onSort(property, newOrder);
     setSortMenuAnchor(null);
@@ -52,13 +83,14 @@ function ChplSortControls({
   };
 
   return (
-    <Box display="flex" alignItems="center" mr={2}>
-      <ButtonGroup color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
+    <Box className={classes.container} display="flex" alignItems="center">
+      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
         <Button
+          className={classes.primaryButton}
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={<SortIcon />}
           color="primary"
-          style={{ padding: '8px 16px', fontSize:'12px' }}
+          style={{ padding: '0 16px', fontSize: '12px' }}
         >
           {getCurrentSortLabel()}
         </Button>
@@ -96,6 +128,7 @@ ChplSortControls.propTypes = {
   sortOptions: arrayOf(shape({
     property: string.isRequired,
     text: string.isRequired,
+    reverseDefault: bool,
   })).isRequired,
   orderBy: string.isRequired,
   order: oneOf(['asc', 'desc']).isRequired,

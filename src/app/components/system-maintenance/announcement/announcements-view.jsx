@@ -143,28 +143,20 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
                               {
                                 label: 'Text',
                                 value: item.text || 'N/A',
-                                xs: 12,
-                                sm: 12,
                               },
                             ],
                             [
                               {
                                 label: 'Start Date',
                                 value: getDisplayDateFormat(item.startDateTime),
-                                xs: 6,
-                                sm: 3,
                               },
                               {
                                 label: 'End Date',
                                 value: getDisplayDateFormat(item.endDateTime),
-                                xs: 6,
-                                sm: 3,
                               },
                               {
                                 label: 'Public?',
                                 value: item.isPublic ? 'Yes' : 'No',
-                                xs: 6,
-                                sm: 3,
                               },
                             ],
                           ]}

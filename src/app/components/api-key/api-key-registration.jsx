@@ -17,6 +17,7 @@ import * as yup from 'yup';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { useAnalyticsContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   grid: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
   },
   longLabelFix: {
     paddingRight: '4px',
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
   },
 });
 

@@ -16,7 +16,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useSnackbar } from 'notistack';
 import { bool, string } from 'prop-types';
@@ -34,7 +34,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
     flexFlow: 'wrap',
   },
   statusIndicatorOpen: {
-    color: '#66926d',
+    color: palette.active,
   },
   statusIndicatorClosed: {
     color: 'rgba(0, 0, 0, 0.87)',
@@ -204,7 +204,7 @@ function ChplComplaintsView(props) {
           color="secondary"
           variant="contained"
           id="download-results"
-          endIcon={<GetAppIcon />}
+          endIcon={<CloudDownloadOutlinedIcon />}
           size="small"
         >
           Download all complaints
@@ -246,7 +246,7 @@ function ChplComplaintsView(props) {
             color="secondary"
             variant="contained"
             id="download-results"
-            endIcon={<GetAppIcon />}
+            endIcon={<CloudDownloadOutlinedIcon />}
             size="small"
           >
             Download all complaints
@@ -260,7 +260,7 @@ function ChplComplaintsView(props) {
         color="secondary"
         variant="contained"
         id="download-results"
-        endIcon={<GetAppIcon />}
+        endIcon={<CloudDownloadOutlinedIcon />}
         size="small"
       >
         Download all complaints

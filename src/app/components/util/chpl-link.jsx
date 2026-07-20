@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   makeStyles,
 } from '@material-ui/core';
@@ -45,14 +45,9 @@ function ChplLink({
   icon = undefined,
 }) {
   const classes = useStyles();
-  const [href, setHref] = useState('');
-  const [text, setText] = useState('');
   const $state = getAngularService('$state');
-
-  useEffect(() => {
-    setHref(prependLink(initialHref));
-    setText(initialText || initialHref);
-  }, [initialHref, initialText]);
+  const href = prependLink(initialHref);
+  const text = initialText || initialHref;
 
   let clicked = false;
   const track = (e) => {

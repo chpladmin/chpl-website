@@ -122,8 +122,6 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
                   {
                     label: 'Regulatory Text Citation',
                     value: item.regulatoryTextCitation || 'N/A',
-                    xs: 6,
-                    sm: 4,
                     iconButton: (
                       <ChplTooltip title="Use this value in a upload file">
                         <IconButton color="primary" size="small">
@@ -136,14 +134,10 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
                   {
                     label: 'Replaced',
                     value: item.replaced ? 'Yes' : 'No',
-                    xs: 6,
-                    sm: 3,
                   },
                   {
                     label: 'Applicable Criteria',
                     value: item.criteriaDisplay || 'N/A',
-                    xs: 6,
-                    sm: 4,
                   },
                 ],
               ]}

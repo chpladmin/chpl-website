@@ -26,7 +26,7 @@ import {
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
 import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
-import { utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
   },
   tableContainer: {
     overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
+    border: `.5px solid ${palette.divider}`,
     margin: '0px 32px',
     width: 'auto',
   },
