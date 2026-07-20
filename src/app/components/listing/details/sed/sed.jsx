@@ -145,7 +145,7 @@ function ChplSed({ listing }) {
                     { sed.ucdProcesses
                       .sort(sortUcdProcesses)
                       .map((ucd) => (
-                        <TableRow key={ucd.id}>
+                        <TableRow key={`${ucd.id - ucd.name}`}>
                           <TableCell>
                             <List>
                               {ucd.criteria
@@ -220,9 +220,16 @@ function ChplSed({ listing }) {
                       </List>
                     </TableCell>
                     <TableCell>
-                      { ucd.name && `Name: ${ucd.name}` }
-                      { (ucd.name && ucd.details) && <br /> }
-                      { ucd.details && `Details: ${ucd.details}`}
+                      { `Name: ${ucd.name}` }
+                      { ucd.details
+                        && (
+                          <>
+                            <br />
+                            Details:
+                            {' '}
+                            {ucd.details}
+                          </>
+                        )}
                     </TableCell>
                   </TableRow>
                 ))}
