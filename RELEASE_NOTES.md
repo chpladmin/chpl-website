@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 14.8.0
+_20 July 2026_
+
+### Features
+* Standardize on specific "download" icon across the site
+* Enhance navigation components with full bar selection, active link highlighting and hover effects
+* Display "Surveillance Activities" on Compliance Dashboard
+* Display Cards as search results instead of using a table view
+* Enable view of "Compliance Dashboard" for ONC users
+
+---
+
 ## Version 14.7.0
 _6 July 2026_
 
