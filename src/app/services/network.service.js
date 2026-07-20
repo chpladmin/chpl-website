@@ -7,10 +7,6 @@ export default class NetworkService {
     this.API = API;
   }
 
-  getListingBasic(listingId, forceReload) {
-    return this.apiGET(`/certified_products/${listingId}`, { forceReload });
-  }
-
   logout(logoutRequest) {
     return this.apiPOST('/auth/logout', logoutRequest);
   }

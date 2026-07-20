@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -36,6 +41,21 @@ const useFetchListing = ({ id, fetched = false, enabled = true }) => {
     return {};
   }, fetched ? options.daily : {
     enabled: !!id && enabled,
+  });
+};
+
+const useFetchListings = ({ ids, enabled }) => {
+  const axios = useAxios();
+  return useQueries({
+    queries: ids.map((id) => ({
+      ...options.daily,
+      queryKey: ['listing-basic', id],
+      queryFn: async () => {
+        const response = await axios.get(`certified_products/${id}`);
+        return response.data;
+      },
+      enabled: enabled && !!ids && ids.length > 0,
+    })),
   });
 };
 
@@ -84,6 +104,7 @@ export {
   useDeleteSurveillance,
   useFetchIcsFamilyData,
   useFetchListing,
+  useFetchListings,
   useFetchRelatedListings,
   usePostSurveillance,
   usePutListing,

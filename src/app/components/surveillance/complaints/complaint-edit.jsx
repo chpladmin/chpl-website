@@ -23,6 +23,7 @@ import * as yup from 'yup';
 import { useFetchAcbs } from 'api/acbs';
 import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
 import { useFetchComplaintTypes, useFetchComplainantTypes } from 'api/data';
+import { useFetchListings as useFetchListingsBasic } from 'api/listing';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTextField } from 'components/util';
@@ -94,7 +95,6 @@ const validationSchema = yup.object({
 });
 
 function ChplComplaintEdit(props) {
-  const networkService = getAngularService('networkService');
   const { complaint: initialComplaint, dispatch } = props;
   const [certificationBodies, setCertificationBodies] = useState([]);
   const [complainantTypes, setComplainantTypes] = useState([]);
@@ -123,6 +123,10 @@ function ChplComplaintEdit(props) {
     pageSize: 25,
     sortDescending: false,
     query,
+  });
+  const fetchSurveillanceListings = useFetchListingsBasic({
+    ids: complaint.listings?.map((l) => l.listingId) ?? [],
+    enabled: complaint && complaint.listings?.length > 0,
   });
   const classes = useStyles();
   let formik;
@@ -167,33 +171,31 @@ function ChplComplaintEdit(props) {
   }, [listingsData, listingsIsLoading, listingsIsSuccess]);
 
   useEffect(() => {
+    fetchSurveillanceListings.forEach((f) => {
+      if (f.isLoading || f.isError || !f.data) { return; }
+      const newSurveillances = f.data.surveillance.map((surv) => ({
+        id: surv.id,
+        friendlyId: surv.friendlyId,
+        listingId: f.data.id,
+        certifiedProductId: f.data.id,
+        chplProductNumber: f.data.chplProductNumber,
+      }));
+      setSurveillances((original) => [
+        ...original,
+        ...newSurveillances,
+      ].sort((a, b) => {
+        if (a.chplProductNumber < b.chplProductNumber) { return -1; }
+        if (a.chplProductNumber > b.chplProductNumber) { return 1; }
+        return a.friendlyId < b.friendlyId ? -1 : 1;
+      }));
+    });
+  }, [fetchSurveillanceListings.isLoading]);
+
+  useEffect(() => {
     const acbQuery = formik.values.certificationBody ? `certificationBodies=${formik.values.certificationBody.name}` : undefined;
     const listingQuery = listingValueToAdd ? `searchTerm=${listingValueToAdd}` : undefined;
     setQuery([acbQuery, listingQuery].filter((v) => v).join('&'));
   }, [formik?.values?.certificationBody, listingValueToAdd]);
-
-  useEffect(() => {
-    setSurveillances([]);
-    complaint.listings?.forEach((listing) => {
-      networkService.getListingBasic(listing.listingId, true).then((response) => {
-        const newSurveillances = response.surveillance.map((surv) => ({
-          id: surv.id,
-          friendlyId: surv.friendlyId,
-          listingId: response.id,
-          certifiedProductId: response.id,
-          chplProductNumber: response.chplProductNumber,
-        }));
-        setSurveillances((original) => [
-          ...original,
-          ...newSurveillances,
-        ].sort((a, b) => {
-          if (a.chplProductNumber < b.chplProductNumber) { return -1; }
-          if (a.chplProductNumber > b.chplProductNumber) { return 1; }
-          return a.friendlyId < b.friendlyId ? -1 : 1;
-        }));
-      });
-    });
-  }, [complaint.listings]);
 
   const handleAction = (action, payload) => {
     dispatch({ action, payload });
@@ -668,7 +670,7 @@ function ChplComplaintEdit(props) {
                    </ul>
                  </>
                )}
-              {surveillances.length > 0
+              { surveillances.length > 0
                && (
                  <ChplTextField
                    select
