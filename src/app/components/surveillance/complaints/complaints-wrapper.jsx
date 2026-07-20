@@ -3,6 +3,7 @@ import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaints from './complaints';
 
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import AppWrapper from 'app-wrapper';
 
 function ChplComplaintsWrapper(props) {
@@ -14,11 +15,14 @@ function ChplComplaintsWrapper(props) {
 
   return (
     <AppWrapper>
-      <ChplComplaints
-        bonusQuery={bonusQuery}
-        canAdd={canAdd}
-        disallowedFilters={disallowedFilters}
-      />
+      <ChplPageHeader text="Surveillance Complaints" />
+      <ChplPageBody>
+        <ChplComplaints
+          bonusQuery={bonusQuery}
+          canAdd={canAdd}
+          disallowedFilters={disallowedFilters}
+        />
+      </ChplPageBody>
     </AppWrapper>
   );
 }
