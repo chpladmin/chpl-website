@@ -10,6 +10,7 @@ import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
 import ChplLoadingCards from './chpl-loading-cards';
+import ChplLoadingSpinner from './chpl-loading-spinner';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
@@ -28,6 +29,7 @@ export {
   ChplEllipsis,
   ChplLink,
   ChplLoadingCards,
+  ChplLoadingSpinner,
   ChplLoadingTable,
   ChplPageBody,
   ChplPageHeader,

@@ -38,13 +38,122 @@
       window.location.replace("unsupported-browser.html")
       }
     </script>
+    <style>
+      /*
+       * Inline copy of Bootstrap's .sr-only / .sr-only-focusable so the
+       * "Skip to main content" link stays visually hidden on a hard reload,
+       * before the SCSS bundle (which also defines these) has loaded.
+       */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+      .sr-only-focusable:active,
+      .sr-only-focusable:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+      }
+      /*
+       * "Skip to main content" link. It is the first focusable element in the
+       * DOM, so keyboard users reach it on the very first Tab press. It stays
+       * visually hidden until focused, then appears as a prominent button at
+       * the top-left, above the route-loading overlay (z-index 2000).
+       */
+      .chpl-skip-link {
+        position: absolute;
+        top: -100px;
+        left: 8px;
+        z-index: 3000;
+        padding: 12px 20px;
+        background-color: #156dac;
+        color: #fff;
+        font-family: 'Open Sans', Arial, sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1;
+        text-decoration: underline;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        transition: top 0.15s ease-in-out;
+      }
+      .chpl-skip-link:focus,
+      .chpl-skip-link:active {
+        top: 0;
+        color: #fff;
+        outline: 3px solid #ffc107;
+        outline-offset: 2px;
+      }
+      #chpl-route-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.75);
+      }
+      #chpl-route-loading.is-active {
+        display: flex;
+      }
+      .chpl-route-loading__spinner {
+        position: relative;
+        width: 96px;
+        height: 96px;
+      }
+      .chpl-route-loading__ring {
+        box-sizing: border-box;
+        position: absolute;
+        inset: 0;
+        border: 4px solid rgba(21, 109, 172, 0.2);
+        border-top-color: #156dac;
+        border-radius: 50%;
+        animation: chpl-route-loading-spin 0.9s linear infinite;
+      }
+      .chpl-route-loading__logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 52px;
+        height: 52px;
+        transform: translate(-50%, -50%);
+      }
+      @keyframes chpl-route-loading-spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body class="{{ bodyClass }}">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9B8823D"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <a href="#{{ currentPage }}#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <a href="#{{ currentPage }}#main-content" class="chpl-skip-link">Skip to main content</a>
+    <div id="chpl-route-loading" class="is-active" role="status" aria-live="polite" aria-label="Loading">
+      <div class="chpl-route-loading__spinner">
+        <div class="chpl-route-loading__ring"></div>
+        <img class="chpl-route-loading__logo" src="assets/favicons/android-chrome-192x192.png" alt="Loading" />
+      </div>
+    </div>
+    <script>
+      // Defensive fallback: never let the loading overlay stay stuck if the
+      // app fails to bootstrap. Angular hides it on the first route transition.
+      (function () {
+        window.setTimeout(function () {
+          var el = document.getElementById('chpl-route-loading');
+          if (el) { el.classList.remove('is-active'); }
+        }, 20000);
+      })();
+    </script>
     <div ui-view=""></div>
   </body>
 </html>

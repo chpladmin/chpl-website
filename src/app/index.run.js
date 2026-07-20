@@ -1,8 +1,46 @@
 (() => {
   /** @ngInject */
   function runBlock($anchorScroll, $location, $rootScope, $state, $timeout, $transitions, $window, Title, authService) {
+    // Show a global loading indicator during every route transition.
+    // UI-Router transitions without async resolves complete synchronously, so
+    // onStart -> onSuccess can happen within a single frame and the overlay
+    // would never actually paint. We keep it visible for a minimum duration so
+    // the user always sees the custom loader whenever the URL changes.
+    const loadingElement = $window.document.getElementById('chpl-route-loading');
+    const MIN_VISIBLE_MS = 500;
+    let shownAt = 0;
+    let hideTimeout = null;
+
+    const showRouteLoading = () => {
+      if (!loadingElement) { return; }
+      if (hideTimeout) {
+        $timeout.cancel(hideTimeout);
+        hideTimeout = null;
+      }
+      shownAt = Date.now();
+      loadingElement.classList.add('is-active');
+    };
+
+    const hideRouteLoading = () => {
+      if (!loadingElement) { return; }
+      const elapsed = Date.now() - shownAt;
+      const remaining = Math.max(0, MIN_VISIBLE_MS - elapsed);
+      if (hideTimeout) {
+        $timeout.cancel(hideTimeout);
+      }
+      hideTimeout = $timeout(() => {
+        loadingElement.classList.remove('is-active');
+        hideTimeout = null;
+      }, remaining);
+    };
+
+    $transitions.onStart({}, () => {
+      showRouteLoading();
+    });
+
     // Update page title on state change
     $transitions.onSuccess({}, (transition) => {
+      hideRouteLoading();
       let { title } = transition.to().data;
       if (title) {
         if (title instanceof Function) {
@@ -42,6 +80,7 @@
     });
 
     $transitions.onError({}, (transition) => {
+      hideRouteLoading();
       const error = transition.error();
       if ((!error.detail?.name || error.detail.name() !== 'login') && error.message !== 'The transition was ignored') {
         transition.router.stateService.go('not-found', {
