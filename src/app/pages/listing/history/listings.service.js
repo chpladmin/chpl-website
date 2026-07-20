@@ -259,7 +259,7 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'ucdProcesses':
       options = {
-        sort: (p, c) => ((p.name ?? p.ucdProcessName) < (c.name ?? c.ucdProcessName) ? -1 : (p.name ?? p.ucdProcessName) > (c.name ?? c.ucdProcessName) ? 1 : 0),
+        sort: (p, c) => ((p.name ?? p.ucdProcessName) < (c.name ?? c.ucdProcessName) ? -1 : (p.name ?? p.ucdProcessName) > (c.name ?? c.ucdProcessName) ? 1 : (p.details < c.details ? -1 : p.details > c.details ? 1 : 0)),
         write: (f) => `UCD Process "${f.name ?? f.ucdProcessName}"`,
       };
       break;
