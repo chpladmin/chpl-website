@@ -13,33 +13,44 @@ import { node, string } from 'prop-types';
 import { eventTrack } from 'services/analytics.service';
 import { palette } from 'themes';
 
-function ChplPageHeader({ text, subtitle }) {
+function ChplPageHeader({
+  text, subtitle, actions, titleAdornment,
+}) {
   const [expanded, setExpanded] = useState(true);
 
   return (
     <Box position="relative" boxShadow={2} bgcolor={palette.white} p={8}>
       <Container maxWidth="lg">
-        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap">
-          <Typography variant="h1">
-            { text }
-          </Typography>
-          { subtitle
+        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gridGap={16}>
+          <Box display="flex" alignItems="center" gridGap={4}>
+            <Typography variant="h1">
+              { text }
+            </Typography>
+            { titleAdornment }
+          </Box>
+          { (actions || subtitle)
             && (
-              <Button
-                color="primary"
-                style={{ fontSize: '1rem' }}
-                onClick={() => {
-                  const next = !expanded;
-                  setExpanded(next);
-                  eventTrack({
-                    event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
-                    label: text,
-                  });
-                }}
-                endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
-              >
-                { expanded ? 'Hide Details' : 'Show Details' }
-              </Button>
+              <Box display="flex" alignItems="center" flexWrap="wrap" gridGap={8}>
+                { actions }
+                { subtitle
+                  && (
+                    <Button
+                      color="primary"
+                      style={{ fontSize: '1rem' }}
+                      onClick={() => {
+                        const next = !expanded;
+                        setExpanded(next);
+                        eventTrack({
+                          event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
+                          label: text,
+                        });
+                      }}
+                      endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
+                    >
+                      { expanded ? 'Hide Details' : 'Show Details' }
+                    </Button>
+                  )}
+              </Box>
             )}
         </Box>
         { subtitle
@@ -62,4 +73,12 @@ export default ChplPageHeader;
 ChplPageHeader.propTypes = {
   text: string.isRequired,
   subtitle: node,
+  actions: node,
+  titleAdornment: node,
+};
+
+ChplPageHeader.defaultProps = {
+  subtitle: null,
+  actions: null,
+  titleAdornment: null,
 };
