@@ -6,7 +6,7 @@ import ChplNavigationTopWrapper from './navigation-top-wrapper';
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
 /** @ngInclude */
-function authInterceptor($injector, $localStorage, $log, $q, API, authService) {
+function authInterceptor($injector, $log, $q, API, authService) {
   // If a token was sent back, save it
   function parseToken(data) {
     let response = data;
@@ -24,29 +24,30 @@ function authInterceptor($injector, $localStorage, $log, $q, API, authService) {
   }
 
   function getAuthorizationHeader() {
-    const accessToken = $localStorage.jwtToken;
+    const accessToken = JSON.parse(localStorage.getItem('ngStorage-jwtToken'));
     if (accessToken && authService.parseJwt(accessToken).exp > moment(new Date().getTime()).unix()) {
       return $q.when(accessToken);
     }
-    const { refreshToken } = $localStorage;
+    const refreshToken = JSON.parse(localStorage.getItem('ngStorage-refreshToken'));
+    const currentUser = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
 
-    if ($localStorage.currentUser && $localStorage.refreshToken) {
-      const { cognitoId } = $localStorage.currentUser;
+    if (currentUser && refreshToken) {
+      const { cognitoId } = currentUser;
       const $http = $injector.get('$http');
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
       return $http.post('auth/refresh-token', { refreshToken, cognitoId }, { headers }).then(
         (response) => {
-          $localStorage.jwtToken = response.data.accessToken;
-          return $localStorage.jwtToken;
+          localStorage.setItem('ngStorage-jwtToken', JSON.stringify(response.data.accessToken));
+          return response.data.accessToken;
         },
         (err) => {
           $log.info(err);
         },
       );
     }
-    return $q.when($localStorage.jwtToken);
+    return $q.when(JSON.parse(localStorage.getItem('ngStorage-jwtToken')));
   }
 
   return {

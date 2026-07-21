@@ -16,7 +16,6 @@ import /* ngResource from */ 'angular-resource';
 import /* ngSanitize from */ 'angular-sanitize';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
-import /* ngStorage from */ 'ngstorage';
 import 'angular-ui-router';
 
 // import app modules
@@ -54,7 +53,6 @@ const dependencies = [
   'ngCytoscape',
   'ngFileSaver',
   'ngResource',
-  'ngStorage',
   'ngSanitize',
   'ui.bootstrap',
   'ui.router',
