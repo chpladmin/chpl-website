@@ -22,7 +22,8 @@ const useFetchApiKeys = () => {
 
 const usePostConfirmApiKey = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.post('key/confirm', data));
+  return useMutation(async (data) => axios.post('key/confirm', { requestKey: data })
+    .then((response) => response.data));
 };
 
 export {

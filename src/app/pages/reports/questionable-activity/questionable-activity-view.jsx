@@ -10,13 +10,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
 import {
   ChplLink,
-  ChplPageBody,
-  ChplPageHeader,
   ChplPagination,
   ChplLoadingTable,
   ChplSortableHeaders,
@@ -34,8 +33,22 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
+  fixFooterSpacing: {
+    minHeight: 'calc(100vh - 188px)',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
+  },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: '#ffffff',
+  },
+  pageBody: {
+    display: 'grid',
+    gridTemplateColumns: ' 1fr',
+    gap: '16px',
+    padding: '16px 32px',
+    backgroundColor: '#f9f9f9',
   },
   pageContent: {
     display: 'grid',
@@ -54,13 +67,13 @@ const useStyles = makeStyles({
   tableContainer: {
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
-    marginTop: '16px',
+    margin: '0px 32px',
     width: 'auto',
   },
   tableResultsHeaderContainer: {
     display: 'grid',
     gap: '8px',
-    marginTop: '16px',
+    margin: '16px 32px',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -159,145 +172,148 @@ function ChplQuestionableActivityView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <>
-      <ChplPageHeader
-        text="Questionable Activity"
-        subtitle={(
+    <div className={classes.fixFooterSpacing}>
+      <div className={classes.pageHeader}>
+        <Typography variant="h1">Questionable Activity</Typography>
+      </div>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+        <div>
           <Typography variant="body1">
             The Questionable Activity Report offers users the ability to monitor the activities performed on specific CHPL products by ONC-Authorized Certification Bodies and assess their adherence to ONC-established rules. This feature serves as an essential transparency mechanism, allowing ONC to identify any questionable actions that may warrant further investigation. Users can filter and search this list based on their specific interests or concerns.
           </Typography>
-        )}
-      />
-      <ChplPageBody>
-        <ChplFilterSearchBar />
+        </div>
+      </div>
+      <ChplFilterSearchBar />
+      <div>
         <ChplFilterChips />
-        { isLoading
-          && (
-            <ChplLoadingTable className={classes.tableContainer} />
-          )}
-        { !isLoading
-          && (
-            <>
-              <div className={classes.tableResultsHeaderContainer}>
-                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                  <Typography variant="subtitle2">Search Results:</Typography>
-                  { activities.length === 0
-                    && (
-                      <Typography>
-                        No results found
-                      </Typography>
-                    )}
-                  { activities.length > 0
-                    && (
-                      <Typography variant="body2">
-                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                      </Typography>
-                    )}
-                </div>
+      </div>
+      { isLoading
+        && (
+          <ChplLoadingTable className={classes.tableContainer} />
+        )}
+      { !isLoading
+        && (
+          <>
+            <div className={classes.tableResultsHeaderContainer}>
+              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                <Typography variant="subtitle2">Search Results:</Typography>
+                { activities.length === 0
+                  && (
+                    <Typography>
+                      No results found
+                    </Typography>
+                  )}
                 { activities.length > 0
                   && (
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      size="small"
-                      id="download-filtered-results"
-                      onClick={handleClick}
-                    >
-                      Download Filtered Results
-                    </Button>
+                    <Typography variant="body2">
+                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                    </Typography>
                   )}
               </div>
               { activities.length > 0
                 && (
-                  <>
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                      <Table
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    size="small"
+                    id="download-filtered-results"
+                    onClick={handleClick}
+                    endIcon={<CloudDownloadOutlinedIcon />}
+                  >
+                    Download Filtered Results
+                  </Button>
+                )}
+            </div>
+            { activities.length > 0
+              && (
+                <>
+                  <TableContainer className={classes.tableContainer} component={Paper}>
+                    <Table
+                      stickyHeader
+                      aria-label="Questionable Activity table"
+                    >
+                      <ChplSortableHeaders
+                        headers={headers}
+                        onTableSort={handleTableSort}
+                        orderBy={orderBy}
+                        order={sortDescending ? 'desc' : 'asc'}
                         stickyHeader
-                        aria-label="Questionable Activity table"
-                      >
-                        <ChplSortableHeaders
-                          headers={headers}
-                          onTableSort={handleTableSort}
-                          orderBy={orderBy}
-                          order={sortDescending ? 'desc' : 'asc'}
-                          stickyHeader
-                        />
-                        <TableBody>
-                          { activities
-                            .map((item) => (
-                              <TableRow key={item.id}>
-                                <TableCell>
-                                  { item.developerId
-                                    && (
-                                      <ChplLink
-                                        href={`#/organizations/developers/${item.developerId}`}
-                                        text={item.developerName}
-                                        analytics={{
-                                          ...analytics,
-                                          event: 'Go to Developer Page',
-                                          label: item.developerName,
-                                        }}
-                                        external={false}
-                                        router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
-                                      />
-                                    )}
-                                </TableCell>
-                                <TableCell>{item.productName}</TableCell>
-                                <TableCell>{item.versionName}</TableCell>
-                                <TableCell>
-                                  { item.listingId
-                                    && (
+                      />
+                      <TableBody>
+                        { activities
+                          .map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell>
+                                { item.developerId
+                                  && (
                                     <ChplLink
-                                      href={`#/listing/${item.listingId}`}
-                                      text={item.chplProductNumber}
+                                      href={`#/organizations/developers/${item.developerId}`}
+                                      text={item.developerName}
                                       analytics={{
                                         ...analytics,
-                                        event: 'Go to Listing Details Page',
-                                        label: item.chplProductNumber,
+                                        event: 'Go to Developer Page',
+                                        label: item.developerName,
                                       }}
                                       external={false}
-                                      router={{ sref: 'listing', options: { id: item.listingId } }}
+                                      router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
                                     />
-                                    )}
-                                </TableCell>
-                                <TableCell>{item.triggerName}</TableCell>
-                                <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
-                                <TableCell>
-                                  { item.reason
-                                    && (
-                                      <Typography>
-                                        {item.reason}
-                                      </Typography>
-                                    )}
-                                  { item.certificationStatusChangeReason
-                                    && (
-                                      <Typography>
-                                        {item.certificationStatusChangeReason}
-                                      </Typography>
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                  <ChplQuestionableActivityDetails activity={item} />
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
-            </>
-          )}
-      </ChplPageBody>
-    </>
+                                  )}
+                              </TableCell>
+                              <TableCell>{item.productName}</TableCell>
+                              <TableCell>{item.versionName}</TableCell>
+                              <TableCell>
+                                { item.listingId
+                                  && (
+                                  <ChplLink
+                                    href={`#/listing/${item.listingId}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Go to Listing Details Page',
+                                      label: item.chplProductNumber,
+                                    }}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: item.listingId } }}
+                                  />
+                                  )}
+                              </TableCell>
+                              <TableCell>{item.triggerName}</TableCell>
+                              <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
+                              <TableCell>
+                                { item.reason
+                                  && (
+                                    <Typography>
+                                      {item.reason}
+                                    </Typography>
+                                  )}
+                                { item.certificationStatusChangeReason
+                                  && (
+                                    <Typography>
+                                      {item.certificationStatusChangeReason}
+                                    </Typography>
+                                  )}
+                              </TableCell>
+                              <TableCell>
+                                <ChplQuestionableActivityDetails activity={item} />
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <ChplPagination
+                    count={recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                  />
+                </>
+              )}
+          </>
+        )}
+    </div>
   );
 }
 

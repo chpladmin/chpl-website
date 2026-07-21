@@ -145,7 +145,7 @@ function ChplAnnual({
                   size="small"
                   variant="outlined"
                   onClick={download}
-                  endIcon={<CloudDownloadOutlinedIcon fontSize="small" />}
+                  endIcon={<CloudDownloadOutlinedIcon />}
                 >
                   Download
                 </Button>
