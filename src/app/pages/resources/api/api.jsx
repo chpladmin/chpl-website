@@ -42,16 +42,21 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
   },
-  downloadSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
+  swaggerCardContent: {
+    padding: '16px',
+    '&:last-child': {
+      paddingBottom: '16px',
     },
+  },
+  downloadSection: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'start',
     gridColumn: '1 / -1',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr auto',
+    },
   },
   listHeaders: {
     marginBottom: '8px',
@@ -135,26 +140,28 @@ function ChplResourcesApi() {
             <Divider />
           </Box>
           <div className={classes.downloadSection}>
-            <Box width="66%">
-              <ul className={classes.listSpacing}>
-                <li>
-                  <Typography gutterBottom><strong>Certified Products:</strong></Typography>
-                  {' '}
-                  Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
-                  <ul>
-                    <li>
-                      The Active products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The Inactive products summary file is updated nightly.
-                    </li>
-                    <li>
-                      The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </Box>
+            <Card>
+              <CardContent>
+                <ul className={classes.listSpacing}>
+                  <li>
+                    <Typography gutterBottom><strong>Certified Products:</strong></Typography>
+                    {' '}
+                    Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
+                    <ul>
+                      <li>
+                        The Active products summary file is updated nightly.
+                      </li>
+                      <li>
+                        The Inactive products summary file is updated nightly.
+                      </li>
+                      <li>
+                        The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
             <Card className={classes.downloadCard}>
               <CardHeader title="Select A File To Download" />
               <CardContent>
@@ -203,67 +210,69 @@ function ChplResourcesApi() {
             <Divider />
           </div>
           <div className={classes.downloadSection}>
-            <Box width="66%">
-              <Typography
-                gutterBottom
-              >
-                The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL&apos;s API includes methods for retrieving a subset of our statistical data and the metadata that describes it. Users must complete the CHPL API registration. After completing the CHPL API registration, the user will be given a unique 32-character API key. This API key will also be emailed to the user.
-              </Typography>
-              <Typography
-                gutterBottom
-              >
-                This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /acbs API, you would make the following call (switching out the key in the URL for your key):
-                {' '}
-                <code>https://chpl.healthit.gov/rest/acbs?api_key=YOUR_KEY_HERE</code>
-              </Typography>
-              <br />
-              <Typography
-                gutterBottom
-              >
-                A sample Java application using the CHPL API can be found at
-                {' '}
-                <ChplLink
-                  href="https://github.com/chpladmin/sample-application"
-                  text="Sample Application"
-                  analytics={{
-                    ...analytics,
-                    event: 'Go to Sample Aplication',
-                  }}
-                  inline
-                />
-              </Typography>
-              <br />
-              <Typography
-                gutterBottom
-              >
-                Release notes for the CHPL API can be found in the
-                {' '}
-                <ChplLink
-                  href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md"
-                  text="release notes on GitHub"
-                  analytics={{
-                    ...analytics,
-                    event: 'Go to release notes on GitHub',
-                  }}
-                  inline
-                />
-              </Typography>
-            </Box>
+            <Card>
+              <CardContent>
+                <Typography
+                  gutterBottom
+                >
+                  The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL&apos;s API includes methods for retrieving a subset of our statistical data and the metadata that describes it. Users must complete the CHPL API registration. After completing the CHPL API registration, the user will be given a unique 32-character API key. This API key will also be emailed to the user.
+                </Typography>
+                <Typography
+                  gutterBottom
+                >
+                  This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /acbs API, you would make the following call (switching out the key in the URL for your key):
+                  {' '}
+                  <code>https://chpl.healthit.gov/rest/acbs?api_key=YOUR_KEY_HERE</code>
+                </Typography>
+                <br />
+                <Typography
+                  gutterBottom
+                >
+                  A sample Java application using the CHPL API can be found at
+                  {' '}
+                  <ChplLink
+                    href="https://github.com/chpladmin/sample-application"
+                    text="Sample Application"
+                    analytics={{
+                      ...analytics,
+                      event: 'Go to Sample Aplication',
+                    }}
+                    inline
+                  />
+                </Typography>
+                <br />
+                <Typography
+                  gutterBottom
+                >
+                  Release notes for the CHPL API can be found in the
+                  {' '}
+                  <ChplLink
+                    href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md"
+                    text="release notes on GitHub"
+                    analytics={{
+                      ...analytics,
+                      event: 'Go to release notes on GitHub',
+                    }}
+                    inline
+                  />
+                </Typography>
+              </CardContent>
+            </Card>
             <div className={classes.downloadCard}>
               <AnalyticsContext.Provider value={{ analytics }}>
                 <ChplApiKeyRegistration />
               </AnalyticsContext.Provider>
             </div>
           </div>
-          <div
-            className={classes.fullWidth}
-          >
-            <SwaggerUI
-              url={url}
-              docExpansion="none"
-              supportedSubmitMethods={[]}
-            />
-          </div>
+          <Card className={classes.fullWidth}>
+            <CardContent className={classes.swaggerCardContent}>
+              <SwaggerUI
+                url={url}
+                docExpansion="none"
+                supportedSubmitMethods={[]}
+              />
+            </CardContent>
+          </Card>
         </div>
       </ChplPageBody>
     </>

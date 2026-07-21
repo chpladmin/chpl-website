@@ -35,13 +35,12 @@ const useStyles = makeStyles({
     },
   },
   downloadSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'start',
     [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
+      gridTemplateColumns: '1fr auto',
     },
   },
   listSpacing: {
@@ -150,50 +149,52 @@ function ChplResourcesDownload() {
           <Divider />
           <div className={classes.content}>
             <Box className={classes.downloadSection}>
-              <Box width="66%">
-                <ul className={classes.listSpacing}>
-                  <li>
-                    <Typography gutterBottom><strong>Certified Products Summary:</strong></Typography>
-                    {' '}
-                    Entire collection of a set of certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
-                    <ul>
-                      <li>
-                        The Active products summary file is updated nightly.
-                      </li>
-                      <li>
-                        The Inactive products summary file is updated nightly.
-                      </li>
-                      <li>
-                        The 2014 Edition Summary file is updated quarterly.
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary:</strong></Typography>
-                    {' '}
-                    Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
-                  </li>
-                </ul>
-                <Box className={classes.infoBox}>
-                  <InfoOutlinedIcon color="primary" />
-                  <Typography>
-                    The JSON files have been moved to the
-                    {' '}
-                    <ChplLink
-                      text="CHPL API page"
-                      external={false}
-                      inline
-                      href="#/resources/api"
-                      router={{ sref: 'resources.api' }}
-                      analytics={{
-                        ...analytics,
-                        event: 'Navigate to CHPL API page',
-                      }}
-                    />
-                    .
-                  </Typography>
-                </Box>
-              </Box>
+              <Card>
+                <CardContent>
+                  <ul className={classes.listSpacing}>
+                    <li>
+                      <Typography gutterBottom><strong>Certified Products Summary:</strong></Typography>
+                      {' '}
+                      Entire collection of a set of certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
+                      <ul>
+                        <li>
+                          The Active products summary file is updated nightly.
+                        </li>
+                        <li>
+                          The Inactive products summary file is updated nightly.
+                        </li>
+                        <li>
+                          The 2014 Edition Summary file is updated quarterly.
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary:</strong></Typography>
+                      {' '}
+                      Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
+                    </li>
+                  </ul>
+                  <Box className={classes.infoBox}>
+                    <InfoOutlinedIcon color="primary" />
+                    <Typography>
+                      The JSON files have been moved to the
+                      {' '}
+                      <ChplLink
+                        text="CHPL API page"
+                        external={false}
+                        inline
+                        href="#/resources/api"
+                        router={{ sref: 'resources.api' }}
+                        analytics={{
+                          ...analytics,
+                          event: 'Navigate to CHPL API page',
+                        }}
+                      />
+                      .
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
               <Card className={classes.downloadCard}>
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
@@ -244,9 +245,8 @@ function ChplResourcesDownload() {
                 </CardActions>
               </Card>
             </Box>
-            <Box>
+            <Box style={{ marginTop: '16px' }}>
               <Typography
-                className={classes.listHeaders}
                 variant="h4"
                 component="h2"
               >
@@ -254,48 +254,52 @@ function ChplResourcesDownload() {
               </Typography>
               <Divider variant="fullWidth" />
             </Box>
-            <ul className={classes.listSpacing}>
-              <li>
-                <Typography gutterBottom><strong>Service Base URL List Availability:</strong></Typography>
-                {' '}
-                The Service Base URL List Report provides information on the public availability of Service Base URL Lists for certified Health IT Modules. For more details, visit
-                {' '}
-                <ChplLink
-                  href="https://www.healthit.gov/topic/certification-ehrs/program-resources/api-service-base-url-availability"
-                  text="API Service Base URL Availability"
-                  analytics={{
-                    ...analytics,
-                    event: 'Go to API Service Base URL Availability',
-                  }}
-                  external={false}
-                  inline
-                />
-                .
-              </li>
-              <li>
-                <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
-                {' '}
-                Entire collection of surveillance activity reported to the CHPL.
-              </li>
-              { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                && (
+            <Card>
+              <CardContent>
+                <ul className={classes.listSpacing}>
                   <li>
-                    <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
+                    <Typography gutterBottom><strong>Service Base URL List Availability:</strong></Typography>
                     {' '}
-                    Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
+                    The Service Base URL List Report provides information on the public availability of Service Base URL Lists for certified Health IT Modules. For more details, visit
+                    {' '}
+                    <ChplLink
+                      href="https://www.healthit.gov/topic/certification-ehrs/program-resources/api-service-base-url-availability"
+                      text="API Service Base URL Availability"
+                      analytics={{
+                        ...analytics,
+                        event: 'Go to API Service Base URL Availability',
+                      }}
+                      external={false}
+                      inline
+                    />
+                    .
                   </li>
-                )}
-              <li>
-                <Typography gutterBottom><strong>Surveillance Non-Conformities:</strong></Typography>
-                {' '}
-                Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
-              </li>
-              <li>
-                <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
-                {' '}
-                Entire collection of Direct Review activity reported to the CHPL.
-              </li>
-            </ul>
+                  <li>
+                    <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
+                    {' '}
+                    Entire collection of surveillance activity reported to the CHPL.
+                  </li>
+                  { hasAnyRole(['chpl-admin', 'chpl-onc'])
+                    && (
+                      <li>
+                        <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
+                        {' '}
+                        Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
+                      </li>
+                    )}
+                  <li>
+                    <Typography gutterBottom><strong>Surveillance Non-Conformities:</strong></Typography>
+                    {' '}
+                    Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
+                  </li>
+                  <li>
+                    <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
+                    {' '}
+                    Entire collection of Direct Review activity reported to the CHPL.
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </ChplPageBody>

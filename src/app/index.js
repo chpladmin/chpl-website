@@ -1,8 +1,8 @@
 // Import base SCSS file and then all SCSS files in directories
 import 'angular-loading-bar/build/loading-bar.min.css';
+import 'swagger-ui-react/swagger-ui.css';
 import './index.scss';
 import '../assets/favicons/favicons';
-import 'swagger-ui-react/swagger-ui.css';
 
 import angular from 'angular';
 import /* angularConfirm from */ 'angular-confirm';
