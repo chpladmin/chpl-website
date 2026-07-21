@@ -6,7 +6,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Container,
   Divider,
   MenuItem,
   Typography,
@@ -15,7 +14,12 @@ import {
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import SwaggerUI from 'swagger-ui-react';
 
-import { ChplLink, ChplTextField } from 'components/util';
+import {
+  ChplLink,
+  ChplPageBody,
+  ChplPageHeader,
+  ChplTextField,
+} from 'components/util';
 import { ChplApiKeyRegistration } from 'components/api-key';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
@@ -37,19 +41,22 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    backgroundColor: palette.background,
-    padding: '32px 0',
+  },
+  swaggerCardContent: {
+    padding: '16px',
+    '&:last-child': {
+      paddingBottom: '16px',
+    },
   },
   downloadSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-    },
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'start',
     gridColumn: '1 / -1',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr auto',
+    },
   },
   listHeaders: {
     marginBottom: '8px',
@@ -60,10 +67,6 @@ const useStyles = makeStyles({
       marginBottom: '.7em',
       marginTop: '.7em',
     },
-  },
-  pageHeader: {
-    padding: '32px 0',
-    backgroundColor: palette.white,
   },
   warningBox: {
     padding: '16px',
@@ -123,30 +126,22 @@ function ChplResourcesApi() {
 
   return (
     <>
-      <Box bgcolor={palette.background}>
-        <div className={classes.pageHeader}>
-          <Container maxWidth="lg">
+      <ChplPageHeader text="CHPL API" />
+      <ChplPageBody>
+        <div className={classes.pageBody}>
+          <Box className={classes.fullWidth}>
             <Typography
-              variant="h1"
+              variant="h4"
+              component="h2"
             >
-              CHPL API
+              Definitions & Guidelines
             </Typography>
-          </Container>
-        </div>
-        <Container maxWidth="lg">
-          <div className={classes.pageBody} id="main-content" tabIndex="-1">
-            <Box className={classes.fullWidth}>
-              <Typography
-                variant="h4"
-                component="h2"
-              >
-                Definitions & Guidelines
-              </Typography>
-              <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
-              <Divider />
-            </Box>
-            <div className={classes.downloadSection}>
-              <Box width="66%">
+            <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
+            <Divider />
+          </Box>
+          <div className={classes.downloadSection}>
+            <Card>
+              <CardContent>
                 <ul className={classes.listSpacing}>
                   <li>
                     <Typography gutterBottom><strong>Certified Products:</strong></Typography>
@@ -165,55 +160,57 @@ function ChplResourcesApi() {
                     </ul>
                   </li>
                 </ul>
-              </Box>
-              <Card className={classes.downloadCard}>
-                <CardHeader title="Select A File To Download" />
-                <CardContent>
-                  <Box display="flex" flexDirection="column" gridGap={16}>
-                    <Typography>
-                      To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
-                    </Typography>
-                    <div className={classes.fullWidth}>
-                      <ChplTextField
-                        select
-                        id="download-select"
-                        name="downloadSelect"
-                        label="Select a collection to download"
-                        value={selectedOption}
-                        onChange={(event) => setSelectedOption(event.target.value)}
-                      >
-                        { downloadOptions.map((item) => (
-                          <MenuItem value={item} key={item}>{item}</MenuItem>
-                        ))}
-                      </ChplTextField>
-                    </div>
-                  </Box>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    fullWidth
-                    color="primary"
-                    variant="contained"
-                    id="download-chpl-data-button"
-                    onClick={() => downloadFile('data')}
-                    endIcon={<CloudDownloadOutlinedIcon />}
-                  >
-                    Download Data File
-                  </Button>
-                </CardActions>
-              </Card>
-            </div>
-            <div className={classes.fullWidth}>
-              <Typography
-                variant="h4"
-                component="h2"
-              >
-                Access API Documentation
-              </Typography>
-              <Divider />
-            </div>
-            <div className={classes.downloadSection}>
-              <Box width="66%">
+              </CardContent>
+            </Card>
+            <Card className={classes.downloadCard}>
+              <CardHeader title="Select A File To Download" />
+              <CardContent>
+                <Box display="flex" flexDirection="column" gridGap={16}>
+                  <Typography>
+                    To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
+                  </Typography>
+                  <div className={classes.fullWidth}>
+                    <ChplTextField
+                      select
+                      id="download-select"
+                      name="downloadSelect"
+                      label="Select a collection to download"
+                      value={selectedOption}
+                      onChange={(event) => setSelectedOption(event.target.value)}
+                    >
+                      { downloadOptions.map((item) => (
+                        <MenuItem value={item} key={item}>{item}</MenuItem>
+                      ))}
+                    </ChplTextField>
+                  </div>
+                </Box>
+              </CardContent>
+              <CardActions>
+                <Button
+                  fullWidth
+                  color="primary"
+                  variant="contained"
+                  id="download-chpl-data-button"
+                  onClick={() => downloadFile('data')}
+                  endIcon={<CloudDownloadOutlinedIcon />}
+                >
+                  Download Data File
+                </Button>
+              </CardActions>
+            </Card>
+          </div>
+          <div className={classes.fullWidth}>
+            <Typography
+              variant="h4"
+              component="h2"
+            >
+              Access API Documentation
+            </Typography>
+            <Divider />
+          </div>
+          <div className={classes.downloadSection}>
+            <Card>
+              <CardContent>
                 <Typography
                   gutterBottom
                 >
@@ -258,25 +255,25 @@ function ChplResourcesApi() {
                     inline
                   />
                 </Typography>
-              </Box>
-              <div className={classes.downloadCard}>
-                <AnalyticsContext.Provider value={{ analytics }}>
-                  <ChplApiKeyRegistration />
-                </AnalyticsContext.Provider>
-              </div>
+              </CardContent>
+            </Card>
+            <div className={classes.downloadCard}>
+              <AnalyticsContext.Provider value={{ analytics }}>
+                <ChplApiKeyRegistration />
+              </AnalyticsContext.Provider>
             </div>
-            <div
-              className={classes.fullWidth}
-            >
+          </div>
+          <Card className={classes.fullWidth}>
+            <CardContent className={classes.swaggerCardContent}>
               <SwaggerUI
                 url={url}
                 docExpansion="none"
                 supportedSubmitMethods={[]}
               />
-            </div>
-          </div>
-        </Container>
-      </Box>
+            </CardContent>
+          </Card>
+        </div>
+      </ChplPageBody>
     </>
   );
 }
