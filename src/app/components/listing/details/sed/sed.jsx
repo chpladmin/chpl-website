@@ -46,6 +46,11 @@ const useStyles = makeStyles({
   tableScrolling: {
     overflowX: 'auto !important',
   },
+  tableBody: {
+    '& tr:last-child td': {
+      borderBottom: 'none',
+    },
+  },
 });
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
@@ -202,7 +207,7 @@ function ChplSed({ listing }) {
                 <TableCell>UCD Process</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody className={classes.tableBody}>
               { sed.ucdProcesses
                 .sort(sortUcdProcesses)
                 .map((ucd) => (
