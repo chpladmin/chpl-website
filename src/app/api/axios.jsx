@@ -85,7 +85,7 @@ function AxiosProvider({ children }) {
         return response;
       },
       (error) => {
-        if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+        if (error?.response?.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
           setLoginWidgetState('SIGNIN');
           authService.logout();
         }
