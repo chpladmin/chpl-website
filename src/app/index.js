@@ -25,7 +25,6 @@ import compare from './pages/compare/index';
 import /* complianceDashboardModule from */ './pages/compliance-dashboard/index';
 import /* componentsModule from */ './components/index';
 import listing from './pages/listing/index';
-import /* navigationModule from */ './navigation/index';
 import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
 import resources from './pages/resources/index';
@@ -71,7 +70,6 @@ const dependencies = [
   'chpl.search',
   'chpl.components',
   'chpl.constants',
-  'chpl.navigation',
   'chpl.registration',
   'chpl.shared',
 ];

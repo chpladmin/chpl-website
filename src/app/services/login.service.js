@@ -13,7 +13,6 @@ import { clearAuthTokens } from 'axios-jwt';
       getToken,
       hasAnyRole,
       logout,
-      parseJwt,
       saveCurrentUser,
       saveRefreshToken,
       saveToken,
@@ -65,18 +64,6 @@ import { clearAuthTokens } from 'axios-jwt';
       localStorage.removeItem('ngStorage-currentUser');
       clearAuthTokens();
       $rootScope.$broadcast('loggedOut');
-    }
-
-    function parseJwt(token) {
-      if (angular.isString(token)) {
-        const vals = token.split('.');
-        if (vals.length > 1) {
-          const base64 = vals[1].replace('-', '+').replace('_', '/');
-          const user = angular.fromJson($window.atob(base64));
-          return user;
-        }
-      }
-      return {};
     }
 
     function saveCurrentUser(user) {
