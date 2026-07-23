@@ -11,6 +11,7 @@ import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
 import ChplLoadingCards from './chpl-loading-cards';
 import ChplLoadingSpinner from './chpl-loading-spinner';
+import ChplRouteLoading from './chpl-route-loading';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
@@ -35,6 +36,7 @@ export {
   ChplPageHeader,
   ChplPagination,
   ChplProgress,
+  ChplRouteLoading,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,

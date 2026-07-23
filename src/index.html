@@ -138,6 +138,11 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <a href="#{{ currentPage }}#main-content" class="chpl-skip-link">Skip to main content</a>
+    <!--
+      Cold-boot overlay only. Shown before the app bootstraps; once Angular is
+      up, the React ChplRouteLoading component removes `is-active` and owns the
+      route-transition loader from then on.
+    -->
     <div id="chpl-route-loading" class="is-active" role="status" aria-live="polite" aria-label="Loading">
       <div class="chpl-route-loading__spinner">
         <div class="chpl-route-loading__ring"></div>
@@ -146,7 +151,7 @@
     </div>
     <script>
       // Defensive fallback: never let the loading overlay stay stuck if the
-      // app fails to bootstrap. Angular hides it on the first route transition.
+      // app fails to bootstrap. React removes it on the first mount.
       (function () {
         window.setTimeout(function () {
           var el = document.getElementById('chpl-route-loading');
@@ -154,6 +159,8 @@
         }, 20000);
       })();
     </script>
+    <!-- Persistent React root for the route-transition loader (outside ui-view so it survives navigations). -->
+    <div id="chpl-route-loading-react"></div>
     <div ui-view=""></div>
   </body>
 </html>
