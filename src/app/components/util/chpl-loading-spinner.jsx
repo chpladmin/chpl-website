@@ -4,7 +4,7 @@ import {
   CircularProgress,
   makeStyles,
 } from '@material-ui/core';
-import { bool, number } from 'prop-types';
+import { number } from 'prop-types';
 
 import ChplLogo from '../../../assets/favicons/android-chrome-192x192.png';
 
@@ -33,12 +33,12 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplLoadingSpinner({ size = 96, fullHeight = true }) {
+function ChplLoadingSpinner({ size = 96 }) {
   const classes = useStyles();
   const logoSize = size * 0.55;
 
   return (
-    <Box className={classes.container} style={fullHeight ? undefined : { flex: 'unset' }}>
+    <Box className={classes.container}>
       <Box className={classes.spinnerWrapper}>
         <CircularProgress size={size} thickness={2.5} style={{ color: palette.primary }} />
         <img
@@ -56,5 +56,4 @@ export default ChplLoadingSpinner;
 
 ChplLoadingSpinner.propTypes = {
   size: number,
-  fullHeight: bool,
 };
