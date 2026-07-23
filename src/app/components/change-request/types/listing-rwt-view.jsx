@@ -3,7 +3,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { string } from 'prop-types';
 
 import { ChplLink } from 'components/util';
 import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
@@ -21,20 +20,20 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestListingRwtView({ title, value }) {
+function ChplChangeRequestListingRwtView() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest } = useContext(ChangeRequestContext);
   const classes = useStyles();
 
   const getCurrent = () => {
-    if (changeRequest.details.listing[value]) {
+    if (changeRequest.details.listing.rwtResultsUrl) {
       return (
         <ChplLink
-          href={changeRequest.details.listing[value]}
+          href={changeRequest.details.listing.rwtResultsUrl}
           analytics={{
             ...analytics,
-            event: `Navigate to Current RWT ${title} URL`,
-            label: changeRequest.details.listing[value],
+            event: 'Navigate to Current RWT Results URL',
+            label: changeRequest.details.listing.rwtResultsUrl,
           }}
         />
       );
@@ -46,11 +45,7 @@ function ChplChangeRequestListingRwtView({ title, value }) {
     <div className={classes.container}>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          Current RWT
-          {' '}
-          { title }
-          {' '}
-          URL
+          Current RWT Results URL
         </Typography>
         <Typography>
           { getCurrent() }
@@ -58,18 +53,14 @@ function ChplChangeRequestListingRwtView({ title, value }) {
       </div>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">
-          Submitted RWT
-          {' '}
-          { title }
-          {' '}
-          URL
+          Submitted RWT Results URL
         </Typography>
         <Typography>
           <ChplLink
             href={changeRequest.details.url}
             analytics={{
               ...analytics,
-              event: `Navigate to Submitted RWT ${title} URL`,
+              event: 'Navigate to Submitted RWT Results URL',
               label: changeRequest.details.url,
             }}
           />
@@ -82,6 +73,4 @@ function ChplChangeRequestListingRwtView({ title, value }) {
 export default ChplChangeRequestListingRwtView;
 
 ChplChangeRequestListingRwtView.propTypes = {
-  title: string.isRequired,
-  value: string.isRequired,
 };
