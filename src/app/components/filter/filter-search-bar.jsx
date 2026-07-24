@@ -48,19 +48,28 @@ const useStyles = makeStyles({
       },
     },
   },
+  sticky: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 2,
+  },
 });
 
 function ChplFilterSearchBar({
   hideAdvancedSearch = false,
   hideSearchTerm = false,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
+  sticky = false,
   toggleMultipleFilters = undefined,
 }) {
   const { filters } = useFilterContext();
   const classes = useStyles();
 
   return (
-    <div className={classes.searchContainer} data-filter-search-bar="true">
+    <div
+      className={sticky ? `${classes.searchContainer} ${classes.sticky}` : classes.searchContainer}
+      data-filter-search-bar="true"
+    >
       { !hideSearchTerm
         && (
           <ChplFilterSearchTerm
@@ -90,5 +99,6 @@ ChplFilterSearchBar.propTypes = {
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
   placeholder: string,
+  sticky: bool,
   toggleMultipleFilters: arrayOf(object),
 };
