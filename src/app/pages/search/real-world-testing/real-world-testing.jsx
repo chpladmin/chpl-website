@@ -21,38 +21,14 @@ const staticFilters = [
     display: 'Real World Testing',
     operatorKey: 'rwtOperator',
     values: [
-      { value: 'has_plans_url', display: 'Has RWT Plans URL', default: true },
       { value: 'has_results_url', display: 'Has RWT Results URL', default: true },
-      { value: 'no_plans_url', display: 'Does not have RWT Plans URL' },
       { value: 'no_results_url', display: 'Does not have RWT Results URL' },
     ],
   }];
 
 function ChplRealWorldTestingSearchPage() {
   const { hti5ErdIsOn } = useContext(FlagContext);
-  const [filters, setFilters] = useState([
-    ...staticFilters,
-    hti5ErdIsOn ? {
-      ...defaultFilter,
-      key: 'rwtOptions',
-      display: 'Real World Testing',
-      operatorKey: 'rwtOperator',
-      values: [
-        { value: 'has_results_url', display: 'Has RWT Results URL', default: true },
-        { value: 'no_results_url', display: 'Does not have RWT Results URL' },
-      ],
-    } : {
-      ...defaultFilter,
-      key: 'rwtOptions',
-      display: 'Real World Testing',
-      operatorKey: 'rwtOperator',
-      values: [
-        { value: 'has_plans_url', display: 'Has RWT Plans URL', default: true },
-        { value: 'has_results_url', display: 'Has RWT Results URL', default: true },
-        { value: 'no_plans_url', display: 'Does not have RWT Plans URL' },
-        { value: 'no_results_url', display: 'Does not have RWT Results URL' },
-      ],
-    }]);
+  const [filters, setFilters] = useState(staticFilters);
   const { analytics } = useAnalyticsContext();
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
@@ -95,6 +71,34 @@ function ChplRealWorldTestingSearchPage() {
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
+
+  useEffect(() => {
+    const rwtOptions = hti5ErdIsOn ? {
+      ...defaultFilter,
+      key: 'rwtOptions',
+      display: 'Real World Testing',
+      operatorKey: 'rwtOperator',
+      values: [
+        { value: 'has_results_url', display: 'Has RWT Results URL', default: true },
+        { value: 'no_results_url', display: 'Does not have RWT Results URL' },
+      ],
+    } : {
+      ...defaultFilter,
+      key: 'rwtOptions',
+      display: 'Real World Testing',
+      operatorKey: 'rwtOperator',
+      values: [
+        { value: 'has_plans_url', display: 'Has RWT Plans URL', default: true },
+        { value: 'has_results_url', display: 'Has RWT Results URL', default: true },
+        { value: 'no_plans_url', display: 'Does not have RWT Plans URL' },
+        { value: 'no_results_url', display: 'Does not have RWT Results URL' },
+      ],
+    };
+    setFilters((prev) => [
+      ...prev.filter((f) => f.key !== 'rwtOptions'),
+      rwtOptions,
+    ]);
+  }, [hti5ErdIsOn]);
 
   const data = {
     analytics: {
