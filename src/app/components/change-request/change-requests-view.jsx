@@ -28,7 +28,7 @@ import ChplChangeRequestsDownload from './change-requests-download';
 
 import { useFetchChangeRequests } from 'api/change-requests';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -194,14 +194,14 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
         placeholder="Search by Developer..."
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
       />
-      <ChplFilterChips />
-      { isLoading
+      <ChplFilterLayout>
+        { isLoading
         && (
           <div className={classes.noResultsContainer}>
             <CircularProgress />
           </div>
         )}
-      { !isLoading
+        { !isLoading
         && (
           <>
             { isError
@@ -349,6 +349,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
               )}
           </>
         )}
+      </ChplFilterLayout>
     </>
   );
 

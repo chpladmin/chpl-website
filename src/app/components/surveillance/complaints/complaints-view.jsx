@@ -25,7 +25,7 @@ import ChplComplaint from './complaint';
 
 import { useFetchComplaints, usePostReportRequest } from 'api/complaints';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -281,14 +281,12 @@ function ChplComplaintsView(props) {
         <ChplFilterSearchBar
           placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
         />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
+        <ChplFilterLayout>
+          { isLoading
           && (
             <CircularProgress />
           )}
-        { !isLoading
+          { !isLoading
           && (
             <>
               <div className={classes.tableResultsHeaderContainer}>
@@ -375,6 +373,7 @@ function ChplComplaintsView(props) {
                 )}
             </>
           )}
+        </ChplFilterLayout>
       </CardContent>
     </Card>
   );

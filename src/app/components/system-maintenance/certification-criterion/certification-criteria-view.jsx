@@ -7,7 +7,7 @@ import {
 import { arrayOf } from 'prop-types';
 
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -97,73 +97,72 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
       <ChplFilterSearchBar
         placeholder="Search by Number, Title, or Rule..."
       />
-      <div>
-        <ChplFilterChips />
-      </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            Search Results
-          </Typography>
-          <Typography variant="body2">
-            {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '16px' }}>
-        {certificationCriteria
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              cardTitle="Number"
-              cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.number}`}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Title',
-                    value: item.title,
-                  },
-                  {
-                    label: 'Start Date',
-                    value: getDisplayDateFormat(item.startDay),
-                  },
-                  {
-                    label: 'End Date',
-                    value: getDisplayDateFormat(item.endDay),
-                  },
-                ],
-                [
-                  {
-                    label: 'Rule',
-                    value: item.rule?.name || 'N/A',
-                  },
-                  {
-                    label: 'Certification Companion Guide',
-                    value: item.companionGuideLink ? (
-                      <ChplLink
-                        href={item.companionGuideLink}
-                        text={item.companionGuideLink}
-                        external={false}
-                      />
-                    ) : 'N/A',
-                  },
-                  {
-                    label: 'Attributes',
-                    value: item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A',
-                  },
-                ],
-              ]}
+      <ChplFilterLayout>
+        <Box className={classes.headerContainer}>
+          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+            <Typography variant="subtitle2">
+              Search Results
+            </Typography>
+            <Typography variant="body2">
+              {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gridGap={4}>
+            <ChplSortControls
+              sortOptions={sortOptions}
+              orderBy={orderBy}
+              order={order}
+              onSort={handleSort}
             />
-          ))}
-      </Box>
+          </Box>
+        </Box>
+        <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '16px' }}>
+          {certificationCriteria
+            .map((item) => (
+              <ChplSearchResultCard
+                key={`${item.id}`}
+                cardTitle="Number"
+                cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.number}`}
+                fieldGroups={[
+                  [
+                    {
+                      label: 'Title',
+                      value: item.title,
+                    },
+                    {
+                      label: 'Start Date',
+                      value: getDisplayDateFormat(item.startDay),
+                    },
+                    {
+                      label: 'End Date',
+                      value: getDisplayDateFormat(item.endDay),
+                    },
+                  ],
+                  [
+                    {
+                      label: 'Rule',
+                      value: item.rule?.name || 'N/A',
+                    },
+                    {
+                      label: 'Certification Companion Guide',
+                      value: item.companionGuideLink ? (
+                        <ChplLink
+                          href={item.companionGuideLink}
+                          text={item.companionGuideLink}
+                          external={false}
+                        />
+                      ) : 'N/A',
+                    },
+                    {
+                      label: 'Attributes',
+                      value: item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A',
+                    },
+                  ],
+                ]}
+              />
+            ))}
+        </Box>
+      </ChplFilterLayout>
     </>
   );
 }

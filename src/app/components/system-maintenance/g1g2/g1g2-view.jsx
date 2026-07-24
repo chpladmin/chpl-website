@@ -11,7 +11,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -67,69 +67,68 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
       <ChplFilterSearchBar
         placeholder="Search by Abbreviation, Domain, Required Test, or Name..."
       />
-      <div>
-        <ChplFilterChips />
-      </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">Search Results</Typography>
-          <Typography variant="body2">
-            {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { g1g2
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              cardTitle="Name"
-              cardTitleValue={item.name}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Abbreviation',
-                    value: item.abbreviation || 'N/A',
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Domain',
-                    value: item.domainDisplay || 'N/A',
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Required Test',
-                    value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                  },
-                ],
-              ]}
+      <ChplFilterLayout>
+        <Box className={classes.headerContainer}>
+          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+            <Typography variant="subtitle2">Search Results</Typography>
+            <Typography variant="body2">
+              {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gridGap={4}>
+            <ChplSortControls
+              sortOptions={sortOptions}
+              orderBy={orderBy}
+              order={order}
+              onSort={handleSort}
             />
-          ))}
-      </Box>
+          </Box>
+        </Box>
+        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          { g1g2
+            .map((item) => (
+              <ChplSearchResultCard
+                key={`${item.id}`}
+                cardTitle="Name"
+                cardTitleValue={item.name}
+                fieldGroups={[
+                  [
+                    {
+                      label: 'Abbreviation',
+                      value: item.abbreviation || 'N/A',
+                      iconButton: (
+                        <ChplTooltip title="Use this value in a upload file">
+                          <IconButton color="primary" size="small">
+                            <InfoIcon fontSize="small" />
+                          </IconButton>
+                        </ChplTooltip>
+                      ),
+                    },
+                    {
+                      label: 'Domain',
+                      value: item.domainDisplay || 'N/A',
+                      iconButton: (
+                        <ChplTooltip title="Use this value in a upload file">
+                          <IconButton color="primary" size="small">
+                            <InfoIcon fontSize="small" />
+                          </IconButton>
+                        </ChplTooltip>
+                      ),
+                    },
+                    {
+                      label: 'Required Test',
+                      value: `${item.removed ? 'Removed | ' : ''}${item.requiredTest || 'N/A'}`,
+                    },
+                    {
+                      label: 'Applicable Criteria',
+                      value: item.criteriaDisplay || 'N/A',
+                    },
+                  ],
+                ]}
+              />
+            ))}
+        </Box>
+      </ChplFilterLayout>
     </>
   );
 }

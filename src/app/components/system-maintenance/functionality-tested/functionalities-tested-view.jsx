@@ -14,7 +14,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { useFetchFunctionalitiesTestedActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -80,30 +80,28 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
       <ChplFilterSearchBar
         placeholder="Search by Value, Citation, Rule, or Practice Type..."
       />
-      <div>
-        <ChplFilterChips />
-      </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            Search Results
-          </Typography>
-          <Typography variant="body2">
-            {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchFunctionalitiesTestedActivity}
-            title="Functionalities Tested"
-          />
-          {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+      <ChplFilterLayout>
+        <Box className={classes.headerContainer}>
+          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+            <Typography variant="subtitle2">
+              Search Results
+            </Typography>
+            <Typography variant="body2">
+              {`(${functionalitiesTested.length} Result${functionalitiesTested.length !== 1 ? 's' : ''})`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gridGap={4}>
+            <ChplSortControls
+              sortOptions={sortOptions}
+              orderBy={orderBy}
+              order={order}
+              onSort={handleSort}
+            />
+            <ChplSystemMaintenanceActivity
+              fetch={useFetchFunctionalitiesTestedActivity}
+              title="Functionalities Tested"
+            />
+            {hasAnyRole(['chpl-admin', 'chpl-onc']) && (
             <Button
               onClick={() => dispatch({ action: 'edit', payload: {} })}
               id="add-new-functionality-tested"
@@ -113,69 +111,69 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
             >
               Add
             </Button>
-          )}
+            )}
+          </Box>
         </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        {functionalitiesTested
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}-${item.value}`}
-              cardTitle="Value"
-              cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
-              additionalTitleContent={(
-                <ChplUpdateIndicator
-                  requiredDay={item.requiredDay}
-                  endDay={item.endDay}
-                  additionalInformation={item.additionalInformation}
-                />
+        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          {functionalitiesTested
+            .map((item) => (
+              <ChplSearchResultCard
+                key={`${item.id}-${item.value}`}
+                cardTitle="Value"
+                cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
+                additionalTitleContent={(
+                  <ChplUpdateIndicator
+                    requiredDay={item.requiredDay}
+                    endDay={item.endDay}
+                    additionalInformation={item.additionalInformation}
+                  />
               )}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Regulatory Text Citation',
-                    value: item.regulatoryTextCitation || 'N/A',
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Rule',
-                    value: item.rule?.name || 'N/A',
-                  },
-                  {
-                    label: 'Practice Type',
-                    value: item.practiceType?.name || 'N/A',
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                  },
-                ],
-                [
-                  {
-                    label: 'Start Date',
-                    value: getDisplayDateFormat(item.startDay) || 'N/A',
-                  },
-                  {
-                    label: 'End Date',
-                    value: getDisplayDateFormat(item.endDay) || 'N/A',
-                  },
-                  {
-                    label: 'Required Date',
-                    value: getDisplayDateFormat(item.requiredDay) || 'N/A',
-                  },
-                  {
-                    label: 'Extension End Date',
-                    value: getDisplayDateFormat(item.extensionEndDay) || 'N/A',
-                  },
-                ],
-              ]}
-              actions={
+                fieldGroups={[
+                  [
+                    {
+                      label: 'Regulatory Text Citation',
+                      value: item.regulatoryTextCitation || 'N/A',
+                      iconButton: (
+                        <ChplTooltip title="Use this value in a upload file">
+                          <IconButton color="primary" size="small">
+                            <InfoIcon fontSize="small" />
+                          </IconButton>
+                        </ChplTooltip>
+                      ),
+                    },
+                    {
+                      label: 'Rule',
+                      value: item.rule?.name || 'N/A',
+                    },
+                    {
+                      label: 'Practice Type',
+                      value: item.practiceType?.name || 'N/A',
+                    },
+                    {
+                      label: 'Applicable Criteria',
+                      value: item.criteriaDisplay || 'N/A',
+                    },
+                  ],
+                  [
+                    {
+                      label: 'Start Date',
+                      value: getDisplayDateFormat(item.startDay) || 'N/A',
+                    },
+                    {
+                      label: 'End Date',
+                      value: getDisplayDateFormat(item.endDay) || 'N/A',
+                    },
+                    {
+                      label: 'Required Date',
+                      value: getDisplayDateFormat(item.requiredDay) || 'N/A',
+                    },
+                    {
+                      label: 'Extension End Date',
+                      value: getDisplayDateFormat(item.extensionEndDay) || 'N/A',
+                    },
+                  ],
+                ]}
+                actions={
                 hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                   <Button
                     onClick={() => dispatch({ action: 'edit', payload: item })}
@@ -189,9 +187,10 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
                   </Button>
                 )
               }
-            />
-          ))}
-      </Box>
+              />
+            ))}
+        </Box>
+      </ChplFilterLayout>
     </>
   );
 }

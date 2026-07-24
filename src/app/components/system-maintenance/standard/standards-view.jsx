@@ -14,7 +14,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -87,28 +87,26 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       <ChplFilterSearchBar
         placeholder="Search by Value, Citation, Rule, or Group..."
       />
-      <div>
-        <ChplFilterChips />
-      </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">Search Results</Typography>
-          <Typography variant="body2">
-            {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchStandardsActivity}
-            title="Standards"
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+      <ChplFilterLayout>
+        <Box className={classes.headerContainer}>
+          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+            <Typography variant="subtitle2">Search Results</Typography>
+            <Typography variant="body2">
+              {`(${standards.length} Result${standards.length !== 1 ? 's' : ''})`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gridGap={4}>
+            <ChplSortControls
+              sortOptions={sortOptions}
+              orderBy={orderBy}
+              order={order}
+              onSort={handleSort}
+            />
+            <ChplSystemMaintenanceActivity
+              fetch={useFetchStandardsActivity}
+              title="Standards"
+            />
+            { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
             <Button
               onClick={() => dispatch({ action: 'edit', payload: {} })}
               id="add-new-standard"
@@ -118,69 +116,69 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
             >
               Add
             </Button>
-          )}
+            )}
+          </Box>
         </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { standards
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}-${item.value}`}
-              cardTitle="Value"
-              cardTitleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}
-              additionalTitleContent={(
-                <ChplUpdateIndicator
-                  requiredDay={item.requiredDay}
-                  endDay={item.endDay}
-                  additionalInformation={item.additionalInformation}
-                />
+        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          { standards
+            .map((item) => (
+              <ChplSearchResultCard
+                key={`${item.id}-${item.value}`}
+                cardTitle="Value"
+                cardTitleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}
+                additionalTitleContent={(
+                  <ChplUpdateIndicator
+                    requiredDay={item.requiredDay}
+                    endDay={item.endDay}
+                    additionalInformation={item.additionalInformation}
+                  />
               )}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Regulatory Text Citation',
-                    value: item.regulatoryTextCitation || 'N/A',
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Rule',
-                    value: item.rule?.name ?? 'N/A',
-                  },
-                  {
-                    label: 'Group',
-                    value: item.groupName ?? 'N/A',
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                  },
-                ],
-                [
-                  {
-                    label: 'Start Date',
-                    value: getDisplayDateFormat(item.startDay),
-                  },
-                  {
-                    label: 'Required Date',
-                    value: getDisplayDateFormat(item.requiredDay),
-                  },
-                  {
-                    label: 'Extension End Date',
-                    value: getDisplayDateFormat(item.extensionEndDay),
-                  },
-                  {
-                    label: 'End Date',
-                    value: getDisplayDateFormat(item.endDay),
-                  },
-                ],
-              ]}
-              actions={
+                fieldGroups={[
+                  [
+                    {
+                      label: 'Regulatory Text Citation',
+                      value: item.regulatoryTextCitation || 'N/A',
+                      iconButton: (
+                        <ChplTooltip title="Use this value in a upload file">
+                          <IconButton color="primary" size="small">
+                            <InfoIcon fontSize="small" />
+                          </IconButton>
+                        </ChplTooltip>
+                      ),
+                    },
+                    {
+                      label: 'Rule',
+                      value: item.rule?.name ?? 'N/A',
+                    },
+                    {
+                      label: 'Group',
+                      value: item.groupName ?? 'N/A',
+                    },
+                    {
+                      label: 'Applicable Criteria',
+                      value: item.criteriaDisplay || 'N/A',
+                    },
+                  ],
+                  [
+                    {
+                      label: 'Start Date',
+                      value: getDisplayDateFormat(item.startDay),
+                    },
+                    {
+                      label: 'Required Date',
+                      value: getDisplayDateFormat(item.requiredDay),
+                    },
+                    {
+                      label: 'Extension End Date',
+                      value: getDisplayDateFormat(item.extensionEndDay),
+                    },
+                    {
+                      label: 'End Date',
+                      value: getDisplayDateFormat(item.endDay),
+                    },
+                  ],
+                ]}
+                actions={
                 hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                   <Button
                     onClick={() => dispatch({ action: 'edit', payload: item })}
@@ -194,9 +192,10 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
                   </Button>
                 )
               }
-            />
-          ))}
-      </Box>
+              />
+            ))}
+        </Box>
+      </ChplFilterLayout>
     </>
   );
 }
