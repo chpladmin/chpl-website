@@ -56,6 +56,11 @@ const useStyles = makeStyles({
     display: 'inline-flex',
     gap: '4px',
   },
+  card: {
+    width: '100%',
+    maxHeight: '50vh',
+    overflowY: 'auto',
+  },
 });
 
 const truncate = (str, n, useWordBoundary) => {
@@ -143,7 +148,7 @@ function ChplFilterChips() {
 
   return (
     <span className={classes.filterContainer} id="filter-chips">
-      <Card style={{ width: '100%' }}>
+      <Card className={classes.card}>
         <CardContent>
           <Typography variant="subtitle2">Filters Applied:</Typography>
           <div className={classes.filterChipsContainer}>

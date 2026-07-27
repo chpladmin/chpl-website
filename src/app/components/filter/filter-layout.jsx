@@ -34,8 +34,7 @@ const useStyles = makeStyles({
     gap: '8px',
     [theme.breakpoints.up('md')]: {
       position: 'sticky',
-      top: '16px',
-      borderRight: `1px solid ${palette.greyBorder}`,
+      top: '190px',
     },
   },
   sidebarToggle: {
