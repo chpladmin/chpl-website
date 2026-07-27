@@ -61,13 +61,14 @@ const useStyles = makeStyles({
       right: 0,
       bottom: '100%',
       height: '100px',
-      background: `linear-gradient(to top, ${palette.backgroundPage} 55%, transparent)`,
+      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 55%, transparent)`,
       pointerEvents: 'none',
     },
   },
 });
 
 function ChplFilterSearchBar({
+  fadeBackground = palette.backgroundPage,
   hideAdvancedSearch = false,
   hideSearchTerm = false,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
@@ -75,7 +76,7 @@ function ChplFilterSearchBar({
   toggleMultipleFilters = undefined,
 }) {
   const { filters } = useFilterContext();
-  const classes = useStyles();
+  const classes = useStyles({ fadeBackground });
   const sentinelRef = useRef(null);
   const [isStuck, setIsStuck] = useState(false);
 
@@ -133,6 +134,7 @@ function ChplFilterSearchBar({
 export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
+  fadeBackground: string,
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
   placeholder: string,

@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   IconButton,
-  Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { arrayOf, shape, string } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import {
   ChplFilterLayout,
@@ -16,7 +19,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
-import { utilStyles } from 'themes';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'abbreviation', text: 'Abbreviation' },
@@ -24,16 +27,11 @@ const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
 
-const useStyles = makeStyles({
-  ...utilStyles,
-});
-
 function ChplG1g2View({ g1g2: initialG1g2 }) {
   const [g1g2, setG1g2] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('abbreviation');
   const filterContext = useFilterContext();
-  const classes = useStyles();
 
   useEffect(() => {
     setG1g2(initialG1g2
@@ -66,25 +64,24 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
     <>
       <ChplFilterSearchBar
         placeholder="Search by Abbreviation, Domain, Required Test, or Name..."
+        sticky
+        fadeBackground={palette.white}
       />
       <ChplFilterLayout>
-        <Box className={classes.headerContainer}>
-          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-            <Typography variant="subtitle2">Search Results</Typography>
-            <Typography variant="body2">
-              {`(${g1g2.length} Result${g1g2.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" gridGap={4}>
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-          </Box>
-        </Box>
-        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        <ChplSearchResultControls
+          recordCount={g1g2.length}
+          pageStart={g1g2.length > 0 ? 1 : 0}
+          pageEnd={g1g2.length}
+          fadeBackground={palette.white}
+        >
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+        </ChplSearchResultControls>
+        <Box>
           { g1g2
             .map((item) => (
               <ChplSearchResultCard

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
 
@@ -11,11 +9,16 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplLink, ChplSearchResultCard, ChplSortControls } from 'components/util';
+import {
+  ChplLink,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { criterion as criterionPropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'number', text: 'Number' },
@@ -23,10 +26,6 @@ const sortOptions = [
   { property: 'startDay', text: 'Start Date' },
   { property: 'endDay', text: 'End Date' },
 ];
-
-const useStyles = makeStyles({
-  ...utilStyles,
-});
 
 const getDisplay = (key) => {
   switch (key) {
@@ -63,7 +62,6 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('number');
   const filterContext = useFilterContext();
-  const classes = useStyles();
 
   useEffect(() => {
     setCertificationCriteria(initialCertificationCriteria
@@ -96,27 +94,24 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
     <>
       <ChplFilterSearchBar
         placeholder="Search by Number, Title, or Rule..."
+        sticky
+        fadeBackground={palette.white}
       />
       <ChplFilterLayout>
-        <Box className={classes.headerContainer}>
-          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-            <Typography variant="subtitle2">
-              Search Results
-            </Typography>
-            <Typography variant="body2">
-              {`(${certificationCriteria.length} Result${certificationCriteria.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" gridGap={4}>
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-          </Box>
-        </Box>
-        <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '16px' }}>
+        <ChplSearchResultControls
+          recordCount={certificationCriteria.length}
+          pageStart={certificationCriteria.length > 0 ? 1 : 0}
+          pageEnd={certificationCriteria.length}
+          fadeBackground={palette.white}
+        >
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+        </ChplSearchResultControls>
+        <Box>
           {certificationCriteria
             .map((item) => (
               <ChplSearchResultCard

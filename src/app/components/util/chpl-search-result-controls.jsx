@@ -4,7 +4,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { node, number } from 'prop-types';
+import { node, number, string } from 'prop-types';
 
 import { palette, theme } from 'themes';
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
       right: 0,
       bottom: '100%',
       height: '90px',
-      background: `linear-gradient(to top, ${palette.backgroundPage} 40%, transparent)`,
+      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
       pointerEvents: 'none',
     },
     [theme.breakpoints.down('sm')]: {
@@ -76,8 +76,9 @@ function ChplSearchResultControls({
   pageStart,
   pageEnd,
   children = undefined,
+  fadeBackground = palette.backgroundPage,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ fadeBackground });
 
   return (
     <div className={classes.container}>
@@ -113,4 +114,5 @@ ChplSearchResultControls.propTypes = {
   pageStart: number.isRequired,
   pageEnd: number.isRequired,
   children: node,
+  fadeBackground: string,
 };
