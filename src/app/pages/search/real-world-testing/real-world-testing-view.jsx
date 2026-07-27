@@ -19,7 +19,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -155,10 +155,10 @@ function ChplRealWorldTestingSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -188,6 +188,7 @@ function ChplRealWorldTestingSearchView() {
                           [
                             {
                               label: 'Developer',
+                              style: { flex: '2 1 320px' },
                               value: (
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
@@ -214,6 +215,7 @@ function ChplRealWorldTestingSearchView() {
                           [
                             {
                               label: 'CHPL ID',
+                              style: { flex: '2 1 320px' },
                               value: (
                                 <ChplLink
                                   href={`#/listing/${item.id}`}
@@ -242,6 +244,7 @@ function ChplRealWorldTestingSearchView() {
                           [
                             {
                               label: 'Real World Testing Plans URL',
+                              style: { flex: '1 1 100%' },
                               value: item.rwtPlansUrl
                                 ? (
                                   <ChplLink
@@ -258,6 +261,7 @@ function ChplRealWorldTestingSearchView() {
                             },
                             {
                               label: 'Real World Testing Results URL',
+                              style: { flex: '1 1 100%' },
                               value: item.rwtResultsUrl
                                 ? (
                                   <ChplLink
@@ -290,6 +294,7 @@ function ChplRealWorldTestingSearchView() {
               )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

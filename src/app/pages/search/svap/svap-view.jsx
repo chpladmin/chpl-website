@@ -20,7 +20,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -232,10 +232,10 @@ function ChplSvapSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        {isLoading && (<ChplLoadingCards />)}
-        {!isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          {isLoading && (<ChplLoadingCards />)}
+          {!isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -270,6 +270,7 @@ function ChplSvapSearchView() {
                             [
                               {
                                 label: 'Developer',
+                                style: { flex: '2 1 320px' },
                                 value: (
                                   <ChplLink
                                     href={`#/organizations/developers/${item.developer.id}`}
@@ -296,6 +297,7 @@ function ChplSvapSearchView() {
                             [
                               {
                                 label: 'CHPL ID',
+                                style: { flex: '2 1 320px' },
                                 value: (
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
@@ -325,9 +327,11 @@ function ChplSvapSearchView() {
                               {
                                 label: 'SVAP Information',
                                 value: item.svapNode,
+                                style: { flex: '1 1 100%' },
                               },
                               {
                                 label: 'SVAP Notice',
+                                style: { flex: '1 1 100%' },
                                 value: item.svapNoticeUrl
                                   ? (
                                     <ChplLink
@@ -360,6 +364,7 @@ function ChplSvapSearchView() {
                 )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

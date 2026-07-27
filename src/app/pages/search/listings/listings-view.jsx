@@ -24,7 +24,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -138,10 +138,10 @@ function ChplListingsView() {
         subtitle="Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated listings."
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -189,6 +189,7 @@ function ChplListingsView() {
                             [
                               {
                                 label: 'Developer',
+                                style: { flex: '2 1 320px' },
                                 value: (
                                   <ChplLink
                                     href={`#/organizations/developers/${item.developer.id}`}
@@ -216,6 +217,7 @@ function ChplListingsView() {
                             [
                               {
                                 label: 'CHPL ID',
+                                style: { flex: '2 1 320px' },
                                 value: (
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
@@ -259,6 +261,7 @@ function ChplListingsView() {
                 )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );
