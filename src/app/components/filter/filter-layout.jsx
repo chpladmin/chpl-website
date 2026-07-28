@@ -9,7 +9,7 @@ import {
 import FilterListIcon from '@material-ui/icons/FilterList';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { node } from 'prop-types';
+import { bool, node } from 'prop-types';
 
 import ChplFilterChips from './filter-chips';
 import { useFilterContext } from './filter-context';
@@ -28,6 +28,13 @@ const useStyles = makeStyles({
       gap: '24px',
     },
   },
+  layoutContainerMobileOnly: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
+    alignItems: 'start',
+    margin: '16px 0px',
+  },
   sidebar: {
     display: 'flex',
     flexDirection: 'column',
@@ -37,12 +44,21 @@ const useStyles = makeStyles({
       top: '190px',
     },
   },
+  sidebarMobileOnly: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
   sidebarToggle: {
     justifyContent: 'space-between',
     color: palette.black,
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  sidebarToggleMobileOnly: {
+    justifyContent: 'space-between',
+    color: palette.black,
   },
   sidebarToggleLabel: {
     display: 'flex',
@@ -54,10 +70,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterLayout({ children }) {
+function ChplFilterLayout({ children, mobileOnly }) {
   const classes = useStyles();
   const filterContext = useFilterContext();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isDesktopWidth = useMediaQuery(theme.breakpoints.up('md'));
+  const isDesktop = isDesktopWidth && !mobileOnly;
   const [expanded, setExpanded] = useState(false);
 
   const hasAppliedFilters = filterContext.filters
@@ -76,10 +93,10 @@ function ChplFilterLayout({ children }) {
   }
 
   return (
-    <div className={classes.layoutContainer}>
-      <Box className={classes.sidebar}>
+    <div className={mobileOnly ? classes.layoutContainerMobileOnly : classes.layoutContainer}>
+      <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
         <Button
-          className={classes.sidebarToggle}
+          className={mobileOnly ? classes.sidebarToggleMobileOnly : classes.sidebarToggle}
           variant="outlined"
           fullWidth
           id="filter-layout-sidebar-toggle"
@@ -110,8 +127,10 @@ export default ChplFilterLayout;
 
 ChplFilterLayout.propTypes = {
   children: node,
+  mobileOnly: bool,
 };
 
 ChplFilterLayout.defaultProps = {
   children: undefined,
+  mobileOnly: false,
 };

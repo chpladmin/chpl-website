@@ -125,7 +125,7 @@ function ChplProductsView({ products = [], dispatch }) {
         <ChplFilterSearchBar
           hideSearchTerm
         />
-        <ChplFilterLayout>
+        <ChplFilterLayout mobileOnly>
           <div className={classes.tableResultsHeaderContainer}>
             <div className={`${classes.resultsContainer} ${classes.wrap}`}>
               <Typography variant="subtitle2">Search Results:</Typography>

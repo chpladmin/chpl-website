@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -16,12 +11,14 @@ import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
 import {
   ChplLink,
+  ChplLoadingCards,
   ChplPagination,
-  ChplLoadingTable,
-  ChplSortableHeaders,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -30,14 +27,10 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { eventTrack } from 'services/analytics.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { theme } from 'themes';
 
 const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
-  },
-  linkWrap: {
-    overflowWrap: 'anywhere',
   },
   pageHeader: {
     padding: '32px',
@@ -50,46 +43,8 @@ const useStyles = makeStyles({
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
-    },
-  },
-  tableContainer: {
-    overflowWrap: 'normal',
-    border: '.5px solid #c2c6ca',
-    margin: '0px 32px',
-    width: 'auto',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
   resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
+    padding: '0px 32px',
   },
 });
 
@@ -139,15 +94,12 @@ function ChplQuestionableActivityView() {
   }, [API, authService]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = [
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'product', text: 'Product', sortable: true },
-    { property: 'version', text: 'Version', sortable: true },
-    { property: 'chpl_product_number', text: 'CHPL ID', sortable: true },
-    { text: 'Activity' },
-    { property: 'activity_date', text: 'Activity Date', sortable: true },
-    { text: 'Reason' },
-    { text: 'Actions', invisible: true },
+  const sortOptions = [
+    { property: 'developer', text: 'Developer' },
+    { property: 'product', text: 'Product' },
+    { property: 'version', text: 'Version' },
+    { property: 'chpl_product_number', text: 'CHPL ID' },
+    { property: 'activity_date', text: 'Activity Date', reverseDefault: true },
   ];
 
   const handleClick = () => {
@@ -158,7 +110,7 @@ function ChplQuestionableActivityView() {
     window.open(`${downloadLink}&${filterContext.queryString()}`);
   };
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -183,33 +135,23 @@ function ChplQuestionableActivityView() {
           </Typography>
         </div>
       </div>
-      <ChplFilterSearchBar />
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <ChplLoadingTable className={classes.tableContainer} />
-        )}
-      { !isLoading
+      <ChplFilterSearchBar sticky />
+      <ChplFilterLayout>
+        { isLoading && (<ChplLoadingCards />)}
+        { !isLoading
         && (
           <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { activities.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { activities.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
-              </div>
+            <ChplSearchResultControls
+              recordCount={recordCount}
+              pageStart={pageStart}
+              pageEnd={pageEnd}
+            >
+              <ChplSortControls
+                sortOptions={sortOptions}
+                orderBy={orderBy}
+                order={sortDescending ? 'desc' : 'asc'}
+                onSort={handleSort}
+              />
               { activities.length > 0
                 && (
                   <Button
@@ -223,47 +165,39 @@ function ChplQuestionableActivityView() {
                     Download Filtered Results
                   </Button>
                 )}
-            </div>
+            </ChplSearchResultControls>
             { activities.length > 0
               && (
                 <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Questionable Activity table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
-                        stickyHeader
-                      />
-                      <TableBody>
-                        { activities
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell>
-                                { item.developerId
-                                  && (
-                                    <ChplLink
-                                      href={`#/organizations/developers/${item.developerId}`}
-                                      text={item.developerName}
-                                      analytics={{
-                                        ...analytics,
-                                        event: 'Go to Developer Page',
-                                        label: item.developerName,
-                                      }}
-                                      external={false}
-                                      router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
-                                    />
-                                  )}
-                              </TableCell>
-                              <TableCell>{item.productName}</TableCell>
-                              <TableCell>{item.versionName}</TableCell>
-                              <TableCell>
-                                { item.listingId
-                                  && (
+                  <Box className={classes.resultsContainer}>
+                    { activities.map((item) => (
+                      <ChplSearchResultCard
+                        key={item.id}
+                        cardTitle="Developer"
+                        cardTitleValue={item.developerId
+                          ? (
+                            <ChplLink
+                              href={`#/organizations/developers/${item.developerId}`}
+                              text={item.developerName}
+                              analytics={{
+                                ...analytics,
+                                event: 'Go to Developer Page',
+                                label: item.developerName,
+                              }}
+                              external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
+                            />
+                          )
+                          : item.developerName || 'N/A'}
+                        fieldGroups={[
+                          [
+                            { label: 'Product', value: item.productName },
+                            { label: 'Version', value: item.versionName },
+                            {
+                              label: 'CHPL ID',
+                              style: { flex: '2 1 320px' },
+                              value: item.listingId
+                                ? (
                                   <ChplLink
                                     href={`#/listing/${item.listingId}`}
                                     text={item.chplProductNumber}
@@ -275,32 +209,24 @@ function ChplQuestionableActivityView() {
                                     external={false}
                                     router={{ sref: 'listing', options: { id: item.listingId } }}
                                   />
-                                  )}
-                              </TableCell>
-                              <TableCell>{item.triggerName}</TableCell>
-                              <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
-                              <TableCell>
-                                { item.reason
-                                  && (
-                                    <Typography>
-                                      {item.reason}
-                                    </Typography>
-                                  )}
-                                { item.certificationStatusChangeReason
-                                  && (
-                                    <Typography>
-                                      {item.certificationStatusChangeReason}
-                                    </Typography>
-                                  )}
-                              </TableCell>
-                              <TableCell>
-                                <ChplQuestionableActivityDetails activity={item} />
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                                )
+                                : item.chplProductNumber,
+                            },
+                          ],
+                          [
+                            { label: 'Activity', value: item.triggerName },
+                            { label: 'Activity Date', value: getDisplayDateFormat(item.activityDate) },
+                            {
+                              label: 'Reason',
+                              style: { flex: '2 1 320px' },
+                              value: item.reason || item.certificationStatusChangeReason || 'N/A',
+                            },
+                          ],
+                        ]}
+                        actions={<ChplQuestionableActivityDetails activity={item} />}
+                      />
+                    ))}
+                  </Box>
                   <ChplPagination
                     count={recordCount}
                     page={pageNumber}
@@ -313,6 +239,7 @@ function ChplQuestionableActivityView() {
               )}
           </>
         )}
+      </ChplFilterLayout>
     </div>
   );
 }

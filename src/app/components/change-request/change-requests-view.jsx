@@ -1,20 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   MenuItem,
   MenuList,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -35,61 +27,36 @@ import {
 import {
   ChplAvatar,
   ChplLink,
+  ChplLoadingCards,
   ChplPagination,
-  ChplSortableHeaders,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  container: {
-    maxHeight: '64vh',
+  card: {
+    overflow: 'visible',
   },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
-  resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
-  },
-  tableFirstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: palette.white,
-  },
-  tableDeveloperCell: {
+  developerTitle: {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-  },
-  developerName: {
-    fontWeight: '600',
   },
   noResultsContainer: {
     padding: '16px 32px',
   },
 });
 
-function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embedded = false }) {
+function ChplChangeRequestsView({
+  disallowedFilters, bonusQuery, dispatch, embedded = false,
+}) {
   const storageKey = 'storageKey-changeRequestsView';
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -128,20 +95,17 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
     }
   }, [data, isLoading, isSuccess]);
 
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = hasAnyRole(['chpl-developer']) ? [
-    { property: 'change_request_type', text: 'Request Type', sortable: true },
-    { property: 'change_request_status', text: 'Request Status', sortable: true },
-    { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
-    { text: 'Actions', invisible: true },
+  const isDeveloper = hasAnyRole(['chpl-developer']);
+  const sortOptions = isDeveloper ? [
+    { property: 'change_request_type', text: 'Request Type' },
+    { property: 'change_request_status', text: 'Request Status' },
+    { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', reverseDefault: true },
   ] : [
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'change_request_type', text: 'Request Type', sortable: true },
-    { property: 'submitted_date_time', text: 'Creation Date', sortable: true, reverseDefault: true },
-    { property: 'change_request_status', text: 'Request Status', sortable: true },
-    { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
-    { text: 'Associated ONC-ACBs' },
-    { text: 'Actions', invisible: true },
+    { property: 'developer', text: 'Developer' },
+    { property: 'change_request_type', text: 'Request Type' },
+    { property: 'submitted_date_time', text: 'Creation Date', reverseDefault: true },
+    { property: 'change_request_status', text: 'Request Status' },
+    { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', reverseDefault: true },
   ];
 
   const handleDispatch = (action, payload) => {
@@ -156,7 +120,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
     }
   };
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -187,20 +151,18 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+  const recordCount = data?.recordCount ?? 0;
 
   const content = (
     <>
       <ChplFilterSearchBar
+        sticky={!embedded}
+        fadeBackground={palette.white}
         placeholder="Search by Developer..."
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
       />
       <ChplFilterLayout>
-        { isLoading
-        && (
-          <div className={classes.noResultsContainer}>
-            <CircularProgress />
-          </div>
-        )}
+        { isLoading && (<ChplLoadingCards />)}
         { !isLoading
         && (
           <>
@@ -217,84 +179,60 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
                   </MenuList>
                 </>
               )}
-            { isSuccess
+            { !isError
               && (
                 <>
-                  <div className={classes.tableResultsHeaderContainer}>
-                    <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                      <Typography variant="subtitle2">Search Results:</Typography>
-                      { changeRequests.length === 0
-                        && (
-                          <>
-                            No results found
-                          </>
-                        )}
-                      { changeRequests.length > 0
-                        && (
-                          <Typography variant="body2">
-                            {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-                          </Typography>
-                        )}
-                    </div>
+                  <ChplSearchResultControls
+                    recordCount={recordCount}
+                    pageStart={pageStart}
+                    pageEnd={pageEnd}
+                    fadeBackground={palette.white}
+                  >
+                    <ChplSortControls
+                      sortOptions={sortOptions}
+                      orderBy={orderBy}
+                      order={order}
+                      onSort={handleSort}
+                    />
                     { changeRequests.length > 0
                       && (
-                        <ButtonGroup size="small" className={classes.wrap}>
-                          <ChplChangeRequestsDownload
-                            bonusQuery={bonusQuery}
-                            queryParams={queryParams()}
-                            recordCount={data.recordCount}
-                          />
-                        </ButtonGroup>
+                        <ChplChangeRequestsDownload
+                          bonusQuery={bonusQuery}
+                          queryParams={queryParams()}
+                          recordCount={recordCount}
+                        />
                       )}
-                  </div>
+                  </ChplSearchResultControls>
                   { changeRequests.length > 0
                     && (
                       <>
-                        <TableContainer className={classes.container} component={Paper}>
-                          <Table
-                            stickyHeader
-                            aria-label="Change Requests table"
-                          >
-                            <ChplSortableHeaders
-                              headers={headers}
-                              onTableSort={handleTableSort}
-                              orderBy={orderBy}
-                              order={order}
-                              stickyHeader
-                            />
-                            <TableBody>
-                              {changeRequests
-                                .map((item) => (
-                                  <TableRow key={item.id}>
-                                    { !hasAnyRole(['chpl-developer'])
-                                     && (
-                                       <TableCell className={classes.tableFirstColumn}>
-                                         <div className={classes.tableDeveloperCell}>
-                                           <div>
-                                             <ChplAvatar
-                                               text={item.developer.name}
-                                             />
-                                           </div>
-                                           <div className={classes.developerName}>
-                                             <ChplLink
-                                               href={`#/organizations/developers/${item.developer.id}`}
-                                               text={item.developer.name}
-                                               analytics={{
-                                                 ...analytics,
-                                                 event: 'Navigate to Developer Page',
-                                               }}
-                                               external={false}
-                                               router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                             />
-                                           </div>
-                                         </div>
-                                       </TableCell>
-                                     )}
-                                    <TableCell>{item.changeRequestType.name}</TableCell>
-                                    { !hasAnyRole(['chpl-developer'])
-                                     && <TableCell>{getDisplayDateFormat(item.submittedDateTime)}</TableCell>}
-                                    <TableCell>{item.currentStatus.name}</TableCell>
-                                    <TableCell>
+                        <Box>
+                          { changeRequests.map((item) => (
+                            <ChplSearchResultCard
+                              key={item.id}
+                              cardTitle={isDeveloper ? undefined : 'Developer'}
+                              cardTitleValue={isDeveloper ? undefined : (
+                                <Box className={classes.developerTitle}>
+                                  <ChplAvatar text={item.developer.name} />
+                                  <ChplLink
+                                    href={`#/organizations/developers/${item.developer.id}`}
+                                    text={item.developer.name}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Navigate to Developer Page',
+                                    }}
+                                    external={false}
+                                    router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                  />
+                                </Box>
+                              )}
+                              fieldGroups={isDeveloper ? [
+                                [
+                                  { label: 'Request Type', value: item.changeRequestType.name },
+                                  { label: 'Request Status', value: item.currentStatus.name },
+                                  {
+                                    label: 'Time Since Last Status Change',
+                                    value: (
                                       <Moment
                                         withTitle
                                         titleFormat="DD MMM yyyy"
@@ -302,40 +240,52 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
                                       >
                                         {item.currentStatus.statusChangeDateTime}
                                       </Moment>
-                                    </TableCell>
-                                    { !hasAnyRole(['chpl-developer'])
-                                     && (
-                                       <TableCell>
-                                         { item.certificationBodies.length === 0
-                                           ? (
-                                             <>
-                                               None
-                                             </>
-                                           ) : (
-                                             <>
-                                               { item.certificationBodies.map((acb) => acb.name).join('; ') }
-                                             </>
-                                           )}
-                                       </TableCell>
-                                     )}
-                                    <TableCell align="right">
-                                      <Button
-                                        onClick={() => viewChangeRequest(item)}
-                                        variant="outlined"
-                                        color="primary"
+                                    ),
+                                  },
+                                ],
+                              ] : [
+                                [
+                                  { label: 'Request Type', value: item.changeRequestType.name },
+                                  { label: 'Creation Date', value: getDisplayDateFormat(item.submittedDateTime) },
+                                  { label: 'Request Status', value: item.currentStatus.name },
+                                ],
+                                [
+                                  {
+                                    label: 'Time Since Last Status Change',
+                                    value: (
+                                      <Moment
+                                        withTitle
+                                        titleFormat="DD MMM yyyy"
+                                        fromNow
                                       >
-                                        View
-                                        {' '}
-                                        <VisibilityIcon className={classes.iconSpacing} />
-                                      </Button>
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
+                                        {item.currentStatus.statusChangeDateTime}
+                                      </Moment>
+                                    ),
+                                  },
+                                  {
+                                    label: 'Associated ONC-ACBs',
+                                    value: item.certificationBodies.length === 0
+                                      ? 'None'
+                                      : item.certificationBodies.map((acb) => acb.name).join('; '),
+                                  },
+                                ],
+                              ]}
+                              actions={(
+                                <Button
+                                  onClick={() => viewChangeRequest(item)}
+                                  variant="outlined"
+                                  color="primary"
+                                >
+                                  View
+                                  {' '}
+                                  <VisibilityIcon className={classes.iconSpacing} />
+                                </Button>
+                              )}
+                            />
+                          ))}
+                        </Box>
                         <ChplPagination
-                          count={data.recordCount}
+                          count={recordCount}
                           page={pageNumber}
                           rowsPerPage={pageSize}
                           rowsPerPageOptions={[10, 50, 100, 250]}
@@ -354,7 +304,7 @@ function ChplChangeRequestsView({ disallowedFilters, bonusQuery, dispatch, embed
   );
 
   return (
-    <Card>
+    <Card className={classes.card}>
       { bonusQuery
         && (
           <CardHeader title="Change Requests" />
