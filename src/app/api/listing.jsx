@@ -44,17 +44,15 @@ const useFetchListing = ({ id, fetched = false, enabled = true }) => {
   });
 };
 
-const useFetchListings = ({ ids, enabled }) => {
+const useFetchListings = ({ ids }) => {
   const axios = useAxios();
   return useQueries({
     queries: ids.map((id) => ({
-      ...options.daily,
       queryKey: ['listing-basic', id],
       queryFn: async () => {
         const response = await axios.get(`certified_products/${id}`);
         return response.data;
       },
-      enabled: enabled && !!ids && ids.length > 0,
     })),
   });
 };

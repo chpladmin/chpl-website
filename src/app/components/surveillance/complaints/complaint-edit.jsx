@@ -94,8 +94,7 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplComplaintEdit(props) {
-  const { complaint: initialComplaint, dispatch } = props;
+function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
   const [certificationBodies, setCertificationBodies] = useState([]);
   const [complainantTypes, setComplainantTypes] = useState([]);
   const [complaintTypes, setComplaintTypes] = useState([]);
@@ -126,7 +125,6 @@ function ChplComplaintEdit(props) {
   });
   const fetchSurveillanceListings = useFetchListingsBasic({
     ids: complaint.listings?.map((l) => l.listingId) ?? [],
-    enabled: complaint && complaint.listings?.length > 0,
   });
   const classes = useStyles();
   let formik;
@@ -173,23 +171,27 @@ function ChplComplaintEdit(props) {
   useEffect(() => {
     fetchSurveillanceListings.forEach((f) => {
       if (f.isLoading || f.isError || !f.data) { return; }
-      const newSurveillances = f.data.surveillance.map((surv) => ({
-        id: surv.id,
-        friendlyId: surv.friendlyId,
-        listingId: f.data.id,
-        certifiedProductId: f.data.id,
-        chplProductNumber: f.data.chplProductNumber,
-      }));
-      setSurveillances((original) => [
-        ...original,
-        ...newSurveillances,
-      ].sort((a, b) => {
-        if (a.chplProductNumber < b.chplProductNumber) { return -1; }
-        if (a.chplProductNumber > b.chplProductNumber) { return 1; }
-        return a.friendlyId < b.friendlyId ? -1 : 1;
-      }));
+      setSurveillances((original) => {
+        const newSurveillances = f.data.surveillance
+          .map((surv) => ({
+            id: surv.id,
+            friendlyId: surv.friendlyId,
+            listingId: f.data.id,
+            certifiedProductId: f.data.id,
+            chplProductNumber: f.data.chplProductNumber,
+          }))
+          .filter((s) => !original.some((o) => o.id === s.id));
+        return [
+          ...original,
+          ...newSurveillances,
+        ].sort((a, b) => {
+          if (a.chplProductNumber < b.chplProductNumber) { return -1; }
+          if (a.chplProductNumber > b.chplProductNumber) { return 1; }
+          return a.friendlyId < b.friendlyId ? -1 : 1;
+        });
+      });
     });
-  }, [fetchSurveillanceListings.isLoading]);
+  }, [fetchSurveillanceListings]);
 
   useEffect(() => {
     const acbQuery = formik.values.certificationBody ? `certificationBodies=${formik.values.certificationBody.name}` : undefined;
@@ -657,7 +659,7 @@ function ChplComplaintEdit(props) {
                    <ul className={classes.chips}>
                      {complaint.surveillances
                        .map((surveillance) => (
-                         <li key={surveillance.id}>
+                         <li key={`${surveillance.surveillance.chplProductNumber}-${surveillance.surveillance.friendlyId}`}>
                            <Chip
                              label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
                              onDelete={() => removeAssociatedSurveillance(surveillance)}
