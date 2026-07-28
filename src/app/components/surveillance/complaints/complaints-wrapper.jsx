@@ -15,7 +15,7 @@ function ChplComplaintsWrapper(props) {
 
   return (
     <AppWrapper>
-      <ChplPageHeader text="Surveillance Complaints" />
+      <ChplPageHeader text="Complaints Reporting" />
       <ChplPageBody>
         <ChplComplaints
           bonusQuery={bonusQuery}
