@@ -4,10 +4,8 @@ import {
   Button,
   Card,
   CardHeader,
-  CircularProgress,
   List,
   ListItem,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
@@ -17,12 +15,14 @@ import { NotificationsOutlined, SubscriptionsOutlined } from '@material-ui/icons
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {
   ChplLink,
+  ChplLoadingCards,
   ChplPagination,
   ChplSearchResultCard,
+  ChplSearchResultControls,
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -38,6 +38,9 @@ const sortOptions = [
 ];
 
 const useStyles = makeStyles({
+  card: {
+    overflow: 'visible',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -84,14 +87,7 @@ const useStyles = makeStyles({
     },
   },
   resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
+    padding: '0px 32px',
   },
   listContainer: {
     fontSize: 'smaller',
@@ -173,7 +169,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardHeader
         style={{ paddingLeft: '16px' }}
         title={(
@@ -196,34 +192,21 @@ function ChplManageSubscriptionsView({ analytics }) {
       />
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
+          sticky
+          fadeBackground={palette.white}
           placeholder="Search by Subscriber Email or CHPL Product Number..."
         />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
-          && (
-            <CircularProgress />
-          )}
-        { !isLoading
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
-              <div className={classes.tableResultsHeaderContainer}>
-                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                  <Typography variant="subtitle2">Search Results:</Typography>
-                  { subscriptions.length === 0
-                    && (
-                      <Typography>
-                        No results found
-                      </Typography>
-                    )}
-                  { subscriptions.length > 0
-                    && (
-                      <Typography variant="body2">
-                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                      </Typography>
-                    )}
-                </div>
+              <ChplSearchResultControls
+                recordCount={recordCount}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+                fadeBackground={palette.white}
+              >
                 { subscriptions.length > 0
                   && (
                     <ChplSortControls
@@ -233,11 +216,11 @@ function ChplManageSubscriptionsView({ analytics }) {
                       onSort={handleTableSort}
                     />
                   )}
-              </div>
+              </ChplSearchResultControls>
               { subscriptions.length > 0
                 && (
                   <>
-                    <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 32px' }}>
+                    <Box className={classes.resultsContainer}>
                       { subscriptions.map((item) => (
                         <ChplSearchResultCard
                           key={`${item.subscriberId}-${item.subscribedObjectId}`}
@@ -253,11 +236,11 @@ function ChplManageSubscriptionsView({ analytics }) {
                           )}
                           fieldGroups={[
                             [
-                              { label: 'Email', value: item.subscriberEmail },
+                              { label: 'Email', style: { flex: '2 1 320px' }, value: item.subscriberEmail },
                               { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate) },
                             ],
                             [
-                              { label: 'Role', value: item.subscriberRole },
+                              { label: 'Role', style: { flex: '2 1 320px' }, value: item.subscriberRole },
                               {
                                 label: 'Subscription Subjects',
                                 value: (
@@ -288,6 +271,7 @@ function ChplManageSubscriptionsView({ analytics }) {
                 )}
             </>
           )}
+        </ChplFilterLayout>
       </div>
     </Card>
   );

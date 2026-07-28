@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
   Menu,
   MenuItem,
   makeStyles,
@@ -19,11 +20,14 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import SortIcon from '@material-ui/icons/Sort';
 
-import { theme } from 'themes';
+import { theme, palette } from 'themes';
 
 const useStyles = makeStyles({
   container: {
     marginRight: '16px',
+    display: 'flex',
+    border: `1px solid ${theme.palette.divider}`,
+    alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       marginRight: 0,
@@ -83,7 +87,7 @@ function ChplSortControls({
   };
 
   return (
-    <Box className={classes.container} display="flex" alignItems="center">
+    <Card className={classes.container}>
       <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
         <Button
           className={classes.primaryButton}
@@ -118,7 +122,7 @@ function ChplSortControls({
           </MenuItem>
         ))}
       </Menu>
-    </Box>
+    </Card>
   );
 }
 

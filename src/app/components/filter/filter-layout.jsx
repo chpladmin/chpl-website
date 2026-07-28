@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  Card,
+  CardContent,
   Collapse,
+  Typography,
   makeStyles,
   useMediaQuery,
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import LabelOffIcon from '@material-ui/icons/LabelOff';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { bool, node } from 'prop-types';
@@ -65,6 +69,19 @@ const useStyles = makeStyles({
     alignItems: 'center',
     gap: '8px',
   },
+  emptyCard: {
+    width: '100%',
+  },
+  emptyContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    gap: '8px',
+  },
+  emptyIcon: {
+    fontSize: '2rem',
+  },
   content: {
     minWidth: 0,
   },
@@ -86,8 +103,20 @@ function ChplFilterLayout({ children, mobileOnly }) {
 
   if (!hasAppliedFilters) {
     return (
-      <div className={classes.content}>
-        {children}
+      <div className={mobileOnly ? classes.layoutContainerMobileOnly : classes.layoutContainer}>
+        <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
+          <Card className={classes.emptyCard}>
+            <CardContent className={classes.emptyContent}>
+              <LabelOffIcon className={classes.emptyIcon} />
+              <Typography variant="body2">
+                No filters applied. Please use the advanced search to apply filters and view results.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+        <div className={classes.content}>
+          {children}
+        </div>
       </div>
     );
   }

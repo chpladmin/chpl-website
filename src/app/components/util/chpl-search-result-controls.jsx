@@ -23,8 +23,10 @@ const useStyles = makeStyles({
     padding: '16px 32px',
     backgroundColor: palette.white,
     borderRadius: '0px 0px 8px 8px',
-    borderTop: `1px solid ${palette.greyBorder}`,
-    boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
+    borderRight: `1px solid ${palette.divider}`,
+    borderBottom: `1px solid ${palette.divider}`,
+    borderLeft: `1px solid ${palette.divider}`,
+    boxShadow: `0px 6px 8px -4px ${theme.palette.grey[300]}`,
     '&::before': {
       content: '""',
       position: 'absolute',
