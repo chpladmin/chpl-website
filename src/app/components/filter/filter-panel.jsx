@@ -34,6 +34,12 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 1fr',
     },
   },
+  filterPanelFooter: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: '8px 16px',
+    borderTop: `1px solid ${palette.primaryBorder}`,
+  },
   filterPanelPrimary: {
     padding: '16px',
   },
@@ -50,14 +56,14 @@ const useStyles = makeStyles({
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
     justifyItems: 'start',
     alignItems: 'start',
     gap: '16px',
     padding: '0 8px',
     marginTop: '16px',
     [theme.breakpoints.up('xl')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(275px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
     },
   },
   filterHeaderContainer: {
@@ -240,15 +246,15 @@ function ChplFilterPanel() {
         TransitionProps={{ onExited: () => setAnchor(null) }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center',
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'right',
         }}
         PaperProps={{
           style: {
-            width: panelWidth ? `${panelWidth}px` : 'calc(100vw - 32px)',
+            width: panelWidth ? `${panelWidth - 284}px` : 'calc(100vw - 32px - 284px)',
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
@@ -404,6 +410,16 @@ function ChplFilterPanel() {
               </List>
             )}
           </div>
+        </div>
+        <div className={classes.filterPanelFooter}>
+          <Button
+            color="primary"
+            variant="outlined"
+            id="filter-panel-close"
+            onClick={handleClose}
+          >
+            Close
+          </Button>
         </div>
       </Popover>
     </>
