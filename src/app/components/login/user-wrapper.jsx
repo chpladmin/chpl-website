@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useCookies } from 'react-cookie';
 import { node } from 'prop-types';
 import { clearAuthTokens } from 'axios-jwt';
-import { useCookies } from 'react-cookie';
 
 import ChplLogin from './login';
+import { setUser } from './user.slice';
 
 import { usePostLogout } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
@@ -14,15 +16,17 @@ function UserWrapper({ children = <ChplLogin /> }) {
   const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();
   const [loginWidgetState, setLoginWidgetState] = useState('SIGNIN');
-  const [user, setUser] = useState({});
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
 
   useEffect(() => {
     const update = () => {
-      setUser(authService.getCurrentUser());
+      dispatch(setUser({ user: authService.getCurrentUser() }));
+      // setUser(authService.getCurrentUser());
     };
     update();
     const deregisterLoginWatcher = $rootScope.$on('loggedIn', update);
@@ -56,7 +60,8 @@ function UserWrapper({ children = <ChplLogin /> }) {
         email: user.email,
       });
     }
-    setUser({});
+    dispatch(setUser({}));
+    // setUser({});
     removeCookie('cognito_id');
     removeCookie('refresh_token');
     delete $localStorage.jwtToken;
@@ -73,7 +78,6 @@ function UserWrapper({ children = <ChplLogin /> }) {
     loginWidgetState,
     logout,
     setLoginWidgetState,
-    setUser,
     user,
   };
 
