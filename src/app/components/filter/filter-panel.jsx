@@ -234,7 +234,7 @@ function ChplFilterPanel() {
         id="filter-panel-toggle"
         onClick={handleClick}
       >
-        Advanced Search
+        Filters
         {' '}
         <FilterListIcon className={classes.iconSpacing} />
       </Button>

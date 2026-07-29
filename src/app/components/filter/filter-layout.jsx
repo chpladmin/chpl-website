@@ -109,7 +109,7 @@ function ChplFilterLayout({ children, mobileOnly }) {
             <CardContent className={classes.emptyContent}>
               <LabelOffIcon className={classes.emptyIcon} />
               <Typography variant="body2">
-                No filters applied. Please use the advanced search to apply filters and view results.
+                No filters applied. Please use the Filters button to apply filters and view results.
               </Typography>
             </CardContent>
           </Card>

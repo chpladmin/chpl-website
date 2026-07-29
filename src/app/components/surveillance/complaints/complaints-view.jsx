@@ -5,13 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -29,38 +22,29 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { ChplEllipsis, ChplPagination, ChplSortableHeaders } from 'components/util';
+import {
+  ChplEllipsis,
+  ChplLoadingCards,
+  ChplPagination,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+} from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  container: {
-    maxHeight: '64vh',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
   resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
+    padding: '0 32px',
   },
-  wrap: {
-    flexFlow: 'wrap',
+  emptyActions: {
+    display: 'flex',
+    gap: '8px',
+    padding: '16px 32px',
   },
   statusIndicatorOpen: {
     color: palette.active,
@@ -132,6 +116,14 @@ function ChplComplaintsView(props) {
     { property: 'actions', text: 'Actions', invisible: true },
   ];
 
+  const sortOptions = headers
+    .filter((header) => header.sortable)
+    .map((header) => ({
+      property: header.property,
+      text: header.text,
+      reverseDefault: header.reverseDefault,
+    }));
+
   const downloadFile = () => {
     eventTrack({
       ...analytics,
@@ -176,7 +168,7 @@ function ChplComplaintsView(props) {
     }
   };
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -184,6 +176,7 @@ function ChplComplaintsView(props) {
     });
     setOrderBy(property);
     setOrder(orderDirection);
+    setPageNumber(0);
   };
 
   if (activeComplaint) {
@@ -284,83 +277,86 @@ function ChplComplaintsView(props) {
         <ChplFilterLayout>
           { isLoading
           && (
-            <CircularProgress />
+            <ChplLoadingCards />
           )}
           { !isLoading
           && (
             <>
-              <div className={classes.tableResultsHeaderContainer}>
-                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                  <Typography variant="subtitle2">Search Results:</Typography>
-                  { complaints.length === 0
-                    && (
-                      <>
-                        No results found
-                      </>
-                    )}
-                  { complaints.length > 0
-                    && (
-                      <Typography variant="body2">
-                        {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-                      </Typography>
-                    )}
-                </div>
+              <ChplSearchResultControls
+                recordCount={data?.recordCount ?? 0}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+                fadeBackground={palette.white}
+              >
+                <ChplSortControls
+                  sortOptions={sortOptions}
+                  orderBy={orderBy}
+                  order={order}
+                  onSort={handleSort}
+                />
                 { getButtons() }
-              </div>
+              </ChplSearchResultControls>
+              { complaints.length === 0
+                && (
+                  <Box className={classes.emptyActions}>
+                    { getButtons() }
+                  </Box>
+                )}
               { complaints.length > 0
                 && (
                   <>
-                    <TableContainer className={classes.container} component={Paper}>
-                      <Table
-                        stickyHeader
-                        aria-label="Complaints table"
-                      >
-                        <ChplSortableHeaders
-                          headers={headers}
-                          onTableSort={handleTableSort}
-                          orderBy={orderBy}
-                          order={order}
-                          stickyHeader
-                        />
-                        <TableBody>
-                          {complaints
-                            .map((complaint) => (
-                              <TableRow key={complaint.id}>
-                                { !hasAnyRole(['chpl-onc-acb']) && !bonusQuery
-                                 && (
-                                   <TableCell>{complaint.certificationBody.name}</TableCell>
-                                 )}
-                                <TableCell>
-                                  <Typography
-                                    variant="subtitle1"
-                                    className={complaint.closedDate ? classes.statusIndicatorClosed : classes.statusIndicatorOpen}
-                                  >
-                                    {complaint.closedDate ? 'Closed' : 'Open'}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
-                                <TableCell>{complaint.acbComplaintId}</TableCell>
-                                <TableCell>
-                                  { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
-                                </TableCell>
-                                <TableCell>{complaint.complaintTypes?.map((t) => t.name).join(', ')}</TableCell>
-                                <TableCell>{complaint.complainantType.name}</TableCell>
-                                <TableCell align="right">
-                                  <Button
-                                    onClick={() => handleDispatch({ action: 'view', payload: complaint })}
-                                    variant="contained"
-                                    color="secondary"
-                                    id={`view-complaint-${complaint.id}`}
-                                    endIcon={<VisibilityIcon />}
-                                  >
-                                    View
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                    <Box className={classes.resultsContainer}>
+                      { complaints.map((complaint) => {
+                        const showAcb = !hasAnyRole(['chpl-onc-acb']) && !bonusQuery;
+                        const primaryGroup = [];
+                        if (showAcb) {
+                          primaryGroup.push({ label: 'ONC-ACB', value: complaint.certificationBody.name });
+                        }
+                        primaryGroup.push({
+                          label: 'Status',
+                          value: (
+                            <Typography
+                              variant="subtitle1"
+                              className={complaint.closedDate ? classes.statusIndicatorClosed : classes.statusIndicatorOpen}
+                            >
+                              {complaint.closedDate ? 'Closed' : 'Open'}
+                            </Typography>
+                          ),
+                        });
+                        primaryGroup.push({ label: 'Received Date', value: getDisplayDateFormat(complaint.receivedDate) });
+                        return (
+                          <ChplSearchResultCard
+                            key={complaint.id}
+                            cardTitle="ONC-ACB Complaint ID"
+                            cardTitleValue={complaint.acbComplaintId || 'N/A'}
+                            fieldGroups={[
+                              primaryGroup,
+                              [
+                                {
+                                  label: 'ONC Complaint ID',
+                                  value: complaint.oncComplaintId
+                                    ? (<ChplEllipsis text={complaint.oncComplaintId} maxLength={50} />)
+                                    : 'N/A',
+                                },
+                                { label: 'Complaint Type(s)', value: complaint.complaintTypes?.map((t) => t.name).join(', ') || 'N/A' },
+                                { label: 'Complainant Type', value: complaint.complainantType.name },
+                              ],
+                            ]}
+                            actions={(
+                              <Button
+                                onClick={() => handleDispatch({ action: 'view', payload: complaint })}
+                                variant="contained"
+                                color="secondary"
+                                id={`view-complaint-${complaint.id}`}
+                                endIcon={<VisibilityIcon />}
+                              >
+                                View
+                              </Button>
+                            )}
+                          />
+                        );
+                      })}
+                    </Box>
                     <ChplPagination
                       count={data.recordCount}
                       page={pageNumber}
