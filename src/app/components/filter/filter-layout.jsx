@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'start',
-    margin: '16px 0px',
+    margin: '16px 0',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '260px 1fr',
       gap: '24px',
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'start',
-    margin: '16px 0px',
+    margin: '16px 0',
   },
   sidebar: {
     display: 'flex',

@@ -87,7 +87,7 @@ const useStyles = makeStyles({
     },
   },
   resultsContainer: {
-    padding: '0px 32px',
+    padding: '0 32px',
   },
   listContainer: {
     fontSize: 'smaller',
