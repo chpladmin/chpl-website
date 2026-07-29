@@ -19,7 +19,6 @@ angular
     'ngCytoscape',
     'ngFileUpload',
     'ngResource',
-    'ngStorage',
     'ui.bootstrap',
     'ui.router',
   ])
