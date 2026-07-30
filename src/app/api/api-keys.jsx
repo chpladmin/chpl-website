@@ -26,8 +26,15 @@ const usePostConfirmApiKey = () => {
     .then((response) => response.data));
 };
 
+const usePostRequestApiKey = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('key/request', data)
+    .then((response) => response.data));
+};
+
 export {
   useDeleteKey,
   useFetchApiKeys,
   usePostConfirmApiKey,
+  usePostRequestApiKey,
 };
