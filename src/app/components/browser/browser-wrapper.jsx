@@ -1,30 +1,30 @@
 import React from 'react';
 import { node } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { useLocalStorage as useStorage } from 'services/storage.service';
 import { BrowserContext } from 'shared/contexts';
 
-function BrowserWrapper(props) {
-  const $localStorage = getAngularService('$localStorage');
-  const { children } = props;
+function BrowserWrapper({ children }) {
+  const [previouslyCompared, setPreviouslyCompared] = useStorage('ngStorage-previouslyCompared', []);
+  const [previouslyViewed, setPreviouslyViewed] = useStorage('ngStorage-previouslyViewed', []);
 
   const addToCompared = (listing) => {
-    const next = [listing.id]
-      .concat(($localStorage?.previouslyCompared ?? []).filter((id) => id !== listing.id))
-      .slice(0, 20);
-    $localStorage.previouslyCompared = next;
+    setPreviouslyCompared((prev) => [
+      listing.id,
+      ...prev.filter((id) => id !== listing.id),
+    ].slice(0, 20));
   };
 
   const addToViewed = (listing) => {
-    const next = [listing.id]
-      .concat(($localStorage?.previouslyViewed ?? []).filter((id) => id !== listing.id))
-      .slice(0, 20);
-    $localStorage.previouslyViewed = next;
+    setPreviouslyViewed((prev) => [
+      listing.id,
+      ...prev.filter((id) => id !== listing.id),
+    ].slice(0, 20));
   };
 
-  const getPreviouslyCompared = () => $localStorage?.previouslyCompared ?? [];
+  const getPreviouslyCompared = () => previouslyCompared ?? [];
 
-  const getPreviouslyViewed = () => $localStorage?.previouslyViewed ?? [];
+  const getPreviouslyViewed = () => previouslyViewed ?? [];
 
   const browserState = {
     addToCompared,
