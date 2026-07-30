@@ -25,4 +25,12 @@ export API_KEY
 
 envsubst '${API_KEY}' < /usr/local/apache2/htdocs/env-config.js.template > /usr/local/apache2/htdocs/env-config.js
 
+# Safe default (localhost-only) so /server-status is never open to the world
+# by accident; every real environment should set STATUS_ALLOWED_IPS to its
+# monitoring agent's actual IP/CIDR.
+: "${STATUS_ALLOWED_IPS:=127.0.0.1}"
+export STATUS_ALLOWED_IPS
+
+envsubst '${STATUS_ALLOWED_IPS}' < /usr/local/apache2/conf/extra/status.conf.template > /usr/local/apache2/conf/extra/status.conf
+
 exec "$@"
