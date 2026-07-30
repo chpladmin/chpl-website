@@ -14,7 +14,7 @@ COPY .yarn ./.yarn
 RUN yarn install
 
 COPY . .
-RUN yarn build
+RUN yarn build --env.NODE_ENV=production
 
 # Stage 2: Serve the built application with Apache2
 FROM httpd:2.4-alpine

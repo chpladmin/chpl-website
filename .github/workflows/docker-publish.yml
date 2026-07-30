@@ -74,7 +74,7 @@ jobs:
           yarn install --immutable
 
       - name: Build
-        run: yarn build
+        run: yarn build --env.NODE_ENV=production
 
   build-and-push:
     # lint is intentionally omitted here while it's disabled above (skipped
