@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useSelector } from 'react-redux';
 
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -26,7 +27,8 @@ const useStyles = makeStyles({
 });
 
 function ChplLoggedIn() {
-  const { logout, setLoginWidgetState, user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.value);
+  const { logout, setLoginWidgetState } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const classes = useStyles();
 

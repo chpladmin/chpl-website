@@ -26,7 +26,6 @@ function UserWrapper({ children = <ChplLogin /> }) {
   useEffect(() => {
     const update = () => {
       dispatch(setUser({ user: authService.getCurrentUser() }));
-      // setUser(authService.getCurrentUser());
     };
     update();
     const deregisterLoginWatcher = $rootScope.$on('loggedIn', update);
@@ -61,7 +60,6 @@ function UserWrapper({ children = <ChplLogin /> }) {
       });
     }
     dispatch(setUser({}));
-    // setUser({});
     removeCookie('cognito_id');
     removeCookie('refresh_token');
     delete $localStorage.jwtToken;
@@ -78,7 +76,6 @@ function UserWrapper({ children = <ChplLogin /> }) {
     loginWidgetState,
     logout,
     setLoginWidgetState,
-    user,
   };
 
   return (

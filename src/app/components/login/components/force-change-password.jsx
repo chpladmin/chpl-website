@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -8,6 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useSelector, useDispatch } from 'react-redux';
 import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,9 +19,10 @@ import { setAuthTokens } from 'axios-jwt';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostNewPasswordRequired } from 'api/auth';
+import { setUser } from 'components/login/user.slice';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
 import { palette } from 'themes';
 
@@ -58,7 +60,8 @@ const validationSchema = yup.object({
 function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const { user, setUser } = useContext(UserContext);
+  const newDispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -96,7 +99,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         });
-        setUser(response.user);
+        newDispatch(setUser({ user: response.user }));
         authService.saveCurrentUser(response.user);
         eventTrack({
           ...analytics,

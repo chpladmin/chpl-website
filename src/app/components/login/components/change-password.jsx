@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -53,7 +54,8 @@ const validationSchema = yup.object({
 });
 
 function ChplChangePassword() {
-  const { user, setLoginWidgetState } = useContext(UserContext);
+  const user = useSelector((state) => state.user.value);
+  const { setLoginWidgetState } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostChangePassword();

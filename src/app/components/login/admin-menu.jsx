@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useSelector } from 'react-redux';
 import { func } from 'prop-types';
 
 import ChplAdminMenuLinkItem from './navigation/admin-menu-link-item';
@@ -35,13 +36,13 @@ const useStyles = makeStyles({
 });
 
 function ChplAdminMenu({ onClose = () => {} }) {
+  const user = useSelector((state) => state.user.value);
   const { analytics } = useAnalyticsContext();
   const { isOn } = useContext(FlagContext);
   const {
     hasAnyRole,
     logout,
     setLoginWidgetState,
-    user,
   } = useContext(UserContext);
   const [activeConfigs, setActiveConfigs] = useState([]);
   const [openSection, setOpenSection] = useState(null);
@@ -54,7 +55,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
         title: 'Developers',
         roles: ['chpl-developer'],
         items: user?.organizations
-          .sort((a, b) => (a.name < b.name ? -1 : 1))
+          ?.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((d) => ({
             key: d.id,
             roles: ['chpl-developer'],

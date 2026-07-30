@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
+import { useSelector } from 'react-redux';
 import { func } from 'prop-types';
 import { getAccessToken } from 'axios-jwt';
 
@@ -78,7 +79,8 @@ const useStyles = makeStyles({
 });
 
 function ChplToggle({ dispatch = () => {} }) {
-  const { loginWidgetState, setLoginWidgetState, user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.value);
+  const { loginWidgetState, setLoginWidgetState } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
@@ -117,8 +119,8 @@ function ChplToggle({ dispatch = () => {} }) {
   };
 
   useEffect(() => {
-    if (user?.fullName) {
-      setTitle(user.fullName);
+    if (user?.user?.fullName) {
+      setTitle(user.user.fullName);
     } else {
       setTitle('Administrator login');
     }
