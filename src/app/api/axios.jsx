@@ -4,6 +4,7 @@ import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
+import getApiKey from 'api/api-key';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 
@@ -25,7 +26,7 @@ function AxiosProvider({ children }) {
     const requestRefresh = (refreshToken) => {
       const { cognitoId } = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
       const headers = {
-        'API-Key': '12909a978483dfb8ecd0596c98ae9094',
+        'API-Key': getApiKey(),
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
@@ -46,7 +47,7 @@ function AxiosProvider({ children }) {
       const updated = {
         ...config,
       };
-      updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
+      updated.headers['API-Key'] = getApiKey();
       let accessToken = '';
       accessToken = await getAccessToken();
       if (accessToken) {

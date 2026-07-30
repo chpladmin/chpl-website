@@ -8,4 +8,11 @@ export BACKEND_URL
 
 envsubst '${BACKEND_URL}' < /usr/local/apache2/conf/extra/proxy.conf.template > /usr/local/apache2/conf/extra/proxy.conf
 
+# No default here - an unset API_KEY renders as an empty string, which
+# src/app/api/api-key.js's getApiKey() already falls back on safely.
+: "${API_KEY:=}"
+export API_KEY
+
+envsubst '${API_KEY}' < /usr/local/apache2/htdocs/env-config.js.template > /usr/local/apache2/htdocs/env-config.js
+
 exec "$@"
