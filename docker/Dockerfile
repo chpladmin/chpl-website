@@ -4,7 +4,13 @@ FROM node:lts-alpine AS build-stage
 WORKDIR /app
 
 RUN corepack enable
-COPY package.json yarn.lock ./
+
+# .yarnrc.yml (sets nodeLinker: node-modules) and the tracked .yarn/ subdirs must be
+# present for this first install, or it silently runs under Yarn's default PnP linker
+# instead - then `yarn build` fails later looking for a node-modules install-state
+# file that was never created.
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
 RUN yarn install
 
 COPY . .
