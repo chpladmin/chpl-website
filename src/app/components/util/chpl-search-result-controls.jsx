@@ -30,12 +30,13 @@ const useStyles = makeStyles({
     '&::before': {
       content: ({ sticky }) => (sticky ? '""' : 'none'),
       position: 'absolute',
-      left: 0,
-      right: 0,
+      left: '-1px',
+      right: '-1px',
       bottom: '100%',
       height: '90px',
       background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
       pointerEvents: 'none',
+      zIndex: 1,
     },
     [theme.breakpoints.down('sm')]: {
       gap: '12px',

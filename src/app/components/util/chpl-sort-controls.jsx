@@ -26,7 +26,8 @@ const useStyles = makeStyles({
   container: {
     marginRight: '16px',
     display: 'flex',
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid ${palette.primaryBorder}`,
+    borderRadius: theme.shape.borderRadius,
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
@@ -43,6 +44,10 @@ const useStyles = makeStyles({
       flex: '1 1 auto',
       justifyContent: 'flex-start',
     },
+  },
+  directionButton: {
+    borderLeft: `1px solid ${palette.primaryBorder}`,
+    borderRadius: 0,
   },
 });
 
@@ -87,8 +92,8 @@ function ChplSortControls({
   };
 
   return (
-    <Card className={classes.container}>
-      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
+    <Card elevation={0} className={classes.container}>
+      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="text">
         <Button
           className={classes.primaryButton}
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
@@ -102,6 +107,7 @@ function ChplSortControls({
           onClick={toggleSortDirection}
           aria-label={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
           title={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
+          className={classes.directionButton}
           style={{ minWidth: '40px', padding: '9px 4px' }}
           color="primary"
         >
