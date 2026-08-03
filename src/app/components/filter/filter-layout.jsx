@@ -85,6 +85,10 @@ const useStyles = makeStyles({
   },
   emptyCard: {
     width: '100%',
+    // sit above the results-controls fade (content z-index 1) but below the sticky search bar (z-index 3)
+    // so the message stays readable at rest yet tucks under the search when scrolling on mobile
+    position: 'relative',
+    zIndex: 2,
   },
   emptyContent: {
     display: 'flex',
@@ -98,6 +102,8 @@ const useStyles = makeStyles({
   },
   content: {
     minWidth: 0,
+    position: 'relative',
+    zIndex: 1,
   },
 });
 

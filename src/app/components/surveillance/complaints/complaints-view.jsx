@@ -38,13 +38,16 @@ import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  card: {
+    overflow: 'visible',
+  },
   resultsContainer: {
-    padding: '0 32px',
+    padding: 0,
   },
   emptyActions: {
     display: 'flex',
     gap: '8px',
-    padding: '16px 32px',
+    padding: '16px 0',
   },
   statusIndicatorOpen: {
     color: palette.active,
@@ -265,13 +268,15 @@ function ChplComplaintsView(props) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
   return (
-    <Card>
+    <Card className={classes.card}>
       { bonusQuery
         && (
           <CardHeader title="Complaints" />
         )}
       <CardContent>
         <ChplFilterSearchBar
+          sticky
+          fadeBackground={palette.white}
           placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
         />
         <ChplFilterLayout>
