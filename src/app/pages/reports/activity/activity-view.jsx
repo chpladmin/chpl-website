@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     backgroundColor: '#f9f9f9',
   },
   resultsContainer: {
-    padding: '0 32px',
+    padding: '0',
   },
 });
 

@@ -44,6 +44,9 @@ const useStyles = makeStyles({
   card: {
     overflow: 'visible',
   },
+  resultsContainer: {
+    padding: ({ embedded }) => (embedded ? '0' : '0 32px'),
+  },
   developerTitle: {
     display: 'flex',
     alignItems: 'center',
@@ -76,7 +79,7 @@ function ChplChangeRequestsView({
     sortDescending: order === 'desc',
     query: `${queryString()}${bonusQuery}`,
   });
-  const classes = useStyles();
+  const classes = useStyles({ embedded });
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -207,7 +210,7 @@ function ChplChangeRequestsView({
                   { changeRequests.length > 0
                     && (
                       <>
-                        <Box>
+                        <Box className={classes.resultsContainer}>
                           { changeRequests.map((item) => (
                             <ChplSearchResultCard
                               key={item.id}
@@ -253,6 +256,7 @@ function ChplChangeRequestsView({
                                 [
                                   {
                                     label: 'Time Since Last Status Change',
+                                    style: { flex: '0 1 calc((100% - 56px) / 3)' },
                                     value: (
                                       <Moment
                                         withTitle
@@ -265,6 +269,7 @@ function ChplChangeRequestsView({
                                   },
                                   {
                                     label: 'Associated ONC-ACBs',
+                                    style: { flex: '0 1 calc((100% - 56px) / 3)' },
                                     value: item.certificationBodies.length === 0
                                       ? 'None'
                                       : item.certificationBodies.map((acb) => acb.name).join('; '),
