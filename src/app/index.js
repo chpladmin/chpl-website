@@ -16,7 +16,6 @@ import /* ngResource from */ 'angular-resource';
 import /* ngSanitize from */ 'angular-sanitize';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
-import /* ngStorage from */ 'ngstorage';
 import 'angular-ui-router';
 
 // import app modules
@@ -26,7 +25,6 @@ import compare from './pages/compare/index';
 import /* complianceDashboardModule from */ './pages/compliance-dashboard/index';
 import /* componentsModule from */ './components/index';
 import listing from './pages/listing/index';
-import /* navigationModule from */ './navigation/index';
 import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
 import resources from './pages/resources/index';
@@ -54,7 +52,6 @@ const dependencies = [
   'ngCytoscape',
   'ngFileSaver',
   'ngResource',
-  'ngStorage',
   'ngSanitize',
   'ui.bootstrap',
   'ui.router',
@@ -73,7 +70,6 @@ const dependencies = [
   'chpl.search',
   'chpl.components',
   'chpl.constants',
-  'chpl.navigation',
   'chpl.registration',
   'chpl.shared',
 ];

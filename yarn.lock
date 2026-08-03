@@ -5251,7 +5251,6 @@ __metadata:
     moment: "npm:^2.29.4"
     ng-file-upload: "npm:^12.2.13"
     ng-idle: "npm:^1.3.2"
-    ngstorage: "npm:^0.3.11"
     notistack: "npm:^1.0.10"
     postcss: "npm:^5.2.18"
     postcss-import: "npm:^11.1.0"
@@ -12080,13 +12079,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ngstorage@npm:^0.3.11":
-  version: 0.3.11
-  resolution: "ngstorage@npm:0.3.11"
-  checksum: 10/fd4fd1d01b75deae900ba9481940f3414908630bd804b7b70cf6854b8bc26a1b1b16cbf03753fb5cf95df7bf0640a424513bdf62a532259243cccc9d806bcb04
-  languageName: node
-  linkType: hard
-
 "nice-try@npm:^1.0.4":
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
@@ -15113,37 +15105,37 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.1.7#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.14.2#optional!builtin<compat/resolve>":
   version: 1.20.0
-  resolution: "resolve@patch:resolve@npm%3A1.20.0#optional!builtin<compat/resolve>::version=1.20.0&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.20.0#optional!builtin<compat/resolve>::version=1.20.0&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.2.0"
     path-parse: "npm:^1.0.6"
-  checksum: 10/197ca6b762f32ece2eebb55158532512b26bdb10f9e34f272347e92fb55eec691939daf974e850e9cc9cf3c692334bb9339e0f5f1065b48f3daba227fd60e06c
+  checksum: 10/b345e266540eb5b29756511fcf4ff931c2343d1eda608a456696bc68230e7a6e795aaa3f9b798c0b6f7a6263bda3bf35ae12655b32194da8dcbcaedbe05071cb
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A^1.22.1#optional!builtin<compat/resolve>":
   version: 1.22.3
-  resolution: "resolve@patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.12.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/b775dffbad4d4ed3ae498a37d33a96282d64de50955f7642258aeaa2886e419598f4dfe837c0e31bcc6eb448287c1578e899dffe49eca76ef393bf8605a3b543
+  checksum: 10/a5cdb3ee46c61450ef9f981a19c2eaf5a46fdc9c6511204dadec0465dea366846dfa2d87cf27397b651387eb8a10f5fb319246ca8883faeef333c8e6320d808e
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A^2.0.0-next.4#optional!builtin<compat/resolve>":
   version: 2.0.0-next.4
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#optional!builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#optional!builtin<compat/resolve>::version=2.0.0-next.4&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.9.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/27bff19d8219385bb1e271066317e553cff18daa2a19db9598d94ae444417ef3f5aec19e86927872d6cb241d02649cfb35a4c0d9d10ef2afa6325bce8bc8d903
+  checksum: 10/022d9ded746726e984b08da1d4f7739fb221f35271b39f0f28fd3ec5ee98ebe009c9fcbc0412880eaf8f0ce6aaaeaa8aa455d72984c080bc1ffb1f22f8819f2f
   languageName: node
   linkType: hard
 

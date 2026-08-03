@@ -13,7 +13,6 @@ import { getAngularService } from 'services/angular-react-helper';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 function UserWrapper({ children = <ChplLogin /> }) {
-  const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const user = useSelector((state) => state.user.value);
@@ -62,9 +61,9 @@ function UserWrapper({ children = <ChplLogin /> }) {
     dispatch(setUser({}));
     removeCookie('cognito_id');
     removeCookie('refresh_token');
-    delete $localStorage.jwtToken;
-    delete $localStorage.refreshToken;
-    delete $localStorage.currentUser;
+    localStorage.removeItem('ngStorage-jwtToken');
+    localStorage.removeItem('ngStorage-refreshToken');
+    localStorage.removeItem('ngStorage-currentUser');
     setLoginWidgetState('SIGNIN');
     clearAuthTokens();
     $rootScope.$broadcast('loggedOut');
