@@ -161,7 +161,7 @@ function ChplChangeRequestsView({
         placeholder="Search by Developer..."
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
       />
-      <ChplFilterLayout>
+      <ChplFilterLayout mobileOnly={embedded}>
         { isLoading && (<ChplLoadingCards />)}
         { !isLoading
         && (
@@ -187,6 +187,7 @@ function ChplChangeRequestsView({
                     pageStart={pageStart}
                     pageEnd={pageEnd}
                     fadeBackground={palette.white}
+                    sticky={!embedded}
                   >
                     <ChplSortControls
                       sortOptions={sortOptions}

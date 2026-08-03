@@ -9,6 +9,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
@@ -33,12 +34,20 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start',
     width: '100%',
   },
+  filterSelectedContainerHorizontal: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
   filterChipsContainer: {
     display: 'flex',
     gap: '16px',
     alignContent: 'flex-start',
     flexDirection: 'column',
     alignItems: 'flex-start',
+    width: '100%',
+  },
+  filterGroupTitleHorizontal: {
     width: '100%',
   },
   chip: {
@@ -71,7 +80,7 @@ const truncate = (str, n, useWordBoundary) => {
 
 const maxLengthForChip = 40;
 
-function ChplFilterChips() {
+function ChplFilterChips({ horizontal }) {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
@@ -154,10 +163,10 @@ function ChplFilterChips() {
           <div className={classes.filterChipsContainer}>
             { filters.map((f) => (
               <span
-                className={classes.filterSelectedContainer}
+                className={horizontal ? `${classes.filterSelectedContainer} ${classes.filterSelectedContainerHorizontal}` : classes.filterSelectedContainer}
                 key={f.key}
               >
-                <Typography variant="body1">
+                <Typography variant="body1" className={horizontal ? classes.filterGroupTitleHorizontal : undefined}>
                   <strong>
                     {f.getFilterDisplay(f)}
                   </strong>
@@ -239,4 +248,10 @@ function ChplFilterChips() {
 
 export default ChplFilterChips;
 
-ChplFilterChips.propTypes = {};
+ChplFilterChips.propTypes = {
+  horizontal: bool,
+};
+
+ChplFilterChips.defaultProps = {
+  horizontal: false,
+};

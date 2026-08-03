@@ -4,7 +4,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { node, number, string } from 'prop-types';
+import { bool, node, number, string } from 'prop-types';
 
 import { palette, theme } from 'themes';
 
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '4px',
     marginBottom: '16px',
-    position: 'sticky',
+    position: ({ sticky }) => (sticky ? 'sticky' : 'static'),
     top: '190px',
     zIndex: 2,
     alignItems: 'flex-start',
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     borderLeft: `1px solid ${palette.divider}`,
     boxShadow: `0px 6px 8px -4px ${theme.palette.grey[300]}`,
     '&::before': {
-      content: '""',
+      content: ({ sticky }) => (sticky ? '""' : 'none'),
       position: 'absolute',
       left: 0,
       right: 0,
@@ -79,8 +79,9 @@ function ChplSearchResultControls({
   pageEnd,
   children = undefined,
   fadeBackground = palette.backgroundPage,
+  sticky = true,
 }) {
-  const classes = useStyles({ fadeBackground });
+  const classes = useStyles({ fadeBackground, sticky });
 
   return (
     <div className={classes.container}>
@@ -117,4 +118,5 @@ ChplSearchResultControls.propTypes = {
   pageEnd: number.isRequired,
   children: node,
   fadeBackground: string,
+  sticky: bool,
 };

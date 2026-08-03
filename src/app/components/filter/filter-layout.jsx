@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  Chip,
   Collapse,
   Typography,
   makeStyles,
@@ -55,19 +56,32 @@ const useStyles = makeStyles({
   },
   sidebarToggle: {
     justifyContent: 'space-between',
-    color: palette.black,
+    color: palette.primary,
+    borderColor: palette.primaryBorder,
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
   sidebarToggleMobileOnly: {
     justifyContent: 'space-between',
-    color: palette.black,
+    color: palette.primary,
+    borderColor: palette.primaryBorder,
   },
   sidebarToggleLabel: {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+  },
+  countChip: {
+    backgroundColor: palette.primary,
+    color: palette.white,
+    fontWeight: 600,
+    height: '18px',
+    fontSize: '0.7rem',
+    '& .MuiChip-labelSmall': {
+      paddingLeft: '6px',
+      paddingRight: '6px',
+    },
   },
   emptyCard: {
     width: '100%',
@@ -96,6 +110,9 @@ function ChplFilterLayout({ children, mobileOnly }) {
 
   const hasAppliedFilters = filterContext.filters
     .some((filter) => filter.values?.some((v) => v.selected));
+
+  const appliedCount = filterContext.filters
+    .reduce((sum, filter) => sum + (filter.values?.filter((v) => v.selected).length ?? 0), 0);
 
   useEffect(() => {
     if (isDesktop) { setExpanded(false); }
@@ -135,13 +152,15 @@ function ChplFilterLayout({ children, mobileOnly }) {
           <span className={classes.sidebarToggleLabel}>
             <FilterListIcon />
             Filters
+            { appliedCount > 0
+              && <Chip size="small" label={appliedCount} className={classes.countChip} /> }
           </span>
         </Button>
         {isDesktop
           ? <ChplFilterChips />
           : (
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <ChplFilterChips />
+              <ChplFilterChips horizontal />
             </Collapse>
           )}
       </Box>
