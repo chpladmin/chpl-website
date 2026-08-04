@@ -19,7 +19,7 @@ import { setAuthTokens } from 'axios-jwt';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostNewPasswordRequired } from 'api/auth';
-import { setUser } from 'components/login/user.slice';
+import { setUser } from 'components/login/userInfo.slice';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -61,7 +61,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const newDispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.userInfo.value);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();

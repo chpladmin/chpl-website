@@ -79,12 +79,11 @@ const useStyles = makeStyles({
 });
 
 function ChplToggle({ dispatch = () => {} }) {
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.userInfo.user);
   const { loginWidgetState, setLoginWidgetState } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
-  const [title, setTitle] = useState('');
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
@@ -92,6 +91,13 @@ function ChplToggle({ dispatch = () => {} }) {
   useEffect(() => {
     getAccessToken().then((token) => (token ? setLoginWidgetState('LOGGEDIN') : setLoginWidgetState('SIGNIN')));
   }, []);
+
+  const getTitle = () => {
+    if (user?.fullName) {
+      return (user.fullName);
+    }
+    return ('Administrator login');
+  };
 
   const handleClick = (e) => {
     if (isMobile) {
@@ -118,14 +124,6 @@ function ChplToggle({ dispatch = () => {} }) {
     }
   };
 
-  useEffect(() => {
-    if (user?.user?.fullName) {
-      setTitle(user.user.fullName);
-    } else {
-      setTitle('Administrator login');
-    }
-  }, [user]);
-
   return (
     <>
       <Button
@@ -136,7 +134,7 @@ function ChplToggle({ dispatch = () => {} }) {
         onClick={handleClick}
         className={classes.whiteButton}
       >
-        { title }
+        { getTitle() }
       </Button>
       <Popover
         id="admin-login-form"

@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 function ChplAdminMenu({ onClose = () => {} }) {
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.userInfo.value);
   const { analytics } = useAnalyticsContext();
   const { isOn } = useContext(FlagContext);
   const {

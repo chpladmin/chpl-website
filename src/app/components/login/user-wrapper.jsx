@@ -5,7 +5,7 @@ import { node } from 'prop-types';
 import { clearAuthTokens } from 'axios-jwt';
 
 import ChplLogin from './login';
-import { setUser } from './user.slice';
+import { setUser } from './userInfo.slice';
 
 import { usePostLogout } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
@@ -15,7 +15,7 @@ import { UserContext, useAnalyticsContext } from 'shared/contexts';
 function UserWrapper({ children = <ChplLogin /> }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.userInfo.value);
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();

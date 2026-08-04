@@ -54,7 +54,7 @@ const validationSchema = yup.object({
 });
 
 function ChplChangePassword() {
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.userInfo.value);
   const { setLoginWidgetState } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();

@@ -19,7 +19,7 @@ import { setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
 import { usePostLogin } from 'api/auth';
-import { setUser } from 'components/login/user.slice';
+import { setUser } from 'components/login/userInfo.slice';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';

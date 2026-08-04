@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 function ChplLoggedIn() {
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.userInfo.value);
   const { logout, setLoginWidgetState } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const classes = useStyles();
