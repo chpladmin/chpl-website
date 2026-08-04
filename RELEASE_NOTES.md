@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 14.8.1
+_3 August 2026_
+
+### Bug Fixes
+* Use correct analytics data for show/hide search page header actions
+
+---
+
 ## Version 14.8.0
 _20 July 2026_
 

@@ -10,7 +10,6 @@ import { UserContext } from 'shared/contexts';
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
-  const $localStorage = getAngularService('$localStorage');
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
   const { setLoginWidgetState } = useContext(UserContext);
@@ -24,18 +23,14 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      const user = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
-      const { cognitoId } = user;
+      const { cognitoId } = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
       const headers = {
         'API-Key': '12909a978483dfb8ecd0596c98ae9094',
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
         return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
-          .then((response) => {
-            $localStorage.jwtToken = response.data.accessToken;
-            return response.data.accessToken;
-          })
+          .then((response) => response.data.accessToken)
           .catch(() => {
             setLoginWidgetState('SIGNIN');
             authService.logout();
@@ -53,11 +48,7 @@ function AxiosProvider({ children }) {
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
       let accessToken = '';
-      if (JSON.parse(localStorage.getItem('ngStorage-currentUser'))?.cognitoId) {
-        accessToken = await getAccessToken();
-      } else if (JSON.parse(localStorage.getItem('ngStorage-currentUser'))?.userId) {
-        accessToken = $localStorage.jwtToken;
-      }
+      accessToken = await getAccessToken();
       if (accessToken) {
         updated.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -85,7 +76,7 @@ function AxiosProvider({ children }) {
         return response;
       },
       (error) => {
-        if (error.response.data && error.response.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+        if (error?.response?.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
           setLoginWidgetState('SIGNIN');
           authService.logout();
         }
