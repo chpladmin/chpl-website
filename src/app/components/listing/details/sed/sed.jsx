@@ -21,7 +21,7 @@ import ChplSedTaskView from './sed-task-view';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -46,6 +46,11 @@ const useStyles = makeStyles({
   tableScrolling: {
     overflowX: 'auto !important',
   },
+  tableBody: {
+    '& tr:last-child td': {
+      borderBottom: 'none',
+    },
+  },
 });
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
@@ -61,6 +66,7 @@ function ChplSed({ listing }) {
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
+  const { hti5ErdIsOn } = useContext(FlagContext);
   const { user } = useContext(UserContext);
   const [hasSed, setHasSed] = useState(false);
   const classes = useStyles();
@@ -79,112 +85,161 @@ function ChplSed({ listing }) {
 
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
-      <Card>
-        <CardHeader title="SED Summary" />
-        <CardContent>
-          <Box className={classes.dataContainer}>
-            <Box width="100%">
-              <Typography variant="subtitle1">
-                Full Usability Report:
-              </Typography>
-              <Typography>
-                { sedReportFileLocation
-                  && (
-                    <ChplLink
-                      href={sedReportFileLocation}
-                      analytics={{
-                        event: 'Go to Full Usability Report',
-                        category: 'Listing Details',
-                        label: listing.chplProductNumber,
-                        aggregationName: product.name,
-                        group: user?.role,
-                      }}
-                    />
-                  )}
-                {!sedReportFileLocation && 'No report on file'}
-              </Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-              <Typography variant="subtitle1">
-                Description of Intended Users:
-              </Typography>
-              <Typography>
-                {sedIntendedUserDescription ?? 'N/A'}
-              </Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-              <Typography variant="subtitle1">
-                Date SED Testing was Completed:
-              </Typography>
-              <Typography>
-                {getDisplayDateFormat(sedTestingEndDay)}
-              </Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
-        <CardContent>
-          <Card className={classes.tableScrolling}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Certification Criteria</TableCell>
-                  <TableCell>UCD Process</TableCell>
-                  <TableCell>UCD Process Details</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { sed.ucdProcesses
-                  .sort(sortUcdProcesses)
-                  .map((ucd) => (
-                    <TableRow key={ucd.id}>
-                      <TableCell>
-                        <List>
-                          {ucd.criteria
-                            .sort(sortCriteria)
-                            .map((criterion) => (
-                              <ListItem key={criterion.id}>
-                                {criterion.removed && 'Removed | '}
-                                {criterion.number}
-                              </ListItem>
-                            ))}
-                        </List>
-                      </TableCell>
-                      <TableCell>
-                        {ucd.name}
-                      </TableCell>
-                      <TableCell>
-                        {ucd.details}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </Card>
-        </CardContent>
-      </Card>
-      { (listing.edition === null || listing.edition.name === '2015')
+      { !hti5ErdIsOn
         && (
           <Card>
-            <CardHeader title="SED Testing Tasks" />
+            <CardHeader title="SED Summary" />
             <CardContent>
-              <Box display="flex" justifyContent="flex-end" pb={4}>
-                <ChplSedDownload
-                  listing={listing}
-                />
+              <Box className={classes.dataContainer}>
+                <Box width="100%">
+                  <Typography variant="subtitle1">
+                    Full Usability Report:
+                  </Typography>
+                  <Typography>
+                    { sedReportFileLocation
+                      && (
+                        <ChplLink
+                          href={sedReportFileLocation}
+                          analytics={{
+                            event: 'Go to Full Usability Report',
+                            category: 'Listing Details',
+                            label: listing.chplProductNumber,
+                            aggregationName: product.name,
+                            group: user?.role,
+                          }}
+                        />
+                      )}
+                    {!sedReportFileLocation && 'No report on file'}
+                  </Typography>
+                </Box>
+                <Box className={classes.dataBox}>
+                  <Typography variant="subtitle1">
+                    Description of Intended Users:
+                  </Typography>
+                  <Typography>
+                    {sedIntendedUserDescription ?? 'N/A'}
+                  </Typography>
+                </Box>
+                <Box className={classes.dataBox}>
+                  <Typography variant="subtitle1">
+                    Date SED Testing was Completed:
+                  </Typography>
+                  <Typography>
+                    {getDisplayDateFormat(sedTestingEndDay)}
+                  </Typography>
+                </Box>
               </Box>
-              { sed.testTasks
-                .sort(sortTestTasks)
-                .map((task) => (
-                  <ChplSedTaskView
-                    key={task.friendlyId ?? task.id}
-                    task={task}
-                  />
-                ))}
             </CardContent>
           </Card>
+        )}
+      { !hti5ErdIsOn
+        && (
+          <Card>
+            <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
+            <CardContent>
+              <Card className={classes.tableScrolling}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Certification Criteria</TableCell>
+                      <TableCell>UCD Process</TableCell>
+                      <TableCell>UCD Process Details</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { sed.ucdProcesses
+                      .sort(sortUcdProcesses)
+                      .map((ucd) => (
+                        <TableRow key={ucd.id}>
+                          <TableCell>
+                            <List>
+                              {ucd.criteria
+                                .sort(sortCriteria)
+                                .map((criterion) => (
+                                  <ListItem key={criterion.id}>
+                                    {criterion.removed && 'Removed | '}
+                                    {criterion.number}
+                                  </ListItem>
+                                ))}
+                            </List>
+                          </TableCell>
+                          <TableCell>
+                            {ucd.name}
+                          </TableCell>
+                          <TableCell>
+                            {ucd.details}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Card>
+              { (listing.edition === null || listing.edition.name === '2015') && sed.testTasks
+                && (
+                  <Card>
+                    <CardHeader title="SED Testing Tasks" />
+                    <CardContent>
+                      <Box display="flex" justifyContent="flex-end" pb={4}>
+                        <ChplSedDownload
+                          listing={listing}
+                        />
+                      </Box>
+                      { sed.testTasks
+                        .sort(sortTestTasks)
+                        .map((task) => (
+                          <ChplSedTaskView
+                            key={task.friendlyId ?? task.id}
+                            task={task}
+                          />
+                        ))}
+                    </CardContent>
+                  </Card>
+                )}
+            </CardContent>
+          </Card>
+        )}
+      { hti5ErdIsOn
+        && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Certification Criteria</TableCell>
+                <TableCell>UCD Process</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody className={classes.tableBody}>
+              { sed.ucdProcesses
+                .sort(sortUcdProcesses)
+                .map((ucd) => (
+                  <TableRow key={`${ucd.id} - ${ucd.name} - ${ucd.details}`}>
+                    <TableCell>
+                      <List>
+                        {ucd.criteria
+                          .sort(sortCriteria)
+                          .map((criterion) => (
+                            <ListItem key={criterion.id}>
+                              {criterion.removed && 'Removed | '}
+                              {criterion.number}
+                            </ListItem>
+                          ))}
+                      </List>
+                    </TableCell>
+                    <TableCell>
+                      { `Name: ${ucd.name}` }
+                      { ucd.details
+                        && (
+                          <>
+                            <br />
+                            Details:
+                            {' '}
+                            {ucd.details}
+                          </>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         )}
     </Box>
   );

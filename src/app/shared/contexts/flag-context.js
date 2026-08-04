@@ -3,6 +3,7 @@ import { createContext } from 'react';
 const FlagContext = createContext({
   cmsDisabledIsOn: false,
   demographicChangeRequestIsOn: false,
+  hti5ErdIsOn: false,
   insightsConnectionIsOn: false,
   insightsDisplayIsOn: false,
   rwtAiIntegrationIsOn: false,
