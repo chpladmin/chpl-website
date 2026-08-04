@@ -7,7 +7,7 @@ const AnalyticsContext = createContext({
 AnalyticsContext.displayName = 'analytics-context';
 
 function AnalyticsProvider(props) {
-  const user = useSelector((state) => state.userInfo.value);
+  const user = useSelector((state) => state.userInfo.user);
 
   const data = {
     analytics: {

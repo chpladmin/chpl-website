@@ -1,18 +1,19 @@
 import React, { createContext, useContext, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import Axios from 'axios';
 import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
+import { setLoginState } from 'components/login/userInfo.slice';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
 
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
+  const dispatch = useDispatch();
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
-  const { setLoginWidgetState } = useContext(UserContext);
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -32,7 +33,7 @@ function AxiosProvider({ children }) {
         return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => response.data.accessToken)
           .catch(() => {
-            setLoginWidgetState('SIGNIN');
+            dispatch(setLoginState('SIGNIN'));
             authService.logout();
           });
       }
@@ -77,7 +78,7 @@ function AxiosProvider({ children }) {
       },
       (error) => {
         if (error?.response?.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-          setLoginWidgetState('SIGNIN');
+          dispatch(setLoginState('SIGNIN'));
           authService.logout();
         }
         return Promise.reject(error);

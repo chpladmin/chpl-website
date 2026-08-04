@@ -7,13 +7,14 @@ import {
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { func } from 'prop-types';
 
 import ChplAdminMenuLinkItem from './navigation/admin-menu-link-item';
 import ChplAdminMenuSection from './navigation/admin-menu-section';
 import sectionConfigs from './navigation/admin-menu-data';
 
+import { setLoginState } from 'components/login/userInfo.slice';
 import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
@@ -36,13 +37,13 @@ const useStyles = makeStyles({
 });
 
 function ChplAdminMenu({ onClose = () => {} }) {
-  const user = useSelector((state) => state.userInfo.value);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
   const { isOn } = useContext(FlagContext);
   const {
     hasAnyRole,
     logout,
-    setLoginWidgetState,
   } = useContext(UserContext);
   const [activeConfigs, setActiveConfigs] = useState([]);
   const [openSection, setOpenSection] = useState(null);
@@ -81,7 +82,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
       event: 'Change Password',
       category: 'Authentication',
     });
-    setLoginWidgetState('CHANGEPASSWORD');
+    dispatch(setLoginState('CHANGEPASSWORD'));
   };
 
   return (

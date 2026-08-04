@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { node } from 'prop-types';
 import { clearAuthTokens } from 'axios-jwt';
 
 import ChplLogin from './login';
-import { setUser } from './userInfo.slice';
+import { setLoginState, setUser } from './userInfo.slice';
 
 import { usePostLogout } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
@@ -15,11 +15,10 @@ import { UserContext, useAnalyticsContext } from 'shared/contexts';
 function UserWrapper({ children = <ChplLogin /> }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const user = useSelector((state) => state.userInfo.value);
+  const user = useSelector((state) => state.userInfo.user);
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();
-  const [loginWidgetState, setLoginWidgetState] = useState('SIGNIN');
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
 
   useEffect(() => {
@@ -64,7 +63,7 @@ function UserWrapper({ children = <ChplLogin /> }) {
     localStorage.removeItem('ngStorage-jwtToken');
     localStorage.removeItem('ngStorage-refreshToken');
     localStorage.removeItem('ngStorage-currentUser');
-    setLoginWidgetState('SIGNIN');
+    dispatch(setLoginState('SIGNIN'));
     clearAuthTokens();
     $rootScope.$broadcast('loggedOut');
   };
@@ -72,9 +71,7 @@ function UserWrapper({ children = <ChplLogin /> }) {
   const userState = {
     hasAnyRole,
     hasAuthorityOn,
-    loginWidgetState,
     logout,
-    setLoginWidgetState,
   };
 
   return (
