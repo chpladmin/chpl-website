@@ -103,9 +103,7 @@ const useStyles = makeStyles({
 });
 
 function ChplNavigationTop() {
-  const $localStorage = getAngularService('$localStorage');
   const $location = getAngularService('$location');
-  const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { isProduction } = useContext(FlagContext);
@@ -117,8 +115,6 @@ function ChplNavigationTop() {
       event: 'Go to Home Page',
       category: 'Navigation',
     });
-    $rootScope.$broadcast('ClearResults', {});
-    $localStorage.clearResults = true;
     sessionStorage.removeItem('storageKey-listingsPage-hasSearched');
     if ($location.url() === '/search') {
       $state.reload();

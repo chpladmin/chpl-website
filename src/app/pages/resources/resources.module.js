@@ -11,7 +11,6 @@ angular
   .module('chpl.resources', [
     'chpl.constants',
     'chpl.services',
-    'ngStorage',
   ])
   .component('chplCmsLookupWrapperBridge', reactToAngularComponent(ChplCmsLookupWrapper))
   .component('chplForgotPasswordBridge', reactToAngularComponent(ChplForgotPassword))

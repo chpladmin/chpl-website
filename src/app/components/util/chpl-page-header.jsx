@@ -11,12 +11,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 function ChplPageHeader({
   text, subtitle, actions, titleAdornment,
 }) {
   const [expanded, setExpanded] = useState(true);
+  const { analytics } = useAnalyticsContext();
 
   return (
     <Box position="relative" boxShadow={2} bgcolor={palette.white} p={8}>
@@ -41,8 +43,8 @@ function ChplPageHeader({
                         const next = !expanded;
                         setExpanded(next);
                         eventTrack({
+                          ...analytics,
                           event: next ? 'Show Page Header Information' : 'Hide Page Header Information',
-                          label: text,
                         });
                       }}
                       endIcon={expanded ? <ExpandLessIcon color="primary" /> : <ExpandMoreIcon color="primary" />}
