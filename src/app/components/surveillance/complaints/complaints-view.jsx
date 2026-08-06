@@ -100,32 +100,14 @@ function ChplComplaintsView(props) {
   }, [data, isLoading, isSuccess]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = (hasAnyRole(['chpl-onc-acb']) || bonusQuery) ? [
-    { property: 'current_status', text: 'Status', sortable: true },
-    { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
-    { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
-    { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
-    { property: 'complaint_type', text: 'Complaint Type(s)' },
-    { property: 'complainant_type', text: 'Complainant Type', sortable: true },
-    { property: 'actions', text: 'Actions', invisible: true },
-  ] : [
-    { property: 'certification_body', text: 'ONC-ACB', sortable: true },
-    { property: 'current_status', text: 'Status', sortable: true },
-    { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
-    { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
-    { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
-    { property: 'complaint_type', text: 'Complaint Type(s)' },
-    { property: 'complainant_type', text: 'Complainant Type', sortable: true },
-    { property: 'actions', text: 'Actions', invisible: true },
+  const sortOptions = [
+    ...((hasAnyRole(['chpl-onc-acb']) || bonusQuery) ? [] : [{ property: 'certification_body', text: 'ONC-ACB' }]),
+    { property: 'current_status', text: 'Status' },
+    { property: 'received_date', text: 'Received Date', reverseDefault: true },
+    { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID' },
+    { property: 'onc_complaint_id', text: 'ONC Complaint ID' },
+    { property: 'complainant_type', text: 'Complainant Type' },
   ];
-
-  const sortOptions = headers
-    .filter((header) => header.sortable)
-    .map((header) => ({
-      property: header.property,
-      text: header.text,
-      reverseDefault: header.reverseDefault,
-    }));
 
   const downloadFile = () => {
     eventTrack({
@@ -179,7 +161,6 @@ function ChplComplaintsView(props) {
     });
     setOrderBy(property);
     setOrder(orderDirection);
-    setPageNumber(0);
   };
 
   if (activeComplaint) {

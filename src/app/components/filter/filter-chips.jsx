@@ -80,7 +80,7 @@ const truncate = (str, n, useWordBoundary) => {
 
 const maxLengthForChip = 40;
 
-function ChplFilterChips({ horizontal }) {
+function ChplFilterChips({ horizontal = false }) {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
@@ -250,8 +250,4 @@ export default ChplFilterChips;
 
 ChplFilterChips.propTypes = {
   horizontal: bool,
-};
-
-ChplFilterChips.defaultProps = {
-  horizontal: false,
 };

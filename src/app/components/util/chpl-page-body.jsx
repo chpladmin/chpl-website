@@ -15,7 +15,6 @@ const useStyles = makeStyles({
     backgroundColor: palette.backgroundPage,
     backgroundImage: `radial-gradient(${'#d6d4cf'} 0.5px, transparent 0.25px)`,
     backgroundSize: '18px 18px',
-    backgroundSize: '18px 18px',
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(8),
     },

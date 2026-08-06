@@ -107,7 +107,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterLayout({ children, mobileOnly }) {
+function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
   const classes = useStyles();
   const filterContext = useFilterContext();
   const isDesktopWidth = useMediaQuery(theme.breakpoints.up('md'));
@@ -120,6 +120,8 @@ function ChplFilterLayout({ children, mobileOnly }) {
   const appliedCount = filterContext.filters
     .reduce((sum, filter) => sum + (filter.values?.filter((v) => v.selected).length ?? 0), 0);
 
+  // On desktop the chips always render, so collapse the mobile toggle when the
+  // viewport crosses into desktop width; this keeps it collapsed if it returns to mobile.
   useEffect(() => {
     if (isDesktop) { setExpanded(false); }
   }, [isDesktop]);
@@ -182,9 +184,4 @@ export default ChplFilterLayout;
 ChplFilterLayout.propTypes = {
   children: node,
   mobileOnly: bool,
-};
-
-ChplFilterLayout.defaultProps = {
-  children: undefined,
-  mobileOnly: false,
 };
