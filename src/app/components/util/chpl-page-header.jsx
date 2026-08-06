@@ -15,7 +15,10 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 function ChplPageHeader({
-  text, subtitle, actions, titleAdornment,
+  text,
+  subtitle = null,
+  actions = null,
+  titleAdornment = null,
 }) {
   const [expanded, setExpanded] = useState(true);
   const { analytics } = useAnalyticsContext();
@@ -77,10 +80,4 @@ ChplPageHeader.propTypes = {
   subtitle: node,
   actions: node,
   titleAdornment: node,
-};
-
-ChplPageHeader.defaultProps = {
-  subtitle: null,
-  actions: null,
-  titleAdornment: null,
 };
