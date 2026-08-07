@@ -1,13 +1,11 @@
 import React, { useContext, useRef, useState } from 'react';
 import {
-  Box,
   Button,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
   ClickAwayListener,
-  Container,
   Grow,
   List,
   ListItem,
@@ -24,7 +22,11 @@ import { func } from 'prop-types';
 import { usePutListing } from 'api/listing';
 import ChplListingEdit from 'components/listing/listing-edit';
 import ChplListingEditUpload from 'components/listing/listing-edit-upload';
-import { ChplTextField } from 'components/util';
+import {
+  ChplPageBody,
+  ChplPageHeader,
+  ChplTextField,
+} from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { AnalyticsContext, ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles, palette } from 'themes';
@@ -142,12 +144,10 @@ function ChplListingEditPage({ dispatch }) {
 
   return (
     <AnalyticsContext.Provider value={analyticsData}>
-      <Box bgcolor="white" py={8}>
-        <Container maxWidth="xl">
-          <Box display="flex" justifyContent="space-between" flexDirection="row">
-            <Typography variant="h1">
-              {listing.product.name}
-            </Typography>
+      <ChplPageHeader
+        text={listing.product.name}
+        actions={(
+          <>
             <Button
               aria-controls={open ? 'menu' : undefined}
               aria-expanded={open ? 'true' : undefined}
@@ -170,6 +170,7 @@ function ChplListingEditPage({ dispatch }) {
             >
               {({ TransitionProps, placement }) => (
                 <Grow
+                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...TransitionProps}
                   style={{
                     transformOrigin:
@@ -194,49 +195,47 @@ function ChplListingEditPage({ dispatch }) {
                 </Grow>
               )}
             </Popper>
-          </Box>
-        </Container>
-      </Box>
-      <Box sx={{ backgroundColor: palette.background }}>
-        <Box py={8} className={classes.container} id="main-content" tabIndex="-1">
-          <Container maxWidth={isEditing ? 'md' : 'xl'}>
-            { isEditing ? (
-              <ChplListingEdit
-                dispatch={handleDispatch}
-                errors={errors}
-                warnings={warnings}
-                isProcessing={isProcessing}
+          </>
+        )}
+      />
+      <ChplPageBody maxWidth={isEditing ? 'md' : 'xl'}>
+        <div className={classes.container}>
+          { isEditing ? (
+            <ChplListingEdit
+              dispatch={handleDispatch}
+              errors={errors}
+              warnings={warnings}
+              isProcessing={isProcessing}
+            />
+          ) : (
+            <ChplListingEditUpload
+              dispatch={handleDispatch}
+              errors={errors}
+              warnings={warnings}
+              isProcessing={isProcessing}
+            />
+          )}
+          <Card className={classes.reasonForChange}>
+            <CardHeader title="Reason For Change" />
+            <CardContent>
+              <ChplTextField
+                id="reson-for-change"
+                name="reasonForChange"
+                label="Reason"
+                multiline
+                value={reasonForChange}
+                onChange={(event) => setReasonForChange(event.target.value)}
               />
-            ) : (
-              <ChplListingEditUpload
-                dispatch={handleDispatch}
-                errors={errors}
-                warnings={warnings}
-                isProcessing={isProcessing}
-              />
-            )}
-            <Card className={classes.reasonForChange}>
-              <CardHeader title="Reason For Change" />
-              <CardContent>
-                <ChplTextField
-                  id="reson-for-change"
-                  name="reasonForChange"
-                  label="Reason"
-                  multiline
-                  value={reasonForChange}
-                  onChange={(event) => setReasonForChange(event.target.value)}
-                />
-                <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
-                <List disablePadding>
-                  <ListItem>Clinical Quality Measure Removed</ListItem>
-                  <ListItem>Certification Criteria Removed</ListItem>
-                  <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
-                </List>
-              </CardContent>
-            </Card>
-          </Container>
-        </Box>
-      </Box>
+              <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
+              <List disablePadding>
+                <ListItem>Clinical Quality Measure Removed</ListItem>
+                <ListItem>Certification Criteria Removed</ListItem>
+                <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+              </List>
+            </CardContent>
+          </Card>
+        </div>
+      </ChplPageBody>
     </AnalyticsContext.Provider>
   );
 }

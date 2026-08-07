@@ -690,6 +690,11 @@ label {
 
 .swagger-ui {
 
+    .info {
+        margin: 0 0 24px;
+        border-top: none!important;
+    }
+
     .put {
 
         h5,
