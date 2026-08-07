@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -8,16 +13,15 @@ import {
 import ChplActivityDetails from './activity-details';
 
 import { useFetchActivity } from 'api/questionable-activity';
-import {
-  ChplLink,
-  ChplLoadingCards,
+import { ChplLink,
+  ChplPageBody,
+  ChplPageHeader,
   ChplPagination,
-  ChplSearchResultCard,
-  ChplSearchResultControls,
-  ChplSortControls,
-} from 'components/util';
+  ChplLoadingTable,
+  ChplSortableHeaders }
+  from 'components/util';
 import {
-  ChplFilterLayout,
+  ChplFilterChips,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -25,24 +29,63 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 188px)',
+  linkWrap: {
+    overflowWrap: 'anywhere',
   },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
+  pageContent: {
     display: 'grid',
-    gridTemplateColumns: ' 1fr',
-    gap: '16px',
+    gridTemplateRows: '3fr 1fr',
+  },
+  searchContainer: {
+    backgroundColor: palette.grey,
     padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
+    alignItems: 'center',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: 'auto 10fr auto',
+    },
+  },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#ffffff',
+    overflowWrap: 'anywhere',
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '275px',
+    },
+  },
+  tableContainer: {
+    overflowWrap: 'normal',
+    border: '.5px solid #c2c6ca',
+    marginTop: '16px',
+    width: 'auto',
+  },
+  tableResultsHeaderContainer: {
+    display: 'grid',
+    gap: '8px',
+    marginTop: '16px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'auto auto',
+    },
   },
   resultsContainer: {
-    padding: '0',
+    display: 'grid',
+    gap: '8px',
+    justifyContent: 'start',
+    gridTemplateColumns: 'auto auto',
+    alignItems: 'center',
+  },
+  wrap: {
+    flexFlow: 'wrap',
   },
 });
 
@@ -85,8 +128,14 @@ function ChplActivityView() {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const sortOptions = [
-    { property: 'activity_date', text: 'Activity Date', reverseDefault: true },
+  const headers = [
+    { property: 'username', text: 'User' },
+    { property: 'concept', text: 'Concept' },
+    { property: 'activity_date', text: 'Activity Date', sortable: true },
+    { text: 'Description' },
+    { text: 'Reason' },
+    { text: 'CHPL Link' },
+    { text: 'Actions', invisible: true },
   ];
 
   const getLink = (activity) => {
@@ -166,7 +215,7 @@ function ChplActivityView() {
     }
   };
 
-  const handleSort = (property, orderDirection) => {
+  const handleTableSort = (event, property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -180,64 +229,70 @@ function ChplActivityView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">Activity</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+    <>
+      <ChplPageHeader text="Activity" />
+      <ChplPageBody>
         <ChplFilterSearchBar
-          sticky
           placeholder="Search by Description or Reason..."
         />
-        <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
-          { !isLoading
+        <ChplFilterChips />
+        { isLoading
+          && (
+            <ChplLoadingTable className={classes.tableContainer} />
+          )}
+        { !isLoading
           && (
             <>
-              <ChplSearchResultControls
-                recordCount={recordCount}
-                pageStart={pageStart}
-                pageEnd={pageEnd}
-              >
-                <ChplSortControls
-                  sortOptions={sortOptions}
-                  orderBy={orderBy}
-                  order={sortDescending ? 'desc' : 'asc'}
-                  onSort={handleSort}
-                />
-              </ChplSearchResultControls>
+              <div className={classes.tableResultsHeaderContainer}>
+                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  { activities.length === 0
+                    && (
+                      <Typography>
+                        No results found
+                      </Typography>
+                    )}
+                  { activities.length > 0
+                    && (
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                      </Typography>
+                    )}
+                </div>
+              </div>
               { activities.length > 0
                 && (
                   <>
-                    <Box className={classes.resultsContainer}>
-                      { activities.map((item) => (
-                        <ChplSearchResultCard
-                          key={item.id}
-                          cardTitle="User"
-                          cardTitleValue={item.username}
-                          fieldGroups={[
-                            [
-                              { label: 'Concept', value: item.concept },
-                              { label: 'Activity Date', value: getDisplayDateFormat(item.activityDate) },
-                              { label: 'CHPL Link', value: getLink(item) || 'N/A' },
-                            ],
-                            [
-                              {
-                                label: 'Description',
-                                style: { flex: '2 1 320px' },
-                                value: item.description || 'N/A',
-                              },
-                              {
-                                label: 'Reason',
-                                style: { flex: '2 1 320px' },
-                                value: item.reason || 'N/A',
-                              },
-                            ],
-                          ]}
-                          actions={<ChplActivityDetails activity={item} />}
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                      <Table
+                        stickyHeader
+                        aria-label="Activity table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          onTableSort={handleTableSort}
+                          orderBy={orderBy}
+                          order={sortDescending ? 'desc' : 'asc'}
+                          stickyHeader
                         />
-                      ))}
-                    </Box>
+                        <TableBody>
+                          { activities
+                            .map((item) => (
+                              <TableRow key={item.id}>
+                                <TableCell>{ item.username }</TableCell>
+                                <TableCell>{ item.concept }</TableCell>
+                                <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
+                                <TableCell>{ item.description }</TableCell>
+                                <TableCell>{ item.reason }</TableCell>
+                                <TableCell>{ getLink(item) }</TableCell>
+                                <TableCell>
+                                  <ChplActivityDetails activity={item} />
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                     <ChplPagination
                       count={recordCount}
                       page={pageNumber}
@@ -250,9 +305,8 @@ function ChplActivityView() {
                 )}
             </>
           )}
-        </ChplFilterLayout>
-      </div>
-    </div>
+      </ChplPageBody>
+    </>
   );
 }
 

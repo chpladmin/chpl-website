@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   CircularProgress,
-  Container,
-  Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
@@ -27,15 +23,8 @@ import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import ChplDemographicsCreate from 'components/demographics/demographics-create';
 import ChplRwtResultsCreate from 'components/real-world-testing/rwt-results-create';
 import ChplSbulCreate from 'components/sbul/sbul-create';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh)',
-  },
-});
 
 function ChplDeveloperPage({ id }) {
   const { analytics } = useAnalyticsContext();
@@ -48,7 +37,6 @@ function ChplDeveloperPage({ id }) {
   const [product, setProduct] = useState(undefined);
   const [version, setVersion] = useState(undefined);
   const [state, setState] = useState('view');
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -155,16 +143,8 @@ function ChplDeveloperPage({ id }) {
   return (
     <AnalyticsContext.Provider value={analyticsData}>
       <DeveloperContext.Provider value={developerState}>
-        <Box className={classes.pageHeader}>
-          <Container disableGutters maxWidth="lg">
-            <Typography
-              variant="h1"
-            >
-              { developer.name }
-            </Typography>
-          </Container>
-        </Box>
-        <Container className={classes.fixFooterSpacing} maxWidth="lg" id="main-content" tabIndex="-1">
+        <ChplPageHeader text={developer.name} />
+        <ChplPageBody>
           { state === 'view'
             && (
               <ChplDeveloperView
@@ -266,7 +246,7 @@ function ChplDeveloperPage({ id }) {
                 changeRequest={changeRequest}
               />
             )}
-        </Container>
+        </ChplPageBody>
       </DeveloperContext.Provider>
     </AnalyticsContext.Provider>
   );
