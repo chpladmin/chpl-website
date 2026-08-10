@@ -14,6 +14,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import ChplSedDownload from './sed-download';
 import ChplSedTaskView from './sed-task-view';
@@ -21,7 +22,7 @@ import ChplSedTaskView from './sed-task-view';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { FlagContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -66,8 +67,8 @@ function ChplSed({ listing }) {
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
+  const user = useSelector((state) => state.userInfo.user);
   const { hti5ErdIsOn } = useContext(FlagContext);
-  const { user } = useContext(UserContext);
   const [hasSed, setHasSed] = useState(false);
   const classes = useStyles();
 

@@ -15,6 +15,7 @@ import {
   Star,
   StarOutline,
 } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingEdit from './listing-edit';
@@ -80,8 +81,9 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const API = getAngularService('API');
   const { getApiKey, getToken } = getAngularService('authService');
+  const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [isEditing, setIsEditing] = useState(false);

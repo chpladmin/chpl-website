@@ -42,8 +42,7 @@ function UserWrapper({ children = <ChplLogin /> }) {
   };
 
   const hasAuthorityOn = (organization) => user?.organizations
-        .filter((org) => org.id === organization.id)
-        .length > 0;
+        .some((org) => org.id === organization.id);
 
   const logout = (e) => {
     e.stopPropagation();
