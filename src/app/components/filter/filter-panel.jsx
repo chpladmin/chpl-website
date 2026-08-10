@@ -254,7 +254,7 @@ function ChplFilterPanel() {
         }}
         PaperProps={{
           style: {
-            width: panelWidth ? `${panelWidth - 284}px` : 'calc(100vw - 32px - 284px)',
+            width: panelWidth ? `${panelWidth - 284}px` : 'calc(100vw - 316px)',
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
