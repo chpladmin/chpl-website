@@ -19,8 +19,8 @@ import { utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   buttonContainer: {
-    marginTop: '16px',
-    gap: '8px',
+    marginTop: '8px',
+    gap: '6px',
     display: 'flex',
     flexDirection: 'column',
   },

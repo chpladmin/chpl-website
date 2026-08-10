@@ -52,8 +52,8 @@ const useStyles = makeStyles({
     color: palette.error,
   },
   buttonContainer: {
-    marginTop: '16px',
-    gap: '8px',
+    marginTop: '8px',
+    gap: '6px',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -86,7 +86,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '4px',
-    marginTop: '16px',
+    marginTop: '8px',
   },
   productChips: {
     justifyContent: 'space-between',
@@ -105,11 +105,11 @@ const useStyles = makeStyles({
   },
   yearSelector: {
     width: '100%',
-    padding: '12px 16px',
+    padding: '8px 16px',
     borderRadius: '0px 0px 8px 8px',
     backgroundColor: palette.greyLight,
     marginTop: '-8px',
-    marginBottom: '16px',
+    marginBottom: '8px',
   },
   yearSelectorLayout: {
     flexDirection: 'row',
@@ -138,7 +138,7 @@ const useStyles = makeStyles({
     marginRight: '4px',
   },
   disclaimerColumnGap8: {
-    gap: '8px',
+    gap: '4px',
   },
 });
 
@@ -312,6 +312,7 @@ function ChplCmsDisplay() {
               <IconButton
                 onClick={copyToClipboard}
                 color="primary"
+                size="small"
               >
                 <FileCopyOutlinedIcon />
               </IconButton>
@@ -500,7 +501,7 @@ function ChplCmsDisplay() {
           </Button>
         </div>
       </div>
-      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerColumnGap8} alignItems="center">
+      <Box mt={2} mb={1} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerColumnGap8} alignItems="center">
         <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
           {' '}
           For assistance, view the
