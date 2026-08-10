@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import Axios from 'axios';
-import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
+import { applyAuthTokenInterceptor, clearAuthTokens, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { setLoginState } from 'components/login/userInfo.slice';
+import { setLoginState, setUser } from 'components/login/userInfo.slice';
 import { getAngularService } from 'services/angular-react-helper';
 
 const AxiosContext = createContext();
@@ -34,6 +34,9 @@ function AxiosProvider({ children }) {
           .then((response) => response.data.accessToken)
           .catch(() => {
             dispatch(setLoginState('SIGNIN'));
+            dispatch(setUser({}));
+            clearAuthTokens();
+            localStorage.removeItem('ngStorage-currentUser');
             authService.logout();
           });
       }
