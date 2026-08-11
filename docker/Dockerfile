@@ -41,6 +41,11 @@ RUN echo "Listen 3000" > /usr/local/apache2/conf/httpd.conf \
 RUN echo "Include conf/extra/proxy.conf" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "Include conf/extra/status.conf" >> /usr/local/apache2/conf/httpd.conf
 
+# Duplicate access logging to stdout (alongside the default file-based log) so
+# Datadog's container log collection picks up requests - mirrors the pattern
+# QA/staging/production already get from their own (non-GHCR) Apache image.
+RUN echo "CustomLog /proc/self/fd/1 combined" >> /usr/local/apache2/conf/httpd.conf
+
 # Expose the non-standard port
 EXPOSE 3000
 
