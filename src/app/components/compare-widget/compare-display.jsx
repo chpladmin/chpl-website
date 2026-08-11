@@ -14,10 +14,20 @@ import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  stickyWidgetHeader: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    backgroundColor: palette.white,
+    marginLeft: '-8px',
+    marginRight: '-8px',
+    marginBottom: '4px',
+    padding: '4px 8px',
+  },
   buttonContainer: {
     marginTop: '8px',
     gap: '6px',
@@ -70,7 +80,7 @@ function ChplCompareDisplay() {
 
   return (
     <CardContent className={classes.cardcontentPadding}>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h2" className={classes.stickyWidgetHeader}>
         Compare Products
       </Typography>
       <Divider />

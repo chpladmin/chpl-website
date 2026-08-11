@@ -38,6 +38,16 @@ const useStyles = makeStyles({
   emptyStateTitle: {
     fontWeight: '700 !important',
   },
+  stickyWidgetHeader: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    backgroundColor: palette.white,
+    marginLeft: '-8px',
+    marginRight: '-8px',
+    marginBottom: '4px',
+    padding: '4px 8px',
+  },
   sectionLabelFontWeight800: {
     fontWeight: '800 !important',
   },
@@ -295,7 +305,7 @@ function ChplCmsDisplay() {
 
   return (
     <CardContent className={classes.cardcontentPadding}>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h2" className={classes.stickyWidgetHeader}>
         CMS Certification ID Creator
       </Typography>
       <Divider />

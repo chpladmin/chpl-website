@@ -88,13 +88,12 @@ const useStyles = makeStyles({
     },
   },
   widgetRailPaper: {
-    maxHeight: 'calc(100vh - 96px)',
+    maxHeight: 'calc(100vh - 120px)',
     overflowY: 'auto',
     position: 'sticky',
-    top: theme.spacing(10),
+    top: theme.spacing(16),
     width: '100%',
     height: '100%',
-    backgroundColor: palette.white,
     '& .MuiCardContent-root': {
       padding: `${theme.spacing(2)}px !important`,
       maxWidth: '100% !important',
@@ -130,8 +129,7 @@ const useStyles = makeStyles({
   widgetRailClose: {
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0.25),
-    borderBottom: `.5px solid ${theme.palette.divider}`,
+    padding: theme.spacing(0.5),
   },
 });
 
