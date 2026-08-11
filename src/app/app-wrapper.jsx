@@ -3,12 +3,10 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  IconButton,
   Paper,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import { bool, node } from 'prop-types';
 import { CookiesProvider } from 'react-cookie';
 
@@ -94,7 +92,9 @@ const useStyles = makeStyles({
     top: theme.spacing(16),
     width: '100%',
     height: '100%',
+    direction: 'rtl',
     '& .MuiCardContent-root': {
+      direction: 'ltr',
       padding: `${theme.spacing(2)}px !important`,
       maxWidth: '100% !important',
       width: 'auto !important',
@@ -126,11 +126,6 @@ const useStyles = makeStyles({
       position: 'static',
     },
   },
-  widgetRailClose: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0.5),
-  },
 });
 
 function ChplWidgetWorkspacePanel() {
@@ -150,17 +145,8 @@ function ChplWidgetWorkspacePanel() {
   return (
     <Box className={classes.widgetRail}>
       <Paper className={classes.widgetRailPaper} elevation={0} square>
-        <Box className={classes.widgetRailClose}>
-          <IconButton
-            aria-label="Close widget"
-            onClick={closeWidgetPanel}
-            size="small"
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        { cmsIsOpen && (<ChplCmsDisplay />)}
-        { compareIsOpen && (<ChplCompareDisplay />)}
+        { cmsIsOpen && (<ChplCmsDisplay onClose={closeWidgetPanel} />)}
+        { compareIsOpen && (<ChplCompareDisplay onClose={closeWidgetPanel} />)}
       </Paper>
     </Box>
   );

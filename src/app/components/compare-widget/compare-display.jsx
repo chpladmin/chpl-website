@@ -4,11 +4,14 @@ import {
   CardContent,
   Chip,
   Divider,
+  IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { func } from 'prop-types';
 
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { eventTrack } from 'services/analytics.service';
@@ -20,13 +23,17 @@ const useStyles = makeStyles({
   ...utilStyles,
   stickyWidgetHeader: {
     position: 'sticky',
-    top: 0,
+    top: '24px',
     zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '8px',
     backgroundColor: palette.white,
     marginLeft: '-8px',
     marginRight: '-8px',
     marginBottom: '4px',
-    padding: '4px 8px',
+    padding: '4px 4px 4px 8px',
   },
   buttonContainer: {
     marginTop: '8px',
@@ -50,7 +57,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCompareDisplay() {
+function ChplCompareDisplay({ onClose }) {
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
@@ -72,7 +79,12 @@ function ChplCompareDisplay() {
   if (!listings || listings.length === 0) {
     return (
       <CardContent id="no-products-selected">
-        <Typography gutterBottom variant="h6"><strong>No products selected.</strong></Typography>
+        <div className={classes.stickyWidgetHeader}>
+          <Typography variant="h6"><strong>No products selected.</strong></Typography>
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </div>
         <Typography variant="body2" className={classes.wordWrap}>Please select products to compare using the button found on either search results or product detail pages.</Typography>
       </CardContent>
     );
@@ -80,9 +92,14 @@ function ChplCompareDisplay() {
 
   return (
     <CardContent className={classes.cardcontentPadding}>
-      <Typography variant="h2" className={classes.stickyWidgetHeader}>
-        Compare Products
-      </Typography>
+      <div className={classes.stickyWidgetHeader}>
+        <Typography variant="h2">
+          Compare Products
+        </Typography>
+        <IconButton aria-label="Close widget" onClick={onClose} size="small">
+          <CloseIcon />
+        </IconButton>
+      </div>
       <Divider />
       <div className={classes.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
@@ -126,3 +143,7 @@ function ChplCompareDisplay() {
 }
 
 export default ChplCompareDisplay;
+
+ChplCompareDisplay.propTypes = {
+  onClose: func.isRequired,
+};

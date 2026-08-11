@@ -19,10 +19,12 @@ import {
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CloseIcon from '@material-ui/icons/Close';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import { func } from 'prop-types';
 
 import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
 import createPdf from './cms-pdf';
@@ -35,18 +37,19 @@ import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  emptyStateTitle: {
-    fontWeight: '700 !important',
-  },
   stickyWidgetHeader: {
     position: 'sticky',
-    top: 0,
+    top: '24px',
     zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '8px',
     backgroundColor: palette.white,
     marginLeft: '-8px',
     marginRight: '-8px',
     marginBottom: '4px',
-    padding: '4px 8px',
+    padding: '4px 4px 4px 8px',
   },
   sectionLabelFontWeight800: {
     fontWeight: '800 !important',
@@ -77,6 +80,14 @@ const useStyles = makeStyles({
     padding: '8px',
     maxWidth: '500px',
     position: 'relative',
+  },
+  mainCardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100%',
+  },
+  bottomDisclaimer: {
+    marginTop: 'auto',
   },
   loadingOverlay: {
     position: 'absolute',
@@ -152,7 +163,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCmsDisplay() {
+function ChplCmsDisplay({ onClose }) {
   const { listings, removeListing, setIsOpen } = useContext(CmsContext);
   const {
     listings: compareListings,
@@ -246,7 +257,16 @@ function ChplCmsDisplay() {
 
   if (cmsDisabledIsOn) {
     return (
-      <CardContent>
+      <CardContent className={classes.cardcontentPadding}>
+        <div className={classes.stickyWidgetHeader}>
+          <Typography variant="h2">
+            CMS Certification ID Creator
+          </Typography>
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Divider />
         <Typography>
           Access to the CMS ID Creator has been paused. Please check back periodically for updates.
         </Typography>
@@ -257,9 +277,14 @@ function ChplCmsDisplay() {
   if (!listings || listings.length === 0) {
     return (
       <CardContent className={classes.cardcontentPadding}>
-        <Typography className={classes.emptyStateTitle} variant="h3" gutterBottom>
-          CMS Certification ID Creator
-        </Typography>
+        <div className={classes.stickyWidgetHeader}>
+          <Typography variant="h2">
+            CMS Certification ID Creator
+          </Typography>
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </div>
         <Divider />
         <Typography gutterBottom><strong>No products selected.</strong></Typography>
         <Divider />
@@ -304,10 +329,15 @@ function ChplCmsDisplay() {
   }
 
   return (
-    <CardContent className={classes.cardcontentPadding}>
-      <Typography variant="h2" className={classes.stickyWidgetHeader}>
-        CMS Certification ID Creator
-      </Typography>
+    <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
+      <div className={classes.stickyWidgetHeader}>
+        <Typography variant="h2">
+          CMS Certification ID Creator
+        </Typography>
+        <IconButton aria-label="Close widget" onClick={onClose} size="small">
+          <CloseIcon />
+        </IconButton>
+      </div>
       <Divider />
       { idAnalysis.ehrCertificationId
         && (
@@ -511,8 +541,8 @@ function ChplCmsDisplay() {
           </Button>
         </div>
       </div>
-      <Box mt={2} mb={1} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerColumnGap8} alignItems="center">
-        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
+      <Box mt={2} mb={1} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={`${classes.disclaimerColumnGap8} ${classes.bottomDisclaimer}`} alignItems="flex-start">
+        <Typography variant="body2" color="textSecondary">
           {' '}
           For assistance, view the
           {' '}
@@ -535,7 +565,7 @@ function ChplCmsDisplay() {
           />
           .
         </Typography>
-        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
+        <Typography variant="body2" color="textSecondary">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -554,3 +584,7 @@ function ChplCmsDisplay() {
 }
 
 export default ChplCmsDisplay;
+
+ChplCmsDisplay.propTypes = {
+  onClose: func.isRequired,
+};

@@ -111,8 +111,18 @@ function ChplDesktopNav({
   onSearchClick,
 }) {
   const analytics = useAnalyticsContext();
-  const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
-  const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
+  const {
+    highlightNav: cmsHighlightNav,
+    isOpen: cmsIsOpen,
+    setIsOpen: setCmsIsOpen,
+    setIsOpenFromNav: setCmsIsOpenFromNav,
+  } = useContext(CmsContext);
+  const {
+    highlightNav: compareHighlightNav,
+    isOpen: compareIsOpen,
+    setIsOpen: setCompareIsOpen,
+    setIsOpenFromNav: setCompareIsOpenFromNav,
+  } = useContext(CompareContext);
   const { hasAnyRole } = useContext(UserContext);
   const resourcesButtonRef = useRef(null);
   const shortcutsButtonRef = useRef(null);
@@ -132,12 +142,12 @@ function ChplDesktopNav({
 
   const toggleCmsWidget = () => {
     closeAllNavOverlays();
-    setCmsIsOpen(!cmsIsOpen);
+    setCmsIsOpenFromNav(!cmsIsOpen);
   };
 
   const toggleCompareWidget = () => {
     closeAllNavOverlays();
-    setCompareIsOpen(!compareIsOpen);
+    setCompareIsOpenFromNav(!compareIsOpen);
   };
 
   const toggleResources = () => {
@@ -218,14 +228,14 @@ function ChplDesktopNav({
       </Button>
       <Button
         onClick={toggleCmsWidget}
-        aria-expanded={cmsIsOpen}
+        aria-expanded={cmsHighlightNav}
         className={classes.whiteButton}
       >
         CMS ID Creator
       </Button>
       <Button
         onClick={toggleCompareWidget}
-        aria-expanded={compareIsOpen}
+        aria-expanded={compareHighlightNav}
         className={classes.whiteButton}
         color="inherit"
       >
