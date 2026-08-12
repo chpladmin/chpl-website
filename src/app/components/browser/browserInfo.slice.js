@@ -5,7 +5,7 @@ export const browserInfoSlice = createSlice({
   name: 'browserInfo',
   initialState: {
     previouslyCompared: [],
-    prevouslyViewed: [],
+    previouslyViewed: [],
   },
   reducers: {
     pushPreviouslyCompared: (state, action) => {
