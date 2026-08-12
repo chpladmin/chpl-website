@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import browserInfoReducer from 'components/browser/browserInfo.slice';
 import userInfoReducer from 'components/login/userInfo.slice';
 
 const loadState = () => {
@@ -17,7 +18,7 @@ const saveState = (state) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('reduxState', serializedState);
   } catch (err) {
-    // Ignore write errors or log them
+    console.error(err);
   }
 };
 
@@ -25,6 +26,7 @@ const preloadedState = loadState();
 
 const store = configureStore({
   reducer: {
+    browserInfo: browserInfoReducer,
     userInfo: userInfoReducer,
   },
   preloadedState,
@@ -32,6 +34,7 @@ const store = configureStore({
 
 store.subscribe(() => {
   saveState({
+    browserInfo: store.getState().browserInfo,
     userInfo: store.getState().userInfo,
   });
 });
