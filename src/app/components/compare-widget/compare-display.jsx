@@ -75,6 +75,7 @@ const useStyles = makeStyles({
   },
   sectionLabelFontWeight800: {
     fontWeight: '800 !important',
+    marginTop: '4px',
   },
   emptyStateBody: {
     flex: '1 1 auto',
@@ -108,18 +109,19 @@ const useStyles = makeStyles({
     alignItems: 'center',
     textAlign: 'center',
     gap: '4px',
-    paddingTop: '8px',
+    paddingTop: '12px',
+    borderTop: `1px solid ${palette.divider}`,
   },
   chipContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    gap: '4px',
+    gap: '8px',
     marginTop: '8px',
+    marginBottom: '8px',
   },
   productChips: {
     justifyContent: 'space-between',
-    marginBottom: '8px',
     display: 'flex',
   },
 });

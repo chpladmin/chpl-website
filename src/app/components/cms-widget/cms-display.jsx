@@ -52,7 +52,7 @@ function ChplCmsEmptyStateIcon() {
 function ChplCmsWidgetHelpFooter({ classes }) {
   return (
     <div className={classes.widgetHelpFooter}>
-      <Typography variant="caption" color="textPrimary">
+      <Typography variant="body2" color="textPrimary">
         For assistance, view the
         {' '}
         <ChplLink
@@ -467,7 +467,7 @@ function ChplCmsDisplay({ onClose }) {
             { idAnalysis.metPercentages?.criteriaMet < 100
               && (
               <Box className={classes.userNote}>
-                <Typography>
+                <Typography variant="body2" >
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
