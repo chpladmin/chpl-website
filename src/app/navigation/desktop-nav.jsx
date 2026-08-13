@@ -178,6 +178,16 @@ function ChplDesktopNav({
     setShortcutsOpen(false);
   };
 
+  const getDownloadIcon = (item) => {
+    if (!item.showDownloadIcon) {
+      return undefined;
+    }
+    if (item.primaryIcon) {
+      return <CloudDownloadIcon color="primary" />;
+    }
+    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
+  };
+
   const getItemAnalytics = (item) => ({
     ...analytics,
     event: item.analyticsEvent,
@@ -194,16 +204,6 @@ function ChplDesktopNav({
       eventTrack(itemAnalytics);
     }
     window.location.href = item.href;
-  };
-
-  const getDownloadIcon = (item) => {
-    if (!item.showDownloadIcon) {
-      return undefined;
-    }
-    if (item.primaryIcon) {
-      return <CloudDownloadIcon color="primary" />;
-    }
-    return <CloudDownloadIcon />;
   };
 
   return (

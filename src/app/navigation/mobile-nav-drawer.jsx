@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -124,6 +125,29 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     setMobileMenuOpen(false);
   };
 
+  const collapseSection = (section) => {
+    setExpandedSections((previous) => ({
+      ...previous,
+      [section]: false,
+    }));
+  };
+
+  const getDownloadIcon = (item) => {
+    if (!item.showDownloadIcon) {
+      return undefined;
+    }
+    if (item.primaryIcon) {
+      return <CloudDownloadIcon color="primary" />;
+    }
+    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
+  };
+
+  const getItemAnalytics = (item) => ({
+    ...analytics,
+    event: item.analyticsEvent,
+    category: item.analyticsCategory ?? 'Navigation',
+  });
+
   const handleHomeClick = () => {
     onHomeClick();
     closeMobileMenu();
@@ -144,19 +168,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     setExpandedSections((previous) => ({
       ...previous,
       [section]: !previous[section],
-    }));
-  };
-
-  const getItemAnalytics = (item) => ({
-    ...analytics,
-    event: item.analyticsEvent,
-    category: item.analyticsCategory ?? 'Navigation',
-  });
-
-  const collapseSection = (section) => {
-    setExpandedSections((previous) => ({
-      ...previous,
-      [section]: false,
     }));
   };
 
@@ -247,6 +258,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
                         analytics={getItemAnalytics(item)}
                         external={false}
                         router={item.router}
+                        icon={getDownloadIcon(item)}
                       />
                     </ListItem>
                   ))}
