@@ -125,6 +125,22 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     setMobileMenuOpen(false);
   };
 
+  const getDownloadIcon = (item) => {
+    if (!item.showDownloadIcon) {
+      return undefined;
+    }
+    if (item.primaryIcon) {
+      return <CloudDownloadIcon color="primary" />;
+    }
+    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
+  };
+
+  const getItemAnalytics = (item) => ({
+    ...analytics,
+    event: item.analyticsEvent,
+    category: item.analyticsCategory ?? 'Navigation',
+  });
+
   const handleHomeClick = () => {
     onHomeClick();
     closeMobileMenu();
@@ -146,22 +162,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
       ...previous,
       [section]: !previous[section],
     }));
-  };
-
-  const getItemAnalytics = (item) => ({
-    ...analytics,
-    event: item.analyticsEvent,
-    category: item.analyticsCategory ?? 'Navigation',
-  });
-
-  const getDownloadIcon = (item) => {
-    if (!item.showDownloadIcon) {
-      return undefined;
-    }
-    if (item.primaryIcon) {
-      return <CloudDownloadIcon color="primary" />;
-    }
-    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
   };
 
   const widgetSections = [{
