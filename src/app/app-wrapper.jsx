@@ -78,11 +78,7 @@ const useStyles = makeStyles({
       flexBasis: '240px',
     },
     [theme.breakpoints.down('sm')]: {
-      borderBottom: `1px solid ${theme.palette.divider}`,
-      borderLeft: 'none',
-      flex: '0 0 auto',
-      order: -1,
-      width: '100%',
+      display: 'none',
     },
   },
   widgetRailPaper: {
@@ -120,10 +116,6 @@ const useStyles = makeStyles({
     },
     '& .MuiTypography-h6': {
       fontSize: '0.9375em',
-    },
-    [theme.breakpoints.down('sm')]: {
-      maxHeight: 'none',
-      position: 'static',
     },
   },
 });

@@ -32,6 +32,7 @@ const getCertificationStatusValueEntry = ({ filter, handleFilterToggle }) => fil
         style={{
           display: 'flex',
           alignItems: 'center',
+          gap: '4px',
         }}
       >
         {getStatusIcon({ name: filter.getLongValueDisplay(value) })}
