@@ -23,6 +23,7 @@ function FlagWrapper({ children }) {
 
   const cmsDisabledIsOn = isOn('cms-disabled');
   const demographicChangeRequestIsOn = isOn('demographic-change-request');
+  const hti520270101IsOn = isOn('hti-5-2027-01-01');
   const hti5ErdIsOn = isOn('hti-5-erd');
   const insightsConnectionIsOn = isOn('insights-connection');
   const insightsDisplayIsOn = isOn('insights-display');
@@ -35,6 +36,7 @@ function FlagWrapper({ children }) {
     isProduction,
     cmsDisabledIsOn,
     demographicChangeRequestIsOn,
+    hti520270101IsOn,
     hti5ErdIsOn,
     insightsConnectionIsOn,
     insightsDisplayIsOn,
