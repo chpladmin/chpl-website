@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const browserInfoSlice = createSlice({
   name: 'browserInfo',
   initialState: {
+    apiKey: '12909a978483dfb8ecd0596c98ae9094',
     previouslyCompared: [],
     previouslyViewed: [],
   },

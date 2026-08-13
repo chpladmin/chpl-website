@@ -11,6 +11,7 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -63,6 +64,7 @@ const validationSchema = yup.object({
 });
 
 function ChplUploadPromotingInteroperability() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
@@ -87,7 +89,7 @@ function ChplUploadPromotingInteroperability() {
       url: `${API}/promoting-interoperability/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
-        'API-Key': authService.getApiKey(),
+        'API-Key': apiKey,
       },
       data: {
         file,
