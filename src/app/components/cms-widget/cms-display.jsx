@@ -114,6 +114,7 @@ const useStyles = makeStyles({
   },
   sectionLabelFontWeight800: {
     fontWeight: '800 !important',
+    marginTop: '4px',
   },
   centeredWrappedBodyText: {
     textAlign: 'center',
@@ -154,7 +155,8 @@ const useStyles = makeStyles({
     alignItems: 'center',
     textAlign: 'center',
     gap: '4px',
-    paddingTop: '8px',
+    paddingTop: '12px',
+    borderTop: `1px solid ${palette.divider}`,
   },
   emptyStateBody: {
     flex: '1 1 auto',
@@ -183,12 +185,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    gap: '4px',
+    gap: '8px',
     marginTop: '8px',
+    marginBottom: '8px',
   },
   productChips: {
     justifyContent: 'space-between',
-    marginBottom: '8px',
     display: 'flex',
   },
   certCopyContainer: {
@@ -457,9 +459,9 @@ function ChplCmsDisplay({ onClose }) {
       { idAnalysis.products?.length > 0
         && (
           <>
-          <Box style={{ marginTop: '8px'}}>
-            <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
-          </Box>
+            <Box style={{ marginTop: '8px' }}>
+              <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
+            </Box>
             <ChplCmsDisplayProgressBar
               value={idAnalysis.metPercentages?.criteriaMet}
               year={idAnalysis.year}
@@ -467,7 +469,7 @@ function ChplCmsDisplay({ onClose }) {
             { idAnalysis.metPercentages?.criteriaMet < 100
               && (
               <Box className={classes.userNote}>
-                <Typography variant="body2" >
+                <Typography variant="body2">
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
