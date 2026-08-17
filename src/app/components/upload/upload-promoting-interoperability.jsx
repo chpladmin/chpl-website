@@ -65,9 +65,9 @@ const validationSchema = yup.object({
 
 function ChplUploadPromotingInteroperability() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();

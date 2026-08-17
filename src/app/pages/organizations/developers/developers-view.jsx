@@ -83,8 +83,8 @@ const useStyles = makeStyles({
 
 function ChplDevelopersView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-developersView';
-  const API = getAngularService('API');
   const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);

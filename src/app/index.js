@@ -43,8 +43,6 @@ importAll(
   require.context('./', true, /^.*\/.*\.scss$/),
 );
 
-require('./index.constants');
-
 const dependencies = [
   'angular-loading-bar',
   'ngAnimate',
@@ -69,7 +67,6 @@ const dependencies = [
   'chpl.compliance-dashboard',
   'chpl.search',
   'chpl.components',
-  'chpl.constants',
   'chpl.registration',
   'chpl.shared',
 ];

@@ -80,9 +80,9 @@ const useStyles = makeStyles({
 
 function ChplListingPage({ id }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = getAngularService('API');
-  const { getToken } = getAngularService('authService');
+  const API = useSelector((state) => state.browserInfo.api);
   const user = useSelector((state) => state.userInfo.user);
+  const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });

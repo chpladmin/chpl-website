@@ -59,7 +59,7 @@ function ChplUploadListing({
   setDiff,
 }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = getAngularService('API');
+  const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
   const [file, setFile] = useState(undefined);

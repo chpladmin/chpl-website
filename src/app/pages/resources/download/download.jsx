@@ -96,7 +96,7 @@ const allOptions = [
 
 function ChplResourcesDownload() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = getAngularService('API');
+  const API = useSelector((state) => state.browserInfo.api);
   const { getToken } = getAngularService('authService');
   const analytics = {
     ...useAnalyticsContext().analytics,

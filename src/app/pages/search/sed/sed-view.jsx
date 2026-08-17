@@ -26,7 +26,6 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
@@ -42,8 +41,8 @@ const sortOptions = [
 
 function ChplSedSearchView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-sedView';
-  const API = getAngularService('API');
   const { analytics } = useAnalyticsContext();
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);

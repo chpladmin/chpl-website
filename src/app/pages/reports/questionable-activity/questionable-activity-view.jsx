@@ -96,8 +96,8 @@ const useStyles = makeStyles({
 
 function ChplQuestionableActivityView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-questionableActivity';
-  const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);

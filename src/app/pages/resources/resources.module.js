@@ -9,7 +9,6 @@ import ChplResourcesOverview from './overview/overview-wrapper';
 
 angular
   .module('chpl.resources', [
-    'chpl.constants',
     'chpl.services',
   ])
   .component('chplCmsLookupWrapperBridge', reactToAngularComponent(ChplCmsLookupWrapper))
