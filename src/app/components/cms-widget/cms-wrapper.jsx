@@ -6,7 +6,7 @@ import { useLocalStorage } from 'services/storage.service';
 import { CmsContext } from 'shared/contexts';
 
 function CmsWrapper({ children }) {
-  const [isOpen, setIsOpenRaw] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [highlightNav, setHighlightNav] = useState(false);
   const [listings, setListings] = useLocalStorage('cms', []);
   const queryClient = useQueryClient();
@@ -28,15 +28,15 @@ function CmsWrapper({ children }) {
     queryClient.invalidateQueries(['certification-ids']);
   };
 
-  const setIsOpen = (value) => {
-    setIsOpenRaw(value);
+  const handleSetIsOpen = (value) => {
+    setIsOpen(value);
     if (!value) {
       setHighlightNav(false);
     }
   };
 
   const setIsOpenFromNav = (value) => {
-    setIsOpenRaw(value);
+    setIsOpen(value);
     setHighlightNav(value);
   };
 
@@ -48,7 +48,7 @@ function CmsWrapper({ children }) {
     isOpen,
     listings,
     removeListing,
-    setIsOpen,
+    setIsOpen: handleSetIsOpen,
     setIsOpenFromNav,
   };
 
