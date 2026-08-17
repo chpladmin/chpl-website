@@ -79,8 +79,9 @@ const useStyles = makeStyles({
 });
 
 function ChplListingPage({ id }) {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = getAngularService('API');
-  const { getApiKey, getToken } = getAngularService('authService');
+  const { getToken } = getAngularService('authService');
   const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -119,7 +120,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Original CSV',
     });
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
 
@@ -128,7 +129,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Current CSV',
     });
-    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
 

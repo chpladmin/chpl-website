@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import { applyAuthTokenInterceptor, clearAuthTokens, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
@@ -11,6 +11,7 @@ import { getAngularService } from 'services/angular-react-helper';
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const dispatch = useDispatch();
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
@@ -26,7 +27,7 @@ function AxiosProvider({ children }) {
     const requestRefresh = (refreshToken) => {
       const { cognitoId } = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
       const headers = {
-        'API-Key': '12909a978483dfb8ecd0596c98ae9094',
+        'API-Key': apiKey,
       };
       if (cognitoId) {
         // Notice that this is the global axios instance, not the axiosInstance!  <-- important
@@ -50,7 +51,7 @@ function AxiosProvider({ children }) {
       const updated = {
         ...config,
       };
-      updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
+      updated.headers['API-Key'] = apiKey;
       let accessToken = '';
       accessToken = await getAccessToken();
       if (accessToken) {

@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import { useSelector } from 'react-redux';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
@@ -94,6 +95,7 @@ const useStyles = makeStyles({
 });
 
 function ChplQuestionableActivityView() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const storageKey = 'storageKey-questionableActivity';
   const API = getAngularService('API');
   const authService = getAngularService('authService');
@@ -135,7 +137,7 @@ function ChplQuestionableActivityView() {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/questionable-activity/download?api_key=${authService.getApiKey()}&authorization=Bearer%20${authService.getToken()}`);
+    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}&authorization=Bearer%20${authService.getToken()}`);
   }, [API, authService]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */

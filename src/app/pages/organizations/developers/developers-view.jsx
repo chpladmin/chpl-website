@@ -12,6 +12,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import { useSelector } from 'react-redux';
 
 import ChplMessaging from './messaging/messaging';
 
@@ -81,9 +82,10 @@ const useStyles = makeStyles({
 });
 
 function ChplDevelopersView() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const storageKey = 'storageKey-developersView';
   const API = getAngularService('API');
-  const { getApiKey, getToken } = getAngularService('authService');
+  const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
@@ -138,7 +140,7 @@ function ChplDevelopersView() {
       event: 'Download Developers',
       label: recordCount,
     });
-    let url = `${API}/developers/search/download?api_key=${getApiKey()}&${queryString()}`;
+    let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
       url += `&authorization=Bearer%20${getToken()}`;
     }

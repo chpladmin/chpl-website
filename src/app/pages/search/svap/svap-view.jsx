@@ -3,6 +3,7 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import { useFetchListings } from 'api/search';
 import { useFetchSvaps } from 'api/standards';
@@ -71,9 +72,9 @@ const parseSvap = ({ svaps }, data) => {
 };
 
 function ChplSvapSearchView() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const storageKey = 'storageKey-svapView';
   const API = getAngularService('API');
-  const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [downloadLink, setDownloadLink] = useState('');
@@ -123,8 +124,8 @@ function ChplSvapSearchView() {
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/svap/download?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
+    setDownloadLink(`${API}/svap/download?api_key=${apiKey}`);
+  }, [API]);
 
   const handleSort = (property, orderDirection) => {
     eventTrack({

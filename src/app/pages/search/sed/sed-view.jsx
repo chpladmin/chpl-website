@@ -3,6 +3,7 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -40,9 +41,9 @@ const sortOptions = [
 ];
 
 function ChplSedSearchView() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const storageKey = 'storageKey-sedView';
   const API = getAngularService('API');
-  const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
@@ -81,8 +82,8 @@ function ChplSedSearchView() {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/certified_products/sed_details?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
+    setDownloadLink(`${API}/certified_products/sed_details?api_key=${apiKey}`);
+  }, [API]);
 
   const handleSort = (property, orderDirection) => {
     eventTrack({
