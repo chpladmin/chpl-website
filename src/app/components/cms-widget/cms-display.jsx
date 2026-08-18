@@ -54,7 +54,7 @@ function ChplCmsWidgetHelpFooter({ classes }) {
     <div className={classes.widgetHelpFooter}>
       <Typography variant="body2" color={palette.greyDark}>
         For assistance, view the
-        <br/>
+        <br />
         <ChplLink
           href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
           text="CHPL Public User Guide"
@@ -74,7 +74,7 @@ function ChplCmsWidgetHelpFooter({ classes }) {
         />
         .
       </Typography>
-      <Divider style={{width: '32%', float:'center'}}/>
+      <Divider style={{ width: '32%', float: 'center' }} />
       <Typography variant="body2" color={palette.greyDark}>
         To view which products were used to create a specific CMS ID, use the
         {' '}
