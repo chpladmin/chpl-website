@@ -28,42 +28,26 @@ const useStyles = makeStyles({
   appContainer: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh',
-  },
-  appContainerWidgetOpen: {
     height: '100vh',
-    minHeight: '100vh',
     overflow: 'hidden',
   },
   workspace: {
-    flex: '1 0 auto',
+    flex: '1 1 auto',
     display: 'flex',
+    minHeight: 0,
     minWidth: 0,
     width: '100%',
-    transition: theme.transitions.create('grid-template-columns', {
-      duration: theme.transitions.duration.shorter,
-      easing: theme.transitions.easing.easeOut,
-    }),
+    overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
-  },
-  workspaceWidgetOpen: {
-    flex: '1 1 auto',
-    minHeight: 0,
-    overflow: 'hidden',
   },
   content: {
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
     minWidth: 0,
-  },
-  contentWidgetOpen: {
     overflowY: 'auto',
-    '& > *': {
-      flexShrink: 0,
-    },
   },
   widgetRail: {
     animation: '$widgetRailIn 140ms ease-out',
@@ -82,10 +66,7 @@ const useStyles = makeStyles({
     },
   },
   widgetRailPaper: {
-    maxHeight: 'calc(100vh - 120px)',
     overflowY: 'auto',
-    position: 'sticky',
-    top: theme.spacing(16),
     width: '100%',
     height: '100%',
     '& .MuiCardContent-root': {
@@ -143,20 +124,13 @@ function ChplWidgetWorkspacePanel() {
 }
 
 function ChplAppLayout({ children }) {
-  const { isOpen: cmsIsOpen } = useContext(CmsContext);
-  const { isOpen: compareIsOpen } = useContext(CompareContext);
   const classes = useStyles();
-  const widgetOpen = cmsIsOpen || compareIsOpen;
-
-  const appContainerClass = `${classes.appContainer} ${widgetOpen ? classes.appContainerWidgetOpen : ''}`.trim();
-  const workspaceClass = `${classes.workspace} ${widgetOpen ? classes.workspaceWidgetOpen : ''}`.trim();
-  const contentClass = `${classes.content} ${widgetOpen ? classes.contentWidgetOpen : ''}`.trim();
 
   return (
-    <div className={appContainerClass}>
+    <div className={classes.appContainer}>
       <ChplNavigationTop />
-      <div className={workspaceClass}>
-        <div className={contentClass}>
+      <div className={classes.workspace}>
+        <div className={classes.content}>
           {children}
         </div>
         <ChplWidgetWorkspacePanel />

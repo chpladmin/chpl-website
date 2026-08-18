@@ -52,8 +52,9 @@ function ChplCmsEmptyStateIcon() {
 function ChplCmsWidgetHelpFooter({ classes }) {
   return (
     <div className={classes.widgetHelpFooter}>
-      <Typography variant="body2" color="textPrimary">
+      <Typography variant="body2" color={palette.greyDark}>
         For assistance, view the
+        <br/>
         {' '}
         <ChplLink
           href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
@@ -74,7 +75,8 @@ function ChplCmsWidgetHelpFooter({ classes }) {
         />
         .
       </Typography>
-      <Typography variant="caption" color="textPrimary">
+      <Divider style={{width: '32%', float:'center'}}/>
+      <Typography variant="body2" color={palette.greyDark}>
         To view which products were used to create a specific CMS ID, use the
         {' '}
         <ChplLink
@@ -99,7 +101,7 @@ const useStyles = makeStyles({
   ...utilStyles,
   stickyWidgetHeader: {
     position: 'sticky',
-    top: '24px',
+    top: 0,
     zIndex: 1,
     display: 'flex',
     alignItems: 'center',
@@ -109,7 +111,7 @@ const useStyles = makeStyles({
     marginLeft: '-8px',
     marginRight: '-8px',
     marginBottom: '16px',
-    padding: '4px 4px 4px 8px',
+    padding: '8px 4px 8px 8px',
     borderBottom: `1px solid ${palette.divider}`,
   },
   sectionLabelFontWeight800: {
@@ -156,7 +158,6 @@ const useStyles = makeStyles({
     textAlign: 'center',
     gap: '4px',
     paddingTop: '12px',
-    borderTop: `1px solid ${palette.divider}`,
   },
   emptyStateBody: {
     flex: '1 1 auto',

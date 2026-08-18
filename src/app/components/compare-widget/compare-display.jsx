@@ -36,8 +36,9 @@ function ChplCompareEmptyStateIcon() {
 function ChplCompareWidgetHelpFooter({ classes }) {
   return (
     <div className={classes.widgetHelpFooter}>
-      <Typography variant="caption" color="textPrimary">
+      <Typography variant="body2" color={palette.greyDark}>
         For assistance, view the
+        <br/>
         {' '}
         <ChplLink
           href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
@@ -60,7 +61,7 @@ const useStyles = makeStyles({
   ...utilStyles,
   stickyWidgetHeader: {
     position: 'sticky',
-    top: '24px',
+    top: 0,
     zIndex: 1,
     display: 'flex',
     alignItems: 'center',
@@ -110,7 +111,6 @@ const useStyles = makeStyles({
     textAlign: 'center',
     gap: '4px',
     paddingTop: '12px',
-    borderTop: `1px solid ${palette.divider}`,
   },
   chipContainer: {
     display: 'flex',
