@@ -3,7 +3,8 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Container,
+  Card,
+  CardContent,
   List,
   ListItem,
   ListItemIcon,
@@ -23,7 +24,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { useFetchListings } from 'api/cms';
 import ChplChips from 'components/cms/chips';
 import ChplSearchTerm from 'components/cms/search-term';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplPageBody, ChplPageHeader } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage as useStorage } from 'services/storage.service';
@@ -45,34 +46,19 @@ const csvOptions = {
 const headers = csvOptions.headers.map((h) => ({ text: h.headerName }));
 
 const useStyles = makeStyles({
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: palette.white,
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
-  },
   tableContainer: {
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
-    margin: '0px 32px',
     width: 'auto',
   },
   tableResultsHeaderContainer: {
     display: 'flex',
-    margin: '16px 32px',
     justifyContent: 'flex-end',
   },
   errorListIcon: {
     paddingLeft: '20px',
     paddingRight: '16px',
     minWidth: 'auto',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 137px)',
   },
   wrap: {
     flexFlow: 'wrap',
@@ -143,110 +129,122 @@ function ChplCmsLookup() {
 
   if (cmsDisabledIsOn) {
     return (
-      <Container className={classes.fixFooterSpacing} maxWidth="lg">
-        <div className={classes.pageHeader}>
-          <Typography variant="h1">CMS ID Reverse Lookup</Typography>
-        </div>
-        <div className={classes.pageBody} id="main-content" tabIndex="-1">
-          <Typography variant="body1">
-            Access to the CMS ID Creator has been paused. Please check back periodically for updates.
-          </Typography>
-        </div>
-      </Container>
+      <>
+        <ChplPageHeader text="CMS ID Reverse Lookup" />
+        <ChplPageBody>
+          <Card>
+            <CardContent>
+              <Typography variant="body1">
+                Access to the CMS ID Creator has been paused. Please check back periodically for updates.
+              </Typography>
+            </CardContent>
+          </Card>
+        </ChplPageBody>
+      </>
     );
   }
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="lg">
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">CMS ID Reverse Lookup</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="h2">Lookup CMS EHR Certification IDs</Typography>
-        <Typography variant="body1">
-          Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID. Additional IDs may be added individually.
-        </Typography>
-      </div>
-      <ChplSearchTerm
-        dispatch={handleDispatch}
-      />
-      <ChplChips
-        cmsIds={cmsIds}
-        dispatch={handleDispatch}
-      />
-      { errors.length > 0
-        && (
-          <Box>
-            <List>
-              { errors
-                .map((msg) => (
-                  <ListItem key={msg}>
-                    <ListItemIcon className={classes.errorListIcon}>
-                      <WarningIcon color="error" />
-                    </ListItemIcon>
-                    {msg}
-                  </ListItem>
-                ))}
-            </List>
-          </Box>
-        )}
-      { listings.length > 0
-        && (
-          <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <ButtonGroup size="small" className={classes.wrap}>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  fullWidth
-                  id="download-listing-data"
-                  onClick={downloadListingData}
-                  endIcon={<CloudDownloadOutlinedIcon />}
-                >
-                  Download Result
-                  { listings.length !== 1 ? 's' : '' }
-                </Button>
-              </ButtonGroup>
-            </div>
-            <TableContainer className={classes.tableContainer} component={Paper}>
-              <Table
-                stickyHeader
-                aria-label="CMS ID Listing Data table"
-              >
-                <ChplSortableHeaders
-                  headers={headers}
-                  stickyHeader
+    <>
+      <ChplPageHeader text="CMS ID Reverse Lookup" />
+      <ChplPageBody>
+        <Box display="flex" flexDirection="column" gridGap={16}>
+          <Card>
+            <CardContent>
+              <Box display="flex" flexDirection="column" gridGap={16}>
+                <Typography variant="h2">Lookup CMS EHR Certification IDs</Typography>
+                <Typography variant="body1">
+                  Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID. Additional IDs may be added individually.
+                </Typography>
+                <ChplSearchTerm
+                  dispatch={handleDispatch}
                 />
-                <TableBody>
-                  { listings
-                    .map((item) => (
-                      <TableRow key={`${item.certificationId}-${item.id}`}>
-                        <TableCell>{ item.certificationId }</TableCell>
-                        <TableCell>{ item.name }</TableCell>
-                        <TableCell>{ item.version }</TableCell>
-                        <TableCell>{ item.vendor }</TableCell>
-                        <TableCell>
-                          <ChplLink
-                            href={`#/listing/${item.id}`}
-                            text={item.chplProductNumber}
-                            analytics={{
-                              ...analytics,
-                              event: 'Go to Listing Details Page',
-                              label: item.chplProductNumber,
-                              aggregationName: item.name,
-                            }}
-                            external={false}
-                            router={{ sref: 'listing', options: { id: item.id } }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )}
-    </Container>
+                <ChplChips
+                  cmsIds={cmsIds}
+                  dispatch={handleDispatch}
+                />
+                { errors.length > 0
+                  && (
+                    <Box bgcolor={palette.errorLight} borderRadius="4px" border={`1px solid ${palette.error}`} p={2}>
+                      <List>
+                        { errors
+                          .map((msg) => (
+                            <ListItem key={msg}>
+                              <ListItemIcon className={classes.errorListIcon}>
+                                <WarningIcon color="error" />
+                              </ListItemIcon>
+                              {msg}
+                            </ListItem>
+                          ))}
+                      </List>
+                    </Box>
+                  )}
+              </Box>
+            </CardContent>
+          </Card>
+          { listings.length > 0
+            && (
+              <Card>
+                <CardContent>
+                  <Box display="flex" flexDirection="column" gridGap={16}>
+                    <div className={classes.tableResultsHeaderContainer}>
+                      <ButtonGroup size="small" className={classes.wrap}>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          fullWidth
+                          id="download-listing-data"
+                          onClick={downloadListingData}
+                          endIcon={<CloudDownloadOutlinedIcon />}
+                        >
+                          Download Result
+                          { listings.length !== 1 ? 's' : '' }
+                        </Button>
+                      </ButtonGroup>
+                    </div>
+                    <TableContainer className={classes.tableContainer} component={Paper}>
+                      <Table
+                        stickyHeader
+                        aria-label="CMS ID Listing Data table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          stickyHeader
+                        />
+                        <TableBody>
+                          { listings
+                            .map((item) => (
+                              <TableRow key={`${item.certificationId}-${item.id}`}>
+                                <TableCell>{ item.certificationId }</TableCell>
+                                <TableCell>{ item.name }</TableCell>
+                                <TableCell>{ item.version }</TableCell>
+                                <TableCell>{ item.vendor }</TableCell>
+                                <TableCell>
+                                  <ChplLink
+                                    href={`#/listing/${item.id}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Go to Listing Details Page',
+                                      label: item.chplProductNumber,
+                                      aggregationName: item.name,
+                                    }}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                  />
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+                </CardContent>
+              </Card>
+            )}
+        </Box>
+      </ChplPageBody>
+    </>
   );
 }
 

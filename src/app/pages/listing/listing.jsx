@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Container,
   Fade,
   IconButton,
   Typography,
@@ -26,6 +25,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
@@ -36,7 +36,7 @@ import {
   UserContext,
   useAnalyticsContext,
 } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -45,8 +45,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '16px',
-    padding: '32px 0',
-    backgroundColor: palette.background,
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
@@ -57,24 +55,8 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'baseline',
   },
-  listingHeaderBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gridGap: '16px',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gridGap: 'none',
-    },
-  },
   loadingScreen: {
     height: '100vh',
-  },
-  pageHeader: {
-    padding: '32px 0',
-    backgroundColor: palette.white,
   },
 });
 
@@ -214,101 +196,91 @@ function ChplListingPage({ id }) {
 
   return (
     <AnalyticsContext.Provider value={analyticsData}>
-      <Box bgcolor={palette.background}>
-        <ChplBrowserViewedWidget
-          listing={listing}
-        />
-        <div className={classes.pageHeader}>
-          <Container maxWidth="lg">
-            <Box className={classes.listingHeaderBox}>
-              <Box display="flex" alignItems="center" gridGap="4px">
-                <Typography
-                  variant="h1"
+      <ChplBrowserViewedWidget
+        listing={listing}
+      />
+      <ChplPageHeader
+        text={listing.product.name}
+        titleAdornment={(
+          <Box className={classes.favoriteContainer}>
+            <ChplTooltip
+              title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+              placement="top"
+            >
+              <IconButton
+                onClick={toggleFavorite}
+                style={{ color: '#e3bf00' }}
+                aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
+              >
+                {isFavorited ? <Star /> : <StarOutline />}
+              </IconButton>
+            </ChplTooltip>
+            <Fade in={isFavorited} timeout={{ enter: 500, exit: 500 }}>
+              <Typography variant="body1">
+                {isFavorited ? 'This listing is in your favorites!' : ''}
+              </Typography>
+            </Fade>
+          </Box>
+        )}
+        actions={(
+          <ChplActionButton
+            listing={listing}
+            horizontal
+          >
+            { canEdit()
+              && (
+                <Button
+                  endIcon={<Edit />}
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  onClick={edit}
                 >
-                  {listing.product.name}
-                </Typography>
-                <Box className={classes.favoriteContainer}>
-                  <ChplTooltip
-                    title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
-                    placement="top"
-                  >
-                    <IconButton
-                      onClick={toggleFavorite}
-                      style={{ color: '#e3bf00' }}
-                      aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
-                    >
-                      {isFavorited ? <Star /> : <StarOutline />}
-                    </IconButton>
-                  </ChplTooltip>
-                  <Fade in={isFavorited} timeout={{ enter: 500, exit: 500 }}>
-                    <Typography variant="body1">
-                      {isFavorited ? 'This listing is in your favorites!' : ''}
-                    </Typography>
-                  </Fade>
-                </Box>
-              </Box>
-              <Box>
-                <ChplActionButton
-                  listing={listing}
-                  horizontal
+                  Edit
+                </Button>
+              )}
+            <ChplListingHistory
+              listing={listing}
+            />
+            { hasAnyRole(['chpl-admin']) && listing.id >= 10912
+              && (
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  size="small"
+                  id={`download-original-csv-${listing.id}`}
+                  onClick={downloadOriginalCsv}
+                  endIcon={<CloudDownloadOutlinedIcon />}
                 >
-                  { canEdit()
-                    && (
-                      <Button
-                        endIcon={<Edit />}
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={edit}
-                      >
-                        Edit
-                      </Button>
-                    )}
-                  <ChplListingHistory
-                    listing={listing}
-                  />
-                  { hasAnyRole(['chpl-admin']) && listing.id >= 10912
-                    && (
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        size="small"
-                        id={`download-original-csv-${listing.id}`}
-                        onClick={downloadOriginalCsv}
-                        endIcon={<CloudDownloadOutlinedIcon />}
-                      >
-                        Original CSV
-                      </Button>
-                    )}
-                  { canGetCurrentCsv()
-                    && (
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        size="small"
-                        id={`download-current-csv-${listing.id}`}
-                        onClick={downloadCurrentCsv}
-                        endIcon={<CloudDownloadOutlinedIcon />}
-                      >
-                        Current CSV
-                      </Button>
-                    )}
-                </ChplActionButton>
-              </Box>
-            </Box>
-          </Container>
+                  Original CSV
+                </Button>
+              )}
+            { canGetCurrentCsv()
+              && (
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  size="small"
+                  id={`download-current-csv-${listing.id}`}
+                  onClick={downloadCurrentCsv}
+                  endIcon={<CloudDownloadOutlinedIcon />}
+                >
+                  Current CSV
+                </Button>
+              )}
+          </ChplActionButton>
+        )}
+      />
+      <ChplPageBody>
+        <div className={classes.container}>
+          <ListingContext.Provider value={listingState}>
+            <ChplListingView
+              listing={listing}
+              dispatch={handleDispatch}
+            />
+          </ListingContext.Provider>
         </div>
-        <Container maxWidth="lg">
-          <div className={classes.container} id="main-content" tabIndex="-1">
-            <ListingContext.Provider value={listingState}>
-              <ChplListingView
-                listing={listing}
-                dispatch={handleDispatch}
-              />
-            </ListingContext.Provider>
-          </div>
-        </Container>
-      </Box>
+      </ChplPageBody>
     </AnalyticsContext.Provider>
   );
 }

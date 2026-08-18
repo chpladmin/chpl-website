@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Container,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
@@ -16,7 +15,7 @@ import * as yup from 'yup';
 import { LocalDate } from '@js-joda/core';
 
 import { usePostSurveillanceActivityReport } from 'api/surveillance';
-import { ChplTextField } from 'components/util';
+import { ChplPageBody, ChplPageHeader, ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -25,7 +24,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    paddingTop: '16px',
     gap: '16px',
   },
   formContent: {
@@ -33,9 +31,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
     marginBottom: '16px',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 100px)',
   },
 });
 
@@ -123,67 +118,70 @@ function ChplSurveillanceActivityReporting() {
   });
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <div className={classes.container}>
-        <Card>
-          <CardHeader
-            title="Activity Reporting"
-            subheader="Select a Date Range to Download Reports"
-          />
-          <CardContent>
-            <Box className={classes.formContent}>
-              <ChplTextField
-                select
-                required
-                id="year"
-                name="year"
-                label="Year"
-                value={formik.values.year}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.year && !!formik.errors.year}
-                helperText={formik.touched.year && formik.errors.year}
+    <>
+      <ChplPageHeader text="Surveillance Activity Reporting" />
+      <ChplPageBody maxWidth="md">
+        <div className={classes.container}>
+          <Card>
+            <CardHeader
+              title="Activity Reporting"
+              subheader="Select a Date Range to Download Reports"
+            />
+            <CardContent>
+              <Box className={classes.formContent}>
+                <ChplTextField
+                  select
+                  required
+                  id="year"
+                  name="year"
+                  label="Year"
+                  value={formik.values.year}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.year && !!formik.errors.year}
+                  helperText={formik.touched.year && formik.errors.year}
+                >
+                  { getYears().map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </ChplTextField>
+                <ChplTextField
+                  select
+                  required
+                  id="quarter"
+                  name="quarter"
+                  label="Quarter"
+                  value={formik.values.quarter}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.quarter && !!formik.errors.quarter}
+                  helperText={formik.touched.quarter && formik.errors.quarter}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="q1">Q1</MenuItem>
+                  <MenuItem value="q2">Q2</MenuItem>
+                  <MenuItem value="q3">Q3</MenuItem>
+                  <MenuItem value="q4">Q4</MenuItem>
+                </ChplTextField>
+              </Box>
+              <Button
+                color="primary"
+                variant="contained"
+                name="downloadResults"
+                id="download-results"
+                disabled={!formik.isValid}
+                onClick={formik.handleSubmit}
+                endIcon={<CloudDownloadOutlinedIcon />}
               >
-                { getYears().map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </ChplTextField>
-              <ChplTextField
-                select
-                required
-                id="quarter"
-                name="quarter"
-                label="Quarter"
-                value={formik.values.quarter}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.quarter && !!formik.errors.quarter}
-                helperText={formik.touched.quarter && formik.errors.quarter}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="q1">Q1</MenuItem>
-                <MenuItem value="q2">Q2</MenuItem>
-                <MenuItem value="q3">Q3</MenuItem>
-                <MenuItem value="q4">Q4</MenuItem>
-              </ChplTextField>
-            </Box>
-            <Button
-              color="primary"
-              variant="contained"
-              name="downloadResults"
-              id="download-results"
-              disabled={!formik.isValid}
-              onClick={formik.handleSubmit}
-              endIcon={<CloudDownloadOutlinedIcon />}
-            >
-              Download Results
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </Container>
+                Download Results
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </ChplPageBody>
+    </>
   );
 }
 

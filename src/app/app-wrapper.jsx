@@ -3,6 +3,7 @@
 import React from 'react';
 import {
   ThemeProvider,
+  makeStyles,
 } from '@material-ui/core';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
@@ -22,7 +23,23 @@ import ChplNavigationBottom from 'navigation/navigation-bottom';
 import ChplNavigationTop from 'navigation/navigation-top';
 import theme from 'themes/theme';
 
+const useStyles = makeStyles({
+  appContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+  content: {
+    flex: '1 0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    minWidth: 0,
+  },
+});
+
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
+  const classes = useStyles();
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -41,9 +58,13 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
                             domain: '.healthit.gov',
                           }}
                           >
-                            <ChplNavigationTop />
-                            {children}
-                            <ChplNavigationBottom />
+                            <div className={classes.appContainer}>
+                              <ChplNavigationTop />
+                              <div className={classes.content}>
+                                {children}
+                              </div>
+                              <ChplNavigationBottom />
+                            </div>
                           </CookiesProvider>
                         </HashProvider>
                       </AnalyticsProvider>

@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Container,
   Divider,
   Table,
   TableBody,
@@ -26,6 +25,8 @@ import { useFetchAnnouncements } from 'api/announcements';
 import { useFetchAtls } from 'api/atls';
 import {
   ChplLink,
+  ChplPageBody,
+  ChplPageHeader,
   InternalScrollButton,
 } from 'components/util';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -54,9 +55,6 @@ const useStyles = makeStyles({
   pageBody: {
     display: 'grid',
     gap: '16px',
-    paddingTop: '32px',
-    paddingBottom: '32px',
-    minHeight: 'calc(100vh - 100px)',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 1fr',
@@ -80,12 +78,6 @@ const useStyles = makeStyles({
       overflowX: 'auto',
       gap: 0,
     },
-  },
-  pageBackground: {
-    backgroundColor: '#f9f9f9',
-  },
-  pageHeader: {
-    padding: '32px 0',
   },
   subheader: {
     fontWeight: 600,
@@ -123,17 +115,9 @@ function ChplResourcesOverview() {
 
   return (
     <>
-      <div className={classes.pageHeader}>
-        <Container maxWidth="lg">
-          <Typography
-            variant="h1"
-          >
-            CHPL Overview
-          </Typography>
-        </Container>
-      </div>
-      <div className={classes.pageBackground} id="main-content" tabIndex="-1">
-        <Container maxWidth="lg" className={classes.pageBody}>
+      <ChplPageHeader text="CHPL Overview" />
+      <ChplPageBody>
+        <div className={classes.pageBody}>
           <Card className={classes.pageNavigation}>
             {announcements.length > 0
               && (
@@ -653,8 +637,8 @@ function ChplResourcesOverview() {
               </CardContent>
             </Card>
           </div>
-        </Container>
-      </div>
+        </div>
+      </ChplPageBody>
     </>
   );
 }
