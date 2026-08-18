@@ -5,7 +5,7 @@ export const browserInfoSlice = createSlice({
   name: 'browserInfo',
   initialState: {
     api: '/rest',
-    apiKey: '12909a978483dfb8ecd0596c98ae9094',
+    apiKey: window.__env?.API_KEY ?? '12909a978483dfb8ecd0596c98ae9094',
     previouslyCompared: [],
     previouslyViewed: [],
   },
