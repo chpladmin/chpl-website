@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 14.9.0
+_18 August 2026_
+
+### Features
+* Make footer spacing consistent across all pages
+* Cover footer on all charts
+* Set latest quarter as default on Service Base URL List chart
+* Standardize report colors across Charts and Compliance Dashboard
+
+### Flagged Features
+* Show only appropriate SED fields
+
+---
+
 ## Version 14.8.1
 _3 August 2026_
 
