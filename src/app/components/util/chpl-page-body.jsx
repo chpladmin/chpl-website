@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
-    Box, 
-    Container, 
-    makeStyles,
- } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  makeStyles,
+} from '@material-ui/core';
 import { node, oneOf } from 'prop-types';
 
 import { palette, theme } from 'themes';
@@ -11,6 +11,7 @@ import { palette, theme } from 'themes';
 const useStyles = makeStyles({
   container: {
     padding: theme.spacing(8),
+    flexShrink: 0,
     backgroundColor: palette.backgroundPage,
     minHeight: 'calc(100vh - 150px)',
   },
