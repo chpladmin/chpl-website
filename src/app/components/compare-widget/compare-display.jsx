@@ -39,7 +39,6 @@ function ChplCompareWidgetHelpFooter({ classes }) {
       <Typography variant="body2" color={palette.greyDark}>
         For assistance, view the
         <br/>
-        {' '}
         <ChplLink
           href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
           text="CHPL Public User Guide"
