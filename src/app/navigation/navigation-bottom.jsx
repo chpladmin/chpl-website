@@ -16,6 +16,7 @@ import { palette, theme } from 'themes';
 const useStyles = makeStyles({
   footer: {
     position: 'sticky',
+    flexShrink: 0,
     width: '100%',
     backgroundColor: `${palette.navBackground} !important`,
     padding: '4px 32px',

@@ -167,6 +167,7 @@ const useStyles = makeStyles({
     backgroundBlendMode: 'normal, soft-light',
     backgroundSize: '500px',
     minHeight: '75vh',
+    flexGrow: 1,
   },
   subHeaders: {
     color: palette.white,
@@ -210,7 +211,7 @@ function ChplLandingPage() {
           </Typography>
         </Container>
       </Box>
-      <Box className={classes.landingPageBackground} pb={16} height="fit-content">
+      <Box className={classes.landingPageBackground} pb={16}>
         <Box className={classes.landingPageImageryBackground}>
           <Container maxWidth="md">
             <Box position="relative" top="-32px">

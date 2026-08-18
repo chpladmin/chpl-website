@@ -7,6 +7,7 @@ const palette = {
   dividerLight: '#d9e2ec',
   error: '#c44f65',
   errorDark: '#853544',
+  errorLight: '#fbeaed',
   grey: '#c6d5e5',
   greyBorder: '#bbb',
   greyLight: '#efefef',

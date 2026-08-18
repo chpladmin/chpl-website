@@ -14,6 +14,8 @@ import ChplActivityDetails from './activity-details';
 
 import { useFetchActivity } from 'api/questionable-activity';
 import { ChplLink,
+  ChplPageBody,
+  ChplPageHeader,
   ChplPagination,
   ChplLoadingTable,
   ChplSortableHeaders }
@@ -30,22 +32,8 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 188px)',
-  },
   linkWrap: {
     overflowWrap: 'anywhere',
-  },
-  pageHeader: {
-    padding: '32px',
-    backgroundColor: '#ffffff',
-  },
-  pageBody: {
-    display: 'grid',
-    gridTemplateColumns: ' 1fr',
-    gap: '16px',
-    padding: '16px 32px',
-    backgroundColor: '#f9f9f9',
   },
   pageContent: {
     display: 'grid',
@@ -75,13 +63,13 @@ const useStyles = makeStyles({
   tableContainer: {
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
-    margin: '0px 32px',
+    marginTop: '16px',
     width: 'auto',
   },
   tableResultsHeaderContainer: {
     display: 'grid',
     gap: '8px',
-    margin: '16px 32px',
+    marginTop: '16px',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -241,17 +229,13 @@ function ChplActivityView() {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <div className={classes.pageHeader}>
-        <Typography variant="h1">Activity</Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+    <>
+      <ChplPageHeader text="Activity" />
+      <ChplPageBody>
         <ChplFilterSearchBar
           placeholder="Search by Description or Reason..."
         />
-        <div>
-          <ChplFilterChips />
-        </div>
+        <ChplFilterChips />
         { isLoading
           && (
             <ChplLoadingTable className={classes.tableContainer} />
@@ -321,8 +305,8 @@ function ChplActivityView() {
                 )}
             </>
           )}
-      </div>
-    </div>
+      </ChplPageBody>
+    </>
   );
 }
 
