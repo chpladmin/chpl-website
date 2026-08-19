@@ -5,7 +5,7 @@ import { useLocalStorage } from 'services/storage.service';
 import { CompareContext } from 'shared/contexts';
 
 function CompareWrapper({ children }) {
-  const [isOpen, setIsOpenRaw] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [highlightNav, setHighlightNav] = useState(false);
   const [listings, setListings] = useLocalStorage('compare', []);
 
@@ -22,15 +22,8 @@ function CompareWrapper({ children }) {
     setListings((prev) => [...prev].filter((l) => l.id !== listing.id));
   };
 
-  const setIsOpen = (value) => {
-    setIsOpenRaw(value);
-    if (!value) {
-      setHighlightNav(false);
-    }
-  };
-
-  const setIsOpenFromNav = (value) => {
-    setIsOpenRaw(value);
+  const handleSetIsOpen = (value) => {
+    setIsOpen(value);
     setHighlightNav(value);
   };
 
@@ -41,8 +34,8 @@ function CompareWrapper({ children }) {
     isOpen,
     listings,
     removeListing,
-    setIsOpen,
-    setIsOpenFromNav,
+    setIsOpen: handleSetIsOpen,
+    setIsOpenFromNav: handleSetIsOpen,
   };
 
   return (

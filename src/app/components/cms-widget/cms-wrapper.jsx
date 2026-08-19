@@ -30,13 +30,6 @@ function CmsWrapper({ children }) {
 
   const handleSetIsOpen = (value) => {
     setIsOpen(value);
-    if (!value) {
-      setHighlightNav(false);
-    }
-  };
-
-  const setIsOpenFromNav = (value) => {
-    setIsOpen(value);
     setHighlightNav(value);
   };
 
@@ -49,7 +42,7 @@ function CmsWrapper({ children }) {
     listings,
     removeListing,
     setIsOpen: handleSetIsOpen,
-    setIsOpenFromNav,
+    setIsOpenFromNav: handleSetIsOpen,
   };
 
   return (
