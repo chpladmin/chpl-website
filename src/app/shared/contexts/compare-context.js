@@ -2,7 +2,6 @@ import { createContext } from 'react';
 
 const CompareContext = createContext({
   addListing: () => {},
-  highlightNav: false,
   isInWidget: () => false,
   isOpen: false,
   listings: [],

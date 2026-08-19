@@ -7,7 +7,6 @@ import { CmsContext } from 'shared/contexts';
 
 function CmsWrapper({ children }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [highlightNav, setHighlightNav] = useState(false);
   const [listings, setListings] = useLocalStorage('cms', []);
   const queryClient = useQueryClient();
 
@@ -30,13 +29,11 @@ function CmsWrapper({ children }) {
 
   const handleSetIsOpen = (value) => {
     setIsOpen(value);
-    setHighlightNav(value);
   };
 
   const cmsState = {
     addListing,
     canDisplayButton,
-    highlightNav,
     isInWidget,
     isOpen,
     listings,

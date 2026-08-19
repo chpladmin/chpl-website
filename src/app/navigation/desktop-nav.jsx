@@ -112,13 +112,11 @@ function ChplDesktopNav({
 }) {
   const analytics = useAnalyticsContext();
   const {
-    highlightNav: cmsHighlightNav,
     isOpen: cmsIsOpen,
     setIsOpen: setCmsIsOpen,
     setIsOpenFromNav: setCmsIsOpenFromNav,
   } = useContext(CmsContext);
   const {
-    highlightNav: compareHighlightNav,
     isOpen: compareIsOpen,
     setIsOpen: setCompareIsOpen,
     setIsOpenFromNav: setCompareIsOpenFromNav,
@@ -228,14 +226,14 @@ function ChplDesktopNav({
       </Button>
       <Button
         onClick={toggleCmsWidget}
-        aria-expanded={cmsHighlightNav}
+        aria-expanded={cmsIsOpen}
         className={classes.whiteButton}
       >
         CMS ID Creator
       </Button>
       <Button
         onClick={toggleCompareWidget}
-        aria-expanded={compareHighlightNav}
+        aria-expanded={compareIsOpen}
         className={classes.whiteButton}
         color="inherit"
       >
