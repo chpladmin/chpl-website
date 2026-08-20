@@ -46,7 +46,7 @@ const useStyles = makeStyles({
     gap: '8px',
     [theme.breakpoints.up('md')]: {
       position: 'sticky',
-      top: '190px',
+      top: '96px',
     },
   },
   sidebarMobileOnly: {

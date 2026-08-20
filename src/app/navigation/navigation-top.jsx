@@ -17,7 +17,10 @@ import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
-import { FlagContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  FlagContext,
+  useAnalyticsContext,
+} from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({

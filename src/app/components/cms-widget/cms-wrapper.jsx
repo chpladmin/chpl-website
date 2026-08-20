@@ -27,6 +27,10 @@ function CmsWrapper({ children }) {
     queryClient.invalidateQueries(['certification-ids']);
   };
 
+  const handleSetIsOpen = (value) => {
+    setIsOpen(value);
+  };
+
   const cmsState = {
     addListing,
     canDisplayButton,
@@ -34,7 +38,8 @@ function CmsWrapper({ children }) {
     isOpen,
     listings,
     removeListing,
-    setIsOpen,
+    setIsOpen: handleSetIsOpen,
+    setIsOpenFromNav: handleSetIsOpen,
   };
 
   return (

@@ -125,6 +125,13 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     setMobileMenuOpen(false);
   };
 
+  const collapseSection = (section) => {
+    setExpandedSections((previous) => ({
+      ...previous,
+      [section]: false,
+    }));
+  };
+
   const getDownloadIcon = (item) => {
     if (!item.showDownloadIcon) {
       return undefined;
@@ -167,11 +174,11 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const widgetSections = [{
     key: 'cms',
     title: 'CMS ID Creator',
-    content: <ChplCmsDisplay />,
+    content: <ChplCmsDisplay onClose={() => collapseSection('cms')} />,
   }, {
     key: 'compare',
     title: 'Compare Products',
-    content: <ChplCompareDisplay />,
+    content: <ChplCompareDisplay onClose={() => collapseSection('compare')} />,
   }];
 
   const linkSections = [{

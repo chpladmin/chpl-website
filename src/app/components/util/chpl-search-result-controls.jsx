@@ -4,7 +4,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { bool, node, number, string } from 'prop-types';
+import {
+  bool, node, number, string,
+} from 'prop-types';
 
 import { palette, theme } from 'themes';
 
@@ -15,7 +17,7 @@ const useStyles = makeStyles({
     gap: '4px',
     marginBottom: '16px',
     position: ({ sticky }) => (sticky ? 'sticky' : 'static'),
-    top: '190px',
+    top: '96px',
     zIndex: 2,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -33,7 +35,7 @@ const useStyles = makeStyles({
       left: '-1px',
       right: '-1px',
       bottom: '100%',
-      height: '90px',
+      height: '24px',
       background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
       pointerEvents: 'none',
       zIndex: 1,

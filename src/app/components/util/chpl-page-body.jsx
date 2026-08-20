@@ -10,7 +10,9 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(8),
+    flexShrink: 0,
+    backgroundColor: palette.backgroundPage,
     minHeight: 'calc(100vh - 150px)',
     backgroundColor: palette.backgroundPage,
     backgroundImage: `radial-gradient(${'#d6d4cf'} 0.5px, transparent 0.25px)`,

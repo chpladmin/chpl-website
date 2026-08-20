@@ -21,13 +21,18 @@ function CompareWrapper({ children }) {
     setListings((prev) => [...prev].filter((l) => l.id !== listing.id));
   };
 
+  const handleSetIsOpen = (value) => {
+    setIsOpen(value);
+  };
+
   const compareState = {
     addListing,
     isInWidget,
     isOpen,
     listings,
     removeListing,
-    setIsOpen,
+    setIsOpen: handleSetIsOpen,
+    setIsOpenFromNav: handleSetIsOpen,
   };
 
   return (
