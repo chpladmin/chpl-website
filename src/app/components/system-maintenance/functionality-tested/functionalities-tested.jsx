@@ -257,7 +257,7 @@ function ChplFunctionalitiesTested() {
       filters={filters}
       storageKey="storageKey-functionalitiesTestedManagement"
     >
-      <Card>
+      <Card style={{ overflow: 'visible' }}>
         <CardHeader
           style={{ paddingLeft: '16px' }}
           title={(
@@ -267,7 +267,7 @@ function ChplFunctionalitiesTested() {
             </>
 )}
         />
-        <CardContent>
+        <CardContent style={{ overflow: 'visible' }}>
           { (deleteFunctionalityTested.isLoading || postFunctionalityTested.isLoading || putFunctionalityTested.isLoading)
             && (
               <CircularProgress />

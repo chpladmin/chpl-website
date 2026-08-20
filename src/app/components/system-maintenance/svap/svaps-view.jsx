@@ -14,7 +14,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -76,28 +76,26 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       <ChplFilterSearchBar
         placeholder="Search by Citation or Version..."
       />
-      <div>
-        <ChplFilterChips />
-      </div>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">Search Results</Typography>
-          <Typography variant="body2">
-            {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchSvapsActivity}
-            title="SVAP"
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+      <ChplFilterLayout>
+        <Box className={classes.headerContainer}>
+          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+            <Typography variant="subtitle2">Search Results</Typography>
+            <Typography variant="body2">
+              {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gridGap={4}>
+            <ChplSortControls
+              sortOptions={sortOptions}
+              orderBy={orderBy}
+              order={order}
+              onSort={handleSort}
+            />
+            <ChplSystemMaintenanceActivity
+              fetch={useFetchSvapsActivity}
+              title="SVAP"
+            />
+            { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
             <Button
               onClick={() => dispatch({ action: 'edit', payload: {} })}
               id="add-new-svap"
@@ -107,41 +105,41 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             >
               Add
             </Button>
-          )}
+            )}
+          </Box>
         </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { svaps
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
-              cardTitle="Approved Standard Version"
-              cardTitleValue={item.approvedStandardVersion}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Regulatory Text Citation',
-                    value: item.regulatoryTextCitation || 'N/A',
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
+        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          { svaps
+            .map((item) => (
+              <ChplSearchResultCard
+                key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
+                cardTitle="Approved Standard Version"
+                cardTitleValue={item.approvedStandardVersion}
+                fieldGroups={[
+                  [
+                    {
+                      label: 'Regulatory Text Citation',
+                      value: item.regulatoryTextCitation || 'N/A',
+                      iconButton: (
+                        <ChplTooltip title="Use this value in a upload file">
+                          <IconButton color="primary" size="small">
+                            <InfoIcon fontSize="small" />
+                          </IconButton>
+                        </ChplTooltip>
+                      ),
+                    },
 
-                  {
-                    label: 'Replaced',
-                    value: item.replaced ? 'Yes' : 'No',
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                  },
-                ],
-              ]}
-              actions={
+                    {
+                      label: 'Replaced',
+                      value: item.replaced ? 'Yes' : 'No',
+                    },
+                    {
+                      label: 'Applicable Criteria',
+                      value: item.criteriaDisplay || 'N/A',
+                    },
+                  ],
+                ]}
+                actions={
                 hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                   <Button
                     onClick={() => dispatch({ action: 'edit', payload: item })}
@@ -155,9 +153,10 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
                   </Button>
                 )
               }
-            />
-          ))}
-      </Box>
+              />
+            ))}
+        </Box>
+      </ChplFilterLayout>
     </>
   );
 }

@@ -106,7 +106,7 @@ function ChplCertificationCriteria() {
       filters={filters}
       storageKey="storageKey-certificationCriteriaManagement"
     >
-      <Card>
+      <Card style={{ overflow: 'visible' }}>
         <CardHeader
           style={{ paddingLeft: '16px' }}
           title={(
@@ -116,7 +116,7 @@ function ChplCertificationCriteria() {
             </>
 )}
         />
-        <CardContent>
+        <CardContent style={{ overflow: 'visible' }}>
           <ChplCertificationCriteriaView
             certificationCriteria={certificationCriteria}
           />

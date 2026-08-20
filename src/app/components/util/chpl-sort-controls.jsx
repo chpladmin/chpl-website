@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
   Menu,
   MenuItem,
   makeStyles,
@@ -19,11 +20,15 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import SortIcon from '@material-ui/icons/Sort';
 
-import { theme } from 'themes';
+import { theme, palette } from 'themes';
 
 const useStyles = makeStyles({
   container: {
     marginRight: '16px',
+    display: 'flex',
+    border: `1px solid ${palette.primaryBorder}`,
+    borderRadius: theme.shape.borderRadius,
+    alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       marginRight: 0,
@@ -39,6 +44,10 @@ const useStyles = makeStyles({
       flex: '1 1 auto',
       justifyContent: 'flex-start',
     },
+  },
+  directionButton: {
+    borderLeft: `1px solid ${palette.primaryBorder}`,
+    borderRadius: 0,
   },
 });
 
@@ -83,8 +92,8 @@ function ChplSortControls({
   };
 
   return (
-    <Box className={classes.container} display="flex" alignItems="center">
-      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined" style={{ border: '1px solid primary' }}>
+    <Card elevation={0} className={classes.container}>
+      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="text">
         <Button
           className={classes.primaryButton}
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
@@ -98,6 +107,7 @@ function ChplSortControls({
           onClick={toggleSortDirection}
           aria-label={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
           title={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
+          className={classes.directionButton}
           style={{ minWidth: '40px', padding: '9px 4px' }}
           color="primary"
         >
@@ -118,7 +128,7 @@ function ChplSortControls({
           </MenuItem>
         ))}
       </Menu>
-    </Box>
+    </Card>
   );
 }
 

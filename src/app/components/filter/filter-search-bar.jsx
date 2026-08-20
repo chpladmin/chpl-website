@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   makeStyles,
@@ -48,19 +48,55 @@ const useStyles = makeStyles({
       },
     },
   },
+  sticky: {
+    position: 'sticky',
+    top: '100px',
+    zIndex: 3,
+  },
+  stuck: {
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: '100%',
+      height: '100px',
+      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 55%, transparent)`,
+      pointerEvents: 'none',
+    },
+  },
 });
 
 function ChplFilterSearchBar({
+  fadeBackground = palette.backgroundPage,
   hideAdvancedSearch = false,
   hideSearchTerm = false,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
+  sticky = false,
   toggleMultipleFilters = undefined,
 }) {
   const { filters } = useFilterContext();
-  const classes = useStyles();
+  const classes = useStyles({ fadeBackground });
+  const sentinelRef = useRef(null);
+  const [isStuck, setIsStuck] = useState(false);
 
-  return (
-    <div className={classes.searchContainer} data-filter-search-bar="true">
+  useEffect(() => {
+    if (!sticky) { return undefined; }
+    const sentinel = sentinelRef.current;
+    if (!sentinel) { return undefined; }
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsStuck(!entry.isIntersecting),
+      { rootMargin: '-100px 0px 0px 0px', threshold: 0 },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [sticky]);
+
+  const searchBar = (
+    <div
+      className={sticky ? `${classes.searchContainer} ${classes.sticky} ${isStuck ? classes.stuck : ''}` : classes.searchContainer}
+      data-filter-search-bar="true"
+    >
       { !hideSearchTerm
         && (
           <ChplFilterSearchTerm
@@ -82,13 +118,26 @@ function ChplFilterSearchBar({
       </Box>
     </div>
   );
+
+  if (!sticky) {
+    return searchBar;
+  }
+
+  return (
+    <>
+      <div ref={sentinelRef} />
+      {searchBar}
+    </>
+  );
 }
 
 export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
+  fadeBackground: string,
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
   placeholder: string,
+  sticky: bool,
   toggleMultipleFilters: arrayOf(object),
 };

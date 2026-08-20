@@ -1,43 +1,23 @@
 import React from 'react';
-import {
-  TablePagination,
-  makeStyles,
-} from '@material-ui/core';
+import { TablePagination } from '@material-ui/core';
 import {
   arrayOf,
-  bool,
   func,
   number,
 } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
-
-const useStyles = makeStyles({
-  pagination: {
-    position: 'relative',
-    [theme.breakpoints.up('lg')]: {
-      position: 'sticky',
-      bottom: '64px',
-      width: 'fit-content',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-});
 
 function ChplPagination({
   count,
   page,
   rowsPerPage,
   rowsPerPageOptions,
-  sticky = true,
   setPage,
   setRowsPerPage,
 }) {
   const { analytics } = useAnalyticsContext();
-  const classes = useStyles();
 
   const handlePageChange = (event, newPage) => {
     if (analytics) {
@@ -65,7 +45,6 @@ function ChplPagination({
 
   return (
     <TablePagination
-      className={sticky ? classes.pagination : undefined}
       component="div"
       labelRowsPerPage="Results per page:"
       onPageChange={handlePageChange}
@@ -85,7 +64,6 @@ ChplPagination.propTypes = {
   page: number.isRequired,
   rowsPerPage: number.isRequired,
   rowsPerPageOptions: arrayOf(number).isRequired,
-  sticky: bool,
   setPage: func.isRequired,
   setRowsPerPage: func.isRequired,
 };

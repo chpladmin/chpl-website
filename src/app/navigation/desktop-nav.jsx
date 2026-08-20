@@ -267,7 +267,7 @@ function ChplDesktopNav({
     if (item.primaryIcon) {
       return <CloudDownloadIcon color="primary" />;
     }
-    return <CloudDownloadIcon />;
+    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
   };
 
   return (

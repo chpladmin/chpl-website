@@ -21,7 +21,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -124,10 +124,10 @@ function ChplSedSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
         && (
           <>
             <ChplSearchResultControls
@@ -156,6 +156,7 @@ function ChplSedSearchView() {
                         [
                           {
                             label: 'Developer',
+                            style: { flex: '2 1 320px' },
                             value: (
                               <ChplLink
                                 href={`#/organizations/developers/${item.developer.id}`}
@@ -182,6 +183,7 @@ function ChplSedSearchView() {
                         [
                           {
                             label: 'CHPL ID',
+                            style: { flex: '2 1 320px' },
                             value: (
                               <ChplLink
                                 href={`#/listing/${item.id}`}
@@ -232,6 +234,7 @@ function ChplSedSearchView() {
             )}
           </>
         )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );
