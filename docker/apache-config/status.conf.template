@@ -1,0 +1,10 @@
+<IfModule mod_status.c>
+    <Location "/server-status">
+        SetHandler server-status
+        Require ip ${STATUS_ALLOWED_IPS}
+    </Location>
+    ExtendedStatus On
+    <IfModule mod_proxy.c>
+        ProxyStatus On
+    </IfModule>
+</IfModule>
