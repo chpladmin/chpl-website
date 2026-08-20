@@ -35,7 +35,6 @@ function CmsWrapper({ children }) {
     listings,
     removeListing,
     setIsOpen,
-    setIsOpenFromNav: setIsOpen,
   };
 
   return (

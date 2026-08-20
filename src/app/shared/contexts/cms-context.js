@@ -8,7 +8,6 @@ const CmsContext = createContext({
   listings: [],
   removeListing: () => {},
   setIsOpen: () => {},
-  setIsOpenFromNav: () => {},
 });
 CmsContext.displayName = 'cms-widget';
 

@@ -7,7 +7,6 @@ const CompareContext = createContext({
   listings: [],
   removeListing: () => {},
   setIsOpen: () => {},
-  setIsOpenFromNav: () => {},
 });
 CompareContext.displayName = 'compare-widget';
 

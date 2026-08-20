@@ -114,12 +114,10 @@ function ChplDesktopNav({
   const {
     isOpen: cmsIsOpen,
     setIsOpen: setCmsIsOpen,
-    setIsOpenFromNav: setCmsIsOpenFromNav,
   } = useContext(CmsContext);
   const {
     isOpen: compareIsOpen,
     setIsOpen: setCompareIsOpen,
-    setIsOpenFromNav: setCompareIsOpenFromNav,
   } = useContext(CompareContext);
   const { hasAnyRole } = useContext(UserContext);
   const resourcesButtonRef = useRef(null);
@@ -140,12 +138,12 @@ function ChplDesktopNav({
 
   const toggleCmsWidget = () => {
     closeAllNavOverlays();
-    setCmsIsOpenFromNav(!cmsIsOpen);
+    setCmsIsOpen(!cmsIsOpen);
   };
 
   const toggleCompareWidget = () => {
     closeAllNavOverlays();
-    setCompareIsOpenFromNav(!compareIsOpen);
+    setCompareIsOpen(!compareIsOpen);
   };
 
   const toggleResources = () => {

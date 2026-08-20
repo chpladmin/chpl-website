@@ -110,7 +110,7 @@ const useStyles = makeStyles({
     marginLeft: '-8px',
     marginRight: '-8px',
     marginBottom: '16px',
-    minHeight: '52px',
+    minHeight: '52px', // matches compare widget header so empty-state icons align vertically
     padding: '4px 4px 4px 8px',
     borderBottom: `1px solid ${palette.divider}`,
   },
@@ -152,7 +152,7 @@ const useStyles = makeStyles({
   },
   widgetHelpFooter: {
     marginTop: 'auto',
-    minHeight: '130px',
+    minHeight: '130px', // matches compare widget footer height so empty-state icons align vertically
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

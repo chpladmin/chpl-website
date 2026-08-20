@@ -28,7 +28,6 @@ function CompareWrapper({ children }) {
     listings,
     removeListing,
     setIsOpen,
-    setIsOpenFromNav: setIsOpen,
   };
 
   return (
