@@ -94,7 +94,7 @@ function ChplListingEdit({
   warnings = [],
   isProcessing = false,
 }) {
-  const { isProduction, rwtAiIntegrationIsOn } = useContext(FlagContext);
+  const { hti5ErdIsOn, isProduction, rwtAiIntegrationIsOn } = useContext(FlagContext);
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -568,16 +568,19 @@ function ChplListingEdit({
               </Typography>
               <Box display="flex" justifyContent="space-around" gridGap={16} flexDirection="row">
                 <Box display="flex" justifyContent="space-around" gridGap={16} width={rwtAiIntegrationIsOn ? '90%' : '100%'} flexDirection="row">
-                  <ChplTextField
-                    id="rwt-plans-url"
-                    name="rwtPlansUrl"
-                    label="Real-World Testing Plans URL"
-                    value={formik.values.rwtPlansUrl}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-                    helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-                  />
+                  { !hti5ErdIsOn
+                    && (
+                      <ChplTextField
+                        id="rwt-plans-url"
+                        name="rwtPlansUrl"
+                        label="Real-World Testing Plans URL"
+                        value={formik.values.rwtPlansUrl}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                        helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                      />
+                    )}
                   <ChplTextField
                     id="rwt-results-url"
                     name="rwtResultsUrl"
@@ -607,18 +610,21 @@ function ChplListingEdit({
                   )}
               </Box>
               <Box display="flex" pt={4} justifyContent="space-around" gridGap={16} flexDirection="row">
-                <ChplTextField
-                  id="rwt-plans-check-date"
-                  name="rwtPlansCheckDate"
-                  label="Real-World Testing Plans Check Date"
-                  type="date"
-                  required={formik.values.rwtPlansUrl !== ''}
-                  value={formik.values.rwtPlansCheckDate}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
-                  helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
-                />
+                { !hti5ErdIsOn
+                  && (
+                    <ChplTextField
+                      id="rwt-plans-check-date"
+                      name="rwtPlansCheckDate"
+                      label="Real-World Testing Plans Check Date"
+                      type="date"
+                      required={formik.values.rwtPlansUrl !== ''}
+                      value={formik.values.rwtPlansCheckDate}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
+                      helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
+                    />
+                  )}
                 <ChplTextField
                   id="rwt-results-check-date"
                   name="rwtResultsCheckDate"
