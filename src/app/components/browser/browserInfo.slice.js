@@ -1,11 +1,16 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
+const getInitialApiKey = () => {
+  if (window.__env?.API_KEY && window.__env?.API_KEY.length > 0) { return window.__env.API_KEY; }
+  return '12909a978483dfb8ecd0596c98ae9094';
+};
+
 export const browserInfoSlice = createSlice({
   name: 'browserInfo',
   initialState: {
     api: '/rest',
-    apiKey: window.__env?.API_KEY ?? '12909a978483dfb8ecd0596c98ae9094',
+    apiKey: getInitialApiKey(),
     previouslyCompared: [],
     previouslyViewed: [],
   },
