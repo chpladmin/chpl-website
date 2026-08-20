@@ -4,7 +4,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { bool, string } from 'prop-types';
+import { bool } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -42,7 +42,7 @@ const validationSchema = yup.object({
     }),
 });
 
-function ChplChangeRequestListingRwtEdit({ isAccepting = false, title, value }) {
+function ChplChangeRequestListingRwtEdit({ isAccepting = false }) {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
@@ -54,14 +54,14 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false, title, value }) 
   }, [hasAnyRole, isAccepting]);
 
   const getCurrent = () => {
-    if (changeRequest.details.listing[value]) {
+    if (changeRequest.details.listing.rwtResultsUrl) {
       return (
         <ChplLink
-          href={changeRequest.details.listing[value]}
+          href={changeRequest.details.listing.rwtResultsUrl}
           analytics={{
             ...analytics,
-            event: `Navigate to Current RWT ${title} URL`,
-            label: changeRequest.details.listing[value],
+            event: 'Navigate to Current RWT Results URL',
+            label: changeRequest.details.listing.rwtResultsUrl,
           }}
         />
       );
@@ -152,6 +152,4 @@ export default ChplChangeRequestListingRwtEdit;
 
 ChplChangeRequestListingRwtEdit.propTypes = {
   isAccepting: bool,
-  title: string.isRequired,
-  value: string.isRequired,
 };

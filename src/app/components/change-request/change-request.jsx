@@ -141,24 +141,11 @@ const getChangeRequestViewDetails = (cr) => {
           <ChplChangeRequestDemographicsView />
         </>
       );
-    case 'RWT Plans URL Change Request':
-      return (
-        <>
-          <Divider />
-          <ChplChangeRequestListingRwtView
-            value="rwtPlansUrl"
-            title="Plans"
-          />
-        </>
-      );
     case 'RWT Results URL Change Request':
       return (
         <>
           <Divider />
-          <ChplChangeRequestListingRwtView
-            value="rwtResultsUrl"
-            title="Results"
-          />
+          <ChplChangeRequestListingRwtView />
         </>
       );
     case 'Service Base URL List Change Request':
@@ -191,20 +178,10 @@ const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
       return (
         <ChplChangeRequestDemographicsEdit />
       );
-    case 'RWT Plans URL Change Request':
-      return (
-        <ChplChangeRequestListingRwtEdit
-          isAccepting={isAccepting}
-          title="Plans"
-          value="rwtPlansUrl"
-        />
-      );
     case 'RWT Results URL Change Request':
       return (
         <ChplChangeRequestListingRwtEdit
           isAccepting={isAccepting}
-          title="Results"
-          value="rwtResultsUrl"
         />
       );
     case 'Service Base URL List Change Request':

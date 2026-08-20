@@ -19,7 +19,7 @@ import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme } from 'themes';
 
@@ -133,6 +133,7 @@ const parseSvapCsv = ({ svaps }, data) => {
 
 function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) {
   const { analytics } = useAnalyticsContext();
+  const { hti5ErdIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [categories, setCategories] = useState(allCategories.map((h) => ({
@@ -199,7 +200,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
     const activeCategories = categories.filter((cat) => cat.selected).map((cat) => cat.key);
     const csvExporter = new ExportToCsv({
       ...csvOptions,
-      headers: allHeaders.filter((h) => activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)),
+      headers: allHeaders.filter((h) => ((activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)) && (!hti5ErdIsOn || h.objectKey !== 'rwtPlansUrl'))),
     });
     if (analytics) {
       eventTrack({

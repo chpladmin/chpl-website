@@ -38,13 +38,13 @@ const reports = [{
   title: 'Important Dates',
   uniqueClass: 'lessTopMargin',
 }, {
-  title: 'Non-conformities',
+  title: 'Direct Review Non-conformities',
 }, {
   title: 'Questionable URLs',
 }, {
   title: 'Real World Testing',
 }, {
-  title: 'Direct Reviews',
+  title: 'Non-conformities',
 }, {
   title: 'Developer Attestations',
   isWide: true,

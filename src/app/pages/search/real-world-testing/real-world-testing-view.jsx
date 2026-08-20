@@ -90,7 +90,6 @@ function ChplRealWorldTestingSearchView() {
       key={item.id}
       fieldGroups={[[{
         label: 'Developer',
-        style: { flex: '2 1 320px' },
         value: (
           <ChplLink
             href={`#/organizations/developers/${item.developer.id}`}
@@ -112,7 +111,6 @@ function ChplRealWorldTestingSearchView() {
         value: item.version.name,
       }], [{
         label: 'CHPL ID',
-        style: { flex: '2 1 320px' },
         value: (
           <ChplLink
             href={`#/listing/${item.id}`}
@@ -136,7 +134,6 @@ function ChplRealWorldTestingSearchView() {
         iconButton: <ChplCertificationStatusLegend />,
       }], [{
         label: 'Real World Testing Results URL',
-        style: { flex: '1 1 100%' },
         value: item.rwtResultsUrl
           ? (
             <ChplLink
@@ -158,7 +155,6 @@ function ChplRealWorldTestingSearchView() {
       key={item.id}
       fieldGroups={[[{
         label: 'Developer',
-        style: { flex: '2 1 320px' },
         value: (
           <ChplLink
             href={`#/organizations/developers/${item.developer.id}`}
@@ -180,7 +176,6 @@ function ChplRealWorldTestingSearchView() {
         value: item.version.name,
       }], [{
         label: 'CHPL ID',
-        style: { flex: '2 1 320px' },
         value: (
           <ChplLink
             href={`#/listing/${item.id}`}
@@ -204,7 +199,6 @@ function ChplRealWorldTestingSearchView() {
         iconButton: <ChplCertificationStatusLegend />,
       }], [{
         label: 'Real World Testing Plans URL',
-        style: { flex: '1 1 100%' },
         value: item.rwtPlansUrl
           ? (
             <ChplLink
@@ -220,7 +214,6 @@ function ChplRealWorldTestingSearchView() {
           : 'N/A',
       }, {
         label: 'Real World Testing Results URL',
-        style: { flex: '1 1 100%' },
         value: item.rwtResultsUrl
           ? (
             <ChplLink
