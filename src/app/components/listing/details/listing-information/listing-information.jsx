@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
@@ -42,6 +42,7 @@ const useStyles = makeStyles({
 
 function ChplListingInformation({ listing: initialListing }) {
   const user = useSelector((state) => state.userInfo.user);
+  const { hti5ErdIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
@@ -355,11 +356,11 @@ function ChplListingInformation({ listing: initialListing }) {
                   router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
                 />
               </Box>
-              { (listing.rwtPlansUrl || listing.rwtPlansCheckDate || listing.rwtResultsUrl || listing.rwtResultsCheckDate)
+              { ((!hti5ErdIsOn && (listing.rwtPlansUrl || listing.rwtPlansCheckDate)) || listing.rwtResultsUrl || listing.rwtResultsCheckDate)
                 && (
                   <Box className={classes.dataBox}>
                     <Typography variant="subtitle1" gutterBottom>Real World Testing:</Typography>
-                    { listing.rwtPlansUrl
+                    { listing.rwtPlansUrl && !hti5ErdIsOn
                      && (
                        <>
                          <Typography variant="subtitle2">Plans:</Typography>
@@ -375,7 +376,7 @@ function ChplListingInformation({ listing: initialListing }) {
                          />
                        </>
                      )}
-                    { listing.rwtPlansCheckDate && canViewRwtDates()
+                    { listing.rwtPlansCheckDate && canViewRwtDates() && !hti5ErdIsOn
                      && (
                        <>
                          <Typography variant="subtitle2">Last ONC-ACB RWT Plans Completeness Check:</Typography>
