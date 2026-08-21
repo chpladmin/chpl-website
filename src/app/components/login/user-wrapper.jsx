@@ -14,7 +14,6 @@ import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 function UserWrapper({ children = <ChplLogin /> }) {
   const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
   const user = useSelector((state) => state.userInfo.user);
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
@@ -23,16 +22,14 @@ function UserWrapper({ children = <ChplLogin /> }) {
 
   useEffect(() => {
     const update = () => {
-      dispatch(setUser({ user: authService.getCurrentUser() }));
+      dispatch(setUser({ user: JSON.parse(localStorage.getItem('ngStorage-currentUser')) }));
     };
     update();
     const deregisterLoginWatcher = $rootScope.$on('loggedIn', update);
-    const deregisterLogoutWatcher = $rootScope.$on('loggedOut', update);
     return () => {
       deregisterLoginWatcher();
-      deregisterLogoutWatcher();
     };
-  }, [$rootScope, authService]);
+  }, [$rootScope]);
 
   const hasAnyRole = (roles) => {
     if (!user || !roles || roles.length === 0 || !user.role) {
