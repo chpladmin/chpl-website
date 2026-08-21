@@ -6,14 +6,12 @@ import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { setLoginState, setUser } from 'components/login/userInfo.slice';
-import { getAngularService } from 'services/angular-react-helper';
 
 const AxiosContext = createContext();
 
 function AxiosProvider({ children }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const dispatch = useDispatch();
-  const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
 
   const axios = useMemo(() => {
@@ -37,8 +35,10 @@ function AxiosProvider({ children }) {
             dispatch(setLoginState('SIGNIN'));
             dispatch(setUser({}));
             clearAuthTokens();
+            localStorage.removeItem('ngStorage-jwtToken');
+            localStorage.removeItem('ngStorage-refreshToken');
             localStorage.removeItem('ngStorage-currentUser');
-            authService.logout();
+            document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
           });
       }
       return new Promise((resolve) => resolve(''));
@@ -81,9 +81,14 @@ function AxiosProvider({ children }) {
         return response;
       },
       (error) => {
-        if (error?.response?.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
+        if (error?.response?.data === 'Invalid authentication token.') {
           dispatch(setLoginState('SIGNIN'));
-          authService.logout();
+          dispatch(setUser({}));
+          clearAuthTokens();
+          localStorage.removeItem('ngStorage-jwtToken');
+          localStorage.removeItem('ngStorage-refreshToken');
+          localStorage.removeItem('ngStorage-currentUser');
+          document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
         }
         return Promise.reject(error);
       },

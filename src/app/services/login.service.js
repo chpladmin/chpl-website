@@ -11,7 +11,6 @@ import { clearAuthTokens } from 'axios-jwt';
       getCurrentUser,
       getToken,
       hasAnyRole,
-      logout,
       saveCurrentUser,
       saveRefreshToken,
       saveToken,
@@ -45,20 +44,6 @@ import { clearAuthTokens } from 'axios-jwt';
         return true; // logged in, no role required
       }
       return false; // not logged in
-    }
-
-    function logout() {
-      if (getCurrentUser().cognitoId) {
-        $injector.get('networkService').logout({
-          email: getCurrentUser().email,
-        });
-        document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
-      }
-      localStorage.removeItem('ngStorage-jwtToken');
-      localStorage.removeItem('ngStorage-refreshToken');
-      localStorage.removeItem('ngStorage-currentUser');
-      clearAuthTokens();
-      $rootScope.$broadcast('loggedOut');
     }
 
     function saveCurrentUser(user) {
