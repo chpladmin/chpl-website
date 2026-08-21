@@ -1,14 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
@@ -17,18 +9,28 @@ import ChplMessaging from './messaging/messaging';
 
 import { useFetchDevelopersBySearch } from 'api/developer';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import {
-  ChplLink, ChplPagination, ChplLoadingTable, ChplSortableHeaders,
+  ChplLink,
+  ChplLoadingCards,
+  ChplPagination,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
+
+const sortOptions = [
+  { property: 'developer_name', text: 'Developer' },
+  { property: 'developer_code', text: 'Developer Code' },
+];
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -36,47 +38,6 @@ const useStyles = makeStyles({
     display: 'grid',
     borderRadius: 4,
     gridTemplateRows: '1fr',
-    backgroundColor: palette.white,
-  },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: palette.white,
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
-    },
-  },
-  tableContainer: {
-    overflowWrap: 'normal',
-    border: `.5px solid ${palette.divider}`,
-    margin: '0px 32px',
-    width: 'auto',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
   },
 });
 
@@ -97,7 +58,7 @@ function ChplDevelopersView() {
   const classes = useStyles();
 
   const {
-    data, isError, isLoading, isFetching,
+    data, isError, isLoading,
   } = useFetchDevelopersBySearch({
     orderBy,
     pageNumber,
@@ -126,12 +87,6 @@ function ChplDevelopersView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  const headers = [
-    { property: 'developer_name', text: 'Developer', sortable: true },
-    { property: 'developer_code', text: 'Developer Code', sortable: true },
-    { text: 'ONC-ACB for active Listings' },
-  ];
-
   const downloadDevelopers = () => {
     eventTrack({
       ...analytics,
@@ -149,7 +104,7 @@ function ChplDevelopersView() {
     setMessaging(false);
   };
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleSort = (property, orderDirection) => {
     eventTrack({
       ...analytics,
       event: 'Sort Column',
@@ -196,131 +151,104 @@ function ChplDevelopersView() {
     <>
       <div className={classes.developerView} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
+          sticky
+          filterGridMinColWidth={600}
           placeholder="Search by Developer Name or Code..."
           toggleMultipleFilters={bonusQuickFilters}
         />
-        <div>
-          <ChplFilterChips />
-        </div>
-        { isLoading
-          && (
-            <ChplLoadingTable className={classes.tableContainer} />
-          )}
-        { !isLoading
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
-              <div className={classes.tableResultsHeaderContainer}>
-                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                  <Typography variant="subtitle2">Search Results:</Typography>
-                  { developers.length === 0
-                    && (
-                      <Typography>
-                        No results found
-                      </Typography>
-                    )}
-                  { developers.length > 0
-                    && (
-                      <Typography variant="body2">
-                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                      </Typography>
-                    )}
-                  { isFetching
-                    && (
-                      <CircularProgress size={24} />
-                    )}
-                </div>
-                { developers.length > 0
+              <ChplSearchResultControls
+                recordCount={recordCount}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+                wrapActions
+              >
+                <ChplSortControls
+                  sortOptions={sortOptions}
+                  orderBy={orderBy}
+                  order={sortDescending ? 'desc' : 'asc'}
+                  onSort={handleSort}
+                />
+                <Button
+                  onClick={downloadDevelopers}
+                  id="download-developers"
+                  variant="outlined"
+                  color="primary"
+                  endIcon={<CloudDownloadOutlinedIcon />}
+                >
+                  Download information for
+                  {' '}
+                  { recordCount }
+                  {' '}
+                  {`Developer${recordCount !== 1 ? 's' : ''}`}
+                </Button>
+                { hasAnyRole(['chpl-admin', 'chpl-onc'])
                   && (
-                    <div>
-                      <Button
-                        onClick={downloadDevelopers}
-                        id="download-developers"
-                        variant="outlined"
-                        color="primary"
-                        style={{ marginRight: '8px' }}
-                        endIcon={<CloudDownloadOutlinedIcon />}
-                      >
-                        Download information for
-                        {' '}
-                        { recordCount }
-                        {' '}
-                        {`Developer${recordCount !== 1 ? 's' : ''}`}
-                      </Button>
-                      { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                        && (
-                          <Button
-                            onClick={() => setMessaging(true)}
-                            id="compose-message"
-                            variant="outlined"
-                            color="primary"
-                          >
-                            Send message to
-                            {' '}
-                            { recordCount }
-                            {' '}
-                            {`Developer${recordCount !== 1 ? 's' : ''}`}
-                          </Button>
-                        )}
-                    </div>
+                    <Button
+                      onClick={() => setMessaging(true)}
+                      id="compose-message"
+                      variant="outlined"
+                      color="primary"
+                    >
+                      Send message to
+                      {' '}
+                      { recordCount }
+                      {' '}
+                      {`Developer${recordCount !== 1 ? 's' : ''}`}
+                    </Button>
                   )}
-              </div>
+              </ChplSearchResultControls>
               { developers.length > 0
-                && (
-                  <>
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                      <Table
-                        stickyHeader
-                        aria-label="Developers Under Certification Ban table"
-                      >
-                        <ChplSortableHeaders
-                          headers={headers}
-                          onTableSort={handleTableSort}
-                          orderBy={orderBy}
-                          order={sortDescending ? 'desc' : 'asc'}
-                          stickyHeader
-                        />
-                        <TableBody>
-                          { developers
-                            .map((item) => (
-                              <TableRow key={item.id}>
-                                <TableCell className={classes.stickyColumn}>
-                                  <strong>
-                                    <ChplLink
-                                      href={`#/organizations/developers/${item.id}`}
-                                      text={item.name}
-                                      analytics={{
-                                        ...analytics,
-                                        event: 'Navigate to Developer Page',
-                                        label: item.name,
-                                      }}
-                                      external={false}
-                                      router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                                    />
-                                  </strong>
-                                </TableCell>
-                                <TableCell>
-                                  { item.code }
-                                </TableCell>
-                                <TableCell>
-                                  { item.oncAcbDisplay }
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
+              && (
+                <>
+                  { developers.map((item) => (
+                    <ChplSearchResultCard
+                      key={item.id}
+                      fieldGroups={[[
+                        {
+                          label: 'Developer',
+                          value: (
+                            <ChplLink
+                              href={`#/organizations/developers/${item.id}`}
+                              text={item.name}
+                              analytics={{
+                                ...analytics,
+                                event: 'Navigate to Developer Page',
+                                label: item.name,
+                              }}
+                              external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                            />
+                          ),
+                        },
+                        {
+                          label: 'Developer Code',
+                          value: item.code,
+                        },
+                        {
+                          label: 'ONC-ACB for Active Listings',
+                          value: item.oncAcbDisplay,
+                        },
+                      ]]}
                     />
-                  </>
-                )}
+                  ))}
+                  <ChplPagination
+                    count={recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                  />
+                </>
+              )}
             </>
           )}
+        </ChplFilterLayout>
       </div>
     </>
   );

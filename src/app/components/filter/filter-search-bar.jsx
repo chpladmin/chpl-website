@@ -6,6 +6,7 @@ import {
 import {
   arrayOf,
   bool,
+  number,
   object,
   string,
 } from 'prop-types';
@@ -69,6 +70,7 @@ const useStyles = makeStyles({
 
 function ChplFilterSearchBar({
   fadeBackground = palette.backgroundPage,
+  filterGridMinColWidth = 200,
   hideAdvancedSearch = false,
   hideSearchTerm = false,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
@@ -107,7 +109,7 @@ function ChplFilterSearchBar({
         <ChplFilterBrowse />
         { !hideAdvancedSearch
           && (
-            <ChplFilterPanel />
+            <ChplFilterPanel filterGridMinColWidth={filterGridMinColWidth} />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
@@ -135,6 +137,7 @@ export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
   fadeBackground: string,
+  filterGridMinColWidth: number,
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
   placeholder: string,
