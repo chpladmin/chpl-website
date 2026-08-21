@@ -85,6 +85,15 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '8px',
+    flexWrap: 'nowrap',
+  },
+  clearResetTitle: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    minWidth: 0,
+    flex: '1 1 auto',
   },
   searchInput: {
     flexGrow: 1,
@@ -301,6 +310,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
                         color={f === activeCategory ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
                         variant="outlined"
+                        style={{ whiteSpace: 'normal' }}
                         onClick={() => handleCategoryToggle(f)}
                       >
                         <span className={f === activeCategory ? classes.filterBold : undefined}>
@@ -331,7 +341,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
                     className={classes.clearResetContainer}
                     disableGutters
                   >
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" className={classes.clearResetTitle}>
                       { activeCategory.getFilterDisplay(activeCategory) }
                     </Typography>
                     <div className={classes.secondaryPanelOptions}>

@@ -152,7 +152,6 @@ function ChplDevelopersView() {
       <div className={classes.developerView} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           sticky
-          filterGridMinColWidth={600}
           placeholder="Search by Developer Name or Code..."
           toggleMultipleFilters={bonusQuickFilters}
         />
