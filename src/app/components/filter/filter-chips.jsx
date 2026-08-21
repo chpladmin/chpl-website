@@ -72,6 +72,8 @@ const useStyles = makeStyles({
   },
 });
 
+const ConditionalWrapper = ({ condition, wrapper, children }) => (condition ? wrapper(children) : children);
+
 const truncate = (str, n, useWordBoundary) => {
   if (str.length <= n) { return str; }
   const subString = str.slice(0, n - 1);
@@ -205,17 +207,28 @@ function ChplFilterChips({ horizontal = false }) {
                     <React.Fragment key={v.value}>
                       { f.getValueDisplay(v).length > maxLengthForChip
                         ? (
-                          <ChplTooltip
-                            title={f.getLongValueDisplay(v)}
+                          <ConditionalWrapper
+                            condition={f.key !== 'certificationStatuses'}
+                            wrapper={(children) => (
+                              <ChplTooltip title={f.getLongValueDisplay(v)}>
+                                {children}
+                              </ChplTooltip>
+                            )}
                           >
                             <Chip
-                              label={getChipLabel(f, truncate(f.getValueDisplay(v), maxLengthForChip, true), f.getValueDisplay(v))}
+                              label={getChipLabel(
+                                f,
+                                f.key === 'certificationStatuses'
+                                  ? truncate(f.getValueDisplay(v), maxLengthForChip, true).replace(/\.\.\.$/, '')
+                                  : truncate(f.getValueDisplay(v), maxLengthForChip, true),
+                                f.getValueDisplay(v),
+                              )}
                               onDelete={() => removeChip(f, v)}
                               variant="outlined"
                               disabled={f.required && f.values.length === 1}
                               classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
                             />
-                          </ChplTooltip>
+                          </ConditionalWrapper>
                         ) : (
                           <Chip
                             label={getChipLabel(f, f.getValueDisplay(v), f.getValueDisplay(v))}
