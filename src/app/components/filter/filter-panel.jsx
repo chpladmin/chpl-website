@@ -12,6 +12,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import { number } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
@@ -56,15 +57,12 @@ const useStyles = makeStyles({
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gridTemplateColumns: ({ filterGridMinColWidth }) => `repeat(auto-fit, minmax(${filterGridMinColWidth}px, 1fr))`,
     justifyItems: 'start',
     alignItems: 'start',
     gap: '16px',
     padding: '0 8px',
     marginTop: '16px',
-    [theme.breakpoints.up('xl')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -109,8 +107,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterPanel() {
-  const classes = useStyles();
+function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
+  const classes = useStyles({ filterGridMinColWidth });
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -429,4 +427,5 @@ function ChplFilterPanel() {
 export default ChplFilterPanel;
 
 ChplFilterPanel.propTypes = {
+  filterGridMinColWidth: number,
 };
