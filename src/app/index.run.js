@@ -5,7 +5,7 @@ import { ChplRouteLoading } from './components/util';
 
 (() => {
   /** @ngInject */
-  function runBlock($anchorScroll, $location, $rootScope, $state, $timeout, $transitions, $window, Title, authService) {
+  function runBlock($anchorScroll, $location, $rootScope, $state, $timeout, $transitions, $window, Title) {
     // Mount the React route-transition loader into its persistent root (outside
     // ui-view, so it survives navigations). ChplRouteLoading subscribes to the
     // UI-Router transition hooks itself and owns showing/hiding the loader.
@@ -40,18 +40,6 @@ import { ChplRouteLoading } from './components/util';
           }
         }, 0, false);
       }
-    });
-
-    const requiresAuthentication = {
-      to: (state) => state.data && state.data.roles,
-    };
-
-    $transitions.onBefore(requiresAuthentication, (transition) => {
-      const { roles } = transition.to().data;
-      if (roles && !authService.hasAnyRole(roles)) {
-        return transition.router.stateService.target('login', undefined, { location: false });
-      }
-      return true;
     });
 
     $transitions.onError({}, (transition) => {
