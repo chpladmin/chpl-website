@@ -54,6 +54,12 @@ const useStyles = makeStyles({
     border: `1px solid ${palette.primary}`,
     backgroundColor: palette.white,
     maxWidth: '100%',
+    minHeight: '24px',
+    height: 'auto',
+    '& .MuiChip-label': {
+      whiteSpace: 'normal',
+      wordBreak: 'break-word',
+    },
   },
   chipDeleteIcon: {
     order: -2,
