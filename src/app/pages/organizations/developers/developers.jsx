@@ -73,6 +73,7 @@ function ChplDevelopersPage() {
         ...certificationBodies,
         key: 'acbsForActiveListings',
         display: 'Has active Listings with ONC-ACB',
+        wrapText: true,
         values,
       }));
     setFilters((f) => f
@@ -81,6 +82,7 @@ function ChplDevelopersPage() {
         ...certificationBodies,
         key: 'acbsForAllListings',
         display: 'Has any Listings with ONC-ACB',
+        wrapText: true,
         values,
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
