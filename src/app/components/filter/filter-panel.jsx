@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     rowGap: '16px',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
     },
   },
   filterPanelFooter: {
@@ -120,6 +120,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
   const classes = useStyles({ filterGridMinColWidth });
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
+  const [panelWidth, setPanelWidth] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCategoryKey, setActiveCategoryKey] = useState('');
   const [filters, setFilters] = useState([]);
@@ -147,6 +148,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
       });
     }
     setAnchor(e.currentTarget.closest('[data-filter-search-bar="true"]') || e.currentTarget);
+    setPanelWidth((e.currentTarget.closest('[data-filter-search-bar="true"]') || e.currentTarget).getBoundingClientRect().width);
     setOpen(true);
   };
 
@@ -159,6 +161,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
     }
     setOpen(false);
     setActiveCategoryKey('');
+    setPanelWidth(null);
   };
 
   const handleAction = (action) => {
@@ -230,8 +233,6 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
     }
     filterContext.dispatch('toggleDevelopersListingsCriteriaOption', f);
   };
-
-  const panelWidth = anchor?.closest?.('[data-filter-search-bar="true"]')?.getBoundingClientRect?.().width;
 
   return (
     <>
@@ -309,8 +310,8 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
                         key={f.key}
                         color={f === activeCategory ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
+                        style={{ whiteSpace: f.wrapText ? 'normal' : 'nowrap' }}
                         variant="outlined"
-                        style={{ whiteSpace: 'normal' }}
                         onClick={() => handleCategoryToggle(f)}
                       >
                         <span className={f === activeCategory ? classes.filterBold : undefined}>
