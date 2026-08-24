@@ -163,13 +163,13 @@ function ChplListingsPage() {
   getQuery = (state) => {
     const value = state.values[0]?.value;
     if (value === 'Previously Compared' && previouslyCompared.length > 0) {
-      return `listingIds=${previouslyCompared.sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+      return `listingIds=${[...previouslyCompared].sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     if (value === 'Previously Viewed' && previouslyViewed.length > 0) {
-      return `listingIds=${previouslyViewed.sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+      return `listingIds=${[...previouslyViewed].sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     if (value === 'Favorites' && favorites.length > 0) {
-      return `listingIds=${favorites.map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+      return `listingIds=${[...favorites].map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     return null;
   };
