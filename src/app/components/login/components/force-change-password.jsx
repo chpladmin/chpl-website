@@ -20,7 +20,6 @@ import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostNewPasswordRequired } from 'api/auth';
 import { setUser } from 'components/login/userInfo.slice';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
@@ -58,7 +57,6 @@ const validationSchema = yup.object({
 });
 
 function ChplForceChangePassword({ dispatch, sessionId, userName }) {
-  const $rootScope = getAngularService('$rootScope');
   const newDispatch = useDispatch();
   const user = useSelector((state) => state.userInfo.value);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
@@ -97,15 +95,12 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           refreshToken: response.refreshToken,
         });
         newDispatch(setUser({ user: response.user }));
-        localStorage.setItem('ngStorage-currentUser', JSON.stringify(response.user));
         eventTrack({
           ...analytics,
           event: 'Log In',
           category: 'Authentication',
           group: response.user.role,
         });
-        $rootScope.$broadcast('loggedIn');
-        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {

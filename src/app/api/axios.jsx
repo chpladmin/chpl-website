@@ -23,7 +23,7 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      const { cognitoId } = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
+      const { cognitoId } = useSelector((state) => state.userInfo.user);
       const headers = {
         'API-Key': apiKey,
       };
@@ -33,9 +33,8 @@ function AxiosProvider({ children }) {
           .then((response) => response.data.accessToken)
           .catch(() => {
             dispatch(setLoginState('SIGNIN'));
-            dispatch(setUser({}));
+            dispatch(setUser(undefined));
             clearAuthTokens();
-            localStorage.removeItem('ngStorage-currentUser');
             document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
           });
       }
@@ -81,9 +80,8 @@ function AxiosProvider({ children }) {
       (error) => {
         if (error?.response?.data === 'Invalid authentication token.') {
           dispatch(setLoginState('SIGNIN'));
-          dispatch(setUser({}));
+          dispatch(setUser(undefined));
           clearAuthTokens();
-          localStorage.removeItem('ngStorage-currentUser');
           document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
         }
         return Promise.reject(error);

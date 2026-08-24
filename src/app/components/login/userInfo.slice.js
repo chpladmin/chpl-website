@@ -5,7 +5,7 @@ export const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: {
     loginState: 'SIGNIN',
-    user: { },
+    user: JSON.parse(localStorage.getItem('ngStorage-currentUser')) ?? {}, // temporary use of localstorage until redux store is truly global
   },
   reducers: {
     setLoginState: (state, action) => {
@@ -13,6 +13,11 @@ export const userInfoSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload.user;
+      if (state.user !== undefined) {
+        localStorage.setItem('ngStorage-currentUser', JSON.stringify(state.user)); // temporary until redux store is truly global
+      } else {
+        localStorage.removeItem('ngStorage-currentUser');
+      }
     },
   },
 });

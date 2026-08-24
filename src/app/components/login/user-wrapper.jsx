@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { node } from 'prop-types';
@@ -9,27 +9,14 @@ import { setLoginState, setUser } from './userInfo.slice';
 
 import { usePostLogout } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 function UserWrapper({ children = <ChplLogin /> }) {
-  const $rootScope = getAngularService('$rootScope');
   const user = useSelector((state) => state.userInfo.user);
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();
   const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
-
-  useEffect(() => {
-    const update = () => {
-      dispatch(setUser({ user: JSON.parse(localStorage.getItem('ngStorage-currentUser')) }));
-    };
-    update();
-    const deregisterLoginWatcher = $rootScope.$on('loggedIn', update);
-    return () => {
-      deregisterLoginWatcher();
-    };
-  }, [$rootScope]);
 
   const hasAnyRole = (roles) => {
     if (!user || !roles || roles.length === 0 || !user.role) {
@@ -53,13 +40,11 @@ function UserWrapper({ children = <ChplLogin /> }) {
         email: user.email,
       });
     }
-    dispatch(setUser({}));
+    dispatch(setUser(undefined));
     removeCookie('cognito_id');
     removeCookie('refresh_token');
-    localStorage.removeItem('ngStorage-currentUser');
     dispatch(setLoginState('SIGNIN'));
     clearAuthTokens();
-    $rootScope.$broadcast('loggedOut');
   };
 
   const userState = {

@@ -73,7 +73,6 @@ function ChplRegisterUser({ hash }) {
               variant: 'success',
             });
             dispatch(setUser(response.data));
-            localStorage.setItem('ngStorage-currentUser', JSON.stringify(response.data));
             $state.go('administration');
           },
           onError: (error) => {
