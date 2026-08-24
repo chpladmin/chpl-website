@@ -59,7 +59,6 @@ const validationSchema = yup.object({
 
 function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
   const newDispatch = useDispatch();
   const user = useSelector((state) => state.userInfo.value);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
@@ -91,8 +90,8 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           category: 'Authentication',
           group: response.user.role,
         });
-        authService.saveToken(response.accessToken);
-        authService.saveRefreshToken(response.refreshToken);
+        localStorage.setItem('ngStorage-jwtToken', JSON.stringify(response.accessToken));
+        localStorage.setItem('ngStorage-refreshToken', JSON.stringify(response.refreshToken));
         setCookie('cognito_id', response.user.cognitoId);
         setCookie('refresh_token', response.refreshToken);
         setAuthTokens({
@@ -100,7 +99,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           refreshToken: response.refreshToken,
         });
         newDispatch(setUser({ user: response.user }));
-        authService.saveCurrentUser(response.user);
+        localStorage.setItem('ngStorage-currentUser', JSON.stringify(response.user));
         eventTrack({
           ...analytics,
           event: 'Log In',

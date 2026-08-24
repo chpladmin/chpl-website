@@ -59,7 +59,6 @@ function ChplUploadListings() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
-  const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -79,7 +78,7 @@ function ChplUploadListings() {
     const item = {
       url: `${API}/listings/upload`,
       headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('ngStorage-jwtToken')}`,
         'API-Key': apiKey,
       },
       data: {

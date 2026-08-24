@@ -69,7 +69,6 @@ function ChplUploadPromotingInteroperability() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const Upload = getAngularService('Upload');
-  const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let formik;
@@ -88,7 +87,7 @@ function ChplUploadPromotingInteroperability() {
     const item = {
       url: `${API}/promoting-interoperability/upload`,
       headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('ngStorage-jwtToken')}`,
         'API-Key': apiKey,
       },
       data: {

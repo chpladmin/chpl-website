@@ -50,7 +50,6 @@ const validationSchema = yup.object({
 
 function ChplSignin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
   const newDispatch = useDispatch();
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
@@ -91,8 +90,8 @@ function ChplSignin({ dispatch }) {
           group: response.user.role,
           organization: response.user.organizations?.length > 0 ? response.user.organizations.map((org) => org.name).join(';') : undefined,
         });
-        authService.saveToken(response.accessToken);
-        authService.saveRefreshToken(response.refreshToken);
+        localStorage.setItem('ngStorage-jwtToken', JSON.stringify(response.accessToken));
+        localStorage.setItem('ngStorage-refreshToken', JSON.stringify(response.refreshToken));
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
@@ -100,7 +99,7 @@ function ChplSignin({ dispatch }) {
         setCookie('cognito_id', response.user.cognitoId);
         setCookie('refresh_token', response.refreshToken);
         newDispatch(setUser({ user: response.user }));
-        authService.saveCurrentUser(response.user);
+        localStorage.setItem('ngStorage-currentUser', JSON.stringify(response.user));
         formik.resetForm();
         $rootScope.$broadcast('loggedIn');
         $rootScope.$digest();

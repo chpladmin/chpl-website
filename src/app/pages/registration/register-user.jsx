@@ -46,7 +46,6 @@ const useStyles = makeStyles({
 
 function ChplRegisterUser({ hash }) {
   const $state = getAngularService('$state');
-  const authService = getAngularService('authService');
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -74,7 +73,7 @@ function ChplRegisterUser({ hash }) {
               variant: 'success',
             });
             dispatch(setUser(response.data));
-            authService.saveCurrentUser(response.data);
+            localStorage.setItem('ngStorage-currentUser', JSON.stringify(response.data));
             $state.go('administration');
           },
           onError: (error) => {

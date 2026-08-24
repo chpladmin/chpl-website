@@ -23,7 +23,6 @@ import {
 } from 'components/util';
 import { ChplApiKeyRegistration } from 'components/api-key';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -93,7 +92,6 @@ const allOptions = [
 function ChplResourcesApi() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
-  const { getToken } = getAngularService('authService');
   const analytics = {
     ...useAnalyticsContext().analytics,
     category: 'CHPL API',
@@ -113,7 +111,7 @@ function ChplResourcesApi() {
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
-  }, [API, getToken]);
+  }, [API]);
 
   const downloadFile = (type) => {
     if (selectedOption) {

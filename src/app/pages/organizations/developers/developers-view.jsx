@@ -26,7 +26,6 @@ import {
   ChplLink, ChplPagination, ChplLoadingTable, ChplSortableHeaders,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
@@ -85,7 +84,6 @@ function ChplDevelopersView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-developersView';
-  const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
@@ -142,7 +140,7 @@ function ChplDevelopersView() {
     });
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      url += `&authorization=Bearer%20${getToken()}`;
+      url += `&authorization=Bearer%20${JSON.parse(localStorage.getItem('ngStorage-jwtToken'))}`;
     }
     window.open(url);
   };
