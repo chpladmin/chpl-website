@@ -16,6 +16,7 @@ import {
 } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
+import { getAccessToken } from 'axios-jwt';
 
 import ChplListingEdit from './listing-edit';
 import ChplListingHistory from './history/listing-history';
@@ -100,7 +101,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Original CSV',
     });
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${JSON.parse(localStorage.getItem('ngStorage-jwtToken'))}`;
+    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${JSON.parse(getAccessToken())}`;
     window.open(downloadLink);
   };
 
@@ -109,7 +110,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Current CSV',
     });
-    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${JSON.parse(localStorage.getItem('ngStorage-jwtToken'))}`;
+    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${JSON.parse(getAccessToken())}`;
     window.open(downloadLink);
   };
 

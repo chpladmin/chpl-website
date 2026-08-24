@@ -35,8 +35,6 @@ function AxiosProvider({ children }) {
             dispatch(setLoginState('SIGNIN'));
             dispatch(setUser({}));
             clearAuthTokens();
-            localStorage.removeItem('ngStorage-jwtToken');
-            localStorage.removeItem('ngStorage-refreshToken');
             localStorage.removeItem('ngStorage-currentUser');
             document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
           });
@@ -85,8 +83,6 @@ function AxiosProvider({ children }) {
           dispatch(setLoginState('SIGNIN'));
           dispatch(setUser({}));
           clearAuthTokens();
-          localStorage.removeItem('ngStorage-jwtToken');
-          localStorage.removeItem('ngStorage-refreshToken');
           localStorage.removeItem('ngStorage-currentUser');
           document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
         }

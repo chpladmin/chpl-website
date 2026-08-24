@@ -13,6 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import { getAccessToken } from 'axios-jwt';
 
 import { getAngularService } from 'services/angular-react-helper';
 
@@ -78,7 +79,7 @@ function ChplUploadListings() {
     const item = {
       url: `${API}/listings/upload`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('ngStorage-jwtToken')}`,
+        Authorization: `Bearer ${getAccessToken()}`,
         'API-Key': apiKey,
       },
       data: {

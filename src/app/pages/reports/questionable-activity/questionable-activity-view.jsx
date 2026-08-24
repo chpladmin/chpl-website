@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
+import { getAccessToken } from 'axios-jwt';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
@@ -123,7 +124,7 @@ function ChplQuestionableActivityView() {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}&authorization=Bearer%20${localStorage.getItem('ngStorage-jwtToken')}`);
+    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}&authorization=Bearer%20${getAccessToken()}`);
   }, [API]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */

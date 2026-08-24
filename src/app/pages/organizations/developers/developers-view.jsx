@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
+import { getAccessToken } from 'axios-jwt';
 
 import ChplMessaging from './messaging/messaging';
 
@@ -140,7 +141,7 @@ function ChplDevelopersView() {
     });
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      url += `&authorization=Bearer%20${JSON.parse(localStorage.getItem('ngStorage-jwtToken'))}`;
+      url += `&authorization=Bearer%20${JSON.parse(getAccessToken())}`;
     }
     window.open(url);
   };

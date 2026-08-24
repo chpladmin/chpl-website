@@ -15,6 +15,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { useSelector } from 'react-redux';
+import { getAccessToken } from 'axios-jwt';
 
 import {
   ChplLink,
@@ -106,7 +107,7 @@ function ChplResourcesDownload() {
       '2014 edition summary': { data: `${API}/listings/download?listingType=2014&api_key=${apiKey}&format=csv`, definition: `${API}/listings/download?listingType=2014&api_key=${apiKey}&format=csv&definition=true`, label: '2014 products' },
       'SVAP Summary': { data: `${API}/svap/download?api_key=${apiKey}`, definition: `${API}/svap/download?api_key=${apiKey}&definition=true`, label: 'SVAP Summary' },
       'Service Base URL List': { data: `${API}/service-base-url-list/download?api_key=${apiKey}`, label: 'Service Base URL List' },
-      'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${apiKey}&type=basic&authorization=Bearer%20${JSON.parse(localStorage.getItem('ngStorage-jwtToken'))}`, definition: `${API}/surveillance/download?api_key=${apiKey}&type=basic&definition=true&authorization=Bearer%20${JSON.parse(localStorage.getItem('ngStorage-jwtToken'))}`, label: 'Surveillance (Basic)' },
+      'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${apiKey}&type=basic&authorization=Bearer%20${JSON.parse(getAccessToken())}`, definition: `${API}/surveillance/download?api_key=${apiKey}&type=basic&definition=true&authorization=Bearer%20${JSON.parse(getAccessToken())}`, label: 'Surveillance (Basic)' },
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${apiKey}&type=all`, definition: `${API}/surveillance/download?api_key=${apiKey}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${apiKey}`, definition: `${API}/surveillance/download?api_key=${apiKey}&definition=true`, label: 'Surveillance Non-Conformities' },
       'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${apiKey}`, definition: `${API}/developers/direct-reviews/download?api_key=${apiKey}&definition=true`, label: 'Direct Review Activity' },

@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
+import { getAccessToken } from 'axios-jwt';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -87,7 +88,7 @@ function ChplUploadPromotingInteroperability() {
     const item = {
       url: `${API}/promoting-interoperability/upload`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('ngStorage-jwtToken')}`,
+        Authorization: `Bearer ${getAccessToken()}`,
         'API-Key': apiKey,
       },
       data: {

@@ -90,8 +90,6 @@ function ChplSignin({ dispatch }) {
           group: response.user.role,
           organization: response.user.organizations?.length > 0 ? response.user.organizations.map((org) => org.name).join(';') : undefined,
         });
-        localStorage.setItem('ngStorage-jwtToken', JSON.stringify(response.accessToken));
-        localStorage.setItem('ngStorage-refreshToken', JSON.stringify(response.refreshToken));
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,

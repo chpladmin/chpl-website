@@ -90,8 +90,6 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           category: 'Authentication',
           group: response.user.role,
         });
-        localStorage.setItem('ngStorage-jwtToken', JSON.stringify(response.accessToken));
-        localStorage.setItem('ngStorage-refreshToken', JSON.stringify(response.refreshToken));
         setCookie('cognito_id', response.user.cognitoId);
         setCookie('refresh_token', response.refreshToken);
         setAuthTokens({

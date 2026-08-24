@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useSelector } from 'react-redux';
 import { func, number } from 'prop-types';
+import { getAccessToken } from 'axios-jwt';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
@@ -86,7 +87,7 @@ function ChplUploadListing({
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('ngStorage-jwtToken')}`,
+        Authorization: `Bearer ${getAccessToken()}`,
         'API-Key': apiKey,
       },
       data: {

@@ -56,8 +56,6 @@ function UserWrapper({ children = <ChplLogin /> }) {
     dispatch(setUser({}));
     removeCookie('cognito_id');
     removeCookie('refresh_token');
-    localStorage.removeItem('ngStorage-jwtToken');
-    localStorage.removeItem('ngStorage-refreshToken');
     localStorage.removeItem('ngStorage-currentUser');
     dispatch(setLoginState('SIGNIN'));
     clearAuthTokens();
