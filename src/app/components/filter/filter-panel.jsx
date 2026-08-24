@@ -306,7 +306,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
                   <div className={classes.filterContainer}>
                     { filters.map((f) => (
                       <Button
-                        fullWidth={f.key !== 'acbsForActiveListings' && f.key !== 'acbsForAllListings'}
+                        fullWidth
                         key={f.key}
                         color={f === activeCategory ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
