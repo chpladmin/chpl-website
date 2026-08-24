@@ -116,7 +116,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
+function ChplFilterPanel({ filterGridMinColWidth }) {
   const classes = useStyles({ filterGridMinColWidth });
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -160,7 +160,6 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
       });
     }
     setOpen(false);
-    setActiveCategoryKey('');
     setPanelWidth(null);
   };
 
@@ -251,7 +250,7 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
-        TransitionProps={{ onExited: () => setAnchor(null) }}
+        TransitionProps={{ onExited: () => { setAnchor(null); setActiveCategoryKey(''); } }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -438,5 +437,5 @@ function ChplFilterPanel({ filterGridMinColWidth = 200 }) {
 export default ChplFilterPanel;
 
 ChplFilterPanel.propTypes = {
-  filterGridMinColWidth: number,
+  filterGridMinColWidth: number.isRequired,
 };
