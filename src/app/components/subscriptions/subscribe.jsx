@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import SubscriptionsTwoToneIcon from '@material-ui/icons/SubscriptionsTwoTone';
+import { useSelector } from 'react-redux';
 import { number } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -16,7 +17,7 @@ import { useSnackbar } from 'notistack';
 import { usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -25,11 +26,11 @@ const validationSchema = yup.object({
 });
 
 function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { enqueueSnackbar } = useSnackbar();
   const postSubscription = usePostSubscription();
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { listing } = useContext(ListingContext);
-  const { user } = useContext(UserContext);
   let formik;
 
   const subscribe = () => {

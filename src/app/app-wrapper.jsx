@@ -5,8 +5,11 @@ import {
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
-import { bool, node } from 'prop-types';
 import { CookiesProvider } from 'react-cookie';
+import { Provider } from 'react-redux';
+import { bool, node } from 'prop-types';
+
+import store from './store';
 
 import { AnalyticsProvider, HashProvider } from 'shared/contexts';
 import ApiWrapper from 'api/api-wrapper';
@@ -38,40 +41,42 @@ const useStyles = makeStyles({
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   const classes = useStyles();
   return (
-    <ThemeProvider theme={theme}>
-      <SnackbarWrapper>
-        <ApiWrapper showQueryTools={showQueryTools}>
-          <UserWrapper>
-            <FlagWrapper>
-              <CompareWrapper>
-                <CmsWrapper>
-                  <BrowserWrapper>
-                    <AnalyticsProvider>
-                      <HashProvider>
-                        <CookiesProvider defaultSetOptions={{
-                          path: '/',
-                          expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
-                          domain: '.healthit.gov',
-                        }}
-                        >
-                          <div className={classes.appContainer}>
-                            <ChplNavigationTop />
-                            <div className={classes.content}>
-                              {children}
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <SnackbarWrapper>
+          <ApiWrapper showQueryTools={showQueryTools}>
+            <UserWrapper>
+              <FlagWrapper>
+                <CompareWrapper>
+                  <CmsWrapper>
+                    <BrowserWrapper>
+                      <AnalyticsProvider>
+                        <HashProvider>
+                          <CookiesProvider defaultSetOptions={{
+                            path: '/',
+                            expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
+                            domain: '.healthit.gov',
+                          }}
+                          >
+                            <div className={classes.appContainer}>
+                              <ChplNavigationTop />
+                              <div className={classes.content}>
+                                {children}
+                              </div>
+                              <ChplNavigationBottom />
                             </div>
-                            <ChplNavigationBottom />
-                          </div>
-                        </CookiesProvider>
-                      </HashProvider>
-                    </AnalyticsProvider>
-                  </BrowserWrapper>
-                </CmsWrapper>
-              </CompareWrapper>
-            </FlagWrapper>
-          </UserWrapper>
-        </ApiWrapper>
-      </SnackbarWrapper>
-    </ThemeProvider>
+                          </CookiesProvider>
+                        </HashProvider>
+                      </AnalyticsProvider>
+                    </BrowserWrapper>
+                  </CmsWrapper>
+                </CompareWrapper>
+              </FlagWrapper>
+            </UserWrapper>
+          </ApiWrapper>
+        </SnackbarWrapper>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

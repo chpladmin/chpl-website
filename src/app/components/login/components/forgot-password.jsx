@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Button,
   Card,
@@ -8,15 +8,17 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import SendIcon from '@material-ui/icons/Send';
+import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import { usePostForgotPassword } from 'api/auth';
-import { eventTrack } from 'services/analytics.service';
+import { setLoginState } from 'components/login/userInfo.slice';
 import { ChplTextField } from 'components/util';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { eventTrack } from 'services/analytics.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -38,8 +40,8 @@ const validationSchema = yup.object({
 });
 
 function ChplForgotPassword({ userName }) {
+  const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
-  const { setLoginWidgetState } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostForgotPassword();
 
@@ -54,7 +56,7 @@ function ChplForgotPassword({ userName }) {
       category: 'Authentication',
     });
     e.stopPropagation();
-    setLoginWidgetState('SIGNIN');
+    dispatch(setLoginState('SIGNIN'));
   };
 
   const catchEnter = (e, target) => {
@@ -73,7 +75,7 @@ function ChplForgotPassword({ userName }) {
       onSuccess: () => {
         const body = `Forgotten password email sent to ${formik.values.email}; please check your email`;
         enqueueSnackbar(body, { variant: 'success' });
-        setLoginWidgetState('SIGNIN');
+        dispatch(setLoginState('SIGNIN'));
         formik.resetForm();
       },
       onError: () => {

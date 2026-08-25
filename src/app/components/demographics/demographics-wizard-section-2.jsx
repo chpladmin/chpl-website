@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Moment from 'react-moment';
+import { useSelector } from 'react-redux';
 import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -22,7 +23,7 @@ import ChplUrlChecker from 'components/url-checker/url-checker';
 import UrlCheckerContext from 'components/url-checker/url-checker-context';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -126,9 +127,9 @@ const getEditField = ({
 );
 
 function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
-  const { user } = useContext(UserContext);
   const { url, setUrl } = useContext(UrlCheckerContext);
   const classes = useStyles();
   let formik;
