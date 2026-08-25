@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -8,11 +8,11 @@ import {
   ListItem,
   Typography,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import { bool } from 'prop-types';
 
 import ChplIcsFamily from 'components/listing/details/ics-family/ics-family';
 import { ChplLink } from 'components/util';
-import { UserContext } from 'shared/contexts';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
 
@@ -43,7 +43,7 @@ const getRelatives = (source, user, isParent, listings) => listings.map((listing
 
 function ChplAdditionalInformation({ isConfirming = false, listing }) {
   const [currentPi, setCurrentPi] = useState(undefined);
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.userInfo.user);
 
   useEffect(() => {
     if (listing.promotingInteroperabilityUserHistory?.length > 0) {

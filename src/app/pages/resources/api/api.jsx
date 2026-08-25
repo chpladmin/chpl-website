@@ -12,6 +12,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import { useSelector } from 'react-redux';
 import SwaggerUI from 'swagger-ui-react';
 
 import {
@@ -90,8 +91,9 @@ const allOptions = [
 ];
 
 function ChplResourcesApi() {
-  const API = getAngularService('API');
-  const { getApiKey, getToken } = getAngularService('authService');
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
+  const { getToken } = getAngularService('authService');
   const analytics = {
     ...useAnalyticsContext().analytics,
     category: 'CHPL API',
@@ -104,14 +106,14 @@ function ChplResourcesApi() {
 
   useEffect(() => {
     const data = {
-      'Active products': { data: `${API}/listings/download?listingType=active&api_key=${getApiKey()}&format=json`, label: 'Active products' },
-      'Inactive products': { data: `${API}/listings/download?listingType=inactive&api_key=${getApiKey()}&format=json`, label: 'Inactive products' },
-      '2014 edition products': { data: `${API}/listings/download?listingType=2014&api_key=${getApiKey()}&format=json`, label: '2014 edition products' },
-      '2011 edition products': { data: `${API}/listings/download?listingType=2011&api_key=${getApiKey()}&format=json`, label: '2011 edition products' },
+      'Active products': { data: `${API}/listings/download?listingType=active&api_key=${apiKey}&format=json`, label: 'Active products' },
+      'Inactive products': { data: `${API}/listings/download?listingType=inactive&api_key=${apiKey}&format=json`, label: 'Inactive products' },
+      '2014 edition products': { data: `${API}/listings/download?listingType=2014&api_key=${apiKey}&format=json`, label: '2014 edition products' },
+      '2011 edition products': { data: `${API}/listings/download?listingType=2011&api_key=${apiKey}&format=json`, label: '2011 edition products' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
-  }, [API, getApiKey, getToken]);
+  }, [API, getToken]);
 
   const downloadFile = (type) => {
     if (selectedOption) {

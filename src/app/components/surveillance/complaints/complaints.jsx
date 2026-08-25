@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { arrayOf, bool, string } from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { arrayOf, bool, string } from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import ChplComplaintsView from './complaints-view';
 
@@ -115,9 +116,15 @@ const staticFilters = [{
   ],
 }];
 
-function ChplComplaints({ bonusQuery: initialBonusQuery, canAdd, disallowedFilters: initialDisallowedFilters, canEdit = true }) {
+function ChplComplaints({
+  bonusQuery: initialBonusQuery,
+  canAdd,
+  disallowedFilters: initialDisallowedFilters,
+  canEdit = true,
+}) {
+  const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [bonusQuery, setBonusQuery] = useState('');
   const [disallowedFilters, setDisallowedFilters] = useState([]);
   const [filters, setFilters] = useState(staticFilters);

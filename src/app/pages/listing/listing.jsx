@@ -14,6 +14,7 @@ import {
   Star,
   StarOutline,
 } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingEdit from './listing-edit';
@@ -60,10 +61,12 @@ const useStyles = makeStyles({
 });
 
 function ChplListingPage({ id }) {
-  const API = getAngularService('API');
-  const { getApiKey, getToken } = getAngularService('authService');
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
+  const user = useSelector((state) => state.userInfo.user);
+  const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [isEditing, setIsEditing] = useState(false);
@@ -99,7 +102,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Original CSV',
     });
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
 
@@ -108,7 +111,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Current CSV',
     });
-    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
+    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
 

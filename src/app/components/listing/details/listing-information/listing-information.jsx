@@ -10,6 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -40,8 +41,9 @@ const useStyles = makeStyles({
 });
 
 function ChplListingInformation({ listing: initialListing }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { hti5ErdIsOn } = useContext(FlagContext);
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
 
