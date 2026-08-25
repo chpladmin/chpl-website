@@ -281,13 +281,14 @@ function ChplCmsDisplay({ onClose }) {
     } else {
       setIdAnalysis(data.find((d) => d.year === activeYear));
     }
+
   }, [data, isFetching, isSuccess]);
 
   useEffect(() => {
-    if (pdfIsFetching || !pdfIsSuccess) { return; }
+    if (!isDownloading || pdfIsFetching || !pdfIsSuccess) { return; }
     createPdf(pdfData);
     setIsDownloading(false);
-  }, [pdfData, pdfIsFetching, pdfIsSuccess]);
+  }, [pdfData, pdfIsFetching, pdfIsSuccess, isDownloading]);
 
   const compareAll = () => {
     eventTrack({
