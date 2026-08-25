@@ -55,8 +55,8 @@ function ChplAdminMenu({ onClose = () => {} }) {
         key: 'developers',
         title: 'Developers',
         roles: ['chpl-developer'],
-        items: user?.organizations
-          ?.sort((a, b) => (a.name < b.name ? -1 : 1))
+        items: [...user?.organizations]
+          .sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((d) => ({
             key: d.id,
             roles: ['chpl-developer'],
