@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -16,8 +17,9 @@ import { useSnackbar } from 'notistack';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostChangePassword } from 'api/auth';
+import { setLoginState } from 'components/login/userInfo.slice';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
 import { palette } from 'themes';
 
@@ -53,7 +55,8 @@ const validationSchema = yup.object({
 });
 
 function ChplChangePassword() {
-  const { user, setLoginWidgetState } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostChangePassword();
@@ -75,7 +78,7 @@ function ChplChangePassword() {
       event: 'Cancel Password Change',
       category: 'Authentication',
     });
-    setLoginWidgetState('LOGGEDIN');
+    dispatch(setLoginState('LOGGEDIN'));
   };
 
   const changePassword = () => {
@@ -91,7 +94,7 @@ function ChplChangePassword() {
         });
         const body = 'Password successfully changed';
         enqueueSnackbar(body, { variant: 'success' });
-        setLoginWidgetState('LOGGEDIN');
+        dispatch(setLoginState('LOGGEDIN'));
       },
       onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';

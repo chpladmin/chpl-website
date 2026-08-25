@@ -12,7 +12,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 angular
   .module('chpl.administration', [
     'angular-confirm',
-    'chpl.constants',
     'chpl.services',
     'ngIdle',
     'ngFileUpload',

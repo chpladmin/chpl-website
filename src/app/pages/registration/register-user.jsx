@@ -6,11 +6,13 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { usePostAuthorizeUser, usePostCreateInvitedUser } from 'api/users';
 import ChplLogin from 'components/login/login';
+import { setUser } from 'components/login/userInfo.slice';
 import ChplUserCreate from 'components/registration/user-create';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
@@ -45,8 +47,9 @@ const useStyles = makeStyles({
 function ChplRegisterUser({ hash }) {
   const $state = getAngularService('$state');
   const authService = getAngularService('authService');
+  const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
-  const { hasAnyRole, setUser } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState('create');
   const [loginComponentState, setLoginComponentState] = useState('SIGNIN');
@@ -70,7 +73,7 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
-            setUser(response.data);
+            dispatch(setUser(response.data));
             authService.saveCurrentUser(response.data);
             $state.go('administration');
           },

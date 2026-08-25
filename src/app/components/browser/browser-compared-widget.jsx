@@ -1,14 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { BrowserContext } from 'shared/contexts';
+import { pushPreviouslyCompared } from 'components/browser/browserInfo.slice';
 import { listing as listingPropType } from 'shared/prop-types';
 
-function ChplBrowserComparedWidget(props) {
-  const { listing } = props;
-  const { addToCompared } = useContext(BrowserContext);
+function ChplBrowserComparedWidget({ listing }) {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    addToCompared(listing);
+    dispatch(pushPreviouslyCompared(listing));
   }, []);
 
   return null;

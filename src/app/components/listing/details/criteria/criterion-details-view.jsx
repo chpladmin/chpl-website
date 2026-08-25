@@ -16,6 +16,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
+import { useSelector } from 'react-redux';
 import { arrayOf } from 'prop-types';
 
 import ChplCodeSetIndicator from './code-set-indicator/code-set-indicator';
@@ -27,7 +28,7 @@ import {
   ChplTooltip,
   ChplUpdateIndicator,
 } from 'components/util';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 import {
   accessibilityStandard,
   certificationResult,
@@ -56,7 +57,7 @@ function ChplCriterionDetailsView({
   qmsStandards,
   accessibilityStandards,
 }) {
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.userInfo.user);
   const { listing } = useContext(ListingContext);
   const classes = useStyles();
 
