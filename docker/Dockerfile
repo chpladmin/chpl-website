@@ -46,6 +46,13 @@ RUN echo "Include conf/extra/status.conf" >> /usr/local/apache2/conf/httpd.conf
 # QA/staging/production already get from their own (non-GHCR) Apache image.
 RUN echo "CustomLog /proc/self/fd/1 combined" >> /usr/local/apache2/conf/httpd.conf
 
+# The base image's stock httpd.conf leaves Timeout at Apache's 60s default,
+# which is too short for some genuinely slow-but-legitimate backend endpoints
+# (e.g. chpl-api's /developers/search can take 40-60s under real data volume) -
+# mod_proxy_http was killing those with a 502 before the backend ever finished.
+# Match the legacy (non-GHCR) Apache image's explicit "Timeout 600".
+RUN echo "Timeout 600" >> /usr/local/apache2/conf/httpd.conf
+
 # Expose the non-standard port
 EXPOSE 3000
 
