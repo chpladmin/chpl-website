@@ -13,7 +13,7 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { func, objectOf, string } from 'prop-types';
 
-import { ChplEllipsis, ChplLink } from 'components/util';
+import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
@@ -154,9 +154,11 @@ function ChplCompareDisplay({ onClose }) {
           <Typography variant="h2">
             Compare Products
           </Typography>
-          <IconButton aria-label="Close widget" onClick={onClose} size="small">
-            <CloseIcon />
-          </IconButton>
+          <ChplTooltip placement="bottom" title="Close Compare Widget">
+            <IconButton aria-label="Close widget" onClick={onClose} size="small">
+              <CloseIcon />
+            </IconButton>
+          </ChplTooltip>
         </div>
         <div className={classes.emptyStateBody}>
           <ChplCompareEmptyStateIcon />
@@ -176,9 +178,11 @@ function ChplCompareDisplay({ onClose }) {
         <Typography variant="h2">
           Compare Products
         </Typography>
-        <IconButton aria-label="Close widget" onClick={onClose} size="small">
-          <CloseIcon />
-        </IconButton>
+        <ChplTooltip placement="bottom" title="Close Compare Widget">
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </ChplTooltip>
       </div>
       <Typography className={classes.sectionLabelFontWeight800}>Products Selected</Typography>
       <div className={classes.chipContainer}>

@@ -30,7 +30,7 @@ import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
 import createPdf from './cms-pdf';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
-import { ChplEllipsis, ChplLink } from 'components/util';
+import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
@@ -368,9 +368,11 @@ function ChplCmsDisplay({ onClose }) {
           <Typography variant="h2">
             CMS Certification ID Creator
           </Typography>
-          <IconButton aria-label="Close widget" onClick={onClose} size="small">
-            <CloseIcon />
-          </IconButton>
+          <ChplTooltip placement="bottom" title="Close CMS Certification ID Creator">
+            <IconButton aria-label="Close widget" onClick={onClose} size="small">
+              <CloseIcon />
+            </IconButton>
+          </ChplTooltip>
         </div>
         <div className={classes.emptyStateBody}>
           <ChplCmsEmptyStateIcon />
@@ -392,9 +394,11 @@ function ChplCmsDisplay({ onClose }) {
         <Typography variant="h2">
           CMS Certification ID Creator
         </Typography>
-        <IconButton aria-label="Close widget" onClick={onClose} size="small">
-          <CloseIcon />
-        </IconButton>
+        <ChplTooltip placement="bottom" title="Close CMS Certification ID Creator">
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </ChplTooltip>
       </div>
       { idAnalysis.ehrCertificationId
         && (
@@ -406,14 +410,16 @@ function ChplCmsDisplay({ onClose }) {
               <Typography variant="h5" color="primary">
                 { idAnalysis.ehrCertificationId }
               </Typography>
-              <IconButton
-                onClick={copyToClipboard}
-                color="primary"
-                size="small"
-                aria-label="Copy CMS EHR Certification ID"
-              >
-                <FileCopyOutlinedIcon />
-              </IconButton>
+              <ChplTooltip placement="bottom" title="Copy CMS EHR Certification ID">
+                <IconButton
+                  onClick={copyToClipboard}
+                  color="primary"
+                  size="small"
+                  aria-label="Copy CMS EHR Certification ID"
+                >
+                  <FileCopyOutlinedIcon />
+                </IconButton>
+              </ChplTooltip>
             </div>
             <Typography gutterBottom className={classes.preserveWhitespacePreWrapText} variant="body2">
               <span className={classes.errorAsteriskTextColor}>*</span>
