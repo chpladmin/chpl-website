@@ -19,7 +19,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -124,10 +124,10 @@ function ChplDecertifiedProductsSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -157,6 +157,7 @@ function ChplDecertifiedProductsSearchView() {
                           [
                             {
                               label: 'Developer',
+                              style: { flex: '2 1 320px' },
                               value: (
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
@@ -183,6 +184,7 @@ function ChplDecertifiedProductsSearchView() {
                           [
                             {
                               label: 'CHPL ID',
+                              style: { flex: '2 1 320px' },
                               value: (
                                 <ChplLink
                                   href={`#/listing/${item.id}`}
@@ -231,6 +233,7 @@ function ChplDecertifiedProductsSearchView() {
               )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

@@ -20,7 +20,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -170,10 +170,10 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
         && (
           <>
             <ChplSearchResultControls
@@ -203,6 +203,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                           [
                             {
                               label: 'Developer',
+                              style: { flex: '2 1 320px' },
                               value: (
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
@@ -229,6 +230,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                           [
                             {
                               label: 'CHPL ID',
+                              style: { flex: '2 1 320px' },
                               value: (
                                 <ChplLink
                                   href={`#/listing/${item.id}`}
@@ -257,10 +259,12 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                           [
                             {
                               label: 'API Documentation',
+                              style: { flex: '2 1 320px', fontSize: '0.85em' },
                               value: item.apiDocumentationNode,
                             },
                             {
                               label: 'Service Base URL List',
+                              style: { fontSize: '0.85em' },
                               value: item.serviceBaseUrlListValue
                                 ? (
                                   <dl>
@@ -282,6 +286,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
                             },
                             {
                               label: 'Mandatory Disclosures URL',
+                              style: { fontSize: '0.85em' },
                               value: item.mandatoryDisclosures
                                 ? (
                                   <ChplLink
@@ -314,6 +319,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
               )}
           </>
         )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );
