@@ -410,6 +410,7 @@ function ChplCmsDisplay({ onClose }) {
                 onClick={copyToClipboard}
                 color="primary"
                 size="small"
+                aria-label="Copy CMS EHR Certification ID"
               >
                 <FileCopyOutlinedIcon />
               </IconButton>
