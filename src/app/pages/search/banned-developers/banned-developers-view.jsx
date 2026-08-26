@@ -18,7 +18,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -122,17 +122,18 @@ function ChplBannedDevelopersSearchView() {
                 inline
               />
               .
-          </Typography>
+            </Typography>
           </>
         )}
       />
       <ChplPageBody>
         <ChplFilterSearchBar
           placeholder="Search by Developer Name or Code..."
+          sticky
         />
-        <ChplFilterChips />
-        {isLoading && (<ChplLoadingCards />)}
-        {!isLoading
+        <ChplFilterLayout>
+          {isLoading && (<ChplLoadingCards />)}
+          {!isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -172,6 +173,7 @@ function ChplBannedDevelopersSearchView() {
                             [
                               {
                                 label: 'Decertification Date',
+                                style: { flex: '2 1 320px' },
                                 value: item.decertificationDate,
                               },
                               {
@@ -195,6 +197,7 @@ function ChplBannedDevelopersSearchView() {
                 )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

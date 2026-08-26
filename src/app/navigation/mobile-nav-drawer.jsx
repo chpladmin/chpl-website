@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -124,6 +125,22 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     setMobileMenuOpen(false);
   };
 
+  const getDownloadIcon = (item) => {
+    if (!item.showDownloadIcon) {
+      return undefined;
+    }
+    if (item.primaryIcon) {
+      return <CloudDownloadIcon color="primary" />;
+    }
+    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
+  };
+
+  const getItemAnalytics = (item) => ({
+    ...analytics,
+    event: item.analyticsEvent,
+    category: item.analyticsCategory ?? 'Navigation',
+  });
+
   const handleHomeClick = () => {
     onHomeClick();
     closeMobileMenu();
@@ -146,12 +163,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
       [section]: !previous[section],
     }));
   };
-
-  const getItemAnalytics = (item) => ({
-    ...analytics,
-    event: item.analyticsEvent,
-    category: item.analyticsCategory ?? 'Navigation',
-  });
 
   const widgetSections = [{
     key: 'cms',
@@ -240,6 +251,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
                         analytics={getItemAnalytics(item)}
                         external={false}
                         router={item.router}
+                        icon={getDownloadIcon(item)}
                       />
                     </ListItem>
                   ))}

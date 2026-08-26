@@ -4,7 +4,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { node, number } from 'prop-types';
+import { bool, node, number, string } from 'prop-types';
 
 import { palette, theme } from 'themes';
 
@@ -14,14 +14,30 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '4px',
     marginBottom: '16px',
+    position: ({ sticky }) => (sticky ? 'sticky' : 'static'),
+    top: '190px',
+    zIndex: 2,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     padding: '16px 32px',
     backgroundColor: palette.white,
     borderRadius: '0px 0px 8px 8px',
-    borderTop: `1px solid ${palette.greyBorder}`,
-    boxShadow: `0px 2px 4px -1px ${theme.palette.grey[300]}, 0px 4px 5px 0px ${theme.palette.grey[300]}, 0px 1px 10px 0px ${theme.palette.grey[300]}`,
+    borderRight: `1px solid ${palette.divider}`,
+    borderBottom: `1px solid ${palette.divider}`,
+    borderLeft: `1px solid ${palette.divider}`,
+    boxShadow: `0px 6px 8px -4px ${theme.palette.grey[300]}`,
+    '&::before': {
+      content: ({ sticky }) => (sticky ? '""' : 'none'),
+      position: 'absolute',
+      left: '-1px',
+      right: '-1px',
+      bottom: '100%',
+      height: '90px',
+      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
+      pointerEvents: 'none',
+      zIndex: 1,
+    },
     [theme.breakpoints.down('sm')]: {
       gap: '12px',
       padding: '16px',
@@ -41,13 +57,13 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '2px',
+    flexWrap: ({ wrapActions }) => (wrapActions ? 'wrap' : 'nowrap'),
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap',
       gap: '8px',
       width: '100%',
     },
     [theme.breakpoints.up('md')]: {
-      flexWrap: 'nowrap',
       gap: '2px',
       width: 'auto',
       '& > *': {
@@ -63,8 +79,11 @@ function ChplSearchResultControls({
   pageStart,
   pageEnd,
   children = undefined,
+  fadeBackground = palette.backgroundPage,
+  sticky = true,
+  wrapActions = false,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ fadeBackground, sticky, wrapActions });
 
   return (
     <div className={classes.container}>
@@ -100,4 +119,7 @@ ChplSearchResultControls.propTypes = {
   pageStart: number.isRequired,
   pageEnd: number.isRequired,
   children: node,
+  fadeBackground: string,
+  sticky: bool,
+  wrapActions: bool,
 };
