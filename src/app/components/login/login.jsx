@@ -13,15 +13,16 @@ import { setLoginState } from 'components/login/userInfo.slice';
 
 function ChplLogin({
   dispatch = () => {},
+  state = 'SIGNIN',
   uuid = '',
 }) {
-  const loginState = useSelector((state) => state.userInfo.loginState);
+  const loginState = useSelector((s) => s.userInfo.loginState);
   const reduxDispatch = useDispatch();
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && uuid.length > 0) {
       reduxDispatch(setLoginState('RESETFORGOTTENPASSWORD'));
     }
   }, [uuid]);
@@ -47,11 +48,9 @@ function ChplLogin({
     }
   };
 
-  switch (loginState) {
+  switch (state) { // use loginState once redux is working
     case 'CHANGEPASSWORD':
-      return (
-        <ChplChangePassword />
-      );
+      return <ChplChangePassword />;
     case 'FORCECHANGEPASSWORD':
       return (
         <ChplForceChangePassword
@@ -61,19 +60,11 @@ function ChplLogin({
         />
       );
     case 'FORGOTPASSWORD':
-      return (
-        <ChplForgotPassword
-          userName={userName}
-        />
-      );
+      return <ChplForgotPassword userName={userName} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn />;
     case 'RESETFORGOTTENPASSWORD':
-      return (
-        <ChplResetForgottenPassword
-          uuid={uuid}
-        />
-      );
+      return <ChplResetForgottenPassword uuid={uuid} />;
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
       // no default
@@ -84,5 +75,6 @@ export default ChplLogin;
 
 ChplLogin.propTypes = {
   dispatch: func,
+  state: string,
   uuid: string,
 };
