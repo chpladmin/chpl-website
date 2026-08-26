@@ -1,60 +1,84 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  Card,
+  CardContent,
   Chip,
   FormControlLabel,
   Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
 import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
-import theme from 'themes/theme';
 import { palette } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   filterContainer: {
     display: 'flex',
-    padding: '16px 32px',
-    marginTop: '-4px', 
-    position: 'relative',
-    zIndex: 1,
-    backgroundColor: palette.white,
-    borderBottom: `1px solid ${palette.greyBorder}`,
-    flexWrap: 'wrap',
-    flexFlow: 'column',
+    flexDirection: 'column',
     alignItems: 'flex-start',
-    [theme.breakpoints.up('sm')]: {
-      flexWrap: 'wrap',
-    },
+    gap: '16px',
+    width: '100%',
   },
   filterSelectedContainer: {
     display: 'flex',
+    flexDirection: 'column',
     gap: '4px',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'flex-start',
+    width: '100%',
+  },
+  filterSelectedContainerHorizontal: {
+    flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
   filterChipsContainer: {
     display: 'flex',
-    gap: '8px',
+    gap: '16px',
     alignContent: 'flex-start',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  filterGroupTitleHorizontal: {
+    width: '100%',
   },
   chip: {
     border: `1px solid ${palette.primary}`,
     backgroundColor: palette.white,
+    maxWidth: '100%',
+    minHeight: '24px',
+    height: 'auto',
+    '& .MuiChip-label': {
+      whiteSpace: 'normal',
+      wordBreak: 'break-word',
+    },
   },
-  chipAvatar: {
-    backgroundColor: 'transparent !important',
+  chipDeleteIcon: {
+    order: -2,
+    marginLeft: '5px',
+    marginRight: '-4px',
   },
-}));
+  chipLabel: {
+    alignItems: 'center',
+    display: 'inline-flex',
+    gap: '4px',
+  },
+  card: {
+    width: '100%',
+    maxHeight: '50vh',
+    overflowY: 'auto',
+  },
+});
+
+const ConditionalWrapper = ({ condition, wrapper, children }) => (condition ? wrapper(children) : children);
 
 const truncate = (str, n, useWordBoundary) => {
   if (str.length <= n) { return str; }
@@ -64,7 +88,7 @@ const truncate = (str, n, useWordBoundary) => {
 
 const maxLengthForChip = 40;
 
-function ChplFilterChips() {
+function ChplFilterChips({ horizontal = false }) {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
@@ -127,95 +151,122 @@ function ChplFilterChips() {
     filterContext.dispatch('toggleShowAll', f);
   };
 
+  if (filters.length === 0) { return null; }
+
+  const getChipLabel = (f, labelText, iconName) => {
+    if (f.key !== 'certificationStatuses') { return labelText; }
+    return (
+      <span className={classes.chipLabel}>
+        { labelText }
+        { getStatusIcon({ name: iconName }) }
+      </span>
+    );
+  };
+
   return (
     <span className={classes.filterContainer} id="filter-chips">
-      <Typography variant="subtitle2">Filters Applied:</Typography>
-      <div className={classes.filterChipsContainer}>
-        { filters.map((f) => (
-          <span
-            className={classes.filterSelectedContainer}
-            key={f.key}
-          >
-            <Typography variant="body1">
-              <strong>
-                {f.getFilterDisplay(f)}
-              </strong>
-            </Typography>
-            { f.operatorKey
-              && (
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      id={`${f.key}-operator-chips-toggle`}
-                      color="primary"
-                      checked={f.operator === 'and'}
-                      onChange={() => toggleOperator(f)}
-                    />
-                  )}
-                  label={f.operator === 'and' ? 'All' : 'Any'}
-                />
-              )}
-            { f.developersListingsCriteriaOptionKey
-              && (
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      id={`${f.key}-developers-listings-criteria-option-chips-toggle`}
-                      color="primary"
-                      checked={f.developersListingsCriteriaOption === 'all'}
-                      onChange={() => toggleDevelopersListingsCriteriaOption(f)}
-                    />
-                  )}
-                  label={f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}
-                />
-              )}
-            {f.values
-              .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
-              .map((v) => (
-                <React.Fragment key={v.value}>
-                  { f.getValueDisplay(v).length > maxLengthForChip
-                    ? (
-                      <ChplTooltip
-                        title={f.getLongValueDisplay(v)}
-                      >
-                        <Chip
-                          avatar={f.key === 'certificationStatuses' ? getStatusIcon({ name: f.getValueDisplay(v) }) : undefined}
-                          label={truncate(f.getValueDisplay(v), maxLengthForChip, true)}
-                          onDelete={() => removeChip(f, v)}
-                          variant="outlined"
-                          disabled={f.required && f.values.length === 1}
-                          classes={{ avatar: classes.chipAvatar, root: classes.chip }}
-                        />
-                      </ChplTooltip>
-                    ) : (
-                      <Chip
-                        avatar={f.key === 'certificationStatuses' ? getStatusIcon({ name: f.getValueDisplay(v) }) : undefined}
-                        label={f.getValueDisplay(v)}
-                        onDelete={() => removeChip(f, v)}
-                        variant="outlined"
-                        disabled={f.required && f.values.length === 1}
-                        classes={{ avatar: classes.chipAvatar, root: classes.chip }}
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography variant="subtitle2">Filters Applied:</Typography>
+          <div className={classes.filterChipsContainer}>
+            { filters.map((f) => (
+              <span
+                className={horizontal ? `${classes.filterSelectedContainer} ${classes.filterSelectedContainerHorizontal}` : classes.filterSelectedContainer}
+                key={f.key}
+              >
+                <Typography variant="body1" className={horizontal ? classes.filterGroupTitleHorizontal : undefined}>
+                  <strong>
+                    {f.getFilterDisplay(f)}
+                  </strong>
+                </Typography>
+                { f.operatorKey
+                && (
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        id={`${f.key}-operator-chips-toggle`}
+                        color="primary"
+                        checked={f.operator === 'and'}
+                        onChange={() => toggleOperator(f)}
                       />
                     )}
-                </React.Fragment>
-              ))}
-            { f.values.length > DISPLAY_MAX
-              && (
-                <Button
-                  onClick={() => toggleShowAll(f)}
-                  color="primary"
-                  variant="text"
-                >
-                  { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
-                </Button>
-              )}
-          </span>
-        ))}
-      </div>
+                    label={f.operator === 'and' ? 'All' : 'Any'}
+                  />
+                )}
+                { f.developersListingsCriteriaOptionKey
+                && (
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        id={`${f.key}-developers-listings-criteria-option-chips-toggle`}
+                        color="primary"
+                        checked={f.developersListingsCriteriaOption === 'all'}
+                        onChange={() => toggleDevelopersListingsCriteriaOption(f)}
+                      />
+                    )}
+                    label={f.developersListingsCriteriaOption === 'active' ? 'Active Listings' : 'All Listings'}
+                  />
+                )}
+                {f.values
+                  .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
+                  .map((v) => (
+                    <React.Fragment key={v.value}>
+                      { f.getValueDisplay(v).length > maxLengthForChip
+                        ? (
+                          <ConditionalWrapper
+                            condition={f.key !== 'certificationStatuses'}
+                            wrapper={(children) => (
+                              <ChplTooltip title={f.getLongValueDisplay(v)}>
+                                {children}
+                              </ChplTooltip>
+                            )}
+                          >
+                            <Chip
+                              label={getChipLabel(
+                                f,
+                                f.key === 'certificationStatuses'
+                                  ? truncate(f.getValueDisplay(v), maxLengthForChip, true).replace(/\.\.\.$/, '')
+                                  : truncate(f.getValueDisplay(v), maxLengthForChip, true),
+                                f.getValueDisplay(v),
+                              )}
+                              onDelete={() => removeChip(f, v)}
+                              variant="outlined"
+                              disabled={f.required && f.values.length === 1}
+                              classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
+                            />
+                          </ConditionalWrapper>
+                        ) : (
+                          <Chip
+                            label={getChipLabel(f, f.getValueDisplay(v), f.getValueDisplay(v))}
+                            onDelete={() => removeChip(f, v)}
+                            variant="outlined"
+                            disabled={f.required && f.values.length === 1}
+                            classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
+                          />
+                        )}
+                    </React.Fragment>
+                  ))}
+                { f.values.length > DISPLAY_MAX
+                && (
+                  <Button
+                    onClick={() => toggleShowAll(f)}
+                    color="primary"
+                    variant="text"
+                  >
+                    { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
+                  </Button>
+                )}
+              </span>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </span>
   );
 }
 
 export default ChplFilterChips;
 
-ChplFilterChips.propTypes = {};
+ChplFilterChips.propTypes = {
+  horizontal: bool,
+};

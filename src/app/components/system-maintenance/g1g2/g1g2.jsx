@@ -76,7 +76,7 @@ function ChplG1g2() { // to delete when hti520270101IsOn is turned on
       filters={filters}
       storageKey="storageKey-g1g2Management"
     >
-      <Card>
+      <Card style={{ overflow: 'visible' }}>
         <CardHeader
           style={{ paddingLeft: '16px' }}
           title={(
@@ -86,7 +86,7 @@ function ChplG1g2() { // to delete when hti520270101IsOn is turned on
             </>
 )}
         />
-        <CardContent>
+        <CardContent style={{ overflow: 'visible' }}>
           <ChplG1g2View
             g1g2={g1g2}
           />

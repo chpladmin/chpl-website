@@ -3,6 +3,7 @@ import ChplFilterPanel from './filter-panel';
 import ChplFilterQuickFilters from './filter-quick-filters';
 import ChplFilterSearchBar from './filter-search-bar';
 import ChplFilterSearchTerm from './filter-search-term';
+import ChplFilterLayout from './filter-layout';
 import {
   FilterProvider,
   defaultFilter,
@@ -18,6 +19,7 @@ export {
   ChplFilterQuickFilters,
   ChplFilterSearchBar,
   ChplFilterSearchTerm,
+  ChplFilterLayout,
   FilterProvider,
   defaultFilter,
   getDateDisplay,
