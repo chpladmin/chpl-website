@@ -85,10 +85,13 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
                 {
                   label: 'Email',
                   value: key.email,
+                  flex: 1,
+                 style: { flex: '2 1 320px' },
                 },
                 {
                   label: 'API Key',
                   value: key.key,
+                  style: { flex: '2 1 320px' },
                 },
                 {
                   label: 'Last Used',
