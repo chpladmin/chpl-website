@@ -376,7 +376,7 @@ function ChplCmsDisplay({ onClose }) {
           <ChplCmsEmptyStateIcon />
           <Typography variant="h6"><strong>No products selected.</strong></Typography>
           <Box className={classes.userNote}>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="textPrimary">
               Note: the selected products must meet 100% of the Base Criteria.
             </Typography>
           </Box>
