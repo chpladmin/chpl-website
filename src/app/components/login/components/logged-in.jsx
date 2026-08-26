@@ -8,7 +8,9 @@ import {
 } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { setLoginState } from 'components/login/userInfo.slice';
 import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
@@ -26,7 +28,9 @@ const useStyles = makeStyles({
 });
 
 function ChplLoggedIn() {
-  const { logout, setLoginWidgetState, user } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userInfo.user);
+  const { logout } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const classes = useStyles();
 
@@ -37,7 +41,7 @@ function ChplLoggedIn() {
       event: 'Change Password',
       category: 'Authentication',
     });
-    setLoginWidgetState('CHANGEPASSWORD');
+    dispatch(setLoginState('CHANGEPASSWORD'));
   };
 
   return (

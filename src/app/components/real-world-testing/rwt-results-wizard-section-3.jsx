@@ -10,6 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import { useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import {
   bool,
@@ -19,7 +20,7 @@ import {
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import UrlCheckerContext from 'components/url-checker/url-checker-context';
 import { eventTrack } from 'services/analytics.service';
-import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -61,9 +62,9 @@ const useStyles = makeStyles({
 });
 
 function ChplRwtResultsWizardSection3({ isSubmitting = false, dispatch }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
-  const { user } = useContext(UserContext);
   const { url, setUrl } = useContext(UrlCheckerContext);
   const classes = useStyles();
 

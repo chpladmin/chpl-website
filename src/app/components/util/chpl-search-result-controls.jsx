@@ -59,13 +59,13 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '2px',
+    flexWrap: ({ wrapActions }) => (wrapActions ? 'wrap' : 'nowrap'),
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap',
       gap: '8px',
       width: '100%',
     },
     [theme.breakpoints.up('md')]: {
-      flexWrap: 'nowrap',
       gap: '2px',
       width: 'auto',
       '& > *': {
@@ -83,8 +83,9 @@ function ChplSearchResultControls({
   children = undefined,
   fadeBackground = palette.backgroundPage,
   sticky = true,
+  wrapActions = false,
 }) {
-  const classes = useStyles({ fadeBackground, sticky });
+  const classes = useStyles({ fadeBackground, sticky, wrapActions });
 
   return (
     <div className={classes.container}>
@@ -122,4 +123,5 @@ ChplSearchResultControls.propTypes = {
   children: node,
   fadeBackground: string,
   sticky: bool,
+  wrapActions: bool,
 };

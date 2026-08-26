@@ -1,10 +1,9 @@
 export default class NetworkService {
-  constructor($http, $q, API) {
+  constructor($http, $q) {
     'ngInject';
 
     this.$http = $http;
     this.$q = $q;
-    this.API = API;
   }
 
   logout(logoutRequest) {
@@ -16,7 +15,7 @@ export default class NetworkService {
    */
 
   apiPOST(endpoint, postObject) {
-    return this.$http.post(this.API + endpoint, postObject)
+    return this.$http.post(`/rest${endpoint}`, postObject)
       .then((response) => {
         if (angular.isObject(response.data)) {
           return response.data;

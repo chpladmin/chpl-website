@@ -3,6 +3,7 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import { useFetchListings } from 'api/search';
 import { useFetchSvaps } from 'api/standards';
@@ -20,12 +21,11 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
@@ -71,9 +71,9 @@ const parseSvap = ({ svaps }, data) => {
 };
 
 function ChplSvapSearchView() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-svapView';
-  const API = getAngularService('API');
-  const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const [downloadLink, setDownloadLink] = useState('');
@@ -123,8 +123,8 @@ function ChplSvapSearchView() {
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/svap/download?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
+    setDownloadLink(`${API}/svap/download?api_key=${apiKey}`);
+  }, [API]);
 
   const handleSort = (property, orderDirection) => {
     eventTrack({
@@ -232,10 +232,10 @@ function ChplSvapSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        {isLoading && (<ChplLoadingCards />)}
-        {!isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          {isLoading && (<ChplLoadingCards />)}
+          {!isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -270,6 +270,7 @@ function ChplSvapSearchView() {
                             [
                               {
                                 label: 'Developer',
+                                style: { flex: '2 1 320px' },
                                 value: (
                                   <ChplLink
                                     href={`#/organizations/developers/${item.developer.id}`}
@@ -296,6 +297,7 @@ function ChplSvapSearchView() {
                             [
                               {
                                 label: 'CHPL ID',
+                                style: { flex: '2 1 320px' },
                                 value: (
                                   <ChplLink
                                     href={`#/listing/${item.id}`}
@@ -325,9 +327,11 @@ function ChplSvapSearchView() {
                               {
                                 label: 'SVAP Information',
                                 value: item.svapNode,
+                                style: { flex: '1 1 100%' },
                               },
                               {
                                 label: 'SVAP Notice',
+                                style: { flex: '1 1 100%' },
                                 value: item.svapNoticeUrl
                                   ? (
                                     <ChplLink
@@ -360,6 +364,7 @@ function ChplSvapSearchView() {
                 )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

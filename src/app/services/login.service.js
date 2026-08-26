@@ -6,9 +6,8 @@ import { clearAuthTokens } from 'axios-jwt';
 
   /** @ngInclude */
   /** @ngInject */
-  function authService($injector, $log, $rootScope, $window, API_KEY) {
+  function authService($injector, $log, $rootScope) {
     const service = {
-      getApiKey,
       getCurrentUser,
       getToken,
       hasAnyRole,
@@ -20,10 +19,6 @@ import { clearAuthTokens } from 'axios-jwt';
     return service;
 
     /// /////////////////////////////////////////////////////////////////////
-
-    function getApiKey() {
-      return API_KEY;
-    }
 
     function getCurrentUser() {
       return JSON.parse(localStorage.getItem('ngStorage-currentUser'));

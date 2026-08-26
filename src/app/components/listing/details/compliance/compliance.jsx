@@ -4,6 +4,7 @@ import {
   Button,
 } from '@material-ui/core';
 import PlayCircleFilledWhiteOutlinedIcon from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
+import { useSelector } from 'react-redux';
 import { arrayOf, bool, func } from 'prop-types';
 
 import ChplDirectReviews from './direct-reviews';
@@ -23,8 +24,9 @@ function ChplCompliance({
   initialSurveillance,
   dispatch = () => {},
 }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { listing } = useContext(ListingContext);
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [surveillance, setSurveillance] = useState([]);
   const [icsSurveillance, setIcsSurveillance] = useState([]);
 

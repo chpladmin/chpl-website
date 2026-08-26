@@ -10,10 +10,16 @@ import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   container: {
-    padding: theme.spacing(8),
+    padding: theme.spacing(4),
     flexShrink: 0,
     backgroundColor: palette.backgroundPage,
     minHeight: 'calc(100vh - 150px)',
+    backgroundColor: palette.backgroundPage,
+    backgroundImage: `radial-gradient(${'#d6d4cf'} 0.5px, transparent 0.25px)`,
+    backgroundSize: '18px 18px',
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(8),
+    },
   },
 });
 

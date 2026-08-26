@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
+import { useSelector } from 'react-redux';
 import { arrayOf, bool, func } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
@@ -131,9 +132,10 @@ function ChplSurveillance({
   ics = false,
   dispatch = () => {},
 }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
   const { listing } = useContext(ListingContext);
-  const { hasAnyRole, user } = useContext(UserContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const classes = useStyles();

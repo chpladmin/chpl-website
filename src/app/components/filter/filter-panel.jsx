@@ -12,6 +12,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import { number } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
@@ -31,8 +32,14 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     rowGap: '16px',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
     },
+  },
+  filterPanelFooter: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: '8px 16px',
+    borderTop: `1px solid ${palette.primaryBorder}`,
   },
   filterPanelPrimary: {
     padding: '16px',
@@ -50,15 +57,12 @@ const useStyles = makeStyles({
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
+    gridTemplateColumns: ({ filterGridMinColWidth }) => `repeat(auto-fit, minmax(${filterGridMinColWidth}px, 1fr))`,
     justifyItems: 'start',
     alignItems: 'start',
     gap: '16px',
     padding: '0 8px',
     marginTop: '16px',
-    [theme.breakpoints.up('xl')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(275px, 1fr))',
-    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -81,6 +85,15 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '8px',
+    flexWrap: 'nowrap',
+  },
+  clearResetTitle: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    minWidth: 0,
+    flex: '1 1 auto',
   },
   searchInput: {
     flexGrow: 1,
@@ -103,10 +116,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterPanel() {
-  const classes = useStyles();
+function ChplFilterPanel({ filterGridMinColWidth }) {
+  const classes = useStyles({ filterGridMinColWidth });
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
+  const [panelWidth, setPanelWidth] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCategoryKey, setActiveCategoryKey] = useState('');
   const [filters, setFilters] = useState([]);
@@ -134,6 +148,7 @@ function ChplFilterPanel() {
       });
     }
     setAnchor(e.currentTarget.closest('[data-filter-search-bar="true"]') || e.currentTarget);
+    setPanelWidth((e.currentTarget.closest('[data-filter-search-bar="true"]') || e.currentTarget).getBoundingClientRect().width);
     setOpen(true);
   };
 
@@ -145,7 +160,7 @@ function ChplFilterPanel() {
       });
     }
     setOpen(false);
-    setActiveCategoryKey('');
+    setPanelWidth(null);
   };
 
   const handleAction = (action) => {
@@ -218,8 +233,6 @@ function ChplFilterPanel() {
     filterContext.dispatch('toggleDevelopersListingsCriteriaOption', f);
   };
 
-  const panelWidth = anchor?.closest?.('[data-filter-search-bar="true"]')?.getBoundingClientRect?.().width;
-
   return (
     <>
       <Button
@@ -228,7 +241,7 @@ function ChplFilterPanel() {
         id="filter-panel-toggle"
         onClick={handleClick}
       >
-        Advanced Search
+        Filters
         {' '}
         <FilterListIcon className={classes.iconSpacing} />
       </Button>
@@ -237,18 +250,18 @@ function ChplFilterPanel() {
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
-        TransitionProps={{ onExited: () => setAnchor(null) }}
+        TransitionProps={{ onExited: () => { setAnchor(null); setActiveCategoryKey(''); } }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center',
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'right',
         }}
         PaperProps={{
           style: {
-            width: panelWidth ? `${panelWidth}px` : 'calc(100vw - 32px)',
+            width: panelWidth ? `${panelWidth - 284}px` : 'calc(100vw - 316px)',
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
@@ -296,6 +309,7 @@ function ChplFilterPanel() {
                         key={f.key}
                         color={f === activeCategory ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
+                        style={{ whiteSpace: f.wrapText ? 'normal' : 'nowrap' }}
                         variant="outlined"
                         onClick={() => handleCategoryToggle(f)}
                       >
@@ -327,7 +341,7 @@ function ChplFilterPanel() {
                     className={classes.clearResetContainer}
                     disableGutters
                   >
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" className={classes.clearResetTitle}>
                       { activeCategory.getFilterDisplay(activeCategory) }
                     </Typography>
                     <div className={classes.secondaryPanelOptions}>
@@ -405,6 +419,16 @@ function ChplFilterPanel() {
             )}
           </div>
         </div>
+        <div className={classes.filterPanelFooter}>
+          <Button
+            color="primary"
+            variant="outlined"
+            id="filter-panel-close"
+            onClick={handleClose}
+          >
+            Close
+          </Button>
+        </div>
       </Popover>
     </>
   );
@@ -413,4 +437,5 @@ function ChplFilterPanel() {
 export default ChplFilterPanel;
 
 ChplFilterPanel.propTypes = {
+  filterGridMinColWidth: number.isRequired,
 };

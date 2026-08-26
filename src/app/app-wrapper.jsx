@@ -2,8 +2,11 @@
 
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core';
-import { bool, node } from 'prop-types';
 import { CookiesProvider } from 'react-cookie';
+import { Provider } from 'react-redux';
+import { bool, node } from 'prop-types';
+
+import store from './store';
 
 import {
   AnalyticsProvider,
@@ -21,36 +24,38 @@ import ChplAppLayout from './app-layout';
 
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
-    <ThemeProvider theme={theme}>
-      <SnackbarWrapper>
-        <ApiWrapper showQueryTools={showQueryTools}>
-          <UserWrapper>
-            <FlagWrapper>
-              <CompareWrapper>
-                <CmsWrapper>
-                  <BrowserWrapper>
-                    <AnalyticsProvider>
-                      <HashProvider>
-                        <CookiesProvider defaultSetOptions={{
-                          path: '/',
-                          expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
-                          domain: '.healthit.gov',
-                        }}
-                        >
-                          <ChplAppLayout>
-                            {children}
-                          </ChplAppLayout>
-                        </CookiesProvider>
-                      </HashProvider>
-                    </AnalyticsProvider>
-                  </BrowserWrapper>
-                </CmsWrapper>
-              </CompareWrapper>
-            </FlagWrapper>
-          </UserWrapper>
-        </ApiWrapper>
-      </SnackbarWrapper>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <SnackbarWrapper>
+          <ApiWrapper showQueryTools={showQueryTools}>
+            <UserWrapper>
+              <FlagWrapper>
+                <CompareWrapper>
+                  <CmsWrapper>
+                    <BrowserWrapper>
+                      <AnalyticsProvider>
+                        <HashProvider>
+                          <CookiesProvider defaultSetOptions={{
+                            path: '/',
+                            expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
+                            domain: '.healthit.gov',
+                          }}
+                          >
+                            <ChplAppLayout>
+                              {children}
+                            </ChplAppLayout>
+                          </CookiesProvider>
+                        </HashProvider>
+                      </AnalyticsProvider>
+                    </BrowserWrapper>
+                  </CmsWrapper>
+                </CompareWrapper>
+              </FlagWrapper>
+            </UserWrapper>
+          </ApiWrapper>
+        </SnackbarWrapper>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

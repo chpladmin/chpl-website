@@ -19,7 +19,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -139,10 +139,10 @@ function ChplCorrectiveActionSearchView() {
         { directReviewsAvailable
         && (
           <>
-            <ChplFilterSearchBar />
-            <ChplFilterChips />
-            { isLoading && (<ChplLoadingCards />)}
-            { !isLoading
+            <ChplFilterSearchBar sticky />
+            <ChplFilterLayout>
+              { isLoading && (<ChplLoadingCards />)}
+              { !isLoading
               && (
                 <>
                   <ChplSearchResultControls
@@ -172,6 +172,7 @@ function ChplCorrectiveActionSearchView() {
                                 [
                                   {
                                     label: 'Developer',
+                                    style: { flex: '2 1 320px' },
                                     value: (
                                       <ChplLink
                                         href={`#/organizations/developers/${item.developer.id}`}
@@ -198,6 +199,7 @@ function ChplCorrectiveActionSearchView() {
                                 [
                                   {
                                     label: 'CHPL ID',
+                                    style: { flex: '2 1 320px' },
                                     value: (
                                       <ChplLink
                                         href={`#/listing/${item.id}`}
@@ -226,18 +228,22 @@ function ChplCorrectiveActionSearchView() {
                                 [
                                   {
                                     label: '# Open Surveillance NCs',
+                                    style: { flex: '1 1 0' },
                                     value: item.openSurveillanceNonConformityCount,
                                   },
                                   {
                                     label: '# Closed Surveillance NCs',
+                                    style: { flex: '1 1 0' },
                                     value: item.closedSurveillanceNonConformityCount,
                                   },
                                   {
                                     label: '# Open Direct Review NCs',
+                                    style: { flex: '1 1 0' },
                                     value: item.openDirectReviewNonConformityCount,
                                   },
                                   {
                                     label: '# Closed Direct Review NCs',
+                                    style: { flex: '1 1 0' },
                                     value: item.closedDirectReviewNonConformityCount,
                                   },
                                 ],
@@ -258,6 +264,7 @@ function ChplCorrectiveActionSearchView() {
                     )}
                 </>
               )}
+            </ChplFilterLayout>
           </>
         )}
       </ChplPageBody>

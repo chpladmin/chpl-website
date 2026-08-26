@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -8,6 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -16,9 +17,10 @@ import { useSnackbar } from 'notistack';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import { usePostSetForgottenPassword } from 'api/auth';
+import { setLoginState } from 'components/login/userInfo.slice';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const zxcvbn = require('zxcvbn');
@@ -53,8 +55,8 @@ const validationSchema = yup.object({
 });
 
 function ChplResetForgottenPassword({ uuid }) {
+  const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
-  const { setLoginWidgetState } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostSetForgottenPassword();
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -82,7 +84,7 @@ function ChplResetForgottenPassword({ uuid }) {
           category: 'Authentication',
         });
         enqueueSnackbar(body, { variant: 'success' });
-        setLoginWidgetState('SIGNIN');
+        dispatch(setLoginState('SIGNIN'));
       },
       onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';

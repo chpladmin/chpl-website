@@ -19,7 +19,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -313,10 +313,10 @@ function ChplRealWorldTestingSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -353,6 +353,7 @@ function ChplRealWorldTestingSearchView() {
               )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

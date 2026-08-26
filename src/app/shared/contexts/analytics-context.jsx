@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from 'react';
-
-import UserContext from './user-context';
+import { useSelector } from 'react-redux';
 
 const AnalyticsContext = createContext({
   analytics: {},
@@ -8,7 +7,7 @@ const AnalyticsContext = createContext({
 AnalyticsContext.displayName = 'analytics-context';
 
 function AnalyticsProvider(props) {
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.userInfo.user);
 
   const data = {
     analytics: {

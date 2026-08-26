@@ -35,11 +35,11 @@ const getCertificationStatusValueEntry = ({ filter, handleFilterToggle }) => fil
           gap: '4px',
         }}
       >
-        {getStatusIcon({ name: filter.getLongValueDisplay(value) })}
-      </Box>
       <ListItemText style={{ display: 'flex', flex: 'none', flexDirection: 'row' }} id={labelId}>
         {filter.getLongValueDisplay(value)}
       </ListItemText>
+       {getStatusIcon({ name: filter.getLongValueDisplay(value) })}
+      </Box>
     </ListItem>
   );
 });

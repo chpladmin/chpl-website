@@ -11,6 +11,7 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
+import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
 import { getAngularService } from 'services/angular-react-helper';
@@ -55,7 +56,8 @@ const useStyles = makeStyles({
 });
 
 function ChplUploadRealWorldTesting() {
-  const API = getAngularService('API');
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
@@ -78,7 +80,7 @@ function ChplUploadRealWorldTesting() {
       url: `${API}/real-world-testing/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
-        'API-Key': authService.getApiKey(),
+        'API-Key': apiKey,
       },
       data: {
         file,
