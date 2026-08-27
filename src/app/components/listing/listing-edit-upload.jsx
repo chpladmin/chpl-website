@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   },
   differenceContainer: {
     position: 'sticky',
-    top: '100px',
+    top: '8px',
     display: 'flex',
     gap: '32px',
     flexDirection: 'column',
@@ -82,7 +82,7 @@ const useStyles = makeStyles({
   },
   headerContainer: {
     position: 'sticky',
-    top: '100px',
+    top: '8px',
     display: 'flex',
     gap: '32px',
     flexDirection: 'column',
