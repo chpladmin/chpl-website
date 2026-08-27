@@ -62,7 +62,6 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     position: 'sticky',
     top: '0px',
-    marginTop: '-16px',
     zIndex: '999',
   },
 });

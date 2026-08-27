@@ -52,8 +52,7 @@ function ChplCmsEmptyStateIcon() {
 function ChplCmsWidgetHelpFooter({ classes }) {
   return (
     <div className={classes.widgetHelpFooter}>
-      <Typography variant="body2" color={palette.greyDark}>
-        For assistance, view the
+      <Typography variant="body2" style={{ color: palette.greyDark }}>
         <br />
         <ChplLink
           href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
@@ -75,8 +74,7 @@ function ChplCmsWidgetHelpFooter({ classes }) {
         .
       </Typography>
       <Divider style={{ width: '32%', float: 'center' }} />
-      <Typography variant="body2" color={palette.greyDark}>
-        To view which products were used to create a specific CMS ID, use the
+      <Typography variant="body2" style={{ color: palette.greyDark }}> were used to create a specific CMS ID, use the
         {' '}
         <ChplLink
           href="#/resources/cms-lookup"

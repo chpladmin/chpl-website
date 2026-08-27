@@ -36,7 +36,7 @@ function ChplCompareEmptyStateIcon() {
 function ChplCompareWidgetHelpFooter({ classes }) {
   return (
     <div className={classes.widgetHelpFooter}>
-      <Typography variant="body2" color={palette.greyDark}>
+      <Typography variant="body2" style={{ color: palette.greyDark }}>
         For assistance, view the
         <br />
         <ChplLink
