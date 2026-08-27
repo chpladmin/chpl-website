@@ -175,7 +175,7 @@ function ChplCriterion({
                 { criterion.criterion.title }
               </Typography>
             </Box>
-              { !criterion.upToDate && !isDisabled
+            { criterion.upToDate === false && !isDisabled
               && (
                 <Box>
                   <ChplTooltip title="Requirement not met">
