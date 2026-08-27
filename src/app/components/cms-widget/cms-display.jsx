@@ -281,7 +281,6 @@ function ChplCmsDisplay({ onClose }) {
     } else {
       setIdAnalysis(data.find((d) => d.year === activeYear));
     }
-
   }, [data, isFetching, isSuccess]);
 
   useEffect(() => {

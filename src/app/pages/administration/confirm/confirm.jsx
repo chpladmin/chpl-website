@@ -304,10 +304,9 @@ function ChplConfirm({ id }) {
       <PendingListingContext.Provider value={pendingListingState}>
         <div className={classes.container}>
           <Container maxWidth="md">
-          <Typography variant="h6">
-            Inspecting Listing: 
-            { pending.chplProductNumber }
-          </Typography>
+            <Typography variant="h6">
+              {`Inspecting Listing: ${pending.chplProductNumber}`}
+            </Typography>
           </Container>
           <ChplConfirmProgress
             value={getProgress(stage)}
