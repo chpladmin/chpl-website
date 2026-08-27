@@ -104,7 +104,7 @@ const useStyles = makeStyles({
     gap: '16px',
     zIndex: 300,
     [theme.breakpoints.up('md')]: {
-      top: '104px',
+      top: '0',
     },
   },
   subscribe: {
