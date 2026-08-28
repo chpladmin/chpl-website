@@ -19,27 +19,104 @@ import {
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CloseIcon from '@material-ui/icons/Close';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import { func, objectOf, string } from 'prop-types';
 
 import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
 import createPdf from './cms-pdf';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
-import { ChplEllipsis, ChplLink } from 'components/util';
+import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
+function ChplCmsEmptyStateIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 64 64" fill="none" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="32" r="30" fill={palette.secondary} />
+      <rect x="18" y="14" width="28" height="36" rx="4" fill={palette.white} stroke={palette.primary} strokeWidth="2" />
+      <line x1="24" y1="24" x2="40" y2="24" stroke={palette.grey} strokeWidth="2" strokeLinecap="round" />
+      <line x1="24" y1="30" x2="40" y2="30" stroke={palette.grey} strokeWidth="2" strokeLinecap="round" />
+      <line x1="24" y1="36" x2="34" y2="36" stroke={palette.grey} strokeWidth="2" strokeLinecap="round" />
+      <circle cx="40" cy="42" r="9" fill={palette.primary} />
+      <path d="M36 42l3 3 6-6" stroke={palette.white} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  );
+}
+
+function ChplCmsWidgetHelpFooter({ classes }) {
+  return (
+    <div className={classes.widgetHelpFooter}>
+      <Typography variant="body2" style={{ color: palette.greyDark }}>
+        For assistance, view the
+        <br />
+        <ChplLink
+          href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+          text="CHPL Public User Guide"
+          analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+          external={false}
+          inline
+        />
+        {' '}
+        or
+        {' '}
+        <ChplLink
+          href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
+          text="Base Criteria"
+          analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+          external={false}
+          inline
+        />
+        .
+      </Typography>
+      <Divider style={{ width: '32%', float: 'center' }} />
+      <Typography variant="body2" style={{ color: palette.greyDark }}>
+        To view which products were used to create a specific CMS ID, use the
+        {' '}
+        <ChplLink
+          href="#/resources/cms-lookup"
+          text="CMS ID Reverse Lookup"
+          analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
+          external={false}
+          router={{ sref: 'resources.cms-lookup' }}
+          inline
+        />
+        .
+      </Typography>
+    </div>
+  );
+}
+
+ChplCmsWidgetHelpFooter.propTypes = {
+  classes: objectOf(string).isRequired,
+};
+
 const useStyles = makeStyles({
   ...utilStyles,
-  emptyStateTitle: {
-    fontWeight: '700 !important',
+  stickyWidgetHeader: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '8px',
+    backgroundColor: palette.white,
+    marginLeft: '-8px',
+    marginRight: '-8px',
+    marginBottom: '16px',
+    minHeight: '52px', // matches compare widget header so empty-state icons align vertically
+    padding: '4px 4px 4px 8px',
+    borderBottom: `1px solid ${palette.divider}`,
   },
   sectionLabelFontWeight800: {
     fontWeight: '800 !important',
+    marginTop: '4px',
   },
   centeredWrappedBodyText: {
     textAlign: 'center',
@@ -52,8 +129,8 @@ const useStyles = makeStyles({
     color: palette.error,
   },
   buttonContainer: {
-    marginTop: '16px',
-    gap: '8px',
+    marginTop: '8px',
+    gap: '6px',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -67,6 +144,31 @@ const useStyles = makeStyles({
     padding: '8px',
     maxWidth: '500px',
     position: 'relative',
+  },
+  mainCardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100%',
+  },
+  widgetHelpFooter: {
+    marginTop: 'auto',
+    minHeight: '130px', // matches compare widget footer height so empty-state icons align vertically
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    gap: '4px',
+    paddingTop: '12px',
+  },
+  emptyStateBody: {
+    flex: '1 1 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    gap: '8px',
+    padding: '16px 8px',
   },
   loadingOverlay: {
     position: 'absolute',
@@ -85,12 +187,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    gap: '4px',
-    marginTop: '16px',
+    gap: '8px',
+    marginTop: '8px',
+    marginBottom: '8px',
   },
   productChips: {
     justifyContent: 'space-between',
-    marginBottom: '8px',
     display: 'flex',
   },
   certCopyContainer: {
@@ -103,13 +205,21 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  userNote: {
+    backgroundColor: palette.secondary,
+    border: `1px solid ${palette.primary}`,
+    padding: '4px',
+    borderRadius: '8px',
+    marginTop: '4px',
+    marginBottom: '4px',
+  },
   yearSelector: {
     width: '100%',
-    padding: '12px 16px',
+    padding: '8px 16px',
     borderRadius: '0px 0px 8px 8px',
     backgroundColor: palette.greyLight,
     marginTop: '-8px',
-    marginBottom: '16px',
+    marginBottom: '8px',
   },
   yearSelectorLayout: {
     flexDirection: 'row',
@@ -137,12 +247,9 @@ const useStyles = makeStyles({
     transform: 'scale(1.5)',
     marginRight: '4px',
   },
-  disclaimerColumnGap8: {
-    gap: '8px',
-  },
 });
 
-function ChplCmsDisplay() {
+function ChplCmsDisplay({ onClose }) {
   const { listings, removeListing, setIsOpen } = useContext(CmsContext);
   const {
     listings: compareListings,
@@ -177,10 +284,10 @@ function ChplCmsDisplay() {
   }, [data, isFetching, isSuccess]);
 
   useEffect(() => {
-    if (pdfIsFetching || !pdfIsSuccess) { return; }
+    if (!isDownloading || pdfIsFetching || !pdfIsSuccess) { return; }
     createPdf(pdfData);
     setIsDownloading(false);
-  }, [pdfData, pdfIsFetching, pdfIsSuccess]);
+  }, [pdfData, pdfIsFetching, pdfIsSuccess, isDownloading]);
 
   const compareAll = () => {
     eventTrack({
@@ -236,69 +343,62 @@ function ChplCmsDisplay() {
 
   if (cmsDisabledIsOn) {
     return (
-      <CardContent>
+      <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
+        <div className={classes.stickyWidgetHeader}>
+          <Typography variant="h2">
+            CMS Certification ID Creator
+          </Typography>
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </div>
         <Typography>
           Access to the CMS ID Creator has been paused. Please check back periodically for updates.
         </Typography>
+        <ChplCmsWidgetHelpFooter classes={classes} />
       </CardContent>
     );
   }
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent className={classes.cardcontentPadding}>
-        <Typography className={classes.emptyStateTitle} variant="h3" gutterBottom>
-          CMS Certification ID Creator
-        </Typography>
-        <Divider />
-        <Typography gutterBottom><strong>No products selected.</strong></Typography>
-        <Divider />
-        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
-          {' '}
-          Note: the selected products must meet 100% of the Base Criteria. For assistance, view the
-          {' '}
-          <ChplLink
-            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-            text="CHPL Public User Guide"
-            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          {' '}
-          or
-          {' '}
-          <ChplLink
-            href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
-            text="Base Criteria"
-            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          .
-        </Typography>
-        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
-          To view which products were used to create a specific CMS ID, use the
-          {' '}
-          <ChplLink
-            href="#/resources/cms-lookup"
-            text="CMS ID Reverse Lookup"
-            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
-            external={false}
-            router={{ sref: 'resources.cms-lookup' }}
-            inline
-          />
-          .
-        </Typography>
+      <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
+        <div className={classes.stickyWidgetHeader}>
+          <Typography variant="h2">
+            CMS Certification ID Creator
+          </Typography>
+          <ChplTooltip placement="bottom" title="Close CMS Certification ID Creator">
+            <IconButton aria-label="Close widget" onClick={onClose} size="small">
+              <CloseIcon />
+            </IconButton>
+          </ChplTooltip>
+        </div>
+        <div className={classes.emptyStateBody}>
+          <ChplCmsEmptyStateIcon />
+          <Typography variant="h6"><strong>No products selected.</strong></Typography>
+          <Box className={classes.userNote}>
+            <Typography variant="body2" color="textPrimary">
+              Note: the selected products must meet 100% of the Base Criteria.
+            </Typography>
+          </Box>
+        </div>
+        <ChplCmsWidgetHelpFooter classes={classes} />
       </CardContent>
     );
   }
 
   return (
-    <CardContent className={classes.cardcontentPadding}>
-      <Typography variant="h2" gutterBottom>
-        CMS Certification ID Creator
-      </Typography>
-      <Divider />
+    <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
+      <div className={classes.stickyWidgetHeader}>
+        <Typography variant="h2">
+          CMS Certification ID Creator
+        </Typography>
+        <ChplTooltip placement="bottom" title="Close CMS Certification ID Creator">
+          <IconButton aria-label="Close widget" onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </ChplTooltip>
+      </div>
       { idAnalysis.ehrCertificationId
         && (
           <>
@@ -309,12 +409,16 @@ function ChplCmsDisplay() {
               <Typography variant="h5" color="primary">
                 { idAnalysis.ehrCertificationId }
               </Typography>
-              <IconButton
-                onClick={copyToClipboard}
-                color="primary"
-              >
-                <FileCopyOutlinedIcon />
-              </IconButton>
+              <ChplTooltip placement="bottom" title="Copy CMS EHR Certification ID">
+                <IconButton
+                  onClick={copyToClipboard}
+                  color="primary"
+                  size="small"
+                  aria-label="Copy CMS EHR Certification ID"
+                >
+                  <FileCopyOutlinedIcon />
+                </IconButton>
+              </ChplTooltip>
             </div>
             <Typography gutterBottom className={classes.preserveWhitespacePreWrapText} variant="body2">
               <span className={classes.errorAsteriskTextColor}>*</span>
@@ -364,19 +468,23 @@ function ChplCmsDisplay() {
       { idAnalysis.products?.length > 0
         && (
           <>
-            <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
+            <Box style={{ marginTop: '8px' }}>
+              <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
+            </Box>
             <ChplCmsDisplayProgressBar
               value={idAnalysis.metPercentages?.criteriaMet}
               year={idAnalysis.year}
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
               && (
-                <Typography>
+              <Box className={classes.userNote}>
+                <Typography variant="body2">
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
                   {' '}
                   must meet 100% of the Base Criteria for the specified year.
                 </Typography>
+              </Box>
               )}
           </>
         )}
@@ -500,46 +608,13 @@ function ChplCmsDisplay() {
           </Button>
         </div>
       </div>
-      <Box mt={6} mb={2} id="cms-widget-disclaimer" display="flex" flexDirection="column" className={classes.disclaimerColumnGap8} alignItems="center">
-        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
-          {' '}
-          For assistance, view the
-          {' '}
-          <ChplLink
-            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-            text="CHPL Public User Guide"
-            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          {' '}
-          or
-          {' '}
-          <ChplLink
-            href="https://www.healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
-            text="Base Criteria"
-            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
-            external={false}
-            inline
-          />
-          .
-        </Typography>
-        <Typography className={classes.centeredWrappedBodyText} variant="body2" color="textSecondary">
-          To view which products were used to create a specific CMS ID, use the
-          {' '}
-          <ChplLink
-            href="#/resources/cms-lookup"
-            text="CMS ID Reverse Lookup"
-            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
-            external={false}
-            router={{ sref: 'resources.cms-lookup' }}
-            inline
-          />
-          .
-        </Typography>
-      </Box>
+      <ChplCmsWidgetHelpFooter classes={classes} />
     </CardContent>
   );
 }
 
 export default ChplCmsDisplay;
+
+ChplCmsDisplay.propTypes = {
+  onClose: func.isRequired,
+};

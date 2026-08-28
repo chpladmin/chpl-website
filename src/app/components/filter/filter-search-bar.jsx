@@ -51,7 +51,7 @@ const useStyles = makeStyles({
   },
   sticky: {
     position: 'sticky',
-    top: '100px',
+    top: '8px',
     zIndex: 3,
   },
   stuck: {
