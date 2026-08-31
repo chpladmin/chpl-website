@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { string } from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import ChplLogin from 'components/login/login';
+import { setLoginState } from 'components/login/userInfo.slice';
 
 const useStyles = makeStyles({
   content: {
@@ -21,8 +23,12 @@ const useStyles = makeStyles({
 });
 
 function ChplForgotPassword({ uuid }) {
-  const [state, setState] = useState('RESETFORGOTTENPASSWORD');
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    dispatch(setLoginState('RESETFORGOTTENPASSWORD'));
+  }, []);
 
   return (
     <div className={classes.fixFooterSpacing}>
@@ -33,8 +39,6 @@ function ChplForgotPassword({ uuid }) {
       </Container>
       <Container maxWidth="xs">
         <ChplLogin
-          setState={setState}
-          state={state}
           uuid={uuid}
         />
       </Container>

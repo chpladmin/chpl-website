@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { func, string } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,16 +15,10 @@ function ChplLogin({
   dispatch = () => {},
   uuid = '',
 }) {
-  const loginState = useSelector((state) => state.userInfo.loginState);
+  const loginState = useSelector((s) => s.userInfo.loginState);
   const reduxDispatch = useDispatch();
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    if (uuid) {
-      reduxDispatch(setLoginState('RESETFORGOTTENPASSWORD'));
-    }
-  }, [uuid]);
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
@@ -49,9 +43,7 @@ function ChplLogin({
 
   switch (loginState) {
     case 'CHANGEPASSWORD':
-      return (
-        <ChplChangePassword />
-      );
+      return <ChplChangePassword />;
     case 'FORCECHANGEPASSWORD':
       return (
         <ChplForceChangePassword
@@ -61,19 +53,11 @@ function ChplLogin({
         />
       );
     case 'FORGOTPASSWORD':
-      return (
-        <ChplForgotPassword
-          userName={userName}
-        />
-      );
+      return <ChplForgotPassword userName={userName} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn />;
     case 'RESETFORGOTTENPASSWORD':
-      return (
-        <ChplResetForgottenPassword
-          uuid={uuid}
-        />
-      );
+      return <ChplResetForgottenPassword uuid={uuid} />;
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
       // no default

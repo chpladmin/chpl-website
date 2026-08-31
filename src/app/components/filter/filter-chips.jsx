@@ -12,8 +12,6 @@ import {
 import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
-
-import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { palette } from 'themes';
@@ -77,16 +75,6 @@ const useStyles = makeStyles({
     overflowY: 'auto',
   },
 });
-
-const ConditionalWrapper = ({ condition, wrapper, children }) => (condition ? wrapper(children) : children);
-
-const truncate = (str, n, useWordBoundary) => {
-  if (str.length <= n) { return str; }
-  const subString = str.slice(0, n - 1);
-  return `${useWordBoundary ? subString.slice(0, subString.lastIndexOf(' ')) : subString}...`;
-};
-
-const maxLengthForChip = 40;
 
 function ChplFilterChips({ horizontal = false }) {
   const [filters, setFilters] = useState([]);
@@ -211,39 +199,13 @@ function ChplFilterChips({ horizontal = false }) {
                   .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
                   .map((v) => (
                     <React.Fragment key={v.value}>
-                      { f.getValueDisplay(v).length > maxLengthForChip
-                        ? (
-                          <ConditionalWrapper
-                            condition={f.key !== 'certificationStatuses'}
-                            wrapper={(children) => (
-                              <ChplTooltip title={f.getLongValueDisplay(v)}>
-                                {children}
-                              </ChplTooltip>
-                            )}
-                          >
-                            <Chip
-                              label={getChipLabel(
-                                f,
-                                f.key === 'certificationStatuses'
-                                  ? truncate(f.getValueDisplay(v), maxLengthForChip, true).replace(/\.\.\.$/, '')
-                                  : truncate(f.getValueDisplay(v), maxLengthForChip, true),
-                                f.getValueDisplay(v),
-                              )}
-                              onDelete={() => removeChip(f, v)}
-                              variant="outlined"
-                              disabled={f.required && f.values.length === 1}
-                              classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
-                            />
-                          </ConditionalWrapper>
-                        ) : (
-                          <Chip
-                            label={getChipLabel(f, f.getValueDisplay(v), f.getValueDisplay(v))}
-                            onDelete={() => removeChip(f, v)}
-                            variant="outlined"
-                            disabled={f.required && f.values.length === 1}
-                            classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
-                          />
-                        )}
+                      <Chip
+                        label={getChipLabel(f, f.getValueDisplay(v), f.getValueDisplay(v))}
+                        onDelete={() => removeChip(f, v)}
+                        variant="outlined"
+                        disabled={f.required && f.values.length === 1}
+                        classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
+                      />
                     </React.Fragment>
                   ))}
                 { f.values.length > DISPLAY_MAX

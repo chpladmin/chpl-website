@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Container,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -302,8 +303,11 @@ function ChplConfirm({ id }) {
     <Container className={classes.fixFooterSpacing} maxWidth="lg">
       <PendingListingContext.Provider value={pendingListingState}>
         <div className={classes.container}>
-          Inspecting Listing
-          { pending.chplProductNumber }
+          <Container maxWidth="md">
+            <Typography variant="h6">
+              {`Inspecting Listing: ${pending.chplProductNumber}`}
+            </Typography>
+          </Container>
           <ChplConfirmProgress
             value={getProgress(stage)}
             canNext={canAct('next')}
