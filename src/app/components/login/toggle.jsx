@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,14 +11,12 @@ import {
 } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { func } from 'prop-types';
-import { getAccessToken } from 'axios-jwt';
 
 import ChplLogin from './login';
 import ChplAdminMenu from './admin-menu';
 
-import { setLoginState } from 'components/login/userInfo.slice';
 import { theme, palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -79,7 +77,6 @@ const useStyles = makeStyles({
 });
 
 function ChplToggle({ dispatch = () => {} }) {
-  const reduxDispatch = useDispatch();
   const loginState = useSelector((state) => state.userInfo.loginState);
   const user = useSelector((state) => state.userInfo.user);
   const [anchor, setAnchor] = useState(null);
@@ -88,10 +85,6 @@ function ChplToggle({ dispatch = () => {} }) {
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
-
-  useEffect(() => {
-    getAccessToken().then((token) => (token ? reduxDispatch(setLoginState('LOGGEDIN')) : reduxDispatch(setLoginState('SIGNIN'))));
-  }, []);
 
   const getTitle = () => {
     if (user?.fullName) {

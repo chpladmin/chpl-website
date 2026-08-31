@@ -4,8 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: {
-    loginState: 'SIGNIN',
-    user: { },
+    loginState: localStorage.getItem('ngStorage-currentUser') ? 'LOGGEDIN' : 'SIGNIN',
+    user: {},
   },
   reducers: {
     setLoginState: (state, action) => {
