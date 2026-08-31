@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { func, string } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ChplChangePassword from './components/change-password';
 import ChplForceChangePassword from './components/force-change-password';
@@ -8,21 +9,16 @@ import ChplLoggedIn from './components/logged-in';
 import ChplResetForgottenPassword from './components/reset-forgotten-password';
 import ChplSignin from './components/signin';
 
-import { UserContext } from 'shared/contexts';
+import { setLoginState } from 'components/login/userInfo.slice';
 
 function ChplLogin({
   dispatch = () => {},
   uuid = '',
 }) {
-  const { loginWidgetState, setLoginWidgetState } = useContext(UserContext);
+  const loginState = useSelector((s) => s.userInfo.loginState);
+  const reduxDispatch = useDispatch();
   const [sessionId, setSessionId] = useState('');
   const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    if (uuid) {
-      setLoginWidgetState('RESETFORGOTTENPASSWORD');
-    }
-  }, [uuid]);
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
@@ -30,14 +26,14 @@ function ChplLogin({
         setUserName(payload.userName);
         setSessionId(payload.sessionId);
         dispatch('forceChangePassword');
-        setLoginWidgetState('FORCECHANGEPASSWORD');
+        reduxDispatch(setLoginState('FORCECHANGEPASSWORD'));
         break;
       case 'forgotPassword':
         setUserName(payload?.userName ?? '');
-        setLoginWidgetState('FORGOTPASSWORD');
+        reduxDispatch(setLoginState('FORGOTPASSWORD'));
         break;
       case 'loggedIn':
-        setLoginWidgetState('LOGGEDIN');
+        reduxDispatch(setLoginState('LOGGEDIN'));
         dispatch('loggedIn');
         break;
       default:
@@ -45,11 +41,9 @@ function ChplLogin({
     }
   };
 
-  switch (loginWidgetState) {
+  switch (loginState) {
     case 'CHANGEPASSWORD':
-      return (
-        <ChplChangePassword />
-      );
+      return <ChplChangePassword />;
     case 'FORCECHANGEPASSWORD':
       return (
         <ChplForceChangePassword
@@ -59,19 +53,11 @@ function ChplLogin({
         />
       );
     case 'FORGOTPASSWORD':
-      return (
-        <ChplForgotPassword
-          userName={userName}
-        />
-      );
+      return <ChplForgotPassword userName={userName} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn />;
     case 'RESETFORGOTTENPASSWORD':
-      return (
-        <ChplResetForgottenPassword
-          uuid={uuid}
-        />
-      );
+      return <ChplResetForgottenPassword uuid={uuid} />;
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
       // no default

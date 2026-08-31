@@ -11,7 +11,7 @@ import { arrayOf, func } from 'prop-types';
 import ChplProductView from './product-view';
 
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -125,19 +125,17 @@ function ChplProductsView({ products = [], dispatch }) {
         <ChplFilterSearchBar
           hideSearchTerm
         />
-        <div>
-          <ChplFilterChips />
-        </div>
-        <div className={classes.tableResultsHeaderContainer}>
-          <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-            <Typography variant="subtitle2">Search Results:</Typography>
-            { displayedProducts.length === 0
+        <ChplFilterLayout mobileOnly>
+          <div className={classes.tableResultsHeaderContainer}>
+            <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+              <Typography variant="subtitle2">Search Results:</Typography>
+              { displayedProducts.length === 0
               && (
                 <>
                   No results found
                 </>
               )}
-            { displayedProducts.length > 0
+              { displayedProducts.length > 0
               && (
                 <Typography variant="body2">
                   { displayedProducts.length }
@@ -146,18 +144,19 @@ function ChplProductsView({ products = [], dispatch }) {
                   { displayedProducts.length === 1 ? '' : 's' }
                 </Typography>
               )}
+            </div>
           </div>
-        </div>
-        { displayedProducts
-          .sort((a, b) => sortProducts(a, b))
-          .map((product) => (
-            <ChplProductView
-              key={product.id}
-              product={product}
-              productCount={displayedProducts.length}
-              dispatch={dispatch}
-            />
-          ))}
+          { displayedProducts
+            .sort((a, b) => sortProducts(a, b))
+            .map((product) => (
+              <ChplProductView
+                key={product.id}
+                product={product}
+                productCount={displayedProducts.length}
+                dispatch={dispatch}
+              />
+            ))}
+        </ChplFilterLayout>
       </CardContent>
     </Card>
   );

@@ -256,7 +256,7 @@ function ChplStandards() {
       filters={filters}
       storageKey="storageKey-standardsManagement"
     >
-      <Card>
+      <Card style={{ overflow: 'visible' }}>
         <CardHeader
           style={{ paddingLeft: '16px' }}
           title={(
@@ -266,7 +266,7 @@ function ChplStandards() {
             </>
 )}
         />
-        <CardContent>
+        <CardContent style={{ overflow: 'visible' }}>
           { (deleteStandard.isLoading || postStandard.isLoading || putStandard.isLoading)
             && (
               <CircularProgress />

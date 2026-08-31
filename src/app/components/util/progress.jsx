@@ -61,13 +61,13 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     position: 'sticky',
-    top: '114px',
+    top: '0px',
     zIndex: '999',
   },
 });
 
 function ChplProgress(props) {
-  const { steps, buttonContainerTop = '114px' } = props;
+  const { steps, buttonContainerTop = '2px' } = props;
   const [value, setValue] = useState(0);
   const [canNext, setCanNext] = useState(false);
   const [canPrevious, setCanPrevious] = useState(false);

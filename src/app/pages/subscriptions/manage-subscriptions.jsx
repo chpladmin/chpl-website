@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ChplManageSubscriptionsView from './manage-subscriptions-view';
 
@@ -14,6 +14,7 @@ import {
   subscriptionSubjects,
   subscriptionTypes,
 } from 'components/filter/filters';
+import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -37,7 +38,29 @@ subscriptionTypes,
 ];
 
 function ChplManageSubscriptionsPage() {
-  const [filters] = useState(staticFilters);
+  const { hti5ErdIsOn } = useContext(FlagContext);
+  const [filters, setFilters] = useState(staticFilters);
+
+  useEffect(() => {
+    if (!hti5ErdIsOn) {
+      setFilters((prev) => [
+        ...prev.filter((f) => f.key !== 'subscriptionSubjects'),
+        {
+          ...defaultFilter,
+          key: 'subscriptionSubjects',
+          display: 'Subscription Subject',
+          values: [
+            { value: 'Certification Status Changed' },
+            { value: 'Certification Criterion Added' },
+            { value: 'Certification Criterion Removed' },
+            { value: 'RWT Plans URL Changed' },
+            { value: 'RWT Results URL Changed' },
+            { value: 'Service Base URL List Changed' },
+          ],
+        },
+      ]);
+    }
+  }, [hti5ErdIsOn]);
 
   const analytics = {
     category: 'Manage Subscriptions',

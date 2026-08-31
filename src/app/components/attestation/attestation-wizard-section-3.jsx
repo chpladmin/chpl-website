@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Moment from 'react-moment';
+import { useSelector } from 'react-redux';
 import {
   bool,
   func,
@@ -17,7 +18,7 @@ import {
 
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -57,8 +58,8 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispatch }) {
+  const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
-  const { user } = useContext(UserContext);
   const [signature, setSignature] = useState('');
   const classes = useStyles();
 

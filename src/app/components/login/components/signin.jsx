@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useDispatch } from 'react-redux';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,10 +19,11 @@ import { setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
 import { usePostLogin } from 'api/auth';
+import { setLoginState, setUser } from 'components/login/userInfo.slice';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
-import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -49,7 +51,7 @@ const validationSchema = yup.object({
 function ChplSignin({ dispatch }) {
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
-  const { setUser } = useContext(UserContext);
+  const newDispatch = useDispatch();
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -97,7 +99,8 @@ function ChplSignin({ dispatch }) {
         });
         setCookie('cognito_id', response.user.cognitoId);
         setCookie('refresh_token', response.refreshToken);
-        setUser(response.user);
+        newDispatch(setLoginState('LOGGEDIN'));
+        newDispatch(setUser({ user: response.user }));
         authService.saveCurrentUser(response.user);
         formik.resetForm();
         $rootScope.$broadcast('loggedIn');

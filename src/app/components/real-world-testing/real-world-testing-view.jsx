@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 
 function ChplRealWorldTestingView({ developer, dispatch }) {
   const { analytics } = useAnalyticsContext();
-  const { rwtChangeRequestIsOn } = useContext(FlagContext);
+  const { hti5ErdIsOn, rwtChangeRequestIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [plans, setPlans] = useState([]);
   const [results, setResults] = useState([]);
@@ -62,7 +62,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
     <Card>
       <CardHeader title="Real World Testing" />
       <CardContent className={classes.content}>
-        { plans.length > 0
+        { plans.length > 0 && !hti5ErdIsOn
           && (
             <>
               <Typography variant="subtitle1">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -19,7 +19,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import {
-  ChplFilterChips,
+  ChplFilterLayout,
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
@@ -27,7 +27,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { useAnalyticsContext } from 'shared/contexts';
+import { FlagContext, useAnalyticsContext } from 'shared/contexts';
 
 const sortOptions = [
   { property: 'chpl_id', text: 'CHPL ID' },
@@ -38,6 +38,7 @@ const sortOptions = [
 
 function ChplRealWorldTestingSearchView() {
   const storageKey = 'storageKey-realWorldTestingView';
+  const { hti5ErdIsOn } = useContext(FlagContext);
   const { analytics } = useAnalyticsContext();
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -84,6 +85,160 @@ function ChplRealWorldTestingSearchView() {
     setSortDescending(orderDirection === 'desc');
   };
 
+  const buildSearchResultCard = (item) => (hti5ErdIsOn ? (
+    <ChplSearchResultCard
+      key={item.id}
+      fieldGroups={[[{
+        label: 'Developer',
+        style: { flex: '2 1 320px' },
+        value: (
+          <ChplLink
+            href={`#/organizations/developers/${item.developer.id}`}
+            text={item.developer.name}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Developer Page',
+              label: item.developer.name,
+            }}
+            external={false}
+            router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+          />
+        ),
+      }, {
+        label: 'Product',
+        value: item.product.name,
+      }, {
+        label: 'Version',
+        value: item.version.name,
+      }], [{
+        label: 'CHPL ID',
+        style: { flex: '2 1 320px' },
+        value: (
+          <ChplLink
+            href={`#/listing/${item.id}`}
+            text={item.chplProductNumber}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Listing Details Page',
+              label: item.chplProductNumber,
+              aggregationName: item.product.name,
+            }}
+            external={false}
+            router={{ sref: 'listing', options: { id: item.id } }}
+          />
+        ),
+      }, {
+        label: 'Certification Date',
+        value: getDisplayDateFormat(item.certificationDate),
+      }, {
+        label: 'Status',
+        value: getStatusIcon(item.certificationStatus),
+        iconButton: <ChplCertificationStatusLegend />,
+      }], [{
+        label: 'Real World Testing Results URL',
+        style: { flex: '1 1 100%' },
+        value: item.rwtResultsUrl
+          ? (
+            <ChplLink
+              href={item.rwtResultsUrl}
+              analytics={{
+                ...analytics,
+                event: 'Go to Real World Testing Results URL',
+                label: item.chplProductNumber,
+                aggregationName: item.product.name,
+              }}
+            />
+          )
+          : 'N/A',
+      }]]}
+      actions={<ChplActionButton listing={item} />}
+    />
+  ) : (
+    <ChplSearchResultCard
+      key={item.id}
+      fieldGroups={[[{
+        label: 'Developer',
+        style: { flex: '2 1 320px' },
+        value: (
+          <ChplLink
+            href={`#/organizations/developers/${item.developer.id}`}
+            text={item.developer.name}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Developer Page',
+              label: item.developer.name,
+            }}
+            external={false}
+            router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+          />
+        ),
+      }, {
+        label: 'Product',
+        value: item.product.name,
+      }, {
+        label: 'Version',
+        value: item.version.name,
+      }], [{
+        label: 'CHPL ID',
+        style: { flex: '2 1 320px' },
+        value: (
+          <ChplLink
+            href={`#/listing/${item.id}`}
+            text={item.chplProductNumber}
+            analytics={{
+              ...analytics,
+              event: 'Navigate to Listing Details Page',
+              label: item.chplProductNumber,
+              aggregationName: item.product.name,
+            }}
+            external={false}
+            router={{ sref: 'listing', options: { id: item.id } }}
+          />
+        ),
+      }, {
+        label: 'Certification Date',
+        value: getDisplayDateFormat(item.certificationDate),
+      }, {
+        label: 'Status',
+        value: getStatusIcon(item.certificationStatus),
+        iconButton: <ChplCertificationStatusLegend />,
+      }], [{
+        label: 'Real World Testing Plans URL',
+        style: { flex: '1 1 100%' },
+        value: item.rwtPlansUrl
+          ? (
+            <ChplLink
+              href={item.rwtPlansUrl}
+              analytics={{
+                ...analytics,
+                event: 'Go to Real World Testing Plans URL',
+                label: item.chplProductNumber,
+                aggregationName: item.product.name,
+              }}
+            />
+          )
+          : 'N/A',
+      }, {
+        label: 'Real World Testing Results URL',
+        style: { flex: '1 1 100%' },
+        value: item.rwtResultsUrl
+          ? (
+            <ChplLink
+              href={item.rwtResultsUrl}
+              analytics={{
+                ...analytics,
+                event: 'Go to Real World Testing Results URL',
+                label: item.chplProductNumber,
+                aggregationName: item.product.name,
+              }}
+            />
+          )
+          : 'N/A',
+      }]]}
+      actions={<ChplActionButton listing={item} />}
+    />
+  ));
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
@@ -120,7 +275,10 @@ function ChplRealWorldTestingSearchView() {
                 inline
               />
               {' '}
-              must successfully test their real world use. If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
+              must successfully test their real world use.
+              {' '}
+              {!hti5ErdIsOn && 'If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, '}
+              Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
             </Typography>
             <br />
             <Typography variant="body1" gutterBottom>
@@ -155,10 +313,10 @@ function ChplRealWorldTestingSearchView() {
         )}
       />
       <ChplPageBody>
-        <ChplFilterSearchBar />
-        <ChplFilterChips />
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        <ChplFilterSearchBar sticky />
+        <ChplFilterLayout>
+          { isLoading && (<ChplLoadingCards />)}
+          { !isLoading
           && (
             <>
               <ChplSearchResultControls
@@ -181,102 +339,7 @@ function ChplRealWorldTestingSearchView() {
               && (
                 <>
                   <Box>
-                    {listings.map((item) => (
-                      <ChplSearchResultCard
-                        key={item.id}
-                        fieldGroups={[
-                          [
-                            {
-                              label: 'Developer',
-                              value: (
-                                <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Developer Page',
-                                    label: item.developer.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                />
-                              ),
-                            },
-                            {
-                              label: 'Product',
-                              value: item.product.name,
-                            },
-                            {
-                              label: 'Version',
-                              value: item.version.name,
-                            },
-                          ],
-                          [
-                            {
-                              label: 'CHPL ID',
-                              value: (
-                                <ChplLink
-                                  href={`#/listing/${item.id}`}
-                                  text={item.chplProductNumber}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Listing Details Page',
-                                    label: item.chplProductNumber,
-                                    aggregationName: item.product.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'listing', options: { id: item.id } }}
-                                />
-                              ),
-                            },
-                            {
-                              label: 'Certification Date',
-                              value: getDisplayDateFormat(item.certificationDate),
-                            },
-                            {
-                              label: 'Status',
-                              value: getStatusIcon(item.certificationStatus),
-                              iconButton: <ChplCertificationStatusLegend />,
-                            },
-                          ],
-                          [
-                            {
-                              label: 'Real World Testing Plans URL',
-                              value: item.rwtPlansUrl
-                                ? (
-                                  <ChplLink
-                                    href={item.rwtPlansUrl}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Go to Real World Testing Plans URL',
-                                      label: item.chplProductNumber,
-                                      aggregationName: item.product.name,
-                                    }}
-                                  />
-                                )
-                                : 'N/A',
-                            },
-                            {
-                              label: 'Real World Testing Results URL',
-                              value: item.rwtResultsUrl
-                                ? (
-                                  <ChplLink
-                                    href={item.rwtResultsUrl}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Go to Real World Testing ResultsURL',
-                                      label: item.chplProductNumber,
-                                      aggregationName: item.product.name,
-                                    }}
-                                  />
-                                )
-                                : 'N/A',
-                            },
-                          ],
-                        ]}
-                        actions={<ChplActionButton listing={item} />}
-                      />
-                    ))}
+                    {listings.map((item) => buildSearchResultCard(item))}
                   </Box>
                   <ChplPagination
                     count={recordCount}
@@ -290,6 +353,7 @@ function ChplRealWorldTestingSearchView() {
               )}
             </>
           )}
+        </ChplFilterLayout>
       </ChplPageBody>
     </>
   );

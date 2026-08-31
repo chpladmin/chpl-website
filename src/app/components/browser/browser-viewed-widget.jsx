@@ -1,14 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { BrowserContext } from 'shared/contexts';
+import { pushPreviouslyViewed } from 'components/browser/browserInfo.slice';
 import { listing as listingPropType } from 'shared/prop-types';
 
-function ChplBrowserViewedWidget(props) {
-  const { listing } = props;
-  const { addToViewed } = useContext(BrowserContext);
+function ChplBrowserViewedWidget({ listing }) {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    addToViewed(listing);
+    dispatch(pushPreviouslyViewed(listing));
   }, []);
 
   return null;

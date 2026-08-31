@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,13 +11,12 @@ import {
 } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
+import { useSelector } from 'react-redux';
 import { func } from 'prop-types';
-import { getAccessToken } from 'axios-jwt';
 
 import ChplLogin from './login';
 import ChplAdminMenu from './admin-menu';
 
-import { UserContext } from 'shared/contexts';
 import { theme, palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -78,18 +77,21 @@ const useStyles = makeStyles({
 });
 
 function ChplToggle({ dispatch = () => {} }) {
-  const { loginWidgetState, setLoginWidgetState, user } = useContext(UserContext);
+  const loginState = useSelector((state) => state.userInfo.loginState);
+  const user = useSelector((state) => state.userInfo.user);
   const [anchor, setAnchor] = useState(null);
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
-  const [title, setTitle] = useState('');
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
 
-  useEffect(() => {
-    getAccessToken().then((token) => (token ? setLoginWidgetState('LOGGEDIN') : setLoginWidgetState('SIGNIN')));
-  }, []);
+  const getTitle = () => {
+    if (user?.fullName) {
+      return (user.fullName);
+    }
+    return ('Administrator login');
+  };
 
   const handleClick = (e) => {
     if (isMobile) {
@@ -116,14 +118,6 @@ function ChplToggle({ dispatch = () => {} }) {
     }
   };
 
-  useEffect(() => {
-    if (user?.fullName) {
-      setTitle(user.fullName);
-    } else {
-      setTitle('Administrator login');
-    }
-  }, [user]);
-
   return (
     <>
       <Button
@@ -134,7 +128,7 @@ function ChplToggle({ dispatch = () => {} }) {
         onClick={handleClick}
         className={classes.whiteButton}
       >
-        { title }
+        { getTitle() }
       </Button>
       <Popover
         id="admin-login-form"
@@ -155,7 +149,7 @@ function ChplToggle({ dispatch = () => {} }) {
           id: 'admin-login-paper',
         }}
       >
-        { loginWidgetState === 'LOGGEDIN' ? (
+        { loginState === 'LOGGEDIN' ? (
           <ChplAdminMenu onClose={handleClose} />
         ) : (
           <div className={classes.loginCard}>
@@ -179,7 +173,7 @@ function ChplToggle({ dispatch = () => {} }) {
             </IconButton>
           </Box>
           <Divider className={classes.drawerDivider} />
-          { loginWidgetState === 'LOGGEDIN' ? (
+          { loginState === 'LOGGEDIN' ? (
             <ChplAdminMenu onClose={handleClose} />
           ) : (
             <div className={classes.drawerLoginCard}>

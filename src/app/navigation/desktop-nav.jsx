@@ -1,6 +1,5 @@
 import React, {
   useContext,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -8,7 +7,6 @@ import {
   Box,
   Button,
   ClickAwayListener,
-  Popover,
   makeStyles,
 } from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
@@ -20,8 +18,6 @@ import {
   shortcutItems,
 } from './navigation-menu-items';
 
-import ChplCmsDisplay from 'components/cms-widget/cms-display';
-import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import {
@@ -115,15 +111,17 @@ function ChplDesktopNav({
   onSearchClick,
 }) {
   const analytics = useAnalyticsContext();
-  const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
-  const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
+  const {
+    isOpen: cmsIsOpen,
+    setIsOpen: setCmsIsOpen,
+  } = useContext(CmsContext);
+  const {
+    isOpen: compareIsOpen,
+    setIsOpen: setCompareIsOpen,
+  } = useContext(CompareContext);
   const { hasAnyRole } = useContext(UserContext);
-  const cmsButtonRef = useRef(null);
-  const compareButtonRef = useRef(null);
   const resourcesButtonRef = useRef(null);
   const shortcutsButtonRef = useRef(null);
-  const [cmsAnchorEl, setCmsAnchorEl] = useState(null);
-  const [compareAnchorEl, setCompareAnchorEl] = useState(null);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const { currentHash } = useHashContext();
@@ -131,87 +129,21 @@ function ChplDesktopNav({
 
   const classes = useStyles();
 
-  const getVisibleAnchor = (ref) => {
-    const el = ref.current;
-    if (!el || !el.isConnected || el.offsetParent === null) {
-      return null;
-    }
-    return el;
-  };
-
-  const getPopoverMaxHeight = (anchor) => {
-    const anchorBottom = anchor?.getBoundingClientRect().bottom ?? 72;
-    return `calc(100vh - ${Math.ceil(anchorBottom + 24)}px)`;
-  };
-
-  useEffect(() => {
-    if (cmsIsOpen) {
-      const anchor = getVisibleAnchor(cmsButtonRef);
-      if (!anchor) {
-        return;
-      }
-      setCmsAnchorEl(anchor);
-      setCompareAnchorEl(null);
-      setResourcesOpen(false);
-      setShortcutsOpen(false);
-    } else {
-      setCmsAnchorEl(null);
-    }
-  }, [cmsIsOpen]);
-
-  useEffect(() => {
-    if (compareIsOpen) {
-      const anchor = getVisibleAnchor(compareButtonRef);
-      if (!anchor) {
-        return;
-      }
-      setCmsAnchorEl(null);
-      setCompareAnchorEl(anchor);
-      setResourcesOpen(false);
-      setShortcutsOpen(false);
-    } else {
-      setCompareAnchorEl(null);
-    }
-  }, [compareIsOpen]);
-
   const closeAllNavOverlays = () => {
-    setCmsAnchorEl(null);
     setCmsIsOpen(false);
-    setCompareAnchorEl(null);
     setCompareIsOpen(false);
     setResourcesOpen(false);
     setShortcutsOpen(false);
   };
 
   const toggleCmsWidget = () => {
-    if (cmsAnchorEl) {
-      setCmsAnchorEl(null);
-      setCmsIsOpen(false);
-      return;
-    }
-    const anchor = getVisibleAnchor(cmsButtonRef);
-    if (!anchor) {
-      return;
-    }
     closeAllNavOverlays();
-    setCmsAnchorEl(anchor);
-    setCmsIsOpen(true);
+    setCmsIsOpen(!cmsIsOpen);
   };
 
   const toggleCompareWidget = () => {
-    if (compareAnchorEl) {
-      setCompareAnchorEl(null);
-      setCompareIsOpen(false);
-      return;
-    }
-
-    const anchor = getVisibleAnchor(compareButtonRef);
-    if (!anchor) {
-      return;
-    }
     closeAllNavOverlays();
-    setCompareAnchorEl(anchor);
-    setCompareIsOpen(true);
+    setCompareIsOpen(!compareIsOpen);
   };
 
   const toggleResources = () => {
@@ -242,6 +174,16 @@ function ChplDesktopNav({
     setShortcutsOpen(false);
   };
 
+  const getDownloadIcon = (item) => {
+    if (!item.showDownloadIcon) {
+      return undefined;
+    }
+    if (item.primaryIcon) {
+      return <CloudDownloadIcon color="primary" />;
+    }
+    return <CloudDownloadIcon htmlColor={palette.greyDark} />;
+  };
+
   const getItemAnalytics = (item) => ({
     ...analytics,
     event: item.analyticsEvent,
@@ -258,16 +200,6 @@ function ChplDesktopNav({
       eventTrack(itemAnalytics);
     }
     window.location.href = item.href;
-  };
-
-  const getDownloadIcon = (item) => {
-    if (!item.showDownloadIcon) {
-      return undefined;
-    }
-    if (item.primaryIcon) {
-      return <CloudDownloadIcon color="primary" />;
-    }
-    return <CloudDownloadIcon />;
   };
 
   return (
@@ -291,60 +223,20 @@ function ChplDesktopNav({
         Search CHPL
       </Button>
       <Button
-        ref={cmsButtonRef}
         onClick={toggleCmsWidget}
-        aria-expanded={!!cmsAnchorEl}
+        aria-expanded={cmsIsOpen}
         className={classes.whiteButton}
       >
         CMS ID Creator
       </Button>
-      <Popover
-        anchorEl={cmsAnchorEl}
-        open={!!cmsAnchorEl}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        disableScrollLock
-        hideBackdrop
-        style={{ pointerEvents: 'none' }}
-        PaperProps={{
-          className: classes.menuPaper,
-          style: {
-            width: '400px',
-            maxHeight: getPopoverMaxHeight(cmsAnchorEl),
-            pointerEvents: 'auto',
-          },
-        }}
-      >
-        <ChplCmsDisplay />
-      </Popover>
       <Button
-        ref={compareButtonRef}
         onClick={toggleCompareWidget}
-        aria-expanded={!!compareAnchorEl}
+        aria-expanded={compareIsOpen}
         className={classes.whiteButton}
         color="inherit"
       >
         Compare Products
       </Button>
-      <Popover
-        anchorEl={compareAnchorEl}
-        open={!!compareAnchorEl}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        disableScrollLock
-        hideBackdrop
-        style={{ pointerEvents: 'none' }}
-        PaperProps={{
-          className: classes.menuPaper,
-          style: {
-            width: '400px',
-            maxHeight: getPopoverMaxHeight(compareAnchorEl),
-            pointerEvents: 'auto',
-          },
-        }}
-      >
-        <ChplCompareDisplay />
-      </Popover>
       <ClickAwayListener onClickAway={closeResources}>
         <Box className={classes.dropdownWrapper}>
           <Button
