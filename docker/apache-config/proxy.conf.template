@@ -1,5 +1,14 @@
 LoadModule proxy_module modules/mod_proxy.so
 LoadModule proxy_http_module modules/mod_proxy_http.so
+LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+LoadModule lbmethod_bytraffic_module modules/mod_lbmethod_bytraffic.so
+LoadModule slotmem_shm_module modules/mod_slotmem_shm.so
 
-ProxyPass /rest/ ${BACKEND_URL}/
-ProxyPassReverse /rest/ ${BACKEND_URL}/
+<Proxy "balancer://chplapi">
+${BALANCER_MEMBERS}
+    ProxySet lbmethod=bytraffic
+    ProxySet failontimeout=On
+</Proxy>
+
+ProxyPass /rest/ balancer://chplapi/
+ProxyPassReverse /rest/ balancer://chplapi/

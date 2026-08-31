@@ -29,6 +29,7 @@ COPY --from=build-stage /app/dist /usr/local/apache2/htdocs/
 # docker-entrypoint.sh) instead of copied in statically, so the same image can
 # point at any environment's backend/key without rebuilding.
 COPY docker/apache-config/proxy.conf.template /usr/local/apache2/conf/extra/proxy.conf.template
+COPY docker/apache-config/status.conf.template /usr/local/apache2/conf/extra/status.conf.template
 COPY docker/env-config.template.js /usr/local/apache2/htdocs/env-config.js.template
 COPY docker/docker-entrypoint.sh /usr/local/apache2/docker-entrypoint.sh
 RUN chmod +x /usr/local/apache2/docker-entrypoint.sh
@@ -38,6 +39,7 @@ RUN chmod +x /usr/local/apache2/docker-entrypoint.sh
 RUN echo "Listen 3000" > /usr/local/apache2/conf/httpd.conf \
     && cat /usr/local/apache2/conf/original/httpd.conf >> /usr/local/apache2/conf/httpd.conf
 RUN echo "Include conf/extra/proxy.conf" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "Include conf/extra/status.conf" >> /usr/local/apache2/conf/httpd.conf
 
 # Expose the non-standard port
 EXPOSE 3000
