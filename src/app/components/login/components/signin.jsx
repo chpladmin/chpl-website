@@ -19,7 +19,7 @@ import { setAuthTokens } from 'axios-jwt';
 import { useCookies } from 'react-cookie';
 
 import { usePostLogin } from 'api/auth';
-import { setUser } from 'components/login/userInfo.slice';
+import { setLoginState, setUser } from 'components/login/userInfo.slice';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -94,6 +94,7 @@ function ChplSignin({ dispatch }) {
         });
         setCookie('cognito_id', response.user.cognitoId);
         setCookie('refresh_token', response.refreshToken);
+        newDispatch(setLoginState('LOGGEDIN'));
         newDispatch(setUser({ user: response.user }));
         formik.resetForm();
         dispatch({ action: 'loggedIn' });

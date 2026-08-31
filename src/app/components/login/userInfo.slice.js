@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: {
-    loginState: 'SIGNIN',
+    loginState: localStorage.getItem('ngStorage-currentUser') ? 'LOGGEDIN' : 'SIGNIN',
     user: JSON.parse(localStorage.getItem('ngStorage-currentUser')) ?? {}, // temporary use of localstorage until redux store is truly global
   },
   reducers: {
