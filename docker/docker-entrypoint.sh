@@ -16,7 +16,22 @@ done
 IFS="$OLD_IFS"
 export BALANCER_MEMBERS
 
-envsubst '${BALANCER_MEMBERS}' < /usr/local/apache2/conf/extra/proxy.conf.template > /usr/local/apache2/conf/extra/proxy.conf
+# Per-instance routes (/rest1, /rest2, ...) so health checks and other tooling
+# can target one specific backend directly, bypassing the load balancer -
+# mirrors the legacy (non-GHCR) image's hardcoded /rest1 and /rest2 routes,
+# but derived from BACKEND_URLS instead of baked-in IPs.
+INDIVIDUAL_BACKEND_ROUTES=""
+INDEX=1
+IFS=','
+for url in $BACKEND_URLS; do
+    INDIVIDUAL_BACKEND_ROUTES="${INDIVIDUAL_BACKEND_ROUTES}ProxyPass \"/rest${INDEX}\" \"${url}\"
+"
+    INDEX=$((INDEX + 1))
+done
+IFS="$OLD_IFS"
+export INDIVIDUAL_BACKEND_ROUTES
+
+envsubst '${BALANCER_MEMBERS} ${INDIVIDUAL_BACKEND_ROUTES}' < /usr/local/apache2/conf/extra/proxy.conf.template > /usr/local/apache2/conf/extra/proxy.conf
 
 # The consumer is browserInfo.slice.js, which reads
 #   window.__env?.API_KEY ?? '<hardcoded default>'

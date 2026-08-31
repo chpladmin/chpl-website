@@ -12,3 +12,5 @@ ${BALANCER_MEMBERS}
 
 ProxyPass /rest/ balancer://chplapi/
 ProxyPassReverse /rest/ balancer://chplapi/
+
+${INDIVIDUAL_BACKEND_ROUTES}
