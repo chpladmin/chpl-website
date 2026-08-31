@@ -12,7 +12,7 @@ export const userInfoSlice = createSlice({
       state.loginState = action.payload;
     },
     setUser: (state, action) => {
-      state.user = action.payload.user;
+      state.user = action.payload?.user;
       if (state.user !== undefined) {
         localStorage.setItem('ngStorage-currentUser', JSON.stringify(state.user)); // temporary until redux store is truly global
       } else {

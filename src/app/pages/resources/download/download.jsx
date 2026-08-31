@@ -102,7 +102,11 @@ function ChplResourcesDownload() {
   const classes = useStyles();
 
   useEffect(() => {
-    getAccessToken().then((response) => setStateAccessToken(JSON.parse(response)));
+    getAccessToken().then((response) => {
+      if (response) {
+        setStateAccessToken(response);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -124,7 +128,7 @@ function ChplResourcesDownload() {
       }
       return true;
     }));
-  }, [API, hasAnyRole]);
+  }, [API, hasAnyRole, stateAccessToken]);
 
   const downloadFile = (type) => {
     if (selectedOption) {
