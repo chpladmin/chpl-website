@@ -140,3 +140,89 @@ jobs:
             ${{ steps.meta.outputs.image }}:build-${{ github.run_number }}
             ${{ steps.meta.outputs.image }}:sha-${{ steps.meta.outputs.sha_short }}
             ${{ steps.meta.outputs.image }}:latest-${{ steps.meta.outputs.branch }}
+
+  # Builds the maintenance-mode image (served while PROD data is loaded into DEV -
+  # see chpl-build's "Turn On Maintenance Mode" stage). Every step but Checkout is
+  # guarded so they're a safe no-op (reported as skipped, not failed) until
+  # docker/Dockerfile.maint exists in the repo. hashFiles() only works in a step's
+  # if condition (it needs a checked-out workspace to hash), not a job-level if,
+  # so the guard can't live on the job itself - Checkout has to run unconditionally
+  # first so there's a workspace for the later steps' hashFiles() calls to check.
+  build-and-push-maint:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: Build
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        run: yarn build --env.NODE_ENV=production
+
+      # Dockerfile.maint ADDs www/chpl and www/error (relative to its own build
+      # context, docker/) directly into the image - it has no build stage of its
+      # own. www/error serves the app's built error.html as its index page while
+      # in maintenance mode; www/chpl is the same build output under the app's
+      # normal document root.
+      - name: Stage maintenance web roots
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        run: |
+          mkdir -p docker/www/chpl docker/www/error
+          cp -r dist/. docker/www/chpl/
+          cp -r dist/. docker/www/error/
+          mv docker/www/error/error.html docker/www/error/index.html
+
+      - name: Set up Docker Buildx
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image metadata
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        id: meta
+        run: |
+          echo "image=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+          echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "branch=$(echo '${{ github.ref_name }}' | tr '/' '-')" >> "$GITHUB_OUTPUT"
+
+      # Same package as the live image, distinguished by a maint- tag prefix -
+      # see the live image's Build and push step above for the base tag scheme.
+      #
+      # Tags:
+      #   maint-build-<run_number> - immutable, sequential build number
+      #   maint-sha-<short-sha>    - immutable, traces back to the exact commit
+      #   latest-maint-<branch>    - floating pointer to the most recent maint
+      #                               build from that branch (DEV consumes
+      #                               latest-maint-development)
+      - name: Build and push (maintenance image)
+        if: hashFiles('docker/Dockerfile.maint') != ''
+        uses: docker/build-push-action@v6
+        with:
+          context: docker
+          file: docker/Dockerfile.maint
+          push: true
+          provenance: false
+          sbom: false
+          tags: |
+            ${{ steps.meta.outputs.image }}:maint-build-${{ github.run_number }}
+            ${{ steps.meta.outputs.image }}:maint-sha-${{ steps.meta.outputs.sha_short }}
+            ${{ steps.meta.outputs.image }}:latest-maint-${{ steps.meta.outputs.branch }}
