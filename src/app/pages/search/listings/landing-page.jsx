@@ -168,6 +168,7 @@ const useStyles = makeStyles({
     backgroundSize: '500px',
     minHeight: '75vh',
     flexGrow: 1,
+    flexShrink: 0,
   },
   subHeaders: {
     color: palette.white,

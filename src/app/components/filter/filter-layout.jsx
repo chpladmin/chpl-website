@@ -46,7 +46,7 @@ const useStyles = makeStyles({
     gap: '8px',
     [theme.breakpoints.up('md')]: {
       position: 'sticky',
-      top: '190px',
+      top: '96px',
     },
   },
   sidebarMobileOnly: {
@@ -58,6 +58,8 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     color: palette.primary,
     borderColor: palette.primaryBorder,
+    backgroundColor: palette.white,
+    border: `1px solid ${palette.primaryBorder}`,
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -65,7 +67,6 @@ const useStyles = makeStyles({
   sidebarToggleMobileOnly: {
     justifyContent: 'space-between',
     color: palette.primary,
-    borderColor: palette.primaryBorder,
   },
   sidebarToggleLabel: {
     display: 'flex',
@@ -151,7 +152,7 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
       <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
         <Button
           className={mobileOnly ? classes.sidebarToggleMobileOnly : classes.sidebarToggle}
-          variant="outlined"
+          variant="contained"
           fullWidth
           id="filter-layout-sidebar-toggle"
           onClick={() => setExpanded((prev) => !prev)}
@@ -159,7 +160,7 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
         >
           <span className={classes.sidebarToggleLabel}>
             <FilterListIcon />
-            Filters
+            Filters Applied
             { appliedCount > 0
               && <Chip size="small" label={appliedCount} className={classes.countChip} /> }
           </span>
