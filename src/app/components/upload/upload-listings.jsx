@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -63,7 +63,16 @@ function ChplUploadListings() {
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
+  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const classes = useStyles();
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      if (response) {
+        setStateAccessToken(response);
+      }
+    });
+  }, []);
 
   const clearFile = () => {
     setFile(undefined);
@@ -79,7 +88,7 @@ function ChplUploadListings() {
     const item = {
       url: `${API}/listings/upload`,
       headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
+        Authorization: `Bearer ${stateAccessToken}`,
         'API-Key': apiKey,
       },
       data: {

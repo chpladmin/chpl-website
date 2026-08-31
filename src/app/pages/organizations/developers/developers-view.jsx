@@ -26,7 +26,7 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'developer_name', text: 'Developer' },
@@ -54,6 +54,7 @@ function ChplDevelopersView() {
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
@@ -67,6 +68,14 @@ function ChplDevelopersView() {
     sortDescending,
     query: queryString(),
   });
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      if (response) {
+        setStateAccessToken(response);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -96,7 +105,7 @@ function ChplDevelopersView() {
     });
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      url += `&authorization=Bearer%20${JSON.parse(getAccessToken())}`;
+      url += `&authorization=Bearer%20${stateAccessToken}`;
     }
     window.open(url);
   };

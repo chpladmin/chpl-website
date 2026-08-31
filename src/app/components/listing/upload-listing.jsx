@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -62,11 +62,20 @@ function ChplUploadListing({
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
+  const { setListing } = useContext(ListingContext);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
-  const { setListing } = useContext(ListingContext);
+  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const classes = useStyles();
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      if (response) {
+        setStateAccessToken(response);
+      }
+    });
+  }, []);
 
   const clearFile = () => {
     setFile(undefined);
@@ -87,7 +96,7 @@ function ChplUploadListing({
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
+        Authorization: `Bearer ${stateAccessToken}`,
         'API-Key': apiKey,
       },
       data: {

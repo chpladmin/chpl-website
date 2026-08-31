@@ -71,8 +71,17 @@ function ChplListingPage({ id }) {
   const [isEditing, setIsEditing] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [favorites, setFavorites] = useLocalStorage('favorites', []);
+  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const classes = useStyles();
   let analyticsData;
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      if (response) {
+        setStateAccessToken(response);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -101,7 +110,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Original CSV',
     });
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${JSON.parse(getAccessToken())}`;
+    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${stateAccessToken}`;
     window.open(downloadLink);
   };
 
@@ -110,7 +119,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Current CSV',
     });
-    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${JSON.parse(getAccessToken())}`;
+    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${stateAccessToken}`;
     window.open(downloadLink);
   };
 

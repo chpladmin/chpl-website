@@ -95,10 +95,10 @@ function ChplResourcesDownload() {
     category: 'Download the CHPL',
   };
   const { hasAnyRole } = useContext(UserContext);
-  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('Active products summary');
+  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
