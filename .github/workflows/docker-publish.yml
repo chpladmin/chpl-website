@@ -1,0 +1,142 @@
+name: Publish Docker Image
+
+on:
+  workflow_dispatch: {}
+  # One workflow, shared by every environment branch: a push to any of these
+  # triggers a build tagged latest-<that-branch>. No per-branch copies or
+  # separate workflow files to keep in sync.
+  push:
+    branches:
+      - development
+      - qa
+      - staging
+      - production
+
+# Publishes a floating latest-<branch> tag - without this, two runs for the
+# same branch could race and let an older commit's build finish last,
+# overwriting latest-<branch> with a stale image. cancel-in-progress is
+# false so runs queue and execute one at a time in the order they were
+# triggered, instead of a newer push cancelling a build already in
+# progress.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # Gates the image build so a broken lint pass never gets published.
+  #
+  # Temporarily disabled: `yarn lint` currently reports 539 pre-existing
+  # problems in src/ (369 errors, 170 warnings) that predate this pipeline --
+  # mostly react-hooks/exhaustive-deps, react/forbid-prop-types and
+  # no-unused-vars. Since `yarn lint` is a bare `eslint src`, those 369 errors
+  # would fail this job on every run and block the image publish below.
+  #
+  # (Running lint on Windows also reports ~70k linebreak-style errors. Those
+  # are a local checkout artifact -- the repo stores LF and CI on ubuntu-latest
+  # does not see them. Ignore them.)
+  #
+  # No other build path for this app (Bamboo or the chpl-build GitHub Actions
+  # prototype) has ever gated on lint. Re-enable this job (and add `lint` back
+  # to build-and-push's `needs` below) once that debt is cleaned up, rather
+  # than blocking every publish on unrelated pre-existing issues.
+  lint:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: Lint
+        run: yarn lint
+
+  # Runs the same `yarn build` that docker/Dockerfile's build stage runs, so a
+  # build-breaking change shows up here, fast, instead of partway through the
+  # (slower) Docker build.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: Build
+        run: yarn build --env.NODE_ENV=production
+
+  build-and-push:
+    # lint is intentionally omitted here while it's disabled above (skipped
+    # jobs don't count as successful, so keeping it in `needs` would block
+    # this job too).
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image metadata
+        id: meta
+        run: |
+          echo "image=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+          echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "branch=$(echo '${{ github.ref_name }}' | tr '/' '-')" >> "$GITHUB_OUTPUT"
+
+      # This image contains no secrets - see docker/Dockerfile. Every environment
+      # (development/qa/staging/production) runs the exact same image; secrets are
+      # supplied as container environment variables at `docker run` time, not baked
+      # in here.
+      #
+      # Tags:
+      #   build-<run_number> - immutable, sequential build number (github.run_number
+      #                         never repeats or goes backwards for this workflow)
+      #   sha-<short-sha>    - immutable, traces back to the exact commit
+      #   latest-<branch>    - floating pointer to the most recent build from that
+      #                         branch (latest-development, latest-qa, latest-staging,
+      #                         latest-production once triggered from those branches)
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: true
+          # build-push-action v6 enables these by default, which each push a
+          # separate untagged provenance/SBOM manifest to GHCR alongside the
+          # real image - not needed here, so turned off to keep the package
+          # version list clean.
+          provenance: false
+          sbom: false
+          tags: |
+            ${{ steps.meta.outputs.image }}:build-${{ github.run_number }}
+            ${{ steps.meta.outputs.image }}:sha-${{ steps.meta.outputs.sha_short }}
+            ${{ steps.meta.outputs.image }}:latest-${{ steps.meta.outputs.branch }}
