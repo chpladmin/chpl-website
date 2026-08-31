@@ -178,6 +178,11 @@ const baseItems = [{
   secondary: 'Table of the Functionality Tested values used during testing of certification criterion functionality',
   icon: <ChplToolTip title="Functionalities Tested"><BeenhereOutlinedIcon /></ChplToolTip>,
 }, {
+  id: 'g1g2',
+  primary: 'G1/G2 Measures',
+  secondary: 'Table of G1/G2 Measures',
+  icon: <ChplToolTip title="G1/G2 Measures"><AssessmentOutlinedIcon /></ChplToolTip>,
+}, {
   id: 'optionalStandards',
   primary: 'Optional Standards',
   secondary: 'View Optional Standards available to be applied to listings',
@@ -238,20 +243,8 @@ function ChplSystemMaintenance() {
   let data;
 
   useEffect(() => {
-    if (!hti520270101IsOn) {
-      setMaintenanceItems(() => [
-        ...baseItems,
-        {
-          id: 'g1g2',
-          primary: 'G1/G2 Measures',
-          secondary: 'Table of G1/G2 Measures',
-          icon: <ChplToolTip title="G1/G2 Measures"><AssessmentOutlinedIcon /></ChplToolTip>,
-        },
-      ].sort((a, b) => {
-        if (a.id === 'home') { return -1; }
-        if (b.id === 'home') { return 1; }
-        return a.primary < b.primary ? -1 : 1;
-      }));
+    if (hti520270101IsOn) {
+      setMaintenanceItems(() => baseItems.filter((i) => i.id !== 'g1g2'));
     } else {
       setMaintenanceItems(baseItems);
     }
