@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 14.10.0
+_31 August 2026_
+
+### Features
+* Enhance CMS ID & Compare widget functionality
+* Add filter layout component and enhance filter chips with card layout for various search pages
+* Add Direct Review report to Compliance Dashboard
+
+### Bug Fixes
+* Restore "change forgotten password" functionality
+
+### User Interface Updates
+* Rearrange widgets on Compliance Dashboard
+
+### Flagged User Interface Updates
+* Hide display of RWT Plans and related data
+
+---
+
 ## Version 14.9.0
 _18 August 2026_
 
