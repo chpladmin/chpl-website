@@ -87,22 +87,8 @@ function ChplCqmsView({ cqms: initialCqms }) {
                 </ChplTooltip>
               )}
               fieldGroups={[
-                [
-                  {
-                    label: 'Title',
-                    value: item.title || 'N/A',
-                  },
-                  {
-                    label: 'Version(s)',
-                    value: item.versionDisplay || 'N/A',
-                  },
-                ],
-                [
-                  {
-                    label: 'Description',
-                    value: item.description || 'N/A',
-                  },
-                ],
+                [{ label: 'Title', value: item.title || 'N/A' }, { label: `Version${item.versionDisplay.indexOf(',') > -1 ? 's' : ''}`, value: item.versionDisplay || 'N/A' }],
+                [{ label: 'Description', value: item.description || 'N/A' }],
               ]}
             />
           ))}
