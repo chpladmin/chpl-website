@@ -32,7 +32,7 @@ const sortVersion = (a, b) => {
 function ChplCqmsView({ cqms: initialCqms }) {
   const [cqms, setCqms] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('id');
+  const [orderBy, setOrderBy] = useState('display');
   const classes = useStyles();
 
   useEffect(() => {
@@ -87,7 +87,10 @@ function ChplCqmsView({ cqms: initialCqms }) {
                 </ChplTooltip>
               )}
               fieldGroups={[
-                [{ label: 'Title', value: item.title || 'N/A' }, { label: `Version${item.versionDisplay.indexOf(',') > -1 ? 's' : ''}`, value: item.versionDisplay || 'N/A' }],
+                [
+                  { label: 'Title', value: item.title || 'N/A' },
+                  { label: `Version${item.versionDisplay.indexOf(',') > -1 ? 's' : ''}`, value: item.versionDisplay || 'N/A' },
+                ],
                 [{ label: 'Description', value: item.description || 'N/A' }],
               ]}
             />
