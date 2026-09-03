@@ -1,0 +1,19 @@
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y apache2 vim composer curl
+
+ADD www/chpl /var/www/chpl
+ADD www/error /var/www/error
+ADD apache2 /etc/apache2
+
+
+RUN a2enmod proxy
+RUN a2enmod proxy_http
+RUN a2enmod proxy_balancer
+RUN a2enmod lbmethod_bytraffic
+
+RUN a2dissite 000-default.conf
+RUN a2ensite 001-error.conf
+CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
