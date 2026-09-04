@@ -2,6 +2,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { ChplRouteLoading } from './components/util';
+import store from './store';
+
+const hasAnyRole = (roles) => {
+  const { user } = store.getState().userInfo;
+  if (!user || !roles || roles.length === 0 || !user.role) {
+    return false;
+  }
+  return roles.reduce((ret, role) => ret || user.role === role, false);
+};
 
 (() => {
   /** @ngInject */
@@ -40,6 +49,18 @@ import { ChplRouteLoading } from './components/util';
           }
         }, 0, false);
       }
+    });
+
+    const requiresAuthentication = {
+      to: (state) => state.data && state.data.roles,
+    };
+
+    $transitions.onBefore(requiresAuthentication, (transition) => {
+      const { roles } = transition.to().data;
+      if (roles && !hasAnyRole(roles)) {
+        return transition.router.stateService.target('login', undefined, { location: false });
+      }
+      return true;
     });
 
     $transitions.onError({}, (transition) => {
