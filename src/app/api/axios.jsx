@@ -6,6 +6,7 @@ import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { setLoginState, setUser } from 'components/login/userInfo.slice';
+import store from 'store';
 
 const AxiosContext = createContext();
 
@@ -23,7 +24,7 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      const { cognitoId } = useSelector((state) => state.userInfo.user);
+      const { cognitoId } = store.getState().userInfo.user;
       const headers = {
         'API-Key': apiKey,
       };
