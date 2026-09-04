@@ -46,7 +46,6 @@ const useStyles = makeStyles({
 
 function ChplRegisterUser({ hash }) {
   const $state = getAngularService('$state');
-  const authService = getAngularService('authService');
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -73,8 +72,7 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
-            dispatch(setUser(response.data));
-            authService.saveCurrentUser(response.data);
+            dispatch(setUser({ user: response.data }));
             $state.go('administration');
           },
           onError: (error) => {

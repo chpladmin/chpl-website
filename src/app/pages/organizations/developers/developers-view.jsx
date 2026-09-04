@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
+import { getAccessToken } from 'axios-jwt';
 
 import ChplMessaging from './messaging/messaging';
 
@@ -23,10 +24,9 @@ import {
   ChplSortControls,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'developer_name', text: 'Developer' },
@@ -46,7 +46,6 @@ function ChplDevelopersView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-developersView';
-  const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
@@ -89,7 +88,7 @@ function ChplDevelopersView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  const downloadDevelopers = () => {
+  const downloadDevelopers = async () => {
     eventTrack({
       ...analytics,
       event: 'Download Developers',
@@ -97,7 +96,8 @@ function ChplDevelopersView() {
     });
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      url += `&authorization=Bearer%20${getToken()}`;
+      const accessToken = await getAccessToken();
+      url += `&authorization=Bearer%20${accessToken}`;
     }
     window.open(url);
   };

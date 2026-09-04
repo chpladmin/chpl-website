@@ -21,7 +21,6 @@ import { useCookies } from 'react-cookie';
 import { usePostLogin } from 'api/auth';
 import { setLoginState, setUser } from 'components/login/userInfo.slice';
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
@@ -49,8 +48,6 @@ const validationSchema = yup.object({
 });
 
 function ChplSignin({ dispatch }) {
-  const $rootScope = getAngularService('$rootScope');
-  const authService = getAngularService('authService');
   const newDispatch = useDispatch();
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
@@ -91,8 +88,6 @@ function ChplSignin({ dispatch }) {
           group: response.user.role,
           organization: response.user.organizations?.length > 0 ? response.user.organizations.map((org) => org.name).join(';') : undefined,
         });
-        authService.saveToken(response.accessToken);
-        authService.saveRefreshToken(response.refreshToken);
         setAuthTokens({
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
@@ -101,10 +96,7 @@ function ChplSignin({ dispatch }) {
         setCookie('refresh_token', response.refreshToken);
         newDispatch(setLoginState('LOGGEDIN'));
         newDispatch(setUser({ user: response.user }));
-        authService.saveCurrentUser(response.user);
         formik.resetForm();
-        $rootScope.$broadcast('loggedIn');
-        $rootScope.$digest();
         dispatch({ action: 'loggedIn' });
       },
       onError: (error) => {

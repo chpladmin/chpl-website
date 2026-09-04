@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useSelector } from 'react-redux';
 import { func, number } from 'prop-types';
+import { getAccessToken } from 'axios-jwt';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext } from 'shared/contexts';
@@ -61,11 +62,10 @@ function ChplUploadListing({
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
-  const authService = getAngularService('authService');
+  const { setListing } = useContext(ListingContext);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
-  const { setListing } = useContext(ListingContext);
   const classes = useStyles();
 
   const clearFile = () => {
@@ -78,16 +78,17 @@ function ChplUploadListing({
     setEle(event.target);
   };
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
     setErrors([]);
     setWarnings([]);
     setIsProcessing(true);
     setListing(undefined);
     setDiff([]);
+    const accessToken = await getAccessToken();
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
+        Authorization: `Bearer ${accessToken}`,
         'API-Key': apiKey,
       },
       data: {

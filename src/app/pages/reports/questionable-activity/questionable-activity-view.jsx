@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
+import { getAccessToken } from 'axios-jwt';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
@@ -24,7 +25,6 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { eventTrack } from 'services/analytics.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
@@ -34,7 +34,6 @@ function ChplQuestionableActivityView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const storageKey = 'storageKey-questionableActivity';
-  const authService = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
   const [downloadLink, setDownloadLink] = useState('');
@@ -72,8 +71,8 @@ function ChplQuestionableActivityView() {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}&authorization=Bearer%20${authService.getToken()}`);
-  }, [API, authService]);
+    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}`);
+  }, [API, apiKey]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const sortOptions = [
@@ -84,12 +83,13 @@ function ChplQuestionableActivityView() {
     { property: 'activity_date', text: 'Activity Date', reverseDefault: true },
   ];
 
-  const handleClick = () => {
+  const handleClick = async () => {
     eventTrack({
       ...analytics,
       event: 'Download Filtered results',
     });
-    window.open(`${downloadLink}&${filterContext.queryString()}`);
+    const accessToken = await getAccessToken();
+    window.open(`${downloadLink}&authorization=Bearer%20${accessToken}&${filterContext.queryString()}`);
   };
 
   const handleSort = (property, orderDirection) => {
