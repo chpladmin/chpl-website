@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -66,16 +66,7 @@ function ChplUploadListing({
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const classes = useStyles();
-
-  useEffect(() => {
-    getAccessToken().then((response) => {
-      if (response) {
-        setStateAccessToken(response);
-      }
-    });
-  }, []);
 
   const clearFile = () => {
     setFile(undefined);
@@ -87,16 +78,17 @@ function ChplUploadListing({
     setEle(event.target);
   };
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
     setErrors([]);
     setWarnings([]);
     setIsProcessing(true);
     setListing(undefined);
     setDiff([]);
+    const accessToken = await getAccessToken();
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {
-        Authorization: `Bearer ${stateAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         'API-Key': apiKey,
       },
       data: {

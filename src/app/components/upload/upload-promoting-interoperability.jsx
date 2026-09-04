@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -69,19 +69,10 @@ function ChplUploadPromotingInteroperability() {
   const API = useSelector((state) => state.browserInfo.api);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const Upload = getAngularService('Upload');
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let formik;
-
-  useEffect(() => {
-    getAccessToken().then((response) => {
-      if (response) {
-        setStateAccessToken(response);
-      }
-    });
-  }, []);
 
   const clearFile = () => {
     setFile(undefined);
@@ -93,11 +84,12 @@ function ChplUploadPromotingInteroperability() {
     setEle(event.target);
   };
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
+    const accessToken = await getAccessToken();
     const item = {
       url: `${API}/promoting-interoperability/upload`,
       headers: {
-        Authorization: `Bearer ${stateAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         'API-Key': apiKey,
       },
       data: {

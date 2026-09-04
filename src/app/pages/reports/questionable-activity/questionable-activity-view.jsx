@@ -41,7 +41,6 @@ function ChplQuestionableActivityView() {
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
-  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();
@@ -52,14 +51,6 @@ function ChplQuestionableActivityView() {
     sortDescending,
     query: filterContext.queryString(),
   });
-
-  useEffect(() => {
-    getAccessToken().then((response) => {
-      if (response) {
-        setStateAccessToken(response);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -80,8 +71,8 @@ function ChplQuestionableActivityView() {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}&authorization=Bearer%20${stateAccessToken}`);
-  }, [API, apiKey, stateAccessToken]);
+    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}`);
+  }, [API, apiKey]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const sortOptions = [
@@ -92,12 +83,13 @@ function ChplQuestionableActivityView() {
     { property: 'activity_date', text: 'Activity Date', reverseDefault: true },
   ];
 
-  const handleClick = () => {
+  const handleClick = async () => {
     eventTrack({
       ...analytics,
       event: 'Download Filtered results',
     });
-    window.open(`${downloadLink}&${filterContext.queryString()}`);
+    const accessToken = await getAccessToken();
+    window.open(`${downloadLink}&authorization=Bearer%20${accessToken}&${filterContext.queryString()}`);
   };
 
   const handleSort = (property, orderDirection) => {

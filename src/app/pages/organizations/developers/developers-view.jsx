@@ -54,7 +54,6 @@ function ChplDevelopersView() {
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
-  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
@@ -68,14 +67,6 @@ function ChplDevelopersView() {
     sortDescending,
     query: queryString(),
   });
-
-  useEffect(() => {
-    getAccessToken().then((response) => {
-      if (response) {
-        setStateAccessToken(response);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -97,7 +88,7 @@ function ChplDevelopersView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  const downloadDevelopers = () => {
+  const downloadDevelopers = async () => {
     eventTrack({
       ...analytics,
       event: 'Download Developers',
@@ -105,7 +96,8 @@ function ChplDevelopersView() {
     });
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      url += `&authorization=Bearer%20${stateAccessToken}`;
+      const accessToken = await getAccessToken();
+      url += `&authorization=Bearer%20${accessToken}`;
     }
     window.open(url);
   };

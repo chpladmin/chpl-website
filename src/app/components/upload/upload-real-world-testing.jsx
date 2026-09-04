@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -63,16 +63,7 @@ function ChplUploadRealWorldTesting() {
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const [stateAccessToken, setStateAccessToken] = useState(undefined);
   const classes = useStyles();
-
-  useEffect(() => {
-    getAccessToken().then((response) => {
-      if (response) {
-        setStateAccessToken(response);
-      }
-    });
-  }, []);
 
   const clearFile = () => {
     setFile(undefined);
@@ -84,11 +75,12 @@ function ChplUploadRealWorldTesting() {
     setEle(event.target);
   };
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
+    const accessToken = await getAccessToken();
     const item = {
       url: `${API}/real-world-testing/upload`,
       headers: {
-        Authorization: `Bearer ${stateAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         'API-Key': apiKey,
       },
       data: {
