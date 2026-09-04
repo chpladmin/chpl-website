@@ -72,7 +72,7 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
-            dispatch(setUser(response.data));
+            dispatch(setUser({ user: response.data }));
             $state.go('administration');
           },
           onError: (error) => {
