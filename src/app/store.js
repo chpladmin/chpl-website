@@ -40,28 +40,35 @@ const saveState = (state) => {
   }
 };
 
-const preloadedState = loadState();
-
 const localStorageMiddleware = (store) => (next) => (action) => {
   const result = next(action);
   saveState(store.getState());
   return result;
 };
 
-const store = configureStore({
-  reducer: {
-    browserInfo: browserInfoReducer,
-    userInfo: userInfoReducer,
-  },
-  preloadedState,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
-});
+const createStore = () => {
+  const configured = configureStore({
+    reducer: {
+      browserInfo: browserInfoReducer,
+      userInfo: userInfoReducer,
+    },
+    preloadedState: loadState(),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
+  });
 
-try {
-  saveState(store.getState()); // make sure `chplState` exists before dropping the legacy key
-  localStorage.removeItem(LEGACY_USER_KEY);
-} catch (err) {
-  // Ignore storage errors
-}
+  try {
+    saveState(configured.getState()); // make sure `chplState` exists before dropping the legacy key
+    localStorage.removeItem(LEGACY_USER_KEY);
+  } catch (err) {
+    // Ignore storage errors
+  }
+
+  return configured;
+};
+
+// `index.html` loads every webpack entry bundle and each one gets its own copy
+// of this module, so hold a single store on `window`. Otherwise each bundle has
+// a private `userInfo` and a login in one is invisible to all the others.
+const store = window.chplStore ?? (window.chplStore = createStore());
 
 export default store;
