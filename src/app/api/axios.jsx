@@ -1,20 +1,76 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
-import { applyAuthTokenInterceptor, clearAuthTokens, getAccessToken } from 'axios-jwt';
+import { applyAuthTokenInterceptor, getAccessToken, refreshTokenIfNeeded } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import { useCookies } from 'react-cookie';
 
-import { setLoginState, setUser } from 'components/login/userInfo.slice';
-import { getAngularService } from 'services/angular-react-helper';
+import { clearSession, SESSION_COOKIES } from 'services/auth.service';
+import store from 'store';
 
 const AxiosContext = createContext();
+
+// Exchanges a refresh token for a new access token. Used both by the request
+// interceptor below and, through `useFreshAccessToken`, by the handful of
+// download links that carry the token in a query string.
+function useRequestRefresh() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const dispatch = useDispatch();
+  const [, , removeCookie] = useCookies(SESSION_COOKIES);
+
+  return useCallback((refreshToken) => {
+    const { cognitoId } = store.getState().userInfo.user ?? {};
+    const headers = {
+      'API-Key': apiKey,
+    };
+    if (cognitoId) {
+      // Notice that this is the global axios instance, not the axiosInstance!  <-- important
+      return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
+        .then((response) => response.data.accessToken)
+        .catch(() => {
+          clearSession(dispatch, removeCookie);
+        });
+    }
+    return Promise.resolve('');
+  }, [apiKey, dispatch, removeCookie]);
+}
+
+// `getAccessToken` only reads storage, so a link built from it 401s once the
+// access token has expired. This refreshes first when needed. Callers get
+// undefined rather than a thrown error when there is no session left to
+// refresh, and the reason is reported here so every caller says the same thing.
+function useFreshAccessToken() {
+  const requestRefresh = useRequestRefresh();
+  const { enqueueSnackbar } = useSnackbar();
+
+  return useCallback(async () => {
+    let accessToken;
+    try {
+      accessToken = await refreshTokenIfNeeded(requestRefresh);
+    } catch (error) {
+      accessToken = undefined;
+    }
+    if (!accessToken) {
+      enqueueSnackbar('Your session could not be renewed. Please log in again and retry.', {
+        variant: 'error',
+      });
+    }
+    return accessToken;
+  }, [enqueueSnackbar, requestRefresh]);
+}
 
 function AxiosProvider({ children }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const dispatch = useDispatch();
-  const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
+  const [, , removeCookie] = useCookies(SESSION_COOKIES);
+  const requestRefresh = useRequestRefresh();
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -23,26 +79,6 @@ function AxiosProvider({ children }) {
         'Content-Type': 'application/json',
       },
     });
-
-    const requestRefresh = (refreshToken) => {
-      const { cognitoId } = JSON.parse(localStorage.getItem('ngStorage-currentUser'));
-      const headers = {
-        'API-Key': apiKey,
-      };
-      if (cognitoId) {
-        // Notice that this is the global axios instance, not the axiosInstance!  <-- important
-        return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
-          .then((response) => response.data.accessToken)
-          .catch(() => {
-            dispatch(setLoginState('SIGNIN'));
-            dispatch(setUser({}));
-            clearAuthTokens();
-            localStorage.removeItem('ngStorage-currentUser');
-            authService.logout();
-          });
-      }
-      return new Promise((resolve) => resolve(''));
-    };
 
     // Notice that this uses the axiosInstance instance.  <-- important
     applyAuthTokenInterceptor(ax, { requestRefresh });
@@ -81,9 +117,10 @@ function AxiosProvider({ children }) {
         return response;
       },
       (error) => {
-        if (error?.response?.data === 'Invalid authentication token.' && authService.hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
-          dispatch(setLoginState('SIGNIN'));
-          authService.logout();
+        // Only tear down a session that actually exists; an anonymous visitor
+        // hitting this error should not be pushed into the sign-in flow.
+        if (error?.response?.data === 'Invalid authentication token.' && store.getState().userInfo.user?.role) {
+          clearSession(dispatch, removeCookie);
         }
         return Promise.reject(error);
       },
@@ -105,4 +142,9 @@ function useAxios() {
   return useContext(AxiosContext);
 }
 
-export { AxiosContext, AxiosProvider, useAxios };
+export {
+  AxiosContext,
+  AxiosProvider,
+  useAxios,
+  useFreshAccessToken,
+};

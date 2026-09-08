@@ -13,7 +13,7 @@ angular
   .module('chpl.administration', [
     'angular-confirm',
     'chpl.services',
-    'ngIdle',
+    'ngIdle', // provides the `Title` service used by the `chpl` run block
     'ngFileUpload',
     'ngSanitize',
     'ui.bootstrap',
