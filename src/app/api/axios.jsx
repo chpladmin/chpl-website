@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
-import { applyAuthTokenInterceptor, clearAuthTokens, getAccessToken } from 'axios-jwt';
+import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import { useCookies } from 'react-cookie';
 
-import { setLoginState, setUser } from 'components/login/userInfo.slice';
+import { clearSession, SESSION_COOKIES } from 'services/auth.service';
 import store from 'store';
 
 const AxiosContext = createContext();
@@ -14,6 +15,7 @@ function AxiosProvider({ children }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const [, , removeCookie] = useCookies(SESSION_COOKIES);
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -24,7 +26,7 @@ function AxiosProvider({ children }) {
     });
 
     const requestRefresh = (refreshToken) => {
-      const { cognitoId } = store.getState().userInfo.user;
+      const { cognitoId } = store.getState().userInfo.user ?? {};
       const headers = {
         'API-Key': apiKey,
       };
@@ -33,10 +35,7 @@ function AxiosProvider({ children }) {
         return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
           .then((response) => response.data.accessToken)
           .catch(() => {
-            dispatch(setLoginState('SIGNIN'));
-            dispatch(setUser(undefined));
-            clearAuthTokens();
-            document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+            clearSession(dispatch, removeCookie);
           });
       }
       return new Promise((resolve) => resolve(''));
@@ -79,11 +78,10 @@ function AxiosProvider({ children }) {
         return response;
       },
       (error) => {
-        if (error?.response?.data === 'Invalid authentication token.') {
-          dispatch(setLoginState('SIGNIN'));
-          dispatch(setUser(undefined));
-          clearAuthTokens();
-          document.cookie = 'refresh_token=; Max-Age=0; path=/; domain=.healthit.gov;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+        // Only tear down a session that actually exists; an anonymous visitor
+        // hitting this error should not be pushed into the sign-in flow.
+        if (error?.response?.data === 'Invalid authentication token.' && store.getState().userInfo.user?.role) {
+          clearSession(dispatch, removeCookie);
         }
         return Promise.reject(error);
       },

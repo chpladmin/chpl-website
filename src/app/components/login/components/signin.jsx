@@ -95,7 +95,7 @@ function ChplSignin({ dispatch }) {
         setCookie('cognito_id', response.user.cognitoId);
         setCookie('refresh_token', response.refreshToken);
         newDispatch(setLoginState('LOGGEDIN'));
-        newDispatch(setUser({ user: response.user }));
+        newDispatch(setUser(response.user));
         formik.resetForm();
         dispatch({ action: 'loggedIn' });
       },

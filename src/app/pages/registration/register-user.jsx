@@ -72,7 +72,7 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Success: Your new permissions have been added', {
               variant: 'success',
             });
-            dispatch(setUser({ user: response.data }));
+            dispatch(setUser(response.data));
             $state.go('administration');
           },
           onError: (error) => {
@@ -108,7 +108,7 @@ function ChplRegisterUser({ hash }) {
           onError: (error) => {
             let errorMessage;
             if (error.response?.data?.errorMessages?.length > 0) {
-              errorMessage = error.response.data.errorMessages[0];
+              errorMessage = [error.response.data.errorMessages];
             } else if (error.response?.data?.error) {
               errorMessage = error.response.data.error;
             } else {

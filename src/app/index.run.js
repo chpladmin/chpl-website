@@ -4,13 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { ChplRouteLoading } from './components/util';
 import store from './store';
 
-const hasAnyRole = (roles) => {
-  const { user } = store.getState().userInfo;
-  if (!user || !roles || roles.length === 0 || !user.role) {
-    return false;
-  }
-  return roles.reduce((ret, role) => ret || user.role === role, false);
-};
+import { hasAnyRole } from 'services/auth.service';
 
 (() => {
   /** @ngInject */
@@ -57,7 +51,7 @@ const hasAnyRole = (roles) => {
 
     $transitions.onBefore(requiresAuthentication, (transition) => {
       const { roles } = transition.to().data;
-      if (roles && !hasAnyRole(roles)) {
+      if (roles && !hasAnyRole(store.getState().userInfo.user, roles)) {
         return transition.router.stateService.target('login', undefined, { location: false });
       }
       return true;

@@ -3,10 +3,28 @@ import { configureStore } from '@reduxjs/toolkit';
 import browserInfoReducer from 'components/browser/browserInfo.slice';
 import userInfoReducer from 'components/login/userInfo.slice';
 
+const LEGACY_USER_KEY = 'ngStorage-currentUser';
+
+// The AngularJS `authService` kept the signed-in user in its own localStorage
+// key. Seed the store from it once so sessions survive the upgrade, after which
+// `chplState` is the only place the user is persisted.
+const loadLegacyUserInfo = () => {
+  try {
+    const user = JSON.parse(localStorage.getItem(LEGACY_USER_KEY));
+    if (!user) return undefined;
+    return { loginState: 'LOGGEDIN', user };
+  } catch (err) {
+    return undefined;
+  }
+};
+
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem('chplState');
-    if (serializedState === null) return undefined; // Let reducers initialize state
+    if (serializedState === null) {
+      const userInfo = loadLegacyUserInfo();
+      return userInfo ? { userInfo } : undefined; // otherwise let reducers initialize state
+    }
     return JSON.parse(serializedState);
   } catch (err) {
     return undefined;
@@ -38,5 +56,12 @@ const store = configureStore({
   preloadedState,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
 });
+
+try {
+  saveState(store.getState()); // make sure `chplState` exists before dropping the legacy key
+  localStorage.removeItem(LEGACY_USER_KEY);
+} catch (err) {
+  // Ignore storage errors
+}
 
 export default store;

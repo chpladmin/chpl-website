@@ -2,13 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { node } from 'prop-types';
-import { clearAuthTokens } from 'axios-jwt';
 
 import ChplLogin from './login';
-import { setLoginState, setUser } from './userInfo.slice';
 
 import { usePostLogout } from 'api/auth';
 import { eventTrack } from 'services/analytics.service';
+import { clearSession, hasAnyRole, SESSION_COOKIES } from 'services/auth.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
 function UserWrapper({ children = <ChplLogin /> }) {
@@ -16,17 +15,10 @@ function UserWrapper({ children = <ChplLogin /> }) {
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const postLogout = usePostLogout();
-  const [, , removeCookie] = useCookies(['cognito_id', 'refresh_token']);
-
-  const hasAnyRole = (roles) => {
-    if (!user || !roles || roles.length === 0 || !user.role) {
-      return false;
-    }
-    return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
-  };
+  const [, , removeCookie] = useCookies(SESSION_COOKIES);
 
   const hasAuthorityOn = (organization) => user?.organizations
-        .some((org) => org.id === organization.id);
+        ?.some((org) => org.id === organization.id);
 
   const logout = (e) => {
     e.stopPropagation();
@@ -40,15 +32,11 @@ function UserWrapper({ children = <ChplLogin /> }) {
         email: user.email,
       });
     }
-    dispatch(setUser(undefined));
-    removeCookie('cognito_id');
-    removeCookie('refresh_token');
-    dispatch(setLoginState('SIGNIN'));
-    clearAuthTokens();
+    clearSession(dispatch, removeCookie);
   };
 
   const userState = {
-    hasAnyRole,
+    hasAnyRole: (roles) => hasAnyRole(user, roles),
     hasAuthorityOn,
     logout,
   };

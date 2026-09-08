@@ -58,7 +58,7 @@ const validationSchema = yup.object({
 
 function ChplForceChangePassword({ dispatch, sessionId, userName }) {
   const newDispatch = useDispatch();
-  const user = useSelector((state) => state.userInfo.value);
+  const user = useSelector((state) => state.userInfo.user);
   const [, setCookie] = useCookies(['cognito_id', 'refresh_token']);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -94,7 +94,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
           accessToken: response.accessToken,
           refreshToken: response.refreshToken,
         });
-        newDispatch(setUser({ user: response.user }));
+        newDispatch(setUser(response.user));
         eventTrack({
           ...analytics,
           event: 'Log In',
