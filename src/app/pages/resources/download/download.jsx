@@ -15,8 +15,8 @@ import CodeIcon from '@material-ui/icons/Code';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { useSelector } from 'react-redux';
-import { getAccessToken } from 'axios-jwt';
 
+import { useFreshAccessToken } from 'api/axios';
 import {
   ChplLink,
   ChplPageBody,
@@ -90,6 +90,7 @@ const allOptions = [
 function ChplResourcesDownload() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
+  const getFreshAccessToken = useFreshAccessToken();
   const analytics = {
     ...useAnalyticsContext().analytics,
     category: 'Download the CHPL',
@@ -130,7 +131,7 @@ function ChplResourcesDownload() {
       });
       let url = files[selectedOption][type];
       if (selectedOption === 'Surveillance (Basic)') {
-        const accessToken = await getAccessToken();
+        const accessToken = await getFreshAccessToken();
         url += `&authorization=Bearer%20${accessToken}`;
       }
       window.open(url);

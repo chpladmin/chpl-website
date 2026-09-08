@@ -5,10 +5,10 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
-import { getAccessToken } from 'axios-jwt';
 
 import ChplMessaging from './messaging/messaging';
 
+import { useFreshAccessToken } from 'api/axios';
 import { useFetchDevelopersBySearch } from 'api/developer';
 import {
   ChplFilterLayout,
@@ -45,6 +45,7 @@ const useStyles = makeStyles({
 function ChplDevelopersView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
+  const getFreshAccessToken = useFreshAccessToken();
   const storageKey = 'storageKey-developersView';
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -96,7 +97,7 @@ function ChplDevelopersView() {
     });
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
-      const accessToken = await getAccessToken();
+      const accessToken = await getFreshAccessToken();
       url += `&authorization=Bearer%20${accessToken}`;
     }
     window.open(url);

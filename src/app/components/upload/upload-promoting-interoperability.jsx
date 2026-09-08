@@ -15,8 +15,8 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import { getAccessToken } from 'axios-jwt';
 
+import { useFreshAccessToken } from 'api/axios';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 
@@ -70,6 +70,7 @@ function ChplUploadPromotingInteroperability() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const Upload = getAngularService('Upload');
+  const getFreshAccessToken = useFreshAccessToken();
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let formik;
@@ -85,7 +86,7 @@ function ChplUploadPromotingInteroperability() {
   };
 
   const uploadFile = async () => {
-    const accessToken = await getAccessToken();
+    const accessToken = await getFreshAccessToken();
     const item = {
       url: `${API}/promoting-interoperability/upload`,
       headers: {

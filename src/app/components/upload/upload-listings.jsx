@@ -13,8 +13,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { getAccessToken } from 'axios-jwt';
 
+import { useFreshAccessToken } from 'api/axios';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
@@ -60,6 +60,7 @@ function ChplUploadListings() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
+  const getFreshAccessToken = useFreshAccessToken();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -76,7 +77,7 @@ function ChplUploadListings() {
   };
 
   const uploadFile = async () => {
-    const accessToken = await getAccessToken();
+    const accessToken = await getFreshAccessToken();
     const item = {
       url: `${API}/listings/upload`,
       headers: {

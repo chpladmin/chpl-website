@@ -16,11 +16,11 @@ import {
 } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
-import { getAccessToken } from 'axios-jwt';
 
 import ChplListingEdit from './listing-edit';
 import ChplListingHistory from './history/listing-history';
 
+import { useFreshAccessToken } from 'api/axios';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
@@ -63,6 +63,7 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
+  const getFreshAccessToken = useFreshAccessToken();
   const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -101,7 +102,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Original CSV',
     });
-    const accessToken = await getAccessToken();
+    const accessToken = await getFreshAccessToken();
     const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${accessToken}`;
     window.open(downloadLink);
   };
@@ -111,7 +112,7 @@ function ChplListingPage({ id }) {
       ...analyticsData.analytics,
       event: 'Download Current CSV',
     });
-    const accessToken = await getAccessToken();
+    const accessToken = await getFreshAccessToken();
     const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${accessToken}`;
     window.open(downloadLink);
   };

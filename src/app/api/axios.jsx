@@ -1,7 +1,12 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
-import { applyAuthTokenInterceptor, getAccessToken } from 'axios-jwt';
+import { applyAuthTokenInterceptor, getAccessToken, refreshTokenIfNeeded } from 'axios-jwt';
 import { element } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useCookies } from 'react-cookie';
@@ -11,11 +16,52 @@ import store from 'store';
 
 const AxiosContext = createContext();
 
+// Exchanges a refresh token for a new access token. Used both by the request
+// interceptor below and, through `useFreshAccessToken`, by the handful of
+// download links that carry the token in a query string.
+function useRequestRefresh() {
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const dispatch = useDispatch();
+  const [, , removeCookie] = useCookies(SESSION_COOKIES);
+
+  return useCallback((refreshToken) => {
+    const { cognitoId } = store.getState().userInfo.user ?? {};
+    const headers = {
+      'API-Key': apiKey,
+    };
+    if (cognitoId) {
+      // Notice that this is the global axios instance, not the axiosInstance!  <-- important
+      return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
+        .then((response) => response.data.accessToken)
+        .catch(() => {
+          clearSession(dispatch, removeCookie);
+        });
+    }
+    return Promise.resolve('');
+  }, [apiKey, dispatch, removeCookie]);
+}
+
+// `getAccessToken` only reads storage, so a link built from it 401s once the
+// access token has expired. This refreshes first when needed, and resolves to
+// undefined instead of throwing when there is no session left to refresh.
+function useFreshAccessToken() {
+  const requestRefresh = useRequestRefresh();
+
+  return useCallback(async () => {
+    try {
+      return await refreshTokenIfNeeded(requestRefresh);
+    } catch (error) {
+      return undefined;
+    }
+  }, [requestRefresh]);
+}
+
 function AxiosProvider({ children }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [, , removeCookie] = useCookies(SESSION_COOKIES);
+  const requestRefresh = useRequestRefresh();
 
   const axios = useMemo(() => {
     const ax = Axios.create({
@@ -24,22 +70,6 @@ function AxiosProvider({ children }) {
         'Content-Type': 'application/json',
       },
     });
-
-    const requestRefresh = (refreshToken) => {
-      const { cognitoId } = store.getState().userInfo.user ?? {};
-      const headers = {
-        'API-Key': apiKey,
-      };
-      if (cognitoId) {
-        // Notice that this is the global axios instance, not the axiosInstance!  <-- important
-        return Axios.post('rest/auth/refresh-token', { refreshToken, cognitoId }, { headers })
-          .then((response) => response.data.accessToken)
-          .catch(() => {
-            clearSession(dispatch, removeCookie);
-          });
-      }
-      return new Promise((resolve) => resolve(''));
-    };
 
     // Notice that this uses the axiosInstance instance.  <-- important
     applyAuthTokenInterceptor(ax, { requestRefresh });
@@ -103,4 +133,9 @@ function useAxios() {
   return useContext(AxiosContext);
 }
 
-export { AxiosContext, AxiosProvider, useAxios };
+export {
+  AxiosContext,
+  AxiosProvider,
+  useAxios,
+  useFreshAccessToken,
+};

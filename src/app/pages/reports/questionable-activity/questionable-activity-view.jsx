@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
-import { getAccessToken } from 'axios-jwt';
 
+import { useFreshAccessToken } from 'api/axios';
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
 import {
@@ -33,6 +33,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 function ChplQuestionableActivityView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
+  const getFreshAccessToken = useFreshAccessToken();
   const storageKey = 'storageKey-questionableActivity';
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
@@ -88,7 +89,7 @@ function ChplQuestionableActivityView() {
       ...analytics,
       event: 'Download Filtered results',
     });
-    const accessToken = await getAccessToken();
+    const accessToken = await getFreshAccessToken();
     window.open(`${downloadLink}&authorization=Bearer%20${accessToken}&${filterContext.queryString()}`);
   };
 
