@@ -5,9 +5,12 @@ import userInfoReducer from 'components/login/userInfo.slice';
 
 const LEGACY_USER_KEY = 'ngStorage-currentUser';
 
-// The AngularJS `authService` kept the signed-in user in its own localStorage
-// key. Seed the store from it once so sessions survive the upgrade, after which
-// `chplState` is the only place the user is persisted.
+// Everything the AngularJS `authService` wrote. Only the user is carried over;
+// the tokens are dropped outright, since `axios-jwt` owns token storage now.
+const LEGACY_KEYS = [LEGACY_USER_KEY, 'ngStorage-jwtToken', 'ngStorage-refreshToken'];
+
+// Seed the store from the legacy user once so sessions survive the upgrade,
+// after which `chplState` is the only place the user is persisted.
 const loadLegacyUserInfo = () => {
   try {
     const user = JSON.parse(localStorage.getItem(LEGACY_USER_KEY));
@@ -57,8 +60,8 @@ const createStore = () => {
   });
 
   try {
-    saveState(configured.getState()); // make sure `chplState` exists before dropping the legacy key
-    localStorage.removeItem(LEGACY_USER_KEY);
+    saveState(configured.getState()); // make sure `chplState` exists before dropping the legacy keys
+    LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
   } catch (err) {
     // Ignore storage errors
   }
