@@ -111,7 +111,7 @@ function ChplResourcesApi() {
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
-  }, [API]);
+  }, [API, apiKey]);
 
   const downloadFile = (type) => {
     if (selectedOption) {

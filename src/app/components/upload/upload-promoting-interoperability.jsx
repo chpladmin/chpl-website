@@ -87,6 +87,9 @@ function ChplUploadPromotingInteroperability() {
 
   const uploadFile = async () => {
     const accessToken = await getFreshAccessToken();
+    if (!accessToken) {
+      return;
+    }
     const item = {
       url: `${API}/promoting-interoperability/upload`,
       headers: {

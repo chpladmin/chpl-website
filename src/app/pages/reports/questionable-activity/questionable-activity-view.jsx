@@ -37,7 +37,6 @@ function ChplQuestionableActivityView() {
   const storageKey = 'storageKey-questionableActivity';
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
-  const [downloadLink, setDownloadLink] = useState('');
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'activity_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
@@ -71,10 +70,6 @@ function ChplQuestionableActivityView() {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  useEffect(() => {
-    setDownloadLink(`${API}/questionable-activity/download?api_key=${apiKey}`);
-  }, [API, apiKey]);
-
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const sortOptions = [
     { property: 'developer', text: 'Developer' },
@@ -90,7 +85,10 @@ function ChplQuestionableActivityView() {
       event: 'Download Filtered results',
     });
     const accessToken = await getFreshAccessToken();
-    window.open(`${downloadLink}&authorization=Bearer%20${accessToken}&${filterContext.queryString()}`);
+    if (!accessToken) {
+      return;
+    }
+    window.open(`${API}/questionable-activity/download?api_key=${apiKey}&authorization=Bearer%20${accessToken}&${filterContext.queryString()}`);
   };
 
   const handleSort = (property, orderDirection) => {

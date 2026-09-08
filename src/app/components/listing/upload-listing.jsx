@@ -86,6 +86,10 @@ function ChplUploadListing({
     setListing(undefined);
     setDiff([]);
     const accessToken = await getFreshAccessToken();
+    if (!accessToken) {
+      setIsProcessing(false);
+      return;
+    }
     const item = {
       url: `${API}/listings/upload/${id}`,
       headers: {

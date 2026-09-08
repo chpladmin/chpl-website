@@ -78,6 +78,9 @@ function ChplUploadRealWorldTesting() {
 
   const uploadFile = async () => {
     const accessToken = await getFreshAccessToken();
+    if (!accessToken) {
+      return;
+    }
     const item = {
       url: `${API}/real-world-testing/upload`,
       headers: {

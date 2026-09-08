@@ -103,8 +103,10 @@ function ChplListingPage({ id }) {
       event: 'Download Original CSV',
     });
     const accessToken = await getFreshAccessToken();
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${accessToken}`;
-    window.open(downloadLink);
+    if (!accessToken) {
+      return;
+    }
+    window.open(`${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${accessToken}`);
   };
 
   const downloadCurrentCsv = async () => {
@@ -113,8 +115,10 @@ function ChplListingPage({ id }) {
       event: 'Download Current CSV',
     });
     const accessToken = await getFreshAccessToken();
-    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${accessToken}`;
-    window.open(downloadLink);
+    if (!accessToken) {
+      return;
+    }
+    window.open(`${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${accessToken}`);
   };
 
   const edit = () => {

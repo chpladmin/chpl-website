@@ -98,6 +98,9 @@ function ChplDevelopersView() {
     let url = `${API}/developers/search/download?api_key=${apiKey}&${queryString()}`;
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
       const accessToken = await getFreshAccessToken();
+      if (!accessToken) {
+        return;
+      }
       url += `&authorization=Bearer%20${accessToken}`;
     }
     window.open(url);

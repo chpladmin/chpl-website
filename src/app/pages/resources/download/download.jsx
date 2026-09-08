@@ -87,6 +87,12 @@ const allOptions = [
   'Direct Review Activity',
 ];
 
+// Options limited to certain roles. These also need an access token appended to
+// their download URL; anything absent here is public.
+const restrictedOptions = {
+  'Surveillance (Basic)': ['chpl-admin', 'chpl-onc'],
+};
+
 function ChplResourcesDownload() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
@@ -114,13 +120,8 @@ function ChplResourcesDownload() {
       'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${apiKey}`, definition: `${API}/developers/direct-reviews/download?api_key=${apiKey}&definition=true`, label: 'Direct Review Activity' },
     };
     setFiles(data);
-    setDownloadOptions(() => allOptions.filter((option) => {
-      if (option === 'Surveillance (Basic)' && !hasAnyRole(['chpl-admin', 'chpl-onc'])) {
-        return false;
-      }
-      return true;
-    }));
-  }, [API, hasAnyRole]);
+    setDownloadOptions(() => allOptions.filter((option) => !restrictedOptions[option] || hasAnyRole(restrictedOptions[option])));
+  }, [API, apiKey, hasAnyRole]);
 
   const downloadFile = async (type) => {
     if (selectedOption) {
@@ -130,8 +131,11 @@ function ChplResourcesDownload() {
         label: files[selectedOption].label,
       });
       let url = files[selectedOption][type];
-      if (selectedOption === 'Surveillance (Basic)') {
+      if (restrictedOptions[selectedOption]) {
         const accessToken = await getFreshAccessToken();
+        if (!accessToken) {
+          return;
+        }
         url += `&authorization=Bearer%20${accessToken}`;
       }
       window.open(url);

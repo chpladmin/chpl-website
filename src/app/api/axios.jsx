@@ -42,18 +42,27 @@ function useRequestRefresh() {
 }
 
 // `getAccessToken` only reads storage, so a link built from it 401s once the
-// access token has expired. This refreshes first when needed, and resolves to
-// undefined instead of throwing when there is no session left to refresh.
+// access token has expired. This refreshes first when needed. Callers get
+// undefined rather than a thrown error when there is no session left to
+// refresh, and the reason is reported here so every caller says the same thing.
 function useFreshAccessToken() {
   const requestRefresh = useRequestRefresh();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useCallback(async () => {
+    let accessToken;
     try {
-      return await refreshTokenIfNeeded(requestRefresh);
+      accessToken = await refreshTokenIfNeeded(requestRefresh);
     } catch (error) {
-      return undefined;
+      accessToken = undefined;
     }
-  }, [requestRefresh]);
+    if (!accessToken) {
+      enqueueSnackbar('Your session could not be renewed. Please log in again and retry.', {
+        variant: 'error',
+      });
+    }
+    return accessToken;
+  }, [enqueueSnackbar, requestRefresh]);
 }
 
 function AxiosProvider({ children }) {
