@@ -63,7 +63,7 @@ Webpack's `resolve.modules` includes `src/app`, so imports write as if `src/app`
 
 ### Build-time globals
 
-`webpack.DefinePlugin` injects `DEVELOPER_MODE`, `ENABLE_LOGGING`, `MINUTES_UNTIL_IDLE`, `MINUTES_UNTIL_LOGOUT` based on `NODE_ENV`. Reference these as bare globals (with `/* global DEVELOPER_MODE */` eslint comment) rather than `process.env`.
+`webpack.DefinePlugin` injects `DEVELOPER_MODE` and `ENABLE_LOGGING` based on `NODE_ENV`. Reference these as bare globals (with `/* global DEVELOPER_MODE */` eslint comment) rather than `process.env`.
 
 ### Deployment
 
