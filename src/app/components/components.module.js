@@ -17,7 +17,6 @@ angular
   .module('chpl.components', [
     'chpl.services',
     'ngCytoscape',
-    'ngFileUpload',
     'ngResource',
     'ui.bootstrap',
     'ui.router',
