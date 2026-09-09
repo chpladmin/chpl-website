@@ -14,6 +14,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
+import { useFreshAccessToken } from 'api/axios';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
@@ -59,7 +60,7 @@ function ChplUploadRealWorldTesting() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const Upload = getAngularService('Upload');
-  const authService = getAngularService('authService');
+  const getFreshAccessToken = useFreshAccessToken();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -75,11 +76,15 @@ function ChplUploadRealWorldTesting() {
     setEle(event.target);
   };
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
+    const accessToken = await getFreshAccessToken();
+    if (!accessToken) {
+      return;
+    }
     const item = {
       url: `${API}/real-world-testing/upload`,
       headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
+        Authorization: `Bearer ${accessToken}`,
         'API-Key': apiKey,
       },
       data: {

@@ -46,7 +46,6 @@ const useStyles = makeStyles({
 
 function ChplRegisterUser({ hash }) {
   const $state = getAngularService('$state');
-  const authService = getAngularService('authService');
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -74,7 +73,6 @@ function ChplRegisterUser({ hash }) {
               variant: 'success',
             });
             dispatch(setUser(response.data));
-            authService.saveCurrentUser(response.data);
             $state.go('administration');
           },
           onError: (error) => {
@@ -110,7 +108,7 @@ function ChplRegisterUser({ hash }) {
           onError: (error) => {
             let errorMessage;
             if (error.response?.data?.errorMessages?.length > 0) {
-              errorMessage = error.response.data.errorMessages[0];
+              errorMessage = [error.response.data.errorMessages];
             } else if (error.response?.data?.error) {
               errorMessage = error.response.data.error;
             } else {
