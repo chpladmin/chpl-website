@@ -3,7 +3,7 @@ import { Box, makeStyles } from '@material-ui/core';
 
 import ChplLoadingSpinner from './chpl-loading-spinner';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { onRouteChange } from 'services/navigation.service';
 
 const MIN_VISIBLE_MS = 500;
 
@@ -31,7 +31,6 @@ function ChplRouteLoading() {
       vanillaOverlay.classList.remove('is-active');
     }
 
-    const $transitions = getAngularService('$transitions');
     let shownAt = 0;
     let hideTimeout = null;
 
@@ -58,17 +57,17 @@ function ChplRouteLoading() {
       }, remaining);
     };
 
-    const deregisterStart = $transitions.onStart({}, () => { show(); });
-    const deregisterSuccess = $transitions.onSuccess({}, () => { hide(); });
-    const deregisterError = $transitions.onError({}, () => { hide(); });
+    const deregister = onRouteChange({
+      onStart: () => { show(); },
+      onSuccess: () => { hide(); },
+      onError: () => { hide(); },
+    });
 
     return () => {
       if (hideTimeout) {
         clearTimeout(hideTimeout);
       }
-      deregisterStart();
-      deregisterSuccess();
-      deregisterError();
+      deregister();
     };
   }, []);
 
