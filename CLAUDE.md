@@ -84,23 +84,29 @@ Within any named (non-default) import, alphabetize the imported names, e.g. `imp
 
 ## Commits
 
-Every commit message must contain its branch name as a tag — `[#OCD-1234]` for branch `OCD-1234` — **exactly once**. A missing tag is a defect, and so is a second copy.
+Every commit message must contain its branch name as a tag — `[#OCD-1234]` for branch `OCD-1234` — **exactly once**. This is a regulatory and policy requirement: a missing tag is a defect, and so is a second copy. `release:` commits are the one exemption; they are version deploys rather than ticket work.
 
-When you are the one writing it, put it on its own line at the end of the message body, before any git trailers:
+Almost every commit is a single subject line plus the tag and nothing else. That is the house style — it describes over 95% of the history — so write that unless you have a reason not to:
 
 ```
 fix: bail out of downloads when the session cannot be renewed
 
-The links carried an expired token, so the request failed with no explanation.
-
 [#OCD-1234]
-
-Co-Authored-By: Some Name <someone@example.com>
 ```
 
-Git trailers (`Co-Authored-By:`, `Signed-off-by:`) follow the tag as their own block, since tooling only recognises trailers as the final block of a message.
+Add a body only when the reason for the change is not evident from the subject. When you do, the tag goes on its own line at the end of the body, before any git trailers (`Co-Authored-By:`, `Signed-off-by:`), since tooling only recognises trailers as the final block of a message.
 
-### Which mechanism supplies it
+### Subject prefixes
+
+- `feat`, `fix`, `refactor`, `ui` — the bulk of the work. `ui` is for presentation-only changes.
+- `<type>-flag` (`feat-flag`, `ui-flag`, `fix-flag`) — work behind a feature flag. Note the order: a lone `flag-feat` exists in the history and is not the pattern to copy.
+- `build`, `ci`, `style`, `perf`, `chore` — tooling, formatting and housekeeping.
+- `release` — version deploys. Exempt from the tag requirement, as above.
+- `wip` — appears in the history but says nothing useful; avoid it.
+
+Lowercase the text after the prefix. Append `!` — `feat!:`, `ui!:`, `fix-flag!:` — when the change is user-visible and should be picked up for release notes. It does not carry the conventional-commits "breaking change" meaning here.
+
+### Which mechanism supplies the tag
 
 Three things can put the tag there, and only one should:
 
@@ -116,9 +122,8 @@ git hook run prepare-commit-msg -- <throwaway file containing a test message>
 
 If a tag appears, the hook owns it — leave it out of the message you write. If nothing appears, you own it.
 
-Do not assume the hook is the one doing it. It has two known gaps:
+Do not assume the hook is the one doing it. It has three known gaps:
 
 - **It may not run at all.** The hooks have shipped as MSYS-style symlinks in `.git/hooks` pointing into a sibling `chpl-documentation` checkout. Git Bash follows those, but native `git.exe` cannot execute through them, so on Windows they fail with `cannot spawn .git/hooks/pre-commit: No such file or directory` — or silently never fire. The fix is a directory of real (non-symlink) hook files plus `git config core.hooksPath <dir>`; a relative path there resolves from the repo root, so it works from any subdirectory.
+- **It never runs for commits made outside a local clone.** Anything committed through the GitHub web UI — an inline file edit, a suggested-change accepted on a PR — bypasses local hooks entirely, so the tag has to be typed. There are untagged commits in the history from exactly this route.
 - **It skips some commits by design.** It bails on any message containing the word "merge" (case-insensitive, anywhere in the message, not just the subject) and on any branch whose name contains "rebas".
-
-Whichever mechanism applies, check the result before pushing: `git show -s --format=%B HEAD` should show the tag once.
