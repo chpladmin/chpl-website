@@ -81,3 +81,44 @@ Group imports into three blocks, separated by a blank line, in this order:
 3. Bare imports resolved from `src/app` as root (e.g. `api/acbs`, `components/util`, `shared/contexts`, `services/analytics.service`), alphabetized by path, e.g. `api/acbs` before `components/util` before `shared/contexts`.
 
 Within any named (non-default) import, alphabetize the imported names, e.g. `import { setLoginState, setUser } from 'components/login/userInfo.slice';` (not `{ setUser, setLoginState }`).
+
+## Commits
+
+Every commit message must contain its branch name as a tag — `[#OCD-1234]` for branch `OCD-1234` — **exactly once**. A missing tag is a defect, and so is a second copy.
+
+When you are the one writing it, put it on its own line at the end of the message body, before any git trailers:
+
+```
+fix: bail out of downloads when the session cannot be renewed
+
+The links carried an expired token, so the request failed with no explanation.
+
+[#OCD-1234]
+
+Co-Authored-By: Some Name <someone@example.com>
+```
+
+Git trailers (`Co-Authored-By:`, `Signed-off-by:`) follow the tag as their own block, since tooling only recognises trailers as the final block of a message.
+
+### Which mechanism supplies it
+
+Three things can put the tag there, and only one should:
+
+1. **A `prepare-commit-msg` hook**, which inserts `[#<branch>]` immediately after the subject line rather than at the end of the body.
+2. **These instructions**, when the message is drafted by an agent reading this file.
+3. **Typing it**, when writing the message by hand.
+
+Know which one is live in your clone before you rely on it. If the hook fires *and* the message already carries a tag, the commit ends up with two; if it does not fire and nobody wrote one, the commit ends up with none. Check with:
+
+```
+git hook run prepare-commit-msg -- <throwaway file containing a test message>
+```
+
+If a tag appears, the hook owns it — leave it out of the message you write. If nothing appears, you own it.
+
+Do not assume the hook is the one doing it. It has two known gaps:
+
+- **It may not run at all.** The hooks have shipped as MSYS-style symlinks in `.git/hooks` pointing into a sibling `chpl-documentation` checkout. Git Bash follows those, but native `git.exe` cannot execute through them, so on Windows they fail with `cannot spawn .git/hooks/pre-commit: No such file or directory` — or silently never fire. The fix is a directory of real (non-symlink) hook files plus `git config core.hooksPath <dir>`; a relative path there resolves from the repo root, so it works from any subdirectory.
+- **It skips some commits by design.** It bails on any message containing the word "merge" (case-insensitive, anywhere in the message, not just the subject) and on any branch whose name contains "rebas".
+
+Whichever mechanism applies, check the result before pushing: `git show -s --format=%B HEAD` should show the tag once.
