@@ -11,14 +11,12 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
-import { useFreshAccessToken } from 'api/axios';
+import { useAxios } from 'api/axios';
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
   buttonUploadContainer: {
@@ -65,12 +63,9 @@ const validationSchema = yup.object({
 });
 
 function ChplUploadPromotingInteroperability() {
-  const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = useSelector((state) => state.browserInfo.api);
+  const axios = useAxios();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const Upload = getAngularService('Upload');
-  const getFreshAccessToken = useFreshAccessToken();
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let formik;
@@ -85,37 +80,23 @@ function ChplUploadPromotingInteroperability() {
     setEle(event.target);
   };
 
-  const uploadFile = async () => {
-    const accessToken = await getFreshAccessToken();
-    if (!accessToken) {
-      return;
-    }
-    const item = {
-      url: `${API}/promoting-interoperability/upload`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'API-Key': apiKey,
-      },
-      data: {
-        file,
-      },
-    };
-    if (typeof formik.values.accurateAsOf === 'object') {
-      item.url += `?accurate_as_of=${formik.values.accurateAsOf.getTime()}`;
-    } else {
-      item.url += `?accurate_as_of=${new Date(formik.values.accurateAsOf).getTime()}`;
-    }
-    Upload.upload(item)
+  const uploadFile = () => {
+    const data = new FormData();
+    data.append('file', file);
+    const accurateAsOf = typeof formik.values.accurateAsOf === 'object'
+      ? formik.values.accurateAsOf.getTime()
+      : new Date(formik.values.accurateAsOf).getTime();
+    axios.post(`promoting-interoperability/upload?accurate_as_of=${accurateAsOf}`, data)
       .then((response) => {
-        const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
+        const message = `File "${file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
         enqueueSnackbar(message, {
           variant: 'success',
         });
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
-        if (error?.data?.errorMessages) {
-          message += ` ${error.data.errorMessages.join(', ')}`;
+        if (error?.response?.data?.errorMessages) {
+          message += ` ${error.response.data.errorMessages.join(', ')}`;
         }
         enqueueSnackbar(message, {
           variant: 'error',

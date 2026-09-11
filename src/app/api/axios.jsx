@@ -88,6 +88,12 @@ function AxiosProvider({ children }) {
         ...config,
       };
       updated.headers['API-Key'] = apiKey;
+      // This instance defaults to JSON, and axios serialises a FormData body to
+      // JSON if that header sticks. Clearing it lets the browser set
+      // multipart/form-data with its own boundary.
+      if (updated.data instanceof FormData) {
+        updated.headers.delete('Content-Type');
+      }
       let accessToken = '';
       accessToken = await getAccessToken();
       if (accessToken) {
