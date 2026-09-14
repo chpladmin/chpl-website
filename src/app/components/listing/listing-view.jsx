@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -28,7 +28,7 @@ import ChplSubscribe from 'components/subscriptions/subscribe';
 import { InternalScrollButton } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { isListingActive } from 'services/listing.service';
-import { useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext, FlagContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -123,6 +123,7 @@ function ChplListingView({
   dispatch = () => {},
 }) {
   const { analytics } = useAnalyticsContext();
+  const { hti520270101IsOn } = useContext(FlagContext);
   const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
@@ -226,7 +227,7 @@ function ChplListingView({
         <AssessmentOutlinedIcon className={classes.iconSpacing} />
       </>
     ),
-    displayFilter: (l) => (l.edition === null || l.edition.name === '2015'),
+    displayFilter: (l) => (l.edition === null || l.edition.name === '2015') && !hti520270101IsOn,
   }, {
     id: 'compliance',
     event: 'Navigate to Compliance Activities',
@@ -364,7 +365,7 @@ function ChplListingView({
              </CardContent>
            </Card>
          )}
-        { (listing.edition === null || listing.edition.name === '2015')
+        { (listing.edition === null || listing.edition.name === '2015') && !hti520270101IsOn
           && (
             <Card>
               <span className="anchor-element">

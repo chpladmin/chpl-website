@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -31,7 +30,7 @@ const staticFilters = [{
   filterFn: (item, filter) => filter.values.reduce((acc, v) => (v.selected ? (acc && (v.value === 'active' ? !item.removed : item.removed)) : acc), true),
 }];
 
-function ChplG1g2() {
+function ChplG1g2() { // to delete when hti520270101IsOn is turned on
   const { data, isLoading, isSuccess } = useFetchG1g2();
   const criteriaQuery = useFetchCriteria();
   const [filters, setFilters] = useState(staticFilters);
