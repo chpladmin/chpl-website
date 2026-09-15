@@ -2,12 +2,23 @@ FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y apache2 vim composer curl
+# gettext-base: provides envsubst for the vhost templating in
+# docker-entrypoint-maint.sh
+RUN apt-get update && apt-get install -y apache2 vim composer curl gettext-base
 
 ADD www/chpl /var/www/chpl
 ADD www/error /var/www/error
 ADD apache2 /etc/apache2
 
+# ServerName/ServerAdmin are templated at container start (see
+# docker-entrypoint-maint.sh) instead of baked in, so the same image can serve
+# maintenance mode for any environment's hostname without rebuilding. Stash
+# pristine copies of the two vhosts - which arrive carrying the placeholders -
+# for the entrypoint to render from on every start.
+RUN mkdir -p /etc/apache2/conf-templates \
+    && cp /etc/apache2/sites-available/000-default.conf \
+          /etc/apache2/sites-available/001-error.conf \
+          /etc/apache2/conf-templates/
 
 RUN a2enmod proxy
 RUN a2enmod proxy_http
@@ -16,4 +27,9 @@ RUN a2enmod lbmethod_bytraffic
 
 RUN a2dissite 000-default.conf
 RUN a2ensite 001-error.conf
+
+COPY docker-entrypoint-maint.sh /usr/local/bin/docker-entrypoint-maint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-maint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint-maint.sh"]
 CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
