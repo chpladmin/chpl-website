@@ -7,7 +7,9 @@ const getCqmValue = (cqm) => {
     return ret;
   }
   if (cqm.cmsId) {
-    return parseInt(cqm.cmsId.substring(3), 10);
+    const ret = parseInt(cqm.cmsId.substring(3), 10);
+    if (cqm.cmsId.endsWith('FHIR')) { return ret + 0.5; }
+    return ret;
   }
   return parseInt(cqm.nqfNumber, 10);
 };
