@@ -10,15 +10,19 @@ ADD www/chpl /var/www/chpl
 ADD www/error /var/www/error
 ADD apache2 /etc/apache2
 
-# ServerName/ServerAdmin are templated at container start (see
-# docker-entrypoint-maint.sh) instead of baked in, so the same image can serve
-# maintenance mode for any environment's hostname without rebuilding. Stash
-# pristine copies of the two vhosts - which arrive carrying the placeholders -
-# for the entrypoint to render from on every start.
-RUN mkdir -p /etc/apache2/conf-templates \
+# ServerName/ServerAdmin and the /server-status ACL are templated at container
+# start (see docker-entrypoint-maint.sh) instead of baked in, so the same image
+# can serve maintenance mode for any environment's hostname and monitoring
+# subnet without rebuilding. Stash pristine copies of the files that arrive
+# carrying the placeholders, preserving their subdirectories, for the entrypoint
+# to render from on every start.
+RUN mkdir -p /etc/apache2/conf-templates/sites-available \
+             /etc/apache2/conf-templates/mods-enabled \
     && cp /etc/apache2/sites-available/000-default.conf \
           /etc/apache2/sites-available/001-error.conf \
-          /etc/apache2/conf-templates/
+          /etc/apache2/conf-templates/sites-available/ \
+    && cp /etc/apache2/mods-enabled/status.conf \
+          /etc/apache2/conf-templates/mods-enabled/
 
 RUN a2enmod proxy
 RUN a2enmod proxy_http
