@@ -11,7 +11,10 @@ RUN corepack enable
 # file that was never created.
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
-RUN yarn install
+# --immutable to match the workflow's gated `build` job: .yarnrc.yml sets
+# enableImmutableInstalls: false, so without the explicit flag this install
+# could quietly resolve differently than the one CI already validated.
+RUN yarn install --immutable
 
 COPY . .
 RUN yarn build --env.NODE_ENV=production
