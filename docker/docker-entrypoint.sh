@@ -66,4 +66,12 @@ export STATUS_ALLOWED_IPS
 
 envsubst '${STATUS_ALLOWED_IPS}' < /usr/local/apache2/conf/extra/status.conf.template > /usr/local/apache2/conf/extra/status.conf
 
+# Set globally so httpd doesn't log AH00558 on every start, guessing an FQDN by
+# reverse DNS. Same variable name the maintenance image takes, so one value can
+# be passed to both containers.
+: "${SERVER_NAME:=localhost}"
+export SERVER_NAME
+
+envsubst '${SERVER_NAME}' < /usr/local/apache2/conf/extra/servername.conf.template > /usr/local/apache2/conf/extra/servername.conf
+
 exec "$@"
