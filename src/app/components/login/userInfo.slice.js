@@ -4,20 +4,24 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: {
-    loginState: localStorage.getItem('ngStorage-currentUser') ? 'LOGGEDIN' : 'SIGNIN',
-    user: {},
+    loginState: 'SIGNIN',
+    user: undefined,
   },
   reducers: {
     setLoginState: (state, action) => {
       state.loginState = action.payload;
     },
     setUser: (state, action) => {
-      state.user = action.payload.user;
+      state.user = action.payload;
+    },
+    clearUser: (state) => {
+      state.user = undefined;
     },
   },
 });
 
 export const {
+  clearUser,
   setLoginState,
   setUser,
 } = userInfoSlice.actions;

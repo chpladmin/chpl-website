@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "14.10.0",
+  "version": "14.11.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -117,5 +117,5 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "packageManager": "yarn@4.17.1"
+  "packageManager": "yarn@4.18.0"
 }

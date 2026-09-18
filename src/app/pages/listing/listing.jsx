@@ -20,6 +20,7 @@ import { number, oneOfType, string } from 'prop-types';
 import ChplListingEdit from './listing-edit';
 import ChplListingHistory from './history/listing-history';
 
+import { useFreshAccessToken } from 'api/axios';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
@@ -27,7 +28,6 @@ import ChplSurveillanceEdit from 'components/listing/details/compliance/surveill
 import ChplListingView from 'components/listing/listing-view';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 import ChplTooltip from 'components/util/chpl-tooltip';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage } from 'services/storage.service';
 import {
@@ -63,8 +63,8 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
+  const getFreshAccessToken = useFreshAccessToken();
   const user = useSelector((state) => state.userInfo.user);
-  const { getToken } = getAngularService('authService');
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
   const { data, isLoading, isSuccess } = useFetchListing({ id });
@@ -97,22 +97,28 @@ function ChplListingPage({ id }) {
     return false;
   };
 
-  const downloadOriginalCsv = () => {
+  const downloadOriginalCsv = async () => {
     eventTrack({
       ...analyticsData.analytics,
       event: 'Download Original CSV',
     });
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${getToken()}`;
-    window.open(downloadLink);
+    const accessToken = await getFreshAccessToken();
+    if (!accessToken) {
+      return;
+    }
+    window.open(`${API}/listings/${listing.id}/uploaded-file?api_key=${apiKey}&authorization=Bearer%20${accessToken}`);
   };
 
-  const downloadCurrentCsv = () => {
+  const downloadCurrentCsv = async () => {
     eventTrack({
       ...analyticsData.analytics,
       event: 'Download Current CSV',
     });
-    const downloadLink = `${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${getToken()}`;
-    window.open(downloadLink);
+    const accessToken = await getFreshAccessToken();
+    if (!accessToken) {
+      return;
+    }
+    window.open(`${API}/certified_products/${listing.id}/download?api_key=${apiKey}&authorization=Bearer%20${accessToken}`);
   };
 
   const edit = () => {
