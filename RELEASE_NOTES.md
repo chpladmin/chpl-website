@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 14.11.0
+_14 September 2026_
+
+### User Interface Updates
+* Change name of Surveillance Non-conformities panel in dashboard
+* Add developer page hyperlinks to the Developer Attestation chart
+
+### Flagged Features
+* Stop displaying G1/G2 measures
+
+---
+
 ## Version 14.10.0
 _31 August 2026_
 

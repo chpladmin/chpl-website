@@ -11,7 +11,10 @@ RUN corepack enable
 # file that was never created.
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
-RUN yarn install
+# --immutable to match the workflow's gated `build` job: .yarnrc.yml sets
+# enableImmutableInstalls: false, so without the explicit flag this install
+# could quietly resolve differently than the one CI already validated.
+RUN yarn install --immutable
 
 COPY . .
 RUN yarn build --env.NODE_ENV=production
@@ -30,6 +33,7 @@ COPY --from=build-stage /app/dist /usr/local/apache2/htdocs/
 # point at any environment's backend/key without rebuilding.
 COPY docker/apache-config/proxy.conf.template /usr/local/apache2/conf/extra/proxy.conf.template
 COPY docker/apache-config/status.conf.template /usr/local/apache2/conf/extra/status.conf.template
+COPY docker/apache-config/servername.conf.template /usr/local/apache2/conf/extra/servername.conf.template
 COPY docker/env-config.template.js /usr/local/apache2/htdocs/env-config.js.template
 COPY docker/docker-entrypoint.sh /usr/local/apache2/docker-entrypoint.sh
 RUN chmod +x /usr/local/apache2/docker-entrypoint.sh
@@ -40,6 +44,7 @@ RUN echo "Listen 3000" > /usr/local/apache2/conf/httpd.conf \
     && cat /usr/local/apache2/conf/original/httpd.conf >> /usr/local/apache2/conf/httpd.conf
 RUN echo "Include conf/extra/proxy.conf" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "Include conf/extra/status.conf" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "Include conf/extra/servername.conf" >> /usr/local/apache2/conf/httpd.conf
 
 # Duplicate access logging to stdout (alongside the default file-based log) so
 # Datadog's container log collection picks up requests - mirrors the pattern
@@ -56,7 +61,8 @@ RUN echo "Timeout 600" >> /usr/local/apache2/conf/httpd.conf
 # Expose the non-standard port
 EXPOSE 3000
 
-# Renders proxy.conf and env-config.js from their templates using the BACKEND_URL
-# and API_KEY env vars, then starts Apache in the foreground
+# Renders proxy.conf, status.conf, servername.conf and env-config.js from their
+# templates using the BACKEND_URLS, STATUS_ALLOWED_IPS, SERVER_NAME and API_KEY
+# env vars, then starts Apache in the foreground
 ENTRYPOINT ["/usr/local/apache2/docker-entrypoint.sh"]
 CMD ["httpd-foreground"]

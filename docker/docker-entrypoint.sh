@@ -39,9 +39,21 @@ envsubst '${BALANCER_MEMBERS} ${INDIVIDUAL_BACKEND_ROUTES}' < /usr/local/apache2
 # an empty string would win over that default and leave the app with no key at
 # all. So when API_KEY is unset we emit only the namespace and leave the
 # property undefined, letting the slice's default apply.
+#
+# When it is set, it goes into the template as a complete, pre-quoted JSON
+# string literal rather than being interpolated between quotes in the template
+# itself. A key containing a quote, backslash or newline would otherwise emit a
+# syntactically broken env-config.js - taking the whole app down - or, with a
+# crafted value, inject script into every page. There's no jq or python in
+# httpd:2.4-alpine, so the escaping is busybox sed plus awk: backslashes first
+# (so the escapes added after aren't themselves re-escaped), then quotes, tabs
+# and carriage returns, with any embedded newlines folded to \n by awk.
 if [ -n "${API_KEY:-}" ]; then
-    export API_KEY
-    envsubst '${API_KEY}' < /usr/local/apache2/htdocs/env-config.js.template > /usr/local/apache2/htdocs/env-config.js
+    API_KEY_JSON="\"$(printf '%s' "$API_KEY" \
+        | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/\t/\\t/g' -e 's/\r/\\r/g' \
+        | awk 'BEGIN{ORS=""} NR>1{print "\\n"} {print}')\""
+    export API_KEY_JSON
+    envsubst '${API_KEY_JSON}' < /usr/local/apache2/htdocs/env-config.js.template > /usr/local/apache2/htdocs/env-config.js
 else
     printf 'window.__env = window.__env || {};\n' > /usr/local/apache2/htdocs/env-config.js
 fi
@@ -53,5 +65,13 @@ fi
 export STATUS_ALLOWED_IPS
 
 envsubst '${STATUS_ALLOWED_IPS}' < /usr/local/apache2/conf/extra/status.conf.template > /usr/local/apache2/conf/extra/status.conf
+
+# Set globally so httpd doesn't log AH00558 on every start, guessing an FQDN by
+# reverse DNS. Same variable name the maintenance image takes, so one value can
+# be passed to both containers.
+: "${SERVER_NAME:=localhost}"
+export SERVER_NAME
+
+envsubst '${SERVER_NAME}' < /usr/local/apache2/conf/extra/servername.conf.template > /usr/local/apache2/conf/extra/servername.conf
 
 exec "$@"
