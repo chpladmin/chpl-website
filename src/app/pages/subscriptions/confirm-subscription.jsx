@@ -169,7 +169,7 @@ function ChplConfirmSubscription(props) {
                      text="the manage subscriptions page"
                      external={false}
                      inline
-                     router={{ sref: 'subscriptions.manage', options: { hash } }}
+                     router={{ sref: 'subscriptions.manage', params: { hash } }}
                    />
                  </Typography>
                </CardContent>
