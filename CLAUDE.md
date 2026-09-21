@@ -19,7 +19,7 @@ yarn lint                           # eslint against src
 yarn lint:fix                       # eslint --fix; pass a path to fix a single file, e.g. yarn lint:fix src/app/path/to/file.jsx
 ```
 
-There is no test runner wired up currently (no `test` script, no jest/karma config in the repo despite some test-related devDependencies) — don't assume `yarn test` exists.
+There is no test runner wired up currently — no `test` script, no jest/karma/wdio config, and no spec files anywhere in `src`. The leftover test-only devDependencies (jest/puppeteer/chromedriver/zombie/angular-mocks) and the istanbul coverage instrumentation in the webpack build have been removed, so don't assume `yarn test` exists or that anything is wired to run it.
 
 Local backend proxy target defaults to `http://localhost:8181/chpl-service`; requests to `/rest/*` are rewritten and proxied there (or to the DEV env with `--env.useDev`).
 

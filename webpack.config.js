@@ -32,21 +32,6 @@ module.exports = (env) => {
     },
     module: {
       rules: [{
-        enforce: 'post',
-        test: /\.js$/,
-        exclude: [
-          /specs\.js/,
-          /\.spec\.js/,
-          /\.test\.jsx/,
-          /node_modules/,
-          /lib/,
-          /\.mock\.js/,
-        ],
-        use: {
-          loader: 'istanbul-instrumenter-loader',
-          options: { esModules: true },
-        },
-      }, {
         test: /\.(js|jsx)$/,
         resolve: {
           extensions: ['.js', '.jsx'],
