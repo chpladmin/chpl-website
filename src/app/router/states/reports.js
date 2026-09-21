@@ -1,7 +1,6 @@
-import PassthroughView from '../passthrough-view';
+import { lazy } from 'react';
 
-import ChplActivityWrapper from 'pages/reports/activity/activity-wrapper';
-import ChplQuestionableActivityWrapper from 'pages/reports/questionable-activity/questionable-activity-wrapper';
+import PassthroughView from '../passthrough-view';
 
 const states = [{
   name: 'reports',
@@ -15,7 +14,7 @@ const states = [{
 }, {
   name: 'reports.activity',
   url: '/activity',
-  component: ChplActivityWrapper,
+  component: lazy(() => import('pages/reports/activity/activity-wrapper')),
   data: {
     title: 'CHPL Activity',
     roles: ['chpl-admin', 'chpl-onc'],
@@ -23,7 +22,7 @@ const states = [{
 }, {
   name: 'reports.questionable-activity',
   url: '/questionable-activity',
-  component: ChplQuestionableActivityWrapper,
+  component: lazy(() => import('pages/reports/questionable-activity/questionable-activity-wrapper')),
   data: {
     title: 'CHPL Activity - Questionable Activity',
     roles: ['chpl-admin', 'chpl-onc'],

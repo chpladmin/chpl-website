@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { UIRouter, UIView } from '@uirouter/react';
 
 import router from './router';
 import SkipLink from './views/skip-link';
 
 import AppWrapper from 'app-wrapper';
-import { ChplRouteLoading } from 'components/util';
+import { ChplLoadingSpinner, ChplRouteLoading } from 'components/util';
 
 // The application root. <UIRouter> starts the router; UIView renders the
 // active state.
@@ -28,7 +28,17 @@ function AppRoot() {
         <SkipLink />
         <ChplRouteLoading />
         <AppWrapper>
-          <UIView />
+          {/*
+            Route components are React.lazy, so each page is its own chunk.
+            The chunk resolves after the transition completes, which is after
+            ChplRouteLoading has hidden its overlay - without a fallback here
+            the content area would flash empty. The chrome above stays mounted
+            throughout, so only the content region shows the spinner. One
+            boundary covers every nested UIView too.
+          */}
+          <Suspense fallback={<ChplLoadingSpinner />}>
+            <UIView />
+          </Suspense>
         </AppWrapper>
       </>
     </UIRouter>

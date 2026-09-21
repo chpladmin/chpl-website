@@ -1,9 +1,9 @@
-import ChplChartsWrapper from 'pages/charts/charts-wrapper';
+import { lazy } from 'react';
 
 const states = [{
   name: 'charts',
   url: '/charts',
-  component: ChplChartsWrapper,
+  component: lazy(() => import('pages/charts/charts-wrapper')),
   data: { title: 'CHPL Charts' },
 }];
 

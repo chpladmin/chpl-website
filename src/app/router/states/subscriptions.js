@@ -1,8 +1,6 @@
-import PassthroughView from '../passthrough-view';
+import { lazy } from 'react';
 
-import ChplConfirmSubscription from 'pages/subscriptions/confirm-subscription-wrapper';
-import ChplManageSubscription from 'pages/subscriptions/manage-subscription-wrapper';
-import ChplUnsubscribeAll from 'pages/subscriptions/unsubscribe-all-wrapper';
+import PassthroughView from '../passthrough-view';
 
 const hashResolve = [
   { token: 'hash', deps: ['$transition$'], resolveFn: (transition) => transition.params().hash },
@@ -16,7 +14,7 @@ const states = [{
 }, {
   name: 'subscriptions.confirm',
   url: '/confirm/{hash}',
-  component: ChplConfirmSubscription,
+  component: lazy(() => import('pages/subscriptions/confirm-subscription-wrapper')),
   params: {
     hash: { squash: true, value: null },
   },
@@ -25,7 +23,7 @@ const states = [{
 }, {
   name: 'subscriptions.unsubscribe',
   url: '/unsubscribe/{hash}',
-  component: ChplUnsubscribeAll,
+  component: lazy(() => import('pages/subscriptions/unsubscribe-all-wrapper')),
   params: {
     hash: { squash: true, value: null },
   },
@@ -34,7 +32,7 @@ const states = [{
 }, {
   name: 'subscriptions.manage',
   url: '/manage/{hash}',
-  component: ChplManageSubscription,
+  component: lazy(() => import('pages/subscriptions/manage-subscription-wrapper')),
   params: {
     hash: { squash: true, value: null },
   },

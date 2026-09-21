@@ -1,8 +1,6 @@
-import PassthroughView from '../passthrough-view';
+import { lazy } from 'react';
 
-import ChplComplaintsWrapper from 'components/surveillance/complaints/complaints-wrapper';
-import ChplSurveillanceActivityReporting from 'pages/surveillance/activity-reporting/activity-reporting-wrapper';
-import ChplSurveillanceReporting from 'pages/surveillance/reporting/reporting-wrapper';
+import PassthroughView from '../passthrough-view';
 
 const states = [{
   name: 'surveillance',
@@ -17,14 +15,14 @@ const states = [{
   // note: no roles of its own; inherits them from the abstract parent above
   name: 'surveillance.complaints',
   url: '/complaints',
-  component: ChplComplaintsWrapper,
+  component: lazy(() => import('components/surveillance/complaints/complaints-wrapper')),
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
   },
 }, {
   name: 'surveillance.activity-reporting',
   url: '/activity-reporting',
-  component: ChplSurveillanceActivityReporting,
+  component: lazy(() => import('pages/surveillance/activity-reporting/activity-reporting-wrapper')),
   data: {
     title: 'CHPL Surveillance - Activity Reporting',
     roles: ['chpl-admin', 'chpl-onc'],
@@ -33,7 +31,7 @@ const states = [{
   // also inherits roles from the parent
   name: 'surveillance.reporting',
   url: '/reporting',
-  component: ChplSurveillanceReporting,
+  component: lazy(() => import('pages/surveillance/reporting/reporting-wrapper')),
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
   },

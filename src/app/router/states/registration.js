@@ -1,7 +1,6 @@
-import PassthroughView from '../passthrough-view';
+import { lazy } from 'react';
 
-import ChplApiKeyConfirmWrapper from 'pages/registration/api-key-confirm-wrapper';
-import ChplRegisterUser from 'pages/registration/register-user-wrapper';
+import PassthroughView from '../passthrough-view';
 
 const hashResolve = [
   { token: 'hash', deps: ['$transition$'], resolveFn: (transition) => transition.params().hash },
@@ -15,7 +14,7 @@ const states = [{
 }, {
   name: 'registration.create-user',
   url: '/create-user/{hash}',
-  component: ChplRegisterUser,
+  component: lazy(() => import('pages/registration/register-user-wrapper')),
   params: {
     hash: { squash: true, value: null },
   },
@@ -24,7 +23,7 @@ const states = [{
 }, {
   name: 'registration.api-key',
   url: '/api-key/{hash}',
-  component: ChplApiKeyConfirmWrapper,
+  component: lazy(() => import('pages/registration/api-key-confirm-wrapper')),
   params: {
     hash: { squash: true, value: null },
   },

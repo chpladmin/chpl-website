@@ -1,8 +1,7 @@
+import { lazy } from 'react';
+
 import DevelopersView from '../views/developers-view';
 import MainContentView from '../views/main-content-view';
-
-import ChplDeveloper from 'pages/organizations/developers/developer/developer-wrapper';
-import ChplOncOrganizations from 'pages/organizations/onc-organizations/onc-organizations-wrapper';
 
 const states = [
   {
@@ -18,7 +17,7 @@ const states = [
   }, {
     name: 'organizations.developers.developer',
     url: '/{id}',
-    component: ChplDeveloper,
+    component: lazy(() => import('pages/organizations/developers/developer/developer-wrapper')),
     // replaces the chplDeveloperPage Angular component, which read
     // $stateParams.id and passed it to the bridge as a binding
     resolve: [
@@ -28,7 +27,7 @@ const states = [
   }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
-    component: ChplOncOrganizations,
+    component: lazy(() => import('pages/organizations/onc-organizations/onc-organizations-wrapper')),
     resolve: [
       { token: 'orgType', deps: [], resolveFn: () => 'acb' },
     ],
@@ -39,7 +38,7 @@ const states = [
   }, {
     name: 'organizations.onc-atls',
     url: '/onc-atls',
-    component: ChplOncOrganizations,
+    component: lazy(() => import('pages/organizations/onc-organizations/onc-organizations-wrapper')),
     resolve: [
       { token: 'orgType', deps: [], resolveFn: () => 'atl' },
     ],

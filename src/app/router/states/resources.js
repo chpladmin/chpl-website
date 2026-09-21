@@ -1,11 +1,6 @@
-import PassthroughView from '../passthrough-view';
+import { lazy } from 'react';
 
-import ChplCmsLookupWrapper from 'pages/resources/cms-lookup/cms-lookup-wrapper';
-import ChplForgotPassword from 'pages/resources/forgot-password/forgot-password-wrapper';
-import ChplNotFound from 'pages/resources/not-found/not-found';
-import ChplResourcesApi from 'pages/resources/api/api-wrapper';
-import ChplResourcesDownloadWrapper from 'pages/resources/download/download-wrapper';
-import ChplResourcesOverview from 'pages/resources/overview/overview-wrapper';
+import PassthroughView from '../passthrough-view';
 
 const states = [
   {
@@ -16,7 +11,7 @@ const states = [
   }, {
     name: 'resources.api',
     url: '/api',
-    component: ChplResourcesApi,
+    component: lazy(() => import('pages/resources/api/api-wrapper')),
     data: { title: 'CHPL API' },
   }, {
     name: 'resources.chpl-api',
@@ -29,22 +24,22 @@ const states = [
   }, {
     name: 'resources.cms-lookup',
     url: '/cms-lookup',
-    component: ChplCmsLookupWrapper,
+    component: lazy(() => import('pages/resources/cms-lookup/cms-lookup-wrapper')),
     data: { title: 'CMS ID Reverse Lookup' },
   }, {
     name: 'resources.download',
     url: '/download',
-    component: ChplResourcesDownloadWrapper,
+    component: lazy(() => import('pages/resources/download/download-wrapper')),
     data: { title: 'Download the CHPL' },
   }, {
     name: 'resources.overview',
     url: '/overview',
-    component: ChplResourcesOverview,
+    component: lazy(() => import('pages/resources/overview/overview-wrapper')),
     data: { title: 'CHPL Overview' },
   }, {
     name: 'forgot-password',
     url: '/forgot-password/{uuid}',
-    component: ChplForgotPassword,
+    component: lazy(() => import('pages/resources/forgot-password/forgot-password-wrapper')),
     params: {
       uuid: { squash: true, value: null },
     },
@@ -60,7 +55,7 @@ const states = [
     params: {
       target: { squash: true, value: null },
     },
-    component: ChplNotFound,
+    component: lazy(() => import('pages/resources/not-found/not-found')),
     data: { title: 'Error: page not found' },
   },
 ];

@@ -1,9 +1,9 @@
-import ChplComparePage from 'pages/compare/compare-wrapper';
+import { lazy } from 'react';
 
 const states = [{
   name: 'compare',
   url: '/compare/{ids}',
-  component: ChplComparePage,
+  component: lazy(() => import('pages/compare/compare-wrapper')),
   params: {
     ids: { squash: true, value: null },
   },
