@@ -28,7 +28,6 @@ module.exports = (env) => {
       reports: path.resolve(__dirname, './src/app/pages/reports/index.js'),
       search: path.resolve(__dirname, './src/app/pages/search/index.js'),
       subscriptions: path.resolve(__dirname, './src/app/pages/subscriptions/index.js'),
-      templates: path.resolve(__dirname, './src/app/templates.js'),
     },
     module: {
       rules: [{

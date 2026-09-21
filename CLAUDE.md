@@ -59,7 +59,7 @@ Webpack's `resolve.modules` includes `src/app`, so imports write as if `src/app`
 
 ### Multiple webpack entry points
 
-`webpack.config.js` defines separate entry bundles for `app`, `administration`, `charts`, `compare`, `listing`, `organizations`, `registration`, `reports`, `search`, `subscriptions`, and `templates`. If you add a new top-level page area intended to be its own bundle, add an entry here.
+`webpack.config.js` defines separate entry bundles for `app`, `administration`, `charts`, `compare`, `listing`, `organizations`, `registration`, `reports`, `search`, and `subscriptions`. If you add a new top-level page area intended to be its own bundle, add an entry here.
 
 ### Build-time globals
 

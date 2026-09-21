@@ -25,7 +25,7 @@ const states = [{
 }, {
   name: 'administration',
   url: '/administration?token',
-  component: 'chplAdministration',
+  template: '<div id="main-content" tabindex="-1"><ui-view><chpl-login-page-bridge></chpl-login-page-bridge></ui-view></div>',
   data: { title: 'CHPL Administration' },
 }, {
   name: 'administration.change-requests',

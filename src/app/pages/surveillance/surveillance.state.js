@@ -2,7 +2,7 @@ const states = [{
   name: 'surveillance',
   abstract: true,
   url: '/surveillance',
-  component: 'chplSurveillance',
+  template: '<ui-view/>',
   data: {
     title: 'CHPL Surveillance',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],

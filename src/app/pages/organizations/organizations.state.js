@@ -3,7 +3,7 @@ const states = [
     name: 'organizations',
     abstract: true,
     url: '/organizations',
-    component: 'chplOrganizations',
+    template: '<div id="main-content" tabindex="-1"><ui-view></ui-view></div>',
   }, {
     name: 'organizations.developers',
     url: '/developers',
