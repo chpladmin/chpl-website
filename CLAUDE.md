@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Web UI for CHPL (Certified Health IT Product List), a healthit.gov site. AngularJS 1.8 shell (routing only) with all page/feature UI built in React. Yarn 2+ (`packageManager: yarn@4.18.0`) is required — run `corepack enable` if `yarn` isn't already the right version.
+Web UI for CHPL (Certified Health IT Product List), a healthit.gov site. A React single-page app routed with @uirouter/react. It was an AngularJS 1.8 shell until the router migration; if you find a stray reference to Angular, it is stale. Yarn 2+ (`packageManager: yarn@4.18.0`) is required — run `corepack enable` if `yarn` isn't already the right version.
 
 ## Commands
 
@@ -31,24 +31,33 @@ Local backend proxy target defaults to `http://localhost:8181/chpl-service`; req
 
 ## Architecture
 
-**AngularJS is a thin shell over a React app.** `src/app/index.js` bootstraps a single `angular.module('chpl', ...)` and wires up `ui.router` states, but essentially every feature is a React component tree that gets embedded into Angular via a bridge — do not add new AngularJS controllers/directives/templates; extend the React side instead.
+**This is a React app.** AngularJS is gone. `src/app/index.js` configures the router and mounts a single React root into `#root`; routing is `@uirouter/react`.
 
-The Angular layer is now routing and the bridge, nothing else: the only Angular packages left are `angular` and `angular-ui-router`, and there are zero directives, controllers, filters, `.html` templates, and Angular-registered services/factories in `src/app`. Parent routes that just host a `<ui-view>` declare it inline as `template: '<ui-view/>'` in their `*.state.js` (see `reports.state.js`, `search.state.js`) rather than via a component and template file.
+### Routing
 
-### Angular → React bridge
+Everything router-related lives in `src/app/router/`:
 
-`src/app/services/angular-react-helper.jsx` exports `reactToAngularComponent(Component)`, which wraps a React component as an Angular component definition (bindings derived from `Component.propTypes`, mounted/unmounted via `react-dom/client` `createRoot`). Each feature area's `*.module.js` registers these bridges, e.g. `src/app/pages/search/search.module.js` does:
+- `create-router.js` — builds a `UIRouterReact` instance. Manual bootstrapping **must** register `servicesPlugin` as well as a location plugin, or transitions fail with `cannot read 'defer'`.
+- `router.js` — the app's single instance, exported so non-React code can reach it. Deliberately holds **no** states or hooks: registering them here would import every page component, and those import `services/navigation.service`, which imports this file — an import cycle.
+- `configure.js` — registers the state tree and global hooks. Called once from the entry.
+- `states/` — one file per feature area, aggregated by `states/index.js`.
+- `hooks.js` — the url rules, page title, role guard and error handling.
+- `views/` — small shell components for route parents that render more than a bare outlet.
+- `passthrough-view.jsx` — for parents that only host a child.
 
-```js
-.component('chplSvapSearchWrapperBridge', reactToAngularComponent(ChplSvapSearchWrapper))
-```
+Things worth knowing before changing routes:
 
-and the corresponding `*.state.js` (e.g. `search.state.js`) maps a `ui-router` state/URL to that Angular component name. So routing lives in Angular (`$stateProvider`), everything else is React.
+- **URLs are hash-based** (`#/search`) via `hashLocationPlugin`, matching what AngularJS produced. A lot of markup hard-codes `#/...` hrefs, so switching to pushState is not a small change.
+- **A parent state with no `component` renders nothing**, including its children. Parents that only host a child must use `PassthroughView`; there is a test asserting both halves of this.
+- **Url params do not reach components as props.** `UIView` forwards resolves (and `transition`), not params, so a state needing `id` declares a resolve for it.
+- **`data` is inherited from parent states through the prototype chain.** Two surveillance states get their `roles` this way, so never spread or serialise a state's `data` — the inherited keys vanish and the route opens up. `router/configure.test.jsx` pins the effective role gate for every protected state.
+- **Do not call `router.start()`.** The `<UIRouter>` component starts it, and starting twice throws.
+- `src/app/services/navigation.service.js` is the single seam for imperative navigation; prefer it (or the `@uirouter/react` hooks) over touching the router directly.
 
 ### Per-page React file trio
 
 Most pages/features under `src/app/pages/**` and `src/app/components/**` follow a three-file pattern:
-- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) for use as an Angular bridge target.
+- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) and is what a route points at.
 - `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own.
 - `x-view.jsx` — presentational component, receives data/handlers as props.
 
@@ -65,9 +74,9 @@ Most pages/features under `src/app/pages/**` and `src/app/components/**` follow 
 
 Webpack's `resolve.modules` includes `src/app`, so imports write as if `src/app` were a root, e.g. `import ApiWrapper from 'api/api-wrapper'`, `import { AnalyticsContext } from 'shared/contexts'`, `import AppWrapper from 'app-wrapper'`. Don't use relative `../../..` paths across top-level directories (`api/`, `components/`, `pages/`, `services/`, `shared/`, `themes/`) — use the bare-style import instead, matching existing files. ESLint's `import/resolver` is configured the same way (`moduleDirectory: ["src/app", "node_modules"]`).
 
-### Multiple webpack entry points
+### Webpack entry point
 
-`webpack.config.js` defines separate entry bundles for `app`, `administration`, `charts`, `compare`, `listing`, `organizations`, `registration`, `reports`, `search`, and `subscriptions`. If you add a new top-level page area intended to be its own bundle, add an entry here.
+`webpack.config.js` defines a single `app` entry. It used to define ten, one per page area, but those existed only to register AngularJS modules and each pulled in a duplicate copy of the shared code.
 
 ### Build-time globals
 

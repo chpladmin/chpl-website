@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = (env) => {
@@ -33,7 +32,6 @@ module.exports = (env) => {
         use: [{
           loader: 'babel-loader',
           options: {
-            plugins: [BabelPluginAngularjsAnnotate],
             presets: ['@babel/preset-env', '@babel/preset-react'],
           },
         }],

@@ -3849,13 +3849,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uirouter/core@npm:6.0.8":
-  version: 6.0.8
-  resolution: "@uirouter/core@npm:6.0.8"
-  checksum: 10/ebcb1d9ae7127c63e151b82b1318f2e69fb5af5285acc7b66ffe6aaed0798ef4f1d1800eee0aa5012cee309b2c77d921f9120119a9d03cffa3460b723686694e
-  languageName: node
-  linkType: hard
-
 "@uirouter/core@npm:6.1.2":
   version: 6.1.2
   resolution: "@uirouter/core@npm:6.1.2"
@@ -4359,24 +4352,6 @@ __metadata:
   version: 1.0.2
   resolution: "alphanum-sort@npm:1.0.2"
   checksum: 10/e23264059c4cd35c7250fa5beee652e6935901845f58a73ecbf8d1a344b341952e9c268c81c05d4132216bf24d7e52640d66dca231a6a757cf7a0e756028e3f2
-  languageName: node
-  linkType: hard
-
-"angular-ui-router@npm:^1.0.30":
-  version: 1.0.30
-  resolution: "angular-ui-router@npm:1.0.30"
-  dependencies:
-    "@uirouter/core": "npm:6.0.8"
-  peerDependencies:
-    angular: ">=1.2.0"
-  checksum: 10/bf63a5a6dc948ba8a823a6e1a96d9be27648941d26d392c32df67454375db5e064eb25f22c18a48e612e8e8249b23d1dd67fbd85bdfa53b3406a332761127ad3
-  languageName: node
-  linkType: hard
-
-"angular@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "angular@npm:1.8.3"
-  checksum: 10/4a21f1f74790dc2cdceb582386abdc7b55a0463f86aaa59573c940295cb51ed61b8fa610011134280ae0da7f97fbbc660f3a4e4491b24c92b2c32a547073a1c2
   languageName: node
   linkType: hard
 
@@ -5005,17 +4980,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-angularjs-annotate@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "babel-plugin-angularjs-annotate@npm:0.9.0"
-  dependencies:
-    babel-code-frame: "npm:^6.26.0"
-    babel-types: "npm:^6.26.0"
-    simple-is: "npm:~0.2.0"
-  checksum: 10/d220c0dd8522ff1a1df05992e3106276e66840a43df9ed10073a8370685429decded83eee6d66c651df6f49d091b24604b8d39a9b5cdc72b3a783a9dfcc87945
-  languageName: node
-  linkType: hard
-
 "babel-plugin-dynamic-import-node@npm:^2.3.3":
   version: 2.3.3
   resolution: "babel-plugin-dynamic-import-node@npm:2.3.3"
@@ -5120,25 +5084,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-runtime@npm:^6.23.0, babel-runtime@npm:^6.26.0":
+"babel-runtime@npm:^6.23.0":
   version: 6.26.0
   resolution: "babel-runtime@npm:6.26.0"
   dependencies:
     core-js: "npm:^2.4.0"
     regenerator-runtime: "npm:^0.11.0"
   checksum: 10/2cdf0f083b9598a43cdb11cbf1e7060584079a9a2230f06aec997ba81e887ef17fdcb5ad813a484ee099e06d2de0cea832bdd3011c06325acb284284c754ee8f
-  languageName: node
-  linkType: hard
-
-"babel-types@npm:^6.26.0":
-  version: 6.26.0
-  resolution: "babel-types@npm:6.26.0"
-  dependencies:
-    babel-runtime: "npm:^6.26.0"
-    esutils: "npm:^2.0.2"
-    lodash: "npm:^4.17.4"
-    to-fast-properties: "npm:^1.0.3"
-  checksum: 10/7ddab92e0dfbda4ddb69d2dbf5825ef4df18d47a609b6dbc452229a40291286aeaec7b2241e6c6755868a5840eca2e6cddcc0a7f571bb004d27b85d246c3d4d6
   languageName: node
   linkType: hard
 
@@ -6018,14 +5970,11 @@ __metadata:
     "@testing-library/jest-dom": "npm:^7.0.1"
     "@testing-library/react": "npm:^16.3.3"
     "@uirouter/react": "npm:^1.0.8"
-    angular: "npm:^1.8.3"
-    angular-ui-router: "npm:^1.0.30"
     axios: "npm:^1.7.7"
     axios-jwt: "npm:^4.0.3"
     babel-eslint: "npm:^8.2.6"
     babel-jest: "npm:^30.5.2"
     babel-loader: "npm:^8.3.0"
-    babel-plugin-angularjs-annotate: "npm:^0.9.0"
     bootstrap-sass: "npm:3.4.3"
     browser-sync: "npm:~2.9.12"
     browser-sync-spa: "npm:~1.0.3"
@@ -6037,7 +5986,6 @@ __metadata:
     eslint-config-airbnb: "npm:18.2.1"
     eslint-formatter-friendly: "npm:^6.0.0"
     eslint-loader: "npm:^2.2.1"
-    eslint-plugin-angular: "npm:^3.3.0"
     eslint-plugin-import: "npm:2.27.5"
     eslint-plugin-jsx-a11y: "npm:6.7.1"
     eslint-plugin-react: "npm:7.32.2"
@@ -7969,13 +7917,6 @@ __metadata:
     eslint:
       optional: true
   checksum: 10/a9a7ed93eb858092e3cdc797357d4ead2b3ea06959b0eada31ab13862d46a59eb064b9cb82302214232e547980ce33618c2992f6821138a4934e65710ed9cc29
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-angular@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "eslint-plugin-angular@npm:3.3.0"
-  checksum: 10/d4eeb7b1344699659d3115fc48d1c06c2a8ffa5e7c426c90bb864bd76168c59e577035ce9375ecbb753e0db53fc93259f9895551735fb6473dcb9bf1a3618d3b
   languageName: node
   linkType: hard
 
@@ -12275,7 +12216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.1.0, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.2.0":
+"lodash@npm:^4.1.0, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.2.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10/c08619c038846ea6ac754abd6dd29d2568aa705feb69339e836dfa8d8b09abbb2f859371e86863eda41848221f9af43714491467b5b0299122431e202bb0c532
@@ -16544,13 +16485,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-is@npm:~0.2.0":
-  version: 0.2.0
-  resolution: "simple-is@npm:0.2.0"
-  checksum: 10/bd149d05ce344d224e7a08c3e6515e68dbc9bf3dfc77880d85929bce21d04ce0d8644478aa457e63cfba5a03343a2233359cdec41c509fd4206d76affbe8e99f
-  languageName: node
-  linkType: hard
-
 "simple-swizzle@npm:^0.2.2":
   version: 0.2.2
   resolution: "simple-swizzle@npm:0.2.2"
@@ -17604,13 +17538,6 @@ __metadata:
   version: 0.1.4
   resolution: "to-array@npm:0.1.4"
   checksum: 10/396a04df5a5e74df5c8891ebb819d575d626e2929312fec3d649b4d38203bbf7185c270cb31fcad903564743895e935f2e965770bd1c6eb137dde48c4d60788d
-  languageName: node
-  linkType: hard
-
-"to-fast-properties@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "to-fast-properties@npm:1.0.3"
-  checksum: 10/bd0abb58c4722851df63419de3f6d901d5118f0440d3f71293ed776dd363f2657edaaf2dc470e3f6b7b48eb84aa411193b60db8a4a552adac30de9516c5cc580
   languageName: node
   linkType: hard
 
