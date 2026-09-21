@@ -5,8 +5,8 @@ import {
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { bool, node, string } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
+import { goToState } from 'services/navigation.service';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -45,7 +45,6 @@ function ChplLink({
   icon = undefined,
 }) {
   const classes = useStyles();
-  const $state = getAngularService('$state');
   const href = prependLink(initialHref);
   const text = initialText || initialHref;
 
@@ -58,7 +57,7 @@ function ChplLink({
         eventTrack(analytics);
       }
       if (router.sref) {
-        $state.go(router.sref, router.options);
+        goToState(router.sref, router.options);
       } else {
         e.target.click();
       }

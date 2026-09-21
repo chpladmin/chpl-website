@@ -11,11 +11,9 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
-import { useFreshAccessToken } from 'api/axios';
-import { getAngularService } from 'services/angular-react-helper';
+import { useAxios } from 'api/axios';
 
 const useStyles = makeStyles({
   buttonUploadContainer: {
@@ -57,10 +55,7 @@ const useStyles = makeStyles({
 });
 
 function ChplUploadRealWorldTesting() {
-  const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = useSelector((state) => state.browserInfo.api);
-  const Upload = getAngularService('Upload');
-  const getFreshAccessToken = useFreshAccessToken();
+  const axios = useAxios();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -76,30 +71,18 @@ function ChplUploadRealWorldTesting() {
     setEle(event.target);
   };
 
-  const uploadFile = async () => {
-    const accessToken = await getFreshAccessToken();
-    if (!accessToken) {
-      return;
-    }
-    const item = {
-      url: `${API}/real-world-testing/upload`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'API-Key': apiKey,
-      },
-      data: {
-        file,
-      },
-    };
-    Upload.upload(item)
+  const uploadFile = () => {
+    const data = new FormData();
+    data.append('file', file);
+    axios.post('real-world-testing/upload', data)
       .then((response) => {
-        const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.email} when processing is complete.`;
+        const message = `File "${file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.email} when processing is complete.`;
         enqueueSnackbar(message, {
           variant: 'success',
         });
       })
-      .catch((error) => {
-        const message = `File "${error.config.data.file.name}" was not uploaded successfully.`;
+      .catch(() => {
+        const message = `File "${file.name}" was not uploaded successfully.`;
         enqueueSnackbar(message, {
           variant: 'error',
         });

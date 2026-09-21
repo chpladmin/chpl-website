@@ -1,16 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import browserInfoReducer from 'components/browser/browserInfo.slice';
+import browserInfoReducer, { MAX_REMEMBERED, initialState as browserInfoDefaults } from 'components/browser/browserInfo.slice';
 import userInfoReducer from 'components/login/userInfo.slice';
 
 const LEGACY_USER_KEY = 'ngStorage-currentUser';
+const LEGACY_COMPARED_KEY = 'ngStorage-previouslyCompared';
+const LEGACY_VIEWED_KEY = 'ngStorage-previouslyViewed';
 
-// Everything the AngularJS `authService` wrote. Only the user is carried over;
-// the tokens are dropped outright, since `axios-jwt` owns token storage now.
-const LEGACY_KEYS = [LEGACY_USER_KEY, 'ngStorage-jwtToken', 'ngStorage-refreshToken'];
+// Everything the AngularJS era wrote to its own localStorage keys. The user and
+// the compare/viewed lists are carried over once; the tokens are dropped
+// outright, since `axios-jwt` owns token storage now.
+const LEGACY_KEYS = [
+  LEGACY_USER_KEY,
+  LEGACY_COMPARED_KEY,
+  LEGACY_VIEWED_KEY,
+  'ngStorage-jwtToken',
+  'ngStorage-refreshToken',
+];
 
-// Seed the store from the legacy user once so sessions survive the upgrade,
-// after which `chplState` is the only place the user is persisted.
 const loadLegacyUserInfo = () => {
   try {
     const user = JSON.parse(localStorage.getItem(LEGACY_USER_KEY));
@@ -21,14 +28,54 @@ const loadLegacyUserInfo = () => {
   }
 };
 
+const loadLegacyIds = (key) => {
+  try {
+    const ids = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(ids) && ids.length > 0 ? ids.slice(0, MAX_REMEMBERED) : undefined;
+  } catch (err) {
+    return undefined;
+  }
+};
+
+const loadLegacyBrowserInfo = () => {
+  const previouslyCompared = loadLegacyIds(LEGACY_COMPARED_KEY);
+  const previouslyViewed = loadLegacyIds(LEGACY_VIEWED_KEY);
+  if (!previouslyCompared && !previouslyViewed) return undefined;
+  return {
+    ...browserInfoDefaults,
+    ...(previouslyCompared ? { previouslyCompared } : {}),
+    ...(previouslyViewed ? { previouslyViewed } : {}),
+  };
+};
+
+// `preloadedState` replaces a slice wholesale rather than merging into its
+// `initialState`, so every branch below has to return complete slices.
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem('chplState');
+
     if (serializedState === null) {
+      // Nothing persisted yet: carry over whatever the legacy keys still hold.
       const userInfo = loadLegacyUserInfo();
-      return userInfo ? { userInfo } : undefined; // otherwise let reducers initialize state
+      const browserInfo = loadLegacyBrowserInfo();
+      if (!userInfo && !browserInfo) return undefined; // let the reducers initialize state
+      const migrated = {};
+      if (userInfo) migrated.userInfo = userInfo;
+      if (browserInfo) migrated.browserInfo = browserInfo;
+      return migrated;
     }
-    return JSON.parse(serializedState);
+
+    const persisted = JSON.parse(serializedState);
+    return {
+      ...persisted,
+      browserInfo: {
+        ...browserInfoDefaults,
+        ...persisted.browserInfo,
+        // Configuration always comes from this build, never from a past visit.
+        api: browserInfoDefaults.api,
+        apiKey: browserInfoDefaults.apiKey,
+      },
+    };
   } catch (err) {
     return undefined;
   }

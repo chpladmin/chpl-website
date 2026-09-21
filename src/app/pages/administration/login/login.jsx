@@ -7,7 +7,7 @@ import {
 import { func, shape } from 'prop-types';
 
 import ChplLogin from 'components/login/login';
-import { getAngularService } from 'services/angular-react-helper';
+import { goToState } from 'services/navigation.service';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -23,7 +23,6 @@ function ChplLoginPage({
     options: () => {},
   },
 }) {
-  const $state = getAngularService('$state');
   const state = returnTo.state();
   const params = returnTo.params();
   const options = { ...returnTo.options(), reload: true };
@@ -31,7 +30,7 @@ function ChplLoginPage({
 
   const handleLogin = (action) => {
     if (action === 'loggedIn') {
-      $state.go(state, params, options);
+      goToState(state, params, options);
     }
   };
 
