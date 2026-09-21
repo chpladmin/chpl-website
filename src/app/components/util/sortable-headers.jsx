@@ -54,6 +54,13 @@ function ChplSortableHeaders({
     setOrderBy(initialOrderBy);
   }, [initialOrderBy]);
 
+  const getDirection = (cell) => {
+    if (orderBy === cell.property) {
+      return order;
+    }
+    return cell.reverseDefault ? 'desc' : 'asc';
+  };
+
   const createSortHandler = (cell) => (event) => {
     const { property, reverseDefault } = cell;
     let direction;
@@ -80,16 +87,16 @@ function ChplSortableHeaders({
                 <TableSortLabel
                   className={classes.header}
                   active={orderBy === cell.property}
-                  direction={orderBy === cell.property ? order : (cell.reverseDefault ? 'desc' : 'asc')}
+                  direction={getDirection(cell)}
                   onClick={createSortHandler(cell)}
                 >
-                  <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
+                  <div className={`${classes.extraContainer}${cell.invisible ? ` ${classes.visuallyHidden}` : ''}`}>
                     { cell.text }
                     { cell.extra }
                   </div>
                 </TableSortLabel>
               ) : (
-                <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
+                <div className={`${classes.extraContainer}${cell.invisible ? ` ${classes.visuallyHidden}` : ''}`}>
                   { cell.text }
                   { cell.extra }
                 </div>
