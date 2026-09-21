@@ -19,7 +19,6 @@ import resources from './pages/resources/index';
 import /* registrationModule from */ './pages/registration/index';
 import './pages/search/index';
 import services from './services/index';
-import /* sharedModule from */ './shared/index';
 import subscriptions from './pages/subscriptions/index';
 import surveillance from './pages/surveillance/index';
 import users from './pages/users/index';
@@ -48,7 +47,6 @@ const dependencies = [
   'chpl.search',
   'chpl.components',
   'chpl.registration',
-  'chpl.shared',
 ];
 
 const appModule = angular.module('chpl', dependencies);

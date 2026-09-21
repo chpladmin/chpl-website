@@ -27,6 +27,8 @@ Local backend proxy target defaults to `http://localhost:8181/chpl-service`; req
 
 **AngularJS is a thin shell over a React app.** `src/app/index.js` bootstraps a single `angular.module('chpl', ...)` and wires up `ui.router` states, but essentially every feature is a React component tree that gets embedded into Angular via a bridge — do not add new AngularJS controllers/directives/templates; extend the React side instead.
 
+The Angular layer is now routing and the bridge, nothing else: the only Angular packages left are `angular` and `angular-ui-router`, and there are zero directives, controllers, filters, `.html` templates, and Angular-registered services/factories in `src/app`. Parent routes that just host a `<ui-view>` declare it inline as `template: '<ui-view/>'` in their `*.state.js` (see `reports.state.js`, `search.state.js`) rather than via a component and template file.
+
 ### Angular → React bridge
 
 `src/app/services/angular-react-helper.jsx` exports `reactToAngularComponent(Component)`, which wraps a React component as an Angular component definition (bindings derived from `Component.propTypes`, mounted/unmounted via `react-dom/client` `createRoot`). Each feature area's `*.module.js` registers these bridges, e.g. `src/app/pages/search/search.module.js` does:

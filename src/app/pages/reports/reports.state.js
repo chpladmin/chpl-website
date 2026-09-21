@@ -16,11 +16,6 @@ const states = [{
     roles: ['chpl-admin', 'chpl-onc'],
   },
 }, {
-  name: 'reports.products',
-  url: '/products',
-  component: 'chplReportsProducts',
-  data: { title: 'CHPL Activity - Products' },
-}, {
   name: 'reports.questionable-activity',
   url: '/questionable-activity',
   component: 'chplQuestionableActivityWrapperBridge',
