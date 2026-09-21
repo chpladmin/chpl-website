@@ -11,6 +11,8 @@ module.exports = {
   modulePaths: ['<rootDir>/src/app'],
   moduleFileExtensions: ['js', 'jsx', 'json'],
 
+  // build-time globals from webpack's DefinePlugin, defined before modules load
+  setupFiles: ['<rootDir>/test/globals.js'],
   setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
 
   // webpack resolves these through style-loader / url-loader / file-loader;
