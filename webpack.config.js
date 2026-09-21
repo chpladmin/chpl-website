@@ -19,15 +19,6 @@ module.exports = (env) => {
     cache: false,
     entry: {
       app: path.resolve(__dirname, './src/app/index.js'),
-      administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
-      charts: path.resolve(__dirname, './src/app/pages/charts/index.js'),
-      compare: path.resolve(__dirname, './src/app/pages/compare/index.js'),
-      listing: path.resolve(__dirname, './src/app/pages/listing/index.js'),
-      organizations: path.resolve(__dirname, './src/app/pages/organizations/index.js'),
-      registration: path.resolve(__dirname, './src/app/pages/registration/index.js'),
-      reports: path.resolve(__dirname, './src/app/pages/reports/index.js'),
-      search: path.resolve(__dirname, './src/app/pages/search/index.js'),
-      subscriptions: path.resolve(__dirname, './src/app/pages/subscriptions/index.js'),
     },
     module: {
       rules: [{
