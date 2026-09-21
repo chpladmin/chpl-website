@@ -18,12 +18,15 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|scss|sass)$': '<rootDir>/test/stubs/style.js',
     '\\.(png|jpe?g|gif|svg|ico|woff2?|ttf|eot)$': '<rootDir>/test/stubs/file.js',
+    // Heavy third-party UI that tests never render, and which ships ESM only.
+    // Transforming it instead would slow every run down for no benefit.
+    '^swagger-ui-react$': '<rootDir>/test/stubs/component.js',
   },
 
   // A few dependencies publish ESM only, which jest cannot load as CommonJS.
   // Let babel transform those rather than ignoring all of node_modules.
   transformIgnorePatterns: [
-    'node_modules/(?!(react-cytoscapejs)/)',
+    'node_modules/(?!(react-cytoscapejs|react-error-boundary)/)',
   ],
 
   // Deliberately not inheriting .babelrc: it targets browsers and injects
