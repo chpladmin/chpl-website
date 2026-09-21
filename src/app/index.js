@@ -10,8 +10,6 @@ import /* angularLoadingBar from */ 'angular-loading-bar';
 import /* ngAnimate from */ 'angular-animate';
 import /* ngAria from */ 'angular-aria';
 import /* ngIdle from */ 'ng-idle';
-import /* cytoscape from */ 'cytoscape';
-import /* ngCytoscape from */ './lib/ngCytoscape.min';
 import /* ngResource from */ 'angular-resource';
 import /* ngSanitize from */ 'angular-sanitize';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
@@ -47,7 +45,6 @@ const dependencies = [
   'angular-loading-bar',
   'ngAnimate',
   'ngAria',
-  'ngCytoscape',
   'ngFileSaver',
   'ngResource',
   'ngSanitize',
