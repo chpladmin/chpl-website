@@ -8,7 +8,7 @@ import { hasAnyRole } from 'services/auth.service';
 
 (() => {
   /** @ngInject */
-  function runBlock($anchorScroll, $location, $rootScope, $state, $timeout, $transitions, $window, Title) {
+  function runBlock($anchorScroll, $location, $rootScope, $state, $timeout, $transitions, $window) {
     // Mount the React route-transition loader into its persistent root (outside
     // ui-view, so it survives navigations). ChplRouteLoading subscribes to the
     // UI-Router transition hooks itself and owns showing/hiding the loader.
@@ -24,7 +24,7 @@ import { hasAnyRole } from 'services/auth.service';
         if (title instanceof Function) {
           title = title.call(transition.to(), transition.params());
         }
-        Title.value(title);
+        document.title = title;
 
         // Set currentPage for internal page links
         $rootScope.currentPage = $location.path(); // eslint-disable-line no-param-reassign

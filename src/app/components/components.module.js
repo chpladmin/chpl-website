@@ -16,8 +16,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 angular
   .module('chpl.components', [
     'chpl.services',
-    'ngResource',
-    'ui.bootstrap',
     'ui.router',
   ])
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))

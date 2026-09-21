@@ -6,7 +6,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 export default angular
   .module('chpl.reports', [
     'chpl.services',
-    'ui.bootstrap',
     'ui.router',
   ])
   .component('chplActivityWrapperBridge', reactToAngularComponent(ChplActivityWrapper))

@@ -14,7 +14,6 @@ import { reactToAngularComponent } from 'services/angular-react-helper';
 export default angular
   .module('chpl.search', [
     'chpl.services',
-    'ui.bootstrap',
   ])
   .component('chplApiDocumentationSearchWrapperBridge', reactToAngularComponent(ChplApiDocumentationSearchWrapper))
   .component('chplBannedDevelopersSearchPageBridge', reactToAngularComponent(ChplBannedDevelopersSearchWrapper))

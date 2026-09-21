@@ -1,19 +1,9 @@
 // Import base SCSS file and then all SCSS files in directories
-import 'angular-loading-bar/build/loading-bar.min.css';
 import 'swagger-ui-react/swagger-ui.css';
 import './index.scss';
 import '../assets/favicons/favicons';
 
 import angular from 'angular';
-import /* angularConfirm from */ 'angular-confirm';
-import /* angularLoadingBar from */ 'angular-loading-bar';
-import /* ngAnimate from */ 'angular-animate';
-import /* ngAria from */ 'angular-aria';
-import /* ngIdle from */ 'ng-idle';
-import /* ngResource from */ 'angular-resource';
-import /* ngSanitize from */ 'angular-sanitize';
-import /* uiBoostrap from */ 'angular-ui-bootstrap';
-import /* ngFileSaver from */ 'angular-file-saver';
 import 'angular-ui-router';
 
 // import app modules
@@ -42,13 +32,6 @@ importAll(
 );
 
 const dependencies = [
-  'angular-loading-bar',
-  'ngAnimate',
-  'ngAria',
-  'ngFileSaver',
-  'ngResource',
-  'ngSanitize',
-  'ui.bootstrap',
   'ui.router',
   administration.name,
   compare.name,

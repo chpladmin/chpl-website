@@ -8,7 +8,6 @@ angular
   .module('chpl.organizations', [
     'chpl.components',
     'chpl.services',
-    'ui.bootstrap',
     'ui.router',
   ])
   .component('chplDeveloperPageBridge', reactToAngularComponent(ChplDeveloper))

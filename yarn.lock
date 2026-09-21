@@ -2782,26 +2782,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uirouter/core@npm:6.1.2":
-  version: 6.1.2
-  resolution: "@uirouter/core@npm:6.1.2"
-  checksum: 10/3771a57f44e059b046aa8a50426f6861fce536f98d7b56f38bbc5b113ce4423fcaee2837d31103e5a04687ec605066f26af6668185ed0c43fd0bf035423dcf7b
-  languageName: node
-  linkType: hard
-
-"@uirouter/react@npm:^1.0.8":
-  version: 1.0.8
-  resolution: "@uirouter/react@npm:1.0.8"
-  dependencies:
-    "@uirouter/core": "npm:6.1.2"
-    classnames: "npm:^2.3.1"
-    prop-types: "npm:^15.6.1"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 10/1b074958e105e61c715ee3f0e57151487c7eecca84a88b72be6436faf4ab6419a932788872e7ae92aa592ce384b3fc98779db951135fc29ce5baadfe7700621c
-  languageName: node
-  linkType: hard
-
 "@webassemblyjs/ast@npm:1.12.1, @webassemblyjs/ast@npm:^1.12.1":
   version: 1.12.1
   resolution: "@webassemblyjs/ast@npm:1.12.1"
@@ -3116,65 +3096,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-animate@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "angular-animate@npm:1.8.3"
-  checksum: 10/2c307aa6a69492a23cec5b50d0f2dda6f5f058fdf32fea2019ff6f82eb33c4d79ca15ce9806a984f26e6f17b4251f34834d36dbbf6ef49d7b1db4039535309b0
-  languageName: node
-  linkType: hard
-
-"angular-aria@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "angular-aria@npm:1.8.3"
-  checksum: 10/ff311a171cfad86484ca9add11a2b52f15edbb711bce1829c199bc22dd25d95786130702ecf48d7a59c2d59458c4fdcb7a055c3a9c7aa4af01784f8a59fbfdfd
-  languageName: node
-  linkType: hard
-
-"angular-confirm@npm:1.2.6":
-  version: 1.2.6
-  resolution: "angular-confirm@npm:1.2.6"
-  checksum: 10/1763a3d319abb8140c0956dcf543fff4f032596d2d869024e24c1b6787a44c0251e9162def514c2cdea28a162e281fef9375b23f5483cb29f11dd8d65ef078e1
-  languageName: node
-  linkType: hard
-
-"angular-file-saver@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "angular-file-saver@npm:1.1.3"
-  dependencies:
-    blob-tmp: "npm:^1.0.0"
-    file-saver: "npm:^1.3.3"
-  checksum: 10/70f43c0c31babf37a5bc8b7ff88d33f1f1ecb206445e7472a43b8df4429d04454a86cbdcd2252129e94696a582a5c359080aeb478f19e7a5e9890e71863585af
-  languageName: node
-  linkType: hard
-
-"angular-loading-bar@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "angular-loading-bar@npm:0.9.0"
-  checksum: 10/70f06c0690f7fd844750f15811e23d8aced561fd4a840a1cfe7c8825db7e357aaab6552de188492a2de16778070b10007fa950b379757d57d80173b79aba68c7
-  languageName: node
-  linkType: hard
-
-"angular-resource@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "angular-resource@npm:1.8.3"
-  checksum: 10/3f348cd315ba271b8c621c0b955d553c885769f8674f3984e291c45e2295e0055f3970805f50c9c29978a2186f925713995688395b42a8665846d91800e08784
-  languageName: node
-  linkType: hard
-
-"angular-sanitize@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "angular-sanitize@npm:1.8.3"
-  checksum: 10/50227cd12259bc12b91d53f23bab9a026831d56f0b4cb74ddb3571c6da602720041e9238857837d014ef2beccf4a9565a19aa01cb2ec8ba2d3111b6c05af93e8
-  languageName: node
-  linkType: hard
-
-"angular-ui-bootstrap@npm:2.5.6":
-  version: 2.5.6
-  resolution: "angular-ui-bootstrap@npm:2.5.6"
-  checksum: 10/04b4660344b32db4b3b7f700cf74802f995dece114a3ec1e0bf2025f33dfe8953cffff83e31d53647f5b9744f2020424e776afcca5317347e401d3d21a58c7e3
-  languageName: node
-  linkType: hard
-
 "angular-ui-router@npm:^1.0.30":
   version: 1.0.30
   resolution: "angular-ui-router@npm:1.0.30"
@@ -3186,14 +3107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-zxcvbn@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "angular-zxcvbn@npm:3.2.2"
-  checksum: 10/09b5dd9a9325e56330246555c0f6163a73fc39e51101272efd523db566f328a32cee0b3cbfe390e92192522bb0d62cfe1aa5532219cb099ac55c4aa194023c41
-  languageName: node
-  linkType: hard
-
-"angular@npm:^1.2.0, angular@npm:^1.8.3":
+"angular@npm:^1.8.3":
   version: 1.8.3
   resolution: "angular@npm:1.8.3"
   checksum: 10/4a21f1f74790dc2cdceb582386abdc7b55a0463f86aaa59573c940295cb51ed61b8fa610011134280ae0da7f97fbbc660f3a4e4491b24c92b2c32a547073a1c2
@@ -3956,13 +3870,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blob-tmp@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "blob-tmp@npm:1.0.0"
-  checksum: 10/ca79af4606db4ba284ea63c9d43cb6aa7442eb8cfaf9652bc35fbc2085cc06a7a167a09f01cbd3b1e4feb52a89b070a04df0d67ef17d05b2e2d9094bf4638fd6
-  languageName: node
-  linkType: hard
-
 "blob@npm:0.0.4":
   version: 0.0.4
   resolution: "blob@npm:0.0.4"
@@ -4630,18 +4537,8 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.12.0"
     "@tanstack/react-query": "npm:4.42.0"
     "@tanstack/react-query-devtools": "npm:4.42.0"
-    "@uirouter/react": "npm:^1.0.8"
     angular: "npm:^1.8.3"
-    angular-animate: "npm:^1.8.3"
-    angular-aria: "npm:^1.8.3"
-    angular-confirm: "npm:1.2.6"
-    angular-file-saver: "npm:^1.1.3"
-    angular-loading-bar: "npm:^0.9.0"
-    angular-resource: "npm:^1.8.3"
-    angular-sanitize: "npm:^1.8.3"
-    angular-ui-bootstrap: "npm:2.5.6"
     angular-ui-router: "npm:^1.0.30"
-    angular-zxcvbn: "npm:^3.2.2"
     axios: "npm:^1.7.7"
     axios-jwt: "npm:^4.0.3"
     babel-eslint: "npm:^8.2.6"
@@ -4675,7 +4572,6 @@ __metadata:
     jspdf-autotable: "npm:^3.5.28"
     mini-css-extract-plugin: "npm:^0.4.5"
     moment: "npm:^2.29.4"
-    ng-idle: "npm:^1.3.2"
     notistack: "npm:^1.0.10"
     postcss: "npm:^5.2.18"
     postcss-import: "npm:^11.1.0"
@@ -6940,13 +6836,6 @@ __metadata:
   peerDependencies:
     webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
   checksum: 10/4ebdc40adec82e645c4a9684a1764256d7219b32ee5059d4ab93552fb382a3a0c8e614b47c53f34877b999a2d797df82b069349d3520f0087df4b7078a98668c
-  languageName: node
-  linkType: hard
-
-"file-saver@npm:^1.3.3":
-  version: 1.3.8
-  resolution: "file-saver@npm:1.3.8"
-  checksum: 10/2ad2df9ce0d19b6c7ef9c084e6a5903494f2820faa38450c8722b89c3ec1812e08a562fbf3686a84e626d3522168d50b1debd739615e588d061b3e714b74c7f9
   languageName: node
   linkType: hard
 
@@ -10643,15 +10532,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ng-idle@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "ng-idle@npm:1.3.2"
-  dependencies:
-    angular: "npm:^1.2.0"
-  checksum: 10/e91e7294687690580c4f1e30b9e7d009462ffc3cdcc1a8454581d37a7970c198cbe30e31d151f967351fa8369874ddd049bf41a05b80449da01217db201d3356
-  languageName: node
-  linkType: hard
-
 "nice-try@npm:^1.0.4":
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
@@ -12446,7 +12326,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.6.1, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
