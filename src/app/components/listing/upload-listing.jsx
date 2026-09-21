@@ -8,11 +8,9 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import { useSelector } from 'react-redux';
 import { func, number } from 'prop-types';
 
-import { useFreshAccessToken } from 'api/axios';
-import { getAngularService } from 'services/angular-react-helper';
+import { useAxios } from 'api/axios';
 import { ListingContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
@@ -59,10 +57,7 @@ function ChplUploadListing({
   setWarnings,
   setDiff,
 }) {
-  const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = useSelector((state) => state.browserInfo.api);
-  const Upload = getAngularService('Upload');
-  const getFreshAccessToken = useFreshAccessToken();
+  const axios = useAxios();
   const { setListing } = useContext(ListingContext);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -79,36 +74,23 @@ function ChplUploadListing({
     setEle(event.target);
   };
 
-  const uploadFile = async () => {
+  const uploadFile = () => {
     setErrors([]);
     setWarnings([]);
     setIsProcessing(true);
     setListing(undefined);
     setDiff([]);
-    const accessToken = await getFreshAccessToken();
-    if (!accessToken) {
-      setIsProcessing(false);
-      return;
-    }
-    const item = {
-      url: `${API}/listings/upload/${id}`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'API-Key': apiKey,
-      },
-      data: {
-        file,
-      },
-    };
-    Upload.upload(item)
+    const data = new FormData();
+    data.append('file', file);
+    axios.post(`listings/upload/${id}`, data)
       .then((response) => {
         setListing(response.data);
         setIsProcessing(false);
       })
       .catch((error) => {
         setIsProcessing(false);
-        if (error?.data?.errorMessages) {
-          setErrors(error.data.errorMessages);
+        if (error?.response?.data?.errorMessages) {
+          setErrors(error.response.data.errorMessages);
         } else {
           setErrors(['An unexpected error occurred. Please check your file and try again.']);
         }

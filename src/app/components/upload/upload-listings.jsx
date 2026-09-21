@@ -11,11 +11,9 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
-import { useFreshAccessToken } from 'api/axios';
-import { getAngularService } from 'services/angular-react-helper';
+import { useAxios } from 'api/axios';
 
 const useStyles = makeStyles({
   buttonUploadContainer: {
@@ -57,10 +55,7 @@ const useStyles = makeStyles({
 });
 
 function ChplUploadListings() {
-  const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = useSelector((state) => state.browserInfo.api);
-  const Upload = getAngularService('Upload');
-  const getFreshAccessToken = useFreshAccessToken();
+  const axios = useAxios();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
@@ -76,30 +71,18 @@ function ChplUploadListings() {
     setEle(event.target);
   };
 
-  const uploadFile = async () => {
-    const accessToken = await getFreshAccessToken();
-    if (!accessToken) {
-      return;
-    }
-    const item = {
-      url: `${API}/listings/upload`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'API-Key': apiKey,
-      },
-      data: {
-        file,
-      },
-    };
-    Upload.upload(item)
+  const uploadFile = () => {
+    const data = new FormData();
+    data.append('file', file);
+    axios.post('listings/upload', data)
       .then((response) => {
         if (response.status === 206) {
-          const message = `Partial success: File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
+          const message = `Partial success: File "${file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
           enqueueSnackbar(message, {
             variant: 'warning',
           });
         } else {
-          const message = `Success: File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
+          const message = `Success: File "${file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
           enqueueSnackbar(message, {
             variant: 'success',
           });
@@ -113,12 +96,13 @@ function ChplUploadListings() {
       })
       .catch((error) => {
         let message = `Error: File "${file.name}" was not uploaded successfully.`;
-        if (error?.data?.errorMessages) {
-          if (error.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
+        const errorMessages = error?.response?.data?.errorMessages;
+        if (errorMessages) {
+          if (errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
             message += ' The CSV header row does not match any of the headers in the system.';
             // to do: get available templates
           } else {
-            message += ` ${error.data.errorMessages.join(', ')}`;
+            message += ` ${errorMessages.join(', ')}`;
           }
         }
         enqueueSnackbar(message, {
