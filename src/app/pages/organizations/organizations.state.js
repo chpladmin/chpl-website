@@ -18,6 +18,9 @@ const states = [
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizationsBridge',
+    resolve: {
+      orgType: () => 'acb',
+    },
     data: {
       title: 'CHPL ONC-ACBs',
       roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
@@ -26,6 +29,9 @@ const states = [
     name: 'organizations.onc-atls',
     url: '/onc-atls',
     component: 'chplOncOrganizationsBridge',
+    resolve: {
+      orgType: () => 'atl',
+    },
     data: {
       title: 'CHPL ONC-ATLs',
       roles: ['chpl-admin', 'chpl-onc'],

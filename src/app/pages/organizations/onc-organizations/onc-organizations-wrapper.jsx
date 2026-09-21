@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { oneOf } from 'prop-types';
 
 import ChplOncOrganizations from './onc-organizations';
 
 import AppWrapper from 'app-wrapper';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 
-function ChplOncOrganizationsWrapper() {
-  const [title, setTitle] = useState('ONC Organizations');
-
-  useEffect(() => {
-    const orgType = window.location.href.includes('onc-acbs') ? 'acb' : 'atl';
-    setTitle(orgType === 'acb' ? 'ONC-ACBs' : 'ONC-ATLs');
-  }, []);
-
+function ChplOncOrganizationsWrapper({ orgType = 'acb' }) {
   return (
     <AppWrapper>
-      <ChplPageHeader text={title} />
+      <ChplPageHeader text={orgType === 'acb' ? 'ONC-ACBs' : 'ONC-ATLs'} />
       <ChplPageBody>
-        <ChplOncOrganizations />
+        <ChplOncOrganizations orgType={orgType} />
       </ChplPageBody>
     </AppWrapper>
   );
@@ -26,4 +20,5 @@ function ChplOncOrganizationsWrapper() {
 export default ChplOncOrganizationsWrapper;
 
 ChplOncOrganizationsWrapper.propTypes = {
+  orgType: oneOf(['acb', 'atl']),
 };
