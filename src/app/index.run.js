@@ -19,11 +19,8 @@ import { hasAnyRole } from 'services/auth.service';
 
     // Update page title on state change
     $transitions.onSuccess({}, (transition) => {
-      let { title } = transition.to().data;
+      const { title } = transition.to().data ?? {};
       if (title) {
-        if (title instanceof Function) {
-          title = title.call(transition.to(), transition.params());
-        }
         document.title = title;
 
         // Set currentPage for internal page links
