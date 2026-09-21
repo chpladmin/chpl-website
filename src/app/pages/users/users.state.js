@@ -19,3 +19,4 @@ function usersStatesConfig($stateProvider) {
 }
 
 export default usersStatesConfig;
+export { states };

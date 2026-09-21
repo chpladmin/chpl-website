@@ -43,4 +43,4 @@ function registrationStatesConfig($stateProvider) {
   });
 }
 
-export { registrationStatesConfig }; // eslint-disable-line import/prefer-default-export
+export { registrationStatesConfig, states };

@@ -39,3 +39,4 @@ function surveillanceStatesConfig($stateProvider) {
   });
 }
 export default surveillanceStatesConfig;
+export { states };

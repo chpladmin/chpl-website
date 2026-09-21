@@ -17,3 +17,4 @@ function complianceDashboardStatesConfig($stateProvider) {
 }
 
 export default complianceDashboardStatesConfig;
+export { states };

@@ -67,3 +67,4 @@ function resourcesStatesConfig($stateProvider) {
 }
 
 export default resourcesStatesConfig;
+export { states };

@@ -48,3 +48,4 @@ function organizationsStatesConfig($stateProvider) {
 }
 
 export default organizationsStatesConfig;
+export { states };

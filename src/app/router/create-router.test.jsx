@@ -6,6 +6,7 @@ import {
 import { string } from 'prop-types';
 
 import createRouter from './create-router';
+import PassthroughView from './passthrough-view';
 
 // These cover the parts of the AngularJS -> @uirouter/react move that only
 // show up when the router actually renders: that a matched state mounts its
@@ -54,6 +55,14 @@ const states = [
     data: { title: 'Complaints' },
     component: () => <div data-testid="page">complaints</div>,
   },
+  // an abstract parent that declares no component at all
+  { name: 'bare', abstract: true, url: '/bare' },
+  { name: 'bare.child', url: '/child', component: () => <div data-testid="page">bare child</div> },
+  // the same shape, but with the passthrough parent
+  {
+    name: 'passthrough', abstract: true, url: '/passthrough', component: PassthroughView,
+  },
+  { name: 'passthrough.child', url: '/child', component: () => <div data-testid="page">passthrough child</div> },
 ];
 
 // <UIRouter> calls router.start() during its own mount effect, even when it is
@@ -93,6 +102,19 @@ describe('the react router', () => {
   it('renders a child state through its parent view', async () => {
     await renderAt('surveillance.complaints');
     await waitFor(() => expect(screen.getByTestId('page')).toHaveTextContent('complaints'));
+  });
+
+  // These two encode why PassthroughView exists. A parent with no component
+  // renders nothing, so the nine AngularJS `template: '<ui-view/>'` states must
+  // each declare PassthroughView rather than simply dropping the template.
+  it('renders nothing for a child whose parent declares no component', async () => {
+    await renderAt('bare.child');
+    expect(screen.queryByTestId('page')).not.toBeInTheDocument();
+  });
+
+  it('renders a child through a PassthroughView parent', async () => {
+    await renderAt('passthrough.child');
+    await waitFor(() => expect(screen.getByTestId('page')).toHaveTextContent('passthrough child'));
   });
 
   it('re-renders when the state changes', async () => {

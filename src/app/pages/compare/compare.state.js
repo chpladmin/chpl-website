@@ -26,3 +26,4 @@ function compareStatesConfig($stateProvider) {
 }
 
 export default compareStatesConfig;
+export { states };

@@ -59,3 +59,4 @@ function subscriptionsStatesConfig($stateProvider) {
 }
 
 export default subscriptionsStatesConfig;
+export { states };

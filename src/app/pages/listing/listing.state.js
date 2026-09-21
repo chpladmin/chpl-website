@@ -23,3 +23,4 @@ function listingStatesConfig($stateProvider) {
 }
 
 export default listingStatesConfig;
+export { states };

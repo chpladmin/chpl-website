@@ -34,3 +34,4 @@ function reportsStatesConfig($stateProvider) {
 }
 
 export default reportsStatesConfig;
+export { states };

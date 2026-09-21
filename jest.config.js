@@ -20,6 +20,12 @@ module.exports = {
     '\\.(png|jpe?g|gif|svg|ico|woff2?|ttf|eot)$': '<rootDir>/test/stubs/file.js',
   },
 
+  // A few dependencies publish ESM only, which jest cannot load as CommonJS.
+  // Let babel transform those rather than ignoring all of node_modules.
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-cytoscapejs)/)',
+  ],
+
   // Deliberately not inheriting .babelrc: it targets browsers and injects
   // core-js 2 polyfills via `useBuiltIns: usage` (plus `debug: true`), none of
   // which we want when running under the current node.
