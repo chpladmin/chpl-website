@@ -17,9 +17,15 @@ yarn start:prod:dev                 # production build settings + DEV environmen
 yarn build                          # production webpack build to dist/
 yarn lint                           # eslint against src
 yarn lint:fix                       # eslint --fix; pass a path to fix a single file, e.g. yarn lint:fix src/app/path/to/file.jsx
+yarn test                           # jest + @testing-library/react in jsdom
 ```
 
-There is no test runner wired up currently — no `test` script, no jest/karma/wdio config, and no spec files anywhere in `src`. The leftover test-only devDependencies (jest/puppeteer/chromedriver/zombie/angular-mocks) and the istanbul coverage instrumentation in the webpack build have been removed, so don't assume `yarn test` exists or that anything is wired to run it.
+Tests run on jest + `@testing-library/react` in a jsdom environment, configured in `jest.config.js` with shared setup and asset stubs under `test/`. Coverage is deliberately narrow right now: it covers the `@uirouter/react` integration, added so the routing migration can be verified without a browser.
+
+Two things to know before adding tests:
+
+- **Name test files `*.test.jsx`, never `*.test.js`.** The `require.context` sweeps in `src/app/pages/*/index.js` match every `.js` file, so a `.test.js` file under those trees would be pulled into the application bundle.
+- **Jest does not inherit `.babelrc`.** That config targets browsers and injects core-js 2 polyfills via `useBuiltIns: usage`; `jest.config.js` supplies its own inline babel config targeting the current node instead. Its `modulePaths` mirrors webpack's `resolve.modules`, so bare imports like `components/util` resolve the same way in tests.
 
 Local backend proxy target defaults to `http://localhost:8181/chpl-service`; requests to `/rest/*` are rewritten and proxied there (or to the DEV env with `--env.useDev`).
 

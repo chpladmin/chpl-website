@@ -44,5 +44,12 @@
         "no-console": ["off"],
       },
     },
+    {
+      "files": ["*.test.jsx", "jest.config.js", "test/**/*.js"],
+      "env": {
+        "jest": true,
+        "node": true,
+      },
+    },
   ],
 }
