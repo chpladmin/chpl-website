@@ -1,9 +1,9 @@
-// Babel's targets still include IE 11, so async/await is transpiled to a
-// regenerator and the output references a global regeneratorRuntime. The
-// webpack babel-loader passes presets inline, which overrides .babelrc's
-// useBuiltIns setting, so babel never injects the polyfill itself. Load it
-// explicitly and first: it used to be supplied by accident, by a copy bundled
-// inside an eagerly loaded vendor chunk.
+// Our own code no longer needs this: IE is out of the browser targets, so
+// async/await is not compiled to a regenerator. Some dependencies ship
+// pre-transpiled code that still expects a global regeneratorRuntime, and that
+// global used to be set as a side effect of swagger-client loading eagerly.
+// Now that routes load on demand it can no longer be relied on, so define it
+// here. Costs ~7K.
 import 'regenerator-runtime/runtime';
 
 // Import base SCSS file and then all SCSS files in directories
