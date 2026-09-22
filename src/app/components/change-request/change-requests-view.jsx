@@ -226,7 +226,7 @@ function ChplChangeRequestsView({
                                       event: 'Navigate to Developer Page',
                                     }}
                                     external={false}
-                                    router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                    router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
                                   />
                                 </Box>
                               )}

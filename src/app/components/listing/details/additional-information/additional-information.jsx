@@ -24,7 +24,7 @@ const getRelatives = (source, user, isParent, listings) => listings.map((listing
           href={`#/listing/${listing.id}`}
           text={`${listing.chplProductNumber} (${getDisplayDateFormat(listing.certificationDay)})`}
           external={false}
-          router={{ sref: 'listing', options: { id: listing?.id } }}
+          router={{ sref: 'listing', params: { id: listing?.id } }}
           analytics={{
             event: `Navigate to Listing from ${isParent ? 'ICS Source for' : 'Inherits From'} - ${listing.chplProductNumber}`,
             category: 'Listing Details',

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="chpl">
+<html lang="en">
   <head>
     <base href="/">
     <!-- Google Tag Manager -->
@@ -18,7 +18,7 @@
       gtag('config', 'G-8Y854Z9M6F');
     </script>
     <meta charset="utf-8">
-    <title ng-bind="title">Certified Health IT Product List (CHPL)</title>
+    <title>Certified Health IT Product List (CHPL)</title>
     <meta name="description" content="Certified Health IT Product List (CHPL) website">
     <meta name="viewport" content="width=device-width">
     <meta name="format-detection" content="telephone=no">
@@ -132,15 +132,14 @@
       }
     </style>
   </head>
-  <body class="{{ bodyClass }}">
+  <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9B8823D"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <a href="#{{ currentPage }}#main-content" class="chpl-skip-link">Skip to main content</a>
     <!--
-      Cold-boot overlay only. Shown before the app bootstraps; once Angular is
-      up, the React ChplRouteLoading component removes `is-active` and owns the
+      Cold-boot overlay only. Shown before the app mounts; the React
+      ChplRouteLoading component then removes `is-active` and owns the
       route-transition loader from then on.
     -->
     <div id="chpl-route-loading" class="is-active" role="status" aria-live="polite" aria-label="Loading">
@@ -159,8 +158,6 @@
         }, 20000);
       })();
     </script>
-    <!-- Persistent React root for the route-transition loader (outside ui-view so it survives navigations). -->
-    <div id="chpl-route-loading-react"></div>
-    <div ui-view=""></div>
+    <div id="root"></div>
   </body>
 </html>

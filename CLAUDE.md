@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Web UI for CHPL (Certified Health IT Product List), a healthit.gov site. AngularJS 1.8 shell (routing only) with all page/feature UI built in React. Yarn 2+ (`packageManager: yarn@4.18.0`) is required — run `corepack enable` if `yarn` isn't already the right version.
+Web UI for CHPL (Certified Health IT Product List), a healthit.gov site. A React single-page app routed with @uirouter/react. It was an AngularJS 1.8 shell until the router migration; if you find a stray reference to Angular, it is stale. Yarn 2+ (`packageManager: yarn@4.18.0`) is required — run `corepack enable` if `yarn` isn't already the right version.
 
 ## Commands
 
@@ -17,30 +17,47 @@ yarn start:prod:dev                 # production build settings + DEV environmen
 yarn build                          # production webpack build to dist/
 yarn lint                           # eslint against src
 yarn lint:fix                       # eslint --fix; pass a path to fix a single file, e.g. yarn lint:fix src/app/path/to/file.jsx
+yarn test                           # jest + @testing-library/react in jsdom
 ```
 
-There is no test runner wired up currently (no `test` script, no jest/karma config in the repo despite some test-related devDependencies) — don't assume `yarn test` exists.
+Tests run on jest + `@testing-library/react` in a jsdom environment, configured in `jest.config.js` with shared setup and asset stubs under `test/`. Coverage is deliberately narrow right now: it covers the `@uirouter/react` integration, added so the routing migration can be verified without a browser.
+
+Two things to know before adding tests:
+
+- **Name test files `*.test.jsx`, never `*.test.js`.** The `require.context` sweeps in `src/app/pages/*/index.js` match every `.js` file, so a `.test.js` file under those trees would be pulled into the application bundle.
+- **Jest does not inherit `.babelrc`.** That config targets browsers and injects core-js 2 polyfills via `useBuiltIns: usage`; `jest.config.js` supplies its own inline babel config targeting the current node instead. Its `modulePaths` mirrors webpack's `resolve.modules`, so bare imports like `components/util` resolve the same way in tests.
 
 Local backend proxy target defaults to `http://localhost:8181/chpl-service`; requests to `/rest/*` are rewritten and proxied there (or to the DEV env with `--env.useDev`).
 
 ## Architecture
 
-**AngularJS is a thin shell over a React app.** `src/app/index.js` bootstraps a single `angular.module('chpl', ...)` and wires up `ui.router` states, but essentially every feature is a React component tree that gets embedded into Angular via a bridge — do not add new AngularJS controllers/directives/templates; extend the React side instead.
+**This is a React app.** AngularJS is gone. `src/app/index.js` configures the router and mounts a single React root into `#root`; routing is `@uirouter/react`.
 
-### Angular → React bridge
+### Routing
 
-`src/app/services/angular-react-helper.jsx` exports `reactToAngularComponent(Component)`, which wraps a React component as an Angular component definition (bindings derived from `Component.propTypes`, mounted/unmounted via `react-dom/client` `createRoot`). Each feature area's `*.module.js` registers these bridges, e.g. `src/app/pages/search/search.module.js` does:
+Everything router-related lives in `src/app/router/`:
 
-```js
-.component('chplSvapSearchWrapperBridge', reactToAngularComponent(ChplSvapSearchWrapper))
-```
+- `create-router.js` — builds a `UIRouterReact` instance. Manual bootstrapping **must** register `servicesPlugin` as well as a location plugin, or transitions fail with `cannot read 'defer'`.
+- `router.js` — the app's single instance, exported so non-React code can reach it. Deliberately holds **no** states or hooks: registering them here would import every page component, and those import `services/navigation.service`, which imports this file — an import cycle.
+- `configure.js` — registers the state tree and global hooks. Called once from the entry.
+- `states/` — one file per feature area, aggregated by `states/index.js`.
+- `hooks.js` — the url rules, page title, role guard and error handling.
+- `views/` — small shell components for route parents that render more than a bare outlet.
+- `passthrough-view.jsx` — for parents that only host a child.
 
-and the corresponding `*.state.js` (e.g. `search.state.js`) maps a `ui-router` state/URL to that Angular component name. So routing lives in Angular (`$stateProvider`), everything else is React.
+Things worth knowing before changing routes:
+
+- **URLs are hash-based** (`#/search`) via `hashLocationPlugin`, matching what AngularJS produced. A lot of markup hard-codes `#/...` hrefs, so switching to pushState is not a small change.
+- **A parent state with no `component` renders nothing**, including its children. Parents that only host a child must use `PassthroughView`; there is a test asserting both halves of this.
+- **Url params do not reach components as props.** `UIView` forwards resolves (and `transition`), not params, so a state needing `id` declares a resolve for it.
+- **`data` is inherited from parent states through the prototype chain.** Two surveillance states get their `roles` this way, so never spread or serialise a state's `data` — the inherited keys vanish and the route opens up. `router/configure.test.jsx` pins the effective role gate for every protected state.
+- **Do not call `router.start()`.** The `<UIRouter>` component starts it, and starting twice throws.
+- `src/app/services/navigation.service.js` is the single seam for imperative navigation; prefer it (or the `@uirouter/react` hooks) over touching the router directly.
 
 ### Per-page React file trio
 
 Most pages/features under `src/app/pages/**` and `src/app/components/**` follow a three-file pattern:
-- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) for use as an Angular bridge target.
+- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) and is what a route points at.
 - `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own.
 - `x-view.jsx` — presentational component, receives data/handlers as props.
 
@@ -57,9 +74,9 @@ Most pages/features under `src/app/pages/**` and `src/app/components/**` follow 
 
 Webpack's `resolve.modules` includes `src/app`, so imports write as if `src/app` were a root, e.g. `import ApiWrapper from 'api/api-wrapper'`, `import { AnalyticsContext } from 'shared/contexts'`, `import AppWrapper from 'app-wrapper'`. Don't use relative `../../..` paths across top-level directories (`api/`, `components/`, `pages/`, `services/`, `shared/`, `themes/`) — use the bare-style import instead, matching existing files. ESLint's `import/resolver` is configured the same way (`moduleDirectory: ["src/app", "node_modules"]`).
 
-### Multiple webpack entry points
+### Webpack entry point
 
-`webpack.config.js` defines separate entry bundles for `app`, `administration`, `charts`, `compare`, `listing`, `organizations`, `registration`, `reports`, `search`, `subscriptions`, and `templates`. If you add a new top-level page area intended to be its own bundle, add an entry here.
+`webpack.config.js` defines a single `app` entry. It used to define ten, one per page area, but those existed only to register AngularJS modules and each pulled in a duplicate copy of the shared code.
 
 ### Build-time globals
 
