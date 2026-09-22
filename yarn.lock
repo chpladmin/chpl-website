@@ -6019,6 +6019,7 @@ __metadata:
     react-error-boundary: "npm:^6.0.0"
     react-moment: "npm:^1.1.3"
     react-redux: "npm:^9.3.0"
+    regenerator-runtime: "npm:^0.14.1"
     sass: "npm:^1.62.1"
     sass-loader: "npm:^7.3.1"
     style-loader: "npm:^0.21.0"
@@ -15632,6 +15633,13 @@ __metadata:
   version: 0.13.9
   resolution: "regenerator-runtime@npm:0.13.9"
   checksum: 10/efbbcee420cf89b90c634ac4c53e4ac8000c80b4650d6d34560f124185d43b21b824d385ec6147657603a1ec1bed6820fc5dfb78e669f9acc7c1b5d7238b1627
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.14.1":
+  version: 0.14.1
+  resolution: "regenerator-runtime@npm:0.14.1"
+  checksum: 10/5db3161abb311eef8c45bcf6565f4f378f785900ed3945acf740a9888c792f75b98ecb77f0775f3bf95502ff423529d23e94f41d80c8256e8fa05ed4b07cf471
   languageName: node
   linkType: hard
 
