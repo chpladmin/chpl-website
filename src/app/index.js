@@ -1,40 +1,21 @@
+// Our own code no longer needs this: IE is out of the browser targets, so
+// async/await is not compiled to a regenerator. Some dependencies ship
+// pre-transpiled code that still expects a global regeneratorRuntime, and that
+// global used to be set as a side effect of swagger-client loading eagerly.
+// Now that routes load on demand it can no longer be relied on, so define it
+// here. Costs ~7K.
+import 'regenerator-runtime/runtime';
+
 // Import base SCSS file and then all SCSS files in directories
-import 'angular-loading-bar/build/loading-bar.min.css';
 import 'swagger-ui-react/swagger-ui.css';
 import './index.scss';
 import '../assets/favicons/favicons';
 
-import angular from 'angular';
-import /* angularConfirm from */ 'angular-confirm';
-import /* angularLoadingBar from */ 'angular-loading-bar';
-import /* ngAnimate from */ 'angular-animate';
-import /* ngAria from */ 'angular-aria';
-import /* ngIdle from */ 'ng-idle';
-import /* cytoscape from */ 'cytoscape';
-import /* ngCytoscape from */ './lib/ngCytoscape.min';
-import /* ngResource from */ 'angular-resource';
-import /* ngSanitize from */ 'angular-sanitize';
-import /* uiBoostrap from */ 'angular-ui-bootstrap';
-import /* ngFileSaver from */ 'angular-file-saver';
-import 'angular-ui-router';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
-// import app modules
-import administration from './pages/administration/index';
-import /* chartsModule from */ './pages/charts/index';
-import compare from './pages/compare/index';
-import /* complianceDashboardModule from */ './pages/compliance-dashboard/index';
-import /* componentsModule from */ './components/index';
-import listing from './pages/listing/index';
-import organizations from './pages/organizations/index';
-import reports from './pages/reports/index';
-import resources from './pages/resources/index';
-import /* registrationModule from */ './pages/registration/index';
-import './pages/search/index';
-import services from './services/index';
-import /* sharedModule from */ './shared/index';
-import subscriptions from './pages/subscriptions/index';
-import surveillance from './pages/surveillance/index';
-import users from './pages/users/index';
+import AppRoot from './router/app-root';
+import configureRouter from './router/configure';
 
 function importAll(r) {
   r.keys().forEach(r);
@@ -43,39 +24,8 @@ importAll(
   require.context('./', true, /^.*\/.*\.scss$/),
 );
 
-const dependencies = [
-  'angular-loading-bar',
-  'ngAnimate',
-  'ngAria',
-  'ngCytoscape',
-  'ngFileSaver',
-  'ngResource',
-  'ngSanitize',
-  'ui.bootstrap',
-  'ui.router',
-  administration.name,
-  compare.name,
-  listing.name,
-  organizations.name,
-  reports.name,
-  resources.name,
-  services.name,
-  subscriptions.name,
-  surveillance.name,
-  users.name,
-  'chpl.charts',
-  'chpl.compliance-dashboard',
-  'chpl.search',
-  'chpl.components',
-  'chpl.registration',
-  'chpl.shared',
-];
+// register the state tree and global hooks before anything renders
+configureRouter();
 
-const appModule = angular.module('chpl', dependencies);
-
-require('./index.route');
-require('./index.run');
-require('./templates');
-require('./index.config');
-
-export default appModule;
+// createElement rather than JSX so this entry can stay a .js file
+createRoot(document.getElementById('root')).render(React.createElement(AppRoot));
