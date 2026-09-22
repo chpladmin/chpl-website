@@ -47,8 +47,10 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
-    overflowY: 'auto',    // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
-    position: 'relative',  },
+    minWidth: 0,
+    overflowY: 'auto', // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
+    position: 'relative',
+  },
   widgetRail: {
     animation: '$widgetRailIn 140ms ease-out',
     backgroundColor: palette.white,
