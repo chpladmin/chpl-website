@@ -14,22 +14,24 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 
 import { ChplTooltip } from 'components/util';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   closeDrawer: {
     border: '1px solid #eee',
     backgroundColor: '#fff',
     borderRadius: '4px 4px',
+    padding: '16px',
+    marginBottom: '8x',
     boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
-    '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#eee',
-      boxShadow: '0 -4px 8px rgb(149 157 165 / 50%)',
-    },
   },
   drawerPaper: {
     borderRadius: '4px',
     boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
-    width: '250px',
+    width: '90vw',
+    [theme.breakpoints.up('md')]: {
+      width: '350px',
+    },
     zIndex: 1298,
   },
   toggle: {
@@ -38,8 +40,8 @@ const useStyles = makeStyles({
     fontWeight: '600',
     zIndex: 1299,
     position: 'fixed',
-    right: '0',
-    marginRight: '8px',
+    right: '16px',
+    marginRight: '16px',
   },
   toggleError: {
     bottom: '125px',
@@ -226,6 +228,7 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
         <div className={classes.closeDrawer}>
           <Button
             color="primary"
+            variant="outlined"
             fullWidth
             onClick={toggleDrawer}
             id="action-bar-messages-close"

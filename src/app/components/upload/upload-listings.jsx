@@ -8,6 +8,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
@@ -52,11 +53,20 @@ const useStyles = makeStyles({
     marginTop: '16px',
     paddingTop: '16px',
   },
+  snackbarActions: {
+    display: 'flex',
+    gap: '8px',
+    paddingRight: '8px',
+    pointerEvents: 'auto',
+  },
+  snackbarIcon: {
+    marginLeft: '4px',
+  },
 });
 
 function ChplUploadListings() {
   const axios = useAxios();
-  const { enqueueSnackbar } = useSnackbar();
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const classes = useStyles();
@@ -85,6 +95,29 @@ function ChplUploadListings() {
           const message = `Success: File "${file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
           enqueueSnackbar(message, {
             variant: 'success',
+            action: (key) => (
+              <div className={classes.snackbarActions}>
+                <Button
+                  color="default"
+                  variant="contained"
+                  onClick={() => {
+                    window.location.href = '#/administration/confirm/listings';
+                    closeSnackbar(key);
+                  }}
+                >
+                  Go to queue
+                </Button>
+                <Button
+                  color="default"
+                  variant="contained"
+                  onClick={() => closeSnackbar(key)}
+                >
+                  Dismiss
+                  {' '}
+                  <CloseIcon className={classes.snackbarIcon} />
+                </Button>
+              </div>
+            ),
           });
         }
         if (response.headers.warning === '299 - "Deprecated upload template"') {
