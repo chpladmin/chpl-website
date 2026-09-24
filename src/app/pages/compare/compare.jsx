@@ -27,6 +27,7 @@ import {
   ChplPageHeader,
   ChplTooltip,
 } from 'components/util';
+import CmsButton from 'components/cms-widget/cms-button';
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
@@ -275,18 +276,21 @@ function ChplComparePage({ ids }) {
                   <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                   { listings.map((listing) => (
                     <TableCell className={classes.headerColumnContent} key={listing.id}>
-                      <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                        { listing.product.name }
-                        <ChplBrowserComparedWidget
-                          listing={listing}
-                        />
-                        <IconButton
-                          size="small"
-                          onClick={() => dropListing(listing)}
-                          disabled={listings.length <= 2}
-                        >
-                          <CloseIcon />
-                        </IconButton>
+                      <Box mb={2} display="flex" flexDirection="column">
+                        <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
+                          { listing.product.name }
+                          <ChplBrowserComparedWidget
+                            listing={listing}
+                          />
+                          <IconButton
+                            size="small"
+                            onClick={() => dropListing(listing)}
+                            disabled={listings.length <= 2}
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        </Box>
+                        <CmsButton listing={listing} />
                       </Box>
                     </TableCell>
                   ))}
@@ -300,16 +304,10 @@ function ChplComparePage({ ids }) {
                 { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
                 { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
                 { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
-                { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
-                { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
-                { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
-                { criteria.map(makeCriterionRow) }
-                { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
-                { cqms.map(makeCqmRow) }
-                { makeRow('View product details', (listing) => (
+                { makeRow('CHPL Product Number', (listing) => (
                   <ChplLink
                     href={`#/listing/${listing.id}`}
-                    text="details"
+                    text={listing.chplProductNumber}
                     analytics={{
                       ...analytics,
                       event: 'Navigate to Listing Details Page',
@@ -320,6 +318,11 @@ function ChplComparePage({ ids }) {
                     router={{ sref: 'listing', options: { id: listing.id } }}
                   />
                 ))}
+                { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
+                { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
+                { criteria.map(makeCriterionRow) }
+                { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
+                { cqms.map(makeCqmRow) }
               </TableBody>
             </Table>
           </TableContainer>
