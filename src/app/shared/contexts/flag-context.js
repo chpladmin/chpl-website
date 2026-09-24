@@ -7,7 +7,6 @@ const FlagContext = createContext({
   hti5ErdIsOn: false,
   insightsConnectionIsOn: false,
   insightsDisplayIsOn: false,
-  rwtAiIntegrationIsOn: false,
   rwtChangeRequestIsOn: false,
   sbulChangeRequestIsOn: false,
 });
