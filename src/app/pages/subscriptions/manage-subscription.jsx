@@ -330,7 +330,7 @@ function ChplManageSubscription({ hash }) {
                               href={`#/organizations/developers/${subscription.developerId}`}
                               text={subscription.developerName}
                               external={false}
-                              router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
+                              router={{ sref: 'organizations.developers.developer', params: { id: subscription.developerId } }}
                             />
                           </Box>
                           <Box className={classes.metaDataBox}>
@@ -351,7 +351,7 @@ function ChplManageSubscription({ hash }) {
                               href={`#/listing/${subscription.certifiedProductId}`}
                               text={`${subscription.chplProductNumber}`}
                               external={false}
-                              router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
+                              router={{ sref: 'listing', params: { id: subscription.certifiedProductId } }}
                             />
                           </Box>
                           <Box className={classes.metaDataBox}>

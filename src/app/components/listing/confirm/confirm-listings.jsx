@@ -24,7 +24,7 @@ import {
   useRejectPendingListing,
 } from 'api/pending-listings';
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
-import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette, utilStyles } from 'themes';
 
@@ -75,6 +75,8 @@ function ChplConfirmListings({ onProcess }) {
   const [idsToReject, setIdsToReject] = useState([]);
   const [listingIdToLoad, setListingIdToLoad] = useState(undefined);
   const [listings, setListings] = useState([]);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('chplProductNumber');
   const [warnings, setWarnings] = useState([]);
   const { data: modernData } = useFetchPendingListings();
   const { data: processingListing } = useFetchPendingListing({ id: listingIdToLoad });
@@ -153,21 +155,11 @@ function ChplConfirmListings({ onProcess }) {
     }
   };
 
-  const listingSortComparator = (property) => {
-    let sortOrder = 1;
-    let key = property;
-    if (key[0] === '-') {
-      sortOrder = -1;
-      key = key.substr(1);
-    }
-    return (a, b) => {
-      const result = (a[key] < b[key]) ? -1 : 1;
-      return result * sortOrder;
-    };
-  };
-
   const handleTableSort = (event, property, orderDirection) => {
-    setListings(listings.map((listing) => listing).sort(listingSortComparator(orderDirection + property)));
+    const descending = orderDirection === 'desc';
+    setListings((prev) => [...prev].sort(sortComparator(property, descending)));
+    setOrderBy(property);
+    setOrder(orderDirection);
   };
 
   const headers = [
@@ -211,6 +203,8 @@ function ChplConfirmListings({ onProcess }) {
                 <ChplSortableHeaders
                   headers={headers}
                   onTableSort={handleTableSort}
+                  order={order}
+                  orderBy={orderBy}
                 />
                 <TableBody>
                   { listings

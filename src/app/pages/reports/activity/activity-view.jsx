@@ -83,7 +83,7 @@ function ChplActivityView() {
             href={`#/listing/${activity.objectId}`}
             text={after.chplProductNumber}
             external={false}
-            router={{ sref: 'listing', options: { id: activity.objectId } }}
+            router={{ sref: 'listing', params: { id: activity.objectId } }}
             analytics={{
               event: 'Navigate to Listing',
               category: 'Activity Search',
@@ -103,7 +103,7 @@ function ChplActivityView() {
               category: 'Activity Search',
             }}
             external={false}
-            router={{ sref: 'organizations.developers.developer', options: { id: activity.objectId } }}
+            router={{ sref: 'organizations.developers.developer', params: { id: activity.objectId } }}
           />
         );
       case 'PRODUCT':
@@ -119,7 +119,7 @@ function ChplActivityView() {
               category: 'Activity Search',
             }}
             external={false}
-            router={{ sref: 'organizations.developers.developer', options: { id: after.owner.id } }}
+            router={{ sref: 'organizations.developers.developer', params: { id: after.owner.id } }}
           />
         );
       case 'VERSION':
@@ -135,7 +135,7 @@ function ChplActivityView() {
               category: 'Activity Search',
             }}
             external={false}
-            router={{ sref: 'organizations.developers.developer', options: { id: after.developerId } }}
+            router={{ sref: 'organizations.developers.developer', params: { id: after.developerId } }}
           />
         );
       default:
