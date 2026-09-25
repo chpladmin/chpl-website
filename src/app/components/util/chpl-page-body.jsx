@@ -11,6 +11,8 @@ import { palette, theme } from 'themes';
 const useStyles = makeStyles({
   container: {
     flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
     padding: theme.spacing(4),
     backgroundColor: palette.backgroundPage,
     backgroundImage: `radial-gradient(${'#d6d4cf'} 0.5px, transparent 0.25px)`,
@@ -26,7 +28,11 @@ function ChplPageBody({ children, maxWidth = 'lg' }) {
 
   return (
     <Box className={classes.container}>
-      <Container id="main-content" tabIndex="-1" maxWidth={maxWidth}>
+      <Container
+        id="main-content" tabIndex="-1"
+        maxWidth={maxWidth}
+        sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
+      >
         {children}
       </Container>
     </Box>

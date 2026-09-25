@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
+  CardContent,
   Chip,
   Divider,
   Drawer,
@@ -14,22 +14,40 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 
 import { ChplTooltip } from 'components/util';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  closeDrawer: {
-    border: '1px solid #eee',
-    backgroundColor: '#fff',
-    borderRadius: '4px 4px',
-    boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
-    '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#eee',
-      boxShadow: '0 -4px 8px rgb(149 157 165 / 50%)',
-    },
+  cardcontentPadding: {
+    padding: '8px',
+  },
+  mainCardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100%',
+  },
+  stickyWidgetHeader: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '8px',
+    backgroundColor: palette.white,
+    marginLeft: '-8px',
+    marginRight: '-8px',
+    marginBottom: '16px',
+    minHeight: '52px', // matches the CMS and compare widget headers
+    padding: '4px 4px 4px 8px',
+    borderBottom: `1px solid ${palette.divider}`,
   },
   drawerPaper: {
     borderRadius: '4px',
     boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
-    width: '250px',
+    width: '90vw',
+    [theme.breakpoints.up('md')]: {
+      width: '350px',
+    },
     zIndex: 1298,
   },
   toggle: {
@@ -38,14 +56,14 @@ const useStyles = makeStyles({
     fontWeight: '600',
     zIndex: 1299,
     position: 'fixed',
-    right: '0',
-    marginRight: '8px',
+    right: '16px',
+    marginRight: '16px',
   },
   toggleError: {
     bottom: '125px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#853544',
+      backgroundColor: palette.errorDark,
       boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
     },
   },
@@ -53,21 +71,21 @@ const useStyles = makeStyles({
     bottom: '80px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#b9bc0c',
+      backgroundColor: palette.warningDark,
       boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
     },
   },
-  messageContainer: {
-    overflowY: 'auto',
-    flexGrow: 1,
-  },
   errorContainer: {
-    backgroundColor: '#c44f6520',
-    color: '#1c1c1c',
+    backgroundColor: palette.errorLight,
+    color: palette.greyDark,
+    borderRadius: '4px',
+    padding: '8px',
   },
   warningContainer: {
-    backgroundColor: '#e6ea0b20',
-    color: '#1c1c1c',
+    backgroundColor: palette.warningLight,
+    color: palette.greyDark,
+    borderRadius: '4px',
+    padding: '8px',
   },
   messageHeader: {
     alignItems: 'center',
@@ -81,15 +99,12 @@ const useStyles = makeStyles({
     width: '32px',
   },
   errorTheme: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    backgroundColor: palette.error,
+    color: palette.white,
   },
   warningTheme: {
-    backgroundColor: '#e6ea0b',
-    color: '#1c1c1c',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
+    backgroundColor: palette.warning,
+    color: palette.greyDark,
   },
   list: {
     margin: '0 0 0 16px',
@@ -163,7 +178,17 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.messageContainer}>
+        <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
+          <div className={classes.stickyWidgetHeader}>
+            <Typography variant="h2">
+              Messages
+            </Typography>
+            <ChplTooltip placement="bottom" title="Close Messages">
+              <IconButton aria-label="Close widget" onClick={toggleDrawer} size="small">
+                <CloseIcon />
+              </IconButton>
+            </ChplTooltip>
+          </div>
           {fixMessages(errors).length > 0
            && (
              <div className={classes.errorContainer} id="action-bar-errors">
@@ -222,18 +247,7 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
                </ul>
              </div>
            )}
-        </div>
-        <div className={classes.closeDrawer}>
-          <Button
-            color="primary"
-            fullWidth
-            onClick={toggleDrawer}
-            id="action-bar-messages-close"
-          >
-            Close
-            <CloseIcon className={classes.iconSpacing} />
-          </Button>
-        </div>
+        </CardContent>
       </Drawer>
     </>
   );
