@@ -13,6 +13,7 @@ import {
   bool,
   func,
   number,
+  oneOfType,
   string,
 } from 'prop-types';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
@@ -133,7 +134,7 @@ export default ChplProgress;
 
 ChplProgress.propTypes = {
   buttonContainerTop: string,
-  buttonContainerMarginTop: number,
+  buttonContainerMarginTop: oneOfType([number, string]),
   steps: arrayOf(string).isRequired,
   dispatch: func.isRequired,
   value: number.isRequired,

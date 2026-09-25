@@ -105,7 +105,7 @@ function ChplUploadListings() {
                     closeSnackbar(key);
                   }}
                 >
-                  Go to queue
+                  Confirm Listing
                 </Button>
                 <Button
                   color="default"
