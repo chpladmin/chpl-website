@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogContent,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+  Button, CircularProgress, Dialog, DialogContent,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import InfoIcon from '@mui/icons-material/Info';
 import { number } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';

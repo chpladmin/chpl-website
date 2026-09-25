@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Avatar,
-  makeStyles,
-} from '@material-ui/core';
+import { Avatar } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
 
 const colors = ['color_9efff5', 'color_490404', 'color_00666d', 'color_2f3193', 'color_662d91', 'color_922790', 'color_ec2176', 'color_ed1c24', 'color_f36622', 'color_f8941e', 'color_fab70f', 'color_fdde00', 'color_d1d219', 'color_8ec73f', 'color_00a650', 'color_00aa9c', 'color_00adef', 'color_0081cd', 'color_005bab'];

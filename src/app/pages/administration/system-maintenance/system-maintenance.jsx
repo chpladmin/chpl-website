@@ -9,29 +9,29 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
-import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
-import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
-import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
-import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
-import HomeOutlined from '@material-ui/icons/HomeOutlined';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import MenuIcon from '@material-ui/icons/Menu';
-import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
-import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
-import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
+import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
+import DataUsageOutlinedIcon from '@mui/icons-material/DataUsageOutlined';
+import HomeOutlined from '@mui/icons-material/HomeOutlined';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import PlaylistAddCheckOutlinedIcon from '@mui/icons-material/PlaylistAddCheckOutlined';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import SubscriptionsOutlinedIcon from '@mui/icons-material/SubscriptionsOutlined';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
+import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 
 import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
@@ -80,7 +80,7 @@ const useStyles = makeStyles({
     gap: '4px',
     alignItems: 'baseline',
     margin: 0,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xl')]: {
       flexDirection: 'column',
     },
   },
@@ -91,7 +91,7 @@ const useStyles = makeStyles({
     top: '115px',
     zIndex: 1,
     transition: 'width 0.3s ease',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       position: 'relative',
       top: 0,
       width: '100%',
@@ -99,7 +99,7 @@ const useStyles = makeStyles({
   },
   navOpen: {
     width: '200px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -111,7 +111,7 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '8px',
     flexDirection: 'column',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'row',
       overflowX: 'scroll',
     },

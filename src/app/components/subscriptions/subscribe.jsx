@@ -5,9 +5,9 @@ import {
   Card,
   CardContent,
   Typography,
-} from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
-import SubscriptionsTwoToneIcon from '@material-ui/icons/SubscriptionsTwoTone';
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import SubscriptionsTwoToneIcon from '@mui/icons-material/SubscriptionsTwoTone';
 import { useSelector } from 'react-redux';
 import { number } from 'prop-types';
 import { useFormik } from 'formik';
@@ -77,8 +77,8 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   return (
     <Card>
       <CardContent>
-        <Box display="flex" flexDirection="column" gridGap={8}>
-          <Box display="flex" flexDirection="row" gridGap={8}>
+        <Box display="flex" flexDirection="column" gap={8}>
+          <Box display="flex" flexDirection="row" gap={8}>
             <SubscriptionsTwoToneIcon fontSize="large" color="primary" />
             <Typography variant="h5">
               <strong>Want Updates?</strong>

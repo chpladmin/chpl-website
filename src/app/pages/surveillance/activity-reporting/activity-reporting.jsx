@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+  Box, Button, Card, CardContent, CardHeader, MenuItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Tooltip } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Tooltip } from '@mui/material';
 import { node, oneOfType, string } from 'prop-types';
 
 import theme from '../../themes/theme';

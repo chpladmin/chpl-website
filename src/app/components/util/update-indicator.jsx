@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import UpdateIcon from '@material-ui/icons/Update';
-import WarningIcon from '@material-ui/icons/Warning';
+import { Box, IconButton, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import UpdateIcon from '@mui/icons-material/Update';
+import WarningIcon from '@mui/icons-material/Warning';
 import * as jsJoda from '@js-joda/core';
 import { string } from 'prop-types';
 
@@ -65,7 +61,7 @@ function ChplUpdateIndicator({
         </Box>
       )}
       >
-        <IconButton>
+        <IconButton size="large">
           <UpdateIcon className={classes.updateNeeded} />
         </IconButton>
       </ChplTooltip>
@@ -90,7 +86,7 @@ function ChplUpdateIndicator({
         </Box>
       )}
       >
-        <IconButton>
+        <IconButton size="large">
           <WarningIcon className={classes.updateRequired} />
         </IconButton>
       </ChplTooltip>
@@ -115,7 +111,7 @@ function ChplUpdateIndicator({
         </Box>
       )}
       >
-        <IconButton>
+        <IconButton size="large">
           <CheckCircleIcon className={classes.alreadyUpdated} />
         </IconButton>
       </ChplTooltip>

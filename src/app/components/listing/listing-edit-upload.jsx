@@ -9,12 +9,12 @@ import {
   List,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import ChplUploadListing from './upload-listing';
 

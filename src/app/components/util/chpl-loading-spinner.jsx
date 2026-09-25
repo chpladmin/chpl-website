@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { number } from 'prop-types';
 
 import ChplLogo from '../../../assets/favicons/android-chrome-192x192.png';

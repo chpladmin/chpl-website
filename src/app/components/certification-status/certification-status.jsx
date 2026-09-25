@@ -11,9 +11,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getStatusIcon } from 'services/listing.service';

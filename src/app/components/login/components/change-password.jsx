@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+  Button, Card, CardHeader, CardContent, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ClearIcon from '@mui/icons-material/Clear';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

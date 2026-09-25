@@ -10,10 +10,10 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import EventIcon from '@material-ui/icons/Event';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import EditIcon from '@mui/icons-material/Edit';
+import EventIcon from '@mui/icons-material/Event';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
@@ -52,7 +52,7 @@ const getAction = (item, dispatch) => {
           variant="contained"
           color="primary"
           aria-label={`Edit Report ${item.name}`}
-        >
+          size="large">
           <EditIcon />
         </IconButton>
       </ChplTooltip>
@@ -68,7 +68,7 @@ const getAction = (item, dispatch) => {
           onClick={() => dispatch({ action: 'schedule', payload: item })}
           color="primary"
           aria-label={`Schedule Report ${item.name}`}
-        >
+          size="large">
           <EventIcon />
         </IconButton>
       </ChplTooltip>

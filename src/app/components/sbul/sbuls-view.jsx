@@ -13,8 +13,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 
 import { useFetchSbuls } from 'api/developer';

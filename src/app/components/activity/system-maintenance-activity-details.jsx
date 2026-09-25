@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   TimelineConnector,
   TimelineContent,
   TimelineDot,
   TimelineItem,
   TimelineSeparator,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import { bool, func, object } from 'prop-types';
 
 import compareSystemMaintenance from './services/system-maintenance.service';

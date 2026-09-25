@@ -1,11 +1,8 @@
 import React, { useContext } from 'react';
 import {
-  Divider,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Divider, FormControlLabel, Switch, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 

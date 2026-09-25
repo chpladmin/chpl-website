@@ -1,11 +1,8 @@
 import React from 'react';
 import {
-  Box,
-  FormControlLabel,
-  FormHelperText,
-  Switch,
-  makeStyles,
-} from '@material-ui/core';
+  Box, FormControlLabel, FormHelperText, Switch,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -80,7 +77,7 @@ function ChplAnnouncementEdit(props) {
   });
 
   return (
-    <Box display="flex" flexDirection="column" gridGap="16px">
+    <Box display="flex" flexDirection="column" gap="16px">
       <ChplTextField
         id="title"
         name="title"
@@ -109,7 +106,7 @@ function ChplAnnouncementEdit(props) {
         error={formik.touched.text && !!formik.errors.text}
         helperText={formik.touched.text && formik.errors.text}
       />
-      <Box display="flex" flexDirection="row" gridGap="16px">
+      <Box display="flex" flexDirection="row" gap="16px">
         <Box className={classes.fullWidth}>
           <ChplTextField
             id="start-date-time"

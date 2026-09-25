@@ -55,7 +55,7 @@ const states = [
     url: '/svap',
     component: 'chplSvapSearchWrapperBridge',
     data: { title: 'SVAP Information' },
-  }, 
+  },
 ];
 
 function searchStatesConfig($stateProvider) {

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+  Box, Card, CardContent, CardHeader, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
@@ -104,7 +99,7 @@ function ChplSystemJobTypesView(props) {
                     onClick={() => dispatch({ action: 'schedule', payload: item })}
                     color="primary"
                     aria-label={`Schedule Job ${item.name}`}
-                  >
+                    size="large">
                     <PlayArrowIcon />
                   </IconButton>
                 </ChplTooltip>

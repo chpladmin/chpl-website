@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@mui/icons-material/Add';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
@@ -51,70 +48,68 @@ function ChplUcdProcessesView({ dispatch, ucdProcesses: initialUcdProcesses }) {
     setOrder(orderDirection);
   };
 
-  return (
-    <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            UCD Processes
-          </Typography>
-          <Typography variant="body2">
-            {`(${ucdProcesses.length} Result${ucdProcesses.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
+  return <>
+    <Box className={classes.headerContainer}>
+      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+        <Typography variant="subtitle2">
+          UCD Processes
+        </Typography>
+        <Typography variant="body2">
+          {`(${ucdProcesses.length} Result${ucdProcesses.length !== 1 ? 's' : ''})`}
+        </Typography>
+      </Box>
+      <Box display="flex" alignItems="center" gap={4}>
+        <ChplSortControls
+          sortOptions={sortOptions}
+          orderBy={orderBy}
+          order={order}
+          onSort={handleSort}
+        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-ucd-process"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        )}
+      </Box>
+    </Box>
+    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      { ucdProcesses
+        .map((item) => (
+          <ChplSearchResultCard
+            key={`${item.id}`}
+            cardTitle="Name"
+            cardTitleValue={item.name}
+            titleIconButton={(
+              <ChplTooltip title="Use this value in a upload file">
+                <IconButton color="primary" size="small">
+                  <InfoIcon fontSize="small" />
+                </IconButton>
+              </ChplTooltip>
+            )}
+            actions={
+              hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                <Button
+                  onClick={() => dispatch({ action: 'edit', payload: item })}
+                  id={`edit-ucd-process-${item.id}`}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  endIcon={<EditOutlinedIcon />}
+                >
+                  Edit
+                </Button>
+              )
+            }
           />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-            <Button
-              onClick={() => dispatch({ action: 'edit', payload: {} })}
-              id="add-new-ucd-process"
-              variant="contained"
-              color="primary"
-              endIcon={<AddIcon />}
-            >
-              Add
-            </Button>
-          )}
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { ucdProcesses
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              cardTitle="Name"
-              cardTitleValue={item.name}
-              titleIconButton={(
-                <ChplTooltip title="Use this value in a upload file">
-                  <IconButton color="primary" size="small">
-                    <InfoIcon fontSize="small" />
-                  </IconButton>
-                </ChplTooltip>
-              )}
-              actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-ucd-process-${item.id}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
-            />
-          ))}
-      </Box>
-    </>
-  );
+        ))}
+    </Box>
+  </>;
 }
 
 export default ChplUcdProcessesView;

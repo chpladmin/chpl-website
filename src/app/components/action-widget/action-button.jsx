@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { bool, node } from 'prop-types';
 
 import CompareButton from 'components/compare-widget/compare-button';

@@ -1,19 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  CircularProgress,
-  Fade,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+  Box, Button, CircularProgress, Fade, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import {
   Edit,
   Star,
   StarOutline,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
 
@@ -217,7 +212,7 @@ function ChplListingPage({ id }) {
                 onClick={toggleFavorite}
                 style={{ color: '#e3bf00' }}
                 aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
-              >
+                size="large">
                 {isFavorited ? <Star /> : <StarOutline />}
               </IconButton>
             </ChplTooltip>

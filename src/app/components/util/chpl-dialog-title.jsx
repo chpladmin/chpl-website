@@ -1,10 +1,8 @@
 import React from 'react';
-import {
-  IconButton,
-  makeStyles,
-} from '@material-ui/core';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
+import { IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import MuiDialogTitle from '@mui/material/DialogTitle';
+import CloseIcon from '@mui/icons-material/Close';
 
 import theme from '../../themes/theme';
 
@@ -33,7 +31,7 @@ function ChplDialogTitle(props) {
            aria-label="close"
            className={classes.closeButton}
            onClick={onClose}
-         >
+           size="large">
            <CloseIcon />
          </IconButton>
        )}

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  List,
-  ListItem,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Card, CardHeader, List, ListItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import { NotificationsOutlined, SubscriptionsOutlined } from '@material-ui/icons';
+import { NotificationsOutlined, SubscriptionsOutlined } from '@mui/icons-material';
 
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {

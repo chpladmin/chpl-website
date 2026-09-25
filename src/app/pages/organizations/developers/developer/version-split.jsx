@@ -11,9 +11,9 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import { ArrowBack, ArrowForward } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 

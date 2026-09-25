@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  CircularProgress,
-  Container,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { CircularProgress, Container, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 

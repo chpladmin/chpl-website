@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Button, Card, CardActions, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { bool, func } from 'prop-types';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { theme } from 'themes';
 import { sortCriteria } from 'services/criteria.service';

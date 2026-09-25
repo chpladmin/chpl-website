@@ -1,14 +1,10 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import StarsIcon from '@material-ui/icons/Stars';
+  Box, Card, CardContent, Container, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import StarsIcon from '@mui/icons-material/Stars';
 
 import { developer as developerPropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';

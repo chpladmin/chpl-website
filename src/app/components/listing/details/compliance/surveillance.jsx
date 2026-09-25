@@ -8,10 +8,10 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import EditIcon from '@material-ui/icons/Edit';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import EditIcon from '@mui/icons-material/Edit';
 import { useSelector } from 'react-redux';
 import { arrayOf, bool, func } from 'prop-types';
 
@@ -236,7 +236,7 @@ function ChplSurveillance({
               </Typography>
             </AccordionSummary>
             <CardContent>
-              <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
+              <Box display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
                 { canManageSurveillance()
                 && (
@@ -281,7 +281,7 @@ function ChplSurveillance({
                   </AccordionSummary>
                   <Box className={classes.surveillanceDetailsBorder}>
                     <CardContent>
-                      <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+                      <Box display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                         { getDataDisplay('Date of Determination of Non-Conformity', <Typography>{ getDisplayDateFormat(nc.dateOfDeterminationDay) }</Typography>, 'The date that the ONC-ACB determined that a non-conformity was present.') }
                         { getDataDisplay('Corrective Action Plan Approval Date', <Typography>{ getDisplayDateFormat(nc.capApprovalDay) }</Typography>, 'The date that the ONC-ACB approved the corrective action plan proposed by the developer.') }
                         { getDataDisplay('Date Corrective Action Began', <Typography>{ getDisplayDateFormat(nc.capStartDay) }</Typography>, 'The date that the corrective action was started.') }

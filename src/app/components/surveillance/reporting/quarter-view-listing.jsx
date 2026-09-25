@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
+  Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import { object } from 'prop-types';
 
 import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveillance';
@@ -74,7 +69,7 @@ function ChplQuarterViewListing({ listing }) {
         display: 'flex', padding: '0', marginTop: '-32px', boxShadow: 'none',
       }}
       >
-        <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
+        <Box display="flex" width="100%" gap="32px" flexDirection="row" justifyContent="space-between">
           { listing.surveillances
             .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
             .map((surv) => (

@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardContent, CardHeader, FormControlLabel, Switch, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+  Box, Card, CardContent, CardHeader, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import EditIcon from '@mui/icons-material/Edit';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
@@ -113,14 +108,14 @@ function ChplUserTriggersView({
                         { label: 'Type', value: item.jobName },
                       ],
                     ];
-                    
+
                     if (item.acbNames) {
                       fieldGroups[1].push({
                         label: 'ONC-ACB',
                         value: item.acbNames,
                       });
                     }
-                    
+
                     return (
                       <ChplSearchResultCard
                         key={`${item.name}-${item.job.name}`}
@@ -136,7 +131,7 @@ function ChplUserTriggersView({
                               onClick={() => dispatch({ action: 'edit', payload: item })}
                               color="primary"
                               aria-label={`Edit Report ${item.name}`}
-                            >
+                              size="large">
                               <EditIcon />
                             </IconButton>
                           </ChplTooltip>

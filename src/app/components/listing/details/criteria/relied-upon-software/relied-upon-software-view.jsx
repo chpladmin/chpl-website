@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  makeStyles,
-} from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf } from 'prop-types';
 
 import { reliedUponSoftware } from 'shared/prop-types';

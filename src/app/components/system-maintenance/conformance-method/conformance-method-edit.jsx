@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Chip, Divider, MenuItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';

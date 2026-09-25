@@ -1,13 +1,8 @@
 import React, { useState, useRef, useCallback } from 'react';
 import {
-  Box,
-  Button,
-  ButtonGroup,
-  Card,
-  Menu,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, ButtonGroup, Card, Menu, MenuItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   bool,
@@ -16,9 +11,9 @@ import {
   shape,
   string,
 } from 'prop-types';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import SortIcon from '@material-ui/icons/Sort';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import SortIcon from '@mui/icons-material/Sort';
 
 import { theme, palette } from 'themes';
 
@@ -29,18 +24,18 @@ const useStyles = makeStyles({
     border: `1px solid ${palette.primaryBorder}`,
     borderRadius: theme.shape.borderRadius,
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
       marginRight: 0,
     },
   },
   buttonGroup: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
   primaryButton: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flex: '1 1 auto',
       justifyContent: 'flex-start',
     },

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Button, Dialog, DialogContent, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Timeline,
-} from '@material-ui/lab';
-import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
+} from '@mui/lab';
+import TrackChangesOutlined from '@mui/icons-material/TrackChangesOutlined';
 import { object } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';

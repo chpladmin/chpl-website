@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Chip,
-  Divider,
-  Drawer,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Button, Chip, Divider, Drawer, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, string,
 } from 'prop-types';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { ChplTooltip } from 'components/util';
 

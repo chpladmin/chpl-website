@@ -9,9 +9,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import InfoIcon from '@mui/icons-material/Info';
 import { arrayOf } from 'prop-types';
 
 import { palette, utilStyles } from 'themes';
@@ -63,7 +63,7 @@ function ChplG1g2(props) {
             .map((measure) => (
               <TableRow key={measure.id ?? measure.measure.id}>
                 <TableCell className={measure.measure.removed ? classes.removedText : ''}>
-                  <Box display="flex" alignItems="center" gridGap={4}>
+                  <Box display="flex" alignItems="center" gap={4}>
                     { measure.measure.removed
                     && (
                       <>
@@ -75,7 +75,7 @@ function ChplG1g2(props) {
                     { measure.measure.removed
                     && (
                       <ChplTooltip title="This MACRA Measure has been removed from the Program.">
-                        <IconButton>
+                        <IconButton size="large">
                           <InfoIcon className={classes.infoIcon} />
                         </IconButton>
                       </ChplTooltip>

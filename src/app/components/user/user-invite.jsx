@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import EmailIcon from '@material-ui/icons/Email';
+  Button, Dialog, DialogActions, DialogContent, MenuItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EmailIcon from '@mui/icons-material/Email';
 import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

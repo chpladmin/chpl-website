@@ -1,13 +1,8 @@
 import React, { useContext } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, CardHeader, CircularProgress, Container,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import ChplListingView from 'components/listing/listing-view';

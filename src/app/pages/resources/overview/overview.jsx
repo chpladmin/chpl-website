@@ -10,15 +10,15 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
-import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
-import WebOutlinedIcon from '@material-ui/icons/WebOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import RecordVoiceOverOutlinedIcon from '@material-ui/icons/RecordVoiceOverOutlined';
-import SupervisedUserCircleOutlinedIcon from '@material-ui/icons/SupervisedUserCircleOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
+import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import RecordVoiceOverOutlinedIcon from '@mui/icons-material/RecordVoiceOverOutlined';
+import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAnnouncements } from 'api/announcements';

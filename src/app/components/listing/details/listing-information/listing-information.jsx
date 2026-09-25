@@ -8,8 +8,8 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSelector } from 'react-redux';
 
 import { ChplLink } from 'components/util';
@@ -68,8 +68,8 @@ function ChplListingInformation({ listing: initialListing }) {
   if (!listing) { return <CircularProgress />; }
 
   return (
-    <Box gridGap={16} display="flex" flexDirection="column">
-      <Box gridGap={16} display="flex" flexDirection="column">
+    <Box gap={16} display="flex" flexDirection="column">
+      <Box gap={16} display="flex" flexDirection="column">
         <Box className={classes.dataContainer}>
           <Box className={classes.dataBox}>
             <Typography variant="subtitle1">CHPL Product Number:</Typography>

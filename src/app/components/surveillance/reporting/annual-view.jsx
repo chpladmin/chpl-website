@@ -1,12 +1,8 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Divider, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   func,
   object,

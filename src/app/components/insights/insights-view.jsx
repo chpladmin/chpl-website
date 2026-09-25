@@ -12,8 +12,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import { useFetchInsights } from 'api/developer';
 import { ChplLink } from 'components/util';

@@ -6,7 +6,7 @@ import {
   CardHeader,
   CircularProgress,
   MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func } from 'prop-types';
 
 import ChplAnnual from './annual';
@@ -85,7 +85,7 @@ function ChplReport({ acb, dispatch }) {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gridGap="16px">
+    <Box display="flex" flexDirection="column" gap="16px">
       { state === ''
         && (
           <Card>
@@ -110,7 +110,7 @@ function ChplReport({ acb, dispatch }) {
       <Box
         display="grid"
         gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
-        gridGap={12}
+        gap={12}
         alignItems="stretch"
         justifyItems="stretch"
       >

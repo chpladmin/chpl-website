@@ -1,12 +1,8 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Button, Container, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
 import { usePostReportRequest } from 'api/cms';
 import { FlagContext } from 'shared/contexts';

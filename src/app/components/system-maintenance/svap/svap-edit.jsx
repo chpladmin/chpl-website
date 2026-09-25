@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Chip,
-  FormControlLabel,
-  MenuItem,
-  Switch,
-  makeStyles,
-} from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+  Button, Chip, FormControlLabel, MenuItem, Switch,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -37,7 +35,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [] }) {
+function ChplSvapEdit({
+  criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');

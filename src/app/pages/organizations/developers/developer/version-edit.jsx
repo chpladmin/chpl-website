@@ -1,10 +1,6 @@
 import React, { useContext, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress, Container } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 

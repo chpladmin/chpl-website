@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  TextField,
-  makeStyles,
-} from '@material-ui/core';
+import { TextField } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
 
 const useStyles = makeStyles({

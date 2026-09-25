@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button,
-  Box,
-  List,
-  makeStyles,
-} from '@material-ui/core';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { Button, Box, List } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch, useSelector } from 'react-redux';
 import { func } from 'prop-types';
 

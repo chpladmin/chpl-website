@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  InputBase,
-  InputAdornment,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, InputBase, InputAdornment,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
-import SearchIcon from '@material-ui/icons/Search';
-import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { ChplTooltip } from 'components/util';
 import { theme, palette } from 'themes';
@@ -84,10 +80,7 @@ function ChplSearchTerm(props) {
             endAdornment={(
               <InputAdornment position="start">
                 <ChplTooltip title="Clear">
-                  <IconButton
-                    onClick={handleClear}
-                    aria-label="Clear search"
-                  >
+                  <IconButton onClick={handleClear} aria-label="Clear search" size="large">
                     <ClearIcon />
                   </IconButton>
                 </ChplTooltip>

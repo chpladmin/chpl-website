@@ -11,10 +11,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import WarningIcon from '@material-ui/icons/Warning';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import WarningIcon from '@mui/icons-material/Warning';
 import { array, func, object } from 'prop-types';
 
 import { palette } from 'themes';
@@ -116,7 +116,7 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
           Section 2 &mdash; Listings
         </Typography>
       </Box>
-      <Box display="flex" flexDirection="column" gridGap="16px">
+      <Box display="flex" flexDirection="column" gap="16px">
         <Card>
           <CardContent>
             <Typography gutterBottom variant="body1">

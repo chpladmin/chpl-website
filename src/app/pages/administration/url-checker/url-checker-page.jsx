@@ -1,14 +1,11 @@
 import React, { useContext, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+  Box, Card, CardContent, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import Skeleton from '@mui/material/Skeleton';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink } from 'components/util';
@@ -20,14 +17,14 @@ const useStyles = makeStyles({
   resultsCard: {
     width: '32.3%',
     overflowWrap: 'break-word',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
   resultsCardHalf: {
     width: '49.2%',
     overflowWrap: 'break-word',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -40,7 +37,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '16px',
     paddingBottom: '16px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },

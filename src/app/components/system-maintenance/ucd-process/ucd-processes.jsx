@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+} from '@mui/material';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplUcdProcessEdit from './ucd-process-edit';

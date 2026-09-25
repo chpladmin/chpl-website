@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  CircularProgress,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+  Button, Card, CardHeader, CardContent, CircularProgress, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch } from 'react-redux';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';

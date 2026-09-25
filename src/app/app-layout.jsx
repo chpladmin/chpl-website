@@ -1,9 +1,6 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Paper,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Paper } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { node } from 'prop-types';
 
 import { CmsContext, CompareContext } from 'shared/contexts';
@@ -38,7 +35,7 @@ const useStyles = makeStyles({
     minWidth: 0,
     width: '100%',
     overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -47,8 +44,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
-    overflowY: 'auto',    // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
-    position: 'relative',  },
+    overflowY: 'auto', // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
+    position: 'relative',
+  },
   widgetRail: {
     animation: '$widgetRailIn 140ms ease-out',
     backgroundColor: palette.white,
@@ -58,10 +56,10 @@ const useStyles = makeStyles({
       duration: theme.transitions.duration.shorter,
       easing: theme.transitions.easing.easeOut,
     }),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xl')]: {
       flexBasis: '240px',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       display: 'none',
     },
   },
@@ -70,18 +68,18 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
     '& .MuiCardContent-root': {
-      padding: `${theme.spacing(2)}px !important`,
+      padding: `${theme.spacing(2)} !important`,
       maxWidth: '100% !important',
       width: 'auto !important',
     },
     '& .MuiCardContent-root:last-child': {
-      paddingBottom: `${theme.spacing(2)}px !important`,
+      paddingBottom: `${theme.spacing(2)} !important`,
     },
     '& .MuiChip-root': {
       maxWidth: '100%',
     },
     '& .MuiDivider-root': {
-      margin: `${theme.spacing(1.5)}px 0`,
+      margin: `${theme.spacing(1.5)} 0`,
     },
     '& .MuiButton-root': {
       fontSize: '0.8125em',

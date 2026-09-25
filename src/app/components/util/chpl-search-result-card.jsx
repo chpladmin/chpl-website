@@ -1,11 +1,8 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   node,
@@ -131,7 +128,7 @@ const useStyles = makeStyles({
     gap: theme.spacing(1.5),
     justifyContent: 'space-between',
     minHeight: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       alignItems: 'stretch',
       width: '100%',
     },

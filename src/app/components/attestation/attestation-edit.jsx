@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 

@@ -12,9 +12,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   useFetchUploadedDeveloper,
@@ -77,7 +77,7 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
             color="primary"
             onClick={dispatch}
             className={classes.closeIcon}
-          >
+            size="large">
             <CloseIcon />
           </IconButton>
 )}

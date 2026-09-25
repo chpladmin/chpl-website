@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import {
-  IconButton,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { IconButton } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';

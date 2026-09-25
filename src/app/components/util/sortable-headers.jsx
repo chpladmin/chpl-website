@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   arrayOf, bool, func, node, oneOf, shape, string,
 } from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TableCell from '@material-ui/core/TableCell';
+import makeStyles from '@mui/styles/makeStyles';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import TableCell from '@mui/material/TableCell';
 
 const useStyles = makeStyles({
   visuallyHidden: {

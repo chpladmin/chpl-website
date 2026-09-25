@@ -10,13 +10,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import InfoIcon from '@material-ui/icons/Info';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
+import CheckIcon from '@mui/icons-material/Check';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import { string } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
@@ -175,7 +175,7 @@ function ChplComparePage({ ids }) {
           { criterion.removed
             && (
               <ChplTooltip title="This certification criterion has been removed from the Program.">
-                <IconButton className={classes.infoIcon}>
+                <IconButton className={classes.infoIcon} size="large">
                   <InfoIcon
                     className={classes.infoIconColor}
                   />

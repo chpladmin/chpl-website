@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import { Button, Dialog, DialogContent } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import InfoIcon from '@mui/icons-material/Info';
 import { object } from 'prop-types';
 
 import compareChangeRequest from './services/change-requests.service';

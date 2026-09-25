@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { AppBar, Toolbar, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import { palette, theme } from 'themes';
 

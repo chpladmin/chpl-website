@@ -15,15 +15,15 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Email from '@material-ui/icons/Email';
-import Phone from '@material-ui/icons/Phone';
-import Person from '@material-ui/icons/Person';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import CallMergeIcon from '@mui/icons-material/CallMerge';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Email from '@mui/icons-material/Email';
+import Phone from '@mui/icons-material/Phone';
+import Person from '@mui/icons-material/Person';
 import { func, number } from 'prop-types';
 
 import ChplProductHistory from 'components/activity/product-history';
@@ -190,7 +190,7 @@ function ChplProductView({ product, productCount, dispatch }) {
               ))}
             </ChplTextField>
           </Box>
-          <Box display="flex" flexDirection="row" alignItems="stretch" gridGap={8}>
+          <Box display="flex" flexDirection="row" alignItems="stretch" gap={8}>
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <ChplProductHistory
@@ -314,7 +314,7 @@ function ChplProductView({ product, productCount, dispatch }) {
           && (
             <>
               <Typography variant="body1">Contact Information</Typography>
-              <Box display="flex" gridGap="8px" pt="8px" pb="16px" flexDirection="row">
+              <Box display="flex" gap="8px" pt="8px" pb="16px" flexDirection="row">
                 <ChplTooltip title="Full Name">
                   <Person />
                 </ChplTooltip>

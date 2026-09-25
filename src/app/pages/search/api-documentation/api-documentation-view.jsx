@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { arrayOf, object } from 'prop-types';
 
 import { useFetchListings } from 'api/search';

@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
-  Divider,
-  Menu,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckIcon from '@material-ui/icons/Check';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+  Button, ButtonGroup, Divider, Menu, MenuItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckIcon from '@mui/icons-material/Check';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
 import { arrayOf, string } from 'prop-types';
 
@@ -29,14 +25,14 @@ const useStyles = makeStyles({
   },
   buttonGroup: {
     width: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
   downloadButton: {
     padding: '0 16px',
     fontSize: '12px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flex: '1 1 auto',
       minWidth: 0,
       justifyContent: 'flex-start',
@@ -54,7 +50,7 @@ const useStyles = makeStyles({
   toggleButton: {
     minWidth: '40px',
     padding: '9px 4px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flex: '0 0 44px',
       minWidth: '44px',
       paddingLeft: 0,

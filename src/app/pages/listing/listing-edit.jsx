@@ -14,9 +14,9 @@ import {
   Paper,
   Popper,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import { ArrowDropDown } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { ArrowDropDown } from '@mui/icons-material';
 import { func } from 'prop-types';
 
 import { usePutListing } from 'api/listing';

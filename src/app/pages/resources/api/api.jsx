@@ -9,9 +9,9 @@ import {
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 import SwaggerUI from 'swagger-ui-react';
 
@@ -124,158 +124,156 @@ function ChplResourcesApi() {
     }
   };
 
-  return (
-    <>
-      <ChplPageHeader text="CHPL API" />
-      <ChplPageBody>
-        <div className={classes.pageBody}>
-          <Box className={classes.fullWidth}>
-            <Typography
-              variant="h4"
-              component="h2"
-            >
-              Definitions & Guidelines
-            </Typography>
-            <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
-            <Divider />
-          </Box>
-          <div className={classes.downloadSection}>
-            <Card>
-              <CardContent>
-                <ul className={classes.listSpacing}>
-                  <li>
-                    <Typography gutterBottom><strong>Certified Products:</strong></Typography>
-                    {' '}
-                    Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
-                    <ul>
-                      <li>
-                        The Active products summary file is updated nightly.
-                      </li>
-                      <li>
-                        The Inactive products summary file is updated nightly.
-                      </li>
-                      <li>
-                        The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className={classes.downloadCard}>
-              <CardHeader title="Select A File To Download" />
-              <CardContent>
-                <Box display="flex" flexDirection="column" gridGap={16}>
-                  <Typography>
-                    To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
-                  </Typography>
-                  <div className={classes.fullWidth}>
-                    <ChplTextField
-                      select
-                      id="download-select"
-                      name="downloadSelect"
-                      label="Select a collection to download"
-                      value={selectedOption}
-                      onChange={(event) => setSelectedOption(event.target.value)}
-                    >
-                      { downloadOptions.map((item) => (
-                        <MenuItem value={item} key={item}>{item}</MenuItem>
-                      ))}
-                    </ChplTextField>
-                  </div>
-                </Box>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  color="primary"
-                  variant="contained"
-                  id="download-chpl-data-button"
-                  onClick={() => downloadFile('data')}
-                  endIcon={<CloudDownloadOutlinedIcon />}
-                >
-                  Download Data File
-                </Button>
-              </CardActions>
-            </Card>
-          </div>
-          <div className={classes.fullWidth}>
-            <Typography
-              variant="h4"
-              component="h2"
-            >
-              Access API Documentation
-            </Typography>
-            <Divider />
-          </div>
-          <div className={classes.downloadSection}>
-            <Card>
-              <CardContent>
-                <Typography
-                  gutterBottom
-                >
-                  The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL&apos;s API includes methods for retrieving a subset of our statistical data and the metadata that describes it. Users must complete the CHPL API registration. After completing the CHPL API registration, the user will be given a unique 32-character API key. This API key will also be emailed to the user.
-                </Typography>
-                <Typography
-                  gutterBottom
-                >
-                  This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /acbs API, you would make the following call (switching out the key in the URL for your key):
+  return <>
+    <ChplPageHeader text="CHPL API" />
+    <ChplPageBody>
+      <div className={classes.pageBody}>
+        <Box className={classes.fullWidth}>
+          <Typography
+            variant="h4"
+            component="h2"
+          >
+            Definitions & Guidelines
+          </Typography>
+          <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
+          <Divider />
+        </Box>
+        <div className={classes.downloadSection}>
+          <Card>
+            <CardContent>
+              <ul className={classes.listSpacing}>
+                <li>
+                  <Typography gutterBottom><strong>Certified Products:</strong></Typography>
                   {' '}
-                  <code>https://chpl.healthit.gov/rest/acbs?api_key=YOUR_KEY_HERE</code>
-                </Typography>
-                <br />
-                <Typography
-                  gutterBottom
-                >
-                  A sample Java application using the CHPL API can be found at
-                  {' '}
-                  <ChplLink
-                    href="https://github.com/chpladmin/sample-application"
-                    text="Sample Application"
-                    analytics={{
-                      ...analytics,
-                      event: 'Go to Sample Aplication',
-                    }}
-                    inline
-                  />
-                </Typography>
-                <br />
-                <Typography
-                  gutterBottom
-                >
-                  Release notes for the CHPL API can be found in the
-                  {' '}
-                  <ChplLink
-                    href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md"
-                    text="release notes on GitHub"
-                    analytics={{
-                      ...analytics,
-                      event: 'Go to release notes on GitHub',
-                    }}
-                    inline
-                  />
-                </Typography>
-              </CardContent>
-            </Card>
-            <div className={classes.downloadCard}>
-              <AnalyticsContext.Provider value={{ analytics }}>
-                <ChplApiKeyRegistration />
-              </AnalyticsContext.Provider>
-            </div>
-          </div>
-          <Card className={classes.fullWidth}>
-            <CardContent className={classes.swaggerCardContent}>
-              <SwaggerUI
-                url={url}
-                docExpansion="none"
-                supportedSubmitMethods={[]}
-              />
+                  Entire collection of a set of certified products, including all data elements. The file is in a JSON format, and the definition of that structure can be found in the &quot;Schemas&quot; section of the &quot;Certified Health IT Product Listing API&quot; documentation.
+                  <ul>
+                    <li>
+                      The Active products summary file is updated nightly.
+                    </li>
+                    <li>
+                      The Inactive products summary file is updated nightly.
+                    </li>
+                    <li>
+                      The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </CardContent>
           </Card>
+          <Card className={classes.downloadCard}>
+            <CardHeader title="Select A File To Download" />
+            <CardContent>
+              <Box display="flex" flexDirection="column" gap={16}>
+                <Typography>
+                  To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
+                </Typography>
+                <div className={classes.fullWidth}>
+                  <ChplTextField
+                    select
+                    id="download-select"
+                    name="downloadSelect"
+                    label="Select a collection to download"
+                    value={selectedOption}
+                    onChange={(event) => setSelectedOption(event.target.value)}
+                  >
+                    { downloadOptions.map((item) => (
+                      <MenuItem value={item} key={item}>{item}</MenuItem>
+                    ))}
+                  </ChplTextField>
+                </div>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <Button
+                fullWidth
+                color="primary"
+                variant="contained"
+                id="download-chpl-data-button"
+                onClick={() => downloadFile('data')}
+                endIcon={<CloudDownloadOutlinedIcon />}
+              >
+                Download Data File
+              </Button>
+            </CardActions>
+          </Card>
         </div>
-      </ChplPageBody>
-    </>
-  );
+        <div className={classes.fullWidth}>
+          <Typography
+            variant="h4"
+            component="h2"
+          >
+            Access API Documentation
+          </Typography>
+          <Divider />
+        </div>
+        <div className={classes.downloadSection}>
+          <Card>
+            <CardContent>
+              <Typography
+                gutterBottom
+              >
+                The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL&apos;s API includes methods for retrieving a subset of our statistical data and the metadata that describes it. Users must complete the CHPL API registration. After completing the CHPL API registration, the user will be given a unique 32-character API key. This API key will also be emailed to the user.
+              </Typography>
+              <Typography
+                gutterBottom
+              >
+                This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /acbs API, you would make the following call (switching out the key in the URL for your key):
+                {' '}
+                <code>https://chpl.healthit.gov/rest/acbs?api_key=YOUR_KEY_HERE</code>
+              </Typography>
+              <br />
+              <Typography
+                gutterBottom
+              >
+                A sample Java application using the CHPL API can be found at
+                {' '}
+                <ChplLink
+                  href="https://github.com/chpladmin/sample-application"
+                  text="Sample Application"
+                  analytics={{
+                    ...analytics,
+                    event: 'Go to Sample Aplication',
+                  }}
+                  inline
+                />
+              </Typography>
+              <br />
+              <Typography
+                gutterBottom
+              >
+                Release notes for the CHPL API can be found in the
+                {' '}
+                <ChplLink
+                  href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md"
+                  text="release notes on GitHub"
+                  analytics={{
+                    ...analytics,
+                    event: 'Go to release notes on GitHub',
+                  }}
+                  inline
+                />
+              </Typography>
+            </CardContent>
+          </Card>
+          <div className={classes.downloadCard}>
+            <AnalyticsContext.Provider value={{ analytics }}>
+              <ChplApiKeyRegistration />
+            </AnalyticsContext.Provider>
+          </div>
+        </div>
+        <Card className={classes.fullWidth}>
+          <CardContent className={classes.swaggerCardContent}>
+            <SwaggerUI
+              url={url}
+              docExpansion="none"
+              supportedSubmitMethods={[]}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </ChplPageBody>
+  </>;
 }
 
 export default ChplResourcesApi;

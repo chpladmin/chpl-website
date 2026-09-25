@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+  Button, Card, CardContent, CardHeader, CircularProgress,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import { useSnackbar } from 'notistack';
 import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';

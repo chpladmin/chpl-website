@@ -11,11 +11,11 @@ import {
   MenuItem,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { object, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -245,11 +245,9 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
         <div className={classes.developerSubContainer}>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
             className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-            onClick={() => handleCreationToggle(false)}
-          >
+            onClick={() => handleCreationToggle(false)}>
             <span className={classes.buttonContent}>
               <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
               { selectedDeveloper
@@ -271,11 +269,9 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
           </div>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
             className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-            onClick={() => handleCreationToggle(true)}
-          >
+            onClick={() => handleCreationToggle(true)}>
             <span className={classes.buttonContent}>
               <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
               Create a developer

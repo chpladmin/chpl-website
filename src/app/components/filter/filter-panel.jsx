@@ -9,9 +9,9 @@ import {
   Popover,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { number } from 'prop-types';
 
 import { useFilterContext } from './filter-context';

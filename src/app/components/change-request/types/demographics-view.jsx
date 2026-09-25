@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-import {
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import { ChangeRequestContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';

@@ -1,8 +1,8 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
 import paletteColors from './palette';
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   root: {
     width: '100%',
     display: 'flex',
@@ -468,6 +468,6 @@ const theme = createTheme({
       },
     },
   },
-});
+}));
 
 export default theme;

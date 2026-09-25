@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+  Box, Button, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { arrayOf, func } from 'prop-types';
 
 import ChplAnnouncementEdit from './announcement-edit';
@@ -97,7 +92,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
           && (
             <>
               <Box className={classes.headerContainer}>
-                <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+                <Box display="flex" flexDirection="row" gap={2} alignItems="center">
                   <Typography variant="subtitle2">
                     Announcements
                   </Typography>
@@ -105,7 +100,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
                     {`(${announcements.length} Result${announcements.length !== 1 ? 's' : ''})`}
                   </Typography>
                 </Box>
-                <Box display="flex" alignItems="center" gridGap={4}>
+                <Box display="flex" alignItems="center" gap={4}>
                   <ChplSystemMaintenanceActivity
                     fetch={useFetchAnnouncementsActivity}
                     title="Announcements"

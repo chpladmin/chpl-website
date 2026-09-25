@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Container, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';

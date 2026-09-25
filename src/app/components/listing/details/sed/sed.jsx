@@ -12,8 +12,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSelector } from 'react-redux';
 
 import ChplSedDownload from './sed-download';
@@ -85,7 +85,7 @@ function ChplSed({ listing }) {
   }
 
   return (
-    <Box display="flex" gridGap={16} flexDirection="column">
+    <Box display="flex" gap={16} flexDirection="column">
       { !hti5ErdIsOn
         && (
           <Card>

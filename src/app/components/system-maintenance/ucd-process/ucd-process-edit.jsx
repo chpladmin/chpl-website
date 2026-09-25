@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -30,7 +30,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [] }) {
+function ChplUcdProcessEdit({
+  dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [],
+}) {
   const [errors, setErrors] = useState([]);
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();

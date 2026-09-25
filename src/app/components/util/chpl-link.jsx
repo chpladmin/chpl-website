@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  makeStyles,
-} from '@material-ui/core';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import makeStyles from '@mui/styles/makeStyles';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { bool, node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+  Box, Button, Chip, Divider, MenuItem,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 

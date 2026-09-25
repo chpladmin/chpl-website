@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplSearchResultCard } from 'components/util';
@@ -31,40 +28,37 @@ function ChplTestDataView({ testData: initialTestData }) {
       .sort(sortComparator('name')));
   }, [initialTestData]);
 
-  return (
-    <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            Test Data
-          </Typography>
-          <Typography variant="body2">
-            {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-        </Box>
+  return <>
+    <Box className={classes.headerContainer}>
+      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+        <Typography variant="subtitle2">
+          Test Data
+        </Typography>
+        <Typography variant="body2">
+          {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
+        </Typography>
       </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { testData
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              cardTitle="Name"
-              cardTitleValue={item.name}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                  },
-                ],
-              ]}
-            />
-          ))}
-      </Box>
-    </>
-  );
+      <Box display="flex" alignItems="center" gap={4} />
+    </Box>
+    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      { testData
+        .map((item) => (
+          <ChplSearchResultCard
+            key={`${item.id}`}
+            cardTitle="Name"
+            cardTitleValue={item.name}
+            fieldGroups={[
+              [
+                {
+                  label: 'Applicable Criteria',
+                  value: item.criteriaDisplay || 'N/A',
+                },
+              ],
+            ]}
+          />
+        ))}
+    </Box>
+  </>;
 }
 
 export default ChplTestDataView;

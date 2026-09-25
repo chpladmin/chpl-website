@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardContent, CardHeader, CircularProgress, Container, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, number, string,
 } from 'prop-types';

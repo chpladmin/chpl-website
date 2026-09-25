@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -30,7 +30,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAccessibilityStandardEdit({ dispatch, isProcessing, accessibilityStandard: initialAccessibilityStandard, errors: propsErrors = [] }) {
+function ChplAccessibilityStandardEdit({
+  dispatch, isProcessing, accessibilityStandard: initialAccessibilityStandard, errors: propsErrors = [],
+}) {
   const [errors, setErrors] = useState([]);
   const [accessibilityStandard, setAccessibilityStandard] = useState({});
   const classes = useStyles();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import ChplLoadingSpinner from './chpl-loading-spinner';
 

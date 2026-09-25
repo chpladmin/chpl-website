@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CircularProgress,
-  Divider,
-  MenuItem,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardContent, CircularProgress, Divider, MenuItem, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
 import { useFormik } from 'formik';

@@ -1,9 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Divider, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { bool } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

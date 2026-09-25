@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Button, Card, CardContent, Chip, FormControlLabel, Switch, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
+
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { palette } from 'themes';

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
 
 import { useDeleteSubscriber } from 'api/subscriptions';

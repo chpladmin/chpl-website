@@ -10,9 +10,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { bool, object } from 'prop-types';
 
 import ChplAttestationCreateException from './attestation-create-exception';
@@ -113,66 +113,64 @@ function ChplAttestationView({
     }
   };
 
-  return (
-    <>
-      <Box display="flex" flexDirection="column" gridGap={16}>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-          <Typography gutterBottom>
-            { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
-            {' '}
-            -
-            {' '}
-            { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
-          </Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-          <Typography gutterBottom>{attestations.statusText}</Typography>
-        </div>
-        { attestations.sections
-          && (
-            <Card>
-              <TableContainer>
-                <Table
-                  aria-label="Developer Attestations details"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Attestation</TableCell>
-                      <TableCell>Response</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { attestations.sections.map((section) => getRows(section, classes)) }
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          )}
-      </Box>
-      { canCreateException && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+  return <>
+    <Box display="flex" flexDirection="column" gap={16}>
+      <div>
+        <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
+        <Typography gutterBottom>
+          { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
+          {' '}
+          -
+          {' '}
+          { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
+        </Typography>
+      </div>
+      <div>
+        <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+        <Typography gutterBottom>{attestations.statusText}</Typography>
+      </div>
+      { attestations.sections
         && (
-          <Button
-            color="primary"
-            id="create-attestation-exception-button"
-            variant="contained"
-            onClick={() => setExceptionPeriod(attestations.period)}
-            fullWidth
-          >
-            Re-Open Submission
-          </Button>
+          <Card>
+            <TableContainer>
+              <Table
+                aria-label="Developer Attestations details"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Attestation</TableCell>
+                    <TableCell>Response</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { attestations.sections.map((section) => getRows(section, classes)) }
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
         )}
-      { exceptionPeriod
-        && (
-          <ChplAttestationCreateException
-            developer={developer}
-            dispatch={handleDispatch}
-            period={exceptionPeriod}
-          />
-        )}
-    </>
-  );
+    </Box>
+    { canCreateException && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+      && (
+        <Button
+          color="primary"
+          id="create-attestation-exception-button"
+          variant="contained"
+          onClick={() => setExceptionPeriod(attestations.period)}
+          fullWidth
+        >
+          Re-Open Submission
+        </Button>
+      )}
+    { exceptionPeriod
+      && (
+        <ChplAttestationCreateException
+          developer={developer}
+          dispatch={handleDispatch}
+          period={exceptionPeriod}
+        />
+      )}
+  </>;
 }
 
 export default ChplAttestationView;

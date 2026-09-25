@@ -7,12 +7,12 @@ import {
   DialogContentText,
   Divider,
   Slide,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { usePostAttestationException } from 'api/developer';
 import { ChplDialogTitle } from 'components/util';
@@ -114,12 +114,10 @@ function ChplAttestationCreateException(props) {
           <CheckIcon className={classes.iconSpacing} />
         </Button>
         <Button
-          color="default"
           variant="contained"
           id="cancel-attestation-exception-button"
           onClick={cancelCreatingException}
-          className={classes.buttonMargin}
-        >
+          className={classes.buttonMargin}>
           Cancel
           {' '}
           <CloseIcon className={classes.iconSpacing} />

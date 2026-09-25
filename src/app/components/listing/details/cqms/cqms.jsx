@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
+  Card, Table, TableBody, TableCell, TableHead, TableRow, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckIcon from '@mui/icons-material/Check';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';

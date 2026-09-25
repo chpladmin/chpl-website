@@ -8,10 +8,10 @@ import {
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { func, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -169,12 +169,10 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
         <div className={classes.developerSubContainer}>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
             disabled={products?.length === 0}
             className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
-            onClick={() => handleCreationToggle(false)}
-          >
+            onClick={() => handleCreationToggle(false)}>
             <span className={classes.buttonContent}>
               <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
               { selectedProduct
@@ -196,11 +194,9 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
           </div>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
             className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-            onClick={() => handleCreationToggle(true)}
-          >
+            onClick={() => handleCreationToggle(true)}>
             <span className={classes.buttonContent}>
               <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
               Create a Product

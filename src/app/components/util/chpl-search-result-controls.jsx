@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   bool, node, number, string,
 } from 'prop-types';
@@ -40,7 +37,7 @@ const useStyles = makeStyles({
       pointerEvents: 'none',
       zIndex: 1,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       gap: '12px',
       padding: '16px',
     },
@@ -60,7 +57,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     gap: '2px',
     flexWrap: ({ wrapActions }) => (wrapActions ? 'wrap' : 'nowrap'),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       flexWrap: 'wrap',
       gap: '8px',
       width: '100%',

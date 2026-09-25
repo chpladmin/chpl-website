@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
 
 import { usePostConfirmApiKey } from 'api/api-keys';

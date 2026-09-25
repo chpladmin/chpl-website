@@ -1,20 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
-import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
-import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+  Box, Card, CardContent, FormControlLabel, Switch, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
+import NotesOutlinedIcon from '@mui/icons-material/NotesOutlined';
+import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { bool, func } from 'prop-types';
 
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';

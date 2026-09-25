@@ -7,11 +7,11 @@ import {
   Container,
   IconButton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import WarningIcon from '@material-ui/icons/Warning';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckIcon from '@mui/icons-material/Check';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import WarningIcon from '@mui/icons-material/Warning';
 
 import ChplCriterionDetailsView from './criterion-details-view';
 

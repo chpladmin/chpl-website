@@ -1,14 +1,10 @@
 import React from 'react';
 import {
-  Collapse,
-  IconButton,
-  List,
-  ListItem,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+  Collapse, IconButton, List, ListItem, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import {
   bool,
   func,

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 
 import { useFetchAcbs } from 'api/acbs';

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+  Box, Card, CardContent, CardHeader, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import Moment from 'react-moment';
 import { arrayOf, func } from 'prop-types';
 
@@ -97,7 +92,7 @@ function ChplSystemTriggersView({
           onClick={() => confirmDelete(item)}
           variant="contained"
           aria-label={`Delete Job ${item.name}`}
-        >
+          size="large">
           <DeleteIcon color="error" />
         </IconButton>
       );

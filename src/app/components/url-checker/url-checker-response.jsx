@@ -1,12 +1,8 @@
 import React from 'react';
-import {
-  Box,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { Box, Divider, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
   bool,
   number,

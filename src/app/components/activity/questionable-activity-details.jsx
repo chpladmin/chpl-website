@@ -8,10 +8,10 @@ import {
   Dialog,
   DialogContent,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIcon from '@material-ui/icons/Info';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InfoIcon from '@mui/icons-material/Info';
 import { object } from 'prop-types';
 
 import { compareDeveloper } from './services/developers.service';
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 const getDisplay = (title, value, fullWidth = false) => {
   if (!value) { return null; }
   return (
-    <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gridGap="8px" display="flex" justifyContent="space-between">
+    <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gap="8px" display="flex" justifyContent="space-between">
       <Box display="flex" flexDirection="column" width="100%">
         <Typography variant="subtitle1">
           {title}
@@ -101,68 +101,66 @@ function ChplQuestionableActivityDetails({ activity }) {
     setOpen(false);
   };
 
-  return (
-    <>
-      <ChplTooltip title="Activity Details">
-        <Button
-          id={`view-activity-details-${activity.id}`}
-          aria-label="Open Activity Details dialog"
-          color="secondary"
-          variant="contained"
-          onClick={handleClickOpen}
-          endIcon={<InfoIcon />}
-        >
-          Details
-        </Button>
-      </ChplTooltip>
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby={`activity-details-${activity.id}-title`}
-        open={open}
-        maxWidth="sm"
+  return <>
+    <ChplTooltip title="Activity Details">
+      <Button
+        id={`view-activity-details-${activity.id}`}
+        aria-label="Open Activity Details dialog"
+        color="secondary"
+        variant="contained"
+        onClick={handleClickOpen}
+        endIcon={<InfoIcon />}
       >
-        <ChplDialogTitle
-          id={`activity-details-${activity.id}-title`}
-          onClose={handleClose}
-          className={classes.legendTitle}
-        >
-          Questionable Activity Details
-        </ChplDialogTitle>
-        <DialogContent dividers>
-          <Box pb={4} display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
-            {getDisplay('Trigger Level', activity.triggerLevel)}
-            {getDisplay('Trigger Name', activity.triggerName)}
-            {getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate))}
-            {getDisplay('Acting User', activity.username)}
-            {getDisplay('Developer', activity.developerName)}
-            {getDisplay('Product', activity.productName)}
-            {getDisplay('Version', activity.versionName)}
-            {getDisplay('CHPL Product Number', activity.chplProductNumber)}
-            {getDisplay('ONC-ACB', activity.acbName)}
-            {getDisplay('Description', activity.description)}
-            {getDisplay('Certification Status', activity.certificationStatusName)}
-            {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
-            {getDisplay('Reason', activity.reason, true)}
-          </Box>
-          { activity.activityId && details?.length > 0
-            && (
-              <Accordion variant="outlined">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    variant="subtitle2"
-                  >
-                    Activity Details
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <ul dangerouslySetInnerHTML={{ __html: details }} />
-                </AccordionDetails>
-              </Accordion>
-            )}
-        </DialogContent>
-      </Dialog>
-    </>
-  );
+        Details
+      </Button>
+    </ChplTooltip>
+    <Dialog
+      onClose={handleClose}
+      aria-labelledby={`activity-details-${activity.id}-title`}
+      open={open}
+      maxWidth="sm"
+    >
+      <ChplDialogTitle
+        id={`activity-details-${activity.id}-title`}
+        onClose={handleClose}
+        className={classes.legendTitle}
+      >
+        Questionable Activity Details
+      </ChplDialogTitle>
+      <DialogContent dividers>
+        <Box pb={4} display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+          {getDisplay('Trigger Level', activity.triggerLevel)}
+          {getDisplay('Trigger Name', activity.triggerName)}
+          {getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate))}
+          {getDisplay('Acting User', activity.username)}
+          {getDisplay('Developer', activity.developerName)}
+          {getDisplay('Product', activity.productName)}
+          {getDisplay('Version', activity.versionName)}
+          {getDisplay('CHPL Product Number', activity.chplProductNumber)}
+          {getDisplay('ONC-ACB', activity.acbName)}
+          {getDisplay('Description', activity.description)}
+          {getDisplay('Certification Status', activity.certificationStatusName)}
+          {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
+          {getDisplay('Reason', activity.reason, true)}
+        </Box>
+        { activity.activityId && details?.length > 0
+          && (
+            <Accordion variant="outlined">
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography
+                  variant="subtitle2"
+                >
+                  Activity Details
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <ul dangerouslySetInnerHTML={{ __html: details }} />
+              </AccordionDetails>
+            </Accordion>
+          )}
+      </DialogContent>
+    </Dialog>
+  </>;
 }
 
 export default ChplQuestionableActivityDetails;

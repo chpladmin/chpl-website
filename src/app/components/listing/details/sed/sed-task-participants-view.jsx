@@ -11,9 +11,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import { Visibility } from '@material-ui/icons';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { Visibility } from '@mui/icons-material';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';

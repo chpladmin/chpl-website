@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';

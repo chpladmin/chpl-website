@@ -11,10 +11,10 @@ import {
   FormControlLabel,
   IconButton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -381,9 +381,7 @@ function ChplManageSubscription({ hash }) {
                                 {s.subject.subject}
                               </Typography>
                               <ChplTooltip title="Unsubscribe from subscription type">
-                                <IconButton
-                                  onClick={() => deleteSubscription(s)}
-                                >
+                                <IconButton onClick={() => deleteSubscription(s)} size="large">
                                   <DeleteIcon className={classes.deleteTextButton} />
                                 </IconButton>
                               </ChplTooltip>

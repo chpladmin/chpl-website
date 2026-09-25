@@ -13,9 +13,9 @@ import {
   Radio,
   RadioGroup,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { array, func, string } from 'prop-types';
 
 import { interpretEmphatic, interpretLink } from './attestation-util';

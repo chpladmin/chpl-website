@@ -3,13 +3,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  Box,
-  Button,
-  ClickAwayListener,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import { Box, Button, ClickAwayListener } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { func } from 'prop-types';
 
 import {
@@ -34,7 +30,7 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'nowrap',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       display: 'none',
     },
   },

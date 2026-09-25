@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  MenuItem,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
+  Box, Button, Card, CardContent, Container, MenuItem, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CheckIcon from '@mui/icons-material/Check';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -121,7 +115,7 @@ function ChplConfirmSubscription(props) {
         </Container>
       </Box>
       <Container maxWidth="sm">
-        <Box pt={8} pb={8} display="flex" flexDirection="column" gridGap="16px">
+        <Box pt={8} pb={8} display="flex" flexDirection="column" gap="16px">
           <Card className={classes.animatedItem}>
             <CardContent>
               <Box className={classes.confirmSubscriptionCard}>

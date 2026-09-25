@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import FindReplaceIcon from '@material-ui/icons/FindReplace';
+import { Box, Button, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import FindReplaceIcon from '@mui/icons-material/FindReplace';
 
 import ChplLandingPage from './landing-page';
 

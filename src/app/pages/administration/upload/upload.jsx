@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import ChplUploadListings from 'components/upload/upload-listings';
 import ChplUploadPromotingInteroperability from 'components/upload/upload-promoting-interoperability';
@@ -26,7 +24,7 @@ function ChplUpload() {
       display="flex"
       flexDirection="row"
       flexWrap="wrap"
-      gridGap="8px"
+      gap="8px"
     >
       { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
         && (

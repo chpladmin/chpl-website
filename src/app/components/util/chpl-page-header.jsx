@@ -5,9 +5,9 @@ import {
   Collapse,
   Container,
   Typography,
-} from '@material-ui/core';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
@@ -26,8 +26,8 @@ function ChplPageHeader({
   return (
     <Box position="relative" boxShadow={2} bgcolor={palette.white} p={8}>
       <Container maxWidth="lg">
-        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gridGap={16}>
-          <Box display="flex" alignItems="center" gridGap={4}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={16}>
+          <Box display="flex" alignItems="center" gap={4}>
             <Typography variant="h1">
               { text }
             </Typography>
@@ -35,7 +35,7 @@ function ChplPageHeader({
           </Box>
           { (actions || subtitle)
             && (
-              <Box display="flex" alignItems="center" flexWrap="wrap" gridGap={8}>
+              <Box display="flex" alignItems="center" flexWrap="wrap" gap={8}>
                 { actions }
                 { subtitle
                   && (

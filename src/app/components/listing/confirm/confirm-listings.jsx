@@ -10,12 +10,12 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FeedbackIcon from '@material-ui/icons/Feedback';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CircularProgress from '@mui/material/CircularProgress';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import { useSnackbar } from 'notistack';
 
 import {

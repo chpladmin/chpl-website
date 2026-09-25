@@ -1,19 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Button, Checkbox, CircularProgress, FormControlLabel, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import SaveIcon from '@material-ui/icons/Save';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import SaveIcon from '@mui/icons-material/Save';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';

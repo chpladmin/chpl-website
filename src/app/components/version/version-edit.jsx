@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardHeader, CardContent, Container,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   bool,

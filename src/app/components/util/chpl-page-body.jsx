@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { node, oneOf } from 'prop-types';
 
 import { palette, theme } from 'themes';

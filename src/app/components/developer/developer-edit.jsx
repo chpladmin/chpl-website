@@ -20,11 +20,11 @@ import {
   TableBody,
   TableFooter,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   arrayOf,
   bool,
@@ -398,7 +398,7 @@ function ChplDeveloperEdit({
                                   onClick={() => removeStatus(status)}
                                   aria-label="Remove status"
                                   disabled={formik.values.isAdding}
-                                >
+                                  size="large">
                                   <CloseIcon
                                     color="error"
                                     size="small"

@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DoneIcon from '@material-ui/icons/Done';
+  Box, Button, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DoneIcon from '@mui/icons-material/Done';
 import { useSnackbar } from 'notistack';
 
 import { useAxios } from 'api/axios';

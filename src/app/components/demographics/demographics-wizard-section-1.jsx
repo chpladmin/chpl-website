@@ -1,12 +1,8 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Container, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles({
   demographicsContainerList: {

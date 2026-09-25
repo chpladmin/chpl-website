@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  ThemeProvider,
-} from '@material-ui/core';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material';
 import { bool, func, number } from 'prop-types';
 
 import { ChplProgress } from 'components/util';
@@ -11,12 +9,14 @@ function ChplConfirmProgress(props) {
   const steps = ['Developer', 'Product', 'Version', 'Listing'];
 
   return (
-    <ThemeProvider theme={theme}>
-      <ChplProgress
-        steps={steps}
-        {...props}
-      />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <ChplProgress
+          steps={steps}
+          {...props}
+        />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

@@ -1,10 +1,7 @@
 import React, { createRef } from 'react';
-import {
-  Button,
-  Collapse,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { Button, Collapse } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloseIcon from '@mui/icons-material/Close';
 import { node } from 'prop-types';
 import { SnackbarProvider } from 'notistack';
 
@@ -67,7 +64,10 @@ function SnackbarWrapper(props) {
       ref={notistackRef}
       action={(key) => (
         <div style={{ pointerEvents: 'auto', zIndex: 1402 }}>
-          <Button className={classes.dismissButton} color="default" variant="contained" onClick={onClickDismiss(key)}>
+          <Button
+            className={classes.dismissButton}
+            variant="contained"
+            onClick={onClickDismiss(key)}>
             Dismiss
             {' '}
             <CloseIcon className={classes.iconSpacing} />

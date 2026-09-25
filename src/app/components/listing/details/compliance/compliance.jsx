@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-} from '@material-ui/core';
-import PlayCircleFilledWhiteOutlinedIcon from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
+} from '@mui/material';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import { useSelector } from 'react-redux';
 import { arrayOf, bool, func } from 'prop-types';
 

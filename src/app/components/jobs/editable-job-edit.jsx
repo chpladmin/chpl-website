@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+  Button, Card, CardContent, CardHeader, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -97,78 +92,73 @@ function ChplEditableJobEdit(props) {
     validationSchema,
   });
 
-  return (
-    <>
-      <Card>
-        <CardHeader
-          titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
-          title={`Edit Job: ${job.name}`}
-          subheader={(
-            <Typography className={classes.subHeaderColor} variant="body1">
-              {job.description}
-            </Typography>
-          )}
-        />
-        <CardContent className={classes.container}>
-          <Card>
-            <CardContent>
-              <Typography gutterBottom variant="subtitle1">
-                Add Subscribers
-              </Typography>
-              <div className={classes.divSpacing}>
-                <ChplTextField
-                  id="email"
-                  name="email"
-                  label="Email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && !!formik.errors.email}
-                  helperText={formik.touched.email && formik.errors.email}
-                />
-                <Button
-                  onClick={() => add()}
-                  variant="contained"
-                  color="primary"
-                >
-                  Add
-                  <AddIcon className={classes.iconSpacing} />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent>
-              <Typography gutterBottom variant="subtitle1">
-                Manage Subscribers
-              </Typography>
-              <div>
-                { emails.map((item) => (
-                  <div className={classes.divSpacing} key={item}>
-                    <div>
-                      {item}
-                    </div>
-                    <div>
-                      <IconButton
-                        onClick={() => remove(item)}
-                        color="default"
-                      >
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </CardContent>
-      </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={emails.length === 0}
+  return <>
+    <Card>
+      <CardHeader
+        titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
+        title={`Edit Job: ${job.name}`}
+        subheader={(
+          <Typography className={classes.subHeaderColor} variant="body1">
+            {job.description}
+          </Typography>
+        )}
       />
-    </>
-  );
+      <CardContent className={classes.container}>
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="subtitle1">
+              Add Subscribers
+            </Typography>
+            <div className={classes.divSpacing}>
+              <ChplTextField
+                id="email"
+                name="email"
+                label="Email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && !!formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+              <Button
+                onClick={() => add()}
+                variant="contained"
+                color="primary"
+              >
+                Add
+                <AddIcon className={classes.iconSpacing} />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <Typography gutterBottom variant="subtitle1">
+              Manage Subscribers
+            </Typography>
+            <div>
+              { emails.map((item) => (
+                <div className={classes.divSpacing} key={item}>
+                  <div>
+                    {item}
+                  </div>
+                  <div>
+                    <IconButton onClick={() => remove(item)} color="default" size="large">
+                      <DeleteIcon color="error" />
+                    </IconButton>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </CardContent>
+    </Card>
+    <ChplActionBar
+      dispatch={handleDispatch}
+      isDisabled={emails.length === 0}
+    />
+  </>;
 }
 
 export default ChplEditableJobEdit;

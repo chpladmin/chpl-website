@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import {
-  AppBar,
-  Box,
-  Checkbox,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Tab,
-  Tabs,
-  makeStyles,
-} from '@material-ui/core';
+  AppBar, Box, Checkbox, ListItem, ListItemIcon, ListItemText, Tab, Tabs,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   func,
   node,

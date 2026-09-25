@@ -8,8 +8,8 @@ import {
   MenuItem,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';

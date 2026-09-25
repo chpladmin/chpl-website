@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  makeStyles,
-} from '@material-ui/core';
-import CreateIcon from '@material-ui/icons/Create';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+  Button, Card, CardHeader, CardContent,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CreateIcon from '@mui/icons-material/Create';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setLoginState } from 'components/login/userInfo.slice';

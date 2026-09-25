@@ -3,8 +3,9 @@ export const OrganizationsComponent = {
   bindings: {
   },
   controller: class OrganizationsComponent {
-    constructor ($log) {
+    constructor($log) {
       'ngInject';
+
       this.$log = $log;
     }
   },

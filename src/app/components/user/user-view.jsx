@@ -7,9 +7,9 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { func } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';

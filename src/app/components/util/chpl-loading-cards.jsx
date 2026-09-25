@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Box, Card, CardContent } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import Skeleton from '@mui/material/Skeleton';
 import { number } from 'prop-types';
 
 import { theme } from 'themes';
@@ -107,8 +103,8 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
               </Box>
 
               <Box className={classes.actionsContainer}>
-                <Skeleton variant="rect" width="120px" height="36px" style={{ borderRadius: '4px' }} />
-                <Skeleton variant="rect" width="120px" height="36px" style={{ borderRadius: '4px' }} />
+                <Skeleton variant="rectangular" width="120px" height="36px" style={{ borderRadius: '4px' }} />
+                <Skeleton variant="rectangular" width="120px" height="36px" style={{ borderRadius: '4px' }} />
               </Box>
             </Box>
           </CardContent>

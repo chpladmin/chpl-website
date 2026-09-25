@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Divider, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { bool, func } from 'prop-types';
 
 import { address as addressProp, formik as formikProp } from '../../../shared/prop-types';

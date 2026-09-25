@@ -10,9 +10,9 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
@@ -222,7 +222,7 @@ function ChplDirectReviews({
             )}
           { !directReviewsAvailable
             && (
-              <Chip size="small" className={classes.errorChip} variant="default" label="Error" />
+              <Chip size="small" className={classes.errorChip} label="Error" />
             )}
         </Box>
       </AccordionSummary>

@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
-  Container,
-  Step,
-  StepLabel,
-  Stepper,
-  makeStyles,
-} from '@material-ui/core';
+  Button, ButtonGroup, Container, Step, StepLabel, Stepper,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   bool,
@@ -15,8 +10,8 @@ import {
   number,
   string,
 } from 'prop-types';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const useStyles = makeStyles({
   buttons: {

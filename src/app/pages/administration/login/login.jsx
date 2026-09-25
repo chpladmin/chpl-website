@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func, shape } from 'prop-types';
 
 import ChplLogin from 'components/login/login';

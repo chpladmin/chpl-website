@@ -1,13 +1,8 @@
 import React from 'react';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardHeader, CardContent, FormControlLabel, Switch, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, func, number, string,
 } from 'prop-types';

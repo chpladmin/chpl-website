@@ -1,13 +1,10 @@
 import React from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  makeStyles,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
-import SendIcon from '@material-ui/icons/Send';
+  Button, Card, CardHeader, CardContent,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ClearIcon from '@mui/icons-material/Clear';
+import SendIcon from '@mui/icons-material/Send';
 import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
