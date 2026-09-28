@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 14.11.1
+_28 September 2026_
+
+### Bug Fixes
+* Sort complaint criteria during edit with updated criteria
+* Handle sorting of CQMs on System Maintenance page, by ID, correctly
+
+---
+
 ## Version 14.11.0
 _14 September 2026_
 
