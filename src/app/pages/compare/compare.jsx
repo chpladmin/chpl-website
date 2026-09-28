@@ -275,7 +275,7 @@ function ChplComparePage({ ids }) {
                   <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                   { listings.map((listing) => (
                     <TableCell className={classes.headerColumnContent} key={listing.id}>
-                      <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                      <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
                         { listing.product.name }
                         <ChplBrowserComparedWidget
                           listing={listing}
@@ -312,23 +312,29 @@ function ChplComparePage({ ids }) {
                 { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
                 { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
                 { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
-                { makeRow(<>CHPL Product Number<br /><Typography variant="caption">Manage CMS ID Creator</Typography></>, (listing) => (
-                  <Box display="flex" alignItems="flex-start" flexDirection="column"  justifyContent="space-between" gridGap={8}>
-                  <ChplLink
-                    href={`#/listing/${listing.id}`}
-                    text={listing.chplProductNumber}
-                    analytics={{
-                      ...analytics,
-                      event: 'Navigate to Listing Details Page',
-                      label: listing.chplProductNumber,
-                      aggregationName: listing.product.name,
-                    }}
-                    external={false}
-                    router={{ sref: 'listing', options: { id: listing.id } }}
-                  />
-                    <CmsButton listing={listing} size="small" />
-                  </Box>
-                ))}
+                { makeRow(
+                  <>
+                    CHPL Product Number
+                    <br />
+                    <Typography variant="caption">Manage CMS ID Creator</Typography>
+                  </>, (listing) => (
+                    <Box display="flex" alignItems="flex-start" flexDirection="column" justifyContent="space-between" gridGap={8}>
+                      <ChplLink
+                        href={`#/listing/${listing.id}`}
+                        text={listing.chplProductNumber}
+                        analytics={{
+                          ...analytics,
+                          event: 'Navigate to Listing Details Page',
+                          label: listing.chplProductNumber,
+                          aggregationName: listing.product.name,
+                        }}
+                        external={false}
+                        router={{ sref: 'listing', options: { id: listing.id } }}
+                      />
+                      <CmsButton listing={listing} size="small" />
+                    </Box>
+                  ),
+                )}
                 { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
                 { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
                 { criteria.map(makeCriterionRow) }
