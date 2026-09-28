@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -47,15 +48,13 @@ const useStyles = makeStyles({
     padding: '16px',
     minWidth: '150px',
   },
-  Table: {
-    height: '80vh',
-  },
   stickyColumn: {
     position: 'sticky',
     left: 0,
     zIndex: 1,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
     backgroundColor: palette.background,
+    maxWidth: '200px',
   },
   MuiTableCellStickyHeader: {
     '&.TableCell-stickyHeader': {
@@ -64,6 +63,19 @@ const useStyles = makeStyles({
   },
   animatedItem: {
     animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
+  },
+  compactButton: {
+    '& .MuiButton-root': {
+      padding: `${theme.spacing(0.75)}px`,
+      fontSize: '0.6875rem',
+      minWidth: 'auto',
+    },
+    '& .MuiButton-endIcon': {
+      marginLeft: theme.spacing(0.5),
+    },
+    '& .MuiButton-endIcon .MuiSvgIcon-root': {
+      fontSize: '0.875rem',
+    },
   },
   '@keyframes myEffect': {
     '0%': {
@@ -276,22 +288,25 @@ function ChplComparePage({ ids }) {
                   <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                   { listings.map((listing) => (
                     <TableCell className={classes.headerColumnContent} key={listing.id}>
-                      <Box mb={2} display="flex" flexDirection="column">
-                        <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
-                          { listing.product.name }
-                          <ChplBrowserComparedWidget
-                            listing={listing}
-                          />
-                          <IconButton
-                            size="small"
-                            onClick={() => dropListing(listing)}
-                            disabled={listings.length <= 2}
-                          >
-                            <CloseIcon />
-                          </IconButton>
+                      <Box display="flex" flexDirection="column">
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            { listing.product.name }
+                            <ChplBrowserComparedWidget
+                              listing={listing}
+                            />
+                          <ChplTooltip title="Compare this listing in the browser" iconOnly>
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                aria-label="Remove listing"
+                                onClick={() => dropListing(listing)}
+                                disabled={listings.length <= 2}
+                              >
+                                <CloseIcon color="primary" />
+                              </IconButton>
+                          </ChplTooltip>
+                          </Box>
                         </Box>
-                        <CmsButton listing={listing} />
-                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
@@ -304,7 +319,8 @@ function ChplComparePage({ ids }) {
                 { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
                 { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
                 { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
-                { makeRow('CHPL Product Number', (listing) => (
+                { makeRow(<>CHPL Product Number<br /><Typography variant="caption">Manage CMS ID Creator</Typography></>, (listing) => (
+                  <Box display="flex" alignItems="flex-start" flexDirection="column"  justifyContent="space-between" gridGap={8}>
                   <ChplLink
                     href={`#/listing/${listing.id}`}
                     text={listing.chplProductNumber}
@@ -317,6 +333,8 @@ function ChplComparePage({ ids }) {
                     external={false}
                     router={{ sref: 'listing', options: { id: listing.id } }}
                   />
+                    <CmsButton listing={listing} size="small" />
+                  </Box>
                 ))}
                 { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
                 { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
