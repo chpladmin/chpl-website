@@ -275,25 +275,19 @@ function ChplComparePage({ ids }) {
                   <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                   { listings.map((listing) => (
                     <TableCell className={classes.headerColumnContent} key={listing.id}>
-                      <Box display="flex" flexDirection="column">
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                            { listing.product.name }
-                            <ChplBrowserComparedWidget
-                              listing={listing}
-                            />
-                          <ChplTooltip title="Compare this listing in the browser" iconOnly>
-                              <IconButton
-                                size="small"
-                                color="primary"
-                                aria-label="Remove listing"
-                                onClick={() => dropListing(listing)}
-                                disabled={listings.length <= 2}
-                              >
-                                <CloseIcon color="primary" />
-                              </IconButton>
-                          </ChplTooltip>
-                          </Box>
-                        </Box>
+                      <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                        { listing.product.name }
+                        <ChplBrowserComparedWidget
+                          listing={listing}
+                        />
+                        <IconButton
+                          size="small"
+                          onClick={() => dropListing(listing)}
+                          disabled={listings.length <= 2}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
