@@ -297,7 +297,19 @@ function ChplComparePage({ ids }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { makeRow('Developer', (listing) => listing.developer.name) }
+                { makeRow('Developer', (listing) => (
+                  <ChplLink
+                    href={`#/organizations/developers/${listing.developer.id}`}
+                    text={listing.developer.name}
+                    analytics={{
+                      ...analytics,
+                      event: 'Navigate to Developer Page',
+                      label: listing.developer.name,
+                    }}
+                    external={false}
+                    router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
+                  />
+                ))}
                 { makeRow('Version', (listing) => listing.version.version) }
                 { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
                 { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : null }
