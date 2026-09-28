@@ -5249,7 +5249,6 @@ __metadata:
     jspdf-autotable: "npm:^3.5.28"
     mini-css-extract-plugin: "npm:^0.4.5"
     moment: "npm:^2.29.4"
-    ng-file-upload: "npm:^12.2.13"
     ng-idle: "npm:^1.3.2"
     notistack: "npm:^1.0.10"
     postcss: "npm:^5.2.18"
@@ -12060,13 +12059,6 @@ __metadata:
   version: 2.0.2
   resolution: "netmask@npm:2.0.2"
   checksum: 10/375cabe898a5832816958664f26206f0a1e9f3605aa1816bfce803e060ff20f9d6ce56a2377e46f1470938358c31c27b3a8086f4a5e3ef678896147884d63ffa
-  languageName: node
-  linkType: hard
-
-"ng-file-upload@npm:^12.2.13":
-  version: 12.2.13
-  resolution: "ng-file-upload@npm:12.2.13"
-  checksum: 10/b85f6422823296706d451838c1ffc7555cec8cfaf15ad067d27b83965b00e6a6361b9572f7e39b1aeb27de6e7ba6030f57bd126eea935ffd1234c250423c7ef9
   languageName: node
   linkType: hard
 

@@ -15,7 +15,7 @@ import { func, objectOf, string } from 'prop-types';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
+import { goToUrl } from 'services/navigation.service';
 import { CompareContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -129,14 +129,11 @@ const useStyles = makeStyles({
 });
 
 function ChplCompareDisplay({ onClose }) {
-  const $location = getAngularService('$location');
-  const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
   const classes = useStyles();
 
   const compareAll = () => {
-    $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
-    $rootScope.$digest();
+    goToUrl(`/compare/${listings.map((listing) => listing.id).join('&')}`);
   };
 
   const removeAll = () => {

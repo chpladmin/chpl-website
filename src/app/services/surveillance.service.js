@@ -68,13 +68,6 @@ const sortRequirements = (a, b) => {
   return sortRequirementTypes(a.requirementType, b.requirementType);
 };
 
-const interpretRequirements = (reqs) => reqs
-  .sort(sortRequirements)
-  .map((req) => ({
-    ...req,
-    display: getRequirementDisplay(req),
-  }));
-
 const sortNonconformityTypes = (a, b) => {
   if (a.number && b.number) {
     return sortCriteria(a, b);
@@ -85,14 +78,10 @@ const sortNonconformityTypes = (a, b) => {
   return typeOrder.indexOf(a.title) - typeOrder.indexOf(b.title);
 };
 
-const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);
-
 export {
   getRequirementDisplay,
   getSurveillanceTitle,
-  interpretRequirements,
   sortNonconformityTypes,
   sortRequirementTypes,
   sortRequirements,
-  sortSurveillances,
 };

@@ -1,4 +1,3 @@
-import 'ng-file-upload';
 import ChplCmsWrapper from './cms/cms-wrapper';
 import ChplConfirmWrapper from './confirm/confirm-wrapper';
 import ChplLoginPage from './login/login-wrapper';
@@ -13,8 +12,7 @@ angular
   .module('chpl.administration', [
     'angular-confirm',
     'chpl.services',
-    'ngIdle',
-    'ngFileUpload',
+    'ngIdle', // provides the `Title` service used by the `chpl` run block
     'ngSanitize',
     'ui.bootstrap',
     'ui.router',

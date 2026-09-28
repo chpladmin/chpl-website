@@ -15,7 +15,7 @@ import ChplLogin from 'components/login/login';
 import { setUser } from 'components/login/userInfo.slice';
 import ChplUserCreate from 'components/registration/user-create';
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
+import { goToState } from 'services/navigation.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
@@ -45,8 +45,6 @@ const useStyles = makeStyles({
 });
 
 function ChplRegisterUser({ hash }) {
-  const $state = getAngularService('$state');
-  const authService = getAngularService('authService');
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const { hasAnyRole } = useContext(UserContext);
@@ -74,8 +72,7 @@ function ChplRegisterUser({ hash }) {
               variant: 'success',
             });
             dispatch(setUser(response.data));
-            authService.saveCurrentUser(response.data);
-            $state.go('administration');
+            goToState('administration');
           },
           onError: (error) => {
             if (error.status === 401) {
@@ -110,7 +107,7 @@ function ChplRegisterUser({ hash }) {
           onError: (error) => {
             let errorMessage;
             if (error.response?.data?.errorMessages?.length > 0) {
-              errorMessage = error.response.data.errorMessages[0];
+              errorMessage = [error.response.data.errorMessages];
             } else if (error.response?.data?.error) {
               errorMessage = error.response.data.error;
             } else {

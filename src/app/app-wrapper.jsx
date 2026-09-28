@@ -6,55 +6,49 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import { bool, node } from 'prop-types';
 
+import ChplAppLayout from './app-layout';
 import store from './store';
 
-import {
-  AnalyticsProvider,
-  HashProvider,
-} from 'shared/contexts';
 import ApiWrapper from 'api/api-wrapper';
-import BrowserWrapper from 'components/browser/browser-wrapper';
+import FlagWrapper from 'api/flag-wrapper';
 import CmsWrapper from 'components/cms-widget/cms-wrapper';
 import CompareWrapper from 'components/compare-widget/compare-wrapper';
-import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 import { SnackbarWrapper } from 'components/util';
+import { AnalyticsProvider, HashProvider } from 'shared/contexts';
 import theme from 'themes/theme';
-import ChplAppLayout from './app-layout';
 
 function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <SnackbarWrapper>
-          <ApiWrapper showQueryTools={showQueryTools}>
-            <UserWrapper>
-              <FlagWrapper>
-                <CompareWrapper>
-                  <CmsWrapper>
-                    <BrowserWrapper>
+      <CookiesProvider defaultSetOptions={{
+        path: '/',
+        expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
+        domain: '.healthit.gov',
+      }}
+      >
+        <ThemeProvider theme={theme}>
+          <SnackbarWrapper>
+            <ApiWrapper showQueryTools={showQueryTools}>
+              <UserWrapper>
+                <FlagWrapper>
+                  <CompareWrapper>
+                    <CmsWrapper>
                       <AnalyticsProvider>
                         <HashProvider>
-                          <CookiesProvider defaultSetOptions={{
-                            path: '/',
-                            expires: new Date(Date.now() + (1000 * 60 * 60 * 10)), // 10 hours
-                            domain: '.healthit.gov',
-                          }}
-                          >
-                            <ChplAppLayout>
-                              {children}
-                            </ChplAppLayout>
-                          </CookiesProvider>
+                          <ChplAppLayout>
+                            {children}
+                          </ChplAppLayout>
                         </HashProvider>
                       </AnalyticsProvider>
-                    </BrowserWrapper>
-                  </CmsWrapper>
-                </CompareWrapper>
-              </FlagWrapper>
-            </UserWrapper>
-          </ApiWrapper>
-        </SnackbarWrapper>
-      </ThemeProvider>
+                    </CmsWrapper>
+                  </CompareWrapper>
+                </FlagWrapper>
+              </UserWrapper>
+            </ApiWrapper>
+          </SnackbarWrapper>
+        </ThemeProvider>
+      </CookiesProvider>
     </Provider>
   );
 }

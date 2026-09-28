@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 
 import { eventTrack } from 'services/analytics.service';
-import { getAngularService } from 'services/angular-react-helper';
+import { getRouteParams } from 'services/navigation.service';
 import { theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -39,11 +39,10 @@ const useStyles = makeStyles({
 });
 
 function ChplNotFound() {
-  const $stateParams = getAngularService('$stateParams');
   const classes = useStyles();
 
   useEffect(() => {
-    const { target } = $stateParams;
+    const { target } = getRouteParams();
     if (target) {
       eventTrack({
         event: 'Page Not Found',
@@ -51,7 +50,7 @@ function ChplNotFound() {
         label: target,
       });
     }
-  }, [$stateParams]);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

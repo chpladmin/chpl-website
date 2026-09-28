@@ -8,10 +8,9 @@ import {
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import { useSelector } from 'react-redux';
 import { func, number } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
+import { useAxios } from 'api/axios';
 import { ListingContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
@@ -58,14 +57,11 @@ function ChplUploadListing({
   setWarnings,
   setDiff,
 }) {
-  const apiKey = useSelector((state) => state.browserInfo.apiKey);
-  const API = useSelector((state) => state.browserInfo.api);
-  const Upload = getAngularService('Upload');
-  const authService = getAngularService('authService');
+  const axios = useAxios();
+  const { setListing } = useContext(ListingContext);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
-  const { setListing } = useContext(ListingContext);
   const classes = useStyles();
 
   const clearFile = () => {
@@ -84,25 +80,17 @@ function ChplUploadListing({
     setIsProcessing(true);
     setListing(undefined);
     setDiff([]);
-    const item = {
-      url: `${API}/listings/upload/${id}`,
-      headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
-        'API-Key': apiKey,
-      },
-      data: {
-        file,
-      },
-    };
-    Upload.upload(item)
+    const data = new FormData();
+    data.append('file', file);
+    axios.post(`listings/upload/${id}`, data)
       .then((response) => {
         setListing(response.data);
         setIsProcessing(false);
       })
       .catch((error) => {
         setIsProcessing(false);
-        if (error?.data?.errorMessages) {
-          setErrors(error.data.errorMessages);
+        if (error?.response?.data?.errorMessages) {
+          setErrors(error.response.data.errorMessages);
         } else {
           setErrors(['An unexpected error occurred. Please check your file and try again.']);
         }
@@ -117,7 +105,7 @@ function ChplUploadListing({
       <div>
         <Button
           color="primary"
-          variant="outlined"
+          variant="contained"
           component="label"
           endIcon={<CloudUploadOutlinedIcon />}
         >
