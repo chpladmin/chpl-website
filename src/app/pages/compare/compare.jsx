@@ -64,19 +64,6 @@ const useStyles = makeStyles({
   animatedItem: {
     animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
   },
-  compactButton: {
-    '& .MuiButton-root': {
-      padding: `${theme.spacing(0.75)}px`,
-      fontSize: '0.6875rem',
-      minWidth: 'auto',
-    },
-    '& .MuiButton-endIcon': {
-      marginLeft: theme.spacing(0.5),
-    },
-    '& .MuiButton-endIcon .MuiSvgIcon-root': {
-      fontSize: '0.875rem',
-    },
-  },
   '@keyframes myEffect': {
     '0%': {
       opacity: 0,
