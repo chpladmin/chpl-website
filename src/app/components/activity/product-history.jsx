@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Dialog, DialogContent, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Timeline,
 } from '@mui/lab';
@@ -18,17 +17,16 @@ import {
 import { compareProduct } from 'components/activity/services/products.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
-const useStyles = makeStyles({
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
-});
+};
 
 function ChplProductHistory({ product }) {
   const [activities, setActivities] = useState([]);
   const [evaluatedActivities, setEvaluatedActivities] = useState([]);
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   const { data, isLoading, isError } = useFetchProductActivitiesMetadata({
     product,
@@ -93,7 +91,7 @@ function ChplProductHistory({ product }) {
         <ChplDialogTitle
           id="history-title"
           onClose={handleClose}
-          className={classes.legendTitle}
+          sx={styles.legendTitle}
         >
           Product/Version History
         </ChplDialogTitle>

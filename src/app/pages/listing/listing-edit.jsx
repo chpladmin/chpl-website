@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -15,7 +16,6 @@ import {
   Popper,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { ArrowDropDown } from '@mui/icons-material';
 import { func } from 'prop-types';
 
@@ -31,7 +31,7 @@ import { eventTrack } from 'services/analytics.service';
 import { AnalyticsContext, ListingContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles, palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     fontWeight: 'bold',
   },
-});
+};
 
 function ChplListingEditPage({ dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -66,7 +66,6 @@ function ChplListingEditPage({ dispatch }) {
   const [open, setOpen] = useState(false);
   const [selectedEditMode, setSelectedEditMode] = useState(0);
   const anchorRef = useRef(null);
-  const classes = useStyles();
   let analyticsData;
 
   const handleDispatch = ({ action, payload }) => {
@@ -179,7 +178,7 @@ function ChplListingEditPage({ dispatch }) {
                 >
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList className={classes.optionMenu} id="menu" autoFocusItem>
+                      <MenuList sx={styles.optionMenu} id="menu" autoFocusItem>
                         { editOptions.map((option, index) => (
                           <MenuItem
                             key={option}
@@ -199,7 +198,7 @@ function ChplListingEditPage({ dispatch }) {
         )}
       />
       <ChplPageBody maxWidth={isEditing ? 'md' : 'xl'}>
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           { isEditing ? (
             <ChplListingEdit
               dispatch={handleDispatch}
@@ -215,7 +214,7 @@ function ChplListingEditPage({ dispatch }) {
               isProcessing={isProcessing}
             />
           )}
-          <Card className={classes.reasonForChange}>
+          <Card sx={styles.reasonForChange}>
             <CardHeader title="Reason For Change" />
             <CardContent>
               <ChplTextField
@@ -226,7 +225,7 @@ function ChplListingEditPage({ dispatch }) {
                 value={reasonForChange}
                 onChange={(event) => setReasonForChange(event.target.value)}
               />
-              <Typography variant="body1" className={classes.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
+              <Typography variant="body1" sx={styles.reasonForChangeText}>If changes are made in any of the following ways, a Reason for Change is required:</Typography>
               <List disablePadding>
                 <ListItem>Clinical Quality Measure Removed</ListItem>
                 <ListItem>Certification Criteria Removed</ListItem>
@@ -234,7 +233,7 @@ function ChplListingEditPage({ dispatch }) {
               </List>
             </CardContent>
           </Card>
-        </div>
+        </Box>
       </ChplPageBody>
     </AnalyticsContext.Provider>
   );

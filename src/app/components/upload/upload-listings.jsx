@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Box, Button, Card, CardContent, CardHeader, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
@@ -10,7 +9,7 @@ import { useSnackbar } from 'notistack';
 
 import { useAxios } from 'api/axios';
 
-const useStyles = makeStyles({
+const styles = {
   buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -47,14 +46,13 @@ const useStyles = makeStyles({
     marginTop: '16px',
     paddingTop: '16px',
   },
-});
+};
 
 function ChplUploadListings() {
   const axios = useAxios();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const classes = useStyles();
 
   const clearFile = () => {
     setFile(undefined);
@@ -113,7 +111,7 @@ function ChplUploadListings() {
     <Card id="upload-certified-products">
       <CardHeader title="Upload Certified Products" />
       <CardContent>
-        <div className={classes.uploadContentContainer}>
+        <Box sx={styles.uploadContentContainer}>
           <Typography variant="body1">
             <strong> CSV files only</strong>
           </Typography>
@@ -135,13 +133,13 @@ function ChplUploadListings() {
           </div>
           { file
             && (
-              <Box className={classes.fileUploadContainer}>
-                <Box className={classes.fileUploadContent}>
-                  <div className={classes.fileName}>
+              <Box sx={styles.fileUploadContainer}>
+                <Box sx={styles.fileUploadContent}>
+                  <Box sx={styles.fileName}>
                     <strong>Filename:</strong>
                     {' '}
                     { file.name }
-                  </div>
+                  </Box>
                   { file
                     && (
                       <div>
@@ -153,7 +151,7 @@ function ChplUploadListings() {
                 </Box>
                 { file
                   && (
-                    <div className={classes.buttonUploadContainer}>
+                    <Box sx={styles.buttonUploadContainer}>
                       <Button
                         color="primary"
                         variant="contained"
@@ -164,7 +162,7 @@ function ChplUploadListings() {
                         Upload
                       </Button>
                       <Button
-                        className={classes.deleteButton}
+                        sx={styles.deleteButton}
                         variant="contained"
                         onClick={clearFile}
                         endIcon={<DeleteIcon />}
@@ -172,11 +170,11 @@ function ChplUploadListings() {
                       >
                         Remove
                       </Button>
-                    </div>
+                    </Box>
                   )}
               </Box>
             )}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

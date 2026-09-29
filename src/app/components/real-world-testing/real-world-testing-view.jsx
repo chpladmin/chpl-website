@@ -10,7 +10,6 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 
 import { useFetchRealWorldTestingPlans, useFetchRealWorldTestingResults } from 'api/developer';
@@ -19,12 +18,12 @@ import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplRealWorldTestingView({ developer, dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -34,7 +33,6 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
   const [results, setResults] = useState([]);
   const plansQuery = useFetchRealWorldTestingPlans({ developer });
   const resultsQuery = useFetchRealWorldTestingResults({ developer });
-  const classes = useStyles();
 
   useEffect(() => {
     if (plansQuery.isLoading || plansQuery.isError) { return; }
@@ -61,7 +59,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
   return (
     <Card>
       <CardHeader title="Real World Testing" />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         { plans.length > 0 && !hti5ErdIsOn
           && (
             <>

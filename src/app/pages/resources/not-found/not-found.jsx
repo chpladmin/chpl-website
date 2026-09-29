@@ -10,13 +10,12 @@ import {
   StyledEngineProvider,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
 import { eventTrack } from 'services/analytics.service';
 import { getRouteParams } from 'services/navigation.service';
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     padding: '64px 32px',
     maxWidth: '90%',
@@ -37,11 +36,9 @@ const useStyles = makeStyles({
   cardActions: {
     padding: '16px',
   },
-});
+};
 
 function ChplNotFound() {
-  const classes = useStyles();
-
   useEffect(() => {
     const { target } = getRouteParams();
     if (target) {
@@ -56,7 +53,7 @@ function ChplNotFound() {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <Container className={classes.container}>
+        <Container sx={styles.container}>
           <Card>
             <CardHeader title="404 Page Not Found" />
             <CardContent>
@@ -66,7 +63,7 @@ function ChplNotFound() {
                 The page you were looking for may have been moved to a new location or no longer exists. Use the links below to either return to the search page or contact us to report a problem with the CHPL site.
               </Typography>
             </CardContent>
-            <CardActions className={classes.cardActions}>
+            <CardActions sx={styles.cardActions}>
               <Typography>
                 <Link
                   href="#/search"

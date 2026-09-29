@@ -110,7 +110,7 @@ function ChplReport({ acb, dispatch }) {
       <Box
         display="grid"
         gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
-        gap={12}
+        gap="12px"
         alignItems="stretch"
         justifyItems="stretch"
       >

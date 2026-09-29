@@ -80,7 +80,7 @@ const useStyles = makeStyles({
     gap: '4px',
     alignItems: 'baseline',
     margin: 0,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -91,7 +91,7 @@ const useStyles = makeStyles({
     top: '115px',
     zIndex: 1,
     transition: 'width 0.3s ease',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       position: 'relative',
       top: 0,
       width: '100%',
@@ -99,7 +99,7 @@ const useStyles = makeStyles({
   },
   navOpen: {
     width: '200px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
@@ -111,7 +111,7 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '8px',
     flexDirection: 'column',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       overflowX: 'scroll',
     },

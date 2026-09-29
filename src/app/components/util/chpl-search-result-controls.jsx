@@ -37,7 +37,7 @@ const useStyles = makeStyles({
       pointerEvents: 'none',
       zIndex: 1,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       gap: '12px',
       padding: '16px',
     },
@@ -57,7 +57,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     gap: '2px',
     flexWrap: ({ wrapActions }) => (wrapActions ? 'wrap' : 'nowrap'),
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexWrap: 'wrap',
       gap: '8px',
       width: '100%',

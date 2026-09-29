@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, Container, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -16,7 +15,7 @@ import { goToState } from 'services/navigation.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     padding: '16px',
@@ -39,7 +38,7 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 136px)',
   },
-});
+};
 
 function ChplRegisterUser({ hash }) {
   const dispatch = useDispatch();
@@ -50,7 +49,6 @@ function ChplRegisterUser({ hash }) {
   const [loginComponentState, setLoginComponentState] = useState('SIGNIN');
   const { mutate: authorizeSsoUser } = usePostAuthorizeUser();
   const { mutate: createInvited } = usePostCreateInvitedUser();
-  const classes = useStyles();
   let handleDispatch;
 
   useEffect(() => {
@@ -137,7 +135,7 @@ function ChplRegisterUser({ hash }) {
               state={loginComponentState}
               setState={setLoginComponentState}
             />
-            <Box className={classes.cardFooter}>
+            <Box sx={styles.cardFooter}>
               <Typography variant="body2">
                 Don&apos;t have an account?
               </Typography>
@@ -156,7 +154,7 @@ function ChplRegisterUser({ hash }) {
         return (
           <>
             <ChplUserCreate dispatch={handleDispatch} />
-            <Box className={classes.cardFooter}>
+            <Box sx={styles.cardFooter}>
               <Typography>
                 Have an account?
               </Typography>
@@ -178,18 +176,18 @@ function ChplRegisterUser({ hash }) {
   };
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <Container maxWidth="xs" className={classes.content}>
+    <Box sx={styles.fixFooterSpacing}>
+      <Container maxWidth="xs" sx={styles.content}>
         <Typography variant="h1">
           User Registration
         </Typography>
       </Container>
-      <Box className={classes.body} bgcolor={palette.background}>
+      <Box sx={styles.body} bgcolor={palette.background}>
         <Container maxWidth="xs">
           { getState() }
         </Container>
       </Box>
-    </div>
+    </Box>
   );
 }
 

@@ -8,14 +8,13 @@ import {
   CardHeader,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { func } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
 import { user as userPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     gap: '8px',
     overflowWrap: 'anywhere',
@@ -24,24 +23,22 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateRows: '64px auto 50px',
   },
-});
+};
 
 function ChplUserView({ user, dispatch = () => {} }) {
-  const classes = useStyles();
-
   const edit = () => {
     dispatch('edit', user);
   };
 
   return (
     <Card
-      className={classes.userCard}
+      sx={styles.userCard}
       title={`${user.fullName} Information`}
     >
       <CardHeader
         title={user.fullName}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <Typography gutterBottom>
           <strong>Email:</strong>
           <br />
@@ -70,7 +67,7 @@ function ChplUserView({ user, dispatch = () => {} }) {
           { user.status }
         </Typography>
       </CardContent>
-      <CardActions className={classes.cardActions}>
+      <CardActions sx={styles.cardActions}>
         <ButtonGroup
           color="primary"
         >

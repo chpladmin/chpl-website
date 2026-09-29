@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import FindReplaceIcon from '@mui/icons-material/FindReplace';
 
 import ChplLandingPage from './landing-page';
@@ -40,7 +39,7 @@ const sortOptions = [
   { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   cantFindContent: {
     display: 'flex',
     alignItems: 'center',
@@ -57,7 +56,7 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     border: `1px solid ${palette.greyMain}`,
   },
-});
+};
 
 function ChplListingsView() {
   const storageKey = 'storageKey-listingsView';
@@ -71,7 +70,6 @@ function ChplListingsView() {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const { dispatch, hasSearched, queryString, filters } = useFilterContext();
-  const classes = useStyles();
 
   const { data, isError, isLoading } = useFetchListings({
     orderBy,
@@ -157,9 +155,9 @@ function ChplListingsView() {
               </ChplSearchResultControls>
               { listings.length === 0 && searchTermRecordCount > 0
                 && (
-                  <Box className={classes.cantFindContainer}>
+                  <Box sx={styles.cantFindContainer}>
                     <FindReplaceIcon htmlColor={palette.primaryLight} style={{ fontSize: '64px' }} />
-                    <Box className={classes.cantFindContent}>
+                    <Box sx={styles.cantFindContent}>
                       <Typography>Can&apos;t find what you&apos;re looking for?</Typography>
                       <Button
                         onClick={seeAllResults}

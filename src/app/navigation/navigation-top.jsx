@@ -63,10 +63,10 @@ const useStyles = makeStyles({
   logo: {
     height: '40px',
     display: 'block',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       height: '32px',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       height: '20px',
     },
   },
@@ -96,7 +96,7 @@ const useStyles = makeStyles({
   },
   mobileOnly: {
     display: 'none',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
     },
   },

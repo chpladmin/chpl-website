@@ -24,8 +24,10 @@ const useStyles = makeStyles({
   },
   primaryRow: {
     display: 'flex',
-    flexWrap: 'wrap',
     gap: theme.spacing(1.25, 3.5),
+    '@media (min-width: 899px) and (max-width: 1201px)': {
+      flexWrap: 'wrap',
+    },
   },
   detailsRow: {
     borderTop: `1px solid ${theme.palette.divider}`,

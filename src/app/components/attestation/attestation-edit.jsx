@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 
@@ -9,11 +8,11 @@ import ChplAttestationWizard from './attestation-wizard';
 import { usePutChangeRequest } from 'api/change-requests';
 import { getDisplayDateFormat } from 'services/date-util';
 
-const useStyles = makeStyles({
+const styles = {
   pageHeader: {
     padding: '8px 0',
   },
-});
+};
 
 function ChplAttestationEdit(props) {
   const { changeRequest, dispatch } = props;
@@ -24,7 +23,6 @@ function ChplAttestationEdit(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
-  const classes = useStyles();
 
   useEffect(() => {
     if (!changeRequest?.details?.form) {
@@ -84,7 +82,7 @@ function ChplAttestationEdit(props) {
 
   return (
     <>
-      <Container className={classes.pageHeader} maxWidth="md">
+      <Container sx={styles.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
           Edit Attestations
         </Typography>

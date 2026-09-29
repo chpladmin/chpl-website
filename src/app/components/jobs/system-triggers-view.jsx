@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Card, CardContent, CardHeader, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import Moment from 'react-moment';
@@ -19,7 +18,7 @@ const sortOptions = [
   { property: 'triggerScheduleType', text: 'Trigger Schedule Type' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   headerContainer: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
     gap: '8px',
     alignItems: 'center',
   },
-});
+};
 
 function ChplSystemTriggersView({
   dispatch,
@@ -43,7 +42,6 @@ function ChplSystemTriggersView({
   const [isConfirming, setIsConfirming] = useState(false);
   const [pendingAction, setPendingAction] = useState({});
   const [pendingMessage, setPendingMessage] = useState('');
-  const classes = useStyles();
 
   let getAction;
 
@@ -129,20 +127,20 @@ function ChplSystemTriggersView({
             { triggers.length > 0
               && (
                 <>
-                  <div className={classes.headerContainer}>
-                    <div className={classes.resultsContainer}>
+                  <Box sx={styles.headerContainer}>
+                    <Box sx={styles.resultsContainer}>
                       <Typography variant="subtitle2">Scheduled Jobs:</Typography>
                       <Typography variant="body2">
                         {`(${triggers.length} Result${triggers.length !== 1 ? 's' : ''})`}
                       </Typography>
-                    </div>
+                    </Box>
                     <ChplSortControls
                       sortOptions={sortOptions}
                       orderBy={orderBy}
                       order={order}
                       onSort={handleSort}
                     />
-                  </div>
+                  </Box>
                   <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
                     { triggers.map((item) => (
                       <ChplSearchResultCard

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, CircularProgress, Container } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func, object } from 'prop-types';
 
 import { usePutProduct } from 'api/product';
@@ -9,7 +8,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   pageContainer: {
     padding: '32px 0',
     display: 'flex',
@@ -21,14 +20,13 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-});
+};
 
 function ChplEditProduct({ dispatch, product }) {
   const { analytics } = useAnalyticsContext();
   const { mutate } = usePutProduct();
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -68,7 +66,7 @@ function ChplEditProduct({ dispatch, product }) {
 
   return (
     <Container disableGutters maxWidth="lg">
-      <Box className={classes.pageContainer}>
+      <Box sx={styles.pageContainer}>
         <ChplProduct
           dispatch={handleDispatch}
           product={product}

@@ -10,7 +10,6 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
@@ -29,7 +28,7 @@ import { compareListing } from 'pages/listing/history/listings.service';
 import { ListingContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -122,7 +121,7 @@ const useStyles = makeStyles({
     fontWeight: '600 !important',
     fontSize: '1.1em !important',
   },
-});
+};
 
 function ChplListingEditUpload({
   dispatch,
@@ -139,7 +138,6 @@ function ChplListingEditUpload({
   const [warnings, setWarnings] = useState([]);
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     if (!newListing) { return; }
@@ -213,9 +211,9 @@ function ChplListingEditUpload({
           setDiff={setDiff}
         />
       </ListingContext.Provider>
-      <div className={classes.pageContainer}>
-        <div className={classes.container}>
-          <div className={classes.headerContainer}>
+      <Box sx={styles.pageContainer}>
+        <Box sx={styles.container}>
+          <Box sx={styles.headerContainer}>
             <Typography
               gutterBottom
               component="h3"
@@ -224,8 +222,8 @@ function ChplListingEditUpload({
             >
               Current Listing
             </Typography>
-          </div>
-          <div className={classes.headerContainer}>
+          </Box>
+          <Box sx={styles.headerContainer}>
             <Typography
               gutterBottom
               component="h3"
@@ -234,10 +232,10 @@ function ChplListingEditUpload({
             >
               Updated Listing
             </Typography>
-          </div>
+          </Box>
           <Card>
-            <Box className={classes.sectionHeader}>
-              <Typography className={classes.sectionHeaderText} variant="h2">Listing Information</Typography>
+            <Box sx={styles.sectionHeader}>
+              <Typography sx={styles.sectionHeaderText} variant="h2">Listing Information</Typography>
             </Box>
             <CardContent>
               <ChplListingInformation
@@ -246,15 +244,15 @@ function ChplListingEditUpload({
             </CardContent>
           </Card>
           { !newListing ? (
-            <Box className={classes.placeholderContainer}>
+            <Box sx={styles.placeholderContainer}>
               <HelpOutlineIcon fontSize="large" color="primary" />
               <Typography>Upload a file above to display your new listing.</Typography>
             </Box>
           ) : (
             <ListingContext.Provider value={newListingState}>
               <Card>
-                <Box className={classes.sectionHeader}>
-                  <Typography className={classes.sectionHeaderText} variant="h2">Listing Information</Typography>
+                <Box sx={styles.sectionHeader}>
+                  <Typography sx={styles.sectionHeaderText} variant="h2">Listing Information</Typography>
                 </Box>
                 <CardContent>
                   <ChplListingInformation
@@ -265,8 +263,8 @@ function ChplListingEditUpload({
             </ListingContext.Provider>
           )}
           <Card>
-            <Box className={classes.sectionHeader}>
-              <Typography className={classes.sectionHeaderText} variant="h2">Certification Criteria</Typography>
+            <Box sx={styles.sectionHeader}>
+              <Typography sx={styles.sectionHeaderText} variant="h2">Certification Criteria</Typography>
               <div>
                 <FormControlLabel
                   control={(
@@ -298,8 +296,8 @@ function ChplListingEditUpload({
                 && (
                   <ListingContext.Provider value={newListingState}>
                     <Card>
-                      <Box className={classes.sectionHeader}>
-                        <Typography className={classes.sectionHeaderText} variant="h2">Certification Criteria</Typography>
+                      <Box sx={styles.sectionHeader}>
+                        <Typography sx={styles.sectionHeaderText} variant="h2">Certification Criteria</Typography>
                         <div>
                           <FormControlLabel
                             control={(
@@ -330,8 +328,8 @@ function ChplListingEditUpload({
                 )}
           </div>
           <Card>
-            <Box className={classes.sectionHeader}>
-              <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
+            <Box sx={styles.sectionHeader}>
+              <Typography sx={styles.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
               <div>
                 <FormControlLabel
                   control={(
@@ -364,8 +362,8 @@ function ChplListingEditUpload({
                 && (
                   <ListingContext.Provider value={newListingState}>
                     <Card>
-                      <Box className={classes.sectionHeader}>
-                        <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
+                      <Box sx={styles.sectionHeader}>
+                        <Typography sx={styles.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
                         <div>
                           <FormControlLabel
                             control={(
@@ -397,8 +395,8 @@ function ChplListingEditUpload({
                 )}
           </div>
           <Card>
-            <Box className={classes.sectionHeader}>
-              <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+            <Box sx={styles.sectionHeader}>
+              <Typography sx={styles.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
             </Box>
             <CardContent>
               <ChplSed
@@ -411,8 +409,8 @@ function ChplListingEditUpload({
                 && (
                   <ListingContext.Provider value={newListingState}>
                     <Card>
-                      <Box className={classes.sectionHeader}>
-                        <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+                      <Box sx={styles.sectionHeader}>
+                        <Typography sx={styles.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
                       </Box>
                       <CardContent>
                         <ChplSed
@@ -424,8 +422,8 @@ function ChplListingEditUpload({
                 )}
           </div>
           <Card>
-            <Box className={classes.sectionHeader}>
-              <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
+            <Box sx={styles.sectionHeader}>
+              <Typography sx={styles.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
             </Box>
             <CardContent>
               <ChplG1G2
@@ -438,8 +436,8 @@ function ChplListingEditUpload({
                 && (
                   <ListingContext.Provider value={newListingState}>
                     <Card>
-                      <Box className={classes.sectionHeader}>
-                        <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
+                      <Box sx={styles.sectionHeader}>
+                        <Typography sx={styles.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
                       </Box>
                       <CardContent>
                         <ChplG1G2
@@ -451,8 +449,8 @@ function ChplListingEditUpload({
                 )}
           </div>
           <Card>
-            <Box className={classes.sectionHeader}>
-              <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>
+            <Box sx={styles.sectionHeader}>
+              <Typography sx={styles.sectionHeaderText} variant="h2">Additional Information</Typography>
             </Box>
             <CardContent>
               <ChplAdditionalInformation
@@ -466,8 +464,8 @@ function ChplListingEditUpload({
                 && (
                   <ListingContext.Provider value={newListingState}>
                     <Card>
-                      <Box className={classes.sectionHeader}>
-                        <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>
+                      <Box sx={styles.sectionHeader}>
+                        <Typography sx={styles.sectionHeaderText} variant="h2">Additional Information</Typography>
                       </Box>
                       <CardContent>
                         <ChplAdditionalInformation
@@ -479,29 +477,29 @@ function ChplListingEditUpload({
                   </ListingContext.Provider>
                 )}
           </div>
-        </div>
-        <Box className={classes.differenceContainer}>
-          <Box className={classes.headerContainer}>
+        </Box>
+        <Box sx={styles.differenceContainer}>
+          <Box sx={styles.headerContainer}>
             <Typography gutterBottom component="h3" style={{ fontWeight: '600' }} variant="h4">
               Differences
             </Typography>
           </Box>
           { diff.length === 0 && !newListing
               && (
-                <Box className={classes.placeholderContainer}>
+                <Box sx={styles.placeholderContainer}>
                   <Typography>Waiting for upload to show results...</Typography>
                 </Box>
               )}
           { diff.length === 0 && newListing
               && (
-                <Box className={classes.placeholderContainer}>
+                <Box sx={styles.placeholderContainer}>
                   <Typography>No differences found</Typography>
                 </Box>
               )}
           { diff.length > 0
               && (
                 <Fade style={{ transitionDelay: newListing ? '1.5s' : '0ms' }} in={!!diff.length > 0}>
-                  <Box className={classes.differenceCallout}>
+                  <Box sx={styles.differenceCallout}>
                     <List className="list-unstyled">
                       {diff.map((change) => (
                         <li key={change} dangerouslySetInnerHTML={{ __html: change }} />
@@ -511,7 +509,7 @@ function ChplListingEditUpload({
                 </Fade>
               )}
         </Box>
-      </div>
+      </Box>
       <ChplActionBar
         dispatch={handleDispatch}
         errors={errors}

@@ -63,7 +63,7 @@ function ChplG1g2(props) {
             .map((measure) => (
               <TableRow key={measure.id ?? measure.measure.id}>
                 <TableCell className={measure.measure.removed ? classes.removedText : ''}>
-                  <Box display="flex" alignItems="center" gap={4}>
+                  <Box display="flex" alignItems="center" gap="4px">
                     { measure.measure.removed
                     && (
                       <>

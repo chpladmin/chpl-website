@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Card, CardContent, Container, IconButton, Typography, Fade,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import BlockIcon from '@mui/icons-material/Block';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -22,7 +21,7 @@ import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   announcement: {
     marginBottom: '8px',
     color: palette.white,
@@ -171,10 +170,9 @@ const useStyles = makeStyles({
       padding: '0',
     },
   },
-});
+};
 
 function ChplLandingPage() {
-  const classes = useStyles();
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
@@ -195,7 +193,7 @@ function ChplLandingPage() {
   };
 
   return <>
-    <Box width="100%" className={classes.heroSection}>
+    <Box width="100%" sx={styles.heroSection}>
       <Container maxWidth="md">
         <Typography align="center" variant="h1" gutterBottom>
           Welcome to the Certified Health IT Product List
@@ -205,8 +203,8 @@ function ChplLandingPage() {
         </Typography>
       </Container>
     </Box>
-    <Box className={classes.landingPageBackground} pb={16}>
-      <Box className={classes.landingPageImageryBackground}>
+    <Box sx={styles.landingPageBackground} pb={16}>
+      <Box sx={styles.landingPageImageryBackground}>
         <Container maxWidth="md">
           <Box position="relative" top="-32px">
             <ChplFilterSearchBar
@@ -215,11 +213,11 @@ function ChplLandingPage() {
           </Box>
           {announcements.length > 0 && (
             <>
-              <Typography className={classes.announcement} variant="h2" id="announcements-heading">
+              <Typography sx={styles.announcement} variant="h2" id="announcements-heading">
                 Announcement
                 {announcements.length > 1 ? 's' : ''}
               </Typography>
-              <Box className={classes.infoBox} mb={4}>
+              <Box sx={styles.infoBox} mb={4}>
                 {announcements.length === 1 ? (
                   // Single announcement - no carousel
                   <Box>
@@ -234,10 +232,10 @@ function ChplLandingPage() {
                   </Box>
                 ) : (
                   // Multiple announcements - show carousel
-                  <Box className={classes.carouselControls} role="region" aria-label="Announcement carousel">
+                  <Box sx={styles.carouselControls} role="region" aria-label="Announcement carousel">
                     <IconButton
                       onClick={handlePrevious}
-                      className={classes.carouselButton}
+                      sx={styles.carouselButton}
                       size="small"
                       color="primary"
                       aria-label="Previous announcement"
@@ -267,7 +265,7 @@ function ChplLandingPage() {
                     </Fade>
                     <IconButton
                       onClick={handleNext}
-                      className={classes.carouselButton}
+                      sx={styles.carouselButton}
                       size="small"
                       color="primary"
                       aria-label="Next announcement"
@@ -280,18 +278,18 @@ function ChplLandingPage() {
             </>
           )}
           <Box pt={6} pb={4}>
-            <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
+            <Typography sx={styles.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
               Use our shortcuts to help find a particular category of listings
             </Typography>
           </Box>
-          <Box display="flex" flexDirection="column" gap={16}>
-            <Box className={classes.shortcutCardContainer}>
-              <Box className={classes.shortcutCard}>
-                <Card className={classes.shortcutCards}>
+          <Box display="flex" flexDirection="column" gap="16px">
+            <Box sx={styles.shortcutCardContainer}>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
                   <CardContent>
-                    <Box display="flex" flexDirection="row" gap={8}>
+                    <Box display="flex" flexDirection="row" gap="8px">
                       <CodeIcon style={{ color: theme.palette.primary.dark }} />
-                      <Box className={classes.shortcutCardText}>
+                      <Box sx={styles.shortcutCardText}>
                         <Typography>
                           <ChplLink
                             href="#/api-documentation"
@@ -309,12 +307,12 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </Box>
-              <Box className={classes.shortcutCard}>
-                <Card className={classes.shortcutCards}>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
                   <CardContent>
-                    <Box display="flex" flexDirection="row" gap={8}>
+                    <Box display="flex" flexDirection="row" gap="8px">
                       <AssignmentTurnedInOutlinedIcon style={{ color: theme.palette.primary.dark }} />
-                      <Box className={classes.shortcutCardText}>
+                      <Box sx={styles.shortcutCardText}>
                         <Typography>
                           <ChplLink
                             href="#/real-world-testing"
@@ -332,12 +330,12 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </Box>
-              <Box className={classes.shortcutCard}>
-                <Card className={classes.shortcutCards}>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
                   <CardContent>
-                    <Box display="flex" flexDirection="row" gap={8}>
+                    <Box display="flex" flexDirection="row" gap="8px">
                       <ImageIcon style={{ color: theme.palette.primary.dark }} />
-                      <Box className={classes.shortcutCardText}>
+                      <Box sx={styles.shortcutCardText}>
                         <Typography>
                           <ChplLink
                             href="#/charts"
@@ -355,12 +353,12 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </Box>
-              <Box className={classes.shortcutCard}>
-                <Card className={classes.shortcutCards}>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
                   <CardContent>
-                    <Box display="flex" flexDirection="row" gap={8}>
+                    <Box display="flex" flexDirection="row" gap="8px">
                       <TrendingUpIcon style={{ color: theme.palette.primary.dark }} />
-                      <Box className={classes.shortcutCardText}>
+                      <Box sx={styles.shortcutCardText}>
                         <Typography>
                           <ChplLink
                             href="#/svap"
@@ -380,15 +378,15 @@ function ChplLandingPage() {
               </Box>
             </Box>
             <Box pt={4} pb={4}>
-              <Typography className={classes.subHeaders} align="left" variant="h2">
+              <Typography sx={styles.subHeaders} align="left" variant="h2">
                 Need Help? Learn more about CHPL through our documentation
               </Typography>
             </Box>
-            <Box className={classes.helpCardsContainer}>
-              <Box className={classes.helpCard}>
-                <Card className={classes.helpCardContent}>
+            <Box sx={styles.helpCardsContainer}>
+              <Box sx={styles.helpCard}>
+                <Card sx={styles.helpCardContent}>
                   <CardContent>
-                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap={8}>
+                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap="8px">
                       <DescriptionIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
                       <Box>
                         <Typography align="center">
@@ -405,10 +403,10 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </Box>
-              <Box className={classes.helpCard}>
-                <Card className={classes.helpCardContent}>
+              <Box sx={styles.helpCard}>
+                <Card sx={styles.helpCardContent}>
                   <CardContent>
-                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap={8}>
+                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap="8px">
                       <DeveloperModeIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
                       <Box>
                         <Typography align="center">
@@ -425,12 +423,12 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </Box>
-              <Box className={classes.helpCard}>
-                <Card className={classes.helpCardContent}>
+              <Box sx={styles.helpCard}>
+                <Card sx={styles.helpCardContent}>
                   <CardContent>
-                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap={8}>
+                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap="8px">
                       <MenuBookIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
-                      <Box display="flex" gap={4}>
+                      <Box display="flex" gap="4px">
                         <Typography align="center">
                           <ChplLink
                             href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
@@ -446,17 +444,17 @@ function ChplLandingPage() {
               </Box>
             </Box>
             <Box pt={4} pb={4}>
-              <Typography className={classes.subHeaders} align="left" variant="h2">
+              <Typography sx={styles.subHeaders} align="left" variant="h2">
                 Check our compliance pages
               </Typography>
             </Box>
-            <Box className={classes.complianceCardsContainer}>
-              <Box className={classes.complianceCard}>
-                <Card className={classes.complianceCardContent}>
+            <Box sx={styles.complianceCardsContainer}>
+              <Box sx={styles.complianceCard}>
+                <Card sx={styles.complianceCardContent}>
                   <CardContent>
-                    <Box display="flex" flexDirection="row" gap={8}>
+                    <Box display="flex" flexDirection="row" gap="8px">
                       <BlockIcon style={{ color: theme.palette.primary.dark }} />
-                      <Box className={classes.shortcutCardText}>
+                      <Box sx={styles.shortcutCardText}>
                         <Typography>
                           <ChplLink
                             href="#/banned-developers"
@@ -474,12 +472,12 @@ function ChplLandingPage() {
                   </CardContent>
                 </Card>
               </Box>
-              <Box className={classes.complianceCard}>
-                <Card className={classes.complianceCardContent}>
+              <Box sx={styles.complianceCard}>
+                <Card sx={styles.complianceCardContent}>
                   <CardContent>
-                    <Box display="flex" flexDirection="row" gap={8}>
+                    <Box display="flex" flexDirection="row" gap="8px">
                       <ErrorOutlineOutlinedIcon style={{ color: theme.palette.primary.dark }} />
-                      <Box className={classes.shortcutCardText}>
+                      <Box sx={styles.shortcutCardText}>
                         <Typography>
                           <ChplLink
                             href="#/corrective-action"

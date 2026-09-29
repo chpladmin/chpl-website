@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Box, Paper } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { node } from 'prop-types';
 
 import { CmsContext, CompareContext } from 'shared/contexts';
@@ -11,7 +10,7 @@ import ChplNavigationTop from 'navigation/navigation-top';
 import { palette } from 'themes';
 import theme from 'themes/theme';
 
-const useStyles = makeStyles({
+const styles = {
   '@keyframes widgetRailIn': {
     from: {
       opacity: 0,
@@ -35,7 +34,7 @@ const useStyles = makeStyles({
     minWidth: 0,
     width: '100%',
     overflow: 'hidden',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
   },
@@ -56,10 +55,10 @@ const useStyles = makeStyles({
       duration: theme.transitions.duration.shorter,
       easing: theme.transitions.easing.easeOut,
     }),
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       flexBasis: '240px',
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
@@ -95,12 +94,11 @@ const useStyles = makeStyles({
       fontSize: '0.9375em',
     },
   },
-});
+};
 
 function ChplWidgetWorkspacePanel() {
   const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
   const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
-  const classes = useStyles();
 
   if (!cmsIsOpen && !compareIsOpen) {
     return null;
@@ -112,8 +110,8 @@ function ChplWidgetWorkspacePanel() {
   };
 
   return (
-    <Box className={classes.widgetRail}>
-      <Paper className={classes.widgetRailPaper} elevation={0} square>
+    <Box sx={styles.widgetRail}>
+      <Paper sx={styles.widgetRailPaper} elevation={0} square>
         { cmsIsOpen && (<ChplCmsDisplay onClose={closeWidgetPanel} />)}
         { compareIsOpen && (<ChplCompareDisplay onClose={closeWidgetPanel} />)}
       </Paper>
@@ -122,19 +120,17 @@ function ChplWidgetWorkspacePanel() {
 }
 
 function ChplAppLayout({ children }) {
-  const classes = useStyles();
-
   return (
-    <div className={classes.appContainer}>
+    <Box sx={styles.appContainer}>
       <ChplNavigationTop />
-      <div className={classes.workspace}>
-        <div className={classes.content}>
+      <Box sx={styles.workspace}>
+        <Box sx={styles.content}>
           {children}
-        </div>
+        </Box>
         <ChplWidgetWorkspacePanel />
-      </div>
+      </Box>
       <ChplNavigationBottom />
-    </div>
+    </Box>
   );
 }
 

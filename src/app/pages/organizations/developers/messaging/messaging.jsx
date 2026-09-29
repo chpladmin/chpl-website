@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -73,14 +73,14 @@ const useStyles = makeStyles({
     top: '110px',
     height: 'min-content',
     width: '100%',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       position: 'relative',
       top: 'auto',
     },
   },
   rightColumn: {
     width: '30%,',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },

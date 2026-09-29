@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   mobileContainer: {
     display: 'none',
     alignItems: 'center',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
     },
   },

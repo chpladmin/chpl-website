@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, Container, MenuItem, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CheckIcon from '@mui/icons-material/Check';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
@@ -18,7 +17,7 @@ const validationSchema = yup.object({
     .required('"I\'m interested because I\'m a..." is required'),
 });
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   header: {
     backgroundColor: `${palette.white} !important`,
@@ -57,7 +56,7 @@ const useStyles = makeStyles({
       transform: 'translateY(0)',
     },
   },
-});
+};
 
 function ChplConfirmSubscription(props) {
   const { hash } = props;
@@ -66,7 +65,6 @@ function ChplConfirmSubscription(props) {
   const [roles, setRoles] = useState([]);
   const { data, isLoading, isSuccess } = useFetchRoles();
   const putSubscriber = usePutSubscriber();
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -106,9 +104,9 @@ function ChplConfirmSubscription(props) {
   if (!roles || !hash) { return null; }
 
   return (
-    <Box className={classes.page}>
-      <Box className={classes.header}>
-        <Container maxWidth="sm" className={classes.headerContent}>
+    <Box sx={styles.page}>
+      <Box sx={styles.header}>
+        <Container maxWidth="sm" sx={styles.headerContent}>
           <Typography variant="h1">
             Confirm Your Subscription
           </Typography>
@@ -116,9 +114,9 @@ function ChplConfirmSubscription(props) {
       </Box>
       <Container maxWidth="sm">
         <Box pt={8} pb={8} display="flex" flexDirection="column" gap="16px">
-          <Card className={classes.animatedItem}>
+          <Card sx={styles.animatedItem}>
             <CardContent>
-              <Box className={classes.confirmSubscriptionCard}>
+              <Box sx={styles.confirmSubscriptionCard}>
                 <Typography gutterBottom>To complete the subscription process and tailor your experience, we kindly ask you to select your area of interest from the dropdown menu provided below and confirm your subscription</Typography>
                 <ChplTextField
                   select

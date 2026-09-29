@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -28,13 +27,13 @@ const sortOptions = [
   { property: 'replaced', text: 'Replaced' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-});
+};
 
 function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   const [svaps, setSvaps] = useState([]);
@@ -42,7 +41,6 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const filterContext = useFilterContext();
-  const classes = useStyles();
 
   useEffect(() => {
     setSvaps(initialSvaps
@@ -73,14 +71,14 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       placeholder="Search by Citation or Version..."
     />
     <ChplFilterLayout>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, IconButton, InputBase, InputAdornment,
+  Box, Button, IconButton, InputAdornment, InputBase,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -13,7 +12,7 @@ import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   searchButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
@@ -38,11 +37,10 @@ const useStyles = makeStyles({
     padding: '8px',
     borderRadius: '8px',
   },
-});
+};
 
 function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or CHPL ID...' }) {
   const [term, setTerm] = useState('');
-  const classes = useStyles();
 
   const {
     analytics,
@@ -89,10 +87,10 @@ function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or 
   };
 
   return <>
-    <div className={classes.searchBarContainer}>
-      <div className={classes.searchBar}>
+    <Box sx={styles.searchBarContainer}>
+      <Box sx={styles.searchBar}>
         <InputBase
-          className={classes.searchInput}
+          sx={styles.searchInput}
           placeholder={placeholder}
           value={term}
           onChange={handleTerm}
@@ -110,18 +108,18 @@ function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or 
           )}
         />
         <Button
-          className={classes.searchButton}
+          sx={styles.searchButton}
           size="medium"
           variant="contained"
           color="primary"
           id="filter-search-term-search"
           onClick={handleSearch}
-          endIcon={<SearchIcon className={classes.searchIcon} color="inherit" fontSize="large" />}
+          endIcon={<SearchIcon sx={styles.searchIcon} color="inherit" fontSize="large" />}
         >
           Search
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   </>;
 }
 

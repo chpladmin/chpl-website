@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress, Container, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {
+  Box, CircularProgress, Container, Typography,
+} from '@mui/material';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -23,7 +24,7 @@ const replaceDeveloperCode = (chplProductNumber, code) => {
   return parts.join('.');
 };
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
@@ -60,7 +61,6 @@ function ChplConfirm({ id }) {
   const [staged, setStaged] = useState(undefined);
   const [uploaded, setUploaded] = useState(undefined);
   const [warnings, setWarnings] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (!uploaded) { return; }
@@ -295,9 +295,9 @@ function ChplConfirm({ id }) {
   };
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="lg">
+    <Container sx={styles.fixFooterSpacing} maxWidth="lg">
       <PendingListingContext.Provider value={pendingListingState}>
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           <Container maxWidth="md">
             <Typography variant="h6">
               {`Inspecting Listing: ${pending.chplProductNumber}`}
@@ -347,7 +347,7 @@ function ChplConfirm({ id }) {
             warnings={warnings}
             dispatch={handleActionDispatch}
           />
-        </div>
+        </Box>
       </PendingListingContext.Provider>
     </Container>
   );

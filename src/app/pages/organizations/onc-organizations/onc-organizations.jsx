@@ -186,7 +186,7 @@ function ChplOncOrganizations() {
                     endIcon={<ArrowForwardIcon />}
                     className={classes.menuItems}
                   >
-                    <Box display="flex" flexDirection="row" gap={4}>
+                    <Box display="flex" flexDirection="row" gap="4px">
                       { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
                       { org.name }
                     </Box>
@@ -195,7 +195,7 @@ function ChplOncOrganizations() {
               </Card>
             </div>
           )}
-        <Box display="flex" flexDirection="column" gap={16}>
+        <Box display="flex" flexDirection="column" gap="16px">
           { activeId
             && (
               <>

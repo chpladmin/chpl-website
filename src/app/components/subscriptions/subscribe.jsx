@@ -77,8 +77,8 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   return (
     <Card>
       <CardContent>
-        <Box display="flex" flexDirection="column" gap={8}>
-          <Box display="flex" flexDirection="row" gap={8}>
+        <Box display="flex" flexDirection="column" gap="8px">
+          <Box display="flex" flexDirection="row" gap="8px">
             <SubscriptionsTwoToneIcon fontSize="large" color="primary" />
             <Typography variant="h5">
               <strong>Want Updates?</strong>

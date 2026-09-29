@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';
 
-const useStyles = makeStyles({
+const styles = {
   chplEllipsis: {
     border: 'none',
     backgroundColor: 'transparent',
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
       color: '#00437c',
     },
   },
-});
+};
 
 function ChplEllipsis({
   text,
@@ -24,7 +23,6 @@ function ChplEllipsis({
   wordBoundaries = false,
 }) {
   const [isShortened, setShortened] = useState(true);
-  const classes = useStyles();
 
   if (!text) {
     return null;
@@ -51,7 +49,7 @@ function ChplEllipsis({
          <ChplTooltip title={text}>
            <IconButton
              size="small"
-             className={classes.chplEllipsis}
+             sx={styles.chplEllipsis}
              onClick={() => setShortened(false)}
            >
              <MoreHorizIcon />
@@ -63,7 +61,7 @@ function ChplEllipsis({
        && (
          <IconButton
            size="small"
-           className={classes.chplEllipsis}
+           sx={styles.chplEllipsis}
            onClick={() => setShortened(true)}
          >
            <ArrowBackIcon />

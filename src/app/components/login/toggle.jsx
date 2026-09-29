@@ -77,7 +77,7 @@ function ChplToggle({ dispatch = () => {} }) {
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
 
   const getTitle = () => {

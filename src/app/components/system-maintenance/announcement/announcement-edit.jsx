@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box, FormControlLabel, FormHelperText, Switch,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -13,12 +12,12 @@ import { jsJoda } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   helperTextSpacing: {
     marginLeft: '14px',
   },
-});
+};
 
 const validationSchema = yup.object({
   title: yup.string()
@@ -35,7 +34,6 @@ const validationSchema = yup.object({
 
 function ChplAnnouncementEdit(props) {
   const { announcement, dispatch } = props;
-  const classes = useStyles();
 
   let formik;
 
@@ -82,7 +80,7 @@ function ChplAnnouncementEdit(props) {
         id="title"
         name="title"
         label="Title"
-        className={classes.fullWidth}
+        sx={styles.fullWidth}
         required
         value={formik.values.title}
         onChange={formik.handleChange}
@@ -94,7 +92,7 @@ function ChplAnnouncementEdit(props) {
         id="text"
         multiline
         minRows={6}
-        className={classes.fullWidth}
+        sx={styles.fullWidth}
         name="text"
         inputProps={{
           style: { height: 132, padding: 0 },
@@ -107,7 +105,7 @@ function ChplAnnouncementEdit(props) {
         helperText={formik.touched.text && formik.errors.text}
       />
       <Box display="flex" flexDirection="row" gap="16px">
-        <Box className={classes.fullWidth}>
+        <Box sx={styles.fullWidth}>
           <ChplTextField
             id="start-date-time"
             name="startDateTime"
@@ -120,9 +118,9 @@ function ChplAnnouncementEdit(props) {
             error={formik.touched.startDateTime && !!formik.errors.startDateTime}
             helperText={formik.touched.startDateTime && formik.errors.startDateTime}
           />
-          <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+          <FormHelperText sx={styles.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
         </Box>
-        <Box className={classes.fullWidth}>
+        <Box sx={styles.fullWidth}>
           <ChplTextField
             id="end-date-time"
             name="endDateTime"
@@ -135,7 +133,7 @@ function ChplAnnouncementEdit(props) {
             error={formik.touched.endDateTime && !!formik.errors.endDateTime}
             helperText={formik.touched.endDateTime && formik.errors.endDateTime}
           />
-          <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+          <FormHelperText sx={styles.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
         </Box>
       </Box>
       <FormControlLabel

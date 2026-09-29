@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   AppBar, Box, Checkbox, ListItem, ListItemIcon, ListItemText, Tab, Tabs,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   func,
   node,
@@ -11,12 +10,6 @@ import {
 } from 'prop-types';
 
 import { filter as filterPropType } from 'shared/prop-types';
-
-const useStyles = makeStyles(() => ({
-  appBar: {
-    backgroundColor: '#ffffff',
-  },
-}));
 
 function TabPanel({
   children,
@@ -59,7 +52,6 @@ function ChplTabbedValueEntry({
   retiredLabel = 'Retired',
 }) {
   const [activeTab, setActiveTab] = useState(0);
-  const classes = useStyles();
 
   const handleChange = (event, newTab) => {
     setActiveTab(newTab);
@@ -92,7 +84,7 @@ function ChplTabbedValueEntry({
 
   return (
     <>
-      <AppBar className={classes.appBar} elevation={0} position="sticky">
+      <AppBar sx={{ backgroundColor: '#ffffff' }} elevation={0} position="sticky">
         <Tabs
           value={activeTab}
           onChange={handleChange}

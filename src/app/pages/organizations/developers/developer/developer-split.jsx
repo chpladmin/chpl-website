@@ -12,7 +12,6 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
@@ -24,7 +23,7 @@ import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   columnContainer: {
     display: 'flex',
@@ -64,7 +63,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridGap: '32px',
   },
-});
+};
 
 function ChplDeveloperSplit({ dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -74,7 +73,6 @@ function ChplDeveloperSplit({ dispatch }) {
   const [products, setProducts] = useState([]);
   const [movingProducts, setMovingProducts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setProducts(developer.products);
@@ -159,8 +157,8 @@ function ChplDeveloperSplit({ dispatch }) {
   return (
     <>
       <Container disableGutters maxWidth="xl">
-        <Box className={classes.pageContainer}>
-          <Box className={classes.columnContainer}>
+        <Box sx={styles.pageContainer}>
+          <Box sx={styles.columnContainer}>
             <ChplDeveloper
               developer={developer}
               isSplitting
@@ -176,7 +174,7 @@ function ChplDeveloperSplit({ dispatch }) {
               isProcessing={isProcessing}
             />
           </Box>
-          <Divider className={classes.fullWidthGridRow} />
+          <Divider sx={styles.fullWidthGridRow} />
           <Card>
             <CardHeader title="Products staying with original developer" />
             <CardContent>
@@ -185,10 +183,10 @@ function ChplDeveloperSplit({ dispatch }) {
                   No products selected. At least one product must remain with the Developer.
                 </Typography>
               ) : (
-                <List className={classes.productList}>
+                <List sx={styles.productList}>
                   {products.map((product) => (
-                    <ListItem divider className={classes.listItem} dense key={product.id}>
-                      <Box className={classes.productName}>
+                    <ListItem divider sx={styles.listItem} dense key={product.id}>
+                      <Box sx={styles.productName}>
                         {product.name}
                       </Box>
                       <ChplTooltip
@@ -219,10 +217,10 @@ function ChplDeveloperSplit({ dispatch }) {
                   No products selected. At least one product must be selected to move.
                 </Typography>
               ) : (
-                <List className={classes.productList}>
+                <List sx={styles.productList}>
                   {movingProducts.map((product) => (
-                    <ListItem divider className={classes.listItem} dense key={product.id}>
-                      <Box className={classes.productName}>
+                    <ListItem divider sx={styles.listItem} dense key={product.id}>
+                      <Box sx={styles.productName}>
                         {product.name}
                       </Box>
                       <ChplTooltip

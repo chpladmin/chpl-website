@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -18,20 +17,19 @@ const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-});
+};
 
 function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: initialAccessibilityStandards }) {
   const { hasAnyRole } = useContext(UserContext);
   const [accessibilityStandards, setAccessibilityStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
-  const classes = useStyles();
 
   useEffect(() => {
     setAccessibilityStandards(initialAccessibilityStandards
@@ -49,8 +47,8 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
   };
 
   return <>
-    <Box className={classes.headerContainer}>
-      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+    <Box sx={styles.headerContainer}>
+      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
         <Typography variant="subtitle2">
           Accessibility Standards
         </Typography>
@@ -58,7 +56,7 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
           {`(${accessibilityStandards.length} Result${accessibilityStandards.length !== 1 ? 's' : ''})`}
         </Typography>
       </Box>
-      <Box display="flex" alignItems="center" gap={4}>
+      <Box display="flex" alignItems="center" gap="4px">
         <ChplSortControls
           sortOptions={sortOptions}
           orderBy={orderBy}

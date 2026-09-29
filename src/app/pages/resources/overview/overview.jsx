@@ -11,7 +11,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
@@ -32,7 +31,7 @@ import {
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   announcement: {
     marginBottom: '8px',
   },
@@ -86,7 +85,7 @@ const useStyles = makeStyles({
   tableSpacing: {
     marginTop: '16px',
   },
-});
+};
 
 const getOrgs = (query, key) => {
   if (!query.isSuccess) { return []; }
@@ -104,7 +103,6 @@ function ChplResourcesOverview() {
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
   const [announcements, setAnnouncements] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -117,8 +115,8 @@ function ChplResourcesOverview() {
     <>
       <ChplPageHeader text="CHPL Overview" />
       <ChplPageBody>
-        <div className={classes.pageBody}>
-          <Card className={classes.pageNavigation}>
+        <Box sx={styles.pageBody}>
+          <Card sx={styles.pageNavigation}>
             {announcements.length > 0
               && (
                 <InternalScrollButton
@@ -129,7 +127,7 @@ function ChplResourcesOverview() {
                   }}
                 >
                   Announcements
-                  <AnnouncementOutlinedIcon className={classes.iconSpacing} />
+                  <AnnouncementOutlinedIcon sx={styles.iconSpacing} />
                 </InternalScrollButton>
               )}
             <InternalScrollButton
@@ -140,7 +138,7 @@ function ChplResourcesOverview() {
               }}
             >
               What is the CHPL
-              <HelpOutlineOutlinedIcon className={classes.iconSpacing} />
+              <HelpOutlineOutlinedIcon sx={styles.iconSpacing} />
             </InternalScrollButton>
             <InternalScrollButton
               id="recommendedWebBrowsers"
@@ -150,7 +148,7 @@ function ChplResourcesOverview() {
               }}
             >
               Recommended Web Browsers
-              <LanguageOutlinedIcon className={classes.iconSpacing} />
+              <LanguageOutlinedIcon sx={styles.iconSpacing} />
             </InternalScrollButton>
             <InternalScrollButton
               id="usingTheChplWebsite"
@@ -160,7 +158,7 @@ function ChplResourcesOverview() {
               }}
             >
               Using the Chpl Website
-              <WebOutlinedIcon className={classes.iconSpacing} />
+              <WebOutlinedIcon sx={styles.iconSpacing} />
             </InternalScrollButton>
             <InternalScrollButton
               id="oncCertificationProgram"
@@ -170,7 +168,7 @@ function ChplResourcesOverview() {
               }}
             >
               ONC Certification Program
-              <BookOutlinedIcon className={classes.iconSpacing} />
+              <BookOutlinedIcon sx={styles.iconSpacing} />
             </InternalScrollButton>
             <InternalScrollButton
               id="forEhrDevelopers"
@@ -180,7 +178,7 @@ function ChplResourcesOverview() {
               }}
             >
               For EHR Developers
-              <RecordVoiceOverOutlinedIcon className={classes.iconSpacing} />
+              <RecordVoiceOverOutlinedIcon sx={styles.iconSpacing} />
             </InternalScrollButton>
             <InternalScrollButton
               id="oncacbAndAtlInformation"
@@ -190,17 +188,17 @@ function ChplResourcesOverview() {
               }}
             >
               ONC-ACB and ONC-ATL Information
-              <SupervisedUserCircleOutlinedIcon className={classes.iconSpacing} />
+              <SupervisedUserCircleOutlinedIcon sx={styles.iconSpacing} />
             </InternalScrollButton>
           </Card>
-          <div className={classes.content}>
+          <Box sx={styles.content}>
             {announcements.length > 0
               && (
-                <Box className={classes.infoBox}>
+                <Box sx={styles.infoBox}>
                   <span className="anchor-element">
                     <span id="announcements" className="page-anchor" />
                   </span>
-                  <Typography className={classes.announcement} variant="h2">
+                  <Typography sx={styles.announcement} variant="h2">
                     Announcement
                     {announcements.length > 1 ? 's' : ''}
                   </Typography>
@@ -294,19 +292,19 @@ function ChplResourcesOverview() {
                   Using the CHPL Website
                 </Typography>
                 <Divider />
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   How do I use the CHPL to view certified health information technology?
                 </Typography>
                 <Typography gutterBottom>
                   To search for certified health information technology, type a developer name, product name, CHPL Product ID, or ONC-ACB Certification ID into the main search area. Alternatively, you may choose to browse all certified products by clicking the &apos;Browse all&apos; option. Filters are also available to search for product listings matching specific criteria (e.g., certification criteria, clinical quality measurements, etc.). The CHPL will display your search results based on the information entered.
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   How do I create a CMS EHR Certification ID?
                 </Typography>
                 <Typography gutterBottom>
                   To create a CMS EHR Certification ID, search for the products that you would like to use your CMS Certification ID. Once you have located the product listings you would like to use, click the yellow &quot;+CertID&quot; button to the right of the product listing on the search results page to add to the &apos;CMS ID Creator&apos; widget at the top of the page. Once you have entered all of the desired product listings, you will be able to generate a CMS EHR Certification ID by clicking the &apos;Get EHR Certification ID&apos; button, if the combination of product listings selected meets the program requirements.
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   What is the difference between an ONC-ACB Certification ID and CHPL Product Number (CHPL ID)?
                 </Typography>
                 <Typography gutterBottom>
@@ -329,13 +327,13 @@ function ChplResourcesOverview() {
                 <Typography gutterBottom>
                   ONC-ACB Certification IDs are generated by each ONC-ACB and may not have a consistent format. In addition, a single ONC-ACB Certification ID may reference more than one certified product.
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   How do I compare products?
                 </Typography>
                 <Typography gutterBottom>
                   To compare product listings, please navigate to the product listings you would like to compare and use the green &apos;+Compare&apos; button to the right of the product listing information on the search results page or in the upper right-hand corner of the product listing detail page to add the product listings to the &apos;Compare&apos; module. Once you have identified all the product listings you would like to compare, click the blue &apos;Compare Products&apos; button in the module (pops out once at least one product listing is selected) to view the products side-by-side.
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   How would I report a problem or concern with my certified health information technology?
                 </Typography>
                 <Typography gutterBottom>
@@ -367,7 +365,7 @@ function ChplResourcesOverview() {
                   {' '}
                   pages.
                 </Typography>
-                <Card className={classes.tableSpacing}>
+                <Card sx={styles.tableSpacing}>
                   <Table>
                     <TableHead>
                       <TableRow>
@@ -448,7 +446,7 @@ function ChplResourcesOverview() {
                   ONC Certification Program
                 </Typography>
                 <Divider />
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   How does the certification process work?
                 </Typography>
                 <Typography gutterBottom>
@@ -470,7 +468,7 @@ function ChplResourcesOverview() {
                 <Typography gutterBottom>
                   Certification criteria establish the required capabilities, standards, and implementation specifications that health information technology needs to meet in order to become certified under the ONC Health IT Certification Program. Certified health IT products can be used for participation in CMS quality reporting programs and State Promoting Interoperability Programs.
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   Which Certification Edition do I need to use to attest for Promoting Interoperability Programs?
                 </Typography>
                 <Typography gutterBottom>
@@ -488,7 +486,7 @@ function ChplResourcesOverview() {
                   />
                   .
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   What are clinical quality measures (CQMs)?
                 </Typography>
                 <Typography gutterBottom>
@@ -509,7 +507,7 @@ function ChplResourcesOverview() {
                   />
                   .
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   What are electronic clinical quality measures (eCQMs)?
                 </Typography>
                 <Typography gutterBottom>
@@ -538,7 +536,7 @@ function ChplResourcesOverview() {
                   For EHR Developers
                 </Typography>
                 <Divider />
-                <Typography gutterBottom variant="h5" component="h3" className={classes.subheader}>
+                <Typography gutterBottom variant="h5" component="h3" sx={styles.subheader}>
                   How can a product be added to the CHPL?
                 </Typography>
                 <Typography gutterBottom>
@@ -582,7 +580,7 @@ function ChplResourcesOverview() {
                 <Typography gutterBottom>
                   The following table identifies the ONC-ACBs and ONC-ATLs used to certify and test health information technology presented on the CHPL. For more information, please visit their respective websites.
                 </Typography>
-                <Card className={classes.tableSpacing}>
+                <Card sx={styles.tableSpacing}>
                   <Table id="acbAtlTable">
                     <TableHead>
                       <TableRow>
@@ -636,8 +634,8 @@ function ChplResourcesOverview() {
                 </Card>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </ChplPageBody>
     </>
   );

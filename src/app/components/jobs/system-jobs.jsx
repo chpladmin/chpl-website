@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button, Card, CardContent, CardHeader, CircularProgress,
+  Box, Button, Card, CardContent, CardHeader, CircularProgress,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import { useSnackbar } from 'notistack';
 import * as jsJoda from '@js-joda/core';
@@ -20,13 +19,13 @@ import {
 } from 'api/jobs';
 import { UserContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
   },
-});
+};
 
 function ChplJobs() {
   const { hasAnyRole } = useContext(UserContext);
@@ -38,7 +37,6 @@ function ChplJobs() {
   const [job, setJob] = useState(undefined);
   const [jobTypes, setJobTypes] = useState([]);
   const [systemTriggers, setSystemTriggers] = useState([]);
-  const classes = useStyles();
   let handleDispatch;
 
   useEffect(() => {
@@ -146,7 +144,7 @@ function ChplJobs() {
         )}
       />
       <CardContent>
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           { systemQuery.isSuccess
             && (
               <ChplSystemTriggersView
@@ -161,7 +159,7 @@ function ChplJobs() {
                 dispatch={handleDispatch}
               />
             )}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

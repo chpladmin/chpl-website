@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Card, CardContent, CardHeader, CircularProgress, IconButton, MenuItem,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   func, number, object, oneOfType, string,
@@ -16,12 +15,12 @@ import { isDateBetweenInclusive } from 'services/date-util';
 import { sortNonconformityTypes } from 'services/surveillance.service';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   nonConformityCard: {
     marginBottom: '8px',
   },
-});
+};
 
 const validationSchema = yup.object({
   capApprovalDay: yup.date(),
@@ -72,7 +71,6 @@ function ChplNonConformityEdit({
 }) {
   const { data, isLoading, isError } = useFetchNonConformityTypes();
   const [nonConformityTypes, setNonConformityTypes] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -137,7 +135,7 @@ function ChplNonConformityEdit({
   if (nonConformityTypes.length === 0) { return <CircularProgress />; }
 
   return <>
-    <Card className={classes.nonConformityCard}>
+    <Card sx={styles.nonConformityCard}>
       <CardHeader
         title="Non-Conformity"
         action={(

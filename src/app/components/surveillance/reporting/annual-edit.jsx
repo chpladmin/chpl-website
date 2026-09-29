@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Box, Card, CardContent, Divider, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
@@ -13,7 +12,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -40,7 +39,7 @@ const useStyles = makeStyles({
     margin: '8px 0',
     whiteSpace: 'pre-line',
   },
-});
+};
 
 const validationSchema = yup.object({
   obstacleSummary: yup.string(),
@@ -56,7 +55,6 @@ function ChplAnnualEdit({
   const { mutate: putReport } = usePutAnnual();
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
   let formik;
 
   const handleDelete = () => {
@@ -126,9 +124,9 @@ function ChplAnnualEdit({
   });
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.stickyColumn}>
-        <Card className={classes.reportInfoCard}>
+    <Box sx={styles.container}>
+      <Box sx={styles.stickyColumn}>
+        <Card sx={styles.reportInfoCard}>
           <CardContent>
             <Typography variant="h6" component="h2">
               <strong>{`${report.acb?.name} Annual Surveillance Reporting`}</strong>
@@ -159,7 +157,7 @@ function ChplAnnualEdit({
               helperText={formik.touched.obstacleSummary && formik.errors.obstacleSummary}
             />
           </Box>
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" component="h2">
               <strong>Priority Changes From Findings Summary</strong>
             </Typography>
@@ -187,7 +185,7 @@ function ChplAnnualEdit({
         isProcessing={isProcessing}
         canDelete
       />
-    </div>
+    </Box>
   );
 }
 

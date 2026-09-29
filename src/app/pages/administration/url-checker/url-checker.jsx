@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, CircularProgress, Container, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -15,7 +14,7 @@ import { ChplLink, ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles, palette, theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   ...utilStyles,
   titlePadding: {
     paddingTop: '16px',
@@ -35,14 +34,14 @@ const useStyles = makeStyles(() => ({
   resultsCard: {
     width: '32.3%',
     overflowWrap: 'break-word',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
   resultsCardHalf: {
     width: '49.2%',
     overflowWrap: 'break-word',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
@@ -55,7 +54,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     gap: '16px',
     paddingBottom: '16px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
   },
@@ -69,7 +68,7 @@ const useStyles = makeStyles(() => ({
     marginLeft: '8px',
     marginTop: '4px',
   },
-}));
+};
 
 const validationSchema = yup.object({
   url: yup.string()
@@ -87,7 +86,6 @@ function ChplUrlChecker() {
     mutate,
   } = usePostUrlChecker();
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -121,20 +119,20 @@ function ChplUrlChecker() {
   const displayStatusIcon = (passed) => {
     if (passed) {
       return (
-        <CheckCircleIcon fontSize="large" className={classes.greenIcon} />
+        <CheckCircleIcon fontSize="large" sx={styles.greenIcon} />
       );
     }
     return (
-      <CancelIcon fontSize="large" className={classes.redIcon} />
+      <CancelIcon fontSize="large" sx={styles.redIcon} />
     );
   };
 
   return (
     <>
-      <Box className={classes.titleBackground}>
+      <Box sx={styles.titleBackground}>
         <Container maxWidth="lg">
-          <Typography className={classes.titlePadding} variant="h1">URL Checker</Typography>
-          <Typography className={classes.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
+          <Typography sx={styles.titlePadding} variant="h1">URL Checker</Typography>
+          <Typography sx={styles.titlePadding} variant="h5" component="h2" style={{ fontWeight: 600 }}>Validate a URL</Typography>
           <Box display="flex" alignItems="flex-start">
             <ChplTextField
               id="url"
@@ -162,7 +160,7 @@ function ChplUrlChecker() {
           </Box>
         </Container>
       </Box>
-      <Container className={classes.pageBackground} maxWidth="lg">
+      <Container sx={styles.pageBackground} maxWidth="lg">
         { isLoading
           && (
             <Box py={4}>
@@ -172,14 +170,14 @@ function ChplUrlChecker() {
         {urlCheckResponse
           && (
             <>
-              <Typography className={classes.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
-              <Box className={classes.resultsContainer}>
-                <Card className={classes.resultsCardHalf}>
+              <Typography sx={styles.titlePadding} component="h2" variant="h5" style={{ fontWeight: 600 }}>Results</Typography>
+              <Box sx={styles.resultsContainer}>
+                <Card sx={styles.resultsCardHalf}>
                   <CardContent>
                     <Typography variant="h6" style={{ fontWeight: 600 }}>
                       Status:
                     </Typography>
-                    <Typography variant="h6" className={classes.statusText}>
+                    <Typography variant="h6" sx={styles.statusText}>
                       {urlCheckResponse.passed ? 'Passed' : 'Failure'}
                       {displayStatusIcon(urlCheckResponse.passed)}
                     </Typography>
@@ -194,7 +192,7 @@ function ChplUrlChecker() {
                       )}
                   </CardContent>
                 </Card>
-                <Card className={classes.resultsCardHalf}>
+                <Card sx={styles.resultsCardHalf}>
                   <CardContent>
                     <Typography variant="h6" style={{ fontWeight: 600 }}>
                       URL:
@@ -208,16 +206,16 @@ function ChplUrlChecker() {
               { (hasAnyRole(['chpl-admin', 'chpl-onc']) || !urlCheckResponse.passed)
                 && (
                   <>
-                    <Typography className={classes.titlePadding} component="h3" variant="h6" style={{ fontWeight: 600 }}>Assertions</Typography>
-                    <Box className={classes.resultsContainer}>
-                      <Card className={classes.resultsCard}>
+                    <Typography sx={styles.titlePadding} component="h3" variant="h6" style={{ fontWeight: 600 }}>Assertions</Typography>
+                    <Box sx={styles.resultsContainer}>
+                      <Card sx={styles.resultsCard}>
                         <CardContent>
                           {urlCheckResponse.httpResponseAssertion?.actualValue ? (
                             <>
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 HTTP Status Code:
                               </Typography>
-                              <Box className={classes.statusText}>
+                              <Box sx={styles.statusText}>
                                 <Typography>
                                   {urlCheckResponse.httpResponseAssertion.actualValue}
                                 </Typography>
@@ -237,7 +235,7 @@ function ChplUrlChecker() {
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 No HTTP Status Code Available:
                               </Typography>
-                              <Box className={classes.statusText}>
+                              <Box sx={styles.statusText}>
                                 <Typography>
                                   The HTTP response code could not be retrieved or is unavailable.
                                 </Typography>
@@ -247,7 +245,7 @@ function ChplUrlChecker() {
                           )}
                         </CardContent>
                       </Card>
-                      <Card className={classes.resultsCard}>
+                      <Card sx={styles.resultsCard}>
                         <CardContent>
                           <Typography variant="h6" style={{ fontWeight: 600 }}>
                             Response Time (in milliseconds):
@@ -255,7 +253,7 @@ function ChplUrlChecker() {
                           {urlCheckResponse.responseTimeAssertion?.actualValue
                             ? (
                               <>
-                                <Box className={classes.statusText}>
+                                <Box sx={styles.statusText}>
                                   <Typography>
                                     {urlCheckResponse.responseTimeAssertion.actualValue}
                                   </Typography>
@@ -264,7 +262,7 @@ function ChplUrlChecker() {
                               </>
                             ) : (
                               <>
-                                <Box className={classes.statusText}>
+                                <Box sx={styles.statusText}>
                                   <Typography>
                                     The response time is empty or unavailable.
                                   </Typography>
@@ -274,14 +272,14 @@ function ChplUrlChecker() {
                             )}
                         </CardContent>
                       </Card>
-                      <Card className={classes.resultsCard}>
+                      <Card sx={styles.resultsCard}>
                         <CardContent>
                           {urlCheckResponse.bodyNotEmptyAssertion?.actualValue ? (
                             <>
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 Body Content:
                               </Typography>
-                              <Box className={classes.statusText}>
+                              <Box sx={styles.statusText}>
                                 <Typography>
                                   {urlCheckResponse.bodyNotEmptyAssertion.actualValue
                                     ? urlCheckResponse.bodyNotEmptyAssertion.actualValue
@@ -295,7 +293,7 @@ function ChplUrlChecker() {
                               <Typography variant="h6" style={{ fontWeight: 600 }}>
                                 No Content Available:
                               </Typography>
-                              <Box className={classes.statusText}>
+                              <Box sx={styles.statusText}>
                                 <Typography>
                                   The body content is empty or unavailable.
                                 </Typography>

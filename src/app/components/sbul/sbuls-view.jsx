@@ -14,7 +14,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 
 import { useFetchSbuls } from 'api/developer';
@@ -23,12 +22,12 @@ import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplSbulsView({ developer, dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -36,7 +35,6 @@ function ChplSbulsView({ developer, dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [sbuls, setSbuls] = useState([]);
   const { data, isError, isLoading } = useFetchSbuls({ developer });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isError || isLoading) { return; }
@@ -58,7 +56,7 @@ function ChplSbulsView({ developer, dispatch }) {
   return (
     <Card>
       <CardHeader title="Service Base URL List" />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <>
           <Typography variant="body1">
             Service Base URL List information is displayed here if a health IT developer has listings certified to (g)(10) and therefore must comply with

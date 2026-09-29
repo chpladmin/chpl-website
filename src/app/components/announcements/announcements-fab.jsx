@@ -55,7 +55,6 @@ function ChplAnnouncementsFab() {
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       onClose={handleToggle}
-      getContentAnchorEl={null}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       disableScrollLock

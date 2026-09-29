@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Box, Button } from '@mui/material';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
@@ -16,7 +15,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -28,14 +27,13 @@ const useStyles = makeStyles({
     gap: '8px',
     flexWrap: 'wrap',
   },
-});
+};
 
 function ChplQmsStandardEdit({
   dispatch, isProcessing, qmsStandard: initialQmsStandard, errors: propsErrors = [],
 }) {
   const [errors, setErrors] = useState([]);
   const [qmsStandard, setQmsStandard] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -79,7 +77,7 @@ function ChplQmsStandardEdit({
   });
 
   return (
-    <div className={classes.container}>
+    <Box sx={styles.container}>
       <ChplTextField
         id="name"
         name="name"
@@ -98,7 +96,7 @@ function ChplQmsStandardEdit({
         isDisabled={!isValid()}
         isProcessing={isProcessing}
       />
-    </div>
+    </Box>
   );
 }
 

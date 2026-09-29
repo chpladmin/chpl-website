@@ -16,7 +16,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { object } from 'prop-types';
 
@@ -27,7 +26,7 @@ import { sortCriteria } from 'services/criteria.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   accordion: {
     borderRadius: '4px',
@@ -60,7 +59,7 @@ const useStyles = makeStyles({
   rotate: {
     transform: 'rotate(180deg)',
   },
-});
+};
 
 const makeRounded = (val) => Math.round(val * 1000) / 1000;
 
@@ -72,13 +71,12 @@ function ChplSedTaskView({ task: initialTask }) {
   const [meanExperience, setMeanExperience] = useState(0);
   const [task, setTask] = useState(undefined);
   const [occupations, setOccupations] = useState([]);
-  const classes = useStyles();
 
   const getIcon = () => (expanded
     ? (
       <>
         <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
       </>
     )
     : (
@@ -126,26 +124,26 @@ function ChplSedTaskView({ task: initialTask }) {
 
   return (
     <Accordion
-      className={classes.accordion}
+      sx={styles.accordion}
       onChange={handleAccordionChange}
       id={`task-id-${task.friendlyId}`}
     >
       <AccordionSummary
-        className={classes.accordionSummary}
+        sx={styles.accordionSummary}
         expandIcon={getIcon()}
         id={`task-id-${task.friendlyId}-header`}
       >
-        <Typography variant="subtitle1" className={classes.summaryText}>
+        <Typography variant="subtitle1" sx={styles.summaryText}>
           {task.description}
         </Typography>
       </AccordionSummary>
       <AccordionDetails
-        className={classes.accordionDetails}
+        sx={styles.accordionDetails}
         id={`task-id-${task.friendlyId}-details`}
       >
         <CardContent>
-          <Box className={classes.taskData}>
-            <Card className={classes.fullWidthGridRow} id="summary">
+          <Box sx={styles.taskData}>
+            <Card sx={styles.fullWidthGridRow} id="summary">
               <CardHeader title="Summary" />
               <Table size="small">
                 <TableHead>
@@ -285,7 +283,7 @@ function ChplSedTaskView({ task: initialTask }) {
                 </TableBody>
               </Table>
             </Card>
-            <Card className={classes.fullWidthGridRow} id="participants">
+            <Card sx={styles.fullWidthGridRow} id="participants">
               <CardHeader title="Participants" />
               <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4}>
                 <ChplSedTaskParticipantsView

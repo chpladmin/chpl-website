@@ -46,7 +46,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
 
   return <>
     <Box className={classes.headerContainer}>
-      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
         <Typography variant="subtitle2">
           API Keys
         </Typography>
@@ -55,7 +55,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
         </Typography>
       </Box>
       <div className={classes.tableResultsHeaderContainer}>
-        <Box display="flex" alignItems="center" gap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}

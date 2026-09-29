@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Box, List } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +14,7 @@ import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   menuContainer: {
     padding: 0,
     minWidth: '280px',
@@ -30,7 +29,7 @@ const useStyles = makeStyles({
     gap: '8px',
     borderTop: `1px solid ${palette.divider}`,
   },
-});
+};
 
 function ChplAdminMenu({ onClose = () => {} }) {
   const dispatch = useDispatch();
@@ -43,7 +42,6 @@ function ChplAdminMenu({ onClose = () => {} }) {
   } = useContext(UserContext);
   const [activeConfigs, setActiveConfigs] = useState([]);
   const [openSection, setOpenSection] = useState(null);
-  const classes = useStyles();
 
   useEffect(() => {
     setActiveConfigs([
@@ -82,7 +80,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
   };
 
   return (
-    <Box className={classes.menuContainer}>
+    <Box sx={styles.menuContainer}>
       <List component="nav">
         { activeConfigs
           .filter((sectionConfig) => canAccess(sectionConfig.roles))
@@ -110,7 +108,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
             </ChplAdminMenuSection>
           ))}
       </List>
-      <Box className={classes.footer}>
+      <Box sx={styles.footer}>
         <Button
           onClick={logout}
           variant="outlined"

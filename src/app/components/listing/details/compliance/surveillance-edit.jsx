@@ -10,7 +10,6 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import AddIcon from '@mui/icons-material/Add';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -27,14 +26,14 @@ import { ListingContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   background: {
     backgroundColor: palette.background,
     minHeight: '50vh',
     paddingBottom: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   startDay: yup.date()
@@ -63,7 +62,6 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -180,7 +178,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   if (surveillanceTypes.length === 0) { return <CircularProgress />; }
 
   return <>
-    <Container className={classes.pageHeader} maxWidth="md">
+    <Container sx={styles.pageHeader} maxWidth="md">
       <Typography variant="h1">
         { getSurveillanceTitle({
           ...surveillance,
@@ -189,7 +187,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         }) }
       </Typography>
     </Container>
-    <Box pt={4} className={classes.background}>
+    <Box pt={4} sx={styles.background}>
       <Container maxWidth="lg">
         <Box display="flex" gap="16px" flexDirection="column">
           <Card>

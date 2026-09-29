@@ -54,7 +54,7 @@ function ChplCodeSetIndicator({ criterion }) {
   }
 
   return (
-    <Box display="flex" alignItems="center" gap={8}>
+    <Box display="flex" alignItems="center" gap="8px">
       <Typography>
         { endDay ? 'Update Required' : 'Current' }
       </Typography>

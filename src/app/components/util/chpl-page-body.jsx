@@ -1,11 +1,10 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { node, oneOf } from 'prop-types';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     flexGrow: 1,
     padding: theme.spacing(4),
@@ -16,13 +15,11 @@ const useStyles = makeStyles({
       padding: theme.spacing(8),
     },
   },
-});
+};
 
 function ChplPageBody({ children, maxWidth = 'lg' }) {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.container}>
+    <Box sx={styles.container}>
       <Container id="main-content" tabIndex="-1" maxWidth={maxWidth}>
         {children}
       </Container>

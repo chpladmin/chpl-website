@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Button, Card, CardHeader, CardContent,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ClearIcon from '@mui/icons-material/Clear';
 import SendIcon from '@mui/icons-material/Send';
 import { useDispatch } from 'react-redux';
@@ -18,7 +17,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.secondary,
     padding: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -41,8 +40,6 @@ function ChplForgotPassword({ userName }) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostForgotPassword();
-
-  const classes = useStyles();
 
   let formik;
 
@@ -99,8 +96,8 @@ function ChplForgotPassword({ userName }) {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Forgotten password" />
-      <CardContent className={classes.grid}>
+      <CardHeader sx={styles.loginHeader} title="Forgotten password" />
+      <CardContent sx={styles.grid}>
         <ChplTextField
           id="email"
           name="email"

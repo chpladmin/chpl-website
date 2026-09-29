@@ -11,7 +11,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { bool, object } from 'prop-types';
 
@@ -22,7 +21,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   questionParagraph: {
     marginBottom: '8px',
   },
@@ -38,9 +37,9 @@ const useStyles = makeStyles({
     gridGap: '16px',
     alignItems: 'center',
   },
-});
+};
 
-const getRows = (section, classes) => section.formItems
+const getRows = (section) => section.formItems
   .sort((a, b) => a.sortOrder - b.sortOrder)
   .map((item) => (
     <TableRow key={`${section.id}-${item.id}`}>
@@ -51,7 +50,7 @@ const getRows = (section, classes) => section.formItems
         </strong>
         { item.question.question.split('\n\n').map((p) => (
           <Typography
-            className={classes.questionParagraph}
+            sx={styles.questionParagraph}
             key={p}
           >
             { interpretLink(p) }
@@ -62,7 +61,7 @@ const getRows = (section, classes) => section.formItems
         { item.submittedResponses[0]?.response }
         { item.submittedResponses[0]?.message
           && (
-            <Box className={classes.warningBox}>
+            <Box sx={styles.warningBox}>
               <ReportProblemOutlinedIcon />
               <Typography>
                 { item.submittedResponses[0].message }
@@ -91,7 +90,6 @@ function ChplAttestationView({
   const { hasAnyRole } = useContext(UserContext);
   const [attestations, setAttestations] = useState({});
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     setAttestations({
@@ -114,7 +112,7 @@ function ChplAttestationView({
   };
 
   return <>
-    <Box display="flex" flexDirection="column" gap={16}>
+    <Box display="flex" flexDirection="column" gap="16px">
       <div>
         <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
         <Typography gutterBottom>
@@ -143,7 +141,7 @@ function ChplAttestationView({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  { attestations.sections.map((section) => getRows(section, classes)) }
+                  { attestations.sections.map((section) => getRows(section)) }
                 </TableBody>
               </Table>
             </TableContainer>

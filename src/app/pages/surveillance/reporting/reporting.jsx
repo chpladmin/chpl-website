@@ -86,7 +86,7 @@ function ChplSurveillanceReporting() {
                   endIcon={<ArrowForwardIcon />}
                   className={classes.menuItems}
                 >
-                  <Box display="flex" flexDirection="row" gap={4}>
+                  <Box display="flex" flexDirection="row" gap="4px">
                     { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
                     { acb.name }
                   </Box>

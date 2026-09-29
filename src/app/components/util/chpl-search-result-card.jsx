@@ -77,9 +77,11 @@ const useStyles = makeStyles({
   primaryRow: {
     alignItems: 'flex-start',
     display: 'flex',
-    flexWrap: 'wrap',
     gap: theme.spacing(1.25, 3.5),
     minWidth: 0,
+    '@media (min-width: 899px) and (max-width: 1201px)': {
+      flexWrap: 'wrap',
+    },
   },
   fieldLabel: {
     color: theme.palette.text.primary,
@@ -128,7 +130,7 @@ const useStyles = makeStyles({
     gap: theme.spacing(1.5),
     justifyContent: 'space-between',
     minHeight: '100%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       alignItems: 'stretch',
       width: '100%',
     },

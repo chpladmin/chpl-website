@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Chip, FormControlLabel, MenuItem, Switch,
+  Box, Button, Chip, FormControlLabel, MenuItem, Switch,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
@@ -21,7 +20,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -33,7 +32,7 @@ const useStyles = makeStyles({
     gap: '8px',
     flexWrap: 'wrap',
   },
-});
+};
 
 function ChplSvapEdit({
   criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [],
@@ -42,7 +41,6 @@ function ChplSvapEdit({
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -105,7 +103,7 @@ function ChplSvapEdit({
   });
 
   return (
-    <div className={classes.container}>
+    <Box sx={styles.container}>
       <ChplTextField
         id="regulatory-text-citation"
         name="regulatoryTextCitation"
@@ -150,7 +148,7 @@ function ChplSvapEdit({
             </MenuItem>
           ))}
       </ChplTextField>
-      <div className={classes.chips}>
+      <Box sx={styles.chips}>
         { criteria
           .sort(sortCriteria)
           .map((item) => (
@@ -162,7 +160,7 @@ function ChplSvapEdit({
               variant="outlined"
             />
           ))}
-      </div>
+      </Box>
       <FormControlLabel
         control={(
           <Switch
@@ -182,7 +180,7 @@ function ChplSvapEdit({
         isDisabled={!isValid()}
         isProcessing={isProcessing}
       />
-    </div>
+    </Box>
   );
 }
 

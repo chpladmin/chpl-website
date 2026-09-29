@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Box, Button, Container } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
@@ -9,7 +8,7 @@ import { func, number } from 'prop-types';
 import { useAxios } from 'api/axios';
 import { ListingContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -45,7 +44,7 @@ const useStyles = makeStyles({
     borderTop: '1px solid #EEEEEE',
     paddingTop: '16px',
   },
-});
+};
 
 function ChplUploadListing({
   id,
@@ -58,7 +57,6 @@ function ChplUploadListing({
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   const clearFile = () => {
     setFile(undefined);
@@ -116,13 +114,13 @@ function ChplUploadListing({
       </div>
       { file
         && (
-          <Box className={classes.fileUploadContainer}>
-            <Box className={classes.fileUploadContent}>
-              <div className={classes.fileName}>
+          <Box sx={styles.fileUploadContainer}>
+            <Box sx={styles.fileUploadContent}>
+              <Box sx={styles.fileName}>
                 <strong>Filename:</strong>
                 {' '}
                 { file.name }
-              </div>
+              </Box>
               { file
                 && (
                   <div>
@@ -134,7 +132,7 @@ function ChplUploadListing({
             </Box>
             { file
               && (
-                <div className={classes.buttonUploadContainer}>
+                <Box sx={styles.buttonUploadContainer}>
                   <Button
                     color="primary"
                     variant="contained"
@@ -146,7 +144,7 @@ function ChplUploadListing({
                     Upload
                   </Button>
                   <Button
-                    className={classes.deleteButton}
+                    sx={styles.deleteButton}
                     variant="contained"
                     onClick={clearFile}
                     endIcon={<DeleteIcon />}
@@ -154,7 +152,7 @@ function ChplUploadListing({
                   >
                     Remove
                   </Button>
-                </div>
+                </Box>
               )}
           </Box>
         )}

@@ -373,7 +373,7 @@ function ChplDeveloperEdit({
                         <TableCell><Typography variant="body2">Start Date</Typography></TableCell>
                         <TableCell><Typography variant="body2">End Date</Typography></TableCell>
                         <TableCell><Typography variant="body2">Reason</Typography></TableCell>
-                        <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                        <TableCell><Typography sx={utilStyles.visuallyHidden}>Actions</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

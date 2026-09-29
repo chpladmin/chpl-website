@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -27,9 +26,9 @@ const sortOptions = [
   { property: 'endDay', text: 'End Date' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -37,7 +36,6 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const filterContext = useFilterContext();
-  const classes = useStyles();
 
   useEffect(() => {
     setTestTools(initialTestTools
@@ -67,14 +65,14 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
       placeholder="Search by Value..."
     />
     <ChplFilterLayout>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">Search Results</Typography>
           <Typography variant="body2">
             {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}

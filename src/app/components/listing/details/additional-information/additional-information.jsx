@@ -52,7 +52,7 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
   }, [listing]);
 
   return <>
-    <Box gap={8} display="flex" flexDirection="column">
+    <Box gap="8px" display="flex" flexDirection="column">
       { listing.edition !== null && listing.edition.name === '2014'
         && (
           <Card>

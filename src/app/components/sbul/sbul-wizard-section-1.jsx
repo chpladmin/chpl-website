@@ -2,9 +2,8 @@ import React from 'react';
 import {
   Box, Card, CardContent, Container, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
-const useStyles = makeStyles({
+const styles = {
   sbulContainerList: {
     fontSize: '0.875em',
   },
@@ -18,14 +17,12 @@ const useStyles = makeStyles({
   forAssistanceContainer: {
     marginTop: '16px',
   },
-});
+};
 
 function ChplSbulWizardSection1() {
-  const classes = useStyles();
-
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Box className={classes.sbulSectionContainer}>
+    <Container sx={styles.fixFooterSpacing} maxWidth="md">
+      <Box sx={styles.sbulSectionContainer}>
         <Typography component="h2" variant="h3">
           Section 1 &mdash; Introduction
         </Typography>

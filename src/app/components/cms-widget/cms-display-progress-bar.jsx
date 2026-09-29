@@ -45,7 +45,7 @@ function CmsDisplayProgressBar({ value, year }) {
   return (
     <Box
       pt={2}
-      gap={8}
+      gap="8px"
       pb={2}
       display="flex"
       alignItems="center"

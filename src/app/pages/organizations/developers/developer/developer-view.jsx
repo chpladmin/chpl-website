@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   lefthandContainer: {
     width: '33%',
     minWidth: '33%',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
       minWidth: '100%',
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     gap: '32px',
     minHeight: 'calc(100vh - 290px)',
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },

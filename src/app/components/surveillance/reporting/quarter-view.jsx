@@ -124,7 +124,7 @@ function ChplQuarterView({ dispatch, report }) {
                 endIcon={<ArrowForwardIcon />}
                 className={classes.menuItems}
               >
-                <Box display="flex" flexDirection="row" gap={4}>
+                <Box display="flex" flexDirection="row" gap="4px">
                   { item }
                 </Box>
               </Button>

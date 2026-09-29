@@ -1,25 +1,22 @@
 import React from 'react';
-import { Divider, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Box, Divider, Typography } from '@mui/material';
 import { bool, func } from 'prop-types';
 
 import { address as addressProp, formik as formikProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   formSubContainer: {
     display: 'grid',
     gap: '16px',
     flexDirection: 'row',
     gridTemplateColumns: 'auto auto',
   },
-}));
+};
 
 function ChplConfirmDeveloperAddress({
   address, editing, formik, handleChange = () => {},
 }) {
-  const classes = useStyles();
-
   return (
     <>
       { (address || !editing)
@@ -31,7 +28,7 @@ function ChplConfirmDeveloperAddress({
             <Divider />
           </div>
         )}
-      <div className={classes.formSubContainer}>
+      <Box sx={styles.formSubContainer}>
         { editing
           ? (
             <div>
@@ -72,8 +69,8 @@ function ChplConfirmDeveloperAddress({
               <Typography variant="body1">{ address?.line2 }</Typography>
             </div>
           )}
-      </div>
-      <div className={classes.formSubContainer}>
+      </Box>
+      <Box sx={styles.formSubContainer}>
         { editing
           ? (
             <div>
@@ -116,8 +113,8 @@ function ChplConfirmDeveloperAddress({
               <Typography variant="body1">{ address?.state }</Typography>
             </div>
           )}
-      </div>
-      <div className={classes.formSubContainer}>
+      </Box>
+      <Box sx={styles.formSubContainer}>
         { editing
           ? (
             <div>
@@ -160,7 +157,7 @@ function ChplConfirmDeveloperAddress({
               <Typography variant="body1">{ address?.country }</Typography>
             </div>
           )}
-      </div>
+      </Box>
     </>
   );
 }

@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
 
 import { useDeleteSubscriber } from 'api/subscriptions';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '8px',
     gridTemplateColumns: '1fr',
   },
-});
+};
 
 function ChplUnsubscribeAll(props) {
   const { hash } = props;
   const [message, setMessage] = useState(undefined);
   const deleteSubscriber = useDeleteSubscriber();
-  const classes = useStyles();
 
   useEffect(() => {
     deleteSubscriber.mutate({
@@ -35,7 +33,7 @@ function ChplUnsubscribeAll(props) {
   if (!message) { return null; }
 
   return (
-    <Container className={classes.content}>
+    <Container sx={styles.content}>
       <Typography variant="h1">
         Unsubscribe
       </Typography>

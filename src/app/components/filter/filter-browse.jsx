@@ -1,21 +1,11 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
 import { useFilterContext } from './filter-context';
 
 import { eventTrack } from 'services/analytics.service';
 
-const useStyles = makeStyles({
-  browseButton: {
-    borderRadius: '8px',
-    padding: '9px 16px',
-  },
-});
-
 function ChplFilterBrowse() {
-  const classes = useStyles();
-
   const {
     analytics,
     dispatch,
@@ -36,7 +26,7 @@ function ChplFilterBrowse() {
 
   return (
     <Button
-      className={classes.browseButton}
+      sx={{ borderRadius: '8px', padding: '9px 16px' }}
       size="medium"
       variant="outlined"
       id="filter-browse"

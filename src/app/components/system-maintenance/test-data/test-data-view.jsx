@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplSearchResultCard } from 'components/util';
@@ -8,13 +7,12 @@ import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 function ChplTestDataView({ testData: initialTestData }) {
   const [testData, setTestData] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setTestData(initialTestData
@@ -29,8 +27,8 @@ function ChplTestDataView({ testData: initialTestData }) {
   }, [initialTestData]);
 
   return <>
-    <Box className={classes.headerContainer}>
-      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+    <Box sx={styles.headerContainer}>
+      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
         <Typography variant="subtitle2">
           Test Data
         </Typography>
@@ -38,7 +36,7 @@ function ChplTestDataView({ testData: initialTestData }) {
           {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
         </Typography>
       </Box>
-      <Box display="flex" alignItems="center" gap={4} />
+      <Box display="flex" alignItems="center" gap="4px" />
     </Box>
     <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
       { testData

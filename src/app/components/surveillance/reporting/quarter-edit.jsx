@@ -210,7 +210,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                 endIcon={<ArrowForwardIcon />}
                 className={classes.menuItems}
               >
-                <Box display="flex" flexDirection="row" gap={4}>
+                <Box display="flex" flexDirection="row" gap="4px">
                   { item }
                 </Box>
               </Button>
@@ -224,7 +224,7 @@ function ChplQuarterEdit({ dispatch, report }) {
               endIcon={<ArrowBackIcon />}
               className={classes.menuItems}
             >
-              <Box display="flex" flexDirection="row" gap={4}>
+              <Box display="flex" flexDirection="row" gap="4px">
                 Back
               </Box>
             </Button>

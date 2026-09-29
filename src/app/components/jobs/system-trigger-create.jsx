@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import {
   Button, Card, CardContent, CardHeader, FormHelperText, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -12,14 +11,14 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   helperTextSpacing: {
     marginLeft: '14px',
   },
   subHeaderColor: {
     color: '#000000',
   },
-});
+};
 
 const validationSchema = yup.object({
   runTime: yup.date()
@@ -28,7 +27,6 @@ const validationSchema = yup.object({
 
 function ChplSystemTriggerCreate(props) {
   const { job, dispatch } = props;
-  const classes = useStyles();
   let formik;
 
   const handleDispatch = (action) => {
@@ -67,7 +65,7 @@ function ChplSystemTriggerCreate(props) {
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Run Job: ${job.name}`}
           subheader={(
-            <Typography className={classes.subHeaderColor} variant="body1">
+            <Typography sx={styles.subHeaderColor} variant="body1">
               {job.description}
             </Typography>
           )}
@@ -87,7 +85,7 @@ function ChplSystemTriggerCreate(props) {
                 error={formik.touched.runTime && !!formik.errors.runTime}
                 helperText={formik.touched.runTime && formik.errors.runTime}
               />
-              <FormHelperText className={classes.helperTextSpacing}>All times should be entered as Eastern Time (ET)</FormHelperText>
+              <FormHelperText sx={styles.helperTextSpacing}>All times should be entered as Eastern Time (ET)</FormHelperText>
             </CardContent>
           </Card>
         </CardContent>

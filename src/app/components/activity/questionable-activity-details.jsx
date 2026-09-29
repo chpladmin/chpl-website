@@ -9,7 +9,6 @@ import {
   DialogContent,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InfoIcon from '@mui/icons-material/Info';
 import { object } from 'prop-types';
@@ -23,7 +22,7 @@ import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-const useStyles = makeStyles({
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
     color: '#156dac',
     fontWeight: 'bold',
   },
-});
+};
 
 const getDisplay = (title, value, fullWidth = false) => {
   if (!value) { return null; }
@@ -52,7 +51,6 @@ const getDisplay = (title, value, fullWidth = false) => {
 function ChplQuestionableActivityDetails({ activity }) {
   const [details, setDetails] = useState(undefined);
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   const { data, isError, isLoading } = useFetchActivity({
     id: activity.activityId,
@@ -123,7 +121,7 @@ function ChplQuestionableActivityDetails({ activity }) {
       <ChplDialogTitle
         id={`activity-details-${activity.id}-title`}
         onClose={handleClose}
-        className={classes.legendTitle}
+        sx={styles.legendTitle}
       >
         Questionable Activity Details
       </ChplDialogTitle>

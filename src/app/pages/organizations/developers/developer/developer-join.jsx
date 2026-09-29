@@ -145,7 +145,7 @@ function ChplJoinDevelopers({ dispatch }) {
         <Card className={classes.cardContainer}>
           <CardHeader title={`Select Developers joining ${activeDeveloper.name}`} />
           <CardContent>
-            <Box display="flex" flexDirection="column" gap={16}>
+            <Box display="flex" flexDirection="column" gap="16px">
               { /* eslint-disable react/jsx-props-no-spreading */}
               <Autocomplete
                 id="developers"

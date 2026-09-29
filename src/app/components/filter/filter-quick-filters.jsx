@@ -78,7 +78,6 @@ function ChplFilterQuickFilters({ toggleMultipleFilters = undefined }) {
       id="quick-filter-menu"
       open={open}
       anchorEl={anchor}
-      getContentAnchorEl={null}
       keepMounted
       onClose={handleClose}
       anchorOrigin={{

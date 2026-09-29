@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardHeader, List, ListItem,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { NotificationsOutlined, SubscriptionsOutlined } from '@mui/icons-material';
@@ -32,7 +31,7 @@ const sortOptions = [
   { property: 'subscriber_role', text: 'Role' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   card: {
     overflow: 'visible',
   },
@@ -95,7 +94,7 @@ const useStyles = makeStyles({
   notificationsButton: {
     fontSize: '14px',
   },
-});
+};
 
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
@@ -107,7 +106,6 @@ function ChplManageSubscriptionsView({ analytics }) {
   const [recordCount, setRecordCount] = useState(0);
   const [subscriptions, setSubscriptions] = useState([]);
   const { mutate } = usePostGetDeliveredNotifications();
-  const classes = useStyles();
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchAllSubscriptions({
@@ -164,7 +162,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={styles.card}>
       <CardHeader
         style={{ paddingLeft: '16px' }}
         title={(
@@ -177,7 +175,7 @@ function ChplManageSubscriptionsView({ analytics }) {
               color="secondary"
               variant="contained"
               onClick={getDeliveredMessages}
-              className={classes.notificationsButton}
+              sx={styles.notificationsButton}
               endIcon={<NotificationsOutlined fontSize="small" />}
             >
               Get Delivered Notifications
@@ -185,7 +183,7 @@ function ChplManageSubscriptionsView({ analytics }) {
           </Box>
         )}
       />
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+      <Box sx={styles.pageBody} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           sticky
           fadeBackground={palette.white}
@@ -215,7 +213,7 @@ function ChplManageSubscriptionsView({ analytics }) {
               { subscriptions.length > 0
                 && (
                   <>
-                    <Box className={classes.resultsContainer}>
+                    <Box sx={styles.resultsContainer}>
                       { subscriptions.map((item) => (
                         <ChplSearchResultCard
                           key={`${item.subscriberId}-${item.subscribedObjectId}`}
@@ -239,11 +237,11 @@ function ChplManageSubscriptionsView({ analytics }) {
                               {
                                 label: 'Subscription Subjects',
                                 value: (
-                                  <List className={classes.listContainer}>
+                                  <List sx={styles.listContainer}>
                                     { item.subscriptionSubjects
                                       .sort((a, b) => (a < b ? -1 : 1))
                                       .map((sub) => (
-                                        <ListItem className={classes.listItem} key={sub}>{ sub }</ListItem>
+                                        <ListItem sx={styles.listItem} key={sub}>{ sub }</ListItem>
                                       ))}
                                   </List>
                                 ),
@@ -267,7 +265,7 @@ function ChplManageSubscriptionsView({ analytics }) {
             </>
           )}
         </ChplFilterLayout>
-      </div>
+      </Box>
     </Card>
   );
 }

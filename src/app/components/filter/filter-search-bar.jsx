@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '16px',
     },
     [theme.breakpoints.up('md')]: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     gridGap: '8px',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',

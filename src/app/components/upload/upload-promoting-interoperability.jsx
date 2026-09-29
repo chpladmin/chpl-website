@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Box, Button, Card, CardContent, CardHeader, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
@@ -13,7 +12,7 @@ import { useSnackbar } from 'notistack';
 import { useAxios } from 'api/axios';
 import { ChplTextField } from 'components/util';
 
-const useStyles = makeStyles({
+const styles = {
   buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -50,7 +49,7 @@ const useStyles = makeStyles({
     marginTop: '16px',
     paddingTop: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   accurateAsOf: yup.date()
@@ -62,7 +61,6 @@ function ChplUploadPromotingInteroperability() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   let formik;
 
   const clearFile = () => {
@@ -119,7 +117,7 @@ function ChplUploadPromotingInteroperability() {
     <Card id="upload-promoting-interoperability-users">
       <CardHeader title="Upload Promoting Interoperability Users" />
       <CardContent>
-        <div className={classes.uploadContentContainer}>
+        <Box sx={styles.uploadContentContainer}>
           <Typography gutterBottom variant="body1">
             <strong>CSV files only</strong>
           </Typography>
@@ -153,13 +151,13 @@ function ChplUploadPromotingInteroperability() {
           </div>
           { file
             && (
-              <Box className={classes.fileUploadContainer}>
-                <Box className={classes.fileUploadContent}>
-                  <div className={classes.fileName}>
+              <Box sx={styles.fileUploadContainer}>
+                <Box sx={styles.fileUploadContent}>
+                  <Box sx={styles.fileName}>
                     <strong>Filename:</strong>
                     {' '}
                     { file.name }
-                  </div>
+                  </Box>
                   { file
                     && (
                       <div>
@@ -171,7 +169,7 @@ function ChplUploadPromotingInteroperability() {
                 </Box>
                 { file
                   && (
-                    <div className={classes.buttonUploadContainer}>
+                    <Box sx={styles.buttonUploadContainer}>
                       <Button
                         color="primary"
                         variant="contained"
@@ -182,7 +180,7 @@ function ChplUploadPromotingInteroperability() {
                         Upload
                       </Button>
                       <Button
-                        className={classes.deleteButton}
+                        sx={styles.deleteButton}
                         variant="contained"
                         onClick={clearFile}
                         endIcon={<DeleteIcon />}
@@ -190,11 +188,11 @@ function ChplUploadPromotingInteroperability() {
                       >
                         Remove
                       </Button>
-                    </div>
+                    </Box>
                   )}
               </Box>
             )}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -9,14 +9,13 @@ import {
   DialogContent,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { object } from 'prop-types';
 import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -52,12 +51,11 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 function ChplQuarterViewListingSurveillance({ surveillance }) {
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
-  const classes = useStyles();
 
   useEffect(() => {
     setProgress(Math.round(((
@@ -87,7 +85,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
 
   return <>
     <Card style={{ width: '100%' }}>
-      <div className={classes.idContainer}>
+      <Box sx={styles.idContainer}>
         <Typography>
           <strong>Surveillance ID:</strong>
           {' '}
@@ -113,8 +111,8 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
           </Box>
           <Typography variant="body2">Completed</Typography>
         </Box>
-      </div>
-      <div className={classes.container}>
+      </Box>
+      <Box sx={styles.container}>
         <Typography>
           <strong>Start Day:</strong>
           {' '}
@@ -135,7 +133,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
           {' '}
           { surveillance.numOpenNonconformities }
         </Typography>
-      </div>
+      </Box>
       <Box style={{ padding: '8px 16px' }}>
         <Button
           variant="outlined"
@@ -152,7 +150,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <CardHeader title="Surveillance Data" />
       <DialogContent>
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           <Typography>
             <strong>Surveillance Type:</strong>
             {' '}
@@ -260,13 +258,13 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             {' '}
             { surveillance.surveillanceFindings }
           </Typography>
-        </div>
+        </Box>
       </DialogContent>
-      <div className={classes.dialogActions}>
+      <Box sx={styles.dialogActions}>
         <Button onClick={handleClose} variant="outlined" color="primary">
           Close
         </Button>
-      </div>
+      </Box>
     </Dialog>
   </>;
 }

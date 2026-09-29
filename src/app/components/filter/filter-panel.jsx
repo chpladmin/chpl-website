@@ -307,7 +307,7 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                       <Button
                         fullWidth
                         key={f.key}
-                        color={f === activeCategory ? 'default' : 'primary'}
+                        color={f === activeCategory ? 'inherit' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
                         style={{ whiteSpace: f.wrapText ? 'normal' : 'nowrap' }}
                         variant="outlined"

@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     '&:hover': {
       transform: 'scale(1.02)',
     },
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -113,7 +113,7 @@ function ChplCharts() {
     </Box>
     <Box className={classes.container}>
       <Container maxWidth="lg">
-        <Box display="flex" alignItems="flex-start" flexDirection="row" gap={32} width="100%">
+        <Box display="flex" alignItems="flex-start" flexDirection="row" gap="32px" width="100%">
           <Box maxWidth="350px">
             <Card className={classes.stickyCard}>
               <CardContent>
@@ -156,7 +156,7 @@ function ChplCharts() {
                   <Typography gutterBottom>
                     A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
                   </Typography>
-                  <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gap={32}>
+                  <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gap="32px">
                     {reportMetadata && reportMetadata.map((report) => (
                       <Card
                         key={report.title}

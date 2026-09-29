@@ -26,8 +26,8 @@ function ChplPageHeader({
   return (
     <Box position="relative" boxShadow={2} bgcolor={palette.white} p={8}>
       <Container maxWidth="lg">
-        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={16}>
-          <Box display="flex" alignItems="center" gap={4}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap="16px">
+          <Box display="flex" alignItems="center" gap="4px">
             <Typography variant="h1">
               { text }
             </Typography>
@@ -35,7 +35,7 @@ function ChplPageHeader({
           </Box>
           { (actions || subtitle)
             && (
-              <Box display="flex" alignItems="center" flexWrap="wrap" gap={8}>
+              <Box display="flex" alignItems="center" flexWrap="wrap" gap="8px">
                 { actions }
                 { subtitle
                   && (

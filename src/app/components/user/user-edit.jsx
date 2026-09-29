@@ -1,8 +1,13 @@
 import React from 'react';
 import {
-  Card, CardHeader, CardContent, FormControlLabel, Switch, Typography,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  FormControlLabel,
+  Switch,
+  Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, func, number, string,
 } from 'prop-types';
@@ -15,7 +20,7 @@ import {
   user as userPropType,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
@@ -29,7 +34,7 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 188px)',
   },
-});
+};
 
 const validationSchema = yup.object({
   fullName: yup.string()
@@ -42,7 +47,6 @@ function ChplUserEdit({
   errors = [],
   organizationId = undefined,
 }) {
-  const classes = useStyles();
   let formik;
 
   const cancel = () => {
@@ -84,14 +88,14 @@ function ChplUserEdit({
   });
 
   return (
-    <div className={classes.fixFooterSpacing}>
+    <Box sx={styles.fixFooterSpacing}>
       <Card>
         <CardHeader
           title="Edit User"
           subheader={user.email}
         />
-        <CardContent className={classes.content}>
-          <div className={classes.dataEntry}>
+        <CardContent sx={styles.content}>
+          <Box sx={styles.dataEntry}>
             <Typography variant="body1">User Information</Typography>
             <ChplTextField
               id="full-name"
@@ -104,8 +108,8 @@ function ChplUserEdit({
               error={formik.touched.fullName && !!formik.errors.fullName}
               helperText={formik.touched.fullName && formik.errors.fullName}
             />
-          </div>
-          <div className={classes.dataEntry}>
+          </Box>
+          <Box sx={styles.dataEntry}>
             <Typography variant="body1">Settings</Typography>
             <div>
               <FormControlLabel
@@ -121,7 +125,7 @@ function ChplUserEdit({
                 label="Account Enabled"
               />
             </div>
-          </div>
+          </Box>
         </CardContent>
       </Card>
       <ChplActionBar
@@ -129,7 +133,7 @@ function ChplUserEdit({
         errors={errors}
         isDisabled={!formik.isValid}
       />
-    </div>
+    </Box>
   );
 }
 

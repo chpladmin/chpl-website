@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
@@ -12,11 +11,11 @@ import { useFetchAttestations } from 'api/developer';
 import { getDisplayDateFormat } from 'services/date-util';
 import { DeveloperContext, UserContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   pageHeader: {
     padding: '8px 0',
   },
-});
+};
 
 function ChplAttestationCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
@@ -31,7 +30,6 @@ function ChplAttestationCreate({ dispatch }) {
   const { data: { submittablePeriod = {} } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-developer']) });
   const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !data?.form) {
@@ -95,7 +93,7 @@ function ChplAttestationCreate({ dispatch }) {
 
   return (
     <>
-      <Container className={classes.pageHeader} maxWidth="md">
+      <Container sx={styles.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
           Submit Attestations
         </Typography>

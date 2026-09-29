@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, CardHeader, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import AddIcon from '@mui/icons-material/Add';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -18,7 +17,7 @@ import { UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   actionContainer: {
     display: 'flex',
@@ -28,13 +27,12 @@ const useStyles = makeStyles({
   noResultsContainer: {
     padding: '16px 32px',
   },
-});
+};
 
 function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispatch = () => {} }) {
   const { hasAnyRole } = useContext(UserContext);
   const [announcement, setAnnouncement] = useState(undefined);
   const [announcements, setAnnouncements] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setAnnouncements(initialAnnouncements.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
@@ -81,18 +79,18 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
       <CardContent>
         { announcement
           && (
-            <div className={classes.actionContainer}>
+            <Box sx={styles.actionContainer}>
               <ChplAnnouncementEdit
                 announcement={announcement}
                 dispatch={handleActionBarDispatch}
               />
-            </div>
+            </Box>
           )}
         { !announcement
           && (
             <>
-              <Box className={classes.headerContainer}>
-                <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+              <Box sx={styles.headerContainer}>
+                <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
                   <Typography variant="subtitle2">
                     Announcements
                   </Typography>
@@ -100,7 +98,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
                     {`(${announcements.length} Result${announcements.length !== 1 ? 's' : ''})`}
                   </Typography>
                 </Box>
-                <Box display="flex" alignItems="center" gap={4}>
+                <Box display="flex" alignItems="center" gap="4px">
                   <ChplSystemMaintenanceActivity
                     fetch={useFetchAnnouncementsActivity}
                     title="Announcements"
@@ -120,7 +118,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
               </Box>
               { (announcements.length === 0)
                 && (
-                  <Typography className={classes.noResultsContainer}>
+                  <Typography sx={styles.noResultsContainer}>
                     No results found
                   </Typography>
                 )}

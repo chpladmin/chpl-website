@@ -325,7 +325,7 @@ function ChplProductEdit(props) {
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer</Typography></TableCell>
                         <TableCell><Typography variant="body2">Transfer Date</Typography></TableCell>
-                        <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                        <TableCell><Typography sx={utilStyles.visuallyHidden}>Actions</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

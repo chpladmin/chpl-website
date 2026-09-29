@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Dialog, DialogContent, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Timeline,
 } from '@mui/lab';
@@ -16,18 +15,17 @@ import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
-});
+};
 
 function ChplOrganizationActivity({ organization, type, interpret }) {
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
   const [resultSetSize, setResultSetSize] = useState(0);
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   const { data, isError, isLoading } = useFetchOrganizationActivityMetadata({
     organization,
@@ -92,7 +90,7 @@ function ChplOrganizationActivity({ organization, type, interpret }) {
         <ChplDialogTitle
           id="history-title"
           onClose={handleClose}
-          className={classes.legendTitle}
+          sx={styles.legendTitle}
         >
           Organization History
         </ChplDialogTitle>

@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box, Button, Card, CardContent, CardHeader, MenuItem,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
@@ -13,7 +12,7 @@ import { usePostSurveillanceActivityReport } from 'api/surveillance';
 import { ChplPageBody, ChplPageHeader, ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -27,7 +26,7 @@ const useStyles = makeStyles({
     gap: '16px',
     marginBottom: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   year: yup.string()
@@ -39,7 +38,6 @@ const validationSchema = yup.object({
 function ChplSurveillanceActivityReporting() {
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostSurveillanceActivityReport();
-  const classes = useStyles();
   let formik;
 
   const getYears = () => {
@@ -116,14 +114,14 @@ function ChplSurveillanceActivityReporting() {
     <>
       <ChplPageHeader text="Surveillance Activity Reporting" />
       <ChplPageBody maxWidth="md">
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           <Card>
             <CardHeader
               title="Activity Reporting"
               subheader="Select a Date Range to Download Reports"
             />
             <CardContent>
-              <Box className={classes.formContent}>
+              <Box sx={styles.formContent}>
                 <ChplTextField
                   select
                   required
@@ -174,7 +172,7 @@ function ChplSurveillanceActivityReporting() {
               </Button>
             </CardContent>
           </Card>
-        </div>
+        </Box>
       </ChplPageBody>
     </>
   );

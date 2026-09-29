@@ -255,12 +255,12 @@ function ChplListingEdit({
         title="Edit Listing"
       />
       <CardContent>
-        <Box display="flex" padding={4} justifyContent="space-around" gap={16} flexDirection="column">
+        <Box display="flex" padding={4} justifyContent="space-around" gap="16px" flexDirection="column">
           { /* CHPL Product Number */}
           <Typography variant="h6">
             CHPL Product Number
           </Typography>
-          <Box display="flex" justifyContent="space-around" alignItems="baseline" gap={8} flexDirection="row">
+          <Box display="flex" justifyContent="space-around" alignItems="baseline" gap="8px" flexDirection="row">
             <Typography>
               { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
             </Typography>
@@ -304,7 +304,7 @@ function ChplListingEdit({
           <Divider />
 
           { /* Certification Events */}
-          <Box display="flex" gap={8} flexDirection="column">
+          <Box display="flex" gap="8px" flexDirection="column">
             <Typography variant="h6">
               Certification Status
             </Typography>
@@ -360,7 +360,7 @@ function ChplListingEdit({
           { addingStatus
             && (
               <>
-                <Box display="flex" justifyContent="space-around" gap={8} flexDirection="column">
+                <Box display="flex" justifyContent="space-around" gap="8px" flexDirection="column">
                   <ChplTextField
                     select
                     id="status"
@@ -392,7 +392,7 @@ function ChplListingEdit({
                     onChange={(event) => setReasonToAdd(event.target.value)}
                   />
                 </Box>
-                <Box py={2} display="flex" justifyContent="flex-start" gap={8} flexDirection="row">
+                <Box py={2} display="flex" justifyContent="flex-start" gap="8px" flexDirection="row">
                   <Button
                     onClick={() => addStatus()}
                     disabled={statusToAdd === '' || eventDayToAdd === ''}
@@ -416,7 +416,7 @@ function ChplListingEdit({
           <Divider />
 
           { /* ACB & ATL */}
-          <Box display="flex" gap={12} flexDirection="column">
+          <Box display="flex" gap="12px" flexDirection="column">
             <Typography variant="h6">
               ONC-ACB
             </Typography>
@@ -460,7 +460,7 @@ function ChplListingEdit({
             />
           </Box>
           <Divider />
-          <Box pt={4} display="flex" gap={8} flexDirection="column">
+          <Box pt={4} display="flex" gap="8px" flexDirection="column">
             <Typography variant="h6">
               ONC-ATL
               { selectedAtls.length !== 1 ? 's' : '' }
@@ -515,7 +515,7 @@ function ChplListingEdit({
                         <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
                       ))}
                   </ChplTextField>
-                  <Box py={2} display="flex" justifyContent="flex-start" gap={8} flexDirection="row">
+                  <Box py={2} display="flex" justifyContent="flex-start" gap="8px" flexDirection="row">
                     <Button
                       onClick={() => addAtl()}
                       disabled={atlToAdd === ''}
@@ -539,7 +539,7 @@ function ChplListingEdit({
           <Divider />
 
           { /* Mandatory Disclosures */}
-          <Box display="flex" gap={12} flexDirection="column">
+          <Box display="flex" gap="12px" flexDirection="column">
             <Typography variant="h6">
               Mandatory Disclosures
             </Typography>
@@ -557,12 +557,12 @@ function ChplListingEdit({
           <Divider />
 
           { /* Real-World Testing */}
-          <Box display="flex" pt={4} gap={8} flexDirection="column">
+          <Box display="flex" pt={4} gap="8px" flexDirection="column">
             <Typography gutterBottom variant="h6">
               Real World Testing
             </Typography>
-            <Box display="flex" justifyContent="space-around" gap={16} flexDirection="row">
-              <Box display="flex" justifyContent="space-around" gap={16} width={rwtAiIntegrationIsOn ? '90%' : '100%'} flexDirection="row">
+            <Box display="flex" justifyContent="space-around" gap="16px" flexDirection="row">
+              <Box display="flex" justifyContent="space-around" gap="16px" width={rwtAiIntegrationIsOn ? '90%' : '100%'} flexDirection="row">
                 { !hti5ErdIsOn
                   && (
                     <ChplTextField
@@ -604,7 +604,7 @@ function ChplListingEdit({
                   </Button>
                 )}
             </Box>
-            <Box display="flex" pt={4} justifyContent="space-around" gap={16} flexDirection="row">
+            <Box display="flex" pt={4} justifyContent="space-around" gap="16px" flexDirection="row">
               { !hti5ErdIsOn
                 && (
                   <ChplTextField

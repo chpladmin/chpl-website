@@ -12,7 +12,6 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { string } from 'prop-types';
@@ -29,7 +28,7 @@ import {
 import { ChplLink, ChplTooltip } from 'components/util';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   chplAccordion: {
     borderRadius: '4px',
@@ -145,7 +144,7 @@ const useStyles = makeStyles({
     paddingBottom: '16px',
     alignItems: 'center',
   },
-});
+};
 
 function ChplManageSubscription({ hash }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -155,7 +154,6 @@ function ChplManageSubscription({ hash }) {
   const { mutate: deleteObjectSubscription } = useDeleteObjectSubscription();
   const subscriberQuery = useFetchSubscriber(hash);
   const subscriptionQuery = useFetchSubscriptions(hash);
-  const classes = useStyles();
 
   useEffect(() => {
     if (subscriberQuery.isLoading) {
@@ -206,7 +204,7 @@ function ChplManageSubscription({ hash }) {
     ? (
       <>
         <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
       </>
     )
     : (
@@ -224,9 +222,9 @@ function ChplManageSubscription({ hash }) {
   };
 
   return (
-    <Box className={classes.page}>
-      <Box className={classes.header}>
-        <Container className={classes.headerContent}>
+    <Box sx={styles.page}>
+      <Box sx={styles.header}>
+        <Container sx={styles.headerContent}>
           <Typography variant="h1">
             My Subscriptions
           </Typography>
@@ -241,9 +239,9 @@ function ChplManageSubscription({ hash }) {
         </Container>
       </Box>
       <Container>
-        <Box className={classes.chplLeftHandFormat}>
+        <Box sx={styles.chplLeftHandFormat}>
           <Card>
-            <Box className={classes.mySubsciptionImagery} />
+            <Box sx={styles.mySubsciptionImagery} />
             <CardContent>
               <Typography gutterBottom variant="h4" component="h2"><strong>Welcome to your subscription page!</strong></Typography>
               <Typography>Here, you can easily view and manage your subscriptions.</Typography>
@@ -251,7 +249,7 @@ function ChplManageSubscription({ hash }) {
           </Card>
           { subscriptions.length === 0
             && (
-              <Box className={classes.subscriptionTotalContainer}>
+              <Box sx={styles.subscriptionTotalContainer}>
                 <Typography variant="h5" component="h3">
                   <strong>
                     You have no current subscriptions
@@ -262,7 +260,7 @@ function ChplManageSubscription({ hash }) {
           { subscriptions.length > 0
             && (
               <Box>
-                <Box className={classes.subscriptionTotalContainer}>
+                <Box sx={styles.subscriptionTotalContainer}>
                   <Typography variant="h5" component="h3">
                     <strong>
                       {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
@@ -273,24 +271,24 @@ function ChplManageSubscription({ hash }) {
                 </Box>
                 { subscriptions.map((subscription) => (
                   <Accordion
-                    className={classes.chplAccordion}
+                    sx={styles.chplAccordion}
                     onChange={() => handleAccordionChange(subscription)}
                     id={`subscription-${subscription.certifiedProductId}`}
                     key={`subscription-${subscription.certifiedProductId}`}
                   >
                     <AccordionSummary
-                      className={classes.chplAccordionSummary}
+                      sx={styles.chplAccordionSummary}
                       expandIcon={getIcon(subscription)}
                       id={`subscription-id-${subscription.certifiedProductId}-header`}
                     >
-                      <Box className={classes.chplAccordionSummaryHeader}>
-                        <Box className={classes.chplAccordionSummarySubBox}>
-                          <Box className={classes.chplAccordionSummaryData}>
+                      <Box sx={styles.chplAccordionSummaryHeader}>
+                        <Box sx={styles.chplAccordionSummarySubBox}>
+                          <Box sx={styles.chplAccordionSummaryData}>
                             <Typography variant="subtitle1">
                               {subscription.chplProductNumber}
                             </Typography>
                           </Box>
-                          <Box className={classes.chplAccordionSummaryData}>
+                          <Box sx={styles.chplAccordionSummaryData}>
                             <Typography variant="body1">
                               {subscription.subscriptions.length}
                               {' '}
@@ -299,14 +297,14 @@ function ChplManageSubscription({ hash }) {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box className={classes.chplAccordionSummaryData}>
+                        <Box sx={styles.chplAccordionSummaryData}>
                           <FormControlLabel
                             onClick={(event) => event.stopPropagation()}
                             onFocus={(event) => event.stopPropagation()}
                             control={(
                               <Button
                                 variant="text"
-                                className={classes.deleteTextButton}
+                                sx={styles.deleteTextButton}
                                 onClick={() => deleteSubscriptions(subscription)}
                               >
                                 Unsubscribe from listing
@@ -317,12 +315,12 @@ function ChplManageSubscription({ hash }) {
                       </Box>
                     </AccordionSummary>
                     <AccordionDetails
-                      className={classes.chplAccordionDetails}
+                      sx={styles.chplAccordionDetails}
                       id={`subscription-id-${subscription.certifiedProductId}-details`}
                     >
-                      <Box className={classes.subscriptionMetaDataContainer}>
-                        <Box className={classes.metaDataRow}>
-                          <Box className={classes.metaDataBox}>
+                      <Box sx={styles.subscriptionMetaDataContainer}>
+                        <Box sx={styles.metaDataRow}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               Developer
                             </Typography>
@@ -333,7 +331,7 @@ function ChplManageSubscription({ hash }) {
                               router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
                             />
                           </Box>
-                          <Box className={classes.metaDataBox}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               Product
                             </Typography>
@@ -342,8 +340,8 @@ function ChplManageSubscription({ hash }) {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box className={classes.metaDataRow}>
-                          <Box className={classes.metaDataBox}>
+                        <Box sx={styles.metaDataRow}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               CHPL ID
                             </Typography>
@@ -354,7 +352,7 @@ function ChplManageSubscription({ hash }) {
                               router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
                             />
                           </Box>
-                          <Box className={classes.metaDataBox}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               Version
                             </Typography>
@@ -373,7 +371,7 @@ function ChplManageSubscription({ hash }) {
                         >
                           <CardContent>
                             <Box
-                              className={classes.subscriptionTypeContainer}
+                              sx={styles.subscriptionTypeContainer}
                             >
                               <Typography>
                                 {s.subject.type.name}
@@ -382,7 +380,7 @@ function ChplManageSubscription({ hash }) {
                               </Typography>
                               <ChplTooltip title="Unsubscribe from subscription type">
                                 <IconButton onClick={() => deleteSubscription(s)} size="large">
-                                  <DeleteIcon className={classes.deleteTextButton} />
+                                  <DeleteIcon sx={styles.deleteTextButton} />
                                 </IconButton>
                               </ChplTooltip>
                             </Box>

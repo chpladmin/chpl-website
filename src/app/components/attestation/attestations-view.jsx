@@ -16,7 +16,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -31,12 +30,12 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -47,7 +46,6 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const [developer, setDeveloper] = useState({});
   const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) });
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     if (initialDeveloper) {
@@ -93,7 +91,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   return <>
     <Card>
       <CardHeader title="Attestations" />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <>
           <Typography variant="body1">
             Attestations information is displayed here if a health IT developer’s attestation of compliance with the

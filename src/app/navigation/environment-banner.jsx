@@ -1,10 +1,9 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   envBanner: {
     backgroundColor: `${palette.error} !important`,
     width: '100%',
@@ -22,16 +21,15 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     paddingLeft: '8px',
   },
-});
+};
 
 function ChplEnvironmentBanner() {
   const text = 'Do not use | Test Environment | '.repeat(20);
-  const classes = useStyles();
 
   return (
-    <AppBar position="fixed" className={classes.envBanner}>
+    <AppBar position="fixed" sx={styles.envBanner}>
       <Toolbar>
-        <Typography variant="body2" noWrap className={classes.envBannerText}>
+        <Typography variant="body2" noWrap sx={styles.envBannerText}>
           {text}
         </Typography>
       </Toolbar>

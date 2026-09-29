@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func, shape } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -16,14 +15,13 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
   const { hasAnyRole } = useContext(UserContext);
   const [codeSets, setCodeSets] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setCodeSets(initialCodeSets
@@ -37,8 +35,8 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
   }, [initialCodeSets]);
 
   return <>
-    <Box className={classes.headerContainer}>
-      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+    <Box sx={styles.headerContainer}>
+      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
         <Typography variant="subtitle2">
           Code Sets
         </Typography>
@@ -46,7 +44,7 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
           {`(${codeSets.length} Result${codeSets.length !== 1 ? 's' : ''})`}
         </Typography>
       </Box>
-      <Box display="flex" alignItems="center" gap={4}>
+      <Box display="flex" alignItems="center" gap="4px">
         <ChplSystemMaintenanceActivity
           fetch={useFetchCodeSetsActivity}
           title="Code Sets"

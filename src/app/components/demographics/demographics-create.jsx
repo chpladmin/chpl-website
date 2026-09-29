@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Container, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Box, Container, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
@@ -10,12 +9,12 @@ import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-req
 import UrlCheckerWrapper from 'components/url-checker/url-checker-wrapper';
 import { DeveloperContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   pageHeader: {
     paddingTop: '32px',
     paddingBottom: '16px',
   },
-});
+};
 
 function ChplDemographicsCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
@@ -25,7 +24,6 @@ function ChplDemographicsCreate({ dispatch }) {
   const [stage, setStage] = useState(0);
   const crData = useFetchChangeRequestTypes();
   const { mutate, isLoading: isSubmitting } = usePostChangeRequest();
-  const classes = useStyles();
 
   useEffect(() => {
     if (crData.isLoading) {
@@ -85,11 +83,11 @@ function ChplDemographicsCreate({ dispatch }) {
   return (
     <>
       <Container maxWidth="md">
-        <div className={classes.pageHeader}>
+        <Box sx={styles.pageHeader}>
           <Typography gutterBottom component="h1" variant="h2">
             Submit Demographics Change
           </Typography>
-        </div>
+        </Box>
       </Container>
       <UrlCheckerWrapper>
         <ChplDemographicsWizard

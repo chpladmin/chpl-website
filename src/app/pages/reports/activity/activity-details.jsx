@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogContent } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import InfoIcon from '@mui/icons-material/Info';
 import { object } from 'prop-types';
 
@@ -19,11 +18,11 @@ import { compareListing } from 'pages/listing/history/listings.service';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
-});
+};
 
 const getDetails = (activity) => {
   let compare;
@@ -64,7 +63,6 @@ const getDetails = (activity) => {
 function ChplActivityDetails({ activity }) {
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   const handleClickOpen = () => {
     eventTrack({
@@ -159,7 +157,7 @@ function ChplActivityDetails({ activity }) {
         <ChplDialogTitle
           id={`activity-details-${activity.concept}-${activity.id}-title`}
           onClose={handleClose}
-          className={classes.legendTitle}
+          sx={styles.legendTitle}
         >
           Activity Details
         </ChplDialogTitle>

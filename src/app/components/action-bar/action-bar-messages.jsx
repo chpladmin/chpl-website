@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Chip, Divider, Drawer, IconButton, Typography,
+  Box, Button, Chip, Divider, Drawer, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, string,
 } from 'prop-types';
@@ -10,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { ChplTooltip } from 'components/util';
 
-const useStyles = makeStyles({
+const styles = {
   closeDrawer: {
     border: '1px solid #eee',
     backgroundColor: '#fff',
@@ -93,13 +92,12 @@ const useStyles = makeStyles({
   noMargin: {
     margin: '0',
   },
-});
+};
 
 const fixMessages = (msgs) => ([...new Set(msgs)].sort((a, b) => (a < b ? 1 : -1)));
 
 function ChplActionBarMessages({ errors = [], warnings = [] }) {
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     if (errors.length > 0 || warnings.length > 0) {
@@ -127,7 +125,7 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
               <IconButton
                 size="medium"
                 onClick={toggleDrawer}
-                className={`${classes.toggle} ${classes.toggleError} ${classes.errorTheme}`}
+                sx={{ ...styles.toggle, ...styles.toggleError, ...styles.errorTheme }}
                 id="action-bar-messages-toggle-errors"
               >
                 {fixMessages(errors).length}
@@ -140,7 +138,7 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
               <IconButton
                 size="medium"
                 onClick={toggleDrawer}
-                className={`${classes.toggle} ${classes.toggleWarning} ${classes.warningTheme}`}
+                sx={{ ...styles.toggle, ...styles.toggleWarning, ...styles.warningTheme }}
                 id="action-bar-messages-toggle-warnings"
               >
                 {fixMessages(warnings).length}
@@ -154,25 +152,23 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
         open={open}
         onClose={toggleDrawer}
         variant="persistent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
+        PaperProps={{ sx: styles.drawerPaper }}
       >
-        <div className={classes.messageContainer}>
+        <Box sx={styles.messageContainer}>
           {fixMessages(errors).length > 0
            && (
-             <div className={classes.errorContainer} id="action-bar-errors">
-               <div className={classes.messageHeader}>
+             <Box sx={styles.errorContainer} id="action-bar-errors">
+               <Box sx={styles.messageHeader}>
                  Error
                  {fixMessages(errors).length !== 1 ? 's' : ''}
                  <Chip
                    size="small"
-                   className={`${classes.messageChip} ${classes.errorTheme}`}
+                   sx={{ ...styles.messageChip, ...styles.errorTheme }}
                    label={fixMessages(errors).length}
                  />
-               </div>
-               <Divider className={classes.noMargin} />
-               <ul className={classes.list}>
+               </Box>
+               <Divider sx={styles.noMargin} />
+               <Box component="ul" sx={styles.list}>
                  {fixMessages(errors).map((message) => (
                    <li key={message}>
                      <Typography
@@ -183,27 +179,27 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
                      </Typography>
                    </li>
                  ))}
-               </ul>
-             </div>
+               </Box>
+             </Box>
            )}
           {errors.length > 0 && warnings.length > 0
            && (
-             <Divider className={classes.noMargin} />
+             <Divider sx={styles.noMargin} />
            )}
           {warnings.length > 0
            && (
-             <div className={classes.warningContainer} id="action-bar-warnings">
-               <div className={classes.messageHeader}>
+             <Box sx={styles.warningContainer} id="action-bar-warnings">
+               <Box sx={styles.messageHeader}>
                  Warning
                  {fixMessages(warnings).length !== 1 ? 's' : ''}
                  <Chip
                    size="small"
-                   className={`${classes.messageChip} ${classes.warningTheme}`}
+                   sx={{ ...styles.messageChip, ...styles.warningTheme }}
                    label={fixMessages(warnings).length}
                  />
-               </div>
-               <Divider className={classes.noMargin} />
-               <ul className={classes.list}>
+               </Box>
+               <Divider sx={styles.noMargin} />
+               <Box component="ul" sx={styles.list}>
                  {fixMessages(warnings).map((message) => (
                    <li key={message}>
                      <Typography
@@ -214,11 +210,11 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
                      </Typography>
                    </li>
                  ))}
-               </ul>
-             </div>
+               </Box>
+             </Box>
            )}
-        </div>
-        <div className={classes.closeDrawer}>
+        </Box>
+        <Box sx={styles.closeDrawer}>
           <Button
             color="primary"
             fullWidth
@@ -226,9 +222,9 @@ function ChplActionBarMessages({ errors = [], warnings = [] }) {
             id="action-bar-messages-close"
           >
             Close
-            <CloseIcon className={classes.iconSpacing} />
+            <CloseIcon sx={styles.iconSpacing} />
           </Button>
-        </div>
+        </Box>
       </Drawer>
     </>
   );

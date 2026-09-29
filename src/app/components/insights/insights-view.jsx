@@ -13,19 +13,18 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
 import { useFetchInsights } from 'api/developer';
 import { ChplLink } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplInsightsView({ developer }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
@@ -36,7 +35,6 @@ function ChplInsightsView({ developer }) {
     isLoading,
   } = useFetchInsights({ developer });
   const [insights, setInsights] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (isError || isLoading || !data) { return; }
@@ -46,7 +44,7 @@ function ChplInsightsView({ developer }) {
   return (
     <Card>
       <CardHeader title="Access Insights" />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <Typography variant="body1">
           Insights information is displayed here. For more information, please visit the
           {' '}

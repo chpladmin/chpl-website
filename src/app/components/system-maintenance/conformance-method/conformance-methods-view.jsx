@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, IconButton, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, func, shape } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -21,20 +20,19 @@ const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-});
+};
 
 function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConformanceMethods }) {
   const { hasAnyRole } = useContext(UserContext);
   const [conformanceMethods, setConformanceMethods] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
-  const classes = useStyles();
 
   useEffect(() => {
     setConformanceMethods(initialConformanceMethods
@@ -56,8 +54,8 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
   };
 
   return <>
-    <Box className={classes.headerContainer}>
-      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+    <Box sx={styles.headerContainer}>
+      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
         <Typography variant="subtitle2">
           Conformance Methods
         </Typography>
@@ -65,7 +63,7 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
           {`(${conformanceMethods.length} Result${conformanceMethods.length !== 1 ? 's' : ''})`}
         </Typography>
       </Box>
-      <Box display="flex" alignItems="center" gap={4}>
+      <Box display="flex" alignItems="center" gap="4px">
         <ChplSortControls
           sortOptions={sortOptions}
           orderBy={orderBy}

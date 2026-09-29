@@ -11,7 +11,6 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckIcon from '@mui/icons-material/Check';
@@ -34,7 +33,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   headerRow: {
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 16px 8px',
@@ -74,7 +73,7 @@ const useStyles = makeStyles({
       transform: 'translateY(0)',
     },
   },
-});
+};
 
 function ChplComparePage({ ids }) {
   const analytics = {
@@ -88,7 +87,6 @@ function ChplComparePage({ ids }) {
   const [listingsToProcess, setListingsToProcess] = useState([]);
   const [showPracticeType, setShowPracticeType] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -122,9 +120,9 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell className={classes.stickyColumn}><strong>{ title }</strong></TableCell>
+      <TableCell sx={styles.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
-        <TableCell className={classes.animatedItem} key={listing.id}>
+        <TableCell sx={styles.animatedItem} key={listing.id}>
           { getData(listing) }
         </TableCell>
       ))}
@@ -167,7 +165,7 @@ function ChplComparePage({ ids }) {
     if (!listings.some((listing) => listing.certificationResults.some((cr) => cr.criterion.id === criterion.id))) { return null; }
     return (
       <TableRow key={criterion.id} id={`criterion-${criterion.id}`}>
-        <TableCell scope="row" className={classes.stickyColumn}>
+        <TableCell scope="row" sx={styles.stickyColumn}>
           { criterion.removed ? 'Removed | ' : '' }
           <strong>{ criterion.number }</strong>
           {': '}
@@ -175,9 +173,9 @@ function ChplComparePage({ ids }) {
           { criterion.removed
             && (
               <ChplTooltip title="This certification criterion has been removed from the Program.">
-                <IconButton className={classes.infoIcon} size="large">
+                <IconButton sx={styles.infoIcon} size="large">
                   <InfoIcon
-                    className={classes.infoIconColor}
+                    sx={styles.infoIconColor}
                   />
                 </IconButton>
               </ChplTooltip>
@@ -226,7 +224,7 @@ function ChplComparePage({ ids }) {
     }))) { return null; }
     return (
       <TableRow key={cqm.id} id={`cqm-${cqm.id}`}>
-        <TableCell scope="row" className={classes.stickyColumn}>
+        <TableCell scope="row" sx={styles.stickyColumn}>
           <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
           {': '}
           {cqm.title}
@@ -268,13 +266,13 @@ function ChplComparePage({ ids }) {
       />
       <ChplPageBody>
         <Card>
-          <TableContainer className={classes.Table}>
+          <TableContainer sx={styles.Table}>
             <Table size="small">
               <TableHead>
-                <TableRow hover={false} className={classes.headerRow}>
-                  <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
+                <TableRow hover={false} sx={styles.headerRow}>
+                  <TableCell sx={styles.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                   { listings.map((listing) => (
-                    <TableCell className={classes.headerColumnContent} key={listing.id}>
+                    <TableCell sx={styles.headerColumnContent} key={listing.id}>
                       <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                         { listing.product.name }
                         <ChplBrowserComparedWidget

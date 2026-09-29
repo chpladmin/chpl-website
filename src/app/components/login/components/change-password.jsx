@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button, Card, CardHeader, CardContent, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ClearIcon from '@mui/icons-material/Clear';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +20,7 @@ import { palette } from 'themes';
 
 const zxcvbn = require('zxcvbn');
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.secondary,
     padding: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   password: yup.string()
@@ -58,7 +57,6 @@ function ChplChangePassword() {
   const { mutate } = usePostChangePassword();
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
-  const classes = useStyles();
 
   let formik;
 
@@ -134,8 +132,8 @@ function ChplChangePassword() {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Change password" />
-      <CardContent className={classes.grid}>
+      <CardHeader sx={styles.loginHeader} title="Change password" />
+      <CardContent sx={styles.grid}>
         <Typography>
           Choose a strong, unique password that you will easily remember. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.
         </Typography>

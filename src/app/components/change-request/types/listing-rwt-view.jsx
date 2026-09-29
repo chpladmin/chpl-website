@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
-import { Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Box, Typography } from '@mui/material';
 
 import { ChplLink } from 'components/util';
 import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -16,12 +15,11 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '8px',
   },
-});
+};
 
 function ChplChangeRequestListingRwtView() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest } = useContext(ChangeRequestContext);
-  const classes = useStyles();
 
   const getCurrent = () => {
     if (changeRequest.details.listing.rwtResultsUrl) {
@@ -40,16 +38,16 @@ function ChplChangeRequestListingRwtView() {
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.detailsContainer}>
+    <Box sx={styles.container}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">
           Current RWT Results URL
         </Typography>
         <Typography>
           { getCurrent() }
         </Typography>
-      </div>
-      <div className={classes.detailsContainer}>
+      </Box>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">
           Submitted RWT Results URL
         </Typography>
@@ -63,8 +61,8 @@ function ChplChangeRequestListingRwtView() {
             }}
           />
         </Typography>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

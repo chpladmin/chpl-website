@@ -13,7 +13,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useSelector } from 'react-redux';
 
 import ChplSedDownload from './sed-download';
@@ -26,7 +25,7 @@ import { FlagContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   dataContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
       borderBottom: 'none',
     },
   },
-});
+};
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
 
@@ -70,7 +69,6 @@ function ChplSed({ listing }) {
   const user = useSelector((state) => state.userInfo.user);
   const { hti5ErdIsOn } = useContext(FlagContext);
   const [hasSed, setHasSed] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setHasSed(certificationResults.some((cr) => cr.success && cr.sed));
@@ -85,13 +83,13 @@ function ChplSed({ listing }) {
   }
 
   return (
-    <Box display="flex" gap={16} flexDirection="column">
+    <Box display="flex" gap="16px" flexDirection="column">
       { !hti5ErdIsOn
         && (
           <Card>
             <CardHeader title="SED Summary" />
             <CardContent>
-              <Box className={classes.dataContainer}>
+              <Box sx={styles.dataContainer}>
                 <Box width="100%">
                   <Typography variant="subtitle1">
                     Full Usability Report:
@@ -113,7 +111,7 @@ function ChplSed({ listing }) {
                     {!sedReportFileLocation && 'No report on file'}
                   </Typography>
                 </Box>
-                <Box className={classes.dataBox}>
+                <Box sx={styles.dataBox}>
                   <Typography variant="subtitle1">
                     Description of Intended Users:
                   </Typography>
@@ -121,7 +119,7 @@ function ChplSed({ listing }) {
                     {sedIntendedUserDescription ?? 'N/A'}
                   </Typography>
                 </Box>
-                <Box className={classes.dataBox}>
+                <Box sx={styles.dataBox}>
                   <Typography variant="subtitle1">
                     Date SED Testing was Completed:
                   </Typography>
@@ -138,7 +136,7 @@ function ChplSed({ listing }) {
           <Card>
             <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
             <CardContent>
-              <Card className={classes.tableScrolling}>
+              <Card sx={styles.tableScrolling}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -208,7 +206,7 @@ function ChplSed({ listing }) {
                 <TableCell>UCD Process</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody className={classes.tableBody}>
+            <TableBody sx={styles.tableBody}>
               { sed.ucdProcesses
                 .sort(sortUcdProcesses)
                 .map((ucd) => (

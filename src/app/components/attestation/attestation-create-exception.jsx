@@ -8,7 +8,6 @@ import {
   Divider,
   Slide,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import CheckIcon from '@mui/icons-material/Check';
@@ -22,7 +21,7 @@ import { utilStyles } from 'themes';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   dialogTitle: {
     fontWeight: 800,
@@ -34,14 +33,13 @@ const useStyles = makeStyles({
   dialogActions: {
     justifyContent: 'flex-start',
   },
-});
+};
 
 function ChplAttestationCreateException(props) {
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
   const { developer, dispatch, period } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const classes = useStyles();
 
   const cancelCreatingException = () => {
     dispatch('cancel');
@@ -88,7 +86,7 @@ function ChplAttestationCreateException(props) {
       </ChplDialogTitle>
       <Divider />
       <DialogContent>
-        <DialogContentText className={classes.dialogContent}>
+        <DialogContentText sx={styles.dialogContent}>
           This action will re-open the Attestations submission feature for
           {' '}
           { developer.name }
@@ -100,27 +98,27 @@ function ChplAttestationCreateException(props) {
         </DialogContentText>
       </DialogContent>
       <Divider />
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions sx={styles.dialogActions}>
         <Button
           color="primary"
           variant="contained"
           id="create-attestation-exception-button"
           disabled={isSubmitting}
           onClick={createAttestationException}
-          className={classes.buttonMargin}
+          sx={styles.buttonMargin}
         >
           Confirm
           {' '}
-          <CheckIcon className={classes.iconSpacing} />
+          <CheckIcon sx={styles.iconSpacing} />
         </Button>
         <Button
           variant="contained"
           id="cancel-attestation-exception-button"
           onClick={cancelCreatingException}
-          className={classes.buttonMargin}>
+          sx={styles.buttonMargin}>
           Cancel
           {' '}
-          <CloseIcon className={classes.iconSpacing} />
+          <CloseIcon sx={styles.iconSpacing} />
         </Button>
       </DialogActions>
     </Dialog>
