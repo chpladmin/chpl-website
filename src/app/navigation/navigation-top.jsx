@@ -15,8 +15,8 @@ import ChplMobileNavDrawer from './mobile-nav-drawer';
 
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
-import { getAngularService } from 'services/angular-react-helper';
 import { eventTrack } from 'services/analytics.service';
+import { getCurrentUrl, goToState, reloadState } from 'services/navigation.service';
 import {
   FlagContext,
   useAnalyticsContext,
@@ -106,8 +106,6 @@ const useStyles = makeStyles({
 });
 
 function ChplNavigationTop() {
-  const $location = getAngularService('$location');
-  const $state = getAngularService('$state');
   const { analytics } = useAnalyticsContext();
   const { isProduction } = useContext(FlagContext);
   const classes = useStyles();
@@ -119,10 +117,10 @@ function ChplNavigationTop() {
       category: 'Navigation',
     });
     sessionStorage.removeItem('storageKey-listingsPage-hasSearched');
-    if ($location.url() === '/search') {
-      $state.reload();
+    if (getCurrentUrl() === '/search') {
+      reloadState();
     } else {
-      $state.go('search');
+      goToState('search');
     }
   };
 
@@ -132,7 +130,7 @@ function ChplNavigationTop() {
       event: 'Go to Search Page',
       category: 'Navigation',
     });
-    $state.go('search');
+    goToState('search');
   };
 
   return (

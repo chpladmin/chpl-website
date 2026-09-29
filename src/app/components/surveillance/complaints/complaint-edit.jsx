@@ -28,7 +28,7 @@ import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTextField } from 'components/util';
 import { ChplActionBar } from 'components/action-bar';
-import { getAngularService } from 'services/angular-react-helper';
+import { sortCriteria } from 'services/criteria.service';
 import { complaint as complaintPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 
@@ -158,7 +158,7 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
-    setCriteria(criteriaData.sort(getAngularService('utilService').sortCertActual));
+    setCriteria([...criteriaData].sort(sortCriteria));
   }, [criteriaData, criteriaIsLoading, criteriaIsSuccess]);
 
   useEffect(() => {

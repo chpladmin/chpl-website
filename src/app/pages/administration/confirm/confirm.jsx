@@ -17,7 +17,7 @@ import {
   ChplConfirmProgress,
   ChplConfirmVersion,
 } from 'components/listing/confirm';
-import { getAngularService } from 'services/angular-react-helper';
+import { goToState } from 'services/navigation.service';
 import { PendingListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -51,7 +51,6 @@ const useStyles = makeStyles({
 });
 
 function ChplConfirm({ id }) {
-  const $state = getAngularService('$state');
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
   const { mutate: confirmListing } = useConfirmPendingListing();
   const { mutate: rejectListing } = useRejectPendingListing();
@@ -93,7 +92,7 @@ function ChplConfirm({ id }) {
   };
 
   const cancel = () => {
-    $state.go('^', {}, { reload: true });
+    goToState('^', {}, { reload: true });
   };
 
   const confirm = () => {
