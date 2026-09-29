@@ -23,6 +23,14 @@ There is no test runner wired up currently (no `test` script, no jest/karma conf
 
 Local backend proxy target defaults to `http://localhost:8181/chpl-service`; requests to `/rest/*` are rewritten and proxied there (or to the DEV env with `--env.useDev`).
 
+## Testing environments
+
+**All testing is performed in the QA environment.** Write test steps against QA by default, and don't spread cases across environments without a reason.
+
+The one exception is comparison against production behaviour — "does this still look/behave the way it does in PROD?", "confirm no regression versus current PROD". **Do that in STG, not PROD.** STG is the production-comparable environment; never write a test step that asks someone to exercise a change in PROD itself.
+
+Note that this is separate from the local dev-server targets above: `yarn start:dev` proxies to `chpl-dev.healthit.gov` for local development, which is not the same thing as where testing happens.
+
 ## Architecture
 
 **AngularJS is a thin shell over a React app.** `src/app/index.js` bootstraps a single `angular.module('chpl', ...)` and wires up `ui.router` states, but essentially every feature is a React component tree that gets embedded into Angular via a bridge — do not add new AngularJS controllers/directives/templates; extend the React side instead.
@@ -127,3 +135,13 @@ Do not assume the hook is the one doing it. It has three known gaps:
 - **It may not run at all.** The hooks have shipped as MSYS-style symlinks in `.git/hooks` pointing into a sibling `chpl-documentation` checkout. Git Bash follows those, but native `git.exe` cannot execute through them, so on Windows they fail with `cannot spawn .git/hooks/pre-commit: No such file or directory` — or silently never fire. The fix is a directory of real (non-symlink) hook files plus `git config core.hooksPath <dir>`; a relative path there resolves from the repo root, so it works from any subdirectory.
 - **It never runs for commits made outside a local clone.** Anything committed through the GitHub web UI — an inline file edit, a suggested-change accepted on a PR — bypasses local hooks entirely, so the tag has to be typed. There are untagged commits in the history from exactly this route.
 - **It skips some commits by design.** It bails on any message containing the word "merge" (case-insensitive, anywhere in the message, not just the subject) and on any branch whose name contains "rebas".
+
+## Pull requests
+
+Unless directed otherwise, write PR descriptions as **GitHub-flavored Markdown**, ready to paste into the GitHub PR body.
+
+PR titles follow `OCD-1234: short description` — the ticket, a colon, then a brief phrase. This differs from the commit subject convention above; don't reuse the `type:` prefix form in a PR title.
+
+For the body: a short summary of the change and its motivation, then the per-file or per-area detail, then anything the reviewer needs to know (collateral risk, follow-ups in other repos, deliberate deviations from the ticket). Use task lists (`- [ ]`) for reviewer or release checklists, tables where they genuinely help, and fenced code blocks for diffs or commands. Link issues and PRs by `#number`, and reference code as `path/to/file.jsx:42`.
+
+Keep it proportional: a one-file refactor does not need a six-section description.
