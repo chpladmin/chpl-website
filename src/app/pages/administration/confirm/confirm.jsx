@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   CircularProgress,
   Container,
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -44,6 +46,15 @@ const useStyles = makeStyles({
       backgroundColor: '#f9f9f9',
       fontWeight: 600,
     },
+    snackbarActions: {
+      display: 'flex',
+      gap: '8px',
+      paddingRight: '8px',
+      pointerEvents: 'auto',
+    },
+    snackbarIcon: {
+      marginLeft: '4px',
+    },
   },
 });
 
@@ -51,7 +62,7 @@ function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
   const { mutate: confirmListing } = useConfirmPendingListing();
   const { mutate: rejectListing } = useRejectPendingListing();
-  const { enqueueSnackbar } = useSnackbar();
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -99,8 +110,31 @@ function ChplConfirm({ id }) {
       acknowledgeWarnings,
     }, {
       onSuccess: (result) => {
-        enqueueSnackbar(`The Listing has been confirmed. Details are available at <a href="#/listing/${result.id}">${result.chplProductNumber}</a>`, {
+        enqueueSnackbar('The Listing has been confirmed', {
           variant: 'success',
+          action: (key) => (
+            <div className={classes.snackbarActions}>
+              <Button
+                color="default"
+                variant="contained"
+                onClick={() => {
+                  window.location.href = `#/listing/${result.data.id}`;
+                  closeSnackbar(key);
+                }}
+              >
+                View Listing
+              </Button>
+              <Button
+                color="default"
+                variant="contained"
+                onClick={() => closeSnackbar(key)}
+              >
+                Dismiss
+                {' '}
+                <CloseIcon className={classes.snackbarIcon} />
+              </Button>
+            </div>
+          ),
         });
         setIsSubmitting(false);
         cancel();
