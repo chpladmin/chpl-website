@@ -369,7 +369,7 @@ function ChplMessaging({ dispatch }) {
                                 label: item.name,
                               }}
                               external={false}
-                              router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                              router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
                             />
                           </ListItem>
                         ))}
