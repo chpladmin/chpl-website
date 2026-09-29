@@ -1,0 +1,5 @@
+# Set globally so httpd doesn't fall back to a reverse-DNS guess at startup and
+# log AH00558 ("Could not reliably determine the server's fully qualified domain
+# name") on every boot - noise that lands in Datadog alongside the access logs.
+# The base httpd:2.4-alpine config ships ServerName commented out.
+ServerName ${SERVER_NAME}
