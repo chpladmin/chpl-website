@@ -28,11 +28,7 @@ function ChplPageBody({ children, maxWidth = 'lg' }) {
 
   return (
     <Box className={classes.container}>
-      <Container
-        id="main-content" tabIndex="-1"
-        maxWidth={maxWidth}
-        sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
-      >
+      <Container id="main-content" tabIndex="-1" maxWidth={maxWidth}>
         {children}
       </Container>
     </Box>
