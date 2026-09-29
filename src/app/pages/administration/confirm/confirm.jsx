@@ -36,9 +36,6 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     gap: '16px',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 100px)',
-  },
   menuItems: {
     padding: '8px',
     justifyContent: 'space-between',
@@ -299,7 +296,7 @@ function ChplConfirm({ id }) {
   };
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="lg">
+    <Container maxWidth="lg">
       <PendingListingContext.Provider value={pendingListingState}>
         <div className={classes.container}>
           <Container maxWidth="md">

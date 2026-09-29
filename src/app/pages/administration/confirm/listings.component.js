@@ -1,11 +1,9 @@
 const ConfirmListingsComponent = {
-  template: `<div class="row" ui-view>
-  <div class="col-md-12">
-    <chpl-confirm-listings-wrapper-bridge
-      on-process="::$ctrl.handleProcess"
+  template: `<ui-view>
+  <chpl-confirm-listings-wrapper-bridge
+    on-process="::$ctrl.handleProcess"
     ></chpl-confirm-listings-wrapper-bridge>
-  </div>
-</div>
+</ui-view>
 `,
   controller: class ConfirmListingsComponent {
     constructor($log, $state) {

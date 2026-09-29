@@ -13,6 +13,7 @@ function ChplConfirmProgress(props) {
   return (
     <ThemeProvider theme={theme}>
       <ChplProgress
+        buttonContainerMarginTop="-16px"
         steps={steps}
         {...props}
       />
