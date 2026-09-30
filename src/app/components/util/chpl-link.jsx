@@ -18,6 +18,9 @@ const useStyles = makeStyles({
     gap: '4px',
     justifyContent: 'space-between',
   },
+  chplLinkInline: {
+    display: 'inline-flex',
+  },
   indicateOnHover: {
     textDecoration: 'none',
     '&:hover': {
@@ -75,7 +78,7 @@ function ChplLink({
   }
 
   return (
-    <span className={classes.chplLink}>
+    <span className={inline ? `${classes.chplLink} ${classes.chplLinkInline}` : classes.chplLink}>
       <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
         {text}
       </a>
