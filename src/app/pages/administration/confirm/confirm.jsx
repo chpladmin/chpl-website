@@ -46,17 +46,17 @@ const useStyles = makeStyles({
       backgroundColor: '#f9f9f9',
       fontWeight: 600,
     },
-    snackbarActions: {
-      display: 'flex',
-      gap: '8px',
-      paddingRight: '8px',
-      pointerEvents: 'auto',
-    },
-    snackbarIcon: {
-      marginLeft: '4px',
-    },
   },
-});
+  snackbarActions: {
+    display: 'flex',
+    gap: '8px',
+    paddingRight: '8px',
+    pointerEvents: 'auto',
+  },
+  snackbarIcon: {
+    marginLeft: '4px',
+  },
+}); 
 
 function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
@@ -113,7 +113,7 @@ function ChplConfirm({ id }) {
         enqueueSnackbar('The Listing has been confirmed', {
           variant: 'success',
           action: (key) => (
-            <div className={classes.snackbarActions}>
+            <div>
               <Button
                 color="default"
                 variant="contained"

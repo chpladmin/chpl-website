@@ -3,11 +3,7 @@ import React from 'react';
 import ChplCharts from './charts';
 
 function ChplChartsWrapper() {
-  return (
-    <>
-      <ChplCharts />
-    </>
-  );
+  return <ChplCharts />;
 }
 
 export default ChplChartsWrapper;
