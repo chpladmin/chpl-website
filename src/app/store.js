@@ -116,9 +116,6 @@ const createStore = () => {
   return configured;
 };
 
-// `index.html` loads every webpack entry bundle and each one gets its own copy
-// of this module, so hold a single store on `window`. Otherwise each bundle has
-// a private `userInfo` and a login in one is invisible to all the others.
-const store = window.chplStore ?? (window.chplStore = createStore());
+const store = createStore();
 
 export default store;

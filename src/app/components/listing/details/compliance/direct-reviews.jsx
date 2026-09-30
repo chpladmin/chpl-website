@@ -307,7 +307,7 @@ function ChplDirectReviews({
                                       href={`#/listing/${dal.id}`}
                                       text={dal.chplProductNumber}
                                       external={false}
-                                      router={{ sref: 'listing', options: { id: dal.id } }}
+                                      router={{ sref: 'listing', params: { id: dal.id } }}
                                       analytics={{
                                         ...analytics,
                                         event: `Navigate to Listing from Direct Reviews - ${dal.chplProductNumber}`,

@@ -231,7 +231,7 @@ function ChplManageSubscriptionsView({ analytics }) {
                               text={item.subscribedObjectName}
                               analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
                               external={false}
-                              router={{ sref: 'listing', options: { id: item.subscribedObjectId } }}
+                              router={{ sref: 'listing', params: { id: item.subscribedObjectId } }}
                             />
                           )}
                           fieldGroups={[
