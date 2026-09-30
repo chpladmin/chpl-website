@@ -37,6 +37,7 @@ yarn install
 * `yarn start:prod:dev`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but using the production settings for js minification / packaging / etc. and connecting to the DEV environment for data
 * `lint`: Run ESLint against all JavaScript files in the project
 * `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically. Especially useful when run as `yarn lint:fix src/app/path/to/file.js[x]` to automatically apply fixes against a single file
+* `yarn test`: Run unti tests using jest + @testing-library/react in jsdom
 
 #### Yarn environment parameters
 
