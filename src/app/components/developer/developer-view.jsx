@@ -388,14 +388,14 @@ function ChplDeveloperView(props) {
                )}
               { can('edit') && hasAnyRole(['chpl-developer'])
                && (
-                   <Button
-                     variant="contained"
-                     aria-label={`Submit ${developer.name} Demographics Change`}
-                     id="developer-component-edit"
-                     onClick={createDemographicsCr}
-                   >
-                     Submit Demographics Change
-                   </Button>
+               <Button
+                 variant="contained"
+                 aria-label={`Submit ${developer.name} Demographics Change`}
+                 id="developer-component-edit"
+                 onClick={createDemographicsCr}
+               >
+                 Submit Demographics Change
+               </Button>
                )}
               { can('split')
                && (

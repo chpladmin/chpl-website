@@ -304,8 +304,8 @@ function ChplListingHistory(props) {
                           </TableCell>
                           <TableCell>
                             <ul className="list-unstyled">
-                              { item.change.map((change, idx) => (
-                                <li key={idx} dangerouslySetInnerHTML={{ __html: `${change}` }} />
+                              { item.change.map((change) => (
+                                <li key={change} dangerouslySetInnerHTML={{ __html: `${change}` }} />
                               ))}
                             </ul>
                           </TableCell>

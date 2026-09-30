@@ -14,7 +14,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
-import { sortCqms } from 'services/cqms.service';
+import { getCqmDisplayValue, sortCqms } from 'services/cqms.service';
 import {
   certificationEdition,
   cqm as cqmType,
@@ -99,7 +99,7 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
                   <TableCell>
                     <ChplTooltip title={cqm.description ?? 'unknown'}>
                       <Typography>
-                        { cqm.cmsId ? cqm.cmsId : (cqm.nqfNumber ? `NQF-${cqm.nqfNumber}` : 'unknown') }
+                        { getCqmDisplayValue(cqm) }
                         :
                         {' '}
                         { cqm.title ?? 'unknown' }

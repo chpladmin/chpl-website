@@ -37,17 +37,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplReliedUponSoftwareView(props) {
-  /* eslint-disable react/destructuring-assignment */
+function ChplReliedUponSoftwareView({ sw }) {
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     const displaySw = {};
     let count = 0;
-    props.sw.forEach((item, arr, idx) => {
+    sw.forEach((item, arr, idx) => {
       if (item.grouping === null) {
         displaySw[`defaultGroup${idx}`] = [item];
         count += 1;
@@ -65,13 +63,13 @@ function ChplReliedUponSoftwareView(props) {
 
   return (
     <ul className={classes.unindentedData}>
-      { Object.values(software).map((group, groupIndex) => (group.length > 1 ? (
-        <li key={`oneOf-${groupIndex}`}>
+      { Object.entries(software).map(([groupKey, group], groupIndex) => (group.length > 1 ? (
+        <li key={`oneOf-${groupKey}`}>
           One of
-          <ul key={`group-${groupIndex}`}>
-            { group.map((sw, subIndex) => (
-              <li key={sw.id || sw.key || subIndex}>
-                { getDisplay(sw) }
+          <ul key={`group-${groupKey}`}>
+            { group.map((groupItem, subIndex) => (
+              <li key={groupItem.id || groupItem.key || subIndex}>
+                { getDisplay(groupItem) }
                 { isAndOrOr(subIndex, group.length, groupIndex, groupCount) }
               </li>
             ))}
