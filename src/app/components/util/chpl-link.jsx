@@ -8,8 +8,10 @@ import { bool, node, string } from 'prop-types';
 import { eventTrack } from 'services/analytics.service';
 import { goToState } from 'services/navigation.service';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   chplLink: {
     display: 'flex',
     overflowWrap: 'anywhere',
@@ -82,7 +84,7 @@ function ChplLink({
         && (
           <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
             <ExitToAppIcon />
-            <span className="sr-only">Web Site Disclaimers</span>
+            <span className={classes.srOnly}>Web Site Disclaimers</span>
           </a>
         )}
     </span>

@@ -6,14 +6,14 @@ import { arrayOf } from 'prop-types';
 
 import { reliedUponSoftware } from 'shared/prop-types';
 
-const getDisplay = (sw) => (
+const getDisplay = (sw, classes) => (
   <>
     { sw.certifiedProductId
       && <a href={`#/listing/${sw.certifiedProductId}`}>{ sw.certifiedProductNumber }</a>}
     { !sw.certifiedProductId && sw.certifiedProductNumber
         && (
         <>
-          <span className="data-item--invalid">{ sw.certifiedProductNumber }</span>
+          <span className={classes.invalidData}>{ sw.certifiedProductNumber }</span>
           (this CHPL Product Number is invalid)
         </>
         )}
@@ -32,6 +32,9 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
 };
 
 const useStyles = makeStyles({
+  invalidData: {
+    textDecoration: 'line-through',
+  },
   unindentedData: {
     marginLeft: '-25px',
   },
@@ -69,7 +72,7 @@ function ChplReliedUponSoftwareView({ sw }) {
           <ul key={`group-${groupKey}`}>
             { group.map((groupItem, subIndex) => (
               <li key={groupItem.id || groupItem.key || subIndex}>
-                { getDisplay(groupItem) }
+                { getDisplay(groupItem, classes) }
                 { isAndOrOr(subIndex, group.length, groupIndex, groupCount) }
               </li>
             ))}
@@ -77,7 +80,7 @@ function ChplReliedUponSoftwareView({ sw }) {
         </li>
       ) : (
         <li key={group[0].id || group[0].key || groupIndex}>
-          { getDisplay(group[0]) }
+          { getDisplay(group[0], classes) }
           { groupIndex !== groupCount - 1 && ' AND' }
         </li>
       )))}

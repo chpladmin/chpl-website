@@ -81,7 +81,7 @@ const useStyles = makeStyles({
   },
 });
 
-const getItemsSurveilled = (surveillance) => {
+const getItemsSurveilled = (surveillance, classes) => {
   if (surveillance.requirements?.length === 0) { return 'None'; }
   return (
     <List>
@@ -89,7 +89,7 @@ const getItemsSurveilled = (surveillance) => {
         .sort(sortRequirements)
         .map((req) => (
           <ListItem key={req.id}>
-            <span className={(req.requirementType?.removed ? 'removed' : '')}>
+            <span className={(req.requirementType?.removed ? classes.removedText : '')}>
               { getRequirementDisplay(req) }
             </span>
           </ListItem>
@@ -108,7 +108,7 @@ const getSurveillanceResultsSummary = (surv) => surv.requirements
       removed: req.requirementType?.removed,
     })));
 
-const getSurveillanceResult = (surveillance) => {
+const getSurveillanceResult = (surveillance, classes) => {
   if (getSurveillanceResultsSummary(surveillance).length === 0) { return 'No Non-Conformities Found'; }
   return (
     <List>
@@ -118,7 +118,7 @@ const getSurveillanceResult = (surveillance) => {
             <Typography variant="body1">
               { `${result.statusName} Non-Conformity Found for ` }
               {' '}
-              <span className={result.removed ? 'removed' : ''}>{ result.display }</span>
+              <span className={result.removed ? classes.removedText : ''}>{ result.display }</span>
             </Typography>
           </Box>
         </ListItem>
@@ -258,8 +258,8 @@ function ChplSurveillance({
                     {surv.type.name === 'Randomized' ? ` (${surv.randomizedSitesUsed} sites used in surveillance)` : ''}
                   </Typography>,
                   'The type of surveillance conducted (either randomized or reactive).') }
-                { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
-                { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
+                { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv, classes), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
+                { getDataDisplay('Surveillance Result', getSurveillanceResult(surv, classes), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
               { surv.requirements.map((req) => req.nonconformities.map((nc) => (
                 <Accordion
@@ -288,7 +288,7 @@ function ChplSurveillance({
                         { getDataDisplay('Date Corrective Action Must Be Completed', <Typography>{ getDisplayDateFormat(nc.capMustCompleteDay) }</Typography>, 'The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status.') }
                         { getDataDisplay('Date Corrective Action Was Completed', <Typography>{ getDisplayDateFormat(nc.capEndDay) }</Typography>, 'The date that the corrective action was completed.') }
                         { getDataDisplay('Non-Conformity Type',
-                          <Typography className={nc.type.removed ? 'removed' : ''}>
+                          <Typography className={nc.type.removed ? classes.removedText : ''}>
                             {nc.type.removed ? 'Removed | ' : ''}
                             {' '}
                             {nc.type.number ? (`${nc.type.number}: `) : ''}
