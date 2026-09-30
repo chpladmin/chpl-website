@@ -48,7 +48,7 @@ function ChplReliedUponSoftwareView({ sw }) {
   useEffect(() => {
     const displaySw = {};
     let count = 0;
-    sw.forEach((item, arr, idx) => {
+    sw.forEach((item, idx) => {
       if (item.grouping === null) {
         displaySw[`defaultGroup${idx}`] = [item];
         count += 1;
