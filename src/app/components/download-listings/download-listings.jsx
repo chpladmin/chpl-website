@@ -21,9 +21,10 @@ import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   noMargin: {
     margin: '0',
   },
@@ -292,7 +293,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
             selected={c.selected}
             style={{ gap: '8px', padding: '8px 16px' }}
           >
-            <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
+            <span className={classes.srOnly}>{ c.selected ? 'selected: ' : 'not selected: '}</span>
             { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon color="primary" /> }
             { c.name }
           </MenuItem>,

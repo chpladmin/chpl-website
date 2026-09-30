@@ -502,7 +502,7 @@ function ChplListingEditUpload({
               && (
                 <Fade style={{ transitionDelay: newListing ? '1.5s' : '0ms' }} in={!!diff.length > 0}>
                   <Box className={classes.differenceCallout}>
-                    <List className="list-unstyled">
+                    <List>
                       {diff.map((change) => (
                         <li key={change} dangerouslySetInnerHTML={{ __html: change }} />
                       ))}
