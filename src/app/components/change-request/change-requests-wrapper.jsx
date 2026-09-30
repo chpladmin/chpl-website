@@ -5,7 +5,6 @@ import {
 
 import ChplChangeRequests from './change-requests';
 
-import AppWrapper from 'app-wrapper';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 
 function ChplChangeRequestsWrapper(props) {
@@ -17,7 +16,7 @@ function ChplChangeRequestsWrapper(props) {
   } = props;
 
   return (
-    <AppWrapper>
+    <>
       <ChplPageHeader text="Change Requests" />
       <ChplPageBody>
         <ChplChangeRequests
@@ -27,7 +26,7 @@ function ChplChangeRequestsWrapper(props) {
           useFooterSpacing={useFooterSpacing}
         />
       </ChplPageBody>
-    </AppWrapper>
+    </>
   );
 }
 

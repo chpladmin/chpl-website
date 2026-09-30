@@ -3,15 +3,13 @@ import { string } from 'prop-types';
 
 import ChplConfirmSubscription from './confirm-subscription';
 
-import AppWrapper from 'app-wrapper';
-
 function ChplConfirmSubscriptionWrapper({ hash }) {
   return (
-    <AppWrapper>
+    <>
       <ChplConfirmSubscription
         hash={hash}
       />
-    </AppWrapper>
+    </>
   );
 }
 

@@ -12,6 +12,7 @@ import {
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import AddIcon from '@material-ui/icons/Add';
 import { useSnackbar } from 'notistack';
+import { oneOf } from 'prop-types';
 
 import {
   useDeleteUserFromAcb,
@@ -61,7 +62,7 @@ const sortOrgs = (a, b) => {
   return a.name < b.name ? -1 : 1;
 };
 
-function ChplOncOrganizations() {
+function ChplOncOrganizations({ orgType = 'acb' }) {
   const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -69,7 +70,6 @@ function ChplOncOrganizations() {
   const [activeId, setActiveId] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
-  const [orgType, setOrgType] = useState('');
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
   const { mutate: invite } = usePostUserInvitation();
@@ -79,10 +79,6 @@ function ChplOncOrganizations() {
   const roles = ['chpl-onc-acb'];
   const classes = useStyles();
   let analyticsData;
-
-  useEffect(() => {
-    setOrgType(window.location.href.includes('onc-acbs') ? 'acb' : 'atl');
-  }, []);
 
   useEffect(() => {
     if (orgType !== 'acb') { return; }
@@ -267,4 +263,5 @@ function ChplOncOrganizations() {
 export default ChplOncOrganizations;
 
 ChplOncOrganizations.propTypes = {
+  orgType: oneOf(['acb', 'atl']),
 };

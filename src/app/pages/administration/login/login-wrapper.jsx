@@ -6,23 +6,14 @@ import {
 
 import ChplLoginPage from './login';
 
-import AppWrapper from 'app-wrapper';
-
-function ChplLoginWrapper(props = {
-  returnTo: {
-    state: () => 'search',
-    params: () => {},
-    options: () => {},
-  },
-}) {
+// `returnTo` is a ui-router TargetState resolved by the login state. It is
+// absent when this renders as /administration's default content, in which case
+// ChplLoginPage's own default sends the user to search after logging in.
+function ChplLoginWrapper({ returnTo }) {
   return (
-    <AppWrapper>
-      <Container disableGutters maxWidth={false} id="login-component">
-        <ChplLoginPage
-          {...props}
-        />
-      </Container>
-    </AppWrapper>
+    <Container disableGutters maxWidth={false} id="login-component">
+      <ChplLoginPage returnTo={returnTo} />
+    </Container>
   );
 }
 
