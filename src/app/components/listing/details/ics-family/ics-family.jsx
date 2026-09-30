@@ -249,7 +249,7 @@ function ChplIcsFamily(props) {
                             href={`#/listing/${listing?.id}`}
                             text={listing?.chplProductNumber}
                             external={false}
-                            router={{ sref: 'listing', options: { id: listing?.id } }}
+                            router={{ sref: 'listing', params: { id: listing?.id } }}
                             analytics={{
                               ...analytics,
                               event: `Navigate to Listing from ICS Relationship Diagram - ${listing.chplProductNumber}`,
@@ -262,7 +262,7 @@ function ChplIcsFamily(props) {
                           href={`#/organizations/developers/${listing?.developer.id}`}
                           text={listing?.developer.name}
                           external={false}
-                          router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
+                          router={{ sref: 'organizations.developers.developer', params: { id: listing?.developer.id } }}
                           analytics={{
                             ...analytics,
                             event: `Navigate to Developer from ICS Relationship Diagram - ${listing.developer.name}`,
@@ -343,7 +343,7 @@ function ChplIcsFamily(props) {
                                 href={`#/listing/${l.id}`}
                                 text={l.chplProductNumber}
                                 external={false}
-                                router={{ sref: 'listing', options: { id: l?.id } }}
+                                router={{ sref: 'listing', params: { id: l?.id } }}
                                 analytics={{
                                   ...analytics,
                                   event: `Navigate to ICS Relationship Listing - ${l.chplProductNumber}`,
@@ -356,7 +356,7 @@ function ChplIcsFamily(props) {
                             href={`#/organizations/developers/${l?.developer.id}`}
                             text={l?.developer.name}
                             external={false}
-                            router={{ sref: 'organizations.developers.developer', options: { id: l?.developer.id } }}
+                            router={{ sref: 'organizations.developers.developer', params: { id: l?.developer.id } }}
                             analytics={{
                               ...analytics,
                               event: `Navigate to ICS Relationship Developer - ${l.developer.name}`,

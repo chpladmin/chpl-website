@@ -120,7 +120,7 @@ function ChplEditDeveloper({ dispatch }) {
             onSuccess: (response) => {
               setIsProcessing(false);
               let body;
-              if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+              if (!response.status || response.status === 200 || (response.status !== null && typeof response.status === 'object')) {
                 dispatch('cancel');
               } else if (response.data.errorMessages) {
                 body = response.data.errorMessages.join(', ');

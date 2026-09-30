@@ -542,7 +542,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                         aggregationName: changeRequest.details.listing.product.name,
                       }}
                       external={false}
-                      router={{ sref: 'listing', options: { id: changeRequest.details.listing.id } }}
+                      router={{ sref: 'listing', params: { id: changeRequest.details.listing.id } }}
                     />
                   </Typography>
                 </div>
