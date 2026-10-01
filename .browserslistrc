@@ -1,2 +1,9 @@
 # Supported browsers
+#
+# IE is deliberately excluded: index.html redirects IE to
+# unsupported-browser.html, so compiling for it only bloated the output. Its
+# presence in `defaults` (via stale caniuse data) was what forced async/await
+# to be compiled to regenerator.
 defaults
+not ie 11
+not ie_mob 11
