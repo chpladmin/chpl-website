@@ -27,7 +27,6 @@ function FlagWrapper({ children }) {
   const hti5ErdIsOn = isOn('hti-5-erd');
   const insightsConnectionIsOn = isOn('insights-connection');
   const insightsDisplayIsOn = isOn('insights-display');
-  const rwtAiIntegrationIsOn = isOn('rwt-ai-integration');
   const rwtChangeRequestIsOn = isOn('rwt-change-request');
   const sbulChangeRequestIsOn = isOn('sbul-change-request');
 
@@ -40,7 +39,6 @@ function FlagWrapper({ children }) {
     hti5ErdIsOn,
     insightsConnectionIsOn,
     insightsDisplayIsOn,
-    rwtAiIntegrationIsOn,
     rwtChangeRequestIsOn,
     sbulChangeRequestIsOn,
   };
