@@ -14,13 +14,15 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
-import { sortCqms } from 'services/cqms.service';
+import { getCqmDisplayValue, sortCqms } from 'services/cqms.service';
 import {
   certificationEdition,
   cqm as cqmType,
 } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   helperText: {
     padding: '16px 0',
   },
@@ -47,7 +49,7 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
     const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
     return (
       <TableCell key={num}>
-        <span className="sr-only">
+        <span className={classes.srOnly}>
           { meets ? 'meets' : 'does not meet' }
           170.315 (c)(
           {num}
@@ -89,7 +91,7 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
               .map((cqm) => (
                 <TableRow key={cqm.id ?? cqm.cmsId} className={!cqm.success ? classes.disabledRow : ''}>
                   <TableCell>
-                    <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
+                    <span className={classes.srOnly}>{ cqm.success ? 'meets' : 'does not meet' }</span>
                     { edition?.name !== null && edition?.name === '2011' && cqm.success
                       && (
                         <CheckIcon fontSize="large" />
@@ -99,7 +101,7 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
                   <TableCell>
                     <ChplTooltip title={cqm.description ?? 'unknown'}>
                       <Typography>
-                        { cqm.cmsId ? cqm.cmsId : (cqm.nqfNumber ? `NQF-${cqm.nqfNumber}` : 'unknown') }
+                        { getCqmDisplayValue(cqm) }
                         :
                         {' '}
                         { cqm.title ?? 'unknown' }

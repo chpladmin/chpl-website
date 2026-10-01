@@ -1,22 +1,24 @@
 import React from 'react';
-import {
-  ThemeProvider,
-} from '@material-ui/core';
 import { bool, func, number } from 'prop-types';
 
 import { ChplProgress } from 'components/util';
-import theme from 'themes/theme';
 
-function ChplConfirmProgress(props) {
+function ChplConfirmProgress({
+  canNext,
+  canPrevious,
+  dispatch,
+  value,
+}) {
   const steps = ['Developer', 'Product', 'Version', 'Listing'];
 
   return (
-    <ThemeProvider theme={theme}>
-      <ChplProgress
-        steps={steps}
-        {...props}
-      />
-    </ThemeProvider>
+    <ChplProgress
+      steps={steps}
+      canNext={canNext}
+      canPrevious={canPrevious}
+      dispatch={dispatch}
+      value={value}
+    />
   );
 }
 

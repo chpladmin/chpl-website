@@ -35,6 +35,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="assets/favicons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,300,300italic">
     <script>
       var ua = navigator.userAgent;
       var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
@@ -43,30 +44,6 @@
       }
     </script>
     <style>
-      /*
-       * Inline copy of Bootstrap's .sr-only / .sr-only-focusable so the
-       * "Skip to main content" link stays visually hidden on a hard reload,
-       * before the SCSS bundle (which also defines these) has loaded.
-       */
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        border: 0;
-      }
-      .sr-only-focusable:active,
-      .sr-only-focusable:focus {
-        position: static;
-        width: auto;
-        height: auto;
-        margin: 0;
-        overflow: visible;
-        clip: auto;
-      }
       /*
        * "Skip to main content" link. It is the first focusable element in the
        * DOM, so keyboard users reach it on the very first Tab press. It stays

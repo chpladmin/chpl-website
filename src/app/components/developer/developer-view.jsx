@@ -39,9 +39,10 @@ import {
   UserContext,
   useAnalyticsContext,
 } from 'shared/contexts';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -293,22 +294,22 @@ function ChplDeveloperView(props) {
               <Typography variant="body1" gutterBottom>
                 <strong>Contact</strong>
                 <br />
-                <span className="sr-only">Full name: </span>
+                <span className={classes.srOnly}>Full name: </span>
                 {developer.contact.fullName}
                 {developer.contact.title
                   && (
                     <>
                       ,
                       {' '}
-                      <span className="sr-only">Title: </span>
+                      <span className={classes.srOnly}>Title: </span>
                       {developer.contact.title}
                     </>
                   )}
                 <br />
-                <span className="sr-only">Phone: </span>
+                <span className={classes.srOnly}>Phone: </span>
                 {developer.contact.phoneNumber}
                 <br />
-                <span className="sr-only">Email: </span>
+                <span className={classes.srOnly}>Email: </span>
                 {developer.contact.email}
               </Typography>
             )}
@@ -325,30 +326,30 @@ function ChplDeveloperView(props) {
               <Typography variant="body1" gutterBottom>
                 <strong>Address</strong>
                 <br />
-                <span className="sr-only">Line 1: </span>
+                <span className={classes.srOnly}>Line 1: </span>
                 {developer.address.line1}
                 {developer.address.line2
                   && (
                     <>
                       ,
                       {' '}
-                      <span className="sr-only">Line 2: </span>
+                      <span className={classes.srOnly}>Line 2: </span>
                       {developer.address.line2}
                     </>
                   )}
                 <br />
-                <span className="sr-only">City: </span>
+                <span className={classes.srOnly}>City: </span>
                 {developer.address.city}
                 ,
                 {' '}
-                <span className="sr-only">State: </span>
+                <span className={classes.srOnly}>State: </span>
                 {developer.address.state}
                 {' '}
-                <span className="sr-only">Zipcode: </span>
+                <span className={classes.srOnly}>Zipcode: </span>
                 {developer.address.zipcode}
                 ,
                 {' '}
-                <span className="sr-only">Country: </span>
+                <span className={classes.srOnly}>Country: </span>
                 {developer.address.country}
               </Typography>
             )}
@@ -388,14 +389,14 @@ function ChplDeveloperView(props) {
                )}
               { can('edit') && hasAnyRole(['chpl-developer'])
                && (
-                   <Button
-                     variant="contained"
-                     aria-label={`Submit ${developer.name} Demographics Change`}
-                     id="developer-component-edit"
-                     onClick={createDemographicsCr}
-                   >
-                     Submit Demographics Change
-                   </Button>
+               <Button
+                 variant="contained"
+                 aria-label={`Submit ${developer.name} Demographics Change`}
+                 id="developer-component-edit"
+                 onClick={createDemographicsCr}
+               >
+                 Submit Demographics Change
+               </Button>
                )}
               { can('split')
                && (

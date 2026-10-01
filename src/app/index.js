@@ -6,9 +6,8 @@
 // here. Costs ~7K.
 import 'regenerator-runtime/runtime';
 
-// Import base SCSS file and then all SCSS files in directories
+// App styling is all JSS; this is the only stylesheet left to load
 import 'swagger-ui-react/swagger-ui.css';
-import './index.scss';
 import '../assets/favicons/favicons';
 
 import React from 'react';
@@ -16,13 +15,6 @@ import { createRoot } from 'react-dom/client';
 
 import AppRoot from './router/app-root';
 import configureRouter from './router/configure';
-
-function importAll(r) {
-  r.keys().forEach(r);
-}
-importAll(
-  require.context('./', true, /^.*\/.*\.scss$/),
-);
 
 // register the state tree and global hooks before anything renders
 configureRouter();
