@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, bool, func, node, oneOf, shape, string,
+  arrayOf,
+  bool,
+  func,
+  node,
+  oneOf,
+  shape,
+  string,
 } from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
+import Box from '@mui/material/Box';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import TableCell from '@mui/material/TableCell';
 
-const useStyles = makeStyles({
+const styles = {
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -33,7 +39,7 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     zIndex: 1000,
   },
-});
+};
 
 function ChplSortableHeaders({
   headers,
@@ -44,7 +50,6 @@ function ChplSortableHeaders({
 }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
-  const classes = useStyles();
 
   useEffect(() => {
     setOrder(initialOrder);
@@ -73,26 +78,25 @@ function ChplSortableHeaders({
             key={cell.property || cell.text}
             align="left"
             sortDirection={orderBy === cell.property ? order : false}
-            className={(index === 0 && stickyHeader) ? classes.stickyColumn : undefined}
+            sx={(index === 0 && stickyHeader) ? styles.stickyColumn : undefined}
           >
             { cell.sortable
               ? (
                 <TableSortLabel
-                  className={classes.header}
                   active={orderBy === cell.property}
                   direction={orderBy === cell.property ? order : (cell.reverseDefault ? 'desc' : 'asc')}
                   onClick={createSortHandler(cell)}
                 >
-                  <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
+                  <Box sx={[styles.extraContainer, cell.invisible && styles.visuallyHidden]}>
                     { cell.text }
                     { cell.extra }
-                  </div>
+                  </Box>
                 </TableSortLabel>
               ) : (
-                <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
+                <Box sx={[styles.extraContainer, cell.invisible && styles.visuallyHidden]}>
                   { cell.text }
                   { cell.extra }
-                </div>
+                </Box>
               )}
           </TableCell>
         ))}

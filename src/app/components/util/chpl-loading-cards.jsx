@@ -1,12 +1,11 @@
 import React from 'react';
 import { Box, Card, CardContent } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import Skeleton from '@mui/material/Skeleton';
 import { number } from 'prop-types';
 
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   card: {
     marginBottom: theme.spacing(1.5),
   },
@@ -56,20 +55,18 @@ const useStyles = makeStyles({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
-});
+};
 
 function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
-  const classes = useStyles();
-
   const renderField = () => (
-    <Box className={classes.field}>
+    <Box sx={styles.field}>
       <Skeleton variant="text" width="45%" height="14px" />
       <Skeleton variant="text" width="70%" height="20px" />
     </Box>
   );
 
   const renderRow = (isPrimary = true) => (
-    <Box className={isPrimary ? classes.primaryRow : classes.detailsRow}>
+    <Box sx={isPrimary ? styles.primaryRow : styles.detailsRow}>
       {[...Array(fieldsPerRow)].map((_item, idx) => (
         // eslint-disable-next-line react/no-array-index-key
         <React.Fragment key={idx}>
@@ -81,17 +78,17 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
 
   return (
     <Box>
-      <Box className={classes.controlsHeader}>
+      <Box sx={styles.controlsHeader}>
         <Skeleton variant="text" width="30%" height="32px" />
         <Skeleton variant="text" width="20%" height="32px" />
       </Box>
 
       {[...Array(cards)].map((_card, cardIdx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Card key={cardIdx} className={classes.card}>
-          <CardContent className={classes.cardContent}>
+        <Card key={cardIdx} sx={styles.card}>
+          <CardContent sx={styles.cardContent}>
             <Box display="flex" gap={theme.spacing(2)}>
-              <Box className={classes.contentBody}>
+              <Box sx={styles.contentBody}>
                 {renderRow()}
 
                 {renderRow()}
@@ -104,7 +101,7 @@ function ChplLoadingCards({ cards = 5, fieldsPerRow = 3, rows = 3 }) {
                 ))}
               </Box>
 
-              <Box className={classes.actionsContainer}>
+              <Box sx={styles.actionsContainer}>
                 <Skeleton variant="rectangular" width="120px" height="36px" style={{ borderRadius: '4px' }} />
                 <Skeleton variant="rectangular" width="120px" height="36px" style={{ borderRadius: '4px' }} />
               </Box>

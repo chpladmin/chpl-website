@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, ButtonGroup, Container, Step, StepLabel, Stepper,
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Step,
+  StepLabel,
+  Stepper,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   bool,
@@ -13,13 +18,13 @@ import {
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
-const useStyles = makeStyles({
+const styles = {
   buttons: {
     padding: '8px 16px',
     borderRadius: '0 0 32px 32px',
   },
   nextButton: {
-    '&.disabled': {
+    '&.Mui-disabled': {
       backgroundColor: '#eee',
       '&:hover, selected': {
         backgroundColor: '#eee',
@@ -31,7 +36,7 @@ const useStyles = makeStyles({
     '&:hover, selected': {
       backgroundColor: '#eee',
     },
-    '&.disabled': {
+    '&.Mui-disabled': {
       backgroundColor: '#eee',
     },
   },
@@ -59,14 +64,13 @@ const useStyles = makeStyles({
     top: '0px',
     zIndex: '999',
   },
-});
+};
 
 function ChplProgress(props) {
   const { steps, buttonContainerTop = '2px' } = props;
   const [value, setValue] = useState(0);
   const [canNext, setCanNext] = useState(false);
   const [canPrevious, setCanPrevious] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setValue(props.value);
@@ -82,9 +86,9 @@ function ChplProgress(props) {
 
   return (
     <>
-      <Container maxWidth="md" className={classes.stepperContainer}>
+      <Container maxWidth="md" sx={styles.stepperContainer}>
         <Stepper
-          className={classes.stepperBar}
+          sx={styles.stepperBar}
           activeStep={value}
         >
           { steps.map((step) => (
@@ -94,12 +98,12 @@ function ChplProgress(props) {
           ))}
         </Stepper>
       </Container>
-      <div className={classes.stepperButtonContainer} style={{ top: buttonContainerTop }}>
-        <ButtonGroup variant="text" color="primary" className={classes.stepperButton} size="medium">
+      <Box sx={{ ...styles.stepperButtonContainer, top: buttonContainerTop }}>
+        <ButtonGroup variant="text" color="primary" sx={styles.stepperButton} size="medium">
           <Button
             color="primary"
             variant="text"
-            className={`${classes.buttons} ${classes.backButton}`}
+            sx={[styles.buttons, styles.backButton]}
             disabled={!canPrevious}
             onClick={() => props.dispatch('previous')}
             id="inspect-previous"
@@ -110,7 +114,7 @@ function ChplProgress(props) {
           <Button
             color="primary"
             variant="contained"
-            className={`${classes.buttons} ${classes.nextButton}`}
+            sx={[styles.buttons, styles.nextButton]}
             disabled={!canNext}
             onClick={() => props.dispatch('next')}
             id="inspect-next"
@@ -119,7 +123,7 @@ function ChplProgress(props) {
             <NavigateNextIcon />
           </Button>
         </ButtonGroup>
-      </div>
+      </Box>
     </>
   );
 }

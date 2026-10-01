@@ -11,7 +11,6 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { arrayOf, bool } from 'prop-types';
 
@@ -24,7 +23,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   subCard: {
     backgroundColor: palette.white,
@@ -97,7 +96,7 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-});
+};
 
 const getFriendlyValues = (nc) => ({
   ...nc,
@@ -131,7 +130,6 @@ function ChplDirectReviews({
   const { analytics } = useAnalyticsContext();
   const [directReviews, setDirectReviews] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setDirectReviews(initialDirectReviews.map((dr) => {
@@ -173,7 +171,7 @@ function ChplDirectReviews({
     ? (
       <>
         <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
       </>
     )
     : (
@@ -200,12 +198,12 @@ function ChplDirectReviews({
 
   return (
     <Accordion
-      className={classes.directReviews}
       onChange={handleAccordionChange}
+      sx={styles.directReviews}
     >
       <AccordionSummary
         expandIcon={getIcon()}
-        className={classes.directReviewsSummary}
+        sx={styles.directReviewsSummary}
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography variant="body1">
@@ -222,7 +220,7 @@ function ChplDirectReviews({
             )}
           { !directReviewsAvailable
             && (
-              <Chip size="small" className={classes.errorChip} label="Error" />
+              <Chip size="small" label="Error" sx={styles.errorChip} />
             )}
         </Box>
       </AccordionSummary>
@@ -253,14 +251,14 @@ function ChplDirectReviews({
           )}
         { directReviews.map((dr) => (
           <Accordion
-            className={classes.directReviews}
             onChange={handleWithinChange}
             key={dr.created}
+            sx={styles.directReviews}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              className={classes.directReviewSummary}
               color="secondary"
+              sx={styles.directReviewSummary}
             >
               <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
                 <Typography variant="body1">
@@ -284,11 +282,11 @@ function ChplDirectReviews({
                 <Card key={nc.created}>
                   <CardHeader
                     titleTypographyProps={{ variant: 'h6' }}
-                    className={classes.subCard}
                     title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
+                    sx={styles.subCard}
                   />
                   <CardContent>
-                    <Box className={classes.ncContent}>
+                    <Box sx={styles.ncContent}>
                       { getDataDisplay('Non-conformity Type', <Typography>{ nc.nonConformityType }</Typography>, 'Type of non-conformity found during review') }
                       { getDataDisplay('Developer Associated Listings',
                         <>

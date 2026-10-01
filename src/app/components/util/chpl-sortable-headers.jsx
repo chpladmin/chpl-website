@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, bool, func, oneOf, shape, string,
+  arrayOf,
+  bool,
+  func,
+  oneOf,
+  shape,
+  string,
 } from 'prop-types';
-import makeStyles from '@mui/styles/makeStyles';
+import Box from '@mui/material/Box';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import TableCell from '@mui/material/TableCell';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -33,7 +38,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
     zIndex: 3,
   },
-}));
+};
 
 function ChplSortableHeaders({
   onTableSort,
@@ -44,7 +49,6 @@ function ChplSortableHeaders({
 }) {
   const [order, setOrder] = useState('');
   const [orderBy, setOrderBy] = useState('');
-  const classes = useStyles();
 
   useEffect(() => {
     setOrder(initialOrder);
@@ -62,15 +66,15 @@ function ChplSortableHeaders({
     onTableSort(event, property, orderDirection);
   };
 
-  const getCellClassName = (index) => {
-    const classNames = [];
+  const getCellStyles = (index) => {
+    const cellStyles = [];
     if (stickyHeader) {
-      classNames.push(classes.stickyHeader);
+      cellStyles.push(styles.stickyHeader);
     }
     if (index === 0 && stickyHeader) {
-      classNames.push(classes.stickyColumn);
+      cellStyles.push(styles.stickyColumn);
     }
-    return classNames.join(' ') || undefined;
+    return cellStyles;
   };
 
   return (
@@ -83,10 +87,9 @@ function ChplSortableHeaders({
                 key={headCell.property}
                 align="left"
                 sortDirection={orderBy === headCell.property ? order : false}
-                className={getCellClassName(index)}
+                sx={getCellStyles(index)}
               >
                 <TableSortLabel
-                  className={classes.header}
                   active={orderBy === headCell.property}
                   direction={orderBy === headCell.property ? order : 'asc'}
                   onClick={createSortHandler(headCell.property)}
@@ -94,9 +97,9 @@ function ChplSortableHeaders({
                   { headCell.text }
                   {orderBy === headCell.property
                     ? (
-                      <span className={classes.visuallyHidden}>
+                      <Box component="span" sx={styles.visuallyHidden}>
                         { order === 'desc' ? 'sorted descending' : 'sorted ascending' }
-                      </span>
+                      </Box>
                     ) : null}
                 </TableSortLabel>
               </TableCell>
@@ -105,11 +108,11 @@ function ChplSortableHeaders({
               <TableCell
                 align="left"
                 key={headCell.text}
-                className={getCellClassName(index)}
+                sx={getCellStyles(index)}
               >
-                <span className={headCell.invisible && classes.visuallyHidden}>
+                <Box component="span" sx={headCell.invisible ? styles.visuallyHidden : undefined}>
                   { headCell.text }
-                </span>
+                </Box>
               </TableCell>
             )
         ))}

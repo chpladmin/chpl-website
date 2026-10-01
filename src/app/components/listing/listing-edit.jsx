@@ -14,7 +14,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import {
@@ -73,7 +72,13 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-const useStyles = makeStyles({
+const styles = {
+  atlListItem: {
+    marginBottom: '8px',
+    border: '1px solid #c2c6ca',
+    borderRadius: '4px',
+    paddingBottom: '4px',
+  },
   deleteButton: {
     border: '1px solid #c44f65',
     backgroundColor: '#FFFFFF',
@@ -86,7 +91,20 @@ const useStyles = makeStyles({
   tooltipText: {
     fontSize: '1.5em !important',
   },
-});
+  statusListItem: {
+    marginBottom: '8px',
+    border: '1px solid #c2c6ca',
+    borderRadius: '4px',
+    paddingBottom: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+    alignItems: 'center',
+  },
+  validateButton: {
+    padding: '8px !important',
+  },
+};
 
 function ChplListingEdit({
   dispatch,
@@ -115,7 +133,6 @@ function ChplListingEdit({
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
   const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
   const { mutate } = usePostRwtResultsChecker();
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -313,17 +330,8 @@ function ChplListingEdit({
                 .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                 .map((status, idx, arr) => (
                   <ListItem
-                    style={{
-                      marginBottom: '8px',
-                      border: '1px solid #c2c6ca',
-                      borderRadius: '4px',
-                      paddingBottom: '4px',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: '16px',
-                      alignItems: 'center',
-                    }}
                     key={status.eventDay}
+                    sx={styles.statusListItem}
                   >
                     <Box flexGrow={1}>
                       {status.status.name}
@@ -335,7 +343,11 @@ function ChplListingEdit({
                     { idx === 0 && status.status.name === 'Terminated by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography> }
                     { idx === 0 && status.status.name === 'Suspended by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography> }
                     { idx === 0 && status.status.name === 'Withdrawn by Developer' && <Typography>Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography> }
-                    <Tooltip className={classes.tooltipText} arrow title="Delete">
+                    <Tooltip
+                      arrow
+                      componentsProps={{ tooltip: { sx: styles.tooltipText } }}
+                      title="Delete"
+                    >
                       <IconButton onClick={() => removeStatus(status)} size="large">
                         <DeleteIcon color="error" />
                       </IconButton>
@@ -405,8 +417,8 @@ function ChplListingEdit({
                   <Button
                     onClick={() => setAddingStatus(false)}
                     endIcon={<Close />}
-                    className={classes.deleteButton}
                     variant="contained"
+                    sx={styles.deleteButton}
                   >
                     Cancel adding Certification Status
                   </Button>
@@ -468,15 +480,17 @@ function ChplListingEdit({
             <List>
               { selectedAtls.map((atl) => (
                 <ListItem
-                  style={{
-                    marginBottom: '8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px',
-                  }}
                   key={atl.id}
+                  sx={styles.atlListItem}
                 >
                   <Box pb={2} flexGrow={1}>
                     {atl.name}
                   </Box>
-                  <Tooltip className={classes.tooltipText} arrow title="Delete">
+                  <Tooltip
+                    arrow
+                    componentsProps={{ tooltip: { sx: styles.tooltipText } }}
+                    title="Delete"
+                  >
                     <IconButton onClick={() => removeAtl(atl)} size="large">
                       <DeleteIcon color="error" />
                     </IconButton>
@@ -527,8 +541,8 @@ function ChplListingEdit({
                     </Button>
                     <Button
                       onClick={() => setAddingAtl(false)}
-                      className={classes.deleteButton}
                       endIcon={<Close />}
+                      sx={styles.deleteButton}
                     >
                       Cancel adding ONC-ATL
                     </Button>
@@ -598,7 +612,7 @@ function ChplListingEdit({
                     size="small"
                     disabled={formik.values.rwtResultsUrl.length === 0}
                     endIcon={<VerifiedUserIcon />}
-                    style={{ padding: '8px !important' }}
+                    sx={styles.validateButton}
                   >
                     Validate
                   </Button>

@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box, Card, CardContent, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   node,
@@ -14,7 +13,7 @@ import {
 
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   card: {
     marginBottom: theme.spacing(1.5),
     transition: theme.transitions.create('box-shadow'),
@@ -111,17 +110,9 @@ const useStyles = makeStyles({
   },
   titleField: {
     flex: '1 1 200px',
-    '& $fieldValue': {
-      fontSize: '1.12em',
-      fontWeight: 600,
-    },
   },
   titleFieldWide: {
     flex: '1.75 1 320px',
-    '& $fieldValue': {
-      fontSize: '1.12em',
-      fontWeight: 600,
-    },
   },
   actionsContainer: {
     alignItems: 'flex-end',
@@ -141,7 +132,7 @@ const useStyles = makeStyles({
     lineHeight: 1.25,
     minWidth: 0,
   },
-});
+};
 
 function ChplSearchResultCard({
   cardTitle,
@@ -151,28 +142,27 @@ function ChplSearchResultCard({
   fieldGroups = [],
   actions = undefined,
 }) {
-  const classes = useStyles();
   return (
-    <Card className={classes.card}>
-      <CardContent className={classes.cardContent}>
-        <Box className={classes.contentBody}>
+    <Card sx={styles.card}>
+      <CardContent sx={styles.cardContent}>
+        <Box sx={styles.contentBody}>
           { (cardTitle || cardTitleValue)
             && (
-              <Box className={classes.titleSection}>
-                <Box className={classes.primaryRow}>
-                  <Box className={cardTitle ? classes.titleFieldWide : classes.titleField}>
-                    <Box className={classes.fieldLabelRow}>
-                      <Typography className={classes.fieldLabel}>
+              <Box sx={styles.titleSection}>
+                <Box sx={styles.primaryRow}>
+                  <Box sx={cardTitle ? styles.titleFieldWide : styles.titleField}>
+                    <Box sx={styles.fieldLabelRow}>
+                      <Typography sx={styles.fieldLabel}>
                         { cardTitle || 'Product' }
                       </Typography>
                       { titleIconButton
                         && (
-                          <Box className={classes.fieldLabelIcon}>
+                          <Box sx={styles.fieldLabelIcon}>
                             { titleIconButton }
                           </Box>
                         )}
                     </Box>
-                    <Typography className={classes.titleValue}>
+                    <Typography sx={styles.titleValue}>
                       { cardTitleValue }
                     </Typography>
                   </Box>
@@ -188,26 +178,25 @@ function ChplSearchResultCard({
           { fieldGroups.map((group, groupIndex) => (
             <Box
               key={group.map((f) => f.label).join('-')}
-              className={groupIndex < 2 ? classes.primaryRow : classes.detailsRow}
+              sx={groupIndex < 2 ? styles.primaryRow : styles.detailsRow}
             >
               { group.map((field) => (
                 <Box
                   key={field.label}
-                  className={classes.field}
-                  style={{ ...field.style, flex: field.style?.flex ?? '1 1 200px' }}
+                  sx={{ ...styles.field, ...field.style, flex: field.style?.flex ?? '1 1 200px' }}
                 >
-                  <Box className={classes.fieldLabelRow}>
-                    <Typography className={classes.fieldLabel}>
+                  <Box sx={styles.fieldLabelRow}>
+                    <Typography sx={styles.fieldLabel}>
                       { field.label }
                     </Typography>
                     { field.iconButton
                       && (
-                        <Box className={classes.fieldLabelIcon}>
+                        <Box sx={styles.fieldLabelIcon}>
                           { field.iconButton }
                         </Box>
                       )}
                   </Box>
-                  <Typography className={classes.fieldValue}>
+                  <Typography sx={styles.fieldValue}>
                     { field.value ?? field.fallback ?? 'N/A' }
                   </Typography>
                 </Box>
@@ -215,7 +204,7 @@ function ChplSearchResultCard({
             </Box>
           ))}
         </Box>
-        <Box className={classes.actionsContainer}>
+        <Box sx={styles.actionsContainer}>
           { actions }
         </Box>
       </CardContent>

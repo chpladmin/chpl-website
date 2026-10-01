@@ -1,13 +1,13 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Box } from '@mui/material';
 import { bool, node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { goToState } from 'services/navigation.service';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   chplLink: {
     display: 'flex',
     overflowWrap: 'anywhere',
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   disclaimerIcon: {
     marginTop: '4px',
   },
-});
+};
 
 const prependLink = (url) => {
   if (url.substring(0, 7) === 'http://' || url.substring(0, 8) === 'https://' || url.substring(0, 2) === '#/' || url.substring(0, 5) === '/rest') {
@@ -42,7 +42,6 @@ function ChplLink({
   text: initialText = '',
   icon = undefined,
 }) {
-  const classes = useStyles();
   const href = prependLink(initialHref);
   const text = initialText || initialHref;
 
@@ -64,26 +63,26 @@ function ChplLink({
 
   if (inline && !external) {
     return (
-      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
+      <Box component="a" href={href} onClick={track} sx={indicateOnHover ? styles.indicateOnHover : undefined}>
         {text}
-      </a>
+      </Box>
     );
   }
 
   return (
-    <span className={classes.chplLink}>
-      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
+    <Box component="span" sx={styles.chplLink}>
+      <Box component="a" href={href} onClick={track} sx={indicateOnHover ? styles.indicateOnHover : undefined}>
         {text}
-      </a>
+      </Box>
       { icon }
       { external
         && (
-          <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
+          <Box component="a" href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" sx={styles.disclaimerIcon}>
             <ExitToAppIcon />
             <span className="sr-only">Web Site Disclaimers</span>
-          </a>
+          </Box>
         )}
-    </span>
+    </Box>
   );
 }
 

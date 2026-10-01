@@ -1,26 +1,28 @@
 import React, { useContext } from 'react';
+import { keyframes } from '@emotion/react';
 import { Box, Paper } from '@mui/material';
 import { node } from 'prop-types';
 
-import { CmsContext, CompareContext } from 'shared/contexts';
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplNavigationBottom from 'navigation/navigation-bottom';
 import ChplNavigationTop from 'navigation/navigation-top';
+import { CmsContext, CompareContext } from 'shared/contexts';
 import { palette } from 'themes';
 import theme from 'themes/theme';
 
-const styles = {
-  '@keyframes widgetRailIn': {
-    from: {
-      opacity: 0,
-      transform: 'translateX(8px)',
-    },
-    to: {
-      opacity: 1,
-      transform: 'translateX(0)',
-    },
+const widgetRailIn = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateX(8px)',
   },
+  to: {
+    opacity: 1,
+    transform: 'translateX(0)',
+  },
+});
+
+const styles = {
   appContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -47,7 +49,7 @@ const styles = {
     position: 'relative',
   },
   widgetRail: {
-    animation: '$widgetRailIn 140ms ease-out',
+    animation: `${widgetRailIn} 140ms ease-out`,
     backgroundColor: palette.white,
     borderLeft: `.5px solid ${theme.palette.divider}`,
     flex: '0 0 260px',

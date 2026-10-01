@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { keyframes } from '@emotion/react';
 import {
   Box,
   Card,
@@ -33,6 +34,17 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
+const itemEnter = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(200%)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
+
 const styles = {
   ...utilStyles,
   headerRow: {
@@ -61,17 +73,7 @@ const styles = {
     },
   },
   animatedItem: {
-    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
-  },
-  '@keyframes myEffect': {
-    '0%': {
-      opacity: 0,
-      transform: 'translateY(200%)',
-    },
-    '100%': {
-      opacity: 1,
-      transform: 'translateY(0)',
-    },
+    animation: `${itemEnter} 1000ms ${theme.transitions.easing.easeInOut}`,
   },
 };
 

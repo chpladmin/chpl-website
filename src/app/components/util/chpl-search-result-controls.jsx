@@ -1,19 +1,18 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   bool, node, number, string,
 } from 'prop-types';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const getStyles = ({ fadeBackground, sticky, wrapActions }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
     marginBottom: '16px',
-    position: ({ sticky }) => (sticky ? 'sticky' : 'static'),
+    position: sticky ? 'sticky' : 'static',
     top: '96px',
     zIndex: 2,
     alignItems: 'flex-start',
@@ -27,13 +26,13 @@ const useStyles = makeStyles({
     borderLeft: `1px solid ${palette.divider}`,
     boxShadow: `0px 6px 8px -4px ${theme.palette.grey[300]}`,
     '&::before': {
-      content: ({ sticky }) => (sticky ? '""' : 'none'),
+      content: sticky ? '""' : 'none',
       position: 'absolute',
       left: '-1px',
       right: '-1px',
       bottom: '100%',
       height: '24px',
-      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
+      background: `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
       pointerEvents: 'none',
       zIndex: 1,
     },
@@ -56,7 +55,7 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '2px',
-    flexWrap: ({ wrapActions }) => (wrapActions ? 'wrap' : 'nowrap'),
+    flexWrap: wrapActions ? 'wrap' : 'nowrap',
     [theme.breakpoints.down('md')]: {
       flexWrap: 'wrap',
       gap: '8px',
@@ -82,11 +81,11 @@ function ChplSearchResultControls({
   sticky = true,
   wrapActions = false,
 }) {
-  const classes = useStyles({ fadeBackground, sticky, wrapActions });
+  const styles = getStyles({ fadeBackground, sticky, wrapActions });
 
   return (
-    <div className={classes.container}>
-      <div className={classes.results}>
+    <Box sx={styles.container}>
+      <Box sx={styles.results}>
         <Typography variant="subtitle2">Search Results:</Typography>
         { recordCount === 0
           && (
@@ -100,14 +99,14 @@ function ChplSearchResultControls({
               {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
             </Typography>
           )}
-      </div>
+      </Box>
       { recordCount > 0 && children
         && (
-          <Box className={classes.actions}>
+          <Box sx={styles.actions}>
             { children }
           </Box>
         )}
-    </div>
+    </Box>
   );
 }
 

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { string } from 'prop-types';
+
+import { theme } from 'themes';
 
 const colors = ['color_9efff5', 'color_490404', 'color_00666d', 'color_2f3193', 'color_662d91', 'color_922790', 'color_ec2176', 'color_ed1c24', 'color_f36622', 'color_f8941e', 'color_fab70f', 'color_fdde00', 'color_d1d219', 'color_8ec73f', 'color_00a650', 'color_00aa9c', 'color_00adef', 'color_0081cd', 'color_005bab'];
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   color_9efff5: { backgroundColor: '#9efff5', color: theme.palette.getContrastText('#9efff5') },
   color_490404: { backgroundColor: '#490404', color: theme.palette.getContrastText('#490404') },
   color_00666d: { backgroundColor: '#00666d', color: theme.palette.getContrastText('#00666d') },
@@ -25,14 +26,13 @@ const useStyles = makeStyles((theme) => ({
   color_00adef: { backgroundColor: '#00adef', color: theme.palette.getContrastText('#00adef') },
   color_0081cd: { backgroundColor: '#0081cd', color: theme.palette.getContrastText('#0081cd') },
   color_005bab: { backgroundColor: '#005bab', color: theme.palette.getContrastText('#005bab') },
-}));
+};
 
 const getColor = (str) => colors[str.split('').reduce((acc, cur) => acc + cur.charCodeAt(0), 0) % colors.length];
 
 function ChplAvatar(props) {
   const [text, setText] = useState('');
   const [initials, setInitials] = useState('');
-  const classes = useStyles();
 
   useEffect(() => {
     const display = props.text.split(' ').map((c) => c.substring(0, 1).toUpperCase()).join('');
@@ -44,7 +44,7 @@ function ChplAvatar(props) {
   return (
     <Avatar
       alt={text}
-      className={classes[getColor(text)]}
+      sx={styles[getColor(text)]}
       {...props}
     >
       {initials}

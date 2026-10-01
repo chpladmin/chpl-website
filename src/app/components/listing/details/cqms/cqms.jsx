@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Table, TableBody, TableCell, TableHead, TableRow, Typography,
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CheckIcon from '@mui/icons-material/Check';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import { arrayOf, bool } from 'prop-types';
@@ -14,7 +19,7 @@ import {
   cqm as cqmType,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   helperText: {
     padding: '16px 0',
   },
@@ -25,12 +30,11 @@ const useStyles = makeStyles({
     overflowX: 'auto',
     width: '100%',
   },
-});
+};
 
 function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialViewAll }) {
   const [viewAll, setViewAll] = useState(false);
   const [edition, setEdition] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     setEdition(initialEdition);
@@ -56,11 +60,11 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
     <>
       { (edition === null || edition?.name === '2015')
         && (
-          <Typography className={classes.helperText}>
+          <Typography sx={styles.helperText}>
             Note 170.315 (c)(3) has two versions, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
           </Typography>
         )}
-      <Card className={classes.tableScrolling}>
+      <Card sx={styles.tableScrolling}>
         <Table>
           <TableHead>
             <TableRow>
@@ -81,7 +85,10 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
             { cqms.filter((cqm) => viewAll || cqm.success)
               .sort(sortCqms)
               .map((cqm) => (
-                <TableRow key={cqm.id ?? cqm.cmsId} className={!cqm.success ? classes.disabledRow : ''}>
+                <TableRow
+                  key={cqm.id ?? cqm.cmsId}
+                  sx={[!cqm.success && styles.disabledRow]}
+                >
                   <TableCell>
                     <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
                     { edition?.name !== null && edition?.name === '2011' && cqm.success

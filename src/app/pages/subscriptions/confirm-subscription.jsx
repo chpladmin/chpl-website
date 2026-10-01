@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { keyframes } from '@emotion/react';
 import {
-  Box, Button, Card, CardContent, Container, MenuItem, Typography,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  MenuItem,
+  Typography,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { string } from 'prop-types';
@@ -11,6 +18,17 @@ import { useSnackbar } from 'notistack';
 import { useFetchRoles, usePutSubscriber } from 'api/subscriptions';
 import { ChplLink, ChplTextField } from 'components/util';
 import { palette, theme, utilStyles } from 'themes';
+
+const itemEnter = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(200%)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
 
 const validationSchema = yup.object({
   role: yup.object()
@@ -44,17 +62,7 @@ const styles = {
     alignItems: 'flex-start',
   },
   animatedItem: {
-    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
-  },
-  '@keyframes myEffect': {
-    '0%': {
-      opacity: 0,
-      transform: 'translateY(200%)',
-    },
-    '100%': {
-      opacity: 1,
-      transform: 'translateY(0)',
-    },
+    animation: `${itemEnter} 1000ms ${theme.transitions.easing.easeInOut}`,
   },
 };
 
