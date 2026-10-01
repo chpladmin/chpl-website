@@ -316,7 +316,7 @@ function ChplComparePage({ ids }) {
                   <>
                     CHPL Product Number
                     <br />
-                    <Typography variant="caption">Manage CMS ID Creator</Typography>
+                    <Typography variant="body2">Manage CMS ID Creator</Typography>
                   </>, (listing) => (
                     <Box display="flex" alignItems="flex-start" flexDirection="column" justifyContent="space-between" gridGap={8}>
                       <ChplLink
