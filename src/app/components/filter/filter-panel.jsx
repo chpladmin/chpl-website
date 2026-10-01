@@ -9,9 +9,9 @@ import {
   Popover,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { number } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
@@ -307,7 +307,7 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                       <Button
                         fullWidth
                         key={f.key}
-                        color={f === activeCategory ? 'default' : 'primary'}
+                        color={f === activeCategory ? 'inherit' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
                         style={{ whiteSpace: f.wrapText ? 'normal' : 'nowrap' }}
                         variant="outlined"

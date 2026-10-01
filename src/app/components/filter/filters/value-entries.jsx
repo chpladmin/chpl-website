@@ -8,7 +8,7 @@ import {
   ListItemText,
   Radio,
   RadioGroup,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import ChplTabbedValueEntry from './tabbed-value-entry';
 

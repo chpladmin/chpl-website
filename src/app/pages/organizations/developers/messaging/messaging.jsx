@@ -16,11 +16,11 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import SendIcon from '@material-ui/icons/Send';
-import SendOutlined from '@material-ui/icons/SendOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import SendIcon from '@mui/icons-material/Send';
+import SendOutlined from '@mui/icons-material/SendOutlined';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -73,14 +73,14 @@ const useStyles = makeStyles({
     top: '110px',
     height: 'min-content',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       position: 'relative',
       top: 'auto',
     },
   },
   rightColumn: {
     width: '30%,',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -276,7 +276,7 @@ function ChplMessaging({ dispatch }) {
                 </strong>
               </Typography>
               <Divider />
-              <Box display="flex" flexDirection="row" gridGap="16px">
+              <Box display="flex" flexDirection="row" gap="16px">
                 <ChplTextField
                   select
                   id="template-select"
@@ -336,58 +336,58 @@ function ChplMessaging({ dispatch }) {
             </CardContent>
           </Card>
           { !queryString().includes('hasUsers=true')
-            && (
-              <Box className={classes.undeliverable}>
-                { undeliverableIsLoading
-                  && (
-                    <CircularProgress />
-                  )}
-                { undeliverableTotalCount === 0 && !undeliverableIsLoading
-                  && (
+          && (
+            <Box className={classes.undeliverable}>
+              { undeliverableIsLoading
+                && (
+                  <CircularProgress />
+                )}
+              { undeliverableTotalCount === 0 && !undeliverableIsLoading
+                && (
+                  <Typography>
+                    All Developers have at least one active user
+                  </Typography>
+                )}
+              { undeliverableTotalCount > 0
+                && (
+                  <>
                     <Typography>
-                      All Developers have at least one active user
+                      { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
+                      Developer
+                      { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
+                      no active users and will not receive this message:
                     </Typography>
-                  )}
-                { undeliverableTotalCount > 0
-                  && (
-                    <>
-                      <Typography>
-                        { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
-                        Developer
-                        { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
-                        no active users and will not receive this message:
-                      </Typography>
-                      <List>
-                        { undeliverable.map((item) => (
-                          <ListItem key={item.id}>
-                            <ChplLink
-                              href={`#/organizations/developers/${item.id}`}
-                              text={item.name}
-                              analytics={{
-                                ...analytics,
-                                event: 'Navigate to Developer Page',
-                                label: item.name,
-                              }}
-                              external={false}
-                              router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
-                            />
+                    <List>
+                      { undeliverable.map((item) => (
+                        <ListItem key={item.id}>
+                          <ChplLink
+                            href={`#/organizations/developers/${item.id}`}
+                            text={item.name}
+                            analytics={{
+                              ...analytics,
+                              event: 'Navigate to Developer Page',
+                              label: item.name,
+                            }}
+                            external={false}
+                            router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
+                          />
+                        </ListItem>
+                      ))}
+                      { undeliverableTotalCount > 25
+                        && (
+                          <ListItem>
+                            ...and
+                            {' '}
+                            {undeliverableTotalCount - 25}
+                            {' '}
+                            more
                           </ListItem>
-                        ))}
-                        { undeliverableTotalCount > 25
-                          && (
-                            <ListItem>
-                              ...and
-                              {' '}
-                              {undeliverableTotalCount - 25}
-                              {' '}
-                              more
-                            </ListItem>
-                          )}
-                      </List>
-                    </>
-                  )}
-              </Box>
-            )}
+                        )}
+                    </List>
+                  </>
+                )}
+            </Box>
+          )}
           <Card bgcolor="white">
             <Box
               padding="16px"
@@ -395,7 +395,7 @@ function ChplMessaging({ dispatch }) {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <Box display="flex" flexDirection="row" gridGap="16px">
+              <Box display="flex" flexDirection="row" gap="16px">
                 <Button
                   onClick={dispatch}
                   variant="outlined"

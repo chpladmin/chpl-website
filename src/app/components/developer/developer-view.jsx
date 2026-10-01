@@ -10,8 +10,8 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Timeline,
   TimelineConnector,
@@ -19,14 +19,14 @@ import {
   TimelineDot,
   TimelineItem,
   TimelineSeparator,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import { bool, func } from 'prop-types';
-import BlockIcon from '@material-ui/icons/Block';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import ErrorIcon from '@material-ui/icons/Error';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import BlockIcon from '@mui/icons-material/Block';
+import CallMergeIcon from '@mui/icons-material/CallMerge';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ErrorIcon from '@mui/icons-material/Error';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
 import { compareDeveloper } from 'components/activity/services/developers.service';

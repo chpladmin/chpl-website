@@ -1,30 +1,28 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Paper,
-  makeStyles,
-} from '@material-ui/core';
+import { keyframes } from '@emotion/react';
+import { Box, Paper } from '@mui/material';
 import { node } from 'prop-types';
 
-import { CmsContext, CompareContext } from 'shared/contexts';
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplNavigationBottom from 'navigation/navigation-bottom';
 import ChplNavigationTop from 'navigation/navigation-top';
+import { CmsContext, CompareContext } from 'shared/contexts';
 import { palette } from 'themes';
 import theme from 'themes/theme';
 
-const useStyles = makeStyles({
-  '@keyframes widgetRailIn': {
-    from: {
-      opacity: 0,
-      transform: 'translateX(8px)',
-    },
-    to: {
-      opacity: 1,
-      transform: 'translateX(0)',
-    },
+const widgetRailIn = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateX(8px)',
   },
+  to: {
+    opacity: 1,
+    transform: 'translateX(0)',
+  },
+});
+
+const styles = {
   appContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -38,7 +36,7 @@ const useStyles = makeStyles({
     minWidth: 0,
     width: '100%',
     overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
   },
@@ -47,10 +45,11 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
-    overflowY: 'auto',    // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
-    position: 'relative',  },
+    overflowY: 'auto', // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
+    position: 'relative',
+  },
   widgetRail: {
-    animation: '$widgetRailIn 140ms ease-out',
+    animation: `${widgetRailIn} 140ms ease-out`,
     backgroundColor: palette.white,
     borderLeft: `.5px solid ${theme.palette.divider}`,
     flex: '0 0 260px',
@@ -58,10 +57,10 @@ const useStyles = makeStyles({
       duration: theme.transitions.duration.shorter,
       easing: theme.transitions.easing.easeOut,
     }),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexBasis: '240px',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
@@ -70,18 +69,18 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
     '& .MuiCardContent-root': {
-      padding: `${theme.spacing(2)}px !important`,
+      padding: `${theme.spacing(2)} !important`,
       maxWidth: '100% !important',
       width: 'auto !important',
     },
     '& .MuiCardContent-root:last-child': {
-      paddingBottom: `${theme.spacing(2)}px !important`,
+      paddingBottom: `${theme.spacing(2)} !important`,
     },
     '& .MuiChip-root': {
       maxWidth: '100%',
     },
     '& .MuiDivider-root': {
-      margin: `${theme.spacing(1.5)}px 0`,
+      margin: `${theme.spacing(1.5)} 0`,
     },
     '& .MuiButton-root': {
       fontSize: '0.8125em',
@@ -97,12 +96,11 @@ const useStyles = makeStyles({
       fontSize: '0.9375em',
     },
   },
-});
+};
 
 function ChplWidgetWorkspacePanel() {
   const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
   const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
-  const classes = useStyles();
 
   if (!cmsIsOpen && !compareIsOpen) {
     return null;
@@ -114,8 +112,8 @@ function ChplWidgetWorkspacePanel() {
   };
 
   return (
-    <Box className={classes.widgetRail}>
-      <Paper className={classes.widgetRailPaper} elevation={0} square>
+    <Box sx={styles.widgetRail}>
+      <Paper sx={styles.widgetRailPaper} elevation={0} square>
         { cmsIsOpen && (<ChplCmsDisplay onClose={closeWidgetPanel} />)}
         { compareIsOpen && (<ChplCompareDisplay onClose={closeWidgetPanel} />)}
       </Paper>
@@ -124,19 +122,17 @@ function ChplWidgetWorkspacePanel() {
 }
 
 function ChplAppLayout({ children }) {
-  const classes = useStyles();
-
   return (
-    <div className={classes.appContainer}>
+    <Box sx={styles.appContainer}>
       <ChplNavigationTop />
-      <div className={classes.workspace}>
-        <div className={classes.content}>
+      <Box sx={styles.workspace}>
+        <Box sx={styles.content}>
           {children}
-        </div>
+        </Box>
         <ChplWidgetWorkspacePanel />
-      </div>
+      </Box>
       <ChplNavigationBottom />
-    </div>
+    </Box>
   );
 }
 

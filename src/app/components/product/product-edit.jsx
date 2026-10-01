@@ -19,11 +19,11 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   arrayOf,
   bool,
@@ -325,7 +325,7 @@ function ChplProductEdit(props) {
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer</Typography></TableCell>
                         <TableCell><Typography variant="body2">Transfer Date</Typography></TableCell>
-                        <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                        <TableCell><Typography sx={utilStyles.visuallyHidden}>Actions</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -344,7 +344,7 @@ function ChplProductEdit(props) {
                                onClick={() => removeOwner(item)}
                                aria-label="Remove owner"
                                disabled={formik.values.isAdding}
-                             >
+                               size="large">
                                <CloseIcon
                                  color="error"
                                  size="small"

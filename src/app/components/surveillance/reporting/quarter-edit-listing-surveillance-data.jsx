@@ -8,8 +8,7 @@ import {
   MenuItem,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
@@ -26,7 +25,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   question: {
     paddingBottom: '4px',
@@ -36,7 +35,7 @@ const useStyles = makeStyles({
     margin: '8px 0',
     whiteSpace: 'pre-line',
   },
-});
+};
 
 const validationSchema = yup.object({
   surveillanceOutcome: yup.string(),
@@ -83,7 +82,6 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
   const { data: surveillanceGroundsForInitiatingData, isLoading: surveillanceGroundsForInitiatingIsLoading, isSuccess: surveillanceGroundsForInitiatingIsSuccess } = useFetchSurveillanceGroundsForInitiating();
   const { data: surveillanceOutcomesData, isLoading: surveillanceOutcomesIsLoading, isSuccess: surveillanceOutcomesIsSuccess } = useFetchSurveillanceOutcomes();
   const { data: surveillanceProcessTypesData, isLoading: surveillanceProcessTypesIsLoading, isSuccess: surveillanceProcessTypesIsSuccess } = useFetchSurveillanceProcessTypes();
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -225,7 +223,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
       </ChplTextField>
       { formik.values.surveillanceOutcome === 'Non-conformity substantiated - Unresolved - Other - [Please describe]'
         && (
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" gutterBottom>
               <strong>Outcome of Surveillance - Other Explanation</strong>
             </Typography>
@@ -243,11 +241,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             />
           </Box>
         )}
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Surveillance Process Type</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           Select all activities that were conducted as part of the process to surveil this listing/developer for potential non-conformities.
         </Typography>
         <ChplTextField
@@ -283,7 +281,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
       </Box>
       { formik.values.surveillanceProcessTypes.some((s) => s.name === 'Other')
         && (
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" gutterBottom>
               <strong>Surveillance Process Type - Other Explanation</strong>
             </Typography>
@@ -301,11 +299,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             />
           </Box>
         )}
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Grounds For Initiating Surveillance</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           Please select the description to best describe the reasons for initiating surveillance (i.e., the particular facts and circumstances from which a reasonable person would have had grounds to question the continued conformity of the Health IT Module)?
         </Typography>
         <ChplTextField
@@ -341,7 +339,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
       </Box>
       { formik.values.surveillanceGroundsForInitiating.some((s) => s.name === 'Other')
         && (
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" gutterBottom>
               <strong>Grounds For Initiating Surveillance - Other</strong>
             </Typography>
@@ -359,11 +357,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             />
           </Box>
         )}
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Potential Causes of Non-Conformities or Suspected Non-Conformities</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           What were the substantial factors that, in the ONC-ACB&apos;s assessment, caused or contributed to the suspected non-conformity or non-conformities (e.g., implementation problem, user error, limitations on the use of capabilities in the field, a failure to disclose known material information, etc.)?
         </Typography>
         <ChplTextField
@@ -378,11 +376,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.nonconformityCauses && formik.errors.nonconformityCauses}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Nature of Any Substantiated Non-Conformities</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           Did ONC-ACB substantiate any non-conformities? If so, what was the nature of the non-conformity or non-conformities that were substantiated? Please include specific criteria involved.
         </Typography>
         <ChplTextField
@@ -397,11 +395,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.nonconformityNature && formik.errors.nonconformityNature}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Steps to Surveil and Substantiate</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           What steps did the ONC-ACB take to surveil the Health IT Module, to analyze evidence, and to substantiate the non-conformity or non-conformities?
         </Typography>
         <ChplTextField
@@ -416,11 +414,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.stepsToSurveil && formik.errors.stepsToSurveil}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Steps to Engage and Work with Developer and End-Users</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           What steps were taken by ONC-ACB to engage and work with the developer and end-users to analyze and determine the causes of any suspected non-conformities and related deficiencies?
         </Typography>
         <ChplTextField
@@ -435,11 +433,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.stepsToEngage && formik.errors.stepsToEngage}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Additional Costs Evaluation</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           If a suspected non-conformity resulted from additional types of costs or fees that a user was required to pay in order to implement or use the Health IT Module&apos;s certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?
         </Typography>
         <ChplTextField
@@ -454,11 +452,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.additionalCostsEvaluation && formik.errors.additionalCostsEvaluation}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Limitations Evaluation</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           If a suspected non-conformity resulted from limitations that a user encountered in the course of implementing and using the Health IT Module&apos;s certified capabilities, how did ONC-ACB evaluate that suspected non-conformity?
         </Typography>
         <ChplTextField
@@ -473,11 +471,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.limitationsEvaluation && formik.errors.limitationsEvaluation}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Non-Disclosure Evaluation</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           If a suspected non-conformity resulted from the non-disclosure of material information by the developer about additional types of costs or fees associated with the Health IT Module, how did the ONC-ACB evaluate the suspected non-conformity?
         </Typography>
         <ChplTextField
@@ -492,11 +490,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.nondisclosureEvaluation && formik.errors.nondisclosureEvaluation}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Direction for Developer Resolution</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           If a non-conformity was substantiated, what direction was given to the developer to resolve the non-conformity?
         </Typography>
         <ChplTextField
@@ -511,11 +509,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.directionDeveloperResolution && formik.errors.directionDeveloperResolution}
         />
       </Box>
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>CAP Status</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           Please provide the current status of this listing&apos;s CAP. If a Corrective Action Plan was received, approved and completed, please select all actions to verify that the developer completed all requirements. If no CAP was provided, select &quot;No CAP&quot;.
         </Typography>
         <ChplTextField
@@ -551,7 +549,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
       </Box>
       { formik.values.capStatuses.some((s) => s.name === 'Other')
         && (
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" gutterBottom>
               <strong>CAP Status - Other</strong>
             </Typography>
@@ -569,11 +567,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             />
           </Box>
         )}
-      <Box className={classes.summaryGroup}>
+      <Box sx={styles.summaryGroup}>
         <Typography variant="h6" gutterBottom>
           <strong>Surveillance Findings</strong>
         </Typography>
-        <Typography className={classes.question} variant="body2" gutterBottom>
+        <Typography sx={styles.question} variant="body2" gutterBottom>
           If the surveilled activity resulted in no non-conformity but the ONC-ACB surveilled prioritized elements, as identified by the ONC Certification Program, the ONC-ACB should use this field to report on any activity and findings related to that aspect of surveillance.
         </Typography>
         <ChplTextField

@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  InputBase,
-  InputAdornment,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, InputBase, InputAdornment,
+} from '@mui/material';
 import { func } from 'prop-types';
-import SearchIcon from '@material-ui/icons/Search';
-import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { ChplTooltip } from 'components/util';
 import { theme, palette } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   goButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
@@ -42,12 +37,11 @@ const useStyles = makeStyles(() => ({
     padding: '8px',
     borderRadius: '8px',
   },
-}));
+};
 
 function ChplSearchTerm(props) {
   const { dispatch } = props;
   const [term, setTerm] = useState('');
-  const classes = useStyles();
 
   const handleClear = () => {
     setTerm('');
@@ -69,12 +63,12 @@ function ChplSearchTerm(props) {
   };
 
   return (
-    <Box className={classes.searchBarComponent} display="flex" justifyContent="space-between" alignItems="center" padding="16px 32px">
-      <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
-      <div className={classes.searchBarContainer}>
-        <div className={classes.searchBar}>
+    <Box sx={styles.searchBarComponent} display="flex" justifyContent="space-between" alignItems="center" padding="16px 32px">
+      <SearchIcon sx={styles.searchIcon} color="primary" fontSize="large" />
+      <Box sx={styles.searchBarContainer}>
+        <Box sx={styles.searchBar}>
           <InputBase
-            className={classes.searchInput}
+            sx={styles.searchInput}
             placeholder="Enter a CMS EHR Certification ID"
             value={term}
             onChange={handleTerm}
@@ -84,10 +78,7 @@ function ChplSearchTerm(props) {
             endAdornment={(
               <InputAdornment position="start">
                 <ChplTooltip title="Clear">
-                  <IconButton
-                    onClick={handleClear}
-                    aria-label="Clear search"
-                  >
+                  <IconButton onClick={handleClear} aria-label="Clear search" size="large">
                     <ClearIcon />
                   </IconButton>
                 </ChplTooltip>
@@ -95,7 +86,7 @@ function ChplSearchTerm(props) {
             )}
           />
           <Button
-            className={classes.goButton}
+            sx={styles.goButton}
             size="medium"
             variant="contained"
             color="primary"
@@ -105,8 +96,8 @@ function ChplSearchTerm(props) {
           >
             Go
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Box>
   );
 }

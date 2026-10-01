@@ -10,8 +10,8 @@ import {
   Tab,
   Tabs,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

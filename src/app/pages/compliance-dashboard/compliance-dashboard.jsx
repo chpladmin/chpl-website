@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+  Card, CardContent, CardHeader, Grid,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import Skeleton from '@mui/material/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
 
@@ -82,7 +79,7 @@ function ChplComplianceDashboard() {
           <CardHeader title={displayData.title} />
           <CardContent className={classes.reportCardContent}>
             { displayData.isLoading ? (
-              <Skeleton variant="rect" height={displayData.height} />
+              <Skeleton variant="rectangular" height={displayData.height} />
             ) : (
               <iframe
                 title={displayData.title}

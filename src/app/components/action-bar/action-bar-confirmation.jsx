@@ -8,35 +8,18 @@ import {
   DialogTitle,
   Divider,
   Slide,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   func, string,
 } from 'prop-types';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+
+import { palette, utilStyles } from 'themes';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-const useStyles = makeStyles({
-  dialogTitle: {
-    fontWeight: 800,
-    fontSize: '1.5em',
-  },
-  dialogContent: {
-    color: '#000000',
-  },
-  dialogActions: {
-    justifyContent: 'flex-start',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-});
-
 function ChplActionBarConfirmation(props) {
-  const classes = useStyles();
-
   const act = (action) => {
     props.dispatch(action);
   };
@@ -49,17 +32,17 @@ function ChplActionBarConfirmation(props) {
       aria-describedby="alert-dialog-description"
       TransitionComponent={Transition}
     >
-      <DialogTitle id="alert-dialog-title" className={classes.dialogTitle}>
+      <DialogTitle id="alert-dialog-title" sx={{ fontWeight: 800, fontSize: '1.5em' }}>
         Confirm
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <DialogContentText id="alert-dialog-description" className={classes.dialogContent}>
+        <DialogContentText id="alert-dialog-description" sx={{ color: palette.black }}>
           { props.pendingMessage }
         </DialogContentText>
       </DialogContent>
       <Divider />
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions sx={{ justifyContent: 'flex-start' }}>
         <Button
           onClick={() => act('no')}
           color="secondary"
@@ -68,7 +51,7 @@ function ChplActionBarConfirmation(props) {
         >
           No
           {' '}
-          <CloseIcon className={classes.iconSpacing} />
+          <CloseIcon sx={utilStyles.iconSpacing} />
         </Button>
         <Button
           onClick={() => act('yes')}
@@ -79,7 +62,7 @@ function ChplActionBarConfirmation(props) {
         >
           Yes
           {' '}
-          <CheckIcon className={classes.iconSpacing} />
+          <CheckIcon sx={utilStyles.iconSpacing} />
         </Button>
       </DialogActions>
     </Dialog>

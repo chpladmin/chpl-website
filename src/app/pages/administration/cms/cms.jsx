@@ -1,18 +1,13 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Button, Container, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
 import { usePostReportRequest } from 'api/cms';
 import { FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   titlePadding: {
     paddingTop: '16px',
@@ -21,13 +16,12 @@ const useStyles = makeStyles({
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 167px)',
   },
-});
+};
 
 function ChplCms() {
   const { cmsDisabledIsOn } = useContext(FlagContext);
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostReportRequest();
-  const classes = useStyles();
 
   const downloadFile = () => {
     mutate({}, {
@@ -47,7 +41,7 @@ function ChplCms() {
 
   if (cmsDisabledIsOn) {
     return (
-      <Container className={classes.fixFooterSpacing} maxWidth="lg">
+      <Container sx={styles.fixFooterSpacing} maxWidth="lg">
         <Typography variant="body1">
           Access to the CMS ID Creator has been paused. Please check back periodically for updates.
         </Typography>
@@ -57,7 +51,7 @@ function ChplCms() {
 
   return (
     <>
-      <Typography className={classes.titlePadding} variant="h2">Download the latest CMS listing</Typography>
+      <Typography sx={styles.titlePadding} variant="h2">Download the latest CMS listing</Typography>
       <Button
         onClick={downloadFile}
         color="primary"

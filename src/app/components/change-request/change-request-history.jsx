@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -7,14 +8,13 @@ import {
   TableContainer,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'grid',
     gap: '16px',
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   tableContainer: {
     border: '.5px solid #c2c6ca',
   },
-});
+};
 
 const headers = [
   { text: 'Acting Organization' },
@@ -33,7 +33,6 @@ const headers = [
 
 function ChplChangeRequestHistory(props) {
   const [items, setItems] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setItems(props.changeRequest.statuses.map((item) => {
@@ -62,11 +61,11 @@ function ChplChangeRequestHistory(props) {
   }, [props.changeRequest.developer.name, props.changeRequest.statuses]); // eslint-disable-line react/destructuring-assignment
 
   return (
-    <div className={classes.container}>
+    <Box sx={styles.container}>
       <div>
         <Typography variant="subtitle2">Change Request History</Typography>
       </div>
-      <TableContainer className={classes.tableContainer} component={Paper}>
+      <TableContainer sx={styles.tableContainer} component={Paper}>
         <Table stickyHeader>
           <ChplSortableHeaders
             headers={headers}
@@ -90,7 +89,7 @@ function ChplChangeRequestHistory(props) {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 }
 

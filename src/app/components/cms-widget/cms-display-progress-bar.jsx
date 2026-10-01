@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  LinearProgress,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, LinearProgress, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { number, oneOfType, string } from 'prop-types';
 
 import { palette, utilStyles } from 'themes';
@@ -49,7 +45,7 @@ function CmsDisplayProgressBar({ value, year }) {
   return (
     <Box
       pt={2}
-      gridGap={8}
+      gap="8px"
       pb={2}
       display="flex"
       alignItems="center"

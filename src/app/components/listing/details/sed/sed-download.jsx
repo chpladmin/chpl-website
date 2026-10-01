@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';

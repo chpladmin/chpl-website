@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
+  Button, Card, CardContent, CircularProgress, Container, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Moment from 'react-moment';
 import { useSelector } from 'react-redux';
 import {

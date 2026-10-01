@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
+} from '@mui/material';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplQmsStandardEdit from './qms-standard-edit';

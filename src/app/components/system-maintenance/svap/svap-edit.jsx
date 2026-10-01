@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Chip,
-  FormControlLabel,
-  MenuItem,
-  Switch,
-  makeStyles,
-} from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+  Box, Button, Chip, FormControlLabel, MenuItem, Switch,
+} from '@mui/material';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -23,7 +20,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -35,14 +32,15 @@ const useStyles = makeStyles({
     gap: '8px',
     flexWrap: 'wrap',
   },
-});
+};
 
-function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [] }) {
+function ChplSvapEdit({
+  criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -105,7 +103,7 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
   });
 
   return (
-    <div className={classes.container}>
+    <Box sx={styles.container}>
       <ChplTextField
         id="regulatory-text-citation"
         name="regulatoryTextCitation"
@@ -150,7 +148,7 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
             </MenuItem>
           ))}
       </ChplTextField>
-      <div className={classes.chips}>
+      <Box sx={styles.chips}>
         { criteria
           .sort(sortCriteria)
           .map((item) => (
@@ -162,7 +160,7 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
               variant="outlined"
             />
           ))}
-      </div>
+      </Box>
       <FormControlLabel
         control={(
           <Switch
@@ -182,7 +180,7 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
         isDisabled={!isValid()}
         isProcessing={isProcessing}
       />
-    </div>
+    </Box>
   );
 }
 

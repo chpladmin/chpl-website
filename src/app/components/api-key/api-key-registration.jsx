@@ -1,15 +1,9 @@
 import React from 'react';
 import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  TextField,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
+  Button, Card, CardActions, CardContent, CardHeader, TextField, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import SendIcon from '@mui/icons-material/Send';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

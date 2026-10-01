@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
 import { arrayOf } from 'prop-types';
 
 import { reliedUponSoftware } from 'shared/prop-types';
@@ -31,17 +29,16 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
   return '';
 };
 
-const useStyles = makeStyles({
+const styles = {
   unindentedData: {
     marginLeft: '-25px',
   },
-});
+};
 
 function ChplReliedUponSoftwareView(props) {
   /* eslint-disable react/destructuring-assignment */
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
-  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
@@ -64,7 +61,7 @@ function ChplReliedUponSoftwareView(props) {
   }, []);
 
   return (
-    <ul className={classes.unindentedData}>
+    <Box component="ul" sx={styles.unindentedData}>
       { Object.values(software).map((group, groupIndex) => (group.length > 1 ? (
         <li key={`oneOf-${groupIndex}`}>
           One of
@@ -83,7 +80,7 @@ function ChplReliedUponSoftwareView(props) {
           { groupIndex !== groupCount - 1 && ' AND' }
         </li>
       )))}
-    </ul>
+    </Box>
   );
 }
 

@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
+} from '@mui/material';
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplFunctionalityTestedEdit from './functionality-tested-edit';

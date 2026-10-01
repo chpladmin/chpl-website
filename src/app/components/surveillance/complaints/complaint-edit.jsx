@@ -13,9 +13,9 @@ import {
   Select,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import Autocomplete from '@mui/material/Autocomplete';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';

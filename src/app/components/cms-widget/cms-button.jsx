@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { eventTrack } from 'services/analytics.service';
 import {

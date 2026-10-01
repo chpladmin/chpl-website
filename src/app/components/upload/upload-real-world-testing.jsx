@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DoneIcon from '@material-ui/icons/Done';
+  Box, Button, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DoneIcon from '@mui/icons-material/Done';
 import { useSnackbar } from 'notistack';
 
 import { useAxios } from 'api/axios';
 
-const useStyles = makeStyles({
+const styles = {
   buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -52,14 +46,13 @@ const useStyles = makeStyles({
     marginTop: '16px',
     paddingTop: '16px',
   },
-});
+};
 
 function ChplUploadRealWorldTesting() {
   const axios = useAxios();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const classes = useStyles();
 
   const clearFile = () => {
     setFile(undefined);
@@ -96,7 +89,7 @@ function ChplUploadRealWorldTesting() {
     <Card id="upload-real-world-testing">
       <CardHeader title="Upload Real World Testing" />
       <CardContent>
-        <div className={classes.uploadContentContainer}>
+        <Box sx={styles.uploadContentContainer}>
           <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
           <Button
             color="primary"
@@ -112,11 +105,11 @@ function ChplUploadRealWorldTesting() {
               style={{ display: 'none' }}
             />
           </Button>
-        </div>
+        </Box>
         { file
           && (
-            <Box className={classes.fileUploadContainer}>
-              <Box className={classes.fileUploadContent}>
+            <Box sx={styles.fileUploadContainer}>
+              <Box sx={styles.fileUploadContent}>
                 <div>
                   <strong>Filename:</strong>
                   {' '}
@@ -133,7 +126,7 @@ function ChplUploadRealWorldTesting() {
               </Box>
               { file
                 && (
-                  <div className={classes.buttonUploadContainer}>
+                  <Box sx={styles.buttonUploadContainer}>
                     <Button
                       color="primary"
                       variant="contained"
@@ -144,7 +137,7 @@ function ChplUploadRealWorldTesting() {
                       Upload
                     </Button>
                     <Button
-                      className={classes.deleteButton}
+                      sx={styles.deleteButton}
                       variant="contained"
                       onClick={clearFile}
                       endIcon={<DeleteIcon />}
@@ -152,7 +145,7 @@ function ChplUploadRealWorldTesting() {
                     >
                       Remove
                     </Button>
-                  </div>
+                  </Box>
                 )}
             </Box>
           )}

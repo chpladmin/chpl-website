@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
@@ -14,12 +10,12 @@ import { useFetchRwtResultListings } from 'api/developer';
 import UrlCheckerWrapper from 'components/url-checker/url-checker-wrapper';
 import { DeveloperContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   pageHeader: {
     paddingTop: '32px',
     paddingBottom: '16px',
   },
-});
+};
 
 function ChplRwtResultsCreate({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
@@ -31,7 +27,6 @@ function ChplRwtResultsCreate({ dispatch }) {
   const { data, isLoading, isError } = useFetchRwtResultListings({ developer });
   const crData = useFetchChangeRequestTypes();
   const { mutate, isLoading: isSubmitting } = usePostChangeRequest();
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || isError) {
@@ -92,11 +87,11 @@ function ChplRwtResultsCreate({ dispatch }) {
   return (
     <>
       <Container maxWidth="md">
-        <div className={classes.pageHeader}>
+        <Box sx={styles.pageHeader}>
           <Typography gutterBottom component="h1" variant="h2">
             Submit Real World Testing Results URL
           </Typography>
-        </div>
+        </Box>
       </Container>
       <UrlCheckerWrapper>
         <ChplRwtResultsWizard

@@ -1,11 +1,8 @@
 import React, { useContext } from 'react';
 import {
-  AppBar,
-  Box,
-  ButtonBase,
-  Toolbar,
-  makeStyles,
-} from '@material-ui/core';
+  AppBar, Box, ButtonBase, Toolbar,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import ChplLogo from '../../assets/images/Certified-HealthIT-Product-List-Upper-Left-Logo.svg';
 
@@ -66,10 +63,10 @@ const useStyles = makeStyles({
   logo: {
     height: '40px',
     display: 'block',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       height: '32px',
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: '20px',
     },
   },
@@ -99,7 +96,7 @@ const useStyles = makeStyles({
   },
   mobileOnly: {
     display: 'none',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
     },
   },

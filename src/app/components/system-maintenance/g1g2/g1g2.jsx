@@ -4,8 +4,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+} from '@mui/material';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 
 import ChplG1g2View from './g1g2-view';
 

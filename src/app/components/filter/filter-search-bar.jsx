@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   bool,
@@ -28,7 +26,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '16px',
     },
     [theme.breakpoints.up('md')]: {
@@ -39,7 +37,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     gridGap: '8px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',

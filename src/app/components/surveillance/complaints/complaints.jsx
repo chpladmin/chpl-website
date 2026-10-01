@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 import { arrayOf, bool, string } from 'prop-types';
 import { useSelector } from 'react-redux';
 

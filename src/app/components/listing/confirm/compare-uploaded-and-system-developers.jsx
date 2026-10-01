@@ -12,15 +12,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   useFetchUploadedDeveloper,
 } from 'api/pending-listings';
 
-const useStyles = makeStyles({
+const styles = {
   closeIcon: {
     marginTop: '8px',
   },
@@ -43,7 +42,7 @@ const useStyles = makeStyles({
     top: 20,
     width: 1,
   },
-});
+};
 
 function ChplCompareUploadedAndSystemDevelopers(props) {
   const {
@@ -53,16 +52,15 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
   } = props;
   const { data, isLoading, isSuccess } = useFetchUploadedDeveloper({ id });
   const [uploaded, setUploaded] = useState(null);
-  const classes = useStyles();
 
   useEffect(() => {
     setUploaded(data);
   }, [data]);
 
-  const getRowClass = (a, b) => {
-    if (!a && !b) { return ''; }
-    if (a !== b) { return classes.differentValue; }
-    return '';
+  const getRowStyles = (a, b) => {
+    if (!a && !b) { return undefined; }
+    if (a !== b) { return styles.differentValue; }
+    return undefined;
   };
 
   if (isLoading || !isSuccess || !system?.name || !uploaded) { return <CircularProgress />; }
@@ -76,8 +74,8 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
             variant="contained"
             color="primary"
             onClick={dispatch}
-            className={classes.closeIcon}
-          >
+            sx={styles.closeIcon}
+            size="large">
             <CloseIcon />
           </IconButton>
 )}
@@ -87,100 +85,100 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.visuallyHidden}>Section</TableCell>
+                <TableCell sx={styles.visuallyHidden}>Section</TableCell>
                 <TableCell>Existing Developer</TableCell>
                 <TableCell>Uploaded Developer</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow
-                className={getRowClass(system.name, uploaded.name)}
+                sx={getRowStyles(system.name, uploaded.name)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Developer Name</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Developer Name</TableCell>
                 <TableCell>{ system.name }</TableCell>
                 <TableCell>{ uploaded.name }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.website, uploaded.website)}
+                sx={getRowStyles(system.website, uploaded.website)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Website</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Website</TableCell>
                 <TableCell>{ system.website }</TableCell>
                 <TableCell>{ uploaded.website }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.selfDeveloper !== uploaded.selfDeveloper) ? classes.differentValue : ''}
+                sx={(system.selfDeveloper !== uploaded.selfDeveloper) ? styles.differentValue : undefined}
               >
-                <TableCell className={classes.sectionCell} scope="row">Self-Developer</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Self-Developer</TableCell>
                 <TableCell>{ system.selfDeveloper ? 'Yes' : 'No' }</TableCell>
                 <TableCell>{ uploaded.selfDeveloper === null ? '' : (uploaded.selfDeveloper ? 'Yes' : 'No') }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.address?.line1, uploaded.address?.line1)}
+                sx={getRowStyles(system.address?.line1, uploaded.address?.line1)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Line 1</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Line 1</TableCell>
                 <TableCell>{ system.address?.line1 }</TableCell>
                 <TableCell>{ uploaded.address?.line1 }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.address?.line2, uploaded.address?.line2)}
+                sx={getRowStyles(system.address?.line2, uploaded.address?.line2)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Line 2</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Line 2</TableCell>
                 <TableCell>{ system.address?.line2 }</TableCell>
                 <TableCell>{ uploaded.address?.line2 }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.address?.city, uploaded.address?.city)}
+                sx={getRowStyles(system.address?.city, uploaded.address?.city)}
               >
-                <TableCell className={classes.sectionCell} scope="row">City</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">City</TableCell>
                 <TableCell>{ system.address?.city }</TableCell>
                 <TableCell>{ uploaded.address?.city }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.address?.state, uploaded.address?.state)}
+                sx={getRowStyles(system.address?.state, uploaded.address?.state)}
               >
-                <TableCell className={classes.sectionCell} scope="row">State</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">State</TableCell>
                 <TableCell>{ system.address?.state }</TableCell>
                 <TableCell>{ uploaded.address?.state }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.address?.zipcode, uploaded.address?.zipcode)}
+                sx={getRowStyles(system.address?.zipcode, uploaded.address?.zipcode)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Zip</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Zip</TableCell>
                 <TableCell>{ system.address?.zipcode }</TableCell>
                 <TableCell>{ uploaded.address?.zipcode }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.address?.country, uploaded.address?.country)}
+                sx={getRowStyles(system.address?.country, uploaded.address?.country)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Country</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Country</TableCell>
                 <TableCell>{ system.address?.country }</TableCell>
                 <TableCell>{ uploaded.address?.country }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.contact?.fullName, uploaded.contact?.fullName)}
+                sx={getRowStyles(system.contact?.fullName, uploaded.contact?.fullName)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Contact</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Contact</TableCell>
                 <TableCell>{ system.contact?.fullName }</TableCell>
                 <TableCell>{ uploaded.contact?.fullName }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.contact?.title, uploaded.contact?.title)}
+                sx={getRowStyles(system.contact?.title, uploaded.contact?.title)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Title</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Title</TableCell>
                 <TableCell>{ system.contact?.title }</TableCell>
                 <TableCell>{ uploaded.contact?.title }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.contact?.email, uploaded.contact?.email)}
+                sx={getRowStyles(system.contact?.email, uploaded.contact?.email)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Email</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Email</TableCell>
                 <TableCell>{ system.contact?.email }</TableCell>
                 <TableCell>{ uploaded.contact?.email }</TableCell>
               </TableRow>
               <TableRow
-                className={getRowClass(system.contact?.phoneNumber, uploaded.contact?.phoneNumber)}
+                sx={getRowStyles(system.contact?.phoneNumber, uploaded.contact?.phoneNumber)}
               >
-                <TableCell className={classes.sectionCell} scope="row">Phone</TableCell>
+                <TableCell sx={styles.sectionCell} scope="row">Phone</TableCell>
                 <TableCell>{ system.contact?.phoneNumber }</TableCell>
                 <TableCell>{ uploaded.contact?.phoneNumber }</TableCell>
               </TableRow>

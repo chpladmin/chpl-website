@@ -5,7 +5,7 @@ import {
   CardHeader,
   CircularProgress,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchDirectReviews } from 'api/developer';
 import ChplDirectReviewsView from 'components/listing/details/compliance/direct-reviews';

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Typography } from '@mui/material';
 import {
   TimelineConnector,
   TimelineContent,
   TimelineDot,
   TimelineItem,
   TimelineSeparator,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import { bool, func, object } from 'prop-types';
 
 import compareSystemMaintenance from './services/system-maintenance.service';
@@ -18,11 +15,11 @@ import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   dateText: {
     color: palette.greyDark,
   },
-});
+};
 
 const getDescription = (activity) => {
   let verb;
@@ -55,7 +52,6 @@ const getDescription = (activity) => {
 
 function ChplSystemMaintenanceActivityDetails({ activity, interpret = compareSystemMaintenance, last }) {
   const [details, setDetails] = useState([]);
-  const classes = useStyles();
 
   const { data, isError, isLoading } = useFetchActivity({
     id: activity.id,
@@ -85,7 +81,7 @@ function ChplSystemMaintenanceActivityDetails({ activity, interpret = compareSys
       </TimelineSeparator>
       <TimelineContent>
         { getDescription(activity) }
-        <Typography variant="body2" className={classes.dateText}>
+        <Typography variant="body2" sx={styles.dateText}>
           { getDisplayDateFormat(activity.date) }
           {` (${activity.responsibleUser?.fullName ?? 'Anonymous'})` }
         </Typography>

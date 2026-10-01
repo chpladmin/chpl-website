@@ -8,8 +8,7 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { ChplLink } from 'components/util';
@@ -19,7 +18,7 @@ import { FlagContext, UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   dataContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -38,14 +37,13 @@ const useStyles = makeStyles({
     },
     overflowWrap: 'anywhere',
   },
-});
+};
 
 function ChplListingInformation({ listing: initialListing }) {
   const user = useSelector((state) => state.userInfo.user);
   const { hti5ErdIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     setListing({
@@ -68,23 +66,23 @@ function ChplListingInformation({ listing: initialListing }) {
   if (!listing) { return <CircularProgress />; }
 
   return (
-    <Box gridGap={16} display="flex" flexDirection="column">
-      <Box gridGap={16} display="flex" flexDirection="column">
-        <Box className={classes.dataContainer}>
-          <Box className={classes.dataBox}>
+    <Box gap="16px" display="flex" flexDirection="column">
+      <Box gap="16px" display="flex" flexDirection="column">
+        <Box sx={styles.dataContainer}>
+          <Box sx={styles.dataBox}>
             <Typography variant="subtitle1">CHPL Product Number:</Typography>
             <Typography gutterBottom>{listing.chplProductNumber}</Typography>
           </Box>
           { listing.acbCertificationId
            && (
-             <Box className={classes.dataBox}>
+             <Box sx={styles.dataBox}>
                <Typography variant="subtitle1">ONC-ACB Certification ID:</Typography>
                <Typography gutterBottom>{listing.acbCertificationId}</Typography>
              </Box>
            )}
           { listing.chplProductNumberHistory.length > 0
            && (
-             <Box className={classes.dataBox}>
+             <Box sx={styles.dataBox}>
                <Typography variant="subtitle1">Previous CHPL Product Numbers:</Typography>
                <List>
                  {listing.chplProductNumberHistory.map((prev) => (
@@ -95,12 +93,12 @@ function ChplListingInformation({ listing: initialListing }) {
                </List>
              </Box>
            )}
-          <Box className={classes.dataBox}>
+          <Box sx={styles.dataBox}>
             <Typography variant="subtitle1">Certification Date:</Typography>
             <Typography gutterBottom>{getDisplayDateFormat(listing.certificationDay)}</Typography>
             { listing.product.ownerHistory?.length > 0
              && (
-               <Box className={classes.dataBox}>
+               <Box sx={styles.dataBox}>
                  <Typography variant="subtitle1">Previous Developer:</Typography>
                  <List>
                    {listing.product.ownerHistory.map((prev) => (
@@ -116,20 +114,20 @@ function ChplListingInformation({ listing: initialListing }) {
                </Box>
              )}
           </Box>
-          <Box className={classes.dataBox}>
+          <Box sx={styles.dataBox}>
             <Typography variant="subtitle1">Version:</Typography>
             <Typography gutterBottom>{listing.version.version}</Typography>
           </Box>
           { canSeeEdition()
              && (
-             <Box className={classes.dataBox}>
+             <Box sx={styles.dataBox}>
                <Typography variant="subtitle1">Certification Edition:</Typography>
                <Typography gutterBottom>{listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : ''}</Typography>
              </Box>
              )}
           { listing.currentStatus
             && (
-              <Box className={classes.dataBox}>
+              <Box sx={styles.dataBox}>
                 <Typography variant="subtitle1">Certification Status:</Typography>
                 <Typography gutterBottom>
                   {listing.currentStatus.status.name }
@@ -139,23 +137,23 @@ function ChplListingInformation({ listing: initialListing }) {
             )}
           { listing.practiceType?.name
            && (
-             <Box className={classes.dataBox}>
+             <Box sx={styles.dataBox}>
                <Typography variant="subtitle1">Practice Type:</Typography>
                <Typography gutterBottom>{listing.practiceType.name}</Typography>
              </Box>
            )}
           { listing.classificationType?.name
            && (
-             <Box className={classes.dataBox}>
+             <Box sx={styles.dataBox}>
                <Typography variant="subtitle1">Classification Type:</Typography>
                <Typography gutterBottom>{listing.classificationType.name}</Typography>
              </Box>
            )}
-          <Box className={classes.dataBox}>
+          <Box sx={styles.dataBox}>
             <Typography variant="subtitle1">ONC-Authorized Certification Body:</Typography>
             <Typography gutterBottom>{listing.certifyingBody.name}</Typography>
           </Box>
-          <Box className={classes.dataBox}>
+          <Box sx={styles.dataBox}>
             <Typography variant="subtitle1">ONC-Authorized Testing Laboratory:</Typography>
             { listing.testingLabs.map((atl) => (
               <Typography gutterBottom key={atl.testingLab.id}>{atl.testingLab.name}</Typography>
@@ -184,7 +182,7 @@ function ChplListingInformation({ listing: initialListing }) {
                </>
              )}
           </Box>
-          <Box className={classes.dataBox}>
+          <Box sx={styles.dataBox}>
             <Typography variant="subtitle1">Mandatory Disclosures:</Typography>
             { listing.mandatoryDisclosures
               ? (
@@ -206,8 +204,8 @@ function ChplListingInformation({ listing: initialListing }) {
         <Card>
           <CardHeader title="Developer" />
           <CardContent>
-            <Box className={classes.dataContainer}>
-              <Box className={classes.dataBox}>
+            <Box sx={styles.dataContainer}>
+              <Box sx={styles.dataBox}>
                 <Typography variant="subtitle1">Developer:</Typography>
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
@@ -225,14 +223,14 @@ function ChplListingInformation({ listing: initialListing }) {
               </Box>
               { listing.developer.statuses?.length > 0 && listing.developer.statuses?.some((status) => !status.endDate)
                 && (
-                  <Box className={classes.dataBox}>
+                  <Box sx={styles.dataBox}>
                     <Typography variant="subtitle1">Developer Status:</Typography>
                     <Typography gutterBottom>{listing.developer.statuses.find((status) => !status.endDate).status.name}</Typography>
                   </Box>
                 )}
               { listing.developer.website
                 && (
-                  <Box className={classes.dataBox}>
+                  <Box sx={styles.dataBox}>
                     <Typography variant="subtitle1">Developer Website:</Typography>
                     <ChplLink
                       href={listing.developer.website}
@@ -246,13 +244,13 @@ function ChplListingInformation({ listing: initialListing }) {
                     />
                   </Box>
                 )}
-              <Box className={classes.dataBox}>
+              <Box sx={styles.dataBox}>
                 <Typography variant="subtitle1">Self-Developer:</Typography>
                 <Typography gutterBottom>{listing.developer.selfDeveloper ? 'Yes' : 'No'}</Typography>
               </Box>
               { listing.developer.address
                 && (
-                  <Box className={classes.dataBox}>
+                  <Box sx={styles.dataBox}>
                     <Typography variant="body1" gutterBottom>
                       <strong>Address:</strong>
                       <br />
@@ -339,8 +337,8 @@ function ChplListingInformation({ listing: initialListing }) {
         <Card>
           <CardHeader title="Conditions and Maintenance of Certification" />
           <CardContent>
-            <Box className={classes.dataContainer}>
-              <Box className={classes.dataBox}>
+            <Box sx={styles.dataContainer}>
+              <Box sx={styles.dataBox}>
                 <Typography variant="subtitle1">Attestations:</Typography>
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
@@ -358,7 +356,7 @@ function ChplListingInformation({ listing: initialListing }) {
               </Box>
               { ((!hti5ErdIsOn && (listing.rwtPlansUrl || listing.rwtPlansCheckDate)) || listing.rwtResultsUrl || listing.rwtResultsCheckDate)
                 && (
-                  <Box className={classes.dataBox}>
+                  <Box sx={styles.dataBox}>
                     <Typography variant="subtitle1" gutterBottom>Real World Testing:</Typography>
                     { listing.rwtPlansUrl && !hti5ErdIsOn
                      && (

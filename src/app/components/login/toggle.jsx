@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  IconButton,
-  Popover,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import CloseIcon from '@material-ui/icons/Close';
+  Box, Button, Divider, Drawer, IconButton, Popover, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { func } from 'prop-types';
 
@@ -83,7 +77,7 @@ function ChplToggle({ dispatch = () => {} }) {
   const [loginPopoverOpen, setLoginPopoverOpen] = useState(false);
   const [adminDrawerOpen, setAdminDrawerOpen] = useState(false);
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isToggleOpen = isMobile ? adminDrawerOpen : loginPopoverOpen;
 
   const getTitle = () => {
@@ -118,74 +112,72 @@ function ChplToggle({ dispatch = () => {} }) {
     }
   };
 
-  return (
-    <>
-      <Button
-        id="login-toggle"
-        aria-controls={!isMobile && loginPopoverOpen ? 'admin-login-form' : undefined}
-        aria-haspopup="dialog"
-        aria-expanded={isToggleOpen ? 'true' : undefined}
-        onClick={handleClick}
-        className={classes.whiteButton}
-      >
-        { getTitle() }
-      </Button>
-      <Popover
-        id="admin-login-form"
-        open={loginPopoverOpen}
-        anchorEl={anchor}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        className={classes.popoverSpacing}
-        disableScrollLock
-        PaperProps={{
-          id: 'admin-login-paper',
-        }}
-      >
+  return <>
+    <Button
+      id="login-toggle"
+      aria-controls={!isMobile && loginPopoverOpen ? 'admin-login-form' : undefined}
+      aria-haspopup="dialog"
+      aria-expanded={isToggleOpen ? 'true' : undefined}
+      onClick={handleClick}
+      className={classes.whiteButton}
+    >
+      { getTitle() }
+    </Button>
+    <Popover
+      id="admin-login-form"
+      open={loginPopoverOpen}
+      anchorEl={anchor}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      className={classes.popoverSpacing}
+      disableScrollLock
+      PaperProps={{
+        id: 'admin-login-paper',
+      }}
+    >
+      { loginState === 'LOGGEDIN' ? (
+        <ChplAdminMenu onClose={handleClose} />
+      ) : (
+        <div className={classes.loginCard}>
+          <ChplLogin
+            dispatch={handleDispatch}
+          />
+        </div>
+      )}
+    </Popover>
+    <Drawer
+      anchor="right"
+      open={isMobile && adminDrawerOpen}
+      onClose={handleClose}
+      classes={{ paper: classes.drawerPaper }}
+    >
+      <Box className={classes.drawerContent}>
+        <Box className={classes.drawerHeader}>
+          <Typography variant="h6">Administrator Navigation</Typography>
+          <IconButton onClick={handleClose} aria-label="close admin menu" size="large">
+            <CloseIcon color="primary" />
+          </IconButton>
+        </Box>
+        <Divider className={classes.drawerDivider} />
         { loginState === 'LOGGEDIN' ? (
           <ChplAdminMenu onClose={handleClose} />
         ) : (
-          <div className={classes.loginCard}>
+          <div className={classes.drawerLoginCard}>
             <ChplLogin
               dispatch={handleDispatch}
             />
           </div>
         )}
-      </Popover>
-      <Drawer
-        anchor="right"
-        open={isMobile && adminDrawerOpen}
-        onClose={handleClose}
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <Box className={classes.drawerContent}>
-          <Box className={classes.drawerHeader}>
-            <Typography variant="h6">Administrator Navigation</Typography>
-            <IconButton onClick={handleClose} aria-label="close admin menu">
-              <CloseIcon color="primary" />
-            </IconButton>
-          </Box>
-          <Divider className={classes.drawerDivider} />
-          { loginState === 'LOGGEDIN' ? (
-            <ChplAdminMenu onClose={handleClose} />
-          ) : (
-            <div className={classes.drawerLoginCard}>
-              <ChplLogin
-                dispatch={handleDispatch}
-              />
-            </div>
-          )}
-        </Box>
-      </Drawer>
-    </>
-  );
+      </Box>
+    </Drawer>
+  </>;
 }
 
 export default ChplToggle;

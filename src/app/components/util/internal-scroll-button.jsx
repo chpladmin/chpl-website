@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
+import { Button } from '@mui/material';
 import { node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import { analyticsConfig } from 'shared/prop-types';
 import palette from 'themes/palette';
 
-const useStyles = makeStyles({
+const styles = {
   noButtonWrap: {
     whiteSpace: 'nowrap',
     display: 'flex',
@@ -29,13 +26,12 @@ const useStyles = makeStyles({
       fontWeight: 900,
     },
   },
-});
+};
 
 const InternalScrollButton = ({
   analytics = {}, children, id,
 }) => {
   const [target, setTarget] = useState('');
-  const classes = useStyles();
 
   useEffect(() => {
     setTarget(document.getElementById(id));
@@ -53,7 +49,7 @@ const InternalScrollButton = ({
     <Button
       onClick={handleClick}
       color="primary"
-      className={classes.noButtonWrap}
+      sx={styles.noButtonWrap}
       id={`${id}-navigation-button`}
     >
       {children}

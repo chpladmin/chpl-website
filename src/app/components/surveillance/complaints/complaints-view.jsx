@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+  Box, Button, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from '@mui/icons-material/Add';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useSnackbar } from 'notistack';
 import { bool, string } from 'prop-types';
 
@@ -207,7 +202,7 @@ function ChplComplaintsView(props) {
     }
     if (canAdd) {
       return (
-        <Box display="flex" gridGap="8px">
+        <Box display="flex" gap="8px">
           <Button
             onClick={() => handleDispatch({ action: 'add' })}
             color="secondary"

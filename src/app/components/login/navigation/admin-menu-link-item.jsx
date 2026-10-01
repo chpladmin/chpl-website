@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  ListItem,
-  makeStyles,
-} from '@material-ui/core';
+import { ListItem } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   bool,
   func,

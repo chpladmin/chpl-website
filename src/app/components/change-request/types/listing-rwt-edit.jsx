@@ -1,9 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 import { bool } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -12,7 +8,7 @@ import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink, ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -31,7 +27,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
   },
-});
+};
 
 const validationSchema = yup.object({
   checkDate: yup.date()
@@ -46,7 +42,6 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false }) {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -100,15 +95,15 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false }) {
   });
 
   return (
-    <div className={classes.container}>
-      <div className={classes.detailsContainer}>
+    <Box sx={styles.container}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
           { getCurrent() }
         </Typography>
-      </div>
+      </Box>
       <Divider />
-      <div className={classes.detailsContainer}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
         { hasAnyRole(['chpl-developer'])
           && (
@@ -143,8 +138,8 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false }) {
               helperText={formik.touched.checkDate && formik.errors.checkDate}
             />
           )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

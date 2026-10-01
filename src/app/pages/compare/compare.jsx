@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { keyframes } from '@emotion/react';
 import {
   Box,
   Card,
@@ -10,13 +11,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import InfoIcon from '@material-ui/icons/Info';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
+import CheckIcon from '@mui/icons-material/Check';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import { string } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
@@ -34,7 +34,18 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const itemEnter = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(200%)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
+
+const styles = {
   ...utilStyles,
   headerRow: {
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 16px 8px',
@@ -62,19 +73,9 @@ const useStyles = makeStyles({
     },
   },
   animatedItem: {
-    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
+    animation: `${itemEnter} 1000ms ${theme.transitions.easing.easeInOut}`,
   },
-  '@keyframes myEffect': {
-    '0%': {
-      opacity: 0,
-      transform: 'translateY(200%)',
-    },
-    '100%': {
-      opacity: 1,
-      transform: 'translateY(0)',
-    },
-  },
-});
+};
 
 function ChplComparePage({ ids }) {
   const analytics = {
@@ -88,7 +89,6 @@ function ChplComparePage({ ids }) {
   const [listingsToProcess, setListingsToProcess] = useState([]);
   const [showPracticeType, setShowPracticeType] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -122,9 +122,9 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell className={classes.stickyColumn}><strong>{ title }</strong></TableCell>
+      <TableCell sx={styles.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
-        <TableCell className={classes.animatedItem} key={listing.id}>
+        <TableCell sx={styles.animatedItem} key={listing.id}>
           { getData(listing) }
         </TableCell>
       ))}
@@ -167,7 +167,7 @@ function ChplComparePage({ ids }) {
     if (!listings.some((listing) => listing.certificationResults.some((cr) => cr.criterion.id === criterion.id))) { return null; }
     return (
       <TableRow key={criterion.id} id={`criterion-${criterion.id}`}>
-        <TableCell scope="row" className={classes.stickyColumn}>
+        <TableCell scope="row" sx={styles.stickyColumn}>
           { criterion.removed ? 'Removed | ' : '' }
           <strong>{ criterion.number }</strong>
           {': '}
@@ -175,9 +175,9 @@ function ChplComparePage({ ids }) {
           { criterion.removed
             && (
               <ChplTooltip title="This certification criterion has been removed from the Program.">
-                <IconButton className={classes.infoIcon}>
+                <IconButton sx={styles.infoIcon} size="large">
                   <InfoIcon
-                    className={classes.infoIconColor}
+                    sx={styles.infoIconColor}
                   />
                 </IconButton>
               </ChplTooltip>
@@ -226,7 +226,7 @@ function ChplComparePage({ ids }) {
     }))) { return null; }
     return (
       <TableRow key={cqm.id} id={`cqm-${cqm.id}`}>
-        <TableCell scope="row" className={classes.stickyColumn}>
+        <TableCell scope="row" sx={styles.stickyColumn}>
           <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
           {': '}
           {cqm.title}
@@ -268,13 +268,13 @@ function ChplComparePage({ ids }) {
       />
       <ChplPageBody>
         <Card>
-          <TableContainer className={classes.Table}>
+          <TableContainer sx={styles.Table}>
             <Table size="small">
               <TableHead>
-                <TableRow hover={false} className={classes.headerRow}>
-                  <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
+                <TableRow hover={false} sx={styles.headerRow}>
+                  <TableCell sx={styles.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                   { listings.map((listing) => (
-                    <TableCell className={classes.headerColumnContent} key={listing.id}>
+                    <TableCell sx={styles.headerColumnContent} key={listing.id}>
                       <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                         { listing.product.name }
                         <ChplBrowserComparedWidget

@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import EmailIcon from '@material-ui/icons/Email';
+  Button, Dialog, DialogActions, DialogContent, MenuItem,
+} from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EmailIcon from '@mui/icons-material/Email';
 import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -17,7 +12,7 @@ import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '8px',
@@ -25,7 +20,7 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -38,7 +33,6 @@ const validationSchema = yup.object({
 function ChplUserInvite({ dispatch, groupNames }) {
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
   let formik;
 
   const handleClickOpen = () => {
@@ -106,7 +100,7 @@ function ChplUserInvite({ dispatch, groupNames }) {
         </ChplDialogTitle>
         <DialogContent
           dividers
-          className={classes.content}
+          sx={styles.content}
         >
           <ChplTextField
             id="email"
@@ -149,7 +143,7 @@ function ChplUserInvite({ dispatch, groupNames }) {
             onClick={formik.handleSubmit}
           >
             Send Invite
-            <EmailIcon className={classes.iconSpacing} />
+            <EmailIcon sx={styles.iconSpacing} />
           </Button>
         </DialogActions>
       </Dialog>

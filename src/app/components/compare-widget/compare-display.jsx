@@ -1,16 +1,11 @@
 import React, { useContext } from 'react';
 import {
-  Button,
-  CardContent,
-  Chip,
-  Divider,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import DeleteIcon from '@material-ui/icons/Delete';
+  Button, CardContent, Chip, Divider, IconButton, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloseIcon from '@mui/icons-material/Close';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { func, objectOf, string } from 'prop-types';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';

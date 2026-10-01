@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -19,9 +20,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { number } from 'prop-types';
 import CytoscapeComponent from 'react-cytoscapejs';
 
@@ -30,7 +30,7 @@ import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   cardContainer: {
     display: 'flex',
     justifyContent: 'flex-start',
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
     width: '50%',
     borderLeft: '1px solid #ccc',
   },
-});
+};
 
 const layout = {
   name: 'breadthfirst',
@@ -137,7 +137,6 @@ function ChplIcsFamily(props) {
   const [listingId, setListingId] = useState(undefined);
   const [listings, setListings] = useState([]);
   const cy = useRef(null);
-  const classes = useStyles();
 
   useEffect(() => () => {
     if (cy.current) {
@@ -216,8 +215,8 @@ function ChplIcsFamily(props) {
   return (
     <Card>
       <CardContent>
-        <div className={classes.cardContainer}>
-          <div className={classes.directionContainer}>
+        <Box sx={styles.cardContainer}>
+          <Box sx={styles.directionContainer}>
             <div>
               <Typography gutterBottom>
                 Select a Certified Product to the right to view more information. You can also click and drag to scroll through the Certified Products.
@@ -235,9 +234,9 @@ function ChplIcsFamily(props) {
             { isShowingListingDetails
               && (
                 <div>
-                  <Card className={classes.detailContainer}>
+                  <Card sx={styles.detailContainer}>
                     <CardHeader title="Details" />
-                    <CardContent className={classes.detailContainer}>
+                    <CardContent sx={styles.detailContainer}>
                       <Typography>
                         <strong>CHPL Product Number:</strong>
                       </Typography>
@@ -300,8 +299,8 @@ function ChplIcsFamily(props) {
                   </Card>
                 </div>
               )}
-          </div>
-          <div className={classes.figureContainer}>
+          </Box>
+          <Box sx={styles.figureContainer}>
             <figure>
               <CytoscapeComponent
                 elements={elements}
@@ -390,8 +389,8 @@ function ChplIcsFamily(props) {
                 </Table>
               </figcaption>
             </figure>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );

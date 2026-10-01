@@ -1,15 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
-  MenuList,
-  makeStyles,
-} from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+  Box, Button, Card, CardContent, CardHeader, MenuItem, MenuList,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Moment from 'react-moment';
 import {
   arrayOf, bool, func, string,

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 
 import { useFetchUsersAtDeveloper } from 'api/developer';
@@ -28,7 +26,7 @@ const useStyles = makeStyles({
   lefthandContainer: {
     width: '33%',
     minWidth: '33%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
       minWidth: '100%',
     },
@@ -44,7 +42,7 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     gap: '32px',
     minHeight: 'calc(100vh - 290px)',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },

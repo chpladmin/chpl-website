@@ -15,15 +15,15 @@ import {
   Radio,
   RadioGroup,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CloseIcon from '@material-ui/icons/Close';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import Skeleton from '@mui/material/Skeleton';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import { func, objectOf, string } from 'prop-types';
 
 import ChplCmsDisplayProgressBar from './cms-display-progress-bar';

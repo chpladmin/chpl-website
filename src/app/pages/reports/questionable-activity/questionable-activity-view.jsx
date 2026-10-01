@@ -3,8 +3,8 @@ import {
   Box,
   Button,
   Typography,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 
 import { useFreshAccessToken } from 'api/axios';

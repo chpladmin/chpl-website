@@ -1,11 +1,7 @@
 import React, { useContext } from 'react';
 import {
-  Divider,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Divider, FormControlLabel, Switch, Typography,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -14,7 +10,7 @@ import { ChplTextField } from 'components/util';
 import { ChangeRequestContext, UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -34,7 +30,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -63,7 +59,6 @@ const validationSchema = yup.object({
 function ChplChangeRequestDemographicsEdit() {
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
-  const classes = useStyles();
   let formik;
 
   const handleChange = (...args) => {
@@ -123,8 +118,8 @@ function ChplChangeRequestDemographicsEdit() {
   });
 
   return (
-    <div className={classes.container}>
-      <div className={classes.detailsContainer}>
+    <Box sx={styles.container}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
           Self-Developer:
@@ -132,8 +127,8 @@ function ChplChangeRequestDemographicsEdit() {
           { changeRequest.developer.selfDeveloper ? 'Yes' : 'No' }
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
-        <div className={classes.detailsSubContainer}>
-          <Typography className={classes.fullWidthGridRow}>
+        <Box sx={styles.detailsSubContainer}>
+          <Typography sx={styles.fullWidthGridRow}>
             Full Name:
             {' '}
             { changeRequest.developer.contact.fullName }
@@ -148,9 +143,9 @@ function ChplChangeRequestDemographicsEdit() {
             {' '}
             { changeRequest.developer.contact.phoneNumber }
           </Typography>
-        </div>
+        </Box>
         <Typography variant="subtitle2">Address</Typography>
-        <div className={classes.detailsSubContainer}>
+        <Box sx={styles.detailsSubContainer}>
           <Typography>
             Address:
             {' '}
@@ -181,15 +176,15 @@ function ChplChangeRequestDemographicsEdit() {
             {' '}
             { changeRequest.developer.address.country }
           </Typography>
-        </div>
-        <Typography className={classes.fullWidthGridRow}>
+        </Box>
+        <Typography sx={styles.fullWidthGridRow}>
           Website:
           {' '}
           { changeRequest.developer.website }
         </Typography>
-      </div>
+      </Box>
       <Divider />
-      <div className={classes.detailsContainer}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
         <FormControlLabel
           control={(
@@ -205,7 +200,7 @@ function ChplChangeRequestDemographicsEdit() {
           label="Self-Developer"
         />
         <Typography variant="subtitle2">Contact</Typography>
-        <div className={classes.detailsSubContainer}>
+        <Box sx={styles.detailsSubContainer}>
           <ChplTextField
             id="full-name"
             name="fullName"
@@ -217,7 +212,7 @@ function ChplChangeRequestDemographicsEdit() {
             onBlur={formik.handleBlur}
             error={formik.touched.fullName && !!formik.errors.fullName}
             helperText={formik.touched.fullName && formik.errors.fullName}
-            className={classes.fullWidthGridRow}
+            sx={styles.fullWidthGridRow}
           />
           <ChplTextField
             id="email"
@@ -243,9 +238,9 @@ function ChplChangeRequestDemographicsEdit() {
             error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
             helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
-        </div>
+        </Box>
         <Typography variant="subtitle2">Address</Typography>
-        <div className={classes.detailsSubContainer}>
+        <Box sx={styles.detailsSubContainer}>
           <ChplTextField
             id="line1"
             name="line1"
@@ -317,16 +312,16 @@ function ChplChangeRequestDemographicsEdit() {
             error={formik.touched.country && !!formik.errors.country}
             helperText={formik.touched.country && formik.errors.country}
           />
-        </div>
+        </Box>
         <Typography gutterBottom variant="subtitle1">Website</Typography>
-        <div className={classes.fullWidthGridRow}>
+        <Box sx={styles.fullWidthGridRow}>
           <ChplUrlChecker
             dispatch={handleDispatch}
             url={changeRequest.details.website}
           />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

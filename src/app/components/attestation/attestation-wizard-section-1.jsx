@@ -1,18 +1,14 @@
 import React from 'react';
 import {
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardContent, Container, Divider, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles({
   attestationContainerList: {
     fontSize: '0.875em',
   },
-  fixFooterSpacing:{
+  fixFooterSpacing: {
     minHeight: 'calc(100vh - 500px)',
   },
   forAssistanceContainer: {
@@ -24,7 +20,7 @@ function ChplAttestationWizardSection1() {
   const classes = useStyles();
 
   return (
-    <Container  className={classes.fixFooterSpacing} maxWidth="md">
+    <Container className={classes.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2">
         Section 1 &mdash; Introduction
       </Typography>

@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
-import CompareArrows from '@material-ui/icons/CompareArrows';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CompareArrows from '@mui/icons-material/CompareArrows';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { eventTrack } from 'services/analytics.service';
 import { CmsContext, CompareContext, useAnalyticsContext } from 'shared/contexts';

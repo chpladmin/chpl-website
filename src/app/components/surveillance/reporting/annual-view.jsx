@@ -1,12 +1,7 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Divider, Typography,
+} from '@mui/material';
 import {
   func,
   object,
@@ -15,7 +10,7 @@ import {
 import { ChplActionBar } from 'components/action-bar';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -48,22 +43,20 @@ const useStyles = makeStyles({
     margin: '8px 0',
     whiteSpace: 'pre-line',
   },
-});
+};
 
 function ChplAnnualView({
   dispatch,
   report,
 }) {
-  const classes = useStyles();
-
   const handleDispatch = (action) => {
     dispatch({ action });
   };
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.stickyColumn}>
-        <Card className={classes.reportInfoCard}>
+    <Box sx={styles.container}>
+      <Box sx={styles.stickyColumn}>
+        <Card sx={styles.reportInfoCard}>
           <CardContent>
             <Typography variant="h6" component="h2">
               <strong>{`${report.acb?.name} Annual Surveillance Reporting`}</strong>
@@ -83,16 +76,16 @@ function ChplAnnualView({
             <Typography style={{ paddingBottom: '4px', color: '#373737' }} variant="body2" gutterBottom>
               Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.
             </Typography>
-            <Typography className={classes.responseBox}>
+            <Typography sx={styles.responseBox}>
               { report.obstacleSummary }
             </Typography>
           </Box>
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" component="h2">
               <strong>Priority Changes From Findings Summary</strong>
             </Typography>
           </Box>
-          <Typography className={classes.responseBox}>
+          <Typography sx={styles.responseBox}>
             { report.priorityChangesFromFindingsSummary }
           </Typography>
           <Divider />
@@ -107,7 +100,7 @@ function ChplAnnualView({
         canSave={false}
         dispatch={handleDispatch}
       />
-    </div>
+    </Box>
   );
 }
 

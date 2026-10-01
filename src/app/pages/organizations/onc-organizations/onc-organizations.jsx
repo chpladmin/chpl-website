@@ -1,16 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Chip,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import AddIcon from '@material-ui/icons/Add';
+  Box, Button, Card, CardActions, CardContent, Chip, Typography,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AddIcon from '@mui/icons-material/Add';
 import { useSnackbar } from 'notistack';
 import { oneOf } from 'prop-types';
 
@@ -188,7 +182,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
                     endIcon={<ArrowForwardIcon />}
                     className={classes.menuItems}
                   >
-                    <Box display="flex" flexDirection="row" gridGap={4}>
+                    <Box display="flex" flexDirection="row" gap="4px">
                       { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
                       { org.name }
                     </Box>
@@ -197,7 +191,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
               </Card>
             </div>
           )}
-        <Box display="flex" flexDirection="column" gridGap={16}>
+        <Box display="flex" flexDirection="column" gap="16px">
           { activeId
             && (
               <>

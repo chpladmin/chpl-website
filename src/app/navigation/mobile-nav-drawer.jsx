@@ -8,14 +8,14 @@ import {
   List,
   ListItem,
   ListItemText,
-  makeStyles,
   Typography,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MenuIcon from '@material-ui/icons/Menu';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MenuIcon from '@mui/icons-material/Menu';
 import { func } from 'prop-types';
 
 import {
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   mobileContainer: {
     display: 'none',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
     },
   },
@@ -191,86 +191,88 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
     items: shortcutItems,
   }];
 
-  return (
-    <>
-      <Box className={classes.mobileContainer}>
+  return <>
+    <Box className={classes.mobileContainer}>
+      <IconButton
+        className={classes.mobileMenuButton}
+        onClick={() => setMobileMenuOpen(true)}
+        aria-label="open navigation menu"
+        size="large">
+        <MenuIcon style={{ color: '#fff' }} />
+      </IconButton>
+    </Box>
+    <Drawer
+      anchor="right"
+      open={mobileMenuOpen}
+      onClose={closeMobileMenu}
+      classes={{ paper: classes.drawerPaper }}
+    >
+      <div className={classes.drawerHeader}>
+        <Typography variant="h6">CHPL Navigation</Typography>
         <IconButton
-          className={classes.mobileMenuButton}
-          onClick={() => setMobileMenuOpen(true)}
-          aria-label="open navigation menu"
-        >
-          <MenuIcon style={{ color: '#fff' }} />
+          onClick={closeMobileMenu}
+          color="primary"
+          aria-label="close menu"
+          size="large">
+          <CloseIcon color="primary" />
         </IconButton>
-      </Box>
-      <Drawer
-        anchor="right"
-        open={mobileMenuOpen}
-        onClose={closeMobileMenu}
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <div className={classes.drawerHeader}>
-          <Typography variant="h6">CHPL Navigation</Typography>
-          <IconButton onClick={closeMobileMenu} color="primary" aria-label="close menu">
-            <CloseIcon color="primary" />
-          </IconButton>
-        </div>
+      </div>
+      <Divider className={classes.drawerDivider} />
+      <List disablePadding>
+        <ListItem button onClick={handleHomeClick} className={classes.drawerItem}>
+          <ListItemText primary="Home" />
+        </ListItem>
         <Divider className={classes.drawerDivider} />
-        <List disablePadding>
-          <ListItem button onClick={handleHomeClick} className={classes.drawerItem}>
-            <ListItemText primary="Home" />
-          </ListItem>
-          <Divider className={classes.drawerDivider} />
-          <ListItem button onClick={handleSearchClick} className={classes.drawerItem}>
-            <ListItemText primary="Search CHPL" />
-          </ListItem>
-          <Divider className={classes.drawerDivider} />
-          {widgetSections.map((section) => (
-            <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
-                <ListItemText primary={section.title} />
-                {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListItem>
-              <Collapse in={expandedSections[section.key]}>
-                <Box className={classes.widgetContainer}>
-                  {section.content}
-                </Box>
-              </Collapse>
-              <Divider className={classes.drawerDivider} />
-            </React.Fragment>
-          ))}
-          { linkSections.map((section) => (
-            <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
-                <ListItemText primary={section.title} />
-                {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListItem>
-              <Collapse in={expandedSections[section.key]}>
-                <List disablePadding>
-                  { section.items.map((item) => (
-                    <ListItem
-                      key={item.key}
-                      className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
-                      onClick={closeMobileMenu}
-                    >
-                      <ChplLink
-                        href={item.href}
-                        text={item.text}
-                        analytics={getItemAnalytics(item)}
-                        external={false}
-                        router={item.router}
-                        icon={getDownloadIcon(item)}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-              <Divider className={classes.drawerDivider} />
-            </React.Fragment>
-          ))}
-        </List>
-      </Drawer>
-    </>
-  );
+        <ListItem button onClick={handleSearchClick} className={classes.drawerItem}>
+          <ListItemText primary="Search CHPL" />
+        </ListItem>
+        <Divider className={classes.drawerDivider} />
+        {widgetSections.map((section) => (
+          <React.Fragment key={section.key}>
+            <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
+              <ListItemText primary={section.title} />
+              {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </ListItem>
+            <Collapse in={expandedSections[section.key]}>
+              <Box className={classes.widgetContainer}>
+                {section.content}
+              </Box>
+            </Collapse>
+            <Divider className={classes.drawerDivider} />
+          </React.Fragment>
+        ))}
+        { linkSections.map((section) => (
+          <React.Fragment key={section.key}>
+            <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
+              <ListItemText primary={section.title} />
+              {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </ListItem>
+            <Collapse in={expandedSections[section.key]}>
+              <List disablePadding>
+                { section.items.map((item) => (
+                  <ListItem
+                    key={item.key}
+                    className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
+                    onClick={closeMobileMenu}
+                  >
+                    <ChplLink
+                      href={item.href}
+                      text={item.text}
+                      analytics={getItemAnalytics(item)}
+                      external={false}
+                      router={item.router}
+                      icon={getDownloadIcon(item)}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Collapse>
+            <Divider className={classes.drawerDivider} />
+          </React.Fragment>
+        ))}
+      </List>
+    </Drawer>
+  </>;
 }
 
 export default ChplMobileNavDrawer;

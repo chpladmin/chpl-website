@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Box, Button, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { arrayOf, func, object } from 'prop-types';
 
 import { useFetchApiKeyActivity } from 'api/activity';
@@ -48,78 +44,76 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
     setOrder(orderDirection);
   };
 
-  return (
-    <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            API Keys
-          </Typography>
-          <Typography variant="body2">
-            {`(${apiKeys.length} Result${apiKeys.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <div className={classes.tableResultsHeaderContainer}>
-          <Box display="flex" alignItems="center" gridGap={4}>
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-            <ChplSystemMaintenanceActivity
-              fetch={useFetchApiKeyActivity}
-              title="API Keys History"
-            />
-          </Box>
-        </div>
+  return <>
+    <Box className={classes.headerContainer}>
+      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+        <Typography variant="subtitle2">
+          API Keys
+        </Typography>
+        <Typography variant="body2">
+          {`(${apiKeys.length} Result${apiKeys.length !== 1 ? 's' : ''})`}
+        </Typography>
       </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        {apiKeys.map((key) => (
-          <ChplSearchResultCard
-            key={key.key}
-            cardTitle="User"
-            cardTitleValue={key.name}
-            fieldGroups={[
-              [
-                {
-                  label: 'Email',
-                  value: key.email,
-                  flex: 1,
-                 style: { flex: '2 1 320px' },
-                },
-                {
-                  label: 'API Key',
-                  value: key.key,
-                  style: { flex: '2 1 320px' },
-                },
-                {
-                  label: 'Last Used',
-                  value: getDisplayDateFormat(key.lastUsedDate),
-                },
-                {
-                  label: 'Warning Sent',
-                  value: getDisplayDateFormat(key.deleteWarningSentDate),
-                },
-              ],
-            ]}
-            actions={
-              <Button
-                onClick={() => dispatch({ action: 'revoke', payload: key })}
-                id={`revoke-api-key-${key.key}`}
-                variant="contained"
-                className={classes.deleteButtonOutlined}
-                size="small"
-                endIcon={<DeleteIcon />}
-              >
-                Revoke key
-              </Button>
-            }
+      <div className={classes.tableResultsHeaderContainer}>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
           />
-        ))}
-      </Box>
-    </>
-  );
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchApiKeyActivity}
+            title="API Keys History"
+          />
+        </Box>
+      </div>
+    </Box>
+    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      {apiKeys.map((key) => (
+        <ChplSearchResultCard
+          key={key.key}
+          cardTitle="User"
+          cardTitleValue={key.name}
+          fieldGroups={[
+            [
+              {
+                label: 'Email',
+                value: key.email,
+                flex: 1,
+                style: { flex: '2 1 320px' },
+              },
+              {
+                label: 'API Key',
+                value: key.key,
+                style: { flex: '2 1 320px' },
+              },
+              {
+                label: 'Last Used',
+                value: getDisplayDateFormat(key.lastUsedDate),
+              },
+              {
+                label: 'Warning Sent',
+                value: getDisplayDateFormat(key.deleteWarningSentDate),
+              },
+            ],
+          ]}
+          actions={
+            <Button
+              onClick={() => dispatch({ action: 'revoke', payload: key })}
+              id={`revoke-api-key-${key.key}`}
+              variant="contained"
+              className={classes.deleteButtonOutlined}
+              size="small"
+              endIcon={<DeleteIcon />}
+            >
+              Revoke key
+            </Button>
+          }
+        />
+      ))}
+    </Box>
+  </>;
 }
 
 export default ChplApiKeysView;

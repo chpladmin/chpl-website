@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Chip, Divider, MenuItem,
+} from '@mui/material';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
@@ -27,7 +22,7 @@ const validationSchema = yup.object({
   removalDate: yup.date(),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -44,7 +39,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '16px',
   },
-});
+};
 
 function ChplConformanceMethodEdit({
   criterionOptions,
@@ -57,7 +52,6 @@ function ChplConformanceMethodEdit({
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [conformanceMethod, setConformanceMethod] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -119,8 +113,8 @@ function ChplConformanceMethodEdit({
   });
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.horizontalInput}>
+    <Box sx={styles.container}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="name"
           name="name"
@@ -133,7 +127,7 @@ function ChplConformanceMethodEdit({
           helperText={formik.touched.name && formik.errors.name}
         />
       </Box>
-      <Box className={classes.horizontalInput}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="removal-date"
           name="removalDate"
@@ -168,7 +162,7 @@ function ChplConformanceMethodEdit({
             </MenuItem>
           ))}
       </ChplTextField>
-      <div className={classes.chips}>
+      <Box sx={styles.chips}>
         { criteria
           .sort(sortCriteria)
           .map((item) => (
@@ -180,7 +174,7 @@ function ChplConformanceMethodEdit({
               variant="outlined"
             />
           ))}
-      </div>
+      </Box>
       <ChplActionBar
         dispatch={handleDispatch}
         canDelete={!!conformanceMethod.id}
@@ -188,7 +182,7 @@ function ChplConformanceMethodEdit({
         isDisabled={!isValid()}
         isProcessing={isProcessing}
       />
-    </div>
+    </Box>
   );
 }
 

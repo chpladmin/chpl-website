@@ -8,10 +8,10 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
 import { compareOrganization } from 'components/activity/services/organizations.service';

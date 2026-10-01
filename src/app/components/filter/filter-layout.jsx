@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Collapse,
-  Typography,
-  makeStyles,
-  useMediaQuery,
-} from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import LabelOffIcon from '@material-ui/icons/LabelOff';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+  Box, Button, Card, CardContent, Chip, Collapse, Typography, useMediaQuery,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import LabelOffIcon from '@mui/icons-material/LabelOff';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { bool, node } from 'prop-types';
 
 import ChplFilterChips from './filter-chips';
