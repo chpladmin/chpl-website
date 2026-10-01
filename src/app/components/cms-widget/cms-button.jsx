@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { oneOf } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import {
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplCmsButton({ listing }) {
+function ChplCmsButton({ listing, size = 'medium' }) {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
   const {
@@ -53,14 +54,17 @@ function ChplCmsButton({ listing }) {
     return null;
   }
 
+  const inWidget = isInWidget(listing);
+
   return (
     <Button
       color="secondary"
-      className={isInWidget(listing) ? classes.deleteButtonOutlined : ''}
+      className={inWidget ? classes.deleteButtonOutlined : ''}
       variant="contained"
+      size={size}
       id={`toggle-cms-${listing.id}`}
       onClick={handleClick}
-      endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
+      endIcon={inWidget ? <RemoveIcon /> : <AddIcon />}
     >
       Cert ID
     </Button>
@@ -71,4 +75,5 @@ export default ChplCmsButton;
 
 ChplCmsButton.propTypes = {
   listing: listingPropType.isRequired,
+  size: oneOf(['small', 'medium', 'large']),
 };
