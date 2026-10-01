@@ -303,7 +303,7 @@ function ChplComparePage({ ids }) {
                       label: listing.developer.name,
                     }}
                     external={false}
-                    router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
+                    router={{ sref: 'organizations.developers.developer', params: { id: listing.developer.id } }}
                   />
                 ))}
                 { makeRow('Version', (listing) => listing.version.version) }
@@ -329,7 +329,7 @@ function ChplComparePage({ ids }) {
                           aggregationName: listing.product.name,
                         }}
                         external={false}
-                        router={{ sref: 'listing', options: { id: listing.id } }}
+                        router={{ sref: 'listing', params: { id: listing.id } }}
                       />
                       <CmsButton listing={listing} size="small" />
                     </Box>
