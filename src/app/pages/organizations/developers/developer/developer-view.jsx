@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 
 import { useFetchUsersAtDeveloper } from 'api/developer';
@@ -16,7 +15,7 @@ import ChplUsers from 'components/user/users';
 import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   focus: {
     display: 'flex',
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
     gap: '32px',
     width: '100%',
   },
-});
+};
 
 const isActive = (statuses) => statuses.length === 0 || statuses.every((status) => status.endDay);
 
@@ -66,7 +65,6 @@ function ChplDeveloperView({ dispatch }) {
   });
   const [state, setState] = useState('view');
   const [users, setUsers] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (usersQuery.isLoading || !usersQuery.isSuccess) { return; }
@@ -122,11 +120,11 @@ function ChplDeveloperView({ dispatch }) {
   };
 
   return (
-    <Box className={`${state === 'view' ? classes.mainContent : classes.focus}`}>
-      <Box className={classes.lefthandContainer}>
+    <Box sx={state === 'view' ? styles.mainContent : styles.focus}>
+      <Box sx={styles.lefthandContainer}>
         { state === 'view'
           && (
-            <Box className={classes.lefthandColumn}>
+            <Box sx={styles.lefthandColumn}>
               <ChplDeveloperViewDetails
                 developer={developer}
                 dispatch={dispatch}
@@ -156,32 +154,32 @@ function ChplDeveloperView({ dispatch }) {
             </Box>
           )}
       </Box>
-      <Box className={classes.righthandColumn}>
+      <Box sx={styles.righthandColumn}>
         {state === 'view' && (
-          <>
-            {can('manageTracking') && (
-              <ChplChangeRequests
-                disallowedFilters={['submittedDateTime', 'searchTerm']}
-                bonusQuery={`&developerId=${developer.id}`}
-                dispatch={dispatch}
-                embedded
-                useFooterSpacing={false}
-              />
-            )}
-            <ChplDirectReviews developer={developer} />
-          </>
+        <>
+          {can('manageTracking') && (
+          <ChplChangeRequests
+            disallowedFilters={['submittedDateTime', 'searchTerm']}
+            bonusQuery={`&developerId=${developer.id}`}
+            dispatch={dispatch}
+            embedded
+            useFooterSpacing={false}
+          />
+          )}
+          <ChplDirectReviews developer={developer} />
+        </>
         )}
         {state === 'view' && (
-          <ChplProducts developer={developer} dispatch={handleProductDispatch} />
+        <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
         {(state === 'view' || state === 'editUser') && (
-          <ChplUsers
-            users={users}
-            dispatch={handleUserDispatch}
-            groupNames={['chpl-developer']}
-            organizationId={developer.id}
-            isLoading={usersQuery.isLoading}
-          />
+        <ChplUsers
+          users={users}
+          dispatch={handleUserDispatch}
+          groupNames={['chpl-developer']}
+          organizationId={developer.id}
+          isLoading={usersQuery.isLoading}
+        />
         )}
       </Box>
     </Box>

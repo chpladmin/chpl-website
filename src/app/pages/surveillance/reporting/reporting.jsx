@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, Chip, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { useFetchAcbs } from 'api/acbs';
@@ -10,7 +9,7 @@ import ChplReport from 'components/surveillance/reporting/report';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -32,14 +31,13 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 function ChplSurveillanceReporting() {
   const acbQuery = useFetchAcbs(true);
   const [acbs, setAcbs] = useState([]);
   const [activeAcb, setActiveAcb] = useState(undefined);
   const [state, setState] = useState('');
-  const classes = useStyles();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
@@ -67,11 +65,12 @@ function ChplSurveillanceReporting() {
     setActiveAcb(acb);
   };
 
-  return <>
-    <ChplPageHeader text="Surveillance Reporting" />
-    <ChplPageBody>
-      <div className={(acbs.length > 1 && state === '') ? classes.container : ''}>
-        { acbs.length > 1 && state === ''
+  return (
+    <>
+      <ChplPageHeader text="Surveillance Reporting" />
+      <ChplPageBody>
+        <Box sx={(acbs.length > 1 && state === '') ? styles.container : undefined}>
+          { acbs.length > 1 && state === ''
           && (
             <Card>
               { acbs.map((acb) => (
@@ -84,7 +83,7 @@ function ChplSurveillanceReporting() {
                   variant="text"
                   color="primary"
                   endIcon={<ArrowForwardIcon />}
-                  className={classes.menuItems}
+                  sx={styles.menuItems}
                 >
                   <Box display="flex" flexDirection="row" gap="4px">
                     { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
@@ -94,7 +93,7 @@ function ChplSurveillanceReporting() {
               ))}
             </Card>
           )}
-        { !activeAcb
+          { !activeAcb
           && (
             <Card>
               <CardContent>
@@ -110,16 +109,17 @@ function ChplSurveillanceReporting() {
               </CardContent>
             </Card>
           )}
-        { activeAcb
+          { activeAcb
           && (
             <ChplReport
               acb={activeAcb}
               dispatch={handleDispatch}
             />
           )}
-      </div>
-    </ChplPageBody>
-  </>;
+        </Box>
+      </ChplPageBody>
+    </>
+  );
 }
 
 export default ChplSurveillanceReporting;

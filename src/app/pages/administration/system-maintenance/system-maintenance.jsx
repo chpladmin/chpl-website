@@ -10,7 +10,6 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
@@ -61,7 +60,7 @@ import {
 } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -128,7 +127,7 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 const baseItems = [{
   id: 'home',
@@ -238,7 +237,6 @@ function ChplSystemMaintenance() {
   const [active, setActive] = useState('');
   const [maintenanceItems, setMaintenanceItems] = useState(baseItems);
   const [navOpen, setNavOpen] = useState(true);
-  const classes = useStyles();
   let navigate;
   let data;
 
@@ -260,7 +258,7 @@ function ChplSystemMaintenance() {
       variant="text"
       color="primary"
       endIcon={navOpen ? item.icon : null}
-      className={classes.menuItems}
+      sx={styles.menuItems}
     >
       { navOpen ? item.primary : item.icon }
     </Button>
@@ -283,16 +281,16 @@ function ChplSystemMaintenance() {
 
   return (
     <AnalyticsContext.Provider value={data}>
-      <div className={classes.container}>
-        <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
-          <Card className={classes.navigationFlex}>
+      <Box sx={styles.container}>
+        <Box sx={[styles.navigation, navOpen ? styles.navOpen : styles.navClosed]}>
+          <Card sx={styles.navigationFlex}>
             <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
               <Button
                 onClick={() => setNavOpen((prev) => !prev)}
                 variant="text"
                 color="primary"
                 size="medium"
-                className={classes.menuItems}
+                sx={styles.menuItems}
               >
                 { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
               </Button>
@@ -301,7 +299,7 @@ function ChplSystemMaintenance() {
               .filter((item) => !item.roles || hasAnyRole(item.roles))
               .map((item) => getNavigationItem(item))}
           </Card>
-        </div>
+        </Box>
         <Box width="100%">
           { (active === '' || active === 'home')
               && (
@@ -317,7 +315,7 @@ function ChplSystemMaintenance() {
                         .map((item, index) => (
                           <React.Fragment key={item.id}>
                             <ListItem>
-                              <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
+                              <ListItemText sx={styles.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
                             </ListItem>
                             { index < maintenanceItems.length - 1 && <Divider component="li" /> }
                           </React.Fragment>
@@ -345,7 +343,7 @@ function ChplSystemMaintenance() {
           { active === 'testTools' && <ChplTestTools /> }
           { active === 'ucdProcesses' && <ChplUcdProcesses /> }
         </Box>
-      </div>
+      </Box>
     </AnalyticsContext.Provider>
   );
 }

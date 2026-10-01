@@ -15,7 +15,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -28,7 +27,7 @@ import { ChplTextField } from 'components/util';
 import { DeveloperContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   errorColor: {
     border: '1px solid #c44f65',
     color: palette.error,
@@ -44,7 +43,7 @@ const useStyles = makeStyles({
     },
   },
   pageContainer: {
-    padding: '32px 32px',
+    padding: '32px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -63,7 +62,7 @@ const useStyles = makeStyles({
       top: '100px',
     },
   },
-});
+};
 
 function ChplJoinDevelopers({ dispatch }) {
   const { developer: activeDeveloper } = useContext(DeveloperContext);
@@ -74,7 +73,6 @@ function ChplJoinDevelopers({ dispatch }) {
   const [developersToJoin, setDevelopersToJoin] = useState([]);
   const [developerValueToLoad, setDeveloperValueToLoad] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -139,82 +137,83 @@ function ChplJoinDevelopers({ dispatch }) {
 
   if (isLoading || !activeDeveloper) { return <CircularProgress />; }
 
-  return <>
-    <Container disableGutters maxWidth="xl">
-      <Box className={classes.pageContainer}>
-        <Card className={classes.cardContainer}>
-          <CardHeader title={`Select Developers joining ${activeDeveloper.name}`} />
-          <CardContent>
-            <Box display="flex" flexDirection="column" gap="16px">
-              { /* eslint-disable react/jsx-props-no-spreading */}
-              <Autocomplete
-                id="developers"
-                name="developers"
-                options={developers.filter((d) => canAdd(d))}
-                onChange={addDeveloper}
-                inputValue={developerValueToLoad}
-                onInputChange={(event, newValue) => {
-                  setDeveloperValueToLoad(newValue);
-                }}
-                getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
-                renderInput={(params) => <ChplTextField {...params} label={`Select Developers joining ${activeDeveloper.name}`} />}
-              />
-              { /* eslint-enable react/jsx-props-no-spreading */}
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Code</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Status</TableCell>
-                      <TableCell><span className="sr-only">Action</span></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {developers.map((developer) => (
-                      <TableRow key={developer.id}>
-                        <TableCell>{developer.developerCode}</TableCell>
-                        <TableCell>{developer.name}</TableCell>
-                        <TableCell>{getStatus(developer)}</TableCell>
-                        <TableCell>
-                          <Button
-                            onClick={() => addDeveloper(undefined, developer)}
-                            disabled={!canAdd(developer)}
-                            color="secondary"
-                            variant="contained"
-                            endIcon={<AddIcon fontSize="small" />}
-                          >
-                            Add
-                          </Button>
-                        </TableCell>
+  return (
+    <>
+      <Container disableGutters maxWidth="xl">
+        <Box sx={styles.pageContainer}>
+          <Card sx={styles.cardContainer}>
+            <CardHeader title={`Select Developers joining ${activeDeveloper.name}`} />
+            <CardContent>
+              <Box display="flex" flexDirection="column" gap="16px">
+                { /* eslint-disable react/jsx-props-no-spreading */}
+                <Autocomplete
+                  id="developers"
+                  name="developers"
+                  options={developers.filter((d) => canAdd(d))}
+                  onChange={addDeveloper}
+                  inputValue={developerValueToLoad}
+                  onInputChange={(event, newValue) => {
+                    setDeveloperValueToLoad(newValue);
+                  }}
+                  getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
+                  renderInput={(params) => <ChplTextField {...params} label={`Select Developers joining ${activeDeveloper.name}`} />}
+                />
+                { /* eslint-enable react/jsx-props-no-spreading */}
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Code</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell><span className="sr-only">Action</span></TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </CardContent>
-        </Card>
-        <Card className={classes.stickyCardContainer}>
-          <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
-          <CardContent>
-            <Box display="flex" flexDirection="column" gap="8px">
-              <Typography variant="h6" gutterBottom>
-                <strong>Instructions</strong>
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                &quot;Join Developers&quot; allows you to merge the content of one developer into another. This means that certain information about the selected &quot;old&quot; developer will no longer be present, including any demographic data, Attestations previously submitted, Direct Reviews associated with the developer or any of their listings, and any users that may have been associated with the developer.
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                To use the &quot;Join Developers&quot; feature, please select one or more developers that you want to join with the retained developer. This action will combine all the products, versions, and listings with the selected developer(s) under the retained developer.
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted.
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>*** Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action. ***</strong>
-              </Typography>
-              {developersToJoin.length > 0
+                    </TableHead>
+                    <TableBody>
+                      {developers.map((developer) => (
+                        <TableRow key={developer.id}>
+                          <TableCell>{developer.developerCode}</TableCell>
+                          <TableCell>{developer.name}</TableCell>
+                          <TableCell>{getStatus(developer)}</TableCell>
+                          <TableCell>
+                            <Button
+                              onClick={() => addDeveloper(undefined, developer)}
+                              disabled={!canAdd(developer)}
+                              color="secondary"
+                              variant="contained"
+                              endIcon={<AddIcon fontSize="small" />}
+                            >
+                              Add
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </CardContent>
+          </Card>
+          <Card sx={styles.stickyCardContainer}>
+            <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
+            <CardContent>
+              <Box display="flex" flexDirection="column" gap="8px">
+                <Typography variant="h6" gutterBottom>
+                  <strong>Instructions</strong>
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  &quot;Join Developers&quot; allows you to merge the content of one developer into another. This means that certain information about the selected &quot;old&quot; developer will no longer be present, including any demographic data, Attestations previously submitted, Direct Reviews associated with the developer or any of their listings, and any users that may have been associated with the developer.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  To use the &quot;Join Developers&quot; feature, please select one or more developers that you want to join with the retained developer. This action will combine all the products, versions, and listings with the selected developer(s) under the retained developer.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  <strong>*** Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action. ***</strong>
+                </Typography>
+                {developersToJoin.length > 0
                && (
                  <TableContainer>
                    <Table>
@@ -236,7 +235,7 @@ function ChplJoinDevelopers({ dispatch }) {
                              <Button
                                onClick={() => removeDeveloper(developer)}
                                variant="outlined"
-                               className={classes.errorColor}
+                               sx={styles.errorColor}
                                endIcon={<ClearIcon fontSize="small" />}
                              >
                                Remove
@@ -248,17 +247,18 @@ function ChplJoinDevelopers({ dispatch }) {
                    </Table>
                  </TableContainer>
                )}
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-    </Container>
-    <ChplActionBar
-      dispatch={handleDispatch}
-      isDisabled={developersToJoin.length === 0}
-      isProcessing={isProcessing}
-    />
-  </>;
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      </Container>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        isDisabled={developersToJoin.length === 0}
+        isProcessing={isProcessing}
+      />
+    </>
+  );
 }
 
 export default ChplJoinDevelopers;
