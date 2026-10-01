@@ -142,25 +142,26 @@ function ChplCmsLookup() {
     );
   }
 
-  return <>
-    <ChplPageHeader text="CMS ID Reverse Lookup" />
-    <ChplPageBody>
-      <Box display="flex" flexDirection="column" gap="16px">
-        <Card>
-          <CardContent>
-            <Box display="flex" flexDirection="column" gap="16px">
-              <Typography variant="h2">Lookup CMS EHR Certification IDs</Typography>
-              <Typography variant="body1">
-                Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID. Additional IDs may be added individually.
-              </Typography>
-              <ChplSearchTerm
-                dispatch={handleDispatch}
-              />
-              <ChplChips
-                cmsIds={cmsIds}
-                dispatch={handleDispatch}
-              />
-              { errors.length > 0
+  return (
+    <>
+      <ChplPageHeader text="CMS ID Reverse Lookup" />
+      <ChplPageBody>
+        <Box display="flex" flexDirection="column" gap="16px">
+          <Card>
+            <CardContent>
+              <Box display="flex" flexDirection="column" gap="16px">
+                <Typography variant="h2">Lookup CMS EHR Certification IDs</Typography>
+                <Typography variant="body1">
+                  Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID. Additional IDs may be added individually.
+                </Typography>
+                <ChplSearchTerm
+                  dispatch={handleDispatch}
+                />
+                <ChplChips
+                  cmsIds={cmsIds}
+                  dispatch={handleDispatch}
+                />
+                { errors.length > 0
                 && (
                   <Box bgcolor={palette.errorLight} borderRadius="4px" border={`1px solid ${palette.error}`} p={2}>
                     <List>
@@ -176,10 +177,10 @@ function ChplCmsLookup() {
                     </List>
                   </Box>
                 )}
-            </Box>
-          </CardContent>
-        </Card>
-        { listings.length > 0
+              </Box>
+            </CardContent>
+          </Card>
+          { listings.length > 0
           && (
             <Card>
               <CardContent>
@@ -227,7 +228,7 @@ function ChplCmsLookup() {
                                     aggregationName: item.name,
                                   }}
                                   external={false}
-                                  router={{ sref: 'listing', options: { id: item.id } }}
+                                  router={{ sref: 'listing', params: { id: item.id } }}
                                 />
                               </TableCell>
                             </TableRow>
@@ -239,9 +240,10 @@ function ChplCmsLookup() {
               </CardContent>
             </Card>
           )}
-      </Box>
-    </ChplPageBody>
-  </>;
+        </Box>
+      </ChplPageBody>
+    </>
+  );
 }
 
 export default ChplCmsLookup;

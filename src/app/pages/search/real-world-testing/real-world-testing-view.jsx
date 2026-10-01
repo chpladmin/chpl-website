@@ -101,7 +101,7 @@ function ChplRealWorldTestingSearchView() {
               label: item.developer.name,
             }}
             external={false}
-            router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+            router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
           />
         ),
       }, {
@@ -124,7 +124,7 @@ function ChplRealWorldTestingSearchView() {
               aggregationName: item.product.name,
             }}
             external={false}
-            router={{ sref: 'listing', options: { id: item.id } }}
+            router={{ sref: 'listing', params: { id: item.id } }}
           />
         ),
       }, {
@@ -169,7 +169,7 @@ function ChplRealWorldTestingSearchView() {
               label: item.developer.name,
             }}
             external={false}
-            router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+            router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
           />
         ),
       }, {
@@ -192,7 +192,7 @@ function ChplRealWorldTestingSearchView() {
               aggregationName: item.product.name,
             }}
             external={false}
-            router={{ sref: 'listing', options: { id: item.id } }}
+            router={{ sref: 'listing', params: { id: item.id } }}
           />
         ),
       }, {

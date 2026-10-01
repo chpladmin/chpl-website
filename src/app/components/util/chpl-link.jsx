@@ -54,7 +54,7 @@ function ChplLink({
         eventTrack(analytics);
       }
       if (router.sref) {
-        goToState(router.sref, router.options);
+        goToState(router.sref, router.params);
       } else {
         e.target.click();
       }

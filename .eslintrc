@@ -1,7 +1,5 @@
 {
   "plugins": [
-    "angular",
-    "jest-dom",
     "react",
     "react-hooks"
   ],
@@ -23,18 +21,11 @@
   },
   "env": {
     "browser": true,
-    "jasmine": true,
     "amd": true,
     "es6": true,
-    "jest": true,
   },
   "globals": {
-    "angular": true,
-    "inject": true,
     "module": true,
-    "$": true,
-    "$$": true,
-    "browser": true,
   },
   "parser": "babel-eslint",
   "rules": {
@@ -46,9 +37,16 @@
   },
   "overrides": [
     {
-      "files": ["*.jsx", "*.spec.js", "jest.config.js", "karma.conf.js", "wdio.conf.js", "webpack.config.js"],
+      "files": ["*.jsx", "webpack.config.js"],
       "rules": {
         "no-console": ["off"],
+      },
+    },
+    {
+      "files": ["*.test.jsx", "jest.config.js", "test/**/*.js"],
+      "env": {
+        "jest": true,
+        "node": true,
       },
     },
   ],

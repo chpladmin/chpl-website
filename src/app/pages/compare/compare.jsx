@@ -317,7 +317,7 @@ function ChplComparePage({ ids }) {
                       aggregationName: listing.product.name,
                     }}
                     external={false}
-                    router={{ sref: 'listing', options: { id: listing.id } }}
+                    router={{ sref: 'listing', params: { id: listing.id } }}
                   />
                 ))}
               </TableBody>

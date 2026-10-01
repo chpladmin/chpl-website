@@ -33,6 +33,12 @@ import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { product as productPropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
+const compareListings = (a, b) => {
+  if (a.certificationDay < b.certificationDay) { return 1; }
+  if (a.certificationDay > b.certificationDay) { return -1; }
+  return a.chplProductNumber < b.chplProductNumber ? -1 : 1;
+};
+
 const styles = {
   ...utilStyles,
   buttonGroupMenu: {
@@ -103,7 +109,7 @@ function ChplProductView({ product, productCount, dispatch }) {
     setListings(product.versions
       .filter((version) => selectedVersion === 'all' || version.id === selectedVersion)
       .flatMap((version) => version.listings)
-      .sort((a, b) => (a.certificationDay < b.certificationDay ? 1 : (a.certificationDay > b.certificationDay ? -1 : (a.chplProductNumber < b.chplProductNumber ? -1 : 1)))));
+      .sort(compareListings));
   }, [product, selectedVersion]);
 
   const getIcon = () => (expanded

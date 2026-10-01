@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, CircularProgress, Container, Typography,
+  Box, Button, CircularProgress, Container, Typography,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -45,13 +46,22 @@ const styles = {
       fontWeight: 600,
     },
   },
+  snackbarActions: {
+    display: 'flex',
+    gap: '8px',
+    paddingRight: '8px',
+    pointerEvents: 'auto',
+  },
+  snackbarIcon: {
+    marginLeft: '4px',
+  },
 };
 
 function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
   const { mutate: confirmListing } = useConfirmPendingListing();
   const { mutate: rejectListing } = useRejectPendingListing();
-  const { enqueueSnackbar } = useSnackbar();
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -98,8 +108,30 @@ function ChplConfirm({ id }) {
       acknowledgeWarnings,
     }, {
       onSuccess: (result) => {
-        enqueueSnackbar(`The Listing has been confirmed. Details are available at <a href="#/listing/${result.id}">${result.chplProductNumber}</a>`, {
+        enqueueSnackbar('The Listing has been confirmed', {
           variant: 'success',
+          action: (key) => (
+            <Box sx={styles.snackbarActions}>
+              <Button
+                color="inherit"
+                variant="contained"
+                onClick={() => {
+                  window.location.href = `#/listing/${result.data.id}`;
+                  closeSnackbar(key);
+                }}
+              >
+                View Listing
+              </Button>
+              <Button
+                color="inherit"
+                variant="contained"
+                onClick={() => closeSnackbar(key)}
+              >
+                Dismiss
+                <CloseIcon sx={styles.snackbarIcon} />
+              </Button>
+            </Box>
+          ),
         });
         setIsSubmitting(false);
         cancel();

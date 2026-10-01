@@ -69,7 +69,7 @@ function ChplListingsView() {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const { dispatch, hasSearched, queryString, filters } = useFilterContext();
+  const { dispatch, hasSearched, queryString } = useFilterContext();
 
   const { data, isError, isLoading } = useFetchListings({
     orderBy,
@@ -195,7 +195,7 @@ function ChplListingsView() {
                                     }}
                                     external={false}
                                     inline
-                                    router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                    router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
                                   />
                                 ),
                               },
@@ -224,7 +224,7 @@ function ChplListingsView() {
                                     }}
                                     external={false}
                                     inline
-                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                    router={{ sref: 'listing', params: { id: item.id } }}
                                   />
                                 ),
                               },

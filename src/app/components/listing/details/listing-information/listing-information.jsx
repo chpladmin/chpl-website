@@ -218,7 +218,7 @@ function ChplListingInformation({ listing: initialListing }) {
                     group: user?.role,
                   }}
                   external={false}
-                  router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
+                  router={{ sref: 'organizations.developers.developer', params: { id: listing.developer.id } }}
                 />
               </Box>
               { listing.developer.statuses?.length > 0 && listing.developer.statuses?.some((status) => !status.endDate)
@@ -351,7 +351,7 @@ function ChplListingInformation({ listing: initialListing }) {
                     group: user?.role,
                   }}
                   external={false}
-                  router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
+                  router={{ sref: 'organizations.developers.developer', params: { id: listing.developer.id } }}
                 />
               </Box>
               { ((!hti5ErdIsOn && (listing.rwtPlansUrl || listing.rwtPlansCheckDate)) || listing.rwtResultsUrl || listing.rwtResultsCheckDate)
