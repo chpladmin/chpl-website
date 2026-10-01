@@ -1,4 +1,4 @@
-import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { compareBoolean, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const lookup = {
@@ -57,7 +57,7 @@ const lookup = {
   'root.details.listing.targetedUsers': { message: () => undefined },
   'root.details.listing.testingLabs': { message: () => undefined },
   'root.details.listing.warningMessages': { message: () => undefined },
-  'root.details.selfDeveloper': { message: (before, after) => comparePrimitive(before, after, 'selfDeveloper', 'Self-developer') },
+  'root.details.selfDeveloper': { message: (before, after) => compareBoolean(before, after, 'selfDeveloper', 'Self-developer') },
   'root.details.signature': { message: (before, after) => comparePrimitive(before, after, 'signature', 'Signature') },
   'root.details.signatureEmail': { message: (before, after) => comparePrimitive(before, after, 'signatureEmail', 'Signer\'s Email') },
   'root.details.url': { message: (before, after) => comparePrimitive(before, after, 'url', 'URL') },

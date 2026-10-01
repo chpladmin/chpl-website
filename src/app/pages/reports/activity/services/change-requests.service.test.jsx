@@ -37,12 +37,18 @@ describe('compareChangeRequest', () => {
     expect(message).toBe('Details<ul><li>Website changed from "https://old.example.com" to "https://new.example.com"</li></ul>');
   });
 
-  it('describes self-developer changes in both directions', () => {
-    // booleans go through comparePrimitive, which treats false as empty
-    expect(compareChangeRequest(demographics(), demographics({ selfDeveloper: true })))
-      .toEqual(['Details<ul><li>Self-developer added: true</li></ul>']);
-    expect(compareChangeRequest(demographics({ selfDeveloper: true }), demographics()))
-      .toEqual(['Details<ul><li>Self-developer removed: true</li></ul>']);
+  it.each([
+    [false, true, 'Self-developer changed from "No" to "Yes"'],
+    [true, false, 'Self-developer changed from "Yes" to "No"'],
+    [undefined, true, 'Self-developer set to "Yes"'],
+    [undefined, false, 'Self-developer set to "No"'],
+    [true, undefined, 'Self-developer cleared (was "Yes")'],
+    [false, undefined, 'Self-developer cleared (was "No")'],
+  ])('describes self-developer going from %p to %p', (before, after, expected) => {
+    expect(compareChangeRequest(
+      demographics({ selfDeveloper: before }),
+      demographics({ selfDeveloper: after }),
+    )).toEqual([`Details<ul><li>${expected}</li></ul>`]);
   });
 
   it('nests contact changes under a Contact heading', () => {
