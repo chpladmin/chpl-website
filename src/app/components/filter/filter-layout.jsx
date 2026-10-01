@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, Chip, Collapse, Typography, useMediaQuery,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import LabelOffIcon from '@mui/icons-material/LabelOff';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,7 +13,7 @@ import { useFilterContext } from './filter-context';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   layoutContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -99,10 +98,9 @@ const useStyles = makeStyles({
     position: 'relative',
     zIndex: 1,
   },
-});
+};
 
 function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
-  const classes = useStyles();
   const filterContext = useFilterContext();
   const isDesktopWidth = useMediaQuery(theme.breakpoints.up('md'));
   const isDesktop = isDesktopWidth && !mobileOnly;
@@ -122,41 +120,41 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
 
   if (!hasAppliedFilters) {
     return (
-      <div className={mobileOnly ? classes.layoutContainerMobileOnly : classes.layoutContainer}>
-        <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
-          <Card className={classes.emptyCard}>
-            <CardContent className={classes.emptyContent}>
-              <LabelOffIcon className={classes.emptyIcon} />
+      <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
+        <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
+          <Card sx={styles.emptyCard}>
+            <CardContent sx={styles.emptyContent}>
+              <LabelOffIcon sx={styles.emptyIcon} />
               <Typography variant="body2">
                 No filters applied. Please use the Filters button to apply filters and view results.
               </Typography>
             </CardContent>
           </Card>
         </Box>
-        <div className={classes.content}>
+        <Box sx={styles.content}>
           {children}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <div className={mobileOnly ? classes.layoutContainerMobileOnly : classes.layoutContainer}>
-      <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
+    <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
+      <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
         <Button
-          className={mobileOnly ? classes.sidebarToggleMobileOnly : classes.sidebarToggle}
+          sx={mobileOnly ? styles.sidebarToggleMobileOnly : styles.sidebarToggle}
           variant="contained"
           fullWidth
           id="filter-layout-sidebar-toggle"
           onClick={() => setExpanded((prev) => !prev)}
           endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         >
-          <span className={classes.sidebarToggleLabel}>
+          <Box component="span" sx={styles.sidebarToggleLabel}>
             <FilterListIcon />
             Filters Applied
             { appliedCount > 0
-              && <Chip size="small" label={appliedCount} className={classes.countChip} /> }
-          </span>
+              && <Chip size="small" label={appliedCount} sx={styles.countChip} /> }
+          </Box>
         </Button>
         {isDesktop
           ? <ChplFilterChips />
@@ -166,10 +164,10 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
             </Collapse>
           )}
       </Box>
-      <div className={classes.content}>
+      <Box sx={styles.content}>
         {children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

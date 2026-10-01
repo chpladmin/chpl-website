@@ -4,7 +4,6 @@ import React, {
   useState,
 } from 'react';
 import { Box, Button, ClickAwayListener } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { func } from 'prop-types';
 
@@ -25,7 +24,7 @@ import {
 } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   navContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -100,7 +99,7 @@ const useStyles = makeStyles({
       textDecoration: 'none',
     },
   },
-});
+};
 
 function ChplDesktopNav({
   onHomeClick,
@@ -122,8 +121,6 @@ function ChplDesktopNav({
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const { currentHash } = useHashContext();
   const resourceItems = getResourceItems({ includeDeveloperGuide: hasAnyRole(developerGuideRoles) });
-
-  const classes = useStyles();
 
   const closeAllNavOverlays = () => {
     setCmsIsOpen(false);
@@ -199,13 +196,13 @@ function ChplDesktopNav({
   };
 
   return (
-    <Box className={classes.navContainer}>
+    <Box sx={styles.navContainer}>
       <Button
         onClick={() => {
           closeAllNavOverlays();
           onHomeClick();
         }}
-        className={classes.whiteButton}
+        sx={styles.whiteButton}
       >
         Home
       </Button>
@@ -214,41 +211,41 @@ function ChplDesktopNav({
           closeAllNavOverlays();
           onSearchClick();
         }}
-        className={classes.whiteButton}
+        sx={styles.whiteButton}
       >
         Search CHPL
       </Button>
       <Button
         onClick={toggleCmsWidget}
         aria-expanded={cmsIsOpen}
-        className={classes.whiteButton}
+        sx={styles.whiteButton}
       >
         CMS ID Creator
       </Button>
       <Button
         onClick={toggleCompareWidget}
         aria-expanded={compareIsOpen}
-        className={classes.whiteButton}
+        sx={styles.whiteButton}
         color="inherit"
       >
         Compare Products
       </Button>
       <ClickAwayListener onClickAway={closeResources}>
-        <Box className={classes.dropdownWrapper}>
+        <Box sx={styles.dropdownWrapper}>
           <Button
             ref={resourcesButtonRef}
             onClick={toggleResources}
             aria-expanded={resourcesOpen}
-            className={classes.whiteButton}
+            sx={styles.whiteButton}
           >
             CHPL Resources
           </Button>
           { resourcesOpen && (
-            <Box className={classes.dropdown} role="menu">
+            <Box sx={styles.dropdown} role="menu">
               { resourceItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
+                  sx={[styles.dropdownItem, item.href && currentHash === item.href && styles.dropdownItemActive]}
                   onClick={handleMenuItemClick(item, closeResources)}
                   role="menuitem"
                 >
@@ -267,21 +264,21 @@ function ChplDesktopNav({
         </Box>
       </ClickAwayListener>
       <ClickAwayListener onClickAway={closeShortcuts}>
-        <Box className={classes.dropdownWrapper}>
+        <Box sx={styles.dropdownWrapper}>
           <Button
             ref={shortcutsButtonRef}
             onClick={toggleShortcuts}
             aria-expanded={shortcutsOpen}
-            className={classes.whiteButton}
+            sx={styles.whiteButton}
           >
             Shortcuts
           </Button>
           { shortcutsOpen && (
-            <Box className={classes.dropdownRight} role="menu">
+            <Box sx={styles.dropdownRight} role="menu">
               { shortcutItems.map((item) => (
                 <Box
                   key={item.key}
-                  className={`${classes.dropdownItem}${item.href && currentHash === item.href ? ` ${classes.dropdownItemActive}` : ''}`}
+                  sx={[styles.dropdownItem, item.href && currentHash === item.href && styles.dropdownItemActive]}
                   onClick={handleMenuItemClick(item, closeShortcuts)}
                   role="menuitem"
                 >
