@@ -2,7 +2,7 @@ const getMessage = (before, after, root, key, lookup) => {
   if (lookup[`${root}.${key}`]) {
     return lookup[`${root}.${key}`].message(before, after);
   }
-  console.debug(`getMessage: ${root}.${key}: ${before ? before[key] : undefined} => ${after ? after[key] : undefined}`);
+  console.debug(`getMessage: ${root}.${key}:\n ${JSON.stringify(before)}\n=>\n${JSON.stringify(after)}\n\n`);
   return undefined;
 };
 
@@ -29,7 +29,7 @@ const findType = (before, after) => {
 };
 
 const compareObject = (before, after, lookup, root = 'root') => {
-  // walk both sides, so a key that only exists in `after` is still compared
+  // walk both sides, so a key that only exists on one side is still compared
   const keys = [...new Set([...Object.keys(before ?? {}), ...Object.keys(after ?? {})])];
   let messages;
   const diffs = keys.map((key) => {
