@@ -2,7 +2,7 @@ const getMessage = (before, after, root, key, lookup) => {
   if (lookup[`${root}.${key}`]) {
     return lookup[`${root}.${key}`].message(before, after);
   }
-  console.debug(`getMessage: ${root}.${key}: ${before ? before[key] : undefined} => ${after ? after[key] : undefined}`);
+  console.debug(`getMessage: ${root}.${key}:\n ${JSON.stringify(before)}\n=>\n${JSON.stringify(after)}\n\n`);
   return undefined;
 };
 
@@ -29,7 +29,8 @@ const findType = (before, after) => {
 };
 
 const compareObject = (before, after, lookup, root = 'root') => {
-  const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
+  // walk both sides, so a key that only exists on one side is still compared
+  const keys = [...new Set([...Object.keys(before ?? {}), ...Object.keys(after ?? {})])];
   let messages;
   const diffs = keys.map((key) => {
     const b = before ? before[key] : undefined;
@@ -103,6 +104,27 @@ const compareArrays = (previous, current, options, lookup) => {
   return ret;
 };
 
+/**
+ * Compare a boolean field.
+ * comparePrimitive can't be used for these: it treats false as "no value", so
+ * false -> true reads as "added: true" and true -> false as "removed: true".
+ * Anything other than true or false (undefined, null) counts as unset.
+ * Returns undefined when the value didn't change.
+ */
+const compareBoolean = (before, after, key, title) => {
+  const display = (value) => {
+    if (value === true) { return 'Yes'; }
+    if (value === false) { return 'No'; }
+    return undefined;
+  };
+  const b = display(before?.[key]);
+  const a = display(after?.[key]);
+  if (b === a) { return undefined; }
+  if (b === undefined) { return `${title} set to "${a}"`; }
+  if (a === undefined) { return `${title} cleared (was "${b}")`; }
+  return `${title} changed from "${b}" to "${a}"`;
+};
+
 const comparePrimitive = (before, after, key, title, transform = (val) => val, deprecatedBy) => {
   if (deprecatedBy && before[deprecatedBy]) { return undefined; }
   if ((!before || !before[key]) && after && after[key]) {
@@ -116,6 +138,7 @@ const comparePrimitive = (before, after, key, title, transform = (val) => val, d
 
 export {
   compareArrays,
+  compareBoolean,
   compareObject,
   comparePrimitive,
 };
