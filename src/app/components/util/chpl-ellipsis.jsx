@@ -9,7 +9,10 @@ import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';
 
+import { utilStyles } from 'themes';
+
 const useStyles = makeStyles({
+  ...utilStyles,
   chplEllipsis: {
     border: 'none',
     backgroundColor: 'transparent',
@@ -57,7 +60,7 @@ function ChplEllipsis({
              onClick={() => setShortened(false)}
            >
              <MoreHorizIcon />
-             <span className="sr-only">Expand description</span>
+             <span className={classes.srOnly}>Expand description</span>
            </IconButton>
          </ChplTooltip>
        )}
@@ -69,7 +72,7 @@ function ChplEllipsis({
            onClick={() => setShortened(true)}
          >
            <ArrowBackIcon />
-           <span className="sr-only">Minimize description</span>
+           <span className={classes.srOnly}>Minimize description</span>
          </IconButton>
        )}
     </>

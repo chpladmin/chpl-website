@@ -30,8 +30,10 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   content: {
     display: 'grid',
     gap: '16px',
@@ -138,7 +140,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                           { canSeeAttestationData()
                             && (
                               <TableCell>
-                                <span className="sr-only">View Details</span>
+                                <span className={classes.srOnly}>View Details</span>
                               </TableCell>
                             )}
                         </TableRow>

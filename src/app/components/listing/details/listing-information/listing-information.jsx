@@ -17,9 +17,10 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { FlagContext, UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
-import { theme } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   dataContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -256,30 +257,30 @@ function ChplListingInformation({ listing: initialListing }) {
                     <Typography variant="body1" gutterBottom>
                       <strong>Address:</strong>
                       <br />
-                      <span className="sr-only">Line 1:</span>
+                      <span className={classes.srOnly}>Line 1:</span>
                       {listing.developer.address.line1}
                       {listing.developer.address.line2
                        && (
                          <>
                            ,
                            {' '}
-                           <span className="sr-only">Line 2:</span>
+                           <span className={classes.srOnly}>Line 2:</span>
                            {listing.developer.address.line2}
                          </>
                        )}
                       <br />
-                      <span className="sr-only">City:</span>
+                      <span className={classes.srOnly}>City:</span>
                       {listing.developer.address.city}
                       ,
                       {' '}
-                      <span className="sr-only">State:</span>
+                      <span className={classes.srOnly}>State:</span>
                       {listing.developer.address.state}
                       {' '}
-                      <span className="sr-only">Zipcode:</span>
+                      <span className={classes.srOnly}>Zipcode:</span>
                       {listing.developer.address.zipcode}
                       ,
                       {' '}
-                      <span className="sr-only">Country:</span>
+                      <span className={classes.srOnly}>Country:</span>
                       {listing.developer.address.country}
                     </Typography>
                   </Box>
@@ -289,22 +290,22 @@ function ChplListingInformation({ listing: initialListing }) {
                   <Typography variant="body1" gutterBottom>
                     <strong>Contact:</strong>
                     <br />
-                    <span className="sr-only">Full name:</span>
+                    <span className={classes.srOnly}>Full name:</span>
                     {listing.product.contact.fullName}
                     {listing.product.contact.title
                      && (
                        <>
                          ,
                          {' '}
-                         <span className="sr-only">Title:</span>
+                         <span className={classes.srOnly}>Title:</span>
                          {listing.product.contact.title}
                        </>
                      )}
                     <br />
-                    <span className="sr-only">Phone:</span>
+                    <span className={classes.srOnly}>Phone:</span>
                     {listing.product.contact.phoneNumber}
                     <br />
-                    <span className="sr-only">Email:</span>
+                    <span className={classes.srOnly}>Email:</span>
                     {listing.product.contact.email}
                   </Typography>
                 )}
@@ -313,7 +314,7 @@ function ChplListingInformation({ listing: initialListing }) {
                   <Typography variant="body1" gutterBottom>
                     <strong>Contact</strong>
                     <br />
-                    <span className="sr-only">Full name:</span>
+                    <span className={classes.srOnly}>Full name:</span>
                     {' '}
                     {listing.developer.contact.fullName}
                     { listing.developer.contact.title
@@ -321,15 +322,15 @@ function ChplListingInformation({ listing: initialListing }) {
                        <>
                          ,
                          {' '}
-                         <span className="sr-only">Title:</span>
+                         <span className={classes.srOnly}>Title:</span>
                          {listing.developer.contact.title}
                        </>
                      )}
                     <br />
-                    <span className="sr-only">Phone:</span>
+                    <span className={classes.srOnly}>Phone:</span>
                     {listing.developer.contact.phoneNumber}
                     <br />
-                    <span className="sr-only">Email:</span>
+                    <span className={classes.srOnly}>Email:</span>
                     {listing.developer.contact.email}
                   </Typography>
                 )}
