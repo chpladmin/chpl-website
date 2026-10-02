@@ -133,3 +133,129 @@ describe('compareChangeRequest', () => {
     debug.mockRestore();
   });
 });
+
+describe('compareChangeRequest for attestations', () => {
+  // the shape of a real attestation change request, with question text shortened
+  const response = (id, text) => ({
+    id, message: null, response: text, sortOrder: null,
+  });
+  const COMPLIANT = response(1, 'Compliant');
+  const NONCOMPLIANT = response(2, 'Noncompliant');
+  const NOT_UNDER_CAP = response(6, 'Not under a CAP');
+  const UNDER_OPEN_CAP = response(7, 'Under an open CAP');
+  const COMPLETED_CAP = response(8, 'Completed a CAP during the specified Attestation Period');
+
+  const section = (id, name, sortOrder, submitted, followUp) => ({
+    id,
+    name,
+    sortOrder,
+    formItems: [{
+      id: id * 10,
+      parentResponse: null,
+      question: { id, question: `Do you comply with ${name}?` },
+      required: true,
+      sortOrder: 1,
+      submittedResponses: submitted,
+      childFormItems: [{
+        childFormItems: [],
+        id: (id * 10) + 1,
+        parentResponse: NONCOMPLIANT,
+        question: { id: 6, question: 'For a selection of "Noncompliant", please indicate the status of a CAP' },
+        required: false,
+        sortOrder: 1,
+        submittedResponses: followUp,
+      }],
+    }],
+  });
+
+  const attestation = (sectionHeadings) => ({
+    changeRequestType: { id: 3, name: 'Developer Attestation Change Request' },
+    details: {
+      attestationPeriod: { id: 11, description: 'Tenth Period' },
+      form: {
+        id: 5, description: 'Attestation Period', instructions: 'Select one response', sectionHeadings,
+      },
+      signature: 'Developer User',
+      signatureEmail: 'developer@example.com',
+    },
+  });
+
+  const expectChanges = (sections) => [
+    `Details<ul><li>Attestations Submission<ul><li>Attestations changes<ul>${sections
+      .map(([name, changes]) => `<li>${name} changes<ul>${changes.map((c) => `<li>${c}</li>`).join('')}</ul></li>`)
+      .join('')}</ul></li></ul></li></ul>`,
+  ];
+
+  it('describes changed answers and follow-up answers for each section, in form order', () => {
+    // sections arrive out of order, as they do from the API
+    const before = attestation([
+      section(5, 'Application Programming Interfaces', 4, [NONCOMPLIANT], [UNDER_OPEN_CAP, NOT_UNDER_CAP]),
+      section(2, 'Assurances', 2, [NONCOMPLIANT], [NOT_UNDER_CAP]),
+      section(4, 'Real World Testing', 5, [NONCOMPLIANT], [COMPLETED_CAP, UNDER_OPEN_CAP]),
+      section(3, 'Communications', 3, [COMPLIANT], []),
+      section(1, 'Information Blocking', 1, [COMPLIANT], []),
+    ]);
+    const after = attestation([
+      section(5, 'Application Programming Interfaces', 4, [NONCOMPLIANT], [NOT_UNDER_CAP]),
+      section(2, 'Assurances', 2, [COMPLIANT], []),
+      section(4, 'Real World Testing', 5, [COMPLIANT], []),
+      section(3, 'Communications', 3, [NONCOMPLIANT], [NOT_UNDER_CAP, UNDER_OPEN_CAP]),
+      section(1, 'Information Blocking', 1, [NONCOMPLIANT], [NOT_UNDER_CAP]),
+    ]);
+
+    expect(compareChangeRequest(before, after)).toEqual(expectChanges([
+      ['Information Blocking', [
+        'Response changed from "Compliant" to "Noncompliant"',
+        'Follow-up response for "Noncompliant" added: Not under a CAP',
+      ]],
+      ['Assurances', [
+        'Response changed from "Noncompliant" to "Compliant"',
+        'Follow-up response for "Noncompliant" removed: Not under a CAP',
+      ]],
+      ['Communications', [
+        'Response changed from "Compliant" to "Noncompliant"',
+        'Follow-up response for "Noncompliant" added: Not under a CAP',
+        'Follow-up response for "Noncompliant" added: Under an open CAP',
+      ]],
+      ['Application Programming Interfaces', [
+        'Follow-up response for "Noncompliant" removed: Under an open CAP',
+      ]],
+      ['Real World Testing', [
+        'Response changed from "Noncompliant" to "Compliant"',
+        'Follow-up response for "Noncompliant" removed: Completed a CAP during the specified Attestation Period',
+        'Follow-up response for "Noncompliant" removed: Under an open CAP',
+      ]],
+    ]));
+  });
+
+  it('reports nothing when no answers changed', () => {
+    const form = () => attestation([
+      section(1, 'Information Blocking', 1, [NONCOMPLIANT], [NOT_UNDER_CAP, UNDER_OPEN_CAP]),
+      section(3, 'Communications', 3, [COMPLIANT], []),
+    ]);
+
+    expect(compareChangeRequest(form(), form())).toEqual([]);
+  });
+
+  it('ignores the order of multiple-choice answers', () => {
+    const before = attestation([section(1, 'Information Blocking', 1, [NONCOMPLIANT], [NOT_UNDER_CAP, UNDER_OPEN_CAP])]);
+    const after = attestation([section(1, 'Information Blocking', 1, [NONCOMPLIANT], [UNDER_OPEN_CAP, NOT_UNDER_CAP])]);
+
+    expect(compareChangeRequest(before, after)).toEqual([]);
+  });
+
+  it('only lists the sections that changed', () => {
+    const before = attestation([
+      section(1, 'Information Blocking', 1, [COMPLIANT], []),
+      section(3, 'Communications', 3, [COMPLIANT], []),
+    ]);
+    const after = attestation([
+      section(1, 'Information Blocking', 1, [COMPLIANT], []),
+      section(3, 'Communications', 3, [NONCOMPLIANT], []),
+    ]);
+
+    expect(compareChangeRequest(before, after)).toEqual(expectChanges([
+      ['Communications', ['Response changed from "Compliant" to "Noncompliant"']],
+    ]));
+  });
+});

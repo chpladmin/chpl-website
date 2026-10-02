@@ -1,11 +1,63 @@
 import { compareBoolean, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
+/*
+ * Attestation forms
+ *
+ * An attestation change request's details.form is a list of sections, each
+ * holding form items (questions). A form item's submittedResponses are the
+ * answers the developer picked, and its childFormItems are follow-up questions
+ * asked for a particular parent answer (e.g. CAP status after "Noncompliant").
+ * Before and after always have the same shape; only the answers change.
+ */
+
+// pair up items from both sides by id, keeping the order of `after`
+const pairById = (before = [], after = []) => {
+  const ids = [...new Set([...after.map((i) => i.id), ...before.map((i) => i.id)])];
+  return ids.map((id) => [before.find((i) => i.id === id), after.find((i) => i.id === id)]);
+};
+
+const compareSubmittedResponses = (before = [], after = [], title) => {
+  const removed = before.filter((b) => !after.some((a) => a.id === b.id));
+  const added = after.filter((a) => !before.some((b) => b.id === a.id));
+  if (removed.length === 0 && added.length === 0) { return []; }
+  // a single answer replaced by another reads better as one change
+  if (before.length <= 1 && after.length <= 1) {
+    return [comparePrimitive(before[0], after[0], 'response', title)];
+  }
+  return [
+    ...added.map((r) => `${title} added: ${r.response}`),
+    ...removed.map((r) => `${title} removed: ${r.response}`),
+  ];
+};
+
+const compareFormItems = (before, after) => pairById(before, after)
+  .flatMap(([b, a]) => {
+    const parent = (b ?? a).parentResponse;
+    const title = parent ? `Follow-up response for "${parent.response}"` : 'Response';
+    return [
+      ...compareSubmittedResponses(b?.submittedResponses, a?.submittedResponses, title),
+      ...compareFormItems(b?.childFormItems, a?.childFormItems),
+    ];
+  });
+
+const compareSectionHeadings = (before, after) => {
+  const sections = pairById(before, after)
+    .sort(([, a], [, b]) => (a?.sortOrder ?? 0) - (b?.sortOrder ?? 0))
+    .map(([b, a]) => {
+      const changes = compareFormItems(b?.formItems, a?.formItems);
+      return changes.length > 0
+        ? `<li>${(a ?? b).name} changes<ul>${changes.map((change) => `<li>${change}</li>`).join('')}</ul></li>`
+        : '';
+    })
+    .filter((section) => !!section);
+  return sections.length > 0 ? `Attestations changes<ul>${sections.join('')}</ul>` : undefined;
+};
+
 const lookup = {
   shortCircuit: [
     'root.currentStatus.certificationBody',
     'root.developer',
-    'root.details.form',
     'root.details.listing.developer',
     'root.details.listing.product',
     'root.details.listing.sed',
@@ -34,6 +86,11 @@ const lookup = {
   'root.details.contact.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
   'root.details.contact.fullName': { message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name') },
   'root.details.contact.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
+  'root.details.form': { message: () => 'Attestations Submission' },
+  'root.details.form.description': { message: () => undefined },
+  'root.details.form.id': { message: () => undefined },
+  'root.details.form.instructions': { message: () => undefined },
+  'root.details.form.sectionHeadings': { message: compareSectionHeadings },
   'root.details.listing': { message: () => 'Listing' },
   'root.details.listing.accessibilityStandards': { message: () => undefined },
   'root.details.listing.businessErrorMessages': { message: () => undefined },
