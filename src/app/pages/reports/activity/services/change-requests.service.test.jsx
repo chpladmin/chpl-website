@@ -259,3 +259,68 @@ describe('compareChangeRequest for attestations', () => {
     ]));
   });
 });
+
+describe('compareChangeRequest for the current status', () => {
+  const pending = {
+    actingUser: 'developer@example.com',
+    certificationBody: null,
+    changeRequestStatusType: { id: 1, name: 'Pending ONC-ACB Action' },
+    comment: null,
+    id: 9066,
+    statusChangeDateTime: '2026-10-02T10:22:08.487',
+    userGroupName: 'chpl-developer',
+  };
+  const withStatus = (currentStatus) => ({ id: 4325, currentStatus });
+
+  it('ignores a partly filled in after status from historical activity', () => {
+    // as found in real historical activity, where only the details changed
+    const partial = {
+      actingUser: null,
+      certificationBody: null,
+      changeRequestStatusType: { id: 1, name: null },
+      comment: '',
+      id: null,
+      statusChangeDateTime: null,
+      userGroupName: null,
+    };
+
+    expect(compareChangeRequest(withStatus(pending), withStatus(partial))).toEqual([]);
+  });
+
+  it('ignores an after status with no id at all', () => {
+    const { id, ...noId } = pending;
+
+    expect(compareChangeRequest(withStatus(pending), withStatus({ ...noId, comment: 'different' }))).toEqual([]);
+  });
+
+  it('ignores a full after status with the same id', () => {
+    expect(compareChangeRequest(withStatus(pending), withStatus({ ...pending }))).toEqual([]);
+  });
+
+  it('describes a new status, identified by a new id', () => {
+    const accepted = {
+      ...pending,
+      actingUser: 'acb@example.com',
+      changeRequestStatusType: { id: 2, name: 'Accepted' },
+      comment: 'Looks good',
+      id: 9070,
+      statusChangeDateTime: '2026-10-03T09:00:00.000',
+      userGroupName: 'chpl-onc-acb',
+    };
+
+    expect(compareChangeRequest(withStatus(pending), withStatus(accepted))).toEqual([
+      'Current Status<ul>'
+        + '<li>Status<ul><li>Status changed from "Pending ONC-ACB Action" to "Accepted"</li></ul></li>'
+        + '<li>Comment added: Looks good</li>'
+        + '</ul>',
+    ]);
+  });
+
+  it('still describes the rest of the change request when the status did not change', () => {
+    const before = { ...withStatus(pending), details: { website: 'https://old.example.com' } };
+    const after = { ...withStatus({ ...pending, id: null, changeRequestStatusType: { id: 1, name: null } }), details: { website: 'https://new.example.com' } };
+
+    expect(compareChangeRequest(before, after))
+      .toEqual(['Details<ul><li>Website changed from "https://old.example.com" to "https://new.example.com"</li></ul>']);
+  });
+});

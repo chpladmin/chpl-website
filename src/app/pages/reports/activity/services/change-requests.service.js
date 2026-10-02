@@ -122,6 +122,23 @@ const lookup = {
   'root.statuses': { message: () => undefined },
 };
 
-const compareChangeRequest = (prev, curr) => compareObject(prev, curr, lookup);
+/*
+ * A status change is identified by the id of currentStatus, because a new
+ * status is a new record. Historical activity can have a partly filled in
+ * "after" currentStatus (id and name null) even when the status didn't change,
+ * so an after status without an id is never treated as a change. Newer
+ * activity has the full object, where the same id means the same status.
+ */
+const isStatusChanged = (prev, curr) => {
+  const afterId = curr?.currentStatus?.id;
+  return afterId !== null && afterId !== undefined && afterId !== prev?.currentStatus?.id;
+};
+
+const withoutCurrentStatus = {
+  ...lookup,
+  shortCircuit: [...lookup.shortCircuit, 'root.currentStatus'],
+};
+
+const compareChangeRequest = (prev, curr) => compareObject(prev, curr, isStatusChanged(prev, curr) ? lookup : withoutCurrentStatus);
 
 export default compareChangeRequest;
