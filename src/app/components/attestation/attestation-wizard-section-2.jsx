@@ -14,13 +14,12 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { array, func, string } from 'prop-types';
 
 import { interpretEmphatic, interpretLink } from './attestation-util';
 
-const useStyles = makeStyles({
+const styles = {
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 450px)',
   },
@@ -45,11 +44,10 @@ const useStyles = makeStyles({
     gridGap: '16px',
     alignItems: 'center',
   },
-});
+};
 
 function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: initialSections }) {
   const [sections, setSections] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setSections(initialSections);
@@ -115,7 +113,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
       { ins.split('\n\n').map((p) => (
         <Typography
           variant="body1"
-          className={classes.questionParagraph}
+          sx={styles.questionParagraph}
           key={p}
         >
           { p }
@@ -125,12 +123,12 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
   );
 
   const getQuestion = (section, item) => (
-    <div key={item.id}>
+    <Box key={item.id}>
       <FormControl component="fieldset">
-        <FormLabel className={classes.nonCaps}>
+        <FormLabel sx={styles.nonCaps}>
           { item.question.question.split('\n\n').map((p) => (
             <Typography
-              className={classes.questionParagraph}
+              sx={styles.questionParagraph}
               key={p}
             >
               { interpretLink(p) }
@@ -138,7 +136,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
           ))}
         </FormLabel>
         <RadioGroup
-          className={classes.radioGroup}
+          sx={styles.radioGroup}
           name={`response-${item.id}`}
           value={(item.submittedResponses && item.submittedResponses[0]?.response) || ''}
           onChange={(event) => handleResponse(section, item, event.currentTarget.value)}
@@ -151,14 +149,14 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
                 value={response.response}
                 control={<Radio />}
                 label={response.response}
-                className={classes.nonCaps}
+                sx={styles.nonCaps}
               />
             ))}
         </RadioGroup>
       </FormControl>
       { item.submittedResponses[0]?.message
         && (
-          <Box className={classes.warningBox}>
+          <Box sx={styles.warningBox}>
             <ReportProblemOutlinedIcon />
             <Typography>
               { item.submittedResponses[0].message }
@@ -172,7 +170,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
                <Card key={`${item.id}-sub-questions`}>
                  <CardContent>
                    <FormControl component="fieldset">
-                     <FormLabel className={classes.nonCaps}>{ interpretEmphatic(child.question.question) }</FormLabel>
+                     <FormLabel sx={styles.nonCaps}>{ interpretEmphatic(child.question.question) }</FormLabel>
                      <FormGroup>
                        { child.question.allowedResponses
                          .sort((a, b) => a.sortOrder - b.sortOrder)
@@ -187,7 +185,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
                                />
                              )}
                              label={answer.response}
-                             className={classes.nonCaps}
+                             sx={styles.nonCaps}
                            />
                          ))}
                      </FormGroup>
@@ -195,11 +193,11 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
                  </CardContent>
                </Card>
              ))}
-    </div>
+    </Box>
   );
 
   const getSection = (section, idx) => (
-    <div key={section.id}>
+    <Box key={section.id}>
       <Typography variant="subtitle1">
         { idx + 1 }
         :
@@ -211,11 +209,11 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
         && (
           <Divider />
         )}
-    </div>
+    </Box>
   );
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
+    <Container sx={styles.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2">
         Section 2 &mdash; Attestations
       </Typography>

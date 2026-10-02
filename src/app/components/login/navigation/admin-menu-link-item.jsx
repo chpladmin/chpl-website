@@ -1,6 +1,5 @@
 import React from 'react';
 import { ListItem } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   bool,
   func,
@@ -13,7 +12,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   menuItem: {
     cursor: 'pointer',
     padding: '8px 16px 8px 32px',
@@ -37,7 +36,7 @@ const useStyles = makeStyles({
       textDecoration: 'none',
     },
   },
-});
+};
 
 function ChplAdminMenuLinkItem({
   external = false,
@@ -48,7 +47,6 @@ function ChplAdminMenuLinkItem({
 }) {
   const { currentHash } = useHashContext();
   const { analytics } = useAnalyticsContext();
-  const classes = useStyles();
 
   const handleRowClick = (event) => {
     eventTrack({
@@ -66,7 +64,7 @@ function ChplAdminMenuLinkItem({
   return (
     <ListItem
       button
-      className={`${classes.menuItem}${href && currentHash === href ? ` ${classes.menuItemActive}` : ''}`}
+      sx={[styles.menuItem, href && currentHash === href && styles.menuItemActive]}
       onClick={handleRowClick}
     >
       <ChplLink

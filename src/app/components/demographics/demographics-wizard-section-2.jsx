@@ -11,7 +11,6 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Moment from 'react-moment';
 import { useSelector } from 'react-redux';
@@ -26,7 +25,7 @@ import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   demographicsContainer: {
     display: 'grid',
@@ -68,7 +67,7 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
-});
+};
 
 const validationSchema = yup.object({
   fullName: yup.string()
@@ -109,9 +108,9 @@ const getEditField = ({
   display,
   formik,
   required = true,
-  className,
+  sx,
 }) => (
-  <div className={className}>
+  <Box sx={sx}>
     <ChplTextField
       id={key}
       name={key}
@@ -123,7 +122,7 @@ const getEditField = ({
       error={formik.touched[key] && !!formik.errors[key]}
       helperText={formik.touched[key] && formik.errors[key]}
     />
-  </div>
+  </Box>
 );
 
 function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
@@ -131,7 +130,6 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { url, setUrl } = useContext(UrlCheckerContext);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -186,16 +184,16 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
   });
 
   return (
-    <div className={classes.fixFooterSpacing}>
+    <Box sx={styles.fixFooterSpacing}>
       <Container maxWidth="md">
-        <Box className={classes.demographicsSectionContainer}>
+        <Box sx={styles.demographicsSectionContainer}>
           <Typography gutterBottom component="h2" variant="h3">
             Section 2 &mdash; Demographics entry
           </Typography>
         </Box>
       </Container>
-      <Container maxWidth="md" className={classes.demographicsContainer}>
-        <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
+      <Container maxWidth="md" sx={styles.demographicsContainer}>
+        <Card sx={user.title ? styles.nameContainer : styles.nameOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
@@ -206,7 +204,7 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
           </CardContent>
         </Card>
         { user.title && (
-          <Card className={classes.titleContainer}>
+          <Card sx={styles.titleContainer}>
             <CardContent>
               <div>
                 <Typography gutterBottom variant="subtitle1">
@@ -217,7 +215,7 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
             </CardContent>
           </Card>
         )}
-        <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
+        <Card sx={user.title ? styles.developerContainer : styles.developerOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
@@ -227,7 +225,7 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
             </div>
           </CardContent>
         </Card>
-        <Card className={classes.dateContainer}>
+        <Card sx={styles.dateContainer}>
           <CardContent>
             <Typography gutterBottom variant="subtitle1">
               Date:
@@ -240,8 +238,8 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
             </Typography>
           </CardContent>
         </Card>
-        <Card className={classes.editContainer}>
-          <CardContent className={classes.editFields}>
+        <Card sx={styles.editContainer}>
+          <CardContent sx={styles.editFields}>
             <FormControlLabel
               control={(
                 <Switch
@@ -250,32 +248,32 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
                   color="primary"
                   checked={formik.values.selfDeveloper}
                   onChange={formik.handleChange}
-                  className={classes.fullWidthGridRow}
+                  sx={styles.fullWidthGridRow}
                 />
               )}
               label="Self-Developer"
             />
-            <Divider className={classes.fullWidthGridRow} />
-            { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
+            <Divider sx={styles.fullWidthGridRow} />
+            { getEnhancedEditField({ key: 'fullName', display: 'Full Name', sx: styles.fullWidthGridRow }) }
             { getEnhancedEditField({ key: 'email', display: 'Email' }) }
             { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
-            <Divider className={classes.fullWidthGridRow} />
+            <Divider sx={styles.fullWidthGridRow} />
             { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
             { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
             { getEnhancedEditField({ key: 'city', display: 'City' }) }
             { getEnhancedEditField({ key: 'state', display: 'State' }) }
             { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
             { getEnhancedEditField({ key: 'country', display: 'Country' }) }
-            <Divider className={classes.fullWidthGridRow} />
-            <div className={classes.fullWidthGridRow}>
+            <Divider sx={styles.fullWidthGridRow} />
+            <Box sx={styles.fullWidthGridRow}>
               <ChplUrlChecker
                 dispatch={handleDispatch}
                 url={formik.values.website}
               />
-            </div>
+            </Box>
           </CardContent>
         </Card>
-        <div className={classes.fullWidthGridRow}>
+        <Box sx={styles.fullWidthGridRow}>
           <Button
             fullWidth
             id="submit-cr"
@@ -284,15 +282,15 @@ function ChplDemographicsWizardSection2({ isSubmitting = false, dispatch }) {
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
-            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
+            { isSubmitting && <CircularProgress size={24} sx={styles.buttonProgress} /> }
             Submit Demographics Change Request
             <BorderColorIcon
-              className={classes.iconSpacing}
+              sx={styles.iconSpacing}
             />
           </Button>
-        </div>
+        </Box>
       </Container>
-    </div>
+    </Box>
   );
 }
 

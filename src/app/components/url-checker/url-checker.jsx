@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import {
   Box, Button, CircularProgress, Popover,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { bool, func, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
@@ -15,7 +14,7 @@ import { usePostUrlChecker } from 'api/url-checker';
 import { ChplTextField } from 'components/util';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   buttonGroup: {
     display: 'flex',
     alignItems: 'center',
@@ -53,7 +52,7 @@ const useStyles = makeStyles({
       borderRight: `9px solid ${palette.white}`,
     },
   },
-});
+};
 
 const validationSchema = yup.object({
   url: yup.string()
@@ -69,7 +68,6 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   const [hasValidatedOnce, setHasValidatedOnce] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [urlCheckResponse, setUrlCheckResponse] = useState(undefined);
-  const classes = useStyles();
   let formik;
 
   const handleChange = (...args) => {
@@ -131,38 +129,39 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
     setIsPopoverOpen(false);
   };
 
-  return <>
-    <Box display="flex" alignItems="flex-start">
-      <Box ref={fieldAnchorRef} flexGrow={1} style={{ backgroundColor: palette.white }} borderRadius="4px">
-        <ChplTextField
-          id="url"
-          name="url"
-          label="URL to check"
-          value={formik.values.url}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.url && !!formik.errors.url}
-          helperText={formik.touched.url && formik.errors.url}
-          required
-        />
-      </Box>
-      <div className={classes.buttonGroup}>
-        <Button
-          id="validate-url"
-          aria-label="Validate URL"
-          color="primary"
-          variant="contained"
-          onClick={handleValidate}
-          disabled={isLoading}
-          size="small"
-          style={{ fontSize: 'small', padding: '9px' }}
-          endIcon={isLoading
-            ? <CircularProgress size={14} color="inherit" />
-            : <VerifiedUserIcon />}
-        >
-          { isLoading ? 'Validating' : 'Validate' }
-        </Button>
-        { hasValidatedOnce && showResultPopover && (
+  return (
+    <>
+      <Box display="flex" alignItems="flex-start">
+        <Box ref={fieldAnchorRef} flexGrow={1} sx={{ backgroundColor: palette.white }} borderRadius="4px">
+          <ChplTextField
+            id="url"
+            name="url"
+            label="URL to check"
+            value={formik.values.url}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.url && !!formik.errors.url}
+            helperText={formik.touched.url && formik.errors.url}
+            required
+          />
+        </Box>
+        <Box sx={styles.buttonGroup}>
+          <Button
+            id="validate-url"
+            aria-label="Validate URL"
+            color="primary"
+            variant="contained"
+            onClick={handleValidate}
+            disabled={isLoading}
+            size="small"
+            sx={{ fontSize: 'small', padding: '9px' }}
+            endIcon={isLoading
+              ? <CircularProgress size={14} color="inherit" />
+              : <VerifiedUserIcon />}
+          >
+            { isLoading ? 'Validating' : 'Validate' }
+          </Button>
+          { hasValidatedOnce && showResultPopover && (
           <Button
             id="view-last-url-result"
             aria-label="View last URL check result"
@@ -171,14 +170,14 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
             onClick={handleViewResult}
             disabled={!urlCheckResponse || isLoading}
             size="small"
-            style={{ fontSize: 'small', padding: '9px' }}
+            sx={{ fontSize: 'small', padding: '9px' }}
           >
             { isPopoverOpen ? 'Hide Result' : 'View Result' }
           </Button>
-        )}
-      </div>
-    </Box>
-    { showResultPopover && (
+          )}
+        </Box>
+      </Box>
+      { showResultPopover && (
       <Popover
         id="url-checker-response"
         open={Boolean(anchorEl) && Boolean(urlCheckResponse) && isPopoverOpen}
@@ -192,14 +191,15 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
           vertical: 'center',
           horizontal: 'left',
         }}
-        classes={{
-          paper: classes.popoverPaper,
+        PaperProps={{
+          sx: styles.popoverPaper,
         }}
       >
         { urlCheckResponse && <ChplUrlCheckerResponse response={urlCheckResponse} /> }
       </Popover>
-    )}
-  </>;
+      )}
+    </>
+  );
 }
 
 export default ChplUrlChecker;

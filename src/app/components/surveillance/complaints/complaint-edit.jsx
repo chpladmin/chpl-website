@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -14,7 +15,6 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import Autocomplete from '@mui/material/Autocomplete';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -32,7 +32,7 @@ import { sortCriteria } from 'services/criteria.service';
 import { complaint as complaintPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   content: {
     display: 'grid',
     gap: '32px',
@@ -60,7 +60,7 @@ const useStyles = makeStyles(() => ({
   chip: {
     margin: theme.spacing(0.5),
   },
-}));
+};
 
 const validationSchema = yup.object({
   certificationBody: yup.object()
@@ -126,7 +126,6 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
   const fetchSurveillanceListings = useFetchListingsBasic({
     ids: complaint.listings?.map((l) => l.listingId) ?? [],
   });
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -414,8 +413,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                 ))}
               </ChplTextField>
             )}
-          <div className={classes.content}>
-            <div className={classes.dataEntry}>
+          <Box sx={styles.content}>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">General Info</Typography>
               <ChplTextField
                 type="date"
@@ -535,8 +534,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                     helperText={formik.touched.complainantTypeOther && formik.errors.complainantTypeOther}
                   />
                 )}
-            </div>
-            <div className={classes.dataEntry}>
+            </Box>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">Summary and Actions</Typography>
               <ChplTextField
                 id="summary"
@@ -562,27 +561,27 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                 error={formik.touched.actions && !!formik.errors.actions}
                 helperText={formik.touched.actions && formik.errors.actions}
               />
-            </div>
-            <div className={classes.dataEntry}>
+            </Box>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">Review Info</Typography>
               {complaint.criteria?.length > 0
                && (
                  <>
                    <Typography>Associated Criteria</Typography>
-                   <ul className={classes.chips}>
+                   <Box component="ul" sx={styles.chips}>
                      {complaint.criteria
                        .map((criterion) => (
                          <li key={criterion.certificationCriterion.id}>
                            <Chip
                              label={`${(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number}: ${criterion.certificationCriterion.title}`}
                              onDelete={() => removeAssociatedCriterion(criterion)}
-                             className={classes.chip}
+                             sx={styles.chip}
                              color="primary"
                              variant="outlined"
                            />
                          </li>
                        ))}
-                   </ul>
+                   </Box>
                  </>
                )}
               <ChplTextField
@@ -621,20 +620,20 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                && (
                  <>
                    <Typography>Associated Listings</Typography>
-                   <ul className={classes.chips}>
+                   <Box component="ul" sx={styles.chips}>
                      {complaint.listings
                        .map((listing) => (
                          <li key={listing.id}>
                            <Chip
                              label={listing.chplProductNumber}
                              onDelete={() => removeAssociatedListing(listing)}
-                             className={classes.chip}
+                             sx={styles.chip}
                              color="primary"
                              variant="outlined"
                            />
                          </li>
                        ))}
-                   </ul>
+                   </Box>
                  </>
                )}
               { /* eslint-disable react/jsx-props-no-spreading */ }
@@ -656,20 +655,20 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                && (
                  <>
                    <Typography>Associated Surveillance Activities</Typography>
-                   <ul className={classes.chips}>
+                   <Box component="ul" sx={styles.chips}>
                      {complaint.surveillances
                        .map((surveillance) => (
                          <li key={`${surveillance.surveillance.chplProductNumber}-${surveillance.surveillance.friendlyId}`}>
                            <Chip
                              label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
                              onDelete={() => removeAssociatedSurveillance(surveillance)}
-                             className={classes.chip}
+                             sx={styles.chip}
                              color="primary"
                              variant="outlined"
                            />
                          </li>
                        ))}
-                   </ul>
+                   </Box>
                  </>
                )}
               { surveillances.length > 0
@@ -688,8 +687,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                      ))}
                  </ChplTextField>
                )}
-            </div>
-            <div className={classes.dataEntry}>
+            </Box>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">Parties Contacted</Typography>
               <FormControlLabel
                 control={(
@@ -739,8 +738,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                 )}
                 label="Informed ONC per &sect;170.523(s)"
               />
-            </div>
-          </div>
+            </Box>
+          </Box>
         </CardContent>
       </Card>
       <ChplActionBar

@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -11,7 +12,6 @@ import {
   CardHeader,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   Timeline,
   TimelineConnector,
@@ -41,7 +41,7 @@ import {
 } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -69,11 +69,6 @@ const useStyles = makeStyles({
     display: 'grid',
     padding: '4px',
   },
-  MuiAccordionroot: {
-    '&.MuiAccordion-root:before': {
-      backgroundColor: 'transparent',
-    },
-  },
   statusHistorySummary: {
     backgroundColor: palette.white,
     boxShadow: 'none',
@@ -85,19 +80,22 @@ const useStyles = makeStyles({
     border: `.5px solid ${palette.divider}`,
     fontWeight: 'bold',
     marginTop: '8px',
+    '&:before': {
+      backgroundColor: 'transparent',
+    },
   },
-});
+};
 
 const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDate);
 
-const getStatusData = (statuses, classes) => {
+const getStatusData = (statuses) => {
   const current = statuses
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
   if (current.endDate) { return undefined; }
   const rest = statuses
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
   return (
-    <div className={classes.fullWidth}>
+    <Box sx={styles.fullWidth}>
       <Typography variant="body1" gutterBottom>
         <strong>Status</strong>
         <br />
@@ -117,19 +115,16 @@ const getStatusData = (statuses, classes) => {
       {rest.length > 0
         && (
           <Accordion
-            className={classes.statusHistory}
-            classes={{
-              root: classes.MuiAccordionroot,
-            }}
+            sx={styles.statusHistory}
           >
             <AccordionSummary
-              className={classes.statusHistorySummary}
+              sx={styles.statusHistorySummary}
               expandIcon={<ExpandMoreIcon color="primary" />}
             >
               Status History
             </AccordionSummary>
             <AccordionDetails
-              className={classes.historyContent}
+              sx={styles.historyContent}
             >
               {rest.map((status, idx) => (
                 <Timeline
@@ -190,7 +185,7 @@ const getStatusData = (statuses, classes) => {
             </AccordionDetails>
           </Accordion>
         )}
-    </div>
+    </Box>
   );
 };
 
@@ -206,7 +201,6 @@ function ChplDeveloperView(props) {
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const classes = useStyles();
 
   const can = (action) => {
     if (action === 'edit') {
@@ -265,8 +259,8 @@ function ChplDeveloperView(props) {
     >
       <CardHeader
         title={(
-          <div className={classes.headerContainer}>
-            <div className={classes.developerHeaderContainer}>{isSplitting ? 'Original Developer' : developer.name}</div>
+          <Box sx={styles.headerContainer}>
+            <Box sx={styles.developerHeaderContainer}>{isSplitting ? 'Original Developer' : developer.name}</Box>
             { can('edit') && !hasAnyRole(['chpl-developer'])
               && (
                 <ChplOrganizationActivity
@@ -275,12 +269,12 @@ function ChplDeveloperView(props) {
                   interpret={compareDeveloper}
                 />
               )}
-          </div>
+          </Box>
         )}
         component="div"
-        className={classes.developerHeader}
+        sx={styles.developerHeader}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Developer code</strong>
@@ -353,7 +347,7 @@ function ChplDeveloperView(props) {
               </Typography>
             )}
         </div>
-        <div className={classes.fullWidth}>
+        <Box sx={styles.fullWidth}>
           {developer.website
             && (
               <Typography variant="body1" gutterBottom>
@@ -364,12 +358,12 @@ function ChplDeveloperView(props) {
                 />
               </Typography>
             )}
-        </div>
-        {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
+        </Box>
+        {developer.statuses?.length > 0 && getStatusData(developer.statuses)}
       </CardContent>
       { (can('edit') || can('split') || can('join'))
         && (
-          <CardActions className={classes.cardActions}>
+          <CardActions>
             <ButtonGroup
               color="primary"
             >
@@ -388,14 +382,14 @@ function ChplDeveloperView(props) {
                )}
               { can('edit') && hasAnyRole(['chpl-developer'])
                && (
-                   <Button
-                     variant="contained"
-                     aria-label={`Submit ${developer.name} Demographics Change`}
-                     id="developer-component-edit"
-                     onClick={createDemographicsCr}
-                   >
-                     Submit Demographics Change
-                   </Button>
+               <Button
+                 variant="contained"
+                 aria-label={`Submit ${developer.name} Demographics Change`}
+                 id="developer-component-edit"
+                 onClick={createDemographicsCr}
+               >
+                 Submit Demographics Change
+               </Button>
                )}
               { can('split')
                && (

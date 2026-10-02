@@ -21,7 +21,6 @@ import {
   TableFooter,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -41,7 +40,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   content: {
     display: 'grid',
@@ -73,7 +72,7 @@ const useStyles = makeStyles({
   errorColor: {
     color: '#c44f65',
   },
-});
+};
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -147,9 +146,9 @@ const getEditField = ({
   display,
   formik,
   required = true,
-  className,
+  sx,
 }) => (
-  <div className={className}>
+  <Box sx={sx}>
     <ChplTextField
       id={key}
       name={key}
@@ -161,7 +160,7 @@ const getEditField = ({
       error={formik.touched[key] && !!formik.errors[key]}
       helperText={formik.touched[key] && formik.errors[key]}
     />
-  </div>
+  </Box>
 );
 
 function ChplDeveloperEdit({
@@ -178,7 +177,6 @@ function ChplDeveloperEdit({
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const [statuses, setStatuses] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -335,20 +333,20 @@ function ChplDeveloperEdit({
             <CardHeader
               title="New Developer"
               component="h5"
-              className={classes.header}
+              sx={styles.header}
             />
           )}
         { !isSplitting
           && (
             <CardHeader
               title={developer.name}
-              className={classes.header}
+              sx={styles.header}
               component="h2"
             />
           )}
-        <CardContent className={classes.content}>
+        <CardContent sx={styles.content}>
           { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
-            && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidthGridRow })}
+            && getEnhancedEditField({ key: 'name', display: 'Name', sx: styles.fullWidthGridRow })}
           <FormControlLabel
             control={(
               <Switch
@@ -357,16 +355,16 @@ function ChplDeveloperEdit({
                 color="primary"
                 checked={formik.values.selfDeveloper}
                 onChange={formik.handleChange}
-                className={classes.fullWidthGridRow}
+                sx={styles.fullWidthGridRow}
               />
             )}
             label="Self-Developer"
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && !isSplitting
             && (
-              <Box className={classes.fullWidthGridRow}>
-                <TableContainer className={classes.fullWidthGridRow}>
-                  <Table className={classes.table}>
+              <Box sx={styles.fullWidthGridRow}>
+                <TableContainer sx={styles.fullWidthGridRow}>
+                  <Table sx={styles.table}>
                     <TableHead>
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
@@ -398,7 +396,8 @@ function ChplDeveloperEdit({
                                   onClick={() => removeStatus(status)}
                                   aria-label="Remove status"
                                   disabled={formik.values.isAdding}
-                                  size="large">
+                                  size="large"
+                                >
                                   <CloseIcon
                                     color="error"
                                     size="small"
@@ -414,7 +413,7 @@ function ChplDeveloperEdit({
                             <TableRow>
                               <TableCell colSpan={4} align="right">
                                 <Button
-                                  className={classes.tableFooterButton}
+                                  sx={styles.tableFooterButton}
                                   color="secondary"
                                   variant="contained"
                                   onClick={() => formik.setFieldValue('isAdding', true)}
@@ -422,7 +421,7 @@ function ChplDeveloperEdit({
                                 >
                                   Add item
                                   {' '}
-                                  <AddIcon className={classes.iconSpacing} />
+                                  <AddIcon sx={styles.iconSpacing} />
                                 </Button>
                               </TableCell>
                             </TableRow>
@@ -432,7 +431,7 @@ function ChplDeveloperEdit({
                 </TableContainer>
                   { formik.values.isAdding
                     && (
-                      <Card className={classes.statuses}>
+                      <Card sx={styles.statuses}>
                         <ChplTextField
                           select
                           id="status"
@@ -472,7 +471,7 @@ function ChplDeveloperEdit({
                           helperText={formik.touched.endDate && formik.errors.endDate}
                         />
                         <ChplTextField
-                          className={classes.fullWidthGridRow}
+                          sx={styles.fullWidthGridRow}
                           id="reason"
                           name="reason"
                           label="Reason"
@@ -484,7 +483,7 @@ function ChplDeveloperEdit({
                           helperText={formik.touched.reason && formik.errors.reason}
                         />
                         <ButtonGroup
-                          className={classes.fullWidthGridRow}
+                          sx={styles.fullWidthGridRow}
                           variant="outlined"
                         >
                           <Button
@@ -498,7 +497,7 @@ function ChplDeveloperEdit({
                             <CheckIcon />
                           </Button>
                           <Button
-                            className={classes.deleteButtonOutlined}
+                            sx={styles.deleteButtonOutlined}
                             onClick={cancelAdd}
                             aria-label="Cancel adding item"
                             id="certification-status-close-item"
@@ -510,19 +509,19 @@ function ChplDeveloperEdit({
                     )}
               </Box>
             )}
-          <Divider className={classes.fullWidthGridRow} />
-          { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
+          <Divider sx={styles.fullWidthGridRow} />
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name', sx: styles.fullWidthGridRow }) }
           { getEnhancedEditField({ key: 'email', display: 'Email' }) }
           { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
-          <Divider className={classes.fullWidthGridRow} />
+          <Divider sx={styles.fullWidthGridRow} />
           { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
           { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
           { getEnhancedEditField({ key: 'city', display: 'City' }) }
           { getEnhancedEditField({ key: 'state', display: 'State' }) }
           { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
           { getEnhancedEditField({ key: 'country', display: 'Country' }) }
-          <Divider className={classes.fullWidthGridRow} />
-          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidthGridRow }) }
+          <Divider sx={styles.fullWidthGridRow} />
+          { getEnhancedEditField({ key: 'website', display: 'Website', sx: styles.fullWidthGridRow }) }
         </CardContent>
       </Card>
       <ChplActionBar

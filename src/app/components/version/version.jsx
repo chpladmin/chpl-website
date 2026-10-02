@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, CardContent, CardHeader, Typography,
+  Box, Card, CardContent, CardHeader, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf,
   bool,
@@ -13,7 +12,7 @@ import {
 
 import ChplVersionEdit from './version-edit';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-});
+};
 
 function ChplVersion({
   dispatch = () => {},
@@ -43,7 +42,6 @@ function ChplVersion({
   version,
 }) {
   const [isInvalid, setIsInvalid] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setIsInvalid(initialIsInvalid);
@@ -68,14 +66,14 @@ function ChplVersion({
     >
       <CardHeader
         title={(
-          <div className={classes.headerContainer}>
-            <div className={classes.elementHeaderContainer}>Original Version</div>
-          </div>
+          <Box sx={styles.headerContainer}>
+            <Box sx={styles.elementHeaderContainer}>Original Version</Box>
+          </Box>
         )}
         component="div"
-        className={classes.elementHeader}
+        sx={styles.elementHeader}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Version</strong>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, CardHeader, Divider, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { func, object } from 'prop-types';
@@ -18,7 +17,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -59,7 +58,7 @@ const useStyles = makeStyles({
     margin: '8px 0',
     whiteSpace: 'pre-line',
   },
-});
+};
 
 const validationSchema = yup.object({
   surveillanceActivitiesAndOutcomes: yup.string(),
@@ -84,7 +83,6 @@ function ChplQuarterEdit({ dispatch, report }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [listings, setListings] = useState([]);
   const [state, setState] = useState(menuItems[0]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -183,71 +181,72 @@ function ChplQuarterEdit({ dispatch, report }) {
     validationSchema,
   });
 
-  return <>
-    <div className={classes.container}>
-      <Box className={classes.stickyColumn}>
-        <Card className={classes.reportInfoCard}>
-          <CardContent>
-            <Typography variant="h6" component="h2">
-              <strong>{`${report.acb?.name} Quarterly Surveillance Reporting`}</strong>
-            </Typography>
-            <Typography variant="body1">
-              {`${report.year} - ${report.quarter}`}
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent>
-            { menuItems.map((item) => (
+  return (
+    <>
+      <Box sx={styles.container}>
+        <Box sx={styles.stickyColumn}>
+          <Card sx={styles.reportInfoCard}>
+            <CardContent>
+              <Typography variant="h6" component="h2">
+                <strong>{`${report.acb?.name} Quarterly Surveillance Reporting`}</strong>
+              </Typography>
+              <Typography variant="body1">
+                {`${report.year} - ${report.quarter}`}
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              { menuItems.map((item) => (
+                <Button
+                  key={item}
+                  onClick={() => setState(item)}
+                  disabled={state === item}
+                  id={`navigation-${item}`}
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  sx={styles.menuItems}
+                >
+                  <Box display="flex" flexDirection="row" gap="4px">
+                    { item }
+                  </Box>
+                </Button>
+              ))}
               <Button
-                key={item}
-                onClick={() => setState(item)}
-                disabled={state === item}
-                id={`navigation-${item}`}
+                onClick={() => dispatch({ action: 'cancel' })}
+                id="navigation-back"
                 fullWidth
                 variant="text"
                 color="primary"
-                endIcon={<ArrowForwardIcon />}
-                className={classes.menuItems}
+                endIcon={<ArrowBackIcon />}
+                sx={styles.menuItems}
               >
                 <Box display="flex" flexDirection="row" gap="4px">
-                  { item }
+                  Back
                 </Box>
               </Button>
-            ))}
-            <Button
-              onClick={() => dispatch({ action: 'cancel' })}
-              id="navigation-back"
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<ArrowBackIcon />}
-              className={classes.menuItems}
-            >
-              <Box display="flex" flexDirection="row" gap="4px">
-                Back
-              </Box>
-            </Button>
-          </CardContent>
-        </Card>
-      </Box>
-      { state === menuItems[0]
+            </CardContent>
+          </Card>
+        </Box>
+        { state === menuItems[0]
         && (
           <Card>
             <CardHeader title="Activities, Outcomes, & Summaries" />
             <CardContent>
               <Typography variant="h5" gutterBottom><strong>Surveillance Activities and Outcomes</strong></Typography>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6">
-                  <strong>Randomized Surveillance – Selection Methods</strong>
+                  <strong>Randomized Surveillance Ã¢â‚¬â€œ Selection Methods</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.
                 </Typography>
                 <ChplTextField
                   id="surveillance-activities-and-outcomes"
                   name="surveillanceActivitiesAndOutcomes"
-                  label="Randomized Surveillance – Selection Methods"
+                  label="Randomized Surveillance Ã¢â‚¬â€œ Selection Methods"
                   multiline
                   value={formik.values.surveillanceActivitiesAndOutcomes}
                   onChange={formik.handleChange}
@@ -266,11 +265,11 @@ function ChplQuarterEdit({ dispatch, report }) {
               <Typography variant="h5" gutterBottom>
                 <strong>Sampling and Selecting</strong>
               </Typography>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Reactive Surveillance Summary</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.
                 </Typography>
                 <ChplTextField
@@ -285,11 +284,11 @@ function ChplQuarterEdit({ dispatch, report }) {
                   helperText={formik.touched.reactiveSurveillanceSummary && formik.errors.reactiveSurveillanceSummary}
                 />
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>ICS Surveillance Summary</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   In order to meet requirements to conduct reactive surveillance on listings with multiple ICS requests, the ONC-ACB conducted the following ICS related surveillance. Please outline the number of ICS-related surveillances conducted, the method to surveil these products and the approach to include prioritized elements as outlined in the Surveillance Resource.
                 </Typography>
                 <ChplTextField
@@ -305,19 +304,19 @@ function ChplQuarterEdit({ dispatch, report }) {
                 />
               </Box>
               <Divider />
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h5" gutterBottom>
                   <strong>Prioritized Surveillance</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   The ONC-ACB undertook the following activities and implemented the following measures to evaluate and address the prioritized elements of surveillance referred to in Program Policy Resource #18-03 (October 5, 2018).
                 </Typography>
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Prioritized Criteria</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   Please describe which prioritized criteria were surveilled, how and with what frequency. Summarize the approach taken to conduct surveillance on these prioritized criteria.
                 </Typography>
                 <ChplTextField
@@ -332,12 +331,12 @@ function ChplQuarterEdit({ dispatch, report }) {
                   helperText={formik.touched.prioritizedElementSummary && formik.errors.prioritizedElementSummary}
                 />
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Disclosure Requirements Summary</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
-                  The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):
+                <Typography sx={styles.question} variant="body2" gutterBottom>
+                  The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR Ã‚Â§ 170.523(k):
                 </Typography>
                 <ChplTextField
                   id="disclosure-requirements-summary"
@@ -351,11 +350,11 @@ function ChplQuarterEdit({ dispatch, report }) {
                   helperText={formik.touched.disclosureRequirementsSummary && formik.errors.disclosureRequirementsSummary}
                 />
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Developer Complaints Log Review</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   Describe the activities conducted in the past quarter related to the review of developers&lsquo; complaints logs. In your description be sure to discuss the extent to which the developer followed its internal complaints process and any deficiencies with its process. Please also indicate the frequency of complaints that the developer received that are associated with each of the prioritized elements as specified by ONC. Additional insights on individual findings can be included in the Surveillance Activities and Outcomes under &quot;Surveillance Findings&quot;.
                 </Typography>
                 <ChplTextField
@@ -370,11 +369,11 @@ function ChplQuarterEdit({ dispatch, report }) {
                   helperText={formik.touched.developerComplaintsLogReview && formik.errors.developerComplaintsLogReview}
                 />
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Post-certification Performance of Certified Capabilities</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   The assessment of potential non-conformities resulting from implementation or business practices of a developer that could affect the performance of certified capabilities in the field.
                 </Typography>
                 <ChplTextField
@@ -389,11 +388,11 @@ function ChplQuarterEdit({ dispatch, report }) {
                   helperText={formik.touched.postCertificationPerformanceOfCertifiedCapabilities && formik.errors.postCertificationPerformanceOfCertifiedCapabilities}
                 />
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Appropriate Use of Mark</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   Describe activities and frequency of assessment of the appropriate use of the ONC Health IT Certification and Design Mark on developer public-facing materials.
                 </Typography>
                 <ChplTextField
@@ -408,11 +407,11 @@ function ChplQuarterEdit({ dispatch, report }) {
                   helperText={formik.touched.appropriateUseOfMark && formik.errors.appropriateUseOfMark}
                 />
               </Box>
-              <Box className={classes.summaryGroup}>
+              <Box sx={styles.summaryGroup}>
                 <Typography variant="h6" gutterBottom>
                   <strong>Complaints Reported to ONC-ACB</strong>
                 </Typography>
-                <Typography className={classes.question} variant="body2" gutterBottom>
+                <Typography sx={styles.question} variant="body2" gutterBottom>
                   Please log the complaints and any actions to the &quot;Complaints&quot; sheet of this workbook.
                 </Typography>
               </Box>
@@ -423,7 +422,7 @@ function ChplQuarterEdit({ dispatch, report }) {
             </CardContent>
           </Card>
         )}
-      { state === menuItems[1]
+        { state === menuItems[1]
         && (
           <Card>
             <CardHeader title="Listings with relevant surveillance" />
@@ -451,7 +450,7 @@ function ChplQuarterEdit({ dispatch, report }) {
             </CardContent>
           </Card>
         )}
-      { state === menuItems[2]
+        { state === menuItems[2]
         && (
           <ChplComplaints
             disallowedFilters={['certificationBodies', 'receivedDate', 'closedDate']}
@@ -460,8 +459,8 @@ function ChplQuarterEdit({ dispatch, report }) {
             canEdit={false}
           />
         )}
-    </div>
-    { state === menuItems[0]
+      </Box>
+      { state === menuItems[0]
       && (
         <ChplActionBar
           dispatch={handleDispatch}
@@ -471,7 +470,8 @@ function ChplQuarterEdit({ dispatch, report }) {
           canDelete
         />
       )}
-  </>;
+    </>
+  );
 }
 
 export default ChplQuarterEdit;

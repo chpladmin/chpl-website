@@ -9,7 +9,6 @@ import {
   CardHeader,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { func } from 'prop-types';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
@@ -19,7 +18,7 @@ import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'flex',
     gap: '16px',
@@ -38,14 +37,12 @@ const useStyles = makeStyles({
   subContentBox: {
     width: '48%',
   },
-});
+};
 
 function ChplOncOrganizationView({
   organization,
   dispatch,
 }) {
-  const classes = useStyles();
-
   const edit = () => {
     dispatch('edit');
   };
@@ -58,22 +55,22 @@ function ChplOncOrganizationView({
     >
       <CardHeader
         title={(
-          <div className={classes.headerContainer}>
+          <Box sx={styles.headerContainer}>
             { organization.name }
             <ChplOrganizationActivity
               organization={organization}
               type={organization.acbCode ? 'acbs' : 'atls'}
               interpret={compareOrganization}
             />
-          </div>
+          </Box>
         )}
         component="h2"
-        className={classes.header}
+        sx={styles.header}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         { organization.website
          && (
-         <Box className={classes.subContentBox}>
+         <Box sx={styles.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Website</strong>
              <br />
@@ -83,13 +80,13 @@ function ChplOncOrganizationView({
            </Typography>
          </Box>
          )}
-        <Box className={classes.subContentBox}>
+        <Box sx={styles.subContentBox}>
           <Typography variant="body1" gutterBottom>
             <strong>Organization code</strong>
           </Typography>
           <Typography>{ organization.acbCode ?? organization.atlCode }</Typography>
         </Box>
-        <Box className={classes.subContentBox}>
+        <Box sx={styles.subContentBox}>
           <Typography variant="body1" gutterBottom>
             <strong>Retired</strong>
           </Typography>
@@ -97,7 +94,7 @@ function ChplOncOrganizationView({
         </Box>
         { organization.retired
             && (
-              <Box className={classes.subContentBox}>
+              <Box sx={styles.subContentBox}>
                 <>
                   <Typography variant="body1" gutterBottom><strong>Retirement Date</strong></Typography>
                   { getDisplayDateFormat(organization.retirementDay) }
@@ -106,7 +103,7 @@ function ChplOncOrganizationView({
             )}
         { organization.address
          && (
-         <Box className={classes.subContentBox}>
+         <Box sx={styles.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
              <br />

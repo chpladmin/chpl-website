@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-  Card, CardContent, Container, Divider, Typography,
+  Box, Card, CardContent, Container, Divider, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
-const useStyles = makeStyles({
+const styles = {
   attestationContainerList: {
     fontSize: '0.875em',
   },
@@ -14,13 +13,11 @@ const useStyles = makeStyles({
   forAssistanceContainer: {
     marginTop: '16px',
   },
-});
+};
 
 function ChplAttestationWizardSection1() {
-  const classes = useStyles();
-
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
+    <Container sx={styles.fixFooterSpacing} maxWidth="md">
       <Typography gutterBottom variant="h2">
         Section 1 &mdash; Introduction
       </Typography>
@@ -52,18 +49,18 @@ function ChplAttestationWizardSection1() {
           </Typography>
         </CardContent>
       </Card>
-      <Typography gutterBottom className={classes.forAssistanceContainer} variant="body1">
+      <Typography gutterBottom sx={styles.forAssistanceContainer} variant="body1">
         For assistance with the Attestation submission process, please see the
         {' '}
         <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
         {' '}
         to submit a ticket as applicable --
       </Typography>
-      <ul className={classes.attestationContainerList}>
+      <Box component="ul" sx={styles.attestationContainerList}>
         <li>For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category.</li>
         <li>For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category.</li>
         <li>For technical assistance with this process, please select the &quot;CHPL&quot; category.</li>
-      </ul>
+      </Box>
     </Container>
   );
 }

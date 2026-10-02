@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
-import { Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Box, Typography } from '@mui/material';
 
 import { ChangeRequestContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'grid',
@@ -28,143 +27,142 @@ const useStyles = makeStyles({
   highlightNew: {
     backgroundColor: palette.progressSuccessTrack,
   },
-});
+};
 
 function ChplChangeRequestDemographicsView() {
   const { changeRequest } = useContext(ChangeRequestContext);
-  const classes = useStyles();
 
   return (
-    <div className={classes.container}>
-      <div className={classes.detailsContainer}>
+    <Box sx={styles.container}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Current demographics</Typography>
-        <Typography className={changeRequest.developer.selfDeveloper !== changeRequest.details.selfDeveloper ? classes.highlightOld : ''}>
+        <Typography sx={changeRequest.developer.selfDeveloper !== changeRequest.details.selfDeveloper ? styles.highlightOld : undefined}>
           Self-Developer:
           {' '}
           { changeRequest.developer.selfDeveloper ? 'Yes' : 'No' }
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
-        <div className={classes.detailsSubContainer}>
-          <Typography className={`${classes.fullWidthGridRow} ${changeRequest.developer.contact.fullName !== changeRequest.details.contact.fullName ? classes.highlightOld : ''}`}>
+        <Box sx={styles.detailsSubContainer}>
+          <Typography sx={[styles.fullWidthGridRow, changeRequest.developer.contact.fullName !== changeRequest.details.contact.fullName && styles.highlightOld]}>
             Full Name:
             {' '}
             { changeRequest.developer.contact.fullName }
           </Typography>
-          <Typography className={changeRequest.developer.contact.email !== changeRequest.details.contact.email ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.contact.email !== changeRequest.details.contact.email ? styles.highlightOld : undefined}>
             Email:
             {' '}
             { changeRequest.developer.contact.email }
           </Typography>
-          <Typography className={changeRequest.developer.contact.phoneNumber !== changeRequest.details.contact.phoneNumber ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.contact.phoneNumber !== changeRequest.details.contact.phoneNumber ? styles.highlightOld : undefined}>
             Phone:
             {' '}
             { changeRequest.developer.contact.phoneNumber }
           </Typography>
-        </div>
+        </Box>
         <Typography variant="subtitle2">Address</Typography>
-        <div className={classes.detailsSubContainer}>
-          <Typography className={changeRequest.developer.address.line1 !== changeRequest.details.address.line1 ? classes.highlightOld : ''}>
+        <Box sx={styles.detailsSubContainer}>
+          <Typography sx={changeRequest.developer.address.line1 !== changeRequest.details.address.line1 ? styles.highlightOld : undefined}>
             Address:
             {' '}
             { changeRequest.developer.address.line1 }
           </Typography>
-          <Typography className={changeRequest.developer.address.line2 !== changeRequest.details.address.line2 ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.address.line2 !== changeRequest.details.address.line2 ? styles.highlightOld : undefined}>
             Line 2:
             {' '}
             { changeRequest.developer.address.line2 }
           </Typography>
-          <Typography className={changeRequest.developer.address.city !== changeRequest.details.address.city ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.address.city !== changeRequest.details.address.city ? styles.highlightOld : undefined}>
             City:
             {' '}
             { changeRequest.developer.address.city }
           </Typography>
-          <Typography className={changeRequest.developer.address.state !== changeRequest.details.address.state ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.address.state !== changeRequest.details.address.state ? styles.highlightOld : undefined}>
             State:
             {' '}
             { changeRequest.developer.address.state }
           </Typography>
-          <Typography className={changeRequest.developer.address.zipcode !== changeRequest.details.address.zipcode ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.address.zipcode !== changeRequest.details.address.zipcode ? styles.highlightOld : undefined}>
             Zip:
             {' '}
             { changeRequest.developer.address.zipcode }
           </Typography>
-          <Typography className={changeRequest.developer.address.country !== changeRequest.details.address.country ? classes.highlightOld : ''}>
+          <Typography sx={changeRequest.developer.address.country !== changeRequest.details.address.country ? styles.highlightOld : undefined}>
             Country:
             {' '}
             { changeRequest.developer.address.country }
           </Typography>
-        </div>
-        <Typography className={changeRequest.developer.website !== changeRequest.details.website ? classes.highlightOld : ''}>
+        </Box>
+        <Typography sx={changeRequest.developer.website !== changeRequest.details.website ? styles.highlightOld : undefined}>
           Website:
           {' '}
           { changeRequest.developer.website }
         </Typography>
-      </div>
-      <div className={classes.detailsContainer}>
+      </Box>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Submitted demographics</Typography>
-        <Typography className={changeRequest.developer.selfDeveloper !== changeRequest.details.selfDeveloper ? classes.highlightNew : ''}>
+        <Typography sx={changeRequest.developer.selfDeveloper !== changeRequest.details.selfDeveloper ? styles.highlightNew : undefined}>
           Self-Developer:
           {' '}
           { changeRequest.details.selfDeveloper ? 'Yes' : 'No' }
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
-        <div className={classes.detailsSubContainer}>
-          <Typography className={`${classes.fullWidthGridRow} ${changeRequest.developer.contact.fullName !== changeRequest.details.contact.fullName ? classes.highlightNew : ''}`}>
+        <Box sx={styles.detailsSubContainer}>
+          <Typography sx={[styles.fullWidthGridRow, changeRequest.developer.contact.fullName !== changeRequest.details.contact.fullName && styles.highlightNew]}>
             Full Name:
             {' '}
             { changeRequest.details.contact.fullName }
           </Typography>
-          <Typography className={changeRequest.developer.contact.email !== changeRequest.details.contact.email ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.contact.email !== changeRequest.details.contact.email ? styles.highlightNew : undefined}>
             Email:
             {' '}
             { changeRequest.details.contact.email }
           </Typography>
-          <Typography className={changeRequest.developer.contact.phoneNumber !== changeRequest.details.contact.phoneNumber ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.contact.phoneNumber !== changeRequest.details.contact.phoneNumber ? styles.highlightNew : undefined}>
             Phone:
             {' '}
             { changeRequest.details.contact.phoneNumber }
           </Typography>
-        </div>
+        </Box>
         <Typography variant="subtitle2">Address</Typography>
-        <div className={classes.detailsSubContainer}>
-          <Typography className={changeRequest.developer.address.line1 !== changeRequest.details.address.line1 ? classes.highlightNew : ''}>
+        <Box sx={styles.detailsSubContainer}>
+          <Typography sx={changeRequest.developer.address.line1 !== changeRequest.details.address.line1 ? styles.highlightNew : undefined}>
             Address:
             {' '}
             { changeRequest.details.address.line1 }
           </Typography>
-          <Typography className={changeRequest.developer.address.line2 !== changeRequest.details.address.line2 ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.address.line2 !== changeRequest.details.address.line2 ? styles.highlightNew : undefined}>
             Line 2:
             {' '}
             { changeRequest.details.address.line2 }
           </Typography>
-          <Typography className={changeRequest.developer.address.city !== changeRequest.details.address.city ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.address.city !== changeRequest.details.address.city ? styles.highlightNew : undefined}>
             City:
             {' '}
             { changeRequest.details.address.city }
           </Typography>
-          <Typography className={changeRequest.developer.address.state !== changeRequest.details.address.state ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.address.state !== changeRequest.details.address.state ? styles.highlightNew : undefined}>
             State:
             {' '}
             { changeRequest.details.address.state }
           </Typography>
-          <Typography className={changeRequest.developer.address.zipcode !== changeRequest.details.address.zipcode ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.address.zipcode !== changeRequest.details.address.zipcode ? styles.highlightNew : undefined}>
             Zip:
             {' '}
             { changeRequest.details.address.zipcode }
           </Typography>
-          <Typography className={changeRequest.developer.address.country !== changeRequest.details.address.country ? classes.highlightNew : ''}>
+          <Typography sx={changeRequest.developer.address.country !== changeRequest.details.address.country ? styles.highlightNew : undefined}>
             Country:
             {' '}
             { changeRequest.details.address.country }
           </Typography>
-        </div>
-        <Typography className={changeRequest.developer.website !== changeRequest.details.website ? classes.highlightNew : ''}>
+        </Box>
+        <Typography sx={changeRequest.developer.website !== changeRequest.details.website ? styles.highlightNew : undefined}>
           Website:
           {' '}
           { changeRequest.details.website }
         </Typography>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

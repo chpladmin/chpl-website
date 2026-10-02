@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Button, Card, CardContent, CardHeader, MenuItem, MenuList,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Moment from 'react-moment';
 import {
@@ -33,13 +32,10 @@ import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   card: {
     overflow: 'visible',
-  },
-  resultsContainer: {
-    padding: ({ embedded }) => (embedded ? '0' : '0 32px'),
   },
   developerTitle: {
     display: 'flex',
@@ -49,6 +45,10 @@ const useStyles = makeStyles({
   noResultsContainer: {
     padding: '16px 32px',
   },
+};
+
+const getResultsContainerStyles = (embedded) => ({
+  padding: embedded ? 0 : '0 32px',
 });
 
 function ChplChangeRequestsView({
@@ -73,7 +73,6 @@ function ChplChangeRequestsView({
     sortDescending: order === 'desc',
     query: `${queryString()}${bonusQuery}`,
   });
-  const classes = useStyles({ embedded });
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -166,9 +165,9 @@ function ChplChangeRequestsView({
             { isError
               && (
                 <>
-                  <div className={classes.noResultsContainer}>
+                  <Box sx={styles.noResultsContainer}>
                     No results were found, due to invalid parameters:
-                  </div>
+                  </Box>
                   <MenuList>
                     {error.response.data.errorMessages?.map((msg) => (
                       <MenuItem key={msg}>{msg}</MenuItem>
@@ -204,13 +203,13 @@ function ChplChangeRequestsView({
                   { changeRequests.length > 0
                     && (
                       <>
-                        <Box className={classes.resultsContainer}>
+                        <Box sx={getResultsContainerStyles(embedded)}>
                           { changeRequests.map((item) => (
                             <ChplSearchResultCard
                               key={item.id}
                               cardTitle={isDeveloper ? undefined : 'Developer'}
                               cardTitleValue={isDeveloper ? undefined : (
-                                <Box className={classes.developerTitle}>
+                                <Box sx={styles.developerTitle}>
                                   <ChplAvatar text={item.developer.name} />
                                   <ChplLink
                                     href={`#/organizations/developers/${item.developer.id}`}
@@ -278,7 +277,7 @@ function ChplChangeRequestsView({
                                 >
                                   View
                                   {' '}
-                                  <VisibilityIcon className={classes.iconSpacing} />
+                                  <VisibilityIcon sx={styles.iconSpacing} />
                                 </Button>
                               )}
                             />
@@ -304,7 +303,7 @@ function ChplChangeRequestsView({
   );
 
   return (
-    <Card className={classes.card}>
+    <Card sx={styles.card}>
       { bonusQuery
         && (
           <CardHeader title="Change Requests" />

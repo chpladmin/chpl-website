@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Card, CardContent, CardHeader, CircularProgress, Container, Typography,
+  Box, Card, CardContent, CardHeader, CircularProgress, Container, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   arrayOf, bool, func, number, string,
 } from 'prop-types';
@@ -18,7 +17,7 @@ import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -51,7 +50,7 @@ const useStyles = makeStyles({
   cardHeaderAction: {
     margin: '0',
   },
-});
+};
 
 function ChplUsersView({
   dispatch,
@@ -66,7 +65,6 @@ function ChplUsersView({
   const [activeUser, setActiveUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const [users, setUsers] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setUsers(initialUsers);
@@ -175,15 +173,15 @@ function ChplUsersView({
         )}
       { !activeUser
         && (
-          <div className={classes.container}>
+          <Box sx={styles.container}>
             <Card>
               <CardHeader
                 title="Manage Users"
-                classes={{
-                  action: classes.cardHeaderAction,
+                sx={{
+                  '& .MuiCardHeader-action': styles.cardHeaderAction,
                 }}
                 action={(
-                  <Typography className={classes.userCount}>
+                  <Typography>
                     (
                     {users.length}
                     {' '}
@@ -194,7 +192,7 @@ function ChplUsersView({
                 )}
               />
               <CardContent>
-                <div className={classes.header}>
+                <Box sx={styles.header}>
                   <ChplTextField
                     id="user-filter"
                     name="userFilter"
@@ -205,15 +203,15 @@ function ChplUsersView({
                     groupNames={groupNames}
                     dispatch={handleDispatch}
                   />
-                </div>
-                <div className={classes.users}>
+                </Box>
+                <Box sx={styles.users}>
                   { users
                     .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
                     .map((u) => displayUser(u))}
-                </div>
+                </Box>
               </CardContent>
             </Card>
-          </div>
+          </Box>
         )}
     </Container>
   );
