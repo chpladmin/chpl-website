@@ -211,7 +211,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id, enabled: !isEditing });
@@ -231,7 +230,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     setChangeRequest({
       ...data,
     });
-    setDetails(data.details);
     if (data.certificationBodies.length > 1 && hasAnyRole(['chpl-onc-acb'])) {
       setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
       setIsConfirming(true);
@@ -325,46 +323,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     }
   };
 
-  const handleUpdate = (payload) => {
-    switch (changeRequest.changeRequestType.name) {
-      case 'Developer Attestation Change Request':
-        setDetails({
-          ...details,
-          attestation: payload.attestation,
-        });
-        break;
-      case 'Developer Demographics Change Request':
-        setDetails({
-          ...details,
-          address: {
-            line1: payload.line1,
-            line2: payload.line2,
-            city: payload.city,
-            state: payload.state,
-            zipcode: payload.zipcode,
-            country: payload.country,
-          },
-          contact: {
-            fullName: payload.fullName,
-            email: payload.email,
-            phoneNumber: payload.phoneNumber,
-            title: payload.title,
-          },
-          selfDeveloper: payload.selfDeveloper,
-          website: payload.website,
-        });
-        break;
-      case 'Service Base URL List Change Request':
-        setDetails({
-          ...details,
-          url: payload.url,
-        });
-        break;
-        // no default
-    }
-  };
-
-  const handleDispatch = (action, payload) => {
+  const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
         eventTrack({
@@ -376,9 +335,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
         break;
       case 'edit':
         editCr();
-        break;
-      case 'update':
-        handleUpdate(payload);
         break;
       case 'save':
         validateAll().then((isValid) => {
