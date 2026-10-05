@@ -22,7 +22,7 @@ import {
   useFetchSurveillanceProcessTypes,
 } from 'api/data';
 import { usePutRelevantSurveillance } from 'api/surveillance';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { utilStyles } from 'themes';
 
@@ -77,14 +77,13 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
   const [surveillanceGroundsForInitiating, setSurveillanceGroundsForInitiating] = useState([]);
   const [surveillanceOutcomes, setSurveillanceOutcomes] = useState([]);
   const [surveillanceProcessTypes, setSurveillanceProcessTypes] = useState([]);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const { data: capStatusesData, isLoading: capStatusesIsLoading, isSuccess: capStatusesIsSuccess } = useFetchCapStatuses();
   const { data: surveillanceGroundsForInitiatingData, isLoading: surveillanceGroundsForInitiatingIsLoading, isSuccess: surveillanceGroundsForInitiatingIsSuccess } = useFetchSurveillanceGroundsForInitiating();
   const { data: surveillanceOutcomesData, isLoading: surveillanceOutcomesIsLoading, isSuccess: surveillanceOutcomesIsSuccess } = useFetchSurveillanceOutcomes();
   const { data: surveillanceProcessTypesData, isLoading: surveillanceProcessTypesIsLoading, isSuccess: surveillanceProcessTypesIsSuccess } = useFetchSurveillanceProcessTypes();
   const classes = useStyles();
   let formik;
+  let updateActionBar;
 
   useEffect(() => {
     if (capStatusesIsLoading || !capStatusesIsSuccess) { return; }
@@ -122,8 +121,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
   };
 
   const save = () => {
-    setIsProcessing(true);
-    setErrorMessages([]);
+    updateActionBar({ errors: [], isProcessing: true });
     const payload = {
       ...surveillance,
       reportId,
@@ -148,15 +146,14 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
     };
     mutate(payload, {
       onSuccess: () => {
-        setIsProcessing(false);
+        updateActionBar({ isProcessing: false });
         enqueueSnackbar('Your updates have been made. It might take a few moments to reflect the updates on the page.', {
           variant: 'success',
         });
         dispatch({ action: 'cancel' });
       },
       onError: (error) => {
-        setIsProcessing(false);
-        setErrorMessages([error.response?.data?.error]);
+        updateActionBar({ errors: [error.response?.data?.error], isProcessing: false });
       },
     });
   };
@@ -188,7 +185,11 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
     validationSchema,
   });
 
-  if (capStatusesIsLoading || surveillanceGroundsForInitiatingIsLoading || surveillanceOutcomesIsLoading || surveillanceProcessTypesIsLoading) {
+  const isLoading = capStatusesIsLoading || surveillanceGroundsForInitiatingIsLoading || surveillanceOutcomesIsLoading || surveillanceProcessTypesIsLoading;
+
+  updateActionBar = useActionBar({}, !isLoading);
+
+  if (isLoading) {
     return (
       <CircularProgress />
     );
@@ -588,12 +589,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
           helperText={formik.touched.surveillanceFindings && formik.errors.surveillanceFindings}
         />
       </Box>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        disabled={!formik.isValid}
-        errors={errorMessages}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

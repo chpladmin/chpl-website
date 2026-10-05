@@ -29,8 +29,8 @@ import {
   useFetchChangeRequestStatusTypes,
   usePutChangeRequest,
 } from 'api/change-requests';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
-import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -207,14 +207,13 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
-  const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id, enabled: !isEditing });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate, isLoading: isProcessing } = usePutChangeRequest();
   const classes = useStyles();
 
   let formik;
+  let updateActionBar;
   let save;
 
   useEffect(() => {
@@ -420,7 +419,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     }, {
       onSuccess: () => {
         dispatch('close');
-        setWarnings([]);
+        updateActionBar({ warnings: [] });
       },
       onError: (error) => {
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
@@ -428,17 +427,19 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
             variant: 'info',
           });
           dispatch('close');
-          setWarnings([]);
+          updateActionBar({ warnings: [] });
         } else if (error.response.data.warningMessages?.length > 0) {
-          setShowAcknowledgement(true);
-          setWarnings(error.response.data.warningMessages);
+          updateActionBar({
+            showWarningAcknowledgement: true,
+            warnings: error.response.data.warningMessages,
+          });
         } else {
           const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
           enqueueSnackbar(message, {
             variant: 'error',
           });
-          setWarnings([]);
+          updateActionBar({ warnings: [] });
         }
       },
     });
@@ -451,6 +452,16 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     },
     validationSchema,
   });
+
+  // `canEdit` and `canWithdraw` read `changeRequest`, which is undefined until it loads
+  updateActionBar = useActionBar({
+    canEdit: !!changeRequest && !isEditing && canEdit(),
+    canWithdraw: !!changeRequest && ((!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['chpl-developer']))),
+    canClose: !isEditing,
+    canCancel: isEditing,
+    canSave: isEditing,
+    isProcessing,
+  }, !!changeRequest);
 
   if (!changeRequest) {
     return <CircularProgress />;
@@ -655,17 +666,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
           />
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canEdit={!isEditing && canEdit()}
-        canWithdraw={(!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['chpl-developer']))}
-        canClose={!isEditing}
-        canCancel={isEditing}
-        canSave={isEditing}
-        isProcessing={isProcessing}
-        showWarningAcknowledgement={showAcknowledgement}
-        warnings={warnings}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </ChangeRequestContext.Provider>
   );
 }

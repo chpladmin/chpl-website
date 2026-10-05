@@ -20,7 +20,7 @@ import ChplQuarterEditListing from './quarter-edit-listing';
 
 import { useDeleteQuarterly, useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
@@ -188,6 +188,14 @@ function ChplQuarterEdit({ dispatch, report }) {
     },
     validationSchema,
   });
+
+  // Kept in local state rather than written straight to the store: the bar only
+  // shows on the first tab, and a save can settle after switching tabs.
+  useActionBar({
+    canDelete: true,
+    errors: errorMessages,
+    isProcessing,
+  }, state === menuItems[0]);
 
   return (
     <>
@@ -470,13 +478,7 @@ function ChplQuarterEdit({ dispatch, report }) {
       </div>
       { state === menuItems[0]
         && (
-          <ChplActionBar
-            dispatch={handleDispatch}
-            disabled={!formik.isValid}
-            errors={errorMessages}
-            isProcessing={isProcessing}
-            canDelete
-          />
+          <ChplActionBar dispatch={handleDispatch} />
         )}
     </>
   );

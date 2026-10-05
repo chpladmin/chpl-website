@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { ucdProcessType } from 'shared/prop-types';
 
@@ -30,8 +31,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [] }) {
-  const [errors, setErrors] = useState([]);
+function ChplUcdProcessEdit({
+  dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [],
+}) {
   const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
@@ -39,10 +41,6 @@ function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProc
   useEffect(() => {
     setUcdProcess(initialUcdProcess);
   }, [initialUcdProcess]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...ucdProcess,
@@ -76,6 +74,13 @@ function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProc
     validationSchema,
   });
 
+  useActionBar({
+    canDelete: !!ucdProcess.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
+  });
+
   return (
     <div className={classes.container}>
       <ChplTextField
@@ -89,13 +94,7 @@ function ChplUcdProcessEdit({ dispatch, isProcessing, ucdProcess: initialUcdProc
         error={formik.touched.name && !!formik.errors.name}
         helperText={formik.touched.name && formik.errors.name}
       />
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!ucdProcess.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }

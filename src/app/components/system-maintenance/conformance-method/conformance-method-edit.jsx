@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Chip,
   Divider,
   MenuItem,
@@ -13,7 +12,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import {
@@ -54,7 +53,6 @@ function ChplConformanceMethodEdit({
   errors: propsErrors = [],
 }) {
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [conformanceMethod, setConformanceMethod] = useState({});
   const classes = useStyles();
@@ -66,10 +64,6 @@ function ChplConformanceMethodEdit({
       ...c,
     })) || []);
   }, [initialConformanceMethod]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -116,6 +110,13 @@ function ChplConformanceMethodEdit({
       dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    canDelete: !!conformanceMethod.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
   });
 
   return (
@@ -181,13 +182,7 @@ function ChplConformanceMethodEdit({
             />
           ))}
       </div>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!conformanceMethod.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }

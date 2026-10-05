@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Card,
@@ -13,7 +13,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useDeleteAnnual, usePutAnnual } from 'api/surveillance';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
@@ -58,25 +58,22 @@ function ChplAnnualEdit({
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: deleteReport } = useDeleteAnnual();
   const { mutate: putReport } = usePutAnnual();
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
   let formik;
+  let updateActionBar;
 
   const handleDelete = () => {
-    setIsProcessing(true);
-    setErrorMessages([]);
+    updateActionBar({ errors: [], isProcessing: true });
     deleteReport(report, {
       onSuccess: () => {
-        setIsProcessing(false);
+        updateActionBar({ isProcessing: false });
         enqueueSnackbar('The report has been deleted', {
           variant: 'success',
         });
         dispatch({ action: 'cancel' });
       },
       onError: (error) => {
-        setIsProcessing(false);
-        setErrorMessages([error.response?.data?.error]);
+        updateActionBar({ errors: [error.response?.data?.error], isProcessing: false });
       },
     });
   };
@@ -96,8 +93,7 @@ function ChplAnnualEdit({
   };
 
   const save = () => {
-    setIsProcessing(true);
-    setErrorMessages([]);
+    updateActionBar({ errors: [], isProcessing: true });
     const payload = {
       ...report,
       obstacleSummary: formik.values.obstacleSummary,
@@ -105,15 +101,14 @@ function ChplAnnualEdit({
     };
     putReport(payload, {
       onSuccess: () => {
-        setIsProcessing(false);
+        updateActionBar({ isProcessing: false });
         enqueueSnackbar('Your updates have been made', {
           variant: 'success',
         });
         dispatch({ action: 'cancel' });
       },
       onError: (error) => {
-        setIsProcessing(false);
-        setErrorMessages([error.response?.data?.error]);
+        updateActionBar({ errors: [error.response?.data?.error], isProcessing: false });
       },
     });
   };
@@ -127,6 +122,10 @@ function ChplAnnualEdit({
       save();
     },
     validationSchema,
+  });
+
+  updateActionBar = useActionBar({
+    canDelete: true,
   });
 
   return (
@@ -184,13 +183,7 @@ function ChplAnnualEdit({
           </Typography>
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        disabled={!formik.isValid}
-        errors={errorMessages}
-        isProcessing={isProcessing}
-        canDelete
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }
