@@ -252,6 +252,14 @@ const useFetchSvaps = () => {
   });
 };
 
+const useFetchTargetedUsersUsage = () => {
+  const axios = useAxios();
+  return useQuery(['targeted-users/usage'], async () => {
+    const response = await axios.get('targeted-users/usage');
+    return response.data;
+  });
+};
+
 const useFetchTestData = () => {
   const axios = useAxios();
   return useQuery(['test-data'], async () => {
@@ -494,6 +502,7 @@ export {
   useFetchRules,
   useFetchStandards,
   useFetchSvaps,
+  useFetchTargetedUsersUsage,
   useFetchTestData,
   useFetchTestTools,
   useFetchUcdProcesses,

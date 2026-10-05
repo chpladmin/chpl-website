@@ -20,7 +20,14 @@ yarn lint:fix                       # eslint --fix; pass a path to fix a single 
 yarn test                           # jest + @testing-library/react in jsdom
 ```
 
-Tests run on jest + `@testing-library/react` in a jsdom environment, configured in `jest.config.js` with shared setup and asset stubs under `test/`. Coverage is deliberately narrow right now: it covers the `@uirouter/react` integration, added so the routing migration can be verified without a browser.
+Tests run on jest + `@testing-library/react` in a jsdom environment, configured in `jest.config.js` with shared setup and asset stubs under `test/`.
+
+Coverage is still thin: it started with the `@uirouter/react` integration, added so the routing migration could be verified without a browser. **Grow it with every significant change.** Whenever a change alters functionality in a meaningful way, add tests that cover both sides of it:
+
+- **Before:** the existing behavior that must keep working, pinned so the change can't silently break it.
+- **After:** the new or changed behavior itself.
+
+Small, presentation-only or purely mechanical changes don't need new tests.
 
 Two things to know before adding tests:
 
