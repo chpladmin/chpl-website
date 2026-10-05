@@ -165,13 +165,12 @@ const getChangeRequestViewDetails = (cr) => {
   }
 };
 
-const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
+const getChangeRequestEditDetails = (cr, isAccepting) => {
   switch (cr.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return (
         <ChplChangeRequestAttestationEdit
           changeRequest={cr}
-          dispatch={handleDispatch}
         />
       );
     case 'Developer Demographics Change Request':
@@ -392,8 +391,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     }
   };
 
-  const isAccepting = () => formik.values.changeRequestStatusType?.name === 'Accepted';
-
   const isReasonDisabled = () => hasAnyRole(['chpl-developer']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
 
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
@@ -560,7 +557,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                 <Divider />
                 <div className={classes.cardContentChangeRequest}>
                   <div>
-                    { getChangeRequestEditDetails(changeRequest, handleDispatch, isAccepting()) }
+                    { getChangeRequestEditDetails(changeRequest, formik.values.changeRequestStatusType?.name === 'Accepted') }
                   </div>
                   <div className={classes.actionsContainer}>
                     <div className={classes.actionSubContainer}>
