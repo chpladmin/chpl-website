@@ -194,6 +194,7 @@ function ChplQuarterEdit({ dispatch, report }) {
   useActionBar({
     canDelete: true,
     errors: errorMessages,
+    isDisabled: !formik.isValid,
     isProcessing,
   }, state === menuItems[0]);
 

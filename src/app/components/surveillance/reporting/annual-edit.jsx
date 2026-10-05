@@ -126,6 +126,7 @@ function ChplAnnualEdit({
 
   updateActionBar = useActionBar({
     canDelete: true,
+    isDisabled: !formik.isValid,
   });
 
   return (

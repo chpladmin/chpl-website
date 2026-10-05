@@ -187,7 +187,9 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
 
   const isLoading = capStatusesIsLoading || surveillanceGroundsForInitiatingIsLoading || surveillanceOutcomesIsLoading || surveillanceProcessTypesIsLoading;
 
-  updateActionBar = useActionBar({}, !isLoading);
+  updateActionBar = useActionBar({
+    isDisabled: !formik.isValid,
+  }, !isLoading);
 
   if (isLoading) {
     return (
