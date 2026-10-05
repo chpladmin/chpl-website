@@ -30,7 +30,7 @@ const styles = {
     '&:last-child': {
       paddingBottom: '16px',
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       flexDirection: 'row',
       alignItems: 'flex-start',
     },
@@ -78,9 +78,6 @@ const styles = {
     display: 'flex',
     gap: theme.spacing(1.25, 3.5),
     minWidth: 0,
-    '@media (min-width: 899px) and (max-width: 1201px)': {
-      flexWrap: 'wrap',
-    },
   },
   fieldLabel: {
     color: theme.palette.text.primary,
@@ -121,9 +118,22 @@ const styles = {
     gap: theme.spacing(1.5),
     justifyContent: 'space-between',
     minHeight: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       alignItems: 'stretch',
       width: '100%',
+    },
+    // actions sit below the details here; lay the buttons out in a row instead of a column
+    '@media (min-width: 800px) and (max-width: 1199.95px)': {
+      borderTop: `1px solid ${theme.palette.divider}`,
+      paddingTop: theme.spacing(1.5),
+      '& > *': {
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        gap: theme.spacing(1),
+        '& > *': {
+          flex: 1,
+        },
+      },
     },
   },
   titleValue: {

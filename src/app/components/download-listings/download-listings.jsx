@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button, ButtonGroup, Divider, Menu, MenuItem,
 } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckIcon from '@mui/icons-material/Check';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
 import { arrayOf, string } from 'prop-types';
 
@@ -249,7 +249,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
             id="open-download-listings-menu"
             sx={{ ...styles.noMargin, ...styles.toggleButton }}
           >
-            <ExpandMoreIcon />
+            <ArrowDropDownIcon />
           </Button>
         </ChplTooltip>
       </ButtonGroup>

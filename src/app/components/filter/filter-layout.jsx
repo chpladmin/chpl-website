@@ -143,7 +143,7 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
       <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
         <Button
           sx={mobileOnly ? styles.sidebarToggleMobileOnly : styles.sidebarToggle}
-          variant="contained"
+          variant="outlined"
           fullWidth
           id="filter-layout-sidebar-toggle"
           onClick={() => setExpanded((prev) => !prev)}

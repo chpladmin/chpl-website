@@ -21,7 +21,7 @@ const styles = {
     marginRight: '16px',
     display: 'flex',
     border: `1px solid ${palette.primaryBorder}`,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: '4px',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {
       width: '100%',

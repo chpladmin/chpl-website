@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { oneOf } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
 import {
@@ -13,7 +14,7 @@ import {
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-function ChplCmsButton({ listing }) {
+function ChplCmsButton({ listing, size = 'medium' }) {
   const { analytics } = useAnalyticsContext();
   const {
     addListing,
@@ -45,14 +46,17 @@ function ChplCmsButton({ listing }) {
     return null;
   }
 
+  const inWidget = isInWidget(listing);
+
   return (
     <Button
       color="secondary"
-      sx={isInWidget(listing) ? utilStyles.deleteButtonOutlined : undefined}
+      sx={inWidget ? utilStyles.deleteButtonOutlined : undefined}
       variant="contained"
+      size={size}
       id={`toggle-cms-${listing.id}`}
       onClick={handleClick}
-      endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
+      endIcon={inWidget ? <RemoveIcon /> : <AddIcon />}
     >
       Cert ID
     </Button>
@@ -63,4 +67,5 @@ export default ChplCmsButton;
 
 ChplCmsButton.propTypes = {
   listing: listingPropType.isRequired,
+  size: oneOf(['small', 'medium', 'large']),
 };

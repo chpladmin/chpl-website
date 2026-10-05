@@ -492,8 +492,9 @@ const theme = createTheme({
     },
     MuiTimelineItem: {
       styleOverrides: {
-        missingOppositeContent: {
-          '&:before': {
+        // v5's overridesResolver ignores a missingOppositeContent slot; it must be nested under root
+        root: {
+          '&.MuiTimelineItem-missingOppositeContent::before': {
             display: 'none',
           },
         },

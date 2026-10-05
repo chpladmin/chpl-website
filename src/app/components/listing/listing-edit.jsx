@@ -15,14 +15,12 @@ import {
   Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import {
   arrayOf,
   bool,
   func,
   string,
 } from 'prop-types';
-import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -32,7 +30,6 @@ import {
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
 import { useFetchCertificationStatuses } from 'api/data';
-import { usePostRwtResultsChecker } from 'api/url-checker';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -101,9 +98,6 @@ const styles = {
     gap: '16px',
     alignItems: 'center',
   },
-  validateButton: {
-    padding: '8px !important',
-  },
 };
 
 function ChplListingEdit({
@@ -112,10 +106,9 @@ function ChplListingEdit({
   warnings = [],
   isProcessing = false,
 }) {
-  const { hti5ErdIsOn, isProduction, rwtAiIntegrationIsOn } = useContext(FlagContext);
+  const { hti5ErdIsOn } = useContext(FlagContext);
   const { listing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
-  const { enqueueSnackbar } = useSnackbar();
   const [statuses, setStatuses] = useState([]);
   const [addingStatus, setAddingStatus] = useState(false);
   const [statusToAdd, setStatusToAdd] = useState('');
@@ -132,7 +125,6 @@ function ChplListingEdit({
   const { data: statusesData, isLoading: statusesIsLoading, isSuccess: statusesIsSuccess } = useFetchCertificationStatuses();
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
   const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
-  const { mutate } = usePostRwtResultsChecker();
   let formik;
 
   useEffect(() => {
@@ -222,25 +214,6 @@ function ChplListingEdit({
     });
   };
 
-  const validate = () => {
-    mutate({
-      listingId: listing.id,
-      url: formik.values.rwtResultsUrl,
-    }, {
-      onSuccess: (response) => {
-        console.log(response);
-        enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
-          variant: 'success',
-        });
-      },
-      onError: () => {
-        enqueueSnackbar('There was an error attempting to check the RWT Results.', {
-          variant: 'error',
-        });
-      },
-    });
-  };
-
   formik = useFormik({
     initialValues: {
       acbCertificationId: listing.acbCertificationId ?? '',
@@ -266,96 +239,97 @@ function ChplListingEdit({
     );
   }
 
-  return <>
-    <Card>
-      <CardHeader
-        title="Edit Listing"
-      />
-      <CardContent>
-        <Box display="flex" padding={4} justifyContent="space-around" gap="16px" flexDirection="column">
-          { /* CHPL Product Number */}
-          <Typography variant="h6">
-            CHPL Product Number
-          </Typography>
-          <Box display="flex" justifyContent="space-around" alignItems="baseline" gap="8px" flexDirection="row">
-            <Typography>
-              { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
-            </Typography>
-            <ChplTextField
-              id="product-code"
-              name="productCode"
-              label="Product Code"
-              required
-              value={formik.values.productCode}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.productCode && !!formik.errors.productCode}
-              helperText={formik.touched.productCode && formik.errors.productCode}
-            />
-            <ChplTextField
-              id="version-code"
-              name="versionCode"
-              label="Version Code"
-              required
-              value={formik.values.versionCode}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.versionCode && !!formik.errors.versionCode}
-              helperText={formik.touched.versionCode && formik.errors.versionCode}
-            />
-            <ChplTextField
-              id="ics-code"
-              name="icsCode"
-              label="ICS Code"
-              required
-              value={formik.values.icsCode}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.icsCode && !!formik.errors.icsCode}
-              helperText={formik.touched.icsCode && formik.errors.icsCode}
-            />
-            <Typography>
-              { listing.chplProductNumber.split('.').slice(7).join('.') }
-            </Typography>
-          </Box>
-          <Divider />
-
-          { /* Certification Events */}
-          <Box display="flex" gap="8px" flexDirection="column">
+  return (
+    <>
+      <Card>
+        <CardHeader
+          title="Edit Listing"
+        />
+        <CardContent>
+          <Box display="flex" padding={4} justifyContent="space-around" gap="16px" flexDirection="column">
+            { /* CHPL Product Number */}
             <Typography variant="h6">
-              Certification Status
+              CHPL Product Number
             </Typography>
-            <List>
-              { selectedStatuses
-                .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
-                .map((status, idx, arr) => (
-                  <ListItem
-                    key={status.eventDay}
-                    sx={styles.statusListItem}
-                  >
-                    <Box flexGrow={1}>
-                      {status.status.name}
-                      {` on ${getDisplayDateFormat(status.eventDay)}`}
-                      {status.reason && ` for ${status.reason}`}
-                    </Box>
-                    { idx !== arr.length - 1 && status.status.name === arr[idx + 1].status.name && <Typography>Certification Status must differ from previous Status</Typography> }
-                    { idx === 0 && (status.status.name === 'Withdrawn by ONC-ACB' || status.status.name === 'Withdrawn by Developer Under Surveillance/Review') && <Typography>Setting this product to this status may trigger a ban by ONC</Typography> }
-                    { idx === 0 && status.status.name === 'Terminated by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography> }
-                    { idx === 0 && status.status.name === 'Suspended by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography> }
-                    { idx === 0 && status.status.name === 'Withdrawn by Developer' && <Typography>Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography> }
-                    <Tooltip
-                      arrow
-                      componentsProps={{ tooltip: { sx: styles.tooltipText } }}
-                      title="Delete"
+            <Box display="flex" justifyContent="space-around" alignItems="baseline" gap="8px" flexDirection="row">
+              <Typography>
+                { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
+              </Typography>
+              <ChplTextField
+                id="product-code"
+                name="productCode"
+                label="Product Code"
+                required
+                value={formik.values.productCode}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.productCode && !!formik.errors.productCode}
+                helperText={formik.touched.productCode && formik.errors.productCode}
+              />
+              <ChplTextField
+                id="version-code"
+                name="versionCode"
+                label="Version Code"
+                required
+                value={formik.values.versionCode}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.versionCode && !!formik.errors.versionCode}
+                helperText={formik.touched.versionCode && formik.errors.versionCode}
+              />
+              <ChplTextField
+                id="ics-code"
+                name="icsCode"
+                label="ICS Code"
+                required
+                value={formik.values.icsCode}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.icsCode && !!formik.errors.icsCode}
+                helperText={formik.touched.icsCode && formik.errors.icsCode}
+              />
+              <Typography>
+                { listing.chplProductNumber.split('.').slice(7).join('.') }
+              </Typography>
+            </Box>
+            <Divider />
+
+            { /* Certification Events */}
+            <Box display="flex" gap="8px" flexDirection="column">
+              <Typography variant="h6">
+                Certification Status
+              </Typography>
+              <List>
+                { selectedStatuses
+                  .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
+                  .map((status, idx, arr) => (
+                    <ListItem
+                      key={status.eventDay}
+                      sx={styles.statusListItem}
                     >
-                      <IconButton onClick={() => removeStatus(status)} size="large">
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItem>
-                ))}
-            </List>
-            { !addingStatus
+                      <Box flexGrow={1}>
+                        {status.status.name}
+                        {` on ${getDisplayDateFormat(status.eventDay)}`}
+                        {status.reason && ` for ${status.reason}`}
+                      </Box>
+                      { idx !== arr.length - 1 && status.status.name === arr[idx + 1].status.name && <Typography>Certification Status must differ from previous Status</Typography> }
+                      { idx === 0 && (status.status.name === 'Withdrawn by ONC-ACB' || status.status.name === 'Withdrawn by Developer Under Surveillance/Review') && <Typography>Setting this product to this status may trigger a ban by ONC</Typography> }
+                      { idx === 0 && status.status.name === 'Terminated by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography> }
+                      { idx === 0 && status.status.name === 'Suspended by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography> }
+                      { idx === 0 && status.status.name === 'Withdrawn by Developer' && <Typography>Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography> }
+                      <Tooltip
+                        arrow
+                        componentsProps={{ tooltip: { sx: styles.tooltipText } }}
+                        title="Delete"
+                      >
+                        <IconButton onClick={() => removeStatus(status)} size="large">
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItem>
+                  ))}
+              </List>
+              { !addingStatus
               && (
                 <div>
                   <Button
@@ -368,8 +342,8 @@ function ChplListingEdit({
                   </Button>
                 </div>
               )}
-          </Box>
-          { addingStatus
+            </Box>
+            { addingStatus
             && (
               <>
                 <Box display="flex" justifyContent="space-around" gap="8px" flexDirection="column">
@@ -425,14 +399,14 @@ function ChplListingEdit({
                 </Box>
               </>
             )}
-          <Divider />
+            <Divider />
 
-          { /* ACB & ATL */}
-          <Box display="flex" gap="12px" flexDirection="column">
-            <Typography variant="h6">
-              ONC-ACB
-            </Typography>
-            { hasAnyRole(['chpl-admin', 'chpl-onc'])
+            { /* ACB & ATL */}
+            <Box display="flex" gap="12px" flexDirection="column">
+              <Typography variant="h6">
+                ONC-ACB
+              </Typography>
+              { hasAnyRole(['chpl-admin', 'chpl-onc'])
               && (
                 <ChplTextField
                   select
@@ -456,49 +430,49 @@ function ChplListingEdit({
                   ))}
                 </ChplTextField>
               )}
-            { hasAnyRole(['chpl-onc-acb'])
+              { hasAnyRole(['chpl-onc-acb'])
               && (
                 <Typography>{listing.certifyingBody.name}</Typography>
               )}
-            <ChplTextField
-              id="acb-certification-id"
-              name="acbCertificationId"
-              label="ONC-ACB Certification Id"
-              value={formik.values.acbCertificationId}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
-              helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
-            />
-          </Box>
-          <Divider />
-          <Box pt={4} display="flex" gap="8px" flexDirection="column">
-            <Typography variant="h6">
-              ONC-ATL
-              { selectedAtls.length !== 1 ? 's' : '' }
-            </Typography>
-            <List>
-              { selectedAtls.map((atl) => (
-                <ListItem
-                  key={atl.id}
-                  sx={styles.atlListItem}
-                >
-                  <Box pb={2} flexGrow={1}>
-                    {atl.name}
-                  </Box>
-                  <Tooltip
-                    arrow
-                    componentsProps={{ tooltip: { sx: styles.tooltipText } }}
-                    title="Delete"
+              <ChplTextField
+                id="acb-certification-id"
+                name="acbCertificationId"
+                label="ONC-ACB Certification Id"
+                value={formik.values.acbCertificationId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
+                helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
+              />
+            </Box>
+            <Divider />
+            <Box pt={4} display="flex" gap="8px" flexDirection="column">
+              <Typography variant="h6">
+                ONC-ATL
+                { selectedAtls.length !== 1 ? 's' : '' }
+              </Typography>
+              <List>
+                { selectedAtls.map((atl) => (
+                  <ListItem
+                    key={atl.id}
+                    sx={styles.atlListItem}
                   >
-                    <IconButton onClick={() => removeAtl(atl)} size="large">
-                      <DeleteIcon color="error" />
-                    </IconButton>
-                  </Tooltip>
-                </ListItem>
-              ))}
-            </List>
-            { !addingAtl
+                    <Box pb={2} flexGrow={1}>
+                      {atl.name}
+                    </Box>
+                    <Tooltip
+                      arrow
+                      componentsProps={{ tooltip: { sx: styles.tooltipText } }}
+                      title="Delete"
+                    >
+                      <IconButton onClick={() => removeAtl(atl)} size="large">
+                        <DeleteIcon color="error" />
+                      </IconButton>
+                    </Tooltip>
+                  </ListItem>
+                ))}
+              </List>
+              { !addingAtl
               && (
                 <div>
                   <Button
@@ -511,7 +485,7 @@ function ChplListingEdit({
                   </Button>
                 </div>
               )}
-            { addingAtl
+              { addingAtl
               && (
                 <>
                   <ChplTextField
@@ -549,47 +523,46 @@ function ChplListingEdit({
                   </Box>
                 </>
               )}
-          </Box>
-          <Divider />
+            </Box>
+            <Divider />
 
-          { /* Mandatory Disclosures */}
-          <Box display="flex" gap="12px" flexDirection="column">
-            <Typography variant="h6">
-              Mandatory Disclosures
-            </Typography>
-            <ChplTextField
-              id="mandatory-disclosures"
-              name="mandatoryDisclosures"
-              label="Mandatory Disclosures"
-              value={formik.values.mandatoryDisclosures}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.mandatoryDisclosures && !!formik.errors.mandatoryDisclosures}
-              helperText={formik.touched.mandatoryDisclosures && formik.errors.mandatoryDisclosures}
-            />
-          </Box>
-          <Divider />
+            { /* Mandatory Disclosures */}
+            <Box display="flex" gap="12px" flexDirection="column">
+              <Typography variant="h6">
+                Mandatory Disclosures
+              </Typography>
+              <ChplTextField
+                id="mandatory-disclosures"
+                name="mandatoryDisclosures"
+                label="Mandatory Disclosures"
+                value={formik.values.mandatoryDisclosures}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.mandatoryDisclosures && !!formik.errors.mandatoryDisclosures}
+                helperText={formik.touched.mandatoryDisclosures && formik.errors.mandatoryDisclosures}
+              />
+            </Box>
+            <Divider />
 
-          { /* Real-World Testing */}
-          <Box display="flex" pt={4} gap="8px" flexDirection="column">
-            <Typography gutterBottom variant="h6">
-              Real World Testing
-            </Typography>
-            <Box display="flex" justifyContent="space-around" gap="16px" flexDirection="row">
-              <Box display="flex" justifyContent="space-around" gap="16px" width={rwtAiIntegrationIsOn ? '90%' : '100%'} flexDirection="row">
+            { /* Real-World Testing */}
+            <Box display="flex" pt={4} gap="8px" flexDirection="column">
+              <Typography gutterBottom variant="h6">
+                Real World Testing
+              </Typography>
+              <Box display="flex" justifyContent="space-around" gap="16px" flexDirection="row">
                 { !hti5ErdIsOn
-                  && (
-                    <ChplTextField
-                      id="rwt-plans-url"
-                      name="rwtPlansUrl"
-                      label="Real-World Testing Plans URL"
-                      value={formik.values.rwtPlansUrl}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-                      helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-                    />
-                  )}
+                && (
+                  <ChplTextField
+                    id="rwt-plans-url"
+                    name="rwtPlansUrl"
+                    label="Real-World Testing Plans URL"
+                    value={formik.values.rwtPlansUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                    helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                  />
+                )}
                 <ChplTextField
                   id="rwt-results-url"
                   name="rwtResultsUrl"
@@ -601,25 +574,8 @@ function ChplListingEdit({
                   helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
                 />
               </Box>
-              { rwtAiIntegrationIsOn && !isProduction
-                && (
-                  <Button
-                    id="validate-url"
-                    aria-label="Validate RWT Results URL"
-                    color="primary"
-                    variant="contained"
-                    onClick={validate}
-                    size="small"
-                    disabled={formik.values.rwtResultsUrl.length === 0}
-                    endIcon={<VerifiedUserIcon />}
-                    sx={styles.validateButton}
-                  >
-                    Validate
-                  </Button>
-                )}
-            </Box>
-            <Box display="flex" pt={4} justifyContent="space-around" gap="16px" flexDirection="row">
-              { !hti5ErdIsOn
+              <Box display="flex" pt={4} justifyContent="space-around" gap="16px" flexDirection="row">
+                { !hti5ErdIsOn
                 && (
                   <ChplTextField
                     id="rwt-plans-check-date"
@@ -634,32 +590,33 @@ function ChplListingEdit({
                     helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
                   />
                 )}
-              <ChplTextField
-                id="rwt-results-check-date"
-                name="rwtResultsCheckDate"
-                label="Real-World Testing Results Check Date"
-                type="date"
-                required={formik.values.rwtResultsUrl !== ''}
-                value={formik.values.rwtResultsCheckDate}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.rwtResultsCheckDate && !!formik.errors.rwtResultsCheckDate}
-                helperText={formik.touched.rwtResultsCheckDate && formik.errors.rwtResultsCheckDate}
-              />
+                <ChplTextField
+                  id="rwt-results-check-date"
+                  name="rwtResultsCheckDate"
+                  label="Real-World Testing Results Check Date"
+                  type="date"
+                  required={formik.values.rwtResultsUrl !== ''}
+                  value={formik.values.rwtResultsCheckDate}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.rwtResultsCheckDate && !!formik.errors.rwtResultsCheckDate}
+                  helperText={formik.touched.rwtResultsCheckDate && formik.errors.rwtResultsCheckDate}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </CardContent>
-    </Card>
-    <ChplActionBar
-      dispatch={handleDispatch}
-      errors={errors}
-      warnings={warnings}
-      isProcessing={isProcessing}
-      showErrorAcknowledgement={errors.length > 0}
-      showWarningAcknowledgement={warnings.length > 0}
-    />
-  </>;
+        </CardContent>
+      </Card>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        errors={errors}
+        warnings={warnings}
+        isProcessing={isProcessing}
+        showErrorAcknowledgement={errors.length > 0}
+        showWarningAcknowledgement={warnings.length > 0}
+      />
+    </>
+  );
 }
 
 export default ChplListingEdit;
