@@ -1,6 +1,6 @@
 import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { bool, object } from 'prop-types';
 import { Provider } from 'react-redux';
 
@@ -68,6 +68,28 @@ describe('the action bar', () => {
     expect(document.getElementById('action-bar-close')).toBeInTheDocument();
     expect(document.getElementById('action-bar-save')).toBeDisabled();
     expect(document.getElementById('action-bar-delete')).toBeDisabled();
+  });
+
+  it('disables only Save with isSaveDisabled', () => {
+    const store = buildStore();
+    store.dispatch(setActionBar({ canWithdraw: true, isSaveDisabled: true }));
+    renderWith(<ChplActionBar dispatch={() => {}} />, { store });
+    expect(document.getElementById('action-bar-save')).toBeDisabled();
+    expect(document.getElementById('action-bar-withdraw')).toBeEnabled();
+  });
+
+  it('reports hovering over Save only when asked to', () => {
+    const dispatch = jest.fn();
+    const store = buildStore();
+    const { unmount } = renderWith(<ChplActionBar dispatch={dispatch} />, { store });
+    fireEvent.mouseEnter(document.getElementById('action-bar-save'));
+    expect(dispatch).not.toHaveBeenCalled();
+    unmount();
+
+    store.dispatch(setActionBar({ dispatchSaveHover: true }));
+    renderWith(<ChplActionBar dispatch={dispatch} />, { store });
+    fireEvent.mouseEnter(document.getElementById('action-bar-save'));
+    expect(dispatch).toHaveBeenCalledWith('saveHover');
   });
 
   it('only shows the error acknowledgement to admin and ONC users', () => {

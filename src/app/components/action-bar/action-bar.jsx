@@ -80,9 +80,11 @@ function ChplActionBar({
   const canReject = useSelector((state) => state.actionBar.canReject);
   const canSave = useSelector((state) => state.actionBar.canSave);
   const canWithdraw = useSelector((state) => state.actionBar.canWithdraw);
+  const dispatchSaveHover = useSelector((state) => state.actionBar.dispatchSaveHover);
   const isDeleteDisabled = useSelector((state) => state.actionBar.isDeleteDisabled);
   const isDisabled = useSelector((state) => state.actionBar.isDisabled);
   const isProcessing = useSelector((state) => state.actionBar.isProcessing);
+  const isSaveDisabled = useSelector((state) => state.actionBar.isSaveDisabled);
   const showErrorAcknowledgement = useSelector((state) => state.actionBar.showErrorAcknowledgement) && hasAnyRole(['chpl-admin', 'chpl-onc']);
   const showWarningAcknowledgement = useSelector((state) => state.actionBar.showWarningAcknowledgement);
   const [errorAcknowledged, setErrorAcknowledged] = useState(false);
@@ -262,7 +264,8 @@ function ChplActionBar({
                   color="primary"
                   variant="contained"
                   onClick={() => act('save')}
-                  disabled={isDisabled || isProcessing}
+                  onMouseEnter={dispatchSaveHover ? () => act('saveHover') : undefined}
+                  disabled={isDisabled || isSaveDisabled || isProcessing}
                   className={classes.actionBarButton}
                 >
                   { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }

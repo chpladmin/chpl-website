@@ -15,9 +15,11 @@ const initialState = {
   canReject: false,
   canSave: true,
   canWithdraw: false,
+  dispatchSaveHover: false,
   isDeleteDisabled: false,
   isDisabled: false,
   isProcessing: false,
+  isSaveDisabled: false,
   showErrorAcknowledgement: false,
   showWarningAcknowledgement: false,
 };
