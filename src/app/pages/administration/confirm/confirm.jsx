@@ -11,7 +11,7 @@ import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { useConfirmPendingListing, useFetchPendingListing, useRejectPendingListing } from 'api/pending-listings';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import {
   ChplConfirmDeveloper,
   ChplConfirmListing,
@@ -61,12 +61,12 @@ function ChplConfirm({ id }) {
   const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pending, setPending] = useState(undefined);
-  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [stage, setStage] = useState('developer');
   const [staged, setStaged] = useState(undefined);
   const [uploaded, setUploaded] = useState(undefined);
   const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
+  let updateActionBar;
 
   useEffect(() => {
     if (!uploaded) { return; }
@@ -157,9 +157,9 @@ function ChplConfirm({ id }) {
           setErrors(error.response.data.errorMessages);
           setWarnings(error.response.data.warningMessages);
           if (error.response.data.warningMessages?.length > 0) {
-            setShowAcknowledgement(true);
+            updateActionBar({ showWarningAcknowledgement: true });
           } else {
-            setShowAcknowledgement(false);
+            updateActionBar({ showWarningAcknowledgement: false });
             setAcknowledgeWarnings(false);
           }
           setIsSubmitting(false);
@@ -321,6 +321,15 @@ function ChplConfirm({ id }) {
     }
   };
 
+  updateActionBar = useActionBar({
+    canConfirm: true,
+    canReject: true,
+    isDisabled: !canAct('confirm'),
+    isProcessing: isSubmitting,
+    errors,
+    warnings,
+  }, !!uploaded && !isLoading && isSuccess);
+
   if (!uploaded || isLoading || !isSuccess) { return <CircularProgress />; }
 
   const pendingListingState = {
@@ -373,16 +382,7 @@ function ChplConfirm({ id }) {
             && (
               <ChplConfirmListing />
             )}
-          <ChplActionBar
-            canConfirm
-            canReject
-            isDisabled={!canAct('confirm')}
-            isProcessing={isSubmitting}
-            showWarningAcknowledgement={showAcknowledgement}
-            errors={errors}
-            warnings={warnings}
-            dispatch={handleActionDispatch}
-          />
+          <ChplActionBar dispatch={handleActionDispatch} />
         </div>
       </PendingListingContext.Provider>
     </Container>

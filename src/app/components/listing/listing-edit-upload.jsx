@@ -18,7 +18,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 import ChplUploadListing from './upload-listing';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import ChplCqms from 'components/listing/details/cqms/cqms';
 import ChplCriteria from 'components/listing/details/criteria/criteria';
@@ -198,6 +198,15 @@ function ChplListingEditUpload({
     listing: newListing,
     setListing: setNewListing,
   };
+
+  useActionBar({
+    errors,
+    warnings,
+    isProcessing,
+    isDisabled: !newListing,
+    showErrorAcknowledgement: errors.length > 0,
+    showWarningAcknowledgement: warnings.length > 0,
+  }, !!listing);
 
   if (!listing) {
     return <CircularProgress />;
@@ -512,15 +521,7 @@ function ChplListingEditUpload({
               )}
         </Box>
       </div>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        errors={errors}
-        warnings={warnings}
-        isProcessing={isProcessing}
-        isDisabled={!newListing}
-        showErrorAcknowledgement={errors.length > 0}
-        showWarningAcknowledgement={warnings.length > 0}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

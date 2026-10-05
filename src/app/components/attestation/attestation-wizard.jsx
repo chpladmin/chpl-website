@@ -14,7 +14,7 @@ import ChplAttestationWizardSection2 from './attestation-wizard-section-2';
 import ChplAttestationWizardSection3 from './attestation-wizard-section-3';
 import ChplAttestationWizardSection4 from './attestation-wizard-section-4';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const completedFormItems = (section) => section
@@ -90,6 +90,12 @@ function ChplAttestationWizard({
     dispatch('submit', payload);
   };
 
+  useActionBar({
+    canCancel: stage !== 3,
+    canClose: stage === 3,
+    canSave: false,
+  });
+
   return (
     <>
       <ChplAttestationProgress
@@ -124,12 +130,7 @@ function ChplAttestationWizard({
             developer={developer}
           />
         )}
-      <ChplActionBar
-        dispatch={handleActionBarDispatch}
-        canCancel={stage !== 3}
-        canClose={stage === 3}
-        canSave={false}
-      />
+      <ChplActionBar dispatch={handleActionBarDispatch} />
     </>
   );
 }

@@ -14,7 +14,7 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
@@ -48,16 +48,16 @@ const validationSchema = yup.object({
 });
 
 function ChplEditableJobEdit(props) {
-  const { dispatch } = props;
+  const { dispatch, job: initialJob } = props;
   const [job, setJob] = useState({});
   const [emails, setEmails] = useState([]);
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setJob(props.job);
-    setEmails(props.job.jobDataMap.email ? props.job.jobDataMap.email.split(',') : []);
-  }, [props.job]); // eslint-disable-line react/destructuring-assignment
+    setJob(initialJob);
+    setEmails(initialJob.jobDataMap.email ? initialJob.jobDataMap.email.split(',') : []);
+  }, [initialJob]);
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -92,9 +92,13 @@ function ChplEditableJobEdit(props) {
           email: emails.join(','),
         },
       };
-      props.dispatch({ action: 'save', payload });
+      dispatch({ action: 'save', payload });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    isDisabled: emails.length === 0,
   });
 
   return (
@@ -163,10 +167,7 @@ function ChplEditableJobEdit(props) {
           </Card>
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={emails.length === 0}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }
