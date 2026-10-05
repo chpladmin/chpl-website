@@ -41,6 +41,10 @@ const styles = {
   mobileMenuButton: {
     color: '#fff',
   },
+  drawer: {
+    // sit above the top nav (drawer + 1), environment banner (drawer + 2) and sticky page headers
+    zIndex: theme.zIndex.modal + 1,
+  },
   drawerPaper: {
     width: 280,
     backgroundColor: palette.white,
@@ -204,6 +208,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
         anchor="right"
         open={mobileMenuOpen}
         onClose={closeMobileMenu}
+        sx={styles.drawer}
         slotProps={{ paper: { sx: styles.drawerPaper } }}
       >
         <Box sx={styles.drawerHeader}>

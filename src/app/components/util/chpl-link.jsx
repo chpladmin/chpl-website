@@ -14,6 +14,9 @@ const styles = {
     gap: '4px',
     justifyContent: 'space-between',
   },
+  inlineLink: {
+    overflowWrap: 'anywhere',
+  },
   indicateOnHover: {
     textDecoration: 'none',
     '&:hover': {
@@ -63,7 +66,12 @@ function ChplLink({
 
   if (inline && !external) {
     return (
-      <Box component="a" href={href} onClick={track} sx={indicateOnHover ? styles.indicateOnHover : undefined}>
+      <Box
+        component="a"
+        href={href}
+        onClick={track}
+        sx={{ ...styles.inlineLink, ...(indicateOnHover ? styles.indicateOnHover : {}) }}
+      >
         {text}
       </Box>
     );

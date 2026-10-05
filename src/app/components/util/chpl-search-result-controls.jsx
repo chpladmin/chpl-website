@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Typography } from '@mui/material';
 import {
   bool, node, number, string,
 } from 'prop-types';
 
+import { CmsContext, CompareContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const getStyles = ({ fadeBackground, sticky, wrapActions }) => ({
@@ -81,7 +82,10 @@ function ChplSearchResultControls({
   sticky = true,
   wrapActions = false,
 }) {
-  const styles = getStyles({ fadeBackground, sticky, wrapActions });
+  const { isOpen: cmsIsOpen } = useContext(CmsContext);
+  const { isOpen: compareIsOpen } = useContext(CompareContext);
+  // an open widget narrows the page without changing the viewport, so breakpoints alone won't wrap
+  const styles = getStyles({ fadeBackground, sticky, wrapActions: wrapActions || cmsIsOpen || compareIsOpen });
 
   return (
     <Box sx={styles.container}>

@@ -42,6 +42,10 @@ const styles = {
       fontWeight: 'bold',
     },
   },
+  drawer: {
+    // sit above the top nav (drawer + 1), environment banner (drawer + 2) and sticky page headers
+    zIndex: theme.zIndex.modal + 1,
+  },
   drawerPaper: {
     width: 280,
     maxWidth: '100vw',
@@ -154,6 +158,7 @@ function ChplToggle({ dispatch = () => {} }) {
         anchor="right"
         open={isMobile && adminDrawerOpen}
         onClose={handleClose}
+        sx={styles.drawer}
         slotProps={{ paper: { sx: styles.drawerPaper } }}
       >
         <Box sx={styles.drawerContent}>

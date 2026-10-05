@@ -28,6 +28,11 @@ const styles = {
     flexDirection: 'column',
     height: '100vh',
     overflow: 'hidden',
+    [theme.breakpoints.down('md')]: {
+      height: 'auto',
+      minHeight: '100vh',
+      overflow: 'visible',
+    },
   },
   workspace: {
     flex: '1 1 auto',
@@ -38,6 +43,7 @@ const styles = {
     overflow: 'hidden',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
+      overflow: 'visible',
     },
   },
   content: {
@@ -47,6 +53,9 @@ const styles = {
     minHeight: 0,
     overflowY: 'auto', // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
     position: 'relative',
+    [theme.breakpoints.down('md')]: {
+      overflowY: 'visible',
+    },
   },
   widgetRail: {
     animation: `${widgetRailIn} 140ms ease-out`,
