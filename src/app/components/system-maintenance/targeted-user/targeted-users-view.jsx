@@ -1,6 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import {
   Box,
+  CircularProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -8,32 +11,49 @@ import {
   arrayOf, number, shape, string,
 } from 'prop-types';
 
+import { useFetchTargetedUsers } from 'api/standards';
+import {
+  ChplFilterLayout,
+  ChplFilterSearchBar,
+  useFilterContext,
+} from 'components/filter';
 import { certificationStatuses as certificationStatusesFilter } from 'components/filter/filters';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
-import { sortComparator } from 'components/util/sortable-headers';
+import { ChplPagination, ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
-import { targetedUserUsage as targetedUserUsagePropType } from 'shared/prop-types';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 import { theme, utilStyles } from 'themes';
+
+// Sorted on the server: `property` is the API's orderBy value
+const sortOptions = [
+  { property: 'NAME', text: 'Name' },
+  { property: 'USAGE_COUNT', text: 'Total Listings' },
+  { property: 'CREATION_DATE', text: 'Creation Date' },
+];
 
 const useStyles = makeStyles({
   ...utilStyles,
-  // Sits beside the card title and mirrors its label and value styling, but only takes the width a count needs
-  totalField: {
+  // Sit beside the card title and mirror its label and value styling, but only take the width they need
+  narrowFields: {
+    display: 'flex',
+    gap: theme.spacing(3.5),
+  },
+  narrowField: {
     minWidth: '96px',
   },
-  totalLabel: {
+  narrowLabel: {
     color: theme.palette.text.primary,
     fontSize: '0.85em',
     fontWeight: 600,
     lineHeight: 1.1,
   },
-  totalLabelRow: {
+  narrowLabelRow: {
     alignItems: 'center',
     display: 'flex',
     minHeight: '16px',
     paddingTop: theme.spacing(0.25),
   },
-  totalValue: {
+  narrowValue: {
     fontSize: '1.35em',
     fontWeight: 700,
     lineHeight: 1.25,
@@ -46,23 +66,57 @@ const statusOrder = certificationStatusesFilter.values.map((value) => value.valu
 const getStatusOrder = (name) => (statusOrder.includes(name) ? statusOrder.indexOf(name) : statusOrder.length);
 const getStatusKey = (status) => `status-${status.id}`;
 
-// Ties, e.g. the many zero counts, fall back to name order
-const compareBy = (property, descending) => (a, b) => {
-  if (a[property] === b[property]) {
-    return sortComparator('sortName')(a, b);
-  }
-  return sortComparator(property, descending)(a, b);
-};
-
-function ChplTargetedUsersView({ certificationStatuses: initialStatuses, targetedUsers: initialTargetedUsers }) {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('sortName');
+function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
+  const storageKey = 'storageKey-targetedUsersView';
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'NAME');
+  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [recordCount, setRecordCount] = useState(0);
+  const [results, setResults] = useState([]);
+  const filterContext = useFilterContext();
+  const query = filterContext.queryString();
   const classes = useStyles();
+
+  const { data, isError, isLoading } = useFetchTargetedUsers({
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending,
+    query,
+  });
+
+  useEffect(() => {
+    if (isLoading) { return; }
+    if (isError || !data.results) {
+      setResults([]);
+      setRecordCount(0);
+      return;
+    }
+    setResults(data.results);
+    setRecordCount(data.recordCount);
+  }, [data?.results, data?.recordCount, isError, isLoading]);
+
+  // A new search, sort or page size starts again from the first page. Skipped
+  // on mount, so a page remembered from earlier in the session is kept
+  const resetKey = `${query}|${orderBy}|${sortDescending}|${pageSize}`;
+  const lastResetKey = useRef(resetKey);
+  useEffect(() => {
+    if (lastResetKey.current === resetKey) { return; }
+    lastResetKey.current = resetKey;
+    setPageNumber(0);
+  }, [resetKey, setPageNumber]);
+
+  useEffect(() => {
+    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
+      setPageNumber(0);
+    }
+  }, [data?.recordCount, pageNumber, data?.results?.length, setPageNumber]);
 
   const statuses = useMemo(() => [...initialStatuses]
     .sort((a, b) => getStatusOrder(a.name) - getStatusOrder(b.name) || (a.name < b.name ? -1 : 1)), [initialStatuses]);
 
-  const targetedUsers = useMemo(() => initialTargetedUsers.map((targetedUser) => {
+  const targetedUsers = useMemo(() => results.map((targetedUser) => {
     const usage = targetedUser.usage ?? [];
     return {
       ...targetedUser,
@@ -72,81 +126,112 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses, targete
           .filter((entry) => entry.certificationStatus === status.name)
           .reduce((sum, entry) => sum + entry.listingCount, 0),
       }), {}),
-      sortName: targetedUser.name.toLowerCase(),
+      // The same sum the server sorts USAGE_COUNT by
       total: usage.reduce((sum, entry) => sum + entry.listingCount, 0),
     };
-  }), [initialTargetedUsers, statuses]);
+  }), [results, statuses]);
 
   // Statuses are matched by exact name, so a format mismatch with the status list would otherwise show as silent zeros
   useEffect(() => {
     if (statuses.length === 0) { return; }
     const names = statuses.map((status) => status.name);
-    initialTargetedUsers
+    results
       .flatMap((targetedUser) => (targetedUser.usage ?? [])
         .filter((entry) => !names.includes(entry.certificationStatus))
         .map((entry) => ({ targetedUser: targetedUser.name, ...entry })))
       .forEach((unmatched) => console.warn('Targeted User usage has an unknown certification status', unmatched)); // eslint-disable-line no-console
-  }, [initialTargetedUsers, statuses]);
-
-  const sortOptions = useMemo(() => [
-    { property: 'sortName', text: 'Name' },
-    { property: 'total', text: 'Total Listings' },
-    ...statuses.map((status) => ({ property: getStatusKey(status), text: status.name })),
-  ], [statuses]);
-
-  const sorted = useMemo(() => [...targetedUsers]
-    .sort(compareBy(orderBy, order === 'desc')), [targetedUsers, orderBy, order]);
+  }, [results, statuses]);
 
   const handleSort = (property, orderDirection) => {
     setOrderBy(property);
-    setOrder(orderDirection);
+    setSortDescending(orderDirection === 'desc');
   };
+
+  const pageStart = (pageNumber * pageSize) + 1;
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
+
+  const getNarrowField = (label, value) => (
+    <Box className={classes.narrowField}>
+      <Box className={classes.narrowLabelRow}>
+        <Typography className={classes.narrowLabel}>{ label }</Typography>
+      </Box>
+      <Typography className={classes.narrowValue}>{ value }</Typography>
+    </Box>
+  );
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-          <Typography variant="subtitle2">
-            Targeted Users
-          </Typography>
-          <Typography variant="body2">
-            {`(${sorted.length} Result${sorted.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { sorted
-          .map((item) => (
-            <ChplSearchResultCard
-              key={item.id}
-              cardTitle="Targeted User"
-              cardTitleValue={item.name}
-              additionalTitleContent={(
-                <Box className={classes.totalField}>
-                  <Box className={classes.totalLabelRow}>
-                    <Typography className={classes.totalLabel}>Total Listings</Typography>
-                  </Box>
-                  <Typography className={classes.totalValue}>{ item.total }</Typography>
+      <ChplFilterSearchBar
+        placeholder="Search by Name..."
+      />
+      <ChplFilterLayout>
+        { isLoading && <CircularProgress /> }
+        { !isLoading
+          && (
+            <>
+              <Box className={classes.headerContainer}>
+                <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+                  {/* Same wording as ChplSearchResultControls on the other search pages */}
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  { recordCount === 0
+                    && (
+                      <Typography>
+                        No results found
+                      </Typography>
+                    )}
+                  { recordCount > 0
+                    && (
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                      </Typography>
+                    )}
                 </Box>
-              )}
-              fieldGroups={[
-                statuses.map((status) => ({
-                  label: status.name,
-                  value: item[getStatusKey(status)],
-                  iconButton: statusOrder.includes(status.name) ? getStatusIcon(status) : undefined,
-                })),
-              ]}
-            />
-          ))}
-      </Box>
+                <Box display="flex" alignItems="center" gridGap={4}>
+                  <ChplSortControls
+                    sortOptions={sortOptions}
+                    orderBy={orderBy}
+                    order={sortDescending ? 'desc' : 'asc'}
+                    onSort={handleSort}
+                  />
+                </Box>
+              </Box>
+              <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+                { targetedUsers
+                  .map((item) => (
+                    <ChplSearchResultCard
+                      key={item.id}
+                      cardTitle="Targeted User"
+                      cardTitleValue={item.name}
+                      additionalTitleContent={(
+                        <Box className={classes.narrowFields}>
+                          { getNarrowField('Total Listings', item.total) }
+                          { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
+                        </Box>
+                      )}
+                      fieldGroups={[
+                        statuses.map((status) => ({
+                          label: status.name,
+                          value: item[getStatusKey(status)],
+                          iconButton: statusOrder.includes(status.name) ? getStatusIcon(status) : undefined,
+                        })),
+                      ]}
+                    />
+                  ))}
+              </Box>
+              { recordCount > 0
+                && (
+                  <ChplPagination
+                    count={recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                  />
+                )}
+            </>
+          )}
+      </ChplFilterLayout>
     </>
   );
 }
@@ -158,5 +243,4 @@ ChplTargetedUsersView.propTypes = {
     id: number,
     name: string,
   })).isRequired,
-  targetedUsers: arrayOf(targetedUserUsagePropType).isRequired,
 };

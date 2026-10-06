@@ -252,12 +252,20 @@ const useFetchSvaps = () => {
   });
 };
 
-const useFetchTargetedUsersUsage = () => {
+const useFetchTargetedUsers = ({
+  orderBy,
+  pageNumber,
+  pageSize,
+  sortDescending,
+  query,
+}) => {
   const axios = useAxios();
-  return useQuery(['targeted-users/usage'], async () => {
-    const response = await axios.get('targeted-users/usage');
+  return useQuery(['targeted-users/search', {
+    orderBy, pageNumber, pageSize, sortDescending, query,
+  }], async () => {
+    const response = await axios.get(`targeted-users/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
-  });
+  }, { keepPreviousData: true });
 };
 
 const useFetchTestData = () => {
@@ -502,7 +510,7 @@ export {
   useFetchRules,
   useFetchStandards,
   useFetchSvaps,
-  useFetchTargetedUsersUsage,
+  useFetchTargetedUsers,
   useFetchTestData,
   useFetchTestTools,
   useFetchUcdProcesses,

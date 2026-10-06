@@ -99,15 +99,6 @@ const testTool = shape({
   value: string,
 });
 
-const targetedUserUsage = shape({
-  id: number,
-  name: string,
-  usage: arrayOf(shape({
-    certificationStatus: string,
-    listingCount: number,
-  })),
-});
-
 const ucdProcessType = shape({
   id: number,
   name: string,
@@ -130,7 +121,6 @@ export {
   svap,
   selectedSvap,
   selectedTestTool,
-  targetedUserUsage,
   testTool,
   ucdProcess,
   ucdProcessType,
