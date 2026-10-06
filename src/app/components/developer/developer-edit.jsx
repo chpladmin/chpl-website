@@ -34,7 +34,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -166,17 +166,14 @@ const getEditField = ({
 
 function ChplDeveloperEdit({
   dispatch,
-  errorMessages: initialErrorMessages,
-  isInvalid: initialIsInvalid,
+  errorMessages = [],
+  isInvalid,
   isProcessing = false,
   isSplitting,
 }) {
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
   const { hasAnyRole } = useContext(UserContext);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [warnings, setWarnings] = useState([]);
-  const [isInvalid, setIsInvalid] = useState(false);
   const [statuses, setStatuses] = useState([]);
   const classes = useStyles();
   let formik;
@@ -184,29 +181,6 @@ function ChplDeveloperEdit({
   useEffect(() => {
     setStatuses(developer.statuses);
   }, [developer]);
-
-  useEffect(() => {
-    setIsInvalid(initialIsInvalid);
-  }, [initialIsInvalid]);
-
-  useEffect(() => {
-    setErrorMessages(initialErrorMessages);
-  }, [initialErrorMessages]);
-
-  useEffect(() => {
-    if (!statuses || statuses.length === 0) { return; }
-    const warns = [];
-    statuses
-      .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
-      .forEach((status, idx) => {
-        if (idx === 0) {
-          if (status.endDate) {
-            warns.push('To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.');
-          }
-        }
-      });
-    setWarnings(warns);
-  }, [statuses]);
 
   const cancel = () => {
     eventTrack({
@@ -326,6 +300,27 @@ function ChplDeveloperEdit({
     },
     validationSchema,
   });
+
+  const updateActionBar = useActionBar({
+    errors: errorMessages,
+    isDisabled: isActionDisabled(),
+    isProcessing,
+  });
+
+  useEffect(() => {
+    if (!statuses || statuses.length === 0) { return; }
+    const warns = [];
+    statuses
+      .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
+      .forEach((status, idx) => {
+        if (idx === 0) {
+          if (status.endDate) {
+            warns.push('To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.');
+          }
+        }
+      });
+    updateActionBar({ warnings: warns });
+  }, [statuses, updateActionBar]);
 
   return (
     <Container disableGutters maxWidth="lg">
@@ -525,13 +520,7 @@ function ChplDeveloperEdit({
           { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidthGridRow }) }
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={isActionDisabled()}
-        isProcessing={isProcessing}
-        errors={errorMessages}
-        warnings={warnings}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Container>
   );
 }

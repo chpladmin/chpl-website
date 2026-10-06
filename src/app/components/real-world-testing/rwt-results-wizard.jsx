@@ -14,7 +14,7 @@ import ChplRwtResultsWizardSection2 from './rwt-results-wizard-section-2';
 import ChplRwtResultsWizardSection3 from './rwt-results-wizard-section-3';
 import ChplRwtResultsWizardSection4 from './rwt-results-wizard-section-4';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 
 function ChplRwtResultsWizard({
   isSubmitting = false,
@@ -57,6 +57,14 @@ function ChplRwtResultsWizard({
     dispatch('submit', payload);
   };
 
+  useActionBar({
+    errors,
+    canCancel: stage !== 3,
+    canClose: stage === 3,
+    canSave: false,
+    isProcessing: isSubmitting,
+  });
+
   return (
     <>
       <ChplRwtResultsProgress
@@ -88,14 +96,7 @@ function ChplRwtResultsWizard({
         && (
           <ChplRwtResultsWizardSection4 />
         )}
-      <ChplActionBar
-        dispatch={handleActionBarDispatch}
-        errors={errors}
-        canCancel={stage !== 3}
-        canClose={stage === 3}
-        canSave={false}
-        isProcessing={isSubmitting}
-      />
+      <ChplActionBar dispatch={handleActionBarDispatch} />
     </>
   );
 }

@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Chip,
   Divider,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, func, object, string } from 'prop-types';
+import {
+  arrayOf, bool, func, object, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import {
@@ -51,7 +52,6 @@ function ChplCodeSetEdit({
   errors: propsErrors = [],
 }) {
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [codeSet, setCodeSet] = useState({});
   const classes = useStyles();
@@ -63,10 +63,6 @@ function ChplCodeSetEdit({
       ...c,
     })) || []);
   }, [initialCodeSet]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -114,6 +110,13 @@ function ChplCodeSetEdit({
       dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    canDelete: !!codeSet.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
   });
 
   return (
@@ -188,13 +191,7 @@ function ChplCodeSetEdit({
             />
           ))}
       </div>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!codeSet.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }
