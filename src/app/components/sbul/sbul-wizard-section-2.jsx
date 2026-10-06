@@ -11,15 +11,14 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import WarningIcon from '@material-ui/icons/Warning';
+} from '@mui/material';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import WarningIcon from '@mui/icons-material/Warning';
 import { array, func, object } from 'prop-types';
 
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 450px)',
   },
@@ -100,23 +99,21 @@ const useStyles = makeStyles({
     textAlign: 'center',
     maxWidth: '520px',
   },
-});
+};
 
 function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
-  const classes = useStyles();
-
   const toggle = (listing) => {
     dispatch(listing.id);
   };
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Box className={classes.sbulSectionContainer}>
+    <Container sx={styles.fixFooterSpacing} maxWidth="md">
+      <Box sx={styles.sbulSectionContainer}>
         <Typography gutterBottom component="h2" variant="h3">
           Section 2 &mdash; Listings
         </Typography>
       </Box>
-      <Box display="flex" flexDirection="column" gridGap="16px">
+      <Box display="flex" flexDirection="column" gap="16px">
         <Card>
           <CardContent>
             <Typography gutterBottom variant="body1">
@@ -127,16 +124,16 @@ function ChplSbulWizardSection2({ dispatch, listings, selectedListings }) {
         <Card>
           <CardContent>
             {listings.length === 0 && (
-              <Box className={classes.emptyStateContainer}>
-                <Box className={classes.emptyStateGraphic} aria-hidden>
-                  <ErrorOutlineIcon className={`${classes.alertBase} ${classes.alertTopLeft}`} />
-                  <ErrorOutlineIcon className={`${classes.alertBase} ${classes.alertTopRight}`} />
-                  <ErrorOutlineIcon className={`${classes.alertBase} ${classes.alertBottom}`} />
-                  <Box className={classes.emptyStateGraphicCore}>
-                    <WarningIcon className={classes.emptyStateGraphicIcon} />
+              <Box sx={styles.emptyStateContainer}>
+                <Box sx={styles.emptyStateGraphic} aria-hidden>
+                  <ErrorOutlineIcon sx={{ ...styles.alertBase, ...styles.alertTopLeft }} />
+                  <ErrorOutlineIcon sx={{ ...styles.alertBase, ...styles.alertTopRight }} />
+                  <ErrorOutlineIcon sx={{ ...styles.alertBase, ...styles.alertBottom }} />
+                  <Box sx={styles.emptyStateGraphicCore}>
+                    <WarningIcon sx={styles.emptyStateGraphicIcon} />
                   </Box>
                 </Box>
-                <Typography variant="body2" className={classes.emptyStateMessage} aria-live="polite">
+                <Typography variant="body2" sx={styles.emptyStateMessage} aria-live="polite">
                   You do not have an associated listing to update a Service Base URL List URL.
                 </Typography>
               </Box>

@@ -8,10 +8,9 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func } from 'prop-types';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
 import { compareOrganization } from 'components/activity/services/organizations.service';
@@ -20,8 +19,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const styles = {
   content: {
     display: 'flex',
     gap: '16px',
@@ -40,14 +38,12 @@ const useStyles = makeStyles({
   subContentBox: {
     width: '48%',
   },
-});
+};
 
 function ChplOncOrganizationView({
   organization,
   dispatch,
 }) {
-  const classes = useStyles();
-
   const edit = () => {
     dispatch('edit');
   };
@@ -60,22 +56,22 @@ function ChplOncOrganizationView({
     >
       <CardHeader
         title={(
-          <div className={classes.headerContainer}>
+          <Box sx={styles.headerContainer}>
             { organization.name }
             <ChplOrganizationActivity
               organization={organization}
               type={organization.acbCode ? 'acbs' : 'atls'}
               interpret={compareOrganization}
             />
-          </div>
+          </Box>
         )}
         component="h2"
-        className={classes.header}
+        sx={styles.header}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         { organization.website
          && (
-         <Box className={classes.subContentBox}>
+         <Box sx={styles.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Website</strong>
              <br />
@@ -85,13 +81,13 @@ function ChplOncOrganizationView({
            </Typography>
          </Box>
          )}
-        <Box className={classes.subContentBox}>
+        <Box sx={styles.subContentBox}>
           <Typography variant="body1" gutterBottom>
             <strong>Organization code</strong>
           </Typography>
           <Typography>{ organization.acbCode ?? organization.atlCode }</Typography>
         </Box>
-        <Box className={classes.subContentBox}>
+        <Box sx={styles.subContentBox}>
           <Typography variant="body1" gutterBottom>
             <strong>Retired</strong>
           </Typography>
@@ -99,7 +95,7 @@ function ChplOncOrganizationView({
         </Box>
         { organization.retired
             && (
-              <Box className={classes.subContentBox}>
+              <Box sx={styles.subContentBox}>
                 <>
                   <Typography variant="body1" gutterBottom><strong>Retirement Date</strong></Typography>
                   { getDisplayDateFormat(organization.retirementDay) }
@@ -108,34 +104,34 @@ function ChplOncOrganizationView({
             )}
         { organization.address
          && (
-         <Box className={classes.subContentBox}>
+         <Box sx={styles.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
              <br />
-             <span className={classes.srOnly}>Line 1: </span>
+             <Box component="span" sx={utilStyles.srOnly}>Line 1: </Box>
              {organization.address.line1}
              {organization.address.line2
               && (
                 <>
                   ,
                   {' '}
-                  <span className={classes.srOnly}>Line 2: </span>
+                  <Box component="span" sx={utilStyles.srOnly}>Line 2: </Box>
                   {organization.address.line2}
                 </>
               )}
              <br />
-             <span className={classes.srOnly}>City: </span>
+             <Box component="span" sx={utilStyles.srOnly}>City: </Box>
              {organization.address.city}
              ,
              {' '}
-             <span className={classes.srOnly}>State: </span>
+             <Box component="span" sx={utilStyles.srOnly}>State: </Box>
              {organization.address.state}
              {' '}
-             <span className={classes.srOnly}>Zipcode: </span>
+             <Box component="span" sx={utilStyles.srOnly}>Zipcode: </Box>
              {organization.address.zipcode}
              ,
              {' '}
-             <span className={classes.srOnly}>Country: </span>
+             <Box component="span" sx={utilStyles.srOnly}>Country: </Box>
              {organization.address.country}
            </Typography>
          </Box>

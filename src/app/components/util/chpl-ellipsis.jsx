@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import {
-  IconButton,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { Box, IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';
 
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   chplEllipsis: {
     border: 'none',
@@ -21,7 +18,7 @@ const useStyles = makeStyles({
       color: '#00437c',
     },
   },
-});
+};
 
 function ChplEllipsis({
   text,
@@ -29,7 +26,6 @@ function ChplEllipsis({
   wordBoundaries = false,
 }) {
   const [isShortened, setShortened] = useState(true);
-  const classes = useStyles();
 
   if (!text) {
     return null;
@@ -56,11 +52,11 @@ function ChplEllipsis({
          <ChplTooltip title={text}>
            <IconButton
              size="small"
-             className={classes.chplEllipsis}
+             sx={styles.chplEllipsis}
              onClick={() => setShortened(false)}
            >
              <MoreHorizIcon />
-             <span className={classes.srOnly}>Expand description</span>
+             <Box component="span" sx={styles.srOnly}>Expand description</Box>
            </IconButton>
          </ChplTooltip>
        )}
@@ -68,11 +64,11 @@ function ChplEllipsis({
        && (
          <IconButton
            size="small"
-           className={classes.chplEllipsis}
+           sx={styles.chplEllipsis}
            onClick={() => setShortened(true)}
          >
            <ArrowBackIcon />
-           <span className={classes.srOnly}>Minimize description</span>
+           <Box component="span" sx={styles.srOnly}>Minimize description</Box>
          </IconButton>
        )}
     </>

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {
-  TextField,
-  makeStyles,
-} from '@material-ui/core';
+import { TextField } from '@mui/material';
 import { string } from 'prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   longLabelFix: {
     padding: '0 4px',
     background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 21%, rgba(255,255,255,1) 74%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 76%, rgba(255,255,255,0) 100%)',
@@ -15,11 +12,10 @@ const useStyles = makeStyles({
     display: 'inline-flex',
     paddingTop: '16px',
   },
-});
+};
 
 function ChplTextField(props) {
   const { type = undefined } = props;
-  const classes = useStyles();
   const [isDate, setIsDate] = useState(false);
 
   useEffect(() => {
@@ -32,8 +28,8 @@ function ChplTextField(props) {
       fullWidth
       variant="outlined"
       size="small"
-      InputLabelProps={{ classes: { root: classes.longLabelFix } }}
-      InputProps={{ className: isDate ? classes.date : '' }}
+      InputLabelProps={{ sx: styles.longLabelFix }}
+      InputProps={{ sx: isDate ? styles.date : undefined }}
       {...props}
     />
   );

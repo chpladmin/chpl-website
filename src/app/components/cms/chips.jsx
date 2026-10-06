@@ -1,13 +1,10 @@
 import React from 'react';
-import {
-  Chip,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Chip } from '@mui/material';
 import { arrayOf, func, string } from 'prop-types';
 
 import theme from 'themes/theme';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   container: {
     display: 'flex',
     padding: '16px 32px',
@@ -24,18 +21,17 @@ const useStyles = makeStyles(() => ({
       flexWrap: 'wrap',
     },
   },
-}));
+};
 
 function ChplChips(props) {
   const { cmsIds, dispatch } = props;
-  const classes = useStyles();
 
   const removeChip = (cmsId) => {
     dispatch({ action: 'remove', payload: cmsId });
   };
 
   return (
-    <span className={classes.container} id="chips">
+    <Box component="span" sx={styles.container} id="chips">
       { cmsIds
         .sort((a, b) => (a < b ? -1 : 1))
         .map((id) => (
@@ -47,7 +43,7 @@ function ChplChips(props) {
             variant="outlined"
           />
         ))}
-    </span>
+    </Box>
   );
 }
 

@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Badge,
-  CardHeader,
-  IconButton,
-  Menu,
-  makeStyles,
-} from '@material-ui/core';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+  Badge, CardHeader, IconButton, Menu,
+} from '@mui/material';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { useFetchAnnouncements } from 'api/announcements';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   announcementHeader: {
     backgroundColor: palette.white,
     padding: '16px',
@@ -21,12 +17,11 @@ const useStyles = makeStyles({
   badge: {
     border: `2px solid ${palette.primaryDark}`,
   },
-});
+};
 
 function ChplAnnouncementsFab() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [announcements, setAnnouncements] = useState([]);
-  const classes = useStyles();
 
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
 
@@ -45,12 +40,13 @@ function ChplAnnouncementsFab() {
         onClick={handleToggle}
         aria-label="Show announcements"
         style={{ color: palette.white }}
+        size="large"
       >
         <Badge
           badgeContent={announcements.length}
           color="primary"
           overlap="rectangular"
-          classes={{ badge: classes.badge }}
+          sx={{ '& .MuiBadge-badge': styles.badge }}
         >
           <NotificationsIcon style={{ fontSize: 18 }} />
         </Badge>
@@ -59,7 +55,6 @@ function ChplAnnouncementsFab() {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleToggle}
-        getContentAnchorEl={null}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         disableScrollLock
@@ -73,7 +68,7 @@ function ChplAnnouncementsFab() {
       >
         <CardHeader
           fontWeight="bold"
-          className={classes.announcementHeader}
+          sx={styles.announcementHeader}
           title={`Announcement${announcements.length !== 1 ? 's' : ''}`}
         />
         <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
@@ -94,7 +89,7 @@ function ChplAnnouncementsFab() {
                     <strong>{announcement.title}</strong>
                   </h4>
                   {announcement.text && (
-                    <span>{announcement.text}</span>
+                  <span>{announcement.text}</span>
                   )}
                 </div>
               ))}

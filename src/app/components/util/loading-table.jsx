@@ -8,8 +8,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+} from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 
 function ChplLoadingTable({ rows = 10, className }) {
   // Match your real table's column widths
@@ -67,13 +67,13 @@ function ChplLoadingTable({ rows = 10, className }) {
                 </TableCell>
                 {/* Status */}
                 <TableCell style={{ width: columnWidths[5] }}>
-                  <Skeleton variant="circle" width={24} height={24} />
+                  <Skeleton variant="circular" width={24} height={24} />
                 </TableCell>
                 {/* Actions */}
                 <TableCell style={{ width: columnWidths[6] }}>
                   <Box display="flex" flexDirection="column" alignItems="flex-end" gap={1}>
-                    <Skeleton variant="rect" width={90} height={32} style={{ borderRadius: 4, marginBottom: 8 }} />
-                    <Skeleton variant="rect" width={90} height={32} style={{ borderRadius: 4 }} />
+                    <Skeleton variant="rectangular" width={90} height={32} style={{ borderRadius: 4, marginBottom: 8 }} />
+                    <Skeleton variant="rectangular" width={90} height={32} style={{ borderRadius: 4 }} />
                   </Box>
                 </TableCell>
               </TableRow>

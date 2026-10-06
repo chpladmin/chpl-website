@@ -1,10 +1,7 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { oneOf } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
@@ -17,12 +14,7 @@ import {
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
-});
-
 function ChplCmsButton({ listing, size = 'medium' }) {
-  const classes = useStyles();
   const { analytics } = useAnalyticsContext();
   const {
     addListing,
@@ -59,7 +51,7 @@ function ChplCmsButton({ listing, size = 'medium' }) {
   return (
     <Button
       color="secondary"
-      className={inWidget ? classes.deleteButtonOutlined : ''}
+      sx={inWidget ? utilStyles.deleteButtonOutlined : undefined}
       variant="contained"
       size={size}
       id={`toggle-cms-${listing.id}`}

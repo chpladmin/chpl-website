@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Box, Button, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { arrayOf, func, object } from 'prop-types';
 
 import { useFetchApiKeyActivity } from 'api/activity';
@@ -23,19 +18,18 @@ const sortOptions = [
   { property: 'deleteWarningSentDate', text: 'Warning Sent' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-});
+};
 
 function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
   const [apiKeys, setApiKeys] = useState([]);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('lastUsedDate', true);
-  const classes = useStyles();
 
   useEffect(() => {
     setApiKeys(initialApiKeys.sort(sortComparator('lastUsedDate')));
@@ -50,8 +44,8 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">
             API Keys
           </Typography>
@@ -59,8 +53,8 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
             {`(${apiKeys.length} Result${apiKeys.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <div className={classes.tableResultsHeaderContainer}>
-          <Box display="flex" alignItems="center" gridGap={4}>
+        <Box sx={styles.tableResultsHeaderContainer}>
+          <Box display="flex" alignItems="center" gap="4px">
             <ChplSortControls
               sortOptions={sortOptions}
               orderBy={orderBy}
@@ -72,9 +66,9 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
               title="API Keys History"
             />
           </Box>
-        </div>
+        </Box>
       </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      <Box sx={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
         {apiKeys.map((key) => (
           <ChplSearchResultCard
             key={key.key}
@@ -86,7 +80,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
                   label: 'Email',
                   value: key.email,
                   flex: 1,
-                 style: { flex: '2 1 320px' },
+                  style: { flex: '2 1 320px' },
                 },
                 {
                   label: 'API Key',
@@ -103,18 +97,18 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
                 },
               ],
             ]}
-            actions={
+            actions={(
               <Button
                 onClick={() => dispatch({ action: 'revoke', payload: key })}
                 id={`revoke-api-key-${key.key}`}
                 variant="contained"
-                className={classes.deleteButtonOutlined}
+                sx={styles.deleteButtonOutlined}
                 size="small"
                 endIcon={<DeleteIcon />}
               >
                 Revoke key
               </Button>
-            }
+          )}
           />
         ))}
       </Box>

@@ -1,10 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress, Container } from '@mui/material';
 import { func, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -14,7 +9,7 @@ import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   pageContainer: {
     padding: '32px 0',
     display: 'flex',
@@ -26,7 +21,7 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-});
+};
 
 function ChplEditVersion({ dispatch, version }) {
   const { analytics } = useAnalyticsContext();
@@ -34,7 +29,6 @@ function ChplEditVersion({ dispatch, version }) {
   const { mutate } = usePutVersion();
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -75,7 +69,7 @@ function ChplEditVersion({ dispatch, version }) {
 
   return (
     <Container disableGutters maxWidth="lg">
-      <Box className={classes.pageContainer}>
+      <Box sx={styles.pageContainer}>
         <ChplVersion
           dispatch={handleDispatch}
           version={version}

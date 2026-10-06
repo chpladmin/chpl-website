@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
 

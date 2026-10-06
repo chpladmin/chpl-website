@@ -19,11 +19,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   arrayOf,
   bool,
@@ -42,7 +41,7 @@ import { getDisplayDateFormat, jsJoda } from 'services/date-util';
 import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   content: {
     display: 'grid',
@@ -74,7 +73,7 @@ const useStyles = makeStyles({
   errorColor: {
     color: '#c44f65',
   },
-});
+};
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -112,9 +111,9 @@ const getEditField = ({
   display,
   formik,
   required = false,
-  className,
+  sx,
 }) => (
-  <div className={className}>
+  <Box sx={sx}>
     <ChplTextField
       id={key}
       name={key}
@@ -126,7 +125,7 @@ const getEditField = ({
       error={formik.touched[key] && !!formik.errors[key]}
       helperText={formik.touched[key] && formik.errors[key]}
     />
-  </div>
+  </Box>
 );
 
 function ChplProductEdit(props) {
@@ -142,7 +141,6 @@ function ChplProductEdit(props) {
   const { data, isLoading } = useFetchDevelopers();
   const [developers, setDevelopers] = useState([]);
   const [owners, setOwners] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -275,20 +273,20 @@ function ChplProductEdit(props) {
             <CardHeader
               title="New Product"
               component="h5"
-              className={classes.header}
+              sx={styles.header}
             />
           )}
         { !isSplitting
           && (
             <CardHeader
               title={product.name}
-              className={classes.header}
+              sx={styles.header}
               component="h2"
             />
           )}
-        <CardContent className={classes.content}>
+        <CardContent sx={styles.content}>
           { getEnhancedEditField({
-            key: 'name', display: 'Name', className: isSplitting ? '' : classes.fullWidthGridRow, required: true,
+            key: 'name', display: 'Name', sx: isSplitting ? undefined : styles.fullWidthGridRow, required: true,
           })}
           { isSplitting
             && getEnhancedEditField({
@@ -296,8 +294,8 @@ function ChplProductEdit(props) {
             })}
           { !isSplitting
             && (
-              <Box className={classes.fullWidthGridRow}>
-                <Card className={classes.owners}>
+              <Box sx={styles.fullWidthGridRow}>
+                <Card sx={styles.owners}>
                   <ChplTextField
                     select
                     id="current-owner"
@@ -316,12 +314,12 @@ function ChplProductEdit(props) {
                   </ChplTextField>
                 </Card>
                 <TableContainer>
-                  <Table className={classes.table}>
+                  <Table sx={styles.table}>
                     <TableHead>
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer</Typography></TableCell>
                         <TableCell><Typography variant="body2">Transfer Date</Typography></TableCell>
-                        <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                        <TableCell><Typography sx={utilStyles.visuallyHidden}>Actions</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -340,6 +338,7 @@ function ChplProductEdit(props) {
                                onClick={() => removeOwner(item)}
                                aria-label="Remove owner"
                                disabled={formik.values.isAdding}
+                               size="large"
                              >
                                <CloseIcon
                                  color="error"
@@ -356,7 +355,7 @@ function ChplProductEdit(props) {
                           <TableRow>
                             <TableCell colSpan={4} align="right">
                               <Button
-                                className={classes.tableFooterButton}
+                                sx={styles.tableFooterButton}
                                 color="secondary"
                                 variant="contained"
                                 onClick={() => formik.setFieldValue('isAdding', true)}
@@ -364,7 +363,7 @@ function ChplProductEdit(props) {
                               >
                                 Add item
                                 {' '}
-                                <AddIcon className={classes.iconSpacing} />
+                                <AddIcon sx={styles.iconSpacing} />
                               </Button>
                             </TableCell>
                           </TableRow>
@@ -374,7 +373,7 @@ function ChplProductEdit(props) {
                 </TableContainer>
                 { formik.values.isAdding
                   && (
-                    <Card className={classes.owners}>
+                    <Card sx={styles.owners}>
                       <ChplTextField
                         select
                         id="owner"
@@ -406,7 +405,7 @@ function ChplProductEdit(props) {
                         helperText={formik.touched.transferDay && formik.errors.transferDay}
                       />
                       <ButtonGroup
-                        className={classes.fullWidthGridRow}
+                        sx={styles.fullWidthGridRow}
                         variant="outlined"
                       >
                         <Button
@@ -420,7 +419,7 @@ function ChplProductEdit(props) {
                           <CheckIcon />
                         </Button>
                         <Button
-                          className={classes.deleteButtonOutlined}
+                          sx={styles.deleteButtonOutlined}
                           onClick={cancelAdd}
                           aria-label="Cancel adding item"
                           id="owner-close-item"
@@ -434,8 +433,8 @@ function ChplProductEdit(props) {
             )}
           { !isSplitting && (
             <>
-              <Divider className={classes.fullWidthGridRow} />
-              { getEnhancedEditField({ key: 'fullName', display: 'Full Name', className: classes.fullWidthGridRow }) }
+              <Divider sx={styles.fullWidthGridRow} />
+              { getEnhancedEditField({ key: 'fullName', display: 'Full Name', sx: styles.fullWidthGridRow }) }
               { getEnhancedEditField({ key: 'email', display: 'Email' }) }
               { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
             </>

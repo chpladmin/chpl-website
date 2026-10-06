@@ -15,15 +15,14 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Email from '@material-ui/icons/Email';
-import Phone from '@material-ui/icons/Phone';
-import Person from '@material-ui/icons/Person';
+} from '@mui/material';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import CallMergeIcon from '@mui/icons-material/CallMerge';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Email from '@mui/icons-material/Email';
+import Phone from '@mui/icons-material/Phone';
+import Person from '@mui/icons-material/Person';
 import { func, number } from 'prop-types';
 
 import ChplProductHistory from 'components/activity/product-history';
@@ -40,7 +39,7 @@ const compareListings = (a, b) => {
   return a.chplProductNumber < b.chplProductNumber ? -1 : 1;
 };
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   buttonGroupMenu: {
     width: '200px !important',
@@ -74,7 +73,7 @@ const useStyles = makeStyles({
     borderRadius: 0,
     margin: '0 -1px',
   },
-});
+};
 
 function ChplProductView({ product, productCount, dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -88,7 +87,6 @@ function ChplProductView({ product, productCount, dispatch }) {
   const [editAnchorEl, setEditAnchorEl] = useState(null);
   const [splitAnchorEl, setSplitAnchorEl] = useState(null);
   const [mergeAnchorEl, setMergeAnchorEl] = useState(null);
-  const classes = useStyles();
 
   useEffect(() => {
     setOptions([{ id: 'all', version: 'All' }].concat(product.versions.sort((a, b) => (a.id < b.id ? 1 : -1))));
@@ -118,7 +116,7 @@ function ChplProductView({ product, productCount, dispatch }) {
     ? (
       <>
         <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
       </>
     )
     : (
@@ -153,15 +151,15 @@ function ChplProductView({ product, productCount, dispatch }) {
 
   return (
     <Accordion
-      className={classes.products}
+      sx={styles.products}
       onChange={() => handleAccordionChange(product)}
     >
       <AccordionSummary
         expandIcon={getIcon(product)}
-        className={classes.productsSummary}
+        sx={styles.productsSummary}
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
-          <Typography className={classes.chplIdFirstColumn} variant="body1">
+          <Typography sx={styles.chplIdFirstColumn} variant="body1">
             { product.name }
           </Typography>
           <Typography variant="body2">
@@ -196,7 +194,7 @@ function ChplProductView({ product, productCount, dispatch }) {
               ))}
             </ChplTextField>
           </Box>
-          <Box display="flex" flexDirection="row" alignItems="stretch" gridGap={8}>
+          <Box display="flex" flexDirection="row" alignItems="stretch" gap="8px">
             { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
               && (
                 <ChplProductHistory
@@ -212,7 +210,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                         variant="contained"
                         color="primary"
                         size="small"
-                        className={classes.buttonGroup}
+                        sx={styles.buttonGroup}
                         aria-label="Edit"
                         id={`edit-${product.id}`}
                         onClick={handleMenuClick(setEditAnchorEl)}
@@ -224,7 +222,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                       anchorEl={editAnchorEl}
                       open={!!editAnchorEl}
                       onClose={handleMenuClose(setEditAnchorEl)}
-                      className={classes.buttonGroupMenu}
+                      sx={styles.buttonGroupMenu}
                     >
                       <MenuItem
                         onClick={handleAction('editProduct', product)}
@@ -246,7 +244,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                         variant="outlined"
                         color="primary"
                         size="small"
-                        className={classes.buttonGroupMiddle}
+                        sx={styles.buttonGroupMiddle}
                         aria-label="Split"
                         id={`split-${product.id}`}
                         onClick={handleMenuClick(setSplitAnchorEl)}
@@ -258,7 +256,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                       anchorEl={splitAnchorEl}
                       open={!!splitAnchorEl}
                       onClose={handleMenuClose(setSplitAnchorEl)}
-                      className={classes.buttonGroupMenu}
+                      sx={styles.buttonGroupMenu}
                     >
                       <MenuItem
                         onClick={handleAction('split', product)}
@@ -280,7 +278,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                             variant="outlined"
                             color="primary"
                             size="small"
-                            className={classes.buttonGroup}
+                            sx={styles.buttonGroup}
                             aria-label="Merge"
                             id={`merge-${product.id}`}
                             onClick={handleMenuClick(setMergeAnchorEl)}
@@ -295,7 +293,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                           anchorEl={mergeAnchorEl}
                           open={!!mergeAnchorEl}
                           onClose={handleMenuClose(setMergeAnchorEl)}
-                          className={classes.buttonGroupMenu}
+                          sx={styles.buttonGroupMenu}
                         >
                           <MenuItem
                             onClick={handleAction('merge', product)}
@@ -320,7 +318,7 @@ function ChplProductView({ product, productCount, dispatch }) {
           && (
             <>
               <Typography variant="body1">Contact Information</Typography>
-              <Box display="flex" gridGap="8px" pt="8px" pb="16px" flexDirection="row">
+              <Box display="flex" gap="8px" pt="8px" pb="16px" flexDirection="row">
                 <ChplTooltip title="Full Name">
                   <Person />
                 </ChplTooltip>
@@ -384,7 +382,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                           aggregationName: product.name,
                         }}
                         external={false}
-                        router={{ sref: 'listing', params: { id: item.id } }}
+                        router={{ sref: 'listing', options: { id: item.id } }}
                       />
                     </TableCell>
                     <TableCell>{ item.certificationStatus }</TableCell>

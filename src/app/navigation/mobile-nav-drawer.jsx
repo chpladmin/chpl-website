@@ -8,14 +8,13 @@ import {
   List,
   ListItem,
   ListItemText,
-  makeStyles,
   Typography,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MenuIcon from '@material-ui/icons/Menu';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MenuIcon from '@mui/icons-material/Menu';
 import { func } from 'prop-types';
 
 import {
@@ -31,16 +30,20 @@ import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   mobileContainer: {
     display: 'none',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
     },
   },
   mobileMenuButton: {
     color: '#fff',
+  },
+  drawer: {
+    // sit above the top nav (drawer + 1), environment banner (drawer + 2) and sticky page headers
+    zIndex: theme.zIndex.modal + 1,
   },
   drawerPaper: {
     width: 280,
@@ -103,7 +106,7 @@ const useStyles = makeStyles({
       fontSize: '0.75rem',
     },
   },
-});
+};
 
 function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const { analytics } = useAnalyticsContext();
@@ -119,8 +122,6 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
   const resourceItems = getResourceItems({
     includeDeveloperGuide: hasAnyRole(developerGuideRoles),
   });
-  const classes = useStyles();
-
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
@@ -193,11 +194,12 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
 
   return (
     <>
-      <Box className={classes.mobileContainer}>
+      <Box sx={styles.mobileContainer}>
         <IconButton
-          className={classes.mobileMenuButton}
+          sx={styles.mobileMenuButton}
           onClick={() => setMobileMenuOpen(true)}
           aria-label="open navigation menu"
+          size="large"
         >
           <MenuIcon style={{ color: '#fff' }} />
         </IconButton>
@@ -206,41 +208,47 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
         anchor="right"
         open={mobileMenuOpen}
         onClose={closeMobileMenu}
-        classes={{ paper: classes.drawerPaper }}
+        sx={styles.drawer}
+        slotProps={{ paper: { sx: styles.drawerPaper } }}
       >
-        <div className={classes.drawerHeader}>
+        <Box sx={styles.drawerHeader}>
           <Typography variant="h6">CHPL Navigation</Typography>
-          <IconButton onClick={closeMobileMenu} color="primary" aria-label="close menu">
+          <IconButton
+            onClick={closeMobileMenu}
+            color="primary"
+            aria-label="close menu"
+            size="large"
+          >
             <CloseIcon color="primary" />
           </IconButton>
-        </div>
-        <Divider className={classes.drawerDivider} />
+        </Box>
+        <Divider sx={styles.drawerDivider} />
         <List disablePadding>
-          <ListItem button onClick={handleHomeClick} className={classes.drawerItem}>
+          <ListItem button onClick={handleHomeClick} sx={styles.drawerItem}>
             <ListItemText primary="Home" />
           </ListItem>
-          <Divider className={classes.drawerDivider} />
-          <ListItem button onClick={handleSearchClick} className={classes.drawerItem}>
+          <Divider sx={styles.drawerDivider} />
+          <ListItem button onClick={handleSearchClick} sx={styles.drawerItem}>
             <ListItemText primary="Search CHPL" />
           </ListItem>
-          <Divider className={classes.drawerDivider} />
+          <Divider sx={styles.drawerDivider} />
           {widgetSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} sx={styles.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
               <Collapse in={expandedSections[section.key]}>
-                <Box className={classes.widgetContainer}>
+                <Box sx={styles.widgetContainer}>
                   {section.content}
                 </Box>
               </Collapse>
-              <Divider className={classes.drawerDivider} />
+              <Divider sx={styles.drawerDivider} />
             </React.Fragment>
           ))}
           { linkSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key, section.title)} className={classes.drawerItem}>
+              <ListItem button onClick={() => toggleSection(section.key, section.title)} sx={styles.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
@@ -249,7 +257,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
                   { section.items.map((item) => (
                     <ListItem
                       key={item.key}
-                      className={`${classes.drawerNestedItem}${item.href && currentHash === item.href ? ` ${classes.drawerNestedItemActive}` : ''}`}
+                      sx={[styles.drawerNestedItem, item.href && currentHash === item.href && styles.drawerNestedItemActive]}
                       onClick={closeMobileMenu}
                     >
                       <ChplLink
@@ -264,7 +272,7 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
                   ))}
                 </List>
               </Collapse>
-              <Divider className={classes.drawerDivider} />
+              <Divider sx={styles.drawerDivider} />
             </React.Fragment>
           ))}
         </List>

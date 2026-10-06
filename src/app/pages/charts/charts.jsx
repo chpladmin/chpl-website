@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Typography, Button,
+} from '@mui/material';
 
 import { useFetchReportMetadata } from 'api/reports';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
@@ -14,7 +9,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   stickyCard: {
     position: 'sticky',
     top: '116px',
@@ -29,7 +24,7 @@ const useStyles = makeStyles({
     '&:hover': {
       transform: 'scale(1.02)',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
@@ -58,14 +53,14 @@ const useStyles = makeStyles({
       backgroundColor: palette.secondary,
       color: palette.primary,
     },
-    '&.active': {
+  },
+  activeMenuButton: {
+    backgroundColor: palette.secondary,
+    color: palette.black,
+    fontWeight: 'bold',
+    '&:focus': {
       backgroundColor: palette.secondary,
       color: palette.black,
-      fontWeight: 'bold',
-      '&:focus': {
-        backgroundColor: palette.secondary,
-        color: palette.black,
-      },
     },
   },
   reportCardContent: {
@@ -81,10 +76,9 @@ const useStyles = makeStyles({
     display: 'block',
     marginBottom: '-69px',
   },
-});
+};
 
 function ChplCharts() {
-  const classes = useStyles();
   const { analytics } = useAnalyticsContext();
   const [activeReport, setActiveReport] = useState(undefined);
   const [reportMetadata, setReportMetadata] = useState([]);
@@ -108,14 +102,14 @@ function ChplCharts() {
     <>
       <ChplPageHeader text="Charts" />
       <ChplPageBody>
-        <Box display="flex" alignItems="flex-start" flexDirection="row" gridGap={32} width="100%">
+        <Box display="flex" alignItems="flex-start" flexDirection="row" gap="32px" width="100%">
           <Box maxWidth="350px">
-            <Card className={classes.stickyCard}>
+            <Card sx={styles.stickyCard}>
               <CardContent>
-                <Box className={classes.cardButtons}>
+                <Box sx={styles.cardButtons}>
                   <Button
                     color="primary"
-                    className={activeReport === undefined ? `${classes.menuButton} active` : classes.menuButton}
+                    sx={[styles.menuButton, activeReport === undefined && styles.activeMenuButton]}
                     onClick={() => handleReportChange(undefined)}
                     fullWidth
                     variant="text"
@@ -128,7 +122,7 @@ function ChplCharts() {
                       <Button
                         key={`${report.title}-button`}
                         color="primary"
-                        className={`${classes.menuButton} ${activeReport?.title === report.title ? 'active' : ''}`}
+                        sx={[styles.menuButton, activeReport?.title === report.title && styles.activeMenuButton]}
                         onClick={() => handleReportChange(report.title)}
                         id={`report-${report.title}`}
                         fullWidth
@@ -151,14 +145,14 @@ function ChplCharts() {
                   <Typography gutterBottom>
                     A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
                   </Typography>
-                  <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gridGap={32}>
+                  <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gap="32px">
                     {reportMetadata && reportMetadata.map((report) => (
                       <Card
                         key={report.title}
-                        className={classes.card}
+                        sx={styles.card}
                         onClick={() => handleReportChange(report.title)}
                       >
-                        <CardContent className={classes.cardContent}>
+                        <CardContent sx={styles.cardContent}>
                           {report.icon}
                           <Typography>{ report.title }</Typography>
                         </CardContent>
@@ -170,13 +164,14 @@ function ChplCharts() {
             )}
             { activeReport && (
               <Card
-                style={{ width: '100%' }}
+                sx={{ width: '100%' }}
                 key={activeReport.title}
               >
-                <CardContent className={classes.reportCardContent}>
-                  <iframe
+                <CardContent sx={styles.reportCardContent}>
+                  <Box
+                    component="iframe"
                     title={activeReport.title}
-                    className={classes.iframe}
+                    sx={styles.iframe}
                     height={activeReport.height}
                     src={activeReport.url}
                     allowFullScreen

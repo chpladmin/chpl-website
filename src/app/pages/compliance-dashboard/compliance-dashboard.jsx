@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+  Box, Card, CardContent, CardHeader, Grid,
+} from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
 
-const useStyles = makeStyles({
+const styles = {
   reportCard: {
     height: 'auto',
     display: 'flex',
@@ -32,7 +28,7 @@ const useStyles = makeStyles({
   lessTopMargin: {
     marginTop: '-48px',
   },
-});
+};
 
 const reports = [{
   title: 'Important Dates',
@@ -62,7 +58,6 @@ const reports = [{
 }];
 
 function ChplComplianceDashboard() {
-  const classes = useStyles();
   const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportMetadata('onc-dashboard');
 
@@ -80,15 +75,16 @@ function ChplComplianceDashboard() {
 
     return (
       <Grid item xs={12} key={report.title}>
-        <Card className={classes.reportCard}>
+        <Card sx={styles.reportCard}>
           <CardHeader title={displayData.title} />
-          <CardContent className={classes.reportCardContent}>
+          <CardContent sx={styles.reportCardContent}>
             { displayData.isLoading ? (
-              <Skeleton variant="rect" height={displayData.height} />
+              <Skeleton variant="rectangular" height={displayData.height} />
             ) : (
-              <iframe
+              <Box
+                component="iframe"
                 title={displayData.title}
-                className={`${classes.iframe} ${report.uniqueClass ? classes[report.uniqueClass] : ''}`}
+                sx={[styles.iframe, report.uniqueClass && styles[report.uniqueClass]]}
                 height={displayData.height}
                 src={displayData.url}
               />

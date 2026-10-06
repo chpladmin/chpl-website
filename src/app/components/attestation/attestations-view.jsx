@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -15,11 +16,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import AddIcon from '@mui/icons-material/Add';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import ChplAttestationCreateException from './attestation-create-exception';
 import ChplAttestationView from './attestation-view';
@@ -32,13 +32,13 @@ import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -49,7 +49,6 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const [developer, setDeveloper] = useState({});
   const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) });
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     if (initialDeveloper) {
@@ -96,7 +95,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
     <>
       <Card>
         <CardHeader title="Attestations" />
-        <CardContent className={classes.content}>
+        <CardContent sx={styles.content}>
           <>
             <Typography variant="body1">
               Attestations information is displayed here if a health IT developer’s attestation of compliance with the
@@ -127,123 +126,125 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
               .
             </Typography>
             { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
-              && (
-                <Card>
-                  <TableContainer>
-                    <Table
-                      aria-label="Developer Attestations information"
-                    >
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Attestation Period</TableCell>
-                          <TableCell>Status</TableCell>
-                          { canSeeAttestationData()
-                            && (
-                              <TableCell>
-                                <span className={classes.srOnly}>View Details</span>
-                              </TableCell>
-                            )}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        { attestations
-                          .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
-                          .map((item) => (
-                            <TableRow key={item.id ?? item.attestationPeriod.id}>
-                              <TableCell>
-                                { getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                                {' '}
-                                to
-                                {' '}
-                                { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                              </TableCell>
-                              <TableCell>
-                                { item.statusText }
-                              </TableCell>
-                              { canSeeAttestationData()
-                                && (
-                                  <TableCell>
-                                    { item.status === 'ATTESTATIONS_SUBMITTED'
-                                      ? (
-                                        <IconButton
-                                          color="primary"
-                                          variant="contained"
-                                          onClick={() => viewAttestations(item)}
-                                          aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
-                                        >
-                                          <VisibilityIcon color="primary" />
-                                        </IconButton>
-                                      ) : (
-                                        <IconButton
-                                          color="primary"
-                                          variant="contained"
-                                          onClick={() => setExceptionPeriod(item.attestationPeriod)}
-                                          aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
-                                          disabled={!canCreateException}
-                                        >
-                                          <AddIcon color="primary" />
-                                        </IconButton>
-                                      )}
-                                  </TableCell>
-                                )}
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Card>
-              )}
+            && (
+              <Card>
+                <TableContainer>
+                  <Table
+                    aria-label="Developer Attestations information"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Attestation Period</TableCell>
+                        <TableCell>Status</TableCell>
+                        { canSeeAttestationData()
+                          && (
+                            <TableCell>
+                              <Box component="span" sx={styles.srOnly}>View Details</Box>
+                            </TableCell>
+                          )}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      { attestations
+                        .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
+                        .map((item) => (
+                          <TableRow key={item.id ?? item.attestationPeriod.id}>
+                            <TableCell>
+                              { getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                              {' '}
+                              to
+                              {' '}
+                              { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                            </TableCell>
+                            <TableCell>
+                              { item.statusText }
+                            </TableCell>
+                            { canSeeAttestationData()
+                              && (
+                                <TableCell>
+                                  { item.status === 'ATTESTATIONS_SUBMITTED'
+                                    ? (
+                                      <IconButton
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => viewAttestations(item)}
+                                        aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
+                                        size="large"
+                                      >
+                                        <VisibilityIcon color="primary" />
+                                      </IconButton>
+                                    ) : (
+                                      <IconButton
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => setExceptionPeriod(item.attestationPeriod)}
+                                        aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
+                                        disabled={!canCreateException}
+                                        size="large"
+                                      >
+                                        <AddIcon color="primary" />
+                                      </IconButton>
+                                    )}
+                                </TableCell>
+                              )}
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Card>
+            )}
           </>
           { exceptionPeriod
-            && (
-              <ChplAttestationCreateException
-                developer={developer}
-                dispatch={handleDispatch}
-                period={exceptionPeriod}
-              />
-            )}
+          && (
+            <ChplAttestationCreateException
+              developer={developer}
+              dispatch={handleDispatch}
+              period={exceptionPeriod}
+            />
+          )}
         </CardContent>
         { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id })
-          && (
-            <CardActions>
-              <Button
-                color="primary"
-                id="create-attestation-change-request-button"
-                variant="contained"
-                onClick={createAttestationChangeRequest}
-                disabled={!submittablePeriod}
-              >
-                Submit Attestations
-              </Button>
-            </CardActions>
-          )}
+        && (
+          <CardActions>
+            <Button
+              color="primary"
+              id="create-attestation-change-request-button"
+              variant="contained"
+              onClick={createAttestationChangeRequest}
+              disabled={!submittablePeriod}
+            >
+              Submit Attestations
+            </Button>
+          </CardActions>
+        )}
       </Card>
       { activeAttestations
-        && (
-          <Dialog
-            fullWidth
-            maxWidth="md"
+      && (
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          onClose={closeAttestations}
+          aria-labelledby="attestations-details"
+          open={attestationsOpen}
+        >
+          <ChplDialogTitle
+            id="attestations-details"
             onClose={closeAttestations}
-            aria-labelledby="attestations-details"
-            open={attestationsOpen}
           >
-            <ChplDialogTitle
-              id="attestations-details"
-              onClose={closeAttestations}
-            >
-              View Attestations Details
-            </ChplDialogTitle>
-            <DialogContent
-              dividers
-            >
-              <ChplAttestationView
-                attestations={activeAttestations}
-                canCreateException={canCreateException}
-                developer={developer}
-              />
-            </DialogContent>
-          </Dialog>
-        )}
+            View Attestations Details
+          </ChplDialogTitle>
+          <DialogContent
+            dividers
+          >
+            <ChplAttestationView
+              attestations={activeAttestations}
+              canCreateException={canCreateException}
+              developer={developer}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }

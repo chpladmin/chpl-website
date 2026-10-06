@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   Table,
   TableBody,
@@ -7,10 +8,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
+} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
@@ -21,8 +21,7 @@ import {
 } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const styles = {
   helperText: {
     padding: '16px 0',
   },
@@ -33,12 +32,11 @@ const useStyles = makeStyles({
     overflowX: 'auto',
     width: '100%',
   },
-});
+};
 
 function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialViewAll }) {
   const [viewAll, setViewAll] = useState(false);
   const [edition, setEdition] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     setEdition(initialEdition);
@@ -49,12 +47,12 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
     const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
     return (
       <TableCell key={num}>
-        <span className={classes.srOnly}>
+        <Box component="span" sx={utilStyles.srOnly}>
           { meets ? 'meets' : 'does not meet' }
           170.315 (c)(
           {num}
           )
-        </span>
+        </Box>
         { meets ? <CheckIcon fontSize="large" /> : <NotInterestedIcon color="disabled" fontSize="large" /> }
       </TableCell>
     );
@@ -64,11 +62,11 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
     <>
       { (edition === null || edition?.name === '2015')
         && (
-          <Typography className={classes.helperText}>
+          <Typography sx={styles.helperText}>
             Note 170.315 (c)(3) has two versions, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
           </Typography>
         )}
-      <Card className={classes.tableScrolling}>
+      <Card sx={styles.tableScrolling}>
         <Table>
           <TableHead>
             <TableRow>
@@ -89,9 +87,12 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
             { cqms.filter((cqm) => viewAll || cqm.success)
               .sort(sortCqms)
               .map((cqm) => (
-                <TableRow key={cqm.id ?? cqm.cmsId} className={!cqm.success ? classes.disabledRow : ''}>
+                <TableRow
+                  key={cqm.id ?? cqm.cmsId}
+                  sx={[!cqm.success && styles.disabledRow]}
+                >
                   <TableCell>
-                    <span className={classes.srOnly}>{ cqm.success ? 'meets' : 'does not meet' }</span>
+                    <Box component="span" sx={utilStyles.srOnly}>{ cqm.success ? 'meets' : 'does not meet' }</Box>
                     { edition?.name !== null && edition?.name === '2011' && cqm.success
                       && (
                         <CheckIcon fontSize="large" />

@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  makeStyles,
-} from '@material-ui/core';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Box } from '@mui/material';
 import { bool, node, string } from 'prop-types';
 
 import { eventTrack } from 'services/analytics.service';
@@ -10,7 +8,7 @@ import { goToState } from 'services/navigation.service';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   chplLink: {
     display: 'flex',
@@ -21,6 +19,9 @@ const useStyles = makeStyles({
   chplLinkInline: {
     display: 'inline-flex',
   },
+  inlineLink: {
+    overflowWrap: 'anywhere',
+  },
   indicateOnHover: {
     textDecoration: 'none',
     '&:hover': {
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
   disclaimerIcon: {
     marginTop: '4px',
   },
-});
+};
 
 const prependLink = (url) => {
   if (url.substring(0, 7) === 'http://' || url.substring(0, 8) === 'https://' || url.substring(0, 2) === '#/' || url.substring(0, 5) === '/rest') {
@@ -49,7 +50,6 @@ function ChplLink({
   text: initialText = '',
   icon = undefined,
 }) {
-  const classes = useStyles();
   const href = prependLink(initialHref);
   const text = initialText || initialHref;
 
@@ -71,26 +71,31 @@ function ChplLink({
 
   if (inline && !external) {
     return (
-      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
+      <Box
+        component="a"
+        href={href}
+        onClick={track}
+        sx={{ ...styles.inlineLink, ...(indicateOnHover ? styles.indicateOnHover : {}) }}
+      >
         {text}
-      </a>
+      </Box>
     );
   }
 
   return (
-    <span className={inline ? `${classes.chplLink} ${classes.chplLinkInline}` : classes.chplLink}>
-      <a href={href} onClick={track} className={indicateOnHover ? classes.indicateOnHover : undefined}>
+    <Box component="span" sx={inline ? { ...styles.chplLink, ...styles.chplLinkInline } : styles.chplLink}>
+      <Box component="a" href={href} onClick={track} sx={indicateOnHover ? styles.indicateOnHover : undefined}>
         {text}
-      </a>
+      </Box>
       { icon }
       { external
         && (
-          <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className={classes.disclaimerIcon}>
+          <Box component="a" href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" sx={styles.disclaimerIcon}>
             <ExitToAppIcon />
-            <span className={classes.srOnly}>Web Site Disclaimers</span>
-          </a>
+            <Box component="span" sx={styles.srOnly}>Web Site Disclaimers</Box>
+          </Box>
         )}
-    </span>
+    </Box>
   );
 }
 

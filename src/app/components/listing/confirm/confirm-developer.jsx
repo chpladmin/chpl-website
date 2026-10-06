@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -11,11 +12,10 @@ import {
   MenuItem,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { object, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -28,7 +28,7 @@ import { useFetchDevelopers } from 'api/developer';
 import { ChplTextField } from 'components/util';
 import { developer as developerProp } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   buttonCard: {
     padding: '32px',
     display: 'flex',
@@ -109,7 +109,7 @@ const useStyles = makeStyles({
   verticalDivider: {
     height: '25%',
   },
-});
+};
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -142,7 +142,6 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [isCreating, setIsCreating] = useState(!developer.id);
   const [isShowingComparison, setIsShowingComparison] = useState(false);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -238,17 +237,16 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
 
   return (
     <Container maxWidth="md">
-      <div className={classes.developerConfirm}>
-        <div className={classes.developerSubContainer}>
+      <Box sx={styles.developerConfirm}>
+        <Box sx={styles.developerSubContainer}>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
-            className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+            sx={[styles.buttonCard, !isCreating && styles.buttonCardFocused]}
             onClick={() => handleCreationToggle(false)}
           >
-            <span className={classes.buttonContent}>
-              <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+            <Box component="span" sx={styles.buttonContent}>
+              <CheckCircleIcon color="primary" sx={styles.extraLargeIcons} />
               { selectedDeveloper
                 ? (
                   <>
@@ -259,35 +257,34 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
                     Choose A Developer To Use
                   </>
                 )}
-            </span>
+            </Box>
           </Button>
-          <div className={classes.orContainer}>
+          <Box sx={styles.orContainer}>
             <Divider />
             <Typography>OR</Typography>
             <Divider />
-          </div>
+          </Box>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
-            className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+            sx={[styles.buttonCard, isCreating && styles.buttonCardFocused]}
             onClick={() => handleCreationToggle(true)}
           >
-            <span className={classes.buttonContent}>
-              <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+            <Box component="span" sx={styles.buttonContent}>
+              <AddCircleIcon color="primary" sx={styles.extraLargeIcons} />
               Create a developer
-            </span>
+            </Box>
           </Button>
-        </div>
+        </Box>
         <Divider />
         { isCreating
           ? (
             <Card>
               <CardHeader title="Create A New Developer" />
               <CardContent>
-                <div className={classes.formContainer}>
-                  <div className={classes.formSubContainer}>
-                    <div className={classes.developerInfo}>
+                <Box sx={styles.formContainer}>
+                  <Box sx={styles.formSubContainer}>
+                    <Box sx={styles.developerInfo}>
                       <ChplTextField
                         id="name"
                         name="name"
@@ -310,7 +307,7 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
                           />
                         )}
                       />
-                    </div>
+                    </Box>
                     <ChplTextField
                       id="website"
                       name="website"
@@ -321,24 +318,24 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
                       onChange={handleChange}
                       onBlur={formik.handleBlur}
                     />
-                  </div>
-                  <div className={classes.formSubContainer}>
+                  </Box>
+                  <Box sx={styles.formSubContainer}>
                     <ChplConfirmDeveloperAddress
                       address={developer.address}
                       editing
                       formik={formik}
                       handleChange={handleChange}
                     />
-                  </div>
-                  <div className={classes.formSubContainer}>
+                  </Box>
+                  <Box sx={styles.formSubContainer}>
                     <ChplConfirmDeveloperContact
                       contact={developer.contact}
                       editing
                       formik={formik}
                       handleChange={handleChange}
                     />
-                  </div>
-                </div>
+                  </Box>
+                </Box>
               </CardContent>
             </Card>
           ) : (
@@ -354,7 +351,7 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
                     required
                     value={selectedDeveloper}
                     onChange={handleSelectOnChange}
-                    className={classes.chpltextfieldSpacing}
+                    sx={styles.chpltextfieldSpacing}
                   >
                     {developers.map((item) => (
                       <MenuItem value={item} key={item.id}>
@@ -372,7 +369,7 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
                       onClick={() => setIsShowingComparison(true)}
                     >
                       Compare with uploaded information
-                      <CompareArrowsIcon className={classes.iconSpacing} />
+                      <CompareArrowsIcon sx={styles.iconSpacing} />
                     </Button>
                     )}
                 </CardContent>
@@ -386,7 +383,7 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
                 )}
             </>
           )}
-      </div>
+      </Box>
     </Container>
   );
 }

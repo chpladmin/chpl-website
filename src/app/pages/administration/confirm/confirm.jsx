@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  CircularProgress,
-  Container,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+  Box, Button, CircularProgress, Container, Typography,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -29,7 +25,7 @@ const replaceDeveloperCode = (chplProductNumber, code) => {
   return parts.join('.');
 };
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -47,10 +43,16 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
+  snackbarActions: {
+    display: 'flex',
+    gap: '8px',
+    paddingRight: '8px',
+    pointerEvents: 'auto',
+  },
   snackbarIcon: {
     marginLeft: '4px',
   },
-});
+};
 
 function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
@@ -65,7 +67,6 @@ function ChplConfirm({ id }) {
   const [staged, setStaged] = useState(undefined);
   const [uploaded, setUploaded] = useState(undefined);
   const [warnings, setWarnings] = useState([]);
-  const classes = useStyles();
   let updateActionBar;
 
   useEffect(() => {
@@ -107,17 +108,11 @@ function ChplConfirm({ id }) {
         enqueueSnackbar('The Listing has been confirmed', {
           variant: 'success',
           action: (key) => (
-            <div style={{
-              display: 'flex',
-              gap: '8px',
-              paddingRight: '8px',
-              pointerEvents: 'auto',
-            }}
-            >
+            <Box sx={styles.snackbarActions}>
               <Button
-                color="default"
+                color="inherit"
                 variant="contained"
-                style={{marginRight: '4px'}}
+                sx={{ marginRight: '4px' }}
                 onClick={() => {
                   window.location.href = `#/listing/${result.data.id}`;
                   closeSnackbar(key);
@@ -126,15 +121,14 @@ function ChplConfirm({ id }) {
                 View Listing
               </Button>
               <Button
-                color="default"
+                color="inherit"
                 variant="contained"
                 onClick={() => closeSnackbar(key)}
               >
                 Dismiss
-                {' '}
-                <CloseIcon className={classes.snackbarIcon} />
+                <CloseIcon sx={styles.snackbarIcon} />
               </Button>
-            </div>
+            </Box>
           ),
         });
         setIsSubmitting(false);
@@ -342,7 +336,7 @@ function ChplConfirm({ id }) {
   return (
     <Container maxWidth="lg">
       <PendingListingContext.Provider value={pendingListingState}>
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           <Container maxWidth="md">
             <Typography variant="h6">
               {`Inspecting Listing: ${pending.chplProductNumber}`}
@@ -383,7 +377,7 @@ function ChplConfirm({ id }) {
               <ChplConfirmListing />
             )}
           <ChplActionBar dispatch={handleActionDispatch} />
-        </div>
+        </Box>
       </PendingListingContext.Provider>
     </Container>
   );

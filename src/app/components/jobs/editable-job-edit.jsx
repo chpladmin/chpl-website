@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+  Box, Button, Card, CardContent, CardHeader, IconButton, Typography,
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -19,7 +13,7 @@ import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'grid',
     gap: '16px',
@@ -40,7 +34,7 @@ const useStyles = makeStyles({
   subHeaderColor: {
     color: '#000000',
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -51,7 +45,6 @@ function ChplEditableJobEdit(props) {
   const { dispatch, job: initialJob } = props;
   const [job, setJob] = useState({});
   const [emails, setEmails] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -108,18 +101,18 @@ function ChplEditableJobEdit(props) {
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Edit Job: ${job.name}`}
           subheader={(
-            <Typography className={classes.subHeaderColor} variant="body1">
+            <Typography sx={styles.subHeaderColor} variant="body1">
               {job.description}
             </Typography>
           )}
         />
-        <CardContent className={classes.container}>
+        <CardContent sx={styles.container}>
           <Card>
             <CardContent>
               <Typography gutterBottom variant="subtitle1">
                 Add Subscribers
               </Typography>
-              <div className={classes.divSpacing}>
+              <Box sx={styles.divSpacing}>
                 <ChplTextField
                   id="email"
                   name="email"
@@ -136,9 +129,9 @@ function ChplEditableJobEdit(props) {
                   color="primary"
                 >
                   Add
-                  <AddIcon className={classes.iconSpacing} />
+                  <AddIcon sx={styles.iconSpacing} />
                 </Button>
-              </div>
+              </Box>
             </CardContent>
           </Card>
           <Card>
@@ -148,7 +141,7 @@ function ChplEditableJobEdit(props) {
               </Typography>
               <div>
                 { emails.map((item) => (
-                  <div className={classes.divSpacing} key={item}>
+                  <Box sx={styles.divSpacing} key={item}>
                     <div>
                       {item}
                     </div>
@@ -156,11 +149,12 @@ function ChplEditableJobEdit(props) {
                       <IconButton
                         onClick={() => remove(item)}
                         color="default"
+                        size="large"
                       >
                         <DeleteIcon color="error" />
                       </IconButton>
                     </div>
-                  </div>
+                  </Box>
                 ))}
               </div>
             </CardContent>

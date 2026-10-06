@@ -1,7 +1,7 @@
 /* global DEVELOPER_MODE */
 
 import React from 'react';
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import { bool, node } from 'prop-types';
@@ -27,28 +27,30 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
         domain: '.healthit.gov',
       }}
       >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <SnackbarWrapper>
-            <ApiWrapper showQueryTools={showQueryTools}>
-              <UserWrapper>
-                <FlagWrapper>
-                  <CompareWrapper>
-                    <CmsWrapper>
-                      <AnalyticsProvider>
-                        <HashProvider>
-                          <ChplAppLayout>
-                            {children}
-                          </ChplAppLayout>
-                        </HashProvider>
-                      </AnalyticsProvider>
-                    </CmsWrapper>
-                  </CompareWrapper>
-                </FlagWrapper>
-              </UserWrapper>
-            </ApiWrapper>
-          </SnackbarWrapper>
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <SnackbarWrapper>
+              <ApiWrapper showQueryTools={showQueryTools}>
+                <UserWrapper>
+                  <FlagWrapper>
+                    <CompareWrapper>
+                      <CmsWrapper>
+                        <AnalyticsProvider>
+                          <HashProvider>
+                            <ChplAppLayout>
+                              {children}
+                            </ChplAppLayout>
+                          </HashProvider>
+                        </AnalyticsProvider>
+                      </CmsWrapper>
+                    </CompareWrapper>
+                  </FlagWrapper>
+                </UserWrapper>
+              </ApiWrapper>
+            </SnackbarWrapper>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </CookiesProvider>
     </Provider>
   );

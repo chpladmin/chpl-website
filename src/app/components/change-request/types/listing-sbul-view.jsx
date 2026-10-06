@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
-import {
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
 import { ChplLink } from 'components/util';
 import { ChangeRequestContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -18,12 +15,11 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '8px',
   },
-});
+};
 
 function ChplChangeRequestListingSbulView() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest } = useContext(ChangeRequestContext);
-  const classes = useStyles();
 
   const getCurrent = () => {
     if (changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList) {
@@ -43,16 +39,16 @@ function ChplChangeRequestListingSbulView() {
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.detailsContainer}>
+    <Box sx={styles.container}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">
           Current Service Base URL List
         </Typography>
         <Typography>
           { getCurrent() }
         </Typography>
-      </div>
-      <div className={classes.detailsContainer}>
+      </Box>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">
           Submitted Service Base URL List
         </Typography>
@@ -66,8 +62,8 @@ function ChplChangeRequestListingSbulView() {
             }}
           />
         </Typography>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

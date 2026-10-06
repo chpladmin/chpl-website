@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
+} from '@mui/material';
+import DataUsageOutlinedIcon from '@mui/icons-material/DataUsageOutlined';
 
 import ChplTestDataView from './test-data-view';
 

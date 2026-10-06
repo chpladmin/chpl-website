@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  makeStyles,
-} from '@material-ui/core';
-import CreateIcon from '@material-ui/icons/Create';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+  Button, Card, CardHeader, CardContent,
+} from '@mui/material';
+import CreateIcon from '@mui/icons-material/Create';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setLoginState } from 'components/login/userInfo.slice';
@@ -15,7 +11,7 @@ import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -25,14 +21,13 @@ const useStyles = makeStyles({
     backgroundColor: palette.secondary,
     padding: '16px',
   },
-});
+};
 
 function ChplLoggedIn() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userInfo.user);
   const { logout } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
-  const classes = useStyles();
 
   const changePassword = (e) => {
     e.stopPropagation();
@@ -46,8 +41,8 @@ function ChplLoggedIn() {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title={user?.fullName ?? 'Logged in'} />
-      <CardContent className={classes.grid}>
+      <CardHeader sx={styles.loginHeader} title={user?.fullName ?? 'Logged in'} />
+      <CardContent sx={styles.grid}>
         <Button
           fullWidth
           color="primary"

@@ -1,13 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import {
-  Box,
-  Button,
-  ButtonGroup,
-  Card,
-  Menu,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, ButtonGroup, Card, Menu, MenuItem,
+} from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -16,31 +10,31 @@ import {
   shape,
   string,
 } from 'prop-types';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import SortIcon from '@material-ui/icons/Sort';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import SortIcon from '@mui/icons-material/Sort';
 
 import { theme, palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     marginRight: '16px',
     display: 'flex',
     border: `1px solid ${palette.primaryBorder}`,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: '4px',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
       marginRight: 0,
     },
   },
   buttonGroup: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
   primaryButton: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flex: '1 1 auto',
       justifyContent: 'flex-start',
     },
@@ -49,7 +43,7 @@ const useStyles = makeStyles({
     borderLeft: `1px solid ${palette.primaryBorder}`,
     borderRadius: 0,
   },
-});
+};
 
 function ChplSortControls({
   sortOptions,
@@ -57,7 +51,6 @@ function ChplSortControls({
   order,
   onSort,
 }) {
-  const classes = useStyles();
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
   const currentOrderRef = useRef(order);
 
@@ -92,10 +85,10 @@ function ChplSortControls({
   };
 
   return (
-    <Card elevation={0} className={classes.container}>
-      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="text">
+    <Card elevation={0} sx={styles.container}>
+      <ButtonGroup sx={styles.buttonGroup} color="primary" size="small" variant="text">
         <Button
-          className={classes.primaryButton}
+          sx={styles.primaryButton}
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={<SortIcon />}
           color="primary"
@@ -107,7 +100,7 @@ function ChplSortControls({
           onClick={toggleSortDirection}
           aria-label={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
           title={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
-          className={classes.directionButton}
+          sx={styles.directionButton}
           style={{ minWidth: '40px', padding: '9px 4px' }}
           color="primary"
         >

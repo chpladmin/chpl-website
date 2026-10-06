@@ -8,10 +8,9 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import EditIcon from '@material-ui/icons/Edit';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import EditIcon from '@mui/icons-material/Edit';
 import { useSelector } from 'react-redux';
 import { arrayOf, bool, func } from 'prop-types';
 
@@ -19,12 +18,12 @@ import { getDataDisplay } from './compliance.services';
 
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useAnalyticsContext, ListingContext, UserContext } from 'shared/contexts';
-import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { getRequirementDisplay, getSurveillanceTitle, sortRequirements } from 'services/surveillance.service';
+import { ListingContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   editButton: {
     display: 'flex',
@@ -79,9 +78,9 @@ const useStyles = makeStyles({
   rotate: {
     transform: 'rotate(180deg)',
   },
-});
+};
 
-const getItemsSurveilled = (surveillance, classes) => {
+const getItemsSurveilled = (surveillance) => {
   if (surveillance.requirements?.length === 0) { return 'None'; }
   return (
     <List>
@@ -89,9 +88,9 @@ const getItemsSurveilled = (surveillance, classes) => {
         .sort(sortRequirements)
         .map((req) => (
           <ListItem key={req.id}>
-            <span className={(req.requirementType?.removed ? classes.removedText : '')}>
+            <Box component="span" sx={req.requirementType?.removed ? styles.removedText : undefined}>
               { getRequirementDisplay(req) }
-            </span>
+            </Box>
           </ListItem>
         ))}
     </List>
@@ -108,7 +107,7 @@ const getSurveillanceResultsSummary = (surv) => surv.requirements
       removed: req.requirementType?.removed,
     })));
 
-const getSurveillanceResult = (surveillance, classes) => {
+const getSurveillanceResult = (surveillance) => {
   if (getSurveillanceResultsSummary(surveillance).length === 0) { return 'No Non-Conformities Found'; }
   return (
     <List>
@@ -118,7 +117,7 @@ const getSurveillanceResult = (surveillance, classes) => {
             <Typography variant="body1">
               { `${result.statusName} Non-Conformity Found for ` }
               {' '}
-              <span className={result.removed ? classes.removedText : ''}>{ result.display }</span>
+              <Box component="span" sx={result.removed ? styles.removedText : undefined}>{ result.display }</Box>
             </Typography>
           </Box>
         </ListItem>
@@ -138,7 +137,6 @@ function ChplSurveillance({
   const { hasAnyRole } = useContext(UserContext);
   const [surveillance, setSurveillance] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setSurveillance(initialSurveillance);
@@ -155,7 +153,7 @@ function ChplSurveillance({
     ? (
       <>
         <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
       </>
     )
     : (
@@ -192,12 +190,12 @@ function ChplSurveillance({
 
   return (
     <Accordion
-      className={classes.surveillance}
       onChange={handleAccordionChange}
+      sx={styles.surveillance}
     >
       <AccordionSummary
         expandIcon={getIcon()}
-        className={classes.surveillanceSummary}
+        sx={styles.surveillanceSummary}
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography>
@@ -223,24 +221,24 @@ function ChplSurveillance({
           )}
         { surveillance.map((surv) => (
           <Accordion
-            className={classes.surveillance}
             onChange={handleWithinChange}
             key={surv.id}
+            sx={styles.surveillance}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              className={classes.surveillanceDetailsSummary}
+              sx={styles.surveillanceDetailsSummary}
             >
               <Typography>
                 { getSurveillanceTitle(surv) }
               </Typography>
             </AccordionSummary>
             <CardContent>
-              <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
+              <Box display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
                 { canManageSurveillance()
                 && (
-                  <Box className={classes.editButton}>
+                  <Box sx={styles.editButton}>
                     <Button
                       color="primary"
                       variant="outlined"
@@ -258,20 +256,20 @@ function ChplSurveillance({
                     {surv.type.name === 'Randomized' ? ` (${surv.randomizedSitesUsed} sites used in surveillance)` : ''}
                   </Typography>,
                   'The type of surveillance conducted (either randomized or reactive).') }
-                { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv, classes), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
-                { getDataDisplay('Surveillance Result', getSurveillanceResult(surv, classes), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
+                { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
+                { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
               { surv.requirements.map((req) => req.nonconformities.map((nc) => (
                 <Accordion
                   variant="elevation"
-                  className={classes.surveillance}
                   onChange={handleDetailsChange}
                   key={nc.id}
+                  sx={styles.surveillance}
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    className={classes.surveillanceDetailsHeaderWithBorder}
                     color="secondary"
+                    sx={styles.surveillanceDetailsHeaderWithBorder}
                   >
                     <Typography>
                       Details for
@@ -279,16 +277,16 @@ function ChplSurveillance({
                       { getRequirementDisplay(req) }
                     </Typography>
                   </AccordionSummary>
-                  <Box className={classes.surveillanceDetailsBorder}>
+                  <Box sx={styles.surveillanceDetailsBorder}>
                     <CardContent>
-                      <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+                      <Box display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                         { getDataDisplay('Date of Determination of Non-Conformity', <Typography>{ getDisplayDateFormat(nc.dateOfDeterminationDay) }</Typography>, 'The date that the ONC-ACB determined that a non-conformity was present.') }
                         { getDataDisplay('Corrective Action Plan Approval Date', <Typography>{ getDisplayDateFormat(nc.capApprovalDay) }</Typography>, 'The date that the ONC-ACB approved the corrective action plan proposed by the developer.') }
                         { getDataDisplay('Date Corrective Action Began', <Typography>{ getDisplayDateFormat(nc.capStartDay) }</Typography>, 'The date that the corrective action was started.') }
                         { getDataDisplay('Date Corrective Action Must Be Completed', <Typography>{ getDisplayDateFormat(nc.capMustCompleteDay) }</Typography>, 'The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status.') }
                         { getDataDisplay('Date Corrective Action Was Completed', <Typography>{ getDisplayDateFormat(nc.capEndDay) }</Typography>, 'The date that the corrective action was completed.') }
                         { getDataDisplay('Non-Conformity Type',
-                          <Typography className={nc.type.removed ? classes.removedText : ''}>
+                          <Typography sx={nc.type.removed ? styles.removedText : undefined}>
                             {nc.type.removed ? 'Removed | ' : ''}
                             {' '}
                             {nc.type.number ? (`${nc.type.number}: `) : ''}

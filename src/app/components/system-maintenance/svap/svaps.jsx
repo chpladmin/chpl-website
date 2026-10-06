@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
+} from '@mui/material';
+import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplSvapEdit from './svap-edit';

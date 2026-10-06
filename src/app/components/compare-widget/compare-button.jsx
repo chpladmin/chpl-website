@@ -1,19 +1,12 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
-import CompareArrows from '@material-ui/icons/CompareArrows';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button } from '@mui/material';
+import CompareArrows from '@mui/icons-material/CompareArrows';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { eventTrack } from 'services/analytics.service';
 import { CmsContext, CompareContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
-
-const useStyles = makeStyles({
-  ...utilStyles,
-});
 
 function ChplCompareButton({ listing }) {
   const { analytics } = useAnalyticsContext();
@@ -24,7 +17,6 @@ function ChplCompareButton({ listing }) {
     removeListing,
     setIsOpen,
   } = useContext(CompareContext);
-  const classes = useStyles();
 
   const handleClick = () => {
     eventTrack({
@@ -45,7 +37,7 @@ function ChplCompareButton({ listing }) {
   return (
     <Button
       color="secondary"
-      className={isInWidget(listing) ? classes.deleteButtonOutlined : ''}
+      sx={isInWidget(listing) ? utilStyles.deleteButtonOutlined : undefined}
       variant="contained"
       id={`toggle-compare-${listing.id}`}
       onClick={handleClick}
