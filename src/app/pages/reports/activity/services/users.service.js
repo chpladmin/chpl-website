@@ -1,4 +1,9 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import {
+  compareArrays,
+  compareBoolean,
+  compareObject,
+  comparePrimitive,
+} from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
@@ -29,16 +34,16 @@ const compare = (before, after, key, title = 'unknown') => {
 lookup = {
   shortCircuit: [
   ],
-  'root.accountEnabled': { message: (before, after) => comparePrimitive(before, after, 'accountEnabled', 'Account Enabled') },
-  'root.accountLocked': { message: (before, after) => comparePrimitive(before, after, 'accountLocked', 'Account Locked') },
-  'root.accountNonLocked': { message: (before, after) => comparePrimitive(before, after, 'accountNonLocked', 'Account Non-Locked') },
+  'root.accountEnabled': { message: (before, after) => compareBoolean(before, after, 'accountEnabled', 'Account Enabled') },
+  'root.accountLocked': { message: (before, after) => compareBoolean(before, after, 'accountLocked', 'Account Locked') },
+  'root.accountNonLocked': { message: (before, after) => compareBoolean(before, after, 'accountNonLocked', 'Account Non-Locked') },
   'root.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
-  'root.enabled': { message: (before, after) => comparePrimitive(before, after, 'enabled', 'Enabled') },
+  'root.enabled': { message: (before, after) => compareBoolean(before, after, 'enabled', 'Enabled') },
   'root.failedLoginCount': { message: (before, after) => comparePrimitive(before, after, 'failedLoginCount', 'Failed Login Count') },
   'root.friendlyName': { message: (before, after) => comparePrimitive(before, after, 'friendlyName', 'Friendly Name') },
   'root.fullName': { message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name') },
   'root.organizations': { message: (before, after) => compare(before, after, 'organizations', 'Organizations') },
-  'root.passwordResetRequired': { message: (before, after) => comparePrimitive(before, after, 'passwordResetRequired', 'Password Reset Required') },
+  'root.passwordResetRequired': { message: (before, after) => compareBoolean(before, after, 'passwordResetRequired', 'Password Reset Required') },
   'root.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
   'root.signatureDate': { message: (before, after) => comparePrimitive(before, after, 'signatureDate', 'Signature Date', getDisplayDateFormat) },
   'root.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
