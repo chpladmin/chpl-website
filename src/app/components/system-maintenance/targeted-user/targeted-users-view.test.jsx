@@ -62,6 +62,18 @@ describe('the targeted users view', () => {
     expect(fieldValue(beta, 'Suspended by ONC')).toBe('0');
   });
 
+  it('shows the total in the title row, apart from the statuses', () => {
+    renderView();
+    const card = cardFor('beta');
+    const totalLabel = within(card).getByText('Total Listings');
+    const titleLabel = within(card).getByText('Targeted User');
+    let shared = totalLabel.parentElement;
+    while (!shared.contains(titleLabel)) { shared = shared.parentElement; }
+    // The closest element holding both the title and the total holds no status
+    expect(within(shared).queryByText('Active')).not.toBeInTheDocument();
+    expect(within(shared).getByText('beta')).toBeInTheDocument();
+  });
+
   it('lists the statuses in the certification status filter order', () => {
     renderView();
     const labels = within(cardFor('beta')).getAllByText(new RegExp(`^(${displayOrder.map((s) => s.replace(/[/-]/g, '\\$&')).join('|')})$`))

@@ -13,10 +13,31 @@ import { ChplSearchResultCard, ChplSortControls } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { getStatusIcon } from 'services/listing.service';
 import { targetedUserUsage as targetedUserUsagePropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  // Sits beside the card title and mirrors its label and value styling, but only takes the width a count needs
+  totalField: {
+    minWidth: '96px',
+  },
+  totalLabel: {
+    color: theme.palette.text.primary,
+    fontSize: '0.85em',
+    fontWeight: 600,
+    lineHeight: 1.1,
+  },
+  totalLabelRow: {
+    alignItems: 'center',
+    display: 'flex',
+    minHeight: '16px',
+    paddingTop: theme.spacing(0.25),
+  },
+  totalValue: {
+    fontSize: '1.35em',
+    fontWeight: 700,
+    lineHeight: 1.25,
+  },
 });
 
 // Same order as the certification status filter and the status icon legend;
@@ -108,8 +129,15 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses, targete
               key={item.id}
               cardTitle="Targeted User"
               cardTitleValue={item.name}
+              additionalTitleContent={(
+                <Box className={classes.totalField}>
+                  <Box className={classes.totalLabelRow}>
+                    <Typography className={classes.totalLabel}>Total Listings</Typography>
+                  </Box>
+                  <Typography className={classes.totalValue}>{ item.total }</Typography>
+                </Box>
+              )}
               fieldGroups={[
-                [{ label: 'Total Listings', value: item.total }],
                 statuses.map((status) => ({
                   label: status.name,
                   value: item[getStatusKey(status)],
