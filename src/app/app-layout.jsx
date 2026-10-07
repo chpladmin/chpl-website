@@ -51,6 +51,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
+    minWidth: 0,
     overflowY: 'auto', // contain absolutely-positioned descendants (e.g. sr-only spans) so they don't extend the document
     position: 'relative',
     [theme.breakpoints.down('md')]: {

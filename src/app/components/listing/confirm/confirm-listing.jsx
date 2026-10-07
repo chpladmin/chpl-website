@@ -1,23 +1,15 @@
 import React, { useContext } from 'react';
 import {
-  Box, Card, CardContent, CardHeader, CircularProgress, Container,
+  Card, CardContent, CardHeader, CircularProgress, Container,
 } from '@mui/material';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import ChplListingView from 'components/listing/listing-view';
 import { ListingContext, PendingListingContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
 
 const styles = {
-  pageBackground: {
-    flexGrow: 1,
-    backgroundColor: palette.backgroundPage,
-    backgroundImage: `radial-gradient(${'#d6d4cf'} 0.5px, transparent 0.25px)`,
-    backgroundSize: '18px 18px',
-    padding: theme.spacing(4),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(8),
-    },
+  confirmContainer: {
+    padding: '32px 0',
   },
 };
 
@@ -31,8 +23,7 @@ function ChplConfirmListing() {
   };
 
   return (
-    <Box sx={styles.pageBackground}>
-      <Container maxWidth="lg">
+    <Container maxWidth="md" sx={styles.confirmContainer}>
       <Card>
         <CardHeader
           title="Listing"
@@ -49,8 +40,7 @@ function ChplConfirmListing() {
           </ErrorBoundary>
         </CardContent>
       </Card>
-      </Container>
-    </Box>
+    </Container>
   );
 }
 

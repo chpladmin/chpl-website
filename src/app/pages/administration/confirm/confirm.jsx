@@ -34,9 +34,6 @@ const styles = {
     paddingTop: '16px',
     gap: '16px',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 100px)',
-  },
   menuItems: {
     padding: '8px',
     justifyContent: 'space-between',
@@ -115,6 +112,7 @@ function ChplConfirm({ id }) {
               <Button
                 color="inherit"
                 variant="contained"
+                sx={{ marginRight: '4px' }}
                 onClick={() => {
                   window.location.href = `#/listing/${result.data.id}`;
                   closeSnackbar(key);
@@ -327,7 +325,7 @@ function ChplConfirm({ id }) {
   };
 
   return (
-    <Container sx={styles.fixFooterSpacing} maxWidth="lg">
+    <Container maxWidth="lg">
       <PendingListingContext.Provider value={pendingListingState}>
         <Box sx={styles.container}>
           <Container maxWidth="md">

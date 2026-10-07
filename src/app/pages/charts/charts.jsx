@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Card, CardContent, Typography, Container, Button,
+  Box, Card, CardContent, Typography, Button,
 } from '@mui/material';
 
 import { useFetchReportMetadata } from 'api/reports';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const styles = {
-  container: {
-    padding: theme.spacing(8),
-    backgroundColor: palette.greyLight,
-    minHeight: 'calc(100vh - 238px)',
-    alignItems: 'flex-start',
-  },
   stickyCard: {
     position: 'sticky',
     top: '116px',
@@ -105,94 +100,88 @@ function ChplCharts() {
 
   return (
     <>
-      <Box bgcolor={palette.white} p={8}>
-        <Container maxWidth="lg">
-          <Typography variant="h1">Charts</Typography>
-        </Container>
-      </Box>
-      <Box sx={styles.container}>
-        <Container maxWidth="lg">
-          <Box display="flex" alignItems="flex-start" flexDirection="row" gap="32px" width="100%">
-            <Box maxWidth="350px">
-              <Card sx={styles.stickyCard}>
+      <ChplPageHeader text="Charts" />
+      <ChplPageBody>
+        <Box display="flex" alignItems="flex-start" flexDirection="row" gap="32px" width="100%">
+          <Box maxWidth="350px">
+            <Card sx={styles.stickyCard}>
+              <CardContent>
+                <Box sx={styles.cardButtons}>
+                  <Button
+                    color="primary"
+                    sx={[styles.menuButton, activeReport === undefined && styles.activeMenuButton]}
+                    onClick={() => handleReportChange(undefined)}
+                    fullWidth
+                    variant="text"
+                  >
+                    Charts
+                  </Button>
+                  { reportMetadata
+                    .sort((a, b) => (a.title < b.title ? -1 : 1))
+                    .map((report) => (
+                      <Button
+                        key={`${report.title}-button`}
+                        color="primary"
+                        sx={[styles.menuButton, activeReport?.title === report.title && styles.activeMenuButton]}
+                        onClick={() => handleReportChange(report.title)}
+                        id={`report-${report.title}`}
+                        fullWidth
+                        variant="text"
+                      >
+                        { report.title }
+                      </Button>
+                    ))}
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box width="100%">
+            { !activeReport && (
+              <Card>
                 <CardContent>
-                  <Box sx={styles.cardButtons}>
-                    <Button
-                      color="primary"
-                      sx={[styles.menuButton, activeReport === undefined && styles.activeMenuButton]}
-                      onClick={() => handleReportChange(undefined)}
-                      fullWidth
-                      variant="text"
-                    >
-                      Charts
-                    </Button>
-                    { reportMetadata
-                      .sort((a, b) => (a.title < b.title ? -1 : 1))
-                      .map((report) => (
-                        <Button
-                          key={`${report.title}-button`}
-                          color="primary"
-                          sx={[styles.menuButton, activeReport?.title === report.title && styles.activeMenuButton]}
-                          onClick={() => handleReportChange(report.title)}
-                          id={`report-${report.title}`}
-                          fullWidth
-                          variant="text"
-                        >
-                          { report.title }
-                        </Button>
-                      ))}
+                  <Typography gutterBottom variant="h6">
+                    <b>CHPL Charts</b>
+                  </Typography>
+                  <Typography gutterBottom>
+                    A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
+                  </Typography>
+                  <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gap="32px">
+                    {reportMetadata && reportMetadata.map((report) => (
+                      <Card
+                        key={report.title}
+                        sx={styles.card}
+                        onClick={() => handleReportChange(report.title)}
+                      >
+                        <CardContent sx={styles.cardContent}>
+                          {report.icon}
+                          <Typography>{ report.title }</Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </Box>
                 </CardContent>
               </Card>
-            </Box>
-            <Box width="100%">
-              { !activeReport && (
-                <Card>
-                  <CardContent>
-                    <Typography gutterBottom variant="h6">
-                      <b>CHPL Charts</b>
-                    </Typography>
-                    <Typography gutterBottom>
-                      A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
-                    </Typography>
-                    <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gap="32px">
-                      {reportMetadata && reportMetadata.map((report) => (
-                        <Card
-                          key={report.title}
-                          sx={styles.card}
-                          onClick={() => handleReportChange(report.title)}
-                        >
-                          <CardContent sx={styles.cardContent}>
-                            {report.icon}
-                            <Typography>{ report.title }</Typography>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </Box>
-                  </CardContent>
-                </Card>
-              )}
-              { activeReport && (
-                <Card
-                  sx={{ width: '100%' }}
-                  key={activeReport.title}
-                >
-                  <CardContent sx={styles.reportCardContent}>
-                    <Box
-                      component="iframe"
-                      title={activeReport.title}
-                      sx={styles.iframe}
-                      height={activeReport.height}
-                      src={activeReport.url}
-                      allowFullScreen
-                    />
-                  </CardContent>
-                </Card>
-              )}
-            </Box>
+            )}
+            { activeReport && (
+              <Card
+                sx={{ width: '100%' }}
+                key={activeReport.title}
+              >
+                <CardContent sx={styles.reportCardContent}>
+                  <Box
+                    component="iframe"
+                    title={activeReport.title}
+                    sx={styles.iframe}
+                    height={activeReport.height}
+                    src={activeReport.url}
+                    allowFullScreen
+                  />
+                </CardContent>
+              </Card>
+            )}
           </Box>
-        </Container>
-      </Box>
+        </Box>
+      </ChplPageBody>
     </>
   );
 }

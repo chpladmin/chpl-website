@@ -80,9 +80,6 @@ const styles = {
     gap: '16px',
     flexDirection: 'column',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 257px)',
-  },
   formSubContainer: {
     display: 'grid',
     gap: '16px',
@@ -239,7 +236,7 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
   if (developers.length === 0 || isLoading || !isSuccess) { return <CircularProgress />; }
 
   return (
-    <Container sx={styles.fixFooterSpacing} maxWidth="md">
+    <Container maxWidth="md">
       <Box sx={styles.developerConfirm}>
         <Box sx={styles.developerSubContainer}>
           <Button

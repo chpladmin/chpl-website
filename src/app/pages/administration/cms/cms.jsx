@@ -13,9 +13,6 @@ const styles = {
     paddingTop: '16px',
     paddingBottom: '16px',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 167px)',
-  },
 };
 
 function ChplCms() {
@@ -41,7 +38,7 @@ function ChplCms() {
 
   if (cmsDisabledIsOn) {
     return (
-      <Container sx={styles.fixFooterSpacing} maxWidth="lg">
+      <Container maxWidth="lg">
         <Typography variant="body1">
           Access to the CMS ID Creator has been paused. Please check back periodically for updates.
         </Typography>

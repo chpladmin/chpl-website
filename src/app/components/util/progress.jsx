@@ -13,6 +13,7 @@ import {
   bool,
   func,
   number,
+  oneOfType,
   string,
 } from 'prop-types';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -67,7 +68,7 @@ const styles = {
 };
 
 function ChplProgress(props) {
-  const { steps, buttonContainerTop = '2px' } = props;
+  const { steps, buttonContainerTop = '2px', buttonContainerMarginTop = 0 } = props;
   const [value, setValue] = useState(0);
   const [canNext, setCanNext] = useState(false);
   const [canPrevious, setCanPrevious] = useState(false);
@@ -98,7 +99,7 @@ function ChplProgress(props) {
           ))}
         </Stepper>
       </Container>
-      <Box sx={{ ...styles.stepperButtonContainer, top: buttonContainerTop }}>
+      <Box sx={{ ...styles.stepperButtonContainer, top: buttonContainerTop, marginTop: buttonContainerMarginTop }}>
         <ButtonGroup variant="text" color="primary" sx={styles.stepperButton} size="medium">
           <Button
             color="primary"
@@ -132,6 +133,7 @@ export default ChplProgress;
 
 ChplProgress.propTypes = {
   buttonContainerTop: string,
+  buttonContainerMarginTop: oneOfType([number, string]),
   steps: arrayOf(string).isRequired,
   dispatch: func.isRequired,
   value: number.isRequired,
