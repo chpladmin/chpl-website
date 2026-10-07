@@ -1,12 +1,15 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import {
   fireEvent, render, screen, within,
 } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 import { filters } from './targeted-users';
 import ChplTargetedUsersView from './targeted-users-view';
 
 import { useFetchTargetedUsers } from 'api/standards';
+import browserInfoReducer from 'components/browser/browserInfo.slice';
 import { FilterProvider } from 'components/filter';
 
 jest.mock('api/standards', () => ({
@@ -71,10 +74,17 @@ const cardFor = (name) => screen.getByText(name).closest('.MuiCard-root');
 // Each field renders its label and then its value
 const fieldValue = (card, label) => within(card).getByText(label).closest('div').parentElement.lastChild.textContent;
 
+const store = configureStore({
+  reducer: { browserInfo: browserInfoReducer },
+  preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' } },
+});
+
 const renderView = () => render(
-  <FilterProvider filters={filters} storageKey="test-targetedUsers">
-    <ChplTargetedUsersView certificationStatuses={certificationStatuses} />
-  </FilterProvider>,
+  <Provider store={store}>
+    <FilterProvider filters={filters} storageKey="test-targetedUsers">
+      <ChplTargetedUsersView certificationStatuses={certificationStatuses} />
+    </FilterProvider>
+  </Provider>,
 );
 
 const chooseSort = (text) => {
@@ -251,5 +261,44 @@ describe('the targeted users filters', () => {
       { value: 'Before', selected: '2024-12-31' },
       { value: 'After', selected: '2024-01-01' },
     ])).toBe('creationDateStart=2024-01-01&creationDateEnd=2024-12-31');
+  });
+});
+
+describe('downloading the targeted users', () => {
+  let open;
+  beforeEach(() => { open = jest.spyOn(window, 'open').mockImplementation(() => {}); });
+  afterEach(() => open.mockRestore());
+
+  const downloadButton = () => screen.queryByRole('button', { name: /^Download information for/ });
+
+  it('offers to download every match, not just this page', () => {
+    respondWith(targetedUsers, 120);
+    renderView();
+    expect(downloadButton()).toHaveTextContent('Download information for 120 Targeted Users');
+  });
+
+  it('says Targeted User for a single match', () => {
+    respondWith([targetedUsers[0]], 1);
+    renderView();
+    expect(downloadButton()).toHaveTextContent('Download information for 1 Targeted User');
+  });
+
+  it('is hidden when nothing matches', () => {
+    respondWith([], 0);
+    renderView();
+    expect(downloadButton()).not.toBeInTheDocument();
+  });
+
+  it('downloads with the API key and the current search, and no sign-in token', () => {
+    respondWith(targetedUsers, 120);
+    renderView();
+    fireEvent.click(downloadButton());
+    expect(open).toHaveBeenLastCalledWith('/rest/targeted-users/download?api_key=test-key&');
+
+    fireEvent.change(screen.getByPlaceholderText('Search by Name...'), { target: { value: 'clin' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Search' }));
+    fireEvent.click(downloadButton());
+    expect(open).toHaveBeenLastCalledWith('/rest/targeted-users/download?api_key=test-key&searchTerm=clin');
+    expect(open.mock.calls.every(([url]) => !url.includes('authorization'))).toBe(true);
   });
 });

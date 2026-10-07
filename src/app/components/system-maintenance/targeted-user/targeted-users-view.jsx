@@ -3,15 +3,18 @@ import React, {
 } from 'react';
 import {
   Box,
+  Button,
   CircularProgress,
   FormControlLabel,
   Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import {
   arrayOf, number, shape, string,
 } from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { useFetchTargetedUsers } from 'api/standards';
 import {
@@ -21,9 +24,11 @@ import {
 } from 'components/filter';
 import { certificationStatuses as certificationStatusesFilter } from 'components/filter/filters';
 import { ChplPagination, ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 // Sorted on the server: `property` is the API's orderBy value
@@ -78,6 +83,9 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const [results, setResults] = useState([]);
   // An experiment for team feedback, so deliberately not persisted anywhere
   const [showZeroCounts, setShowZeroCounts] = useState(true);
+  const apiKey = useSelector((state) => state.browserInfo.apiKey);
+  const API = useSelector((state) => state.browserInfo.api);
+  const { analytics } = useAnalyticsContext();
   const filterContext = useFilterContext();
   const query = filterContext.queryString();
   const classes = useStyles();
@@ -145,6 +153,16 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
         .map((entry) => ({ targetedUser: targetedUser.name, ...entry })))
       .forEach((unmatched) => console.warn('Targeted User usage has an unknown certification status', unmatched)); // eslint-disable-line no-console
   }, [results, statuses]);
+
+  // Every match, not just this page. The data is public, so the API key is enough
+  const downloadTargetedUsers = () => {
+    eventTrack({
+      ...analytics,
+      event: 'Download Targeted Users',
+      label: recordCount,
+    });
+    window.open(`${API}/targeted-users/download?api_key=${apiKey}&${query}`);
+  };
 
   const handleSort = (property, orderDirection) => {
     setOrderBy(property);
@@ -220,6 +238,22 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                     order={sortDescending ? 'desc' : 'asc'}
                     onSort={handleSort}
                   />
+                  { recordCount > 0
+                    && (
+                      <Button
+                        onClick={downloadTargetedUsers}
+                        id="download-targeted-users"
+                        variant="outlined"
+                        color="primary"
+                        endIcon={<CloudDownloadOutlinedIcon />}
+                      >
+                        Download information for
+                        {' '}
+                        { recordCount }
+                        {' '}
+                        {`Targeted User${recordCount !== 1 ? 's' : ''}`}
+                      </Button>
+                    )}
                 </Box>
               </Box>
               <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
