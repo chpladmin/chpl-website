@@ -4,6 +4,8 @@ import React, {
 import {
   Box,
   CircularProgress,
+  FormControlLabel,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -74,6 +76,8 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const [results, setResults] = useState([]);
+  // An experiment for team feedback, so deliberately not persisted anywhere
+  const [showZeroCounts, setShowZeroCounts] = useState(true);
   const filterContext = useFilterContext();
   const query = filterContext.queryString();
   const classes = useStyles();
@@ -150,6 +154,18 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
+  // With the zero counts hidden, a targeted user no listing uses has no status row at all
+  const getStatusFieldGroups = (item) => {
+    const fields = statuses
+      .filter((status) => showZeroCounts || item[getStatusKey(status)] > 0)
+      .map((status) => ({
+        label: status.name,
+        value: item[getStatusKey(status)],
+        iconButton: statusOrder.includes(status.name) ? getStatusIcon(status) : undefined,
+      }));
+    return fields.length > 0 ? [fields] : [];
+  };
+
   const getNarrowField = (label, value) => (
     <Box className={classes.narrowField}>
       <Box className={classes.narrowLabelRow}>
@@ -187,6 +203,17 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                     )}
                 </Box>
                 <Box display="flex" alignItems="center" gridGap={4}>
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        id="targeted-users-show-zero-counts"
+                        color="primary"
+                        checked={showZeroCounts}
+                        onChange={() => setShowZeroCounts((prev) => !prev)}
+                      />
+                    )}
+                    label="Show statuses with no listings"
+                  />
                   <ChplSortControls
                     sortOptions={sortOptions}
                     orderBy={orderBy}
@@ -208,13 +235,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                           { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
                         </Box>
                       )}
-                      fieldGroups={[
-                        statuses.map((status) => ({
-                          label: status.name,
-                          value: item[getStatusKey(status)],
-                          iconButton: statusOrder.includes(status.name) ? getStatusIcon(status) : undefined,
-                        })),
-                      ]}
+                      fieldGroups={getStatusFieldGroups(item)}
                     />
                   ))}
               </Box>
