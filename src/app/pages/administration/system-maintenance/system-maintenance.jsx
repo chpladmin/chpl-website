@@ -24,6 +24,7 @@ import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import PlaylistAddCheckOutlinedIcon from '@mui/icons-material/PlaylistAddCheckOutlined';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
@@ -47,6 +48,7 @@ import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-sta
 import ChplStandards from 'components/system-maintenance/standard/standards';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
+import ChplTargetedUsers from 'components/system-maintenance/targeted-user/targeted-users';
 import ChplToolTip from 'components/util/chpl-tooltip';
 import ChplTestData from 'components/system-maintenance/test-data/test-data';
 import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
@@ -214,6 +216,12 @@ const baseItems = [{
   roles: ['chpl-admin'],
   icon: <ChplToolTip title="System Jobs"><PlayArrowOutlinedIcon /></ChplToolTip>,
 }, {
+  id: 'targetedUsers',
+  primary: 'Targeted Users',
+  secondary: 'Table of Targeted Users and the number of Listings using each, by Certification Status',
+  roles: ['chpl-admin', 'chpl-onc'],
+  icon: <ChplToolTip title="Targeted Users"><PeopleOutlinedIcon /></ChplToolTip>,
+}, {
   id: 'testData',
   primary: 'Test Data',
   secondary: 'Table of Test Data',
@@ -339,6 +347,7 @@ function ChplSystemMaintenance() {
           { active === 'subscriptions' && <ChplManageSubscriptions /> }
           { active === 'svaps' && <ChplSvaps /> }
           { active === 'systemJobs' && <ChplSystemJobs /> }
+          { active === 'targetedUsers' && <ChplTargetedUsers /> }
           { active === 'testData' && <ChplTestData /> }
           { active === 'testTools' && <ChplTestTools /> }
           { active === 'ucdProcesses' && <ChplUcdProcesses /> }
