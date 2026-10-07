@@ -90,7 +90,10 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const query = filterContext.queryString();
   const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchTargetedUsers({
+  // `isPreviousData`: the request changed and the old results are still on screen until it answers
+  const {
+    data, isError, isLoading, isPreviousData,
+  } = useFetchTargetedUsers({
     orderBy,
     pageNumber,
     pageSize,
@@ -205,19 +208,25 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
             <>
               <Box className={classes.headerContainer}>
                 <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+                  { isPreviousData && <CircularProgress size={20} /> }
                   {/* Same wording as ChplSearchResultControls on the other search pages */}
-                  <Typography variant="subtitle2">Search Results:</Typography>
-                  { recordCount === 0
+                  { !isPreviousData
                     && (
-                      <Typography>
-                        No results found
-                      </Typography>
-                    )}
-                  { recordCount > 0
-                    && (
-                      <Typography variant="body2">
-                        {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                      </Typography>
+                      <>
+                        <Typography variant="subtitle2">Search Results:</Typography>
+                        { recordCount === 0
+                          && (
+                            <Typography>
+                              No results found
+                            </Typography>
+                          )}
+                        { recordCount > 0
+                          && (
+                            <Typography variant="body2">
+                              {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                            </Typography>
+                          )}
+                      </>
                     )}
                 </Box>
                 <Box display="flex" alignItems="center" gridGap={4}>
@@ -243,6 +252,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                       <Button
                         onClick={downloadTargetedUsers}
                         id="download-targeted-users"
+                        disabled={isPreviousData}
                         variant="outlined"
                         color="primary"
                         endIcon={<CloudDownloadOutlinedIcon />}
