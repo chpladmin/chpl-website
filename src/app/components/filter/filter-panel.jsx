@@ -325,7 +325,7 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
               <Box mt={2}>
                 <Typography sx={styles.directionText} variant="subtitle1" gutterBottom>Select a filter to begin</Typography>
                 <Typography variant="body1">To narrow down your search results, choose a filter category from the left-hand panel.</Typography>
-                <Typography variant="body1">Then, select one or more filter options to apply to your search.</Typography>
+                <Typography sx={{mt: 2}} variant="body1">Then, select one or more filter options to apply to your search.</Typography>
               </Box>
             )}
             { activeCategory?.values.length > 0 && (

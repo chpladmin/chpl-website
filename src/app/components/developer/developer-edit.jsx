@@ -67,7 +67,6 @@ const styles = {
   tableFooterButton: {
     margin: '0 -4px',
     textTransform: 'none',
-    fontSize: '1.5em',
   },
   errorColor: {
     color: '#c44f65',
