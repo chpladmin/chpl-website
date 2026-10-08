@@ -36,7 +36,7 @@ const filters = [{
 }, {
   ...defaultFilter,
   key: 'isUsed',
-  display: 'Used',
+  display: 'Used on Listing',
   getValueEntry: getRadioValueEntry,
   singular: true,
   values: [
