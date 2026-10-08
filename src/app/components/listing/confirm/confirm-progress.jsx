@@ -13,6 +13,7 @@ function ChplConfirmProgress({
 
   return (
     <ChplProgress
+      buttonContainerMarginTop="-16px"
       steps={steps}
       canNext={canNext}
       canPrevious={canPrevious}
