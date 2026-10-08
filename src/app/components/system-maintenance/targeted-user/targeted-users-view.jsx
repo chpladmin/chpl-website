@@ -8,9 +8,8 @@ import {
   FormControlLabel,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import {
   arrayOf, number, shape, string,
 } from 'prop-types';
@@ -38,35 +37,6 @@ const sortOptions = [
   { property: 'CREATION_DATE', text: 'Creation Date' },
 ];
 
-const useStyles = makeStyles({
-  ...utilStyles,
-  // Sit beside the card title and mirror its label and value styling, but only take the width they need
-  narrowFields: {
-    display: 'flex',
-    gap: theme.spacing(3.5),
-  },
-  narrowField: {
-    minWidth: '96px',
-  },
-  narrowLabel: {
-    color: theme.palette.text.primary,
-    fontSize: '0.85em',
-    fontWeight: 600,
-    lineHeight: 1.1,
-  },
-  narrowLabelRow: {
-    alignItems: 'center',
-    display: 'flex',
-    minHeight: '16px',
-    paddingTop: theme.spacing(0.25),
-  },
-  narrowValue: {
-    fontSize: '1.35em',
-    fontWeight: 700,
-    lineHeight: 1.25,
-  },
-});
-
 // Same order as the certification status filter and the status icon legend;
 // anything the filter doesn't know about goes last
 const statusOrder = certificationStatusesFilter.values.map((value) => value.value);
@@ -88,7 +58,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const { analytics } = useAnalyticsContext();
   const filterContext = useFilterContext();
   const query = filterContext.queryString();
-  const classes = useStyles();
+  const classes = {};
 
   // `isPreviousData`: the request changed and the old results are still on screen until it answers
   const {

@@ -4,8 +4,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import PeopleOutlinedIcon from '@material-ui/icons/PeopleOutlined';
+} from '@mui/material';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 
 import ChplTargetedUsersView from './targeted-users-view';
 
