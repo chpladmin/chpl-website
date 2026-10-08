@@ -272,7 +272,7 @@ describe('the targeted users filters', () => {
     return filter.getQuery({ ...filter, values });
   };
 
-  it('sends isUsed for the Used filter choice', () => {
+  it('sends isUsed for the Used on Listing filter choice', () => {
     expect(queryFor('isUsed', [{ value: 'true', selected: true }])).toBe('isUsed=true');
     expect(queryFor('isUsed', [{ value: 'false', selected: true }])).toBe('isUsed=false');
   });
