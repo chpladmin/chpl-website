@@ -100,20 +100,39 @@ beforeEach(() => {
 });
 
 describe('the targeted users cards', () => {
-  it('shows a count for every status, zeros included, and a total', () => {
+  const statusLabels = (card) => within(card)
+    .queryAllByText(new RegExp(`^(${displayOrder.map((s) => s.replace(/[/-]/g, '\\$&')).join('|')})$`))
+    .map((el) => el.textContent);
+
+  it('shows a count for each status with listings, and a total', () => {
     renderView();
     const beta = cardFor('beta');
     expect(fieldValue(beta, 'Total Listings')).toBe('5');
     expect(fieldValue(beta, 'Active')).toBe('3');
     expect(fieldValue(beta, 'Retired')).toBe('2');
-    expect(fieldValue(beta, 'Suspended by ONC')).toBe('0');
   });
 
-  it('lists the statuses in the certification status filter order', () => {
+  it('hides the statuses with no listings', () => {
     renderView();
-    const labels = within(cardFor('beta')).getAllByText(new RegExp(`^(${displayOrder.map((s) => s.replace(/[/-]/g, '\\$&')).join('|')})$`))
-      .map((el) => el.textContent);
-    expect(labels).toEqual(displayOrder);
+    expect(statusLabels(cardFor('beta'))).toEqual(['Active', 'Retired']);
+    expect(within(cardFor('beta')).queryByText('Suspended by ONC')).not.toBeInTheDocument();
+  });
+
+  it('lists the statuses with listings in the certification status filter order', () => {
+    // Deliberately not in display order, to show the view reorders them
+    respondWith([{
+      id: 5,
+      name: 'epsilon',
+      creationDate: '2021-03-04',
+      usage: [
+        { certificationStatus: 'Retired', listingCount: 1 },
+        { certificationStatus: 'Withdrawn by Developer', listingCount: 3 },
+        { certificationStatus: 'Active', listingCount: 2 },
+        { certificationStatus: 'Terminated by ONC', listingCount: 1 },
+      ],
+    }]);
+    renderView();
+    expect(statusLabels(cardFor('epsilon'))).toEqual(['Active', 'Terminated by ONC', 'Withdrawn by Developer', 'Retired']);
   });
 
   it('shows the total and creation date in the title row, apart from the statuses', () => {
@@ -130,11 +149,12 @@ describe('the targeted users cards', () => {
     });
   });
 
-  it('shows targeted users no listing uses, with all zeros', () => {
+  it('shows targeted users no listing uses, with a total of 0 and no statuses', () => {
     renderView();
     const gamma = cardFor('gamma');
     expect(fieldValue(gamma, 'Total Listings')).toBe('0');
-    displayOrder.forEach((status) => expect(fieldValue(gamma, status)).toBe('0'));
+    expect(fieldValue(gamma, 'Creation Date')).toBe('Jun 1, 2020');
+    expect(statusLabels(gamma)).toEqual([]);
   });
 
   it('warns about usage whose status matches nothing, but still counts it in the total', () => {
@@ -148,7 +168,8 @@ describe('the targeted users cards', () => {
       { targetedUser: 'delta', certificationStatus: 'WithdrawnByDeveloper', listingCount: 4 },
     );
     expect(fieldValue(cardFor('delta'), 'Total Listings')).toBe('4');
-    expect(fieldValue(cardFor('delta'), 'Withdrawn by Developer')).toBe('0');
+    // It matches no status, so no status shows it
+    expect(statusLabels(cardFor('delta'))).toEqual([]);
     warn.mockRestore();
   });
 

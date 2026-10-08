@@ -5,8 +5,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  FormControlLabel,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -81,8 +79,6 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const [results, setResults] = useState([]);
-  // An experiment for team feedback, so deliberately not persisted anywhere
-  const [showZeroCounts, setShowZeroCounts] = useState(true);
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
   const API = useSelector((state) => state.browserInfo.api);
   const { analytics } = useAnalyticsContext();
@@ -175,10 +171,10 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
-  // With the zero counts hidden, a targeted user no listing uses has no status row at all
+  // Only statuses with listings, still in legend order, so a targeted user no listing uses has no status row at all
   const getStatusFieldGroups = (item) => {
     const fields = statuses
-      .filter((status) => showZeroCounts || item[getStatusKey(status)] > 0)
+      .filter((status) => item[getStatusKey(status)] > 0)
       .map((status) => ({
         label: status.name,
         value: item[getStatusKey(status)],
@@ -230,17 +226,6 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                     )}
                 </Box>
                 <Box display="flex" alignItems="center" gridGap={4}>
-                  <FormControlLabel
-                    control={(
-                      <Switch
-                        id="targeted-users-show-zero-counts"
-                        color="primary"
-                        checked={showZeroCounts}
-                        onChange={() => setShowZeroCounts((prev) => !prev)}
-                      />
-                    )}
-                    label="Show statuses with no listings"
-                  />
                   <ChplSortControls
                     sortOptions={sortOptions}
                     orderBy={orderBy}
