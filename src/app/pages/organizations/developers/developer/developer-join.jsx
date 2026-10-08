@@ -25,7 +25,7 @@ import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { DeveloperContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   errorColor: {
@@ -166,7 +166,7 @@ function ChplJoinDevelopers({ dispatch }) {
                         <TableCell>Code</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell><span className="sr-only">Action</span></TableCell>
+                        <TableCell><Box component="span" sx={utilStyles.srOnly}>Action</Box></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -222,7 +222,7 @@ function ChplJoinDevelopers({ dispatch }) {
                          <TableCell>Code</TableCell>
                          <TableCell>Name</TableCell>
                          <TableCell>Status</TableCell>
-                         <TableCell><span className="sr-only">Action</span></TableCell>
+                         <TableCell><Box component="span" sx={utilStyles.srOnly}>Action</Box></TableCell>
                        </TableRow>
                      </TableHead>
                      <TableBody>

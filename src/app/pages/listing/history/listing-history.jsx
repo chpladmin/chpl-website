@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   CircularProgress,
   Dialog,
@@ -36,6 +37,13 @@ import { ChplDialogTitle } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, timestampToString, toTimestamp } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
+
+const styles = {
+  unstyledList: {
+    listStyle: 'none',
+    paddingLeft: 0,
+  },
+};
 
 function ChplListingHistory(props) {
   const { hasAnyRole } = useContext(UserContext);
@@ -303,11 +311,11 @@ function ChplListingHistory(props) {
                             { item.eventDay ? getDisplayDateFormat(item.eventDay) : timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>
-                            <ul className="list-unstyled">
-                              { item.change.map((change, idx) => (
-                                <li key={idx} dangerouslySetInnerHTML={{ __html: `${change}` }} />
+                            <Box component="ul" sx={styles.unstyledList}>
+                              { item.change.map((change) => (
+                                <li key={change} dangerouslySetInnerHTML={{ __html: `${change}` }} />
                               ))}
-                            </ul>
+                            </Box>
                           </TableCell>
                         </TableRow>
                       ))}

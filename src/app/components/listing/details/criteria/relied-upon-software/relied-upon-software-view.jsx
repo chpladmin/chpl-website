@@ -4,6 +4,15 @@ import { arrayOf } from 'prop-types';
 
 import { reliedUponSoftware } from 'shared/prop-types';
 
+const styles = {
+  invalidData: {
+    textDecoration: 'line-through',
+  },
+  unindentedData: {
+    marginLeft: '-25px',
+  },
+};
+
 const getDisplay = (sw) => (
   <>
     { sw.certifiedProductId
@@ -11,7 +20,7 @@ const getDisplay = (sw) => (
     { !sw.certifiedProductId && sw.certifiedProductNumber
         && (
         <>
-          <span className="data-item--invalid">{ sw.certifiedProductNumber }</span>
+          <Box component="span" sx={styles.invalidData}>{ sw.certifiedProductNumber }</Box>
           (this CHPL Product Number is invalid)
         </>
         )}
@@ -29,22 +38,14 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
   return '';
 };
 
-const styles = {
-  unindentedData: {
-    marginLeft: '-25px',
-  },
-};
-
-function ChplReliedUponSoftwareView(props) {
-  /* eslint-disable react/destructuring-assignment */
+function ChplReliedUponSoftwareView({ sw }) {
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     const displaySw = {};
     let count = 0;
-    props.sw.forEach((item, arr, idx) => {
+    sw.forEach((item, idx) => {
       if (item.grouping === null) {
         displaySw[`defaultGroup${idx}`] = [item];
         count += 1;
@@ -62,13 +63,13 @@ function ChplReliedUponSoftwareView(props) {
 
   return (
     <Box component="ul" sx={styles.unindentedData}>
-      { Object.values(software).map((group, groupIndex) => (group.length > 1 ? (
-        <li key={`oneOf-${groupIndex}`}>
+      { Object.entries(software).map(([groupKey, group], groupIndex) => (group.length > 1 ? (
+        <li key={`oneOf-${groupKey}`}>
           One of
-          <ul key={`group-${groupIndex}`}>
-            { group.map((sw, subIndex) => (
-              <li key={sw.id || sw.key || subIndex}>
-                { getDisplay(sw) }
+          <ul key={`group-${groupKey}`}>
+            { group.map((groupItem, subIndex) => (
+              <li key={groupItem.id || groupItem.key || subIndex}>
+                { getDisplay(groupItem) }
                 { isAndOrOr(subIndex, group.length, groupIndex, groupCount) }
               </li>
             ))}

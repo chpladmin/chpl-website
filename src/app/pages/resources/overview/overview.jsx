@@ -29,7 +29,7 @@ import {
   InternalScrollButton,
 } from 'components/util';
 import { useAnalyticsContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   announcement: {
@@ -195,9 +195,9 @@ function ChplResourcesOverview() {
             {announcements.length > 0
               && (
                 <Box sx={styles.infoBox}>
-                  <span className="anchor-element">
-                    <span id="announcements" className="page-anchor" />
-                  </span>
+                  <Box component="span" sx={utilStyles.anchorElement}>
+                    <Box component="span" id="announcements" sx={utilStyles.pageAnchor} />
+                  </Box>
                   <Typography sx={styles.announcement} variant="h2">
                     Announcement
                     {announcements.length > 1 ? 's' : ''}
@@ -221,9 +221,9 @@ function ChplResourcesOverview() {
               )}
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="whatIsTheChpl" className="page-anchor" />
-                </span>
+                <Box component="span" sx={utilStyles.anchorElement}>
+                  <Box component="span" id="whatIsTheChpl" sx={utilStyles.pageAnchor} />
+                </Box>
                 <Typography gutterBottom variant="h2">
                   What is the CHPL?
                 </Typography>
@@ -265,9 +265,9 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="recommendedWebBrowsers" className="page-anchor" />
-                </span>
+                <Box component="span" sx={utilStyles.anchorElement}>
+                  <Box component="span" id="recommendedWebBrowsers" sx={utilStyles.pageAnchor} />
+                </Box>
                 <Typography gutterBottom variant="h2">
                   Recommended Web Browsers
                 </Typography>
@@ -285,9 +285,9 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="usingTheChplWebsite" className="page-anchor" />
-                </span>
+                <Box component="span" sx={utilStyles.anchorElement}>
+                  <Box component="span" id="usingTheChplWebsite" sx={utilStyles.pageAnchor} />
+                </Box>
                 <Typography gutterBottom variant="h2">
                   Using the CHPL Website
                 </Typography>
@@ -439,9 +439,9 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="oncCertificationProgram" className="page-anchor" />
-                </span>
+                <Box component="span" sx={utilStyles.anchorElement}>
+                  <Box component="span" id="oncCertificationProgram" sx={utilStyles.pageAnchor} />
+                </Box>
                 <Typography gutterBottom variant="h2">
                   ONC Certification Program
                 </Typography>
@@ -529,9 +529,9 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="forEhrDevelopers" className="page-anchor" />
-                </span>
+                <Box component="span" sx={utilStyles.anchorElement}>
+                  <Box component="span" id="forEhrDevelopers" sx={utilStyles.pageAnchor} />
+                </Box>
                 <Typography gutterBottom variant="h2">
                   For EHR Developers
                 </Typography>
@@ -570,9 +570,9 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="oncacbAndAtlInformation" className="page-anchor" />
-                </span>
+                <Box component="span" sx={utilStyles.anchorElement}>
+                  <Box component="span" id="oncacbAndAtlInformation" sx={utilStyles.pageAnchor} />
+                </Box>
                 <Typography gutterBottom variant="h2">
                   ONC-ACB and ONC-ATL Information
                 </Typography>

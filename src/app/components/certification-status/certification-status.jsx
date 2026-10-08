@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Card,
   Dialog,
   DialogContent,
@@ -16,6 +17,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getStatusIcon } from 'services/listing.service';
+import { utilStyles } from 'themes';
 
 const styles = {
   legendTitle: {
@@ -72,7 +74,7 @@ function ChplCertificationStatusLegend() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell><span className="sr-only">Category</span></TableCell>
+                    <TableCell><Box component="span" sx={utilStyles.srOnly}>Category</Box></TableCell>
                     <TableCell>Icon</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Description</TableCell>

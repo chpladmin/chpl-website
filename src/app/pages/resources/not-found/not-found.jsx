@@ -6,8 +6,6 @@ import {
   CardHeader,
   CardContent,
   Link,
-  ThemeProvider,
-  StyledEngineProvider,
   Typography,
 } from '@mui/material';
 
@@ -51,39 +49,35 @@ function ChplNotFound() {
   }, []);
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <Container sx={styles.container}>
-          <Card>
-            <CardHeader title="404 Page Not Found" />
-            <CardContent>
-              <Typography
-                variant="body1"
-              >
-                The page you were looking for may have been moved to a new location or no longer exists. Use the links below to either return to the search page or contact us to report a problem with the CHPL site.
-              </Typography>
-            </CardContent>
-            <CardActions sx={styles.cardActions}>
-              <Typography>
-                <Link
-                  href="#/search"
-                >
-                  Back to Search
-                </Link>
-              </Typography>
-              <Typography>|</Typography>
-              <Typography>
-                <Link
-                  href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
-                >
-                  Support Portal
-                </Link>
-              </Typography>
-            </CardActions>
-          </Card>
-        </Container>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <Container sx={styles.container}>
+      <Card>
+        <CardHeader title="404 Page Not Found" />
+        <CardContent>
+          <Typography
+            variant="body1"
+          >
+            The page you were looking for may have been moved to a new location or no longer exists. Use the links below to either return to the search page or contact us to report a problem with the CHPL site.
+          </Typography>
+        </CardContent>
+        <CardActions sx={styles.cardActions}>
+          <Typography>
+            <Link
+              href="#/search"
+            >
+              Back to Search
+            </Link>
+          </Typography>
+          <Typography>|</Typography>
+          <Typography>
+            <Link
+              href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
+            >
+              Support Portal
+            </Link>
+          </Typography>
+        </CardActions>
+      </Card>
+    </Container>
   );
 }
 

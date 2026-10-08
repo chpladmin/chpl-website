@@ -16,7 +16,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { FlagContext, UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
-import { theme } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const styles = {
   dataContainer: {
@@ -254,30 +254,30 @@ function ChplListingInformation({ listing: initialListing }) {
                     <Typography variant="body1" gutterBottom>
                       <strong>Address:</strong>
                       <br />
-                      <span className="sr-only">Line 1:</span>
+                      <Box component="span" sx={utilStyles.srOnly}>Line 1:</Box>
                       {listing.developer.address.line1}
                       {listing.developer.address.line2
                        && (
                          <>
                            ,
                            {' '}
-                           <span className="sr-only">Line 2:</span>
+                           <Box component="span" sx={utilStyles.srOnly}>Line 2:</Box>
                            {listing.developer.address.line2}
                          </>
                        )}
                       <br />
-                      <span className="sr-only">City:</span>
+                      <Box component="span" sx={utilStyles.srOnly}>City:</Box>
                       {listing.developer.address.city}
                       ,
                       {' '}
-                      <span className="sr-only">State:</span>
+                      <Box component="span" sx={utilStyles.srOnly}>State:</Box>
                       {listing.developer.address.state}
                       {' '}
-                      <span className="sr-only">Zipcode:</span>
+                      <Box component="span" sx={utilStyles.srOnly}>Zipcode:</Box>
                       {listing.developer.address.zipcode}
                       ,
                       {' '}
-                      <span className="sr-only">Country:</span>
+                      <Box component="span" sx={utilStyles.srOnly}>Country:</Box>
                       {listing.developer.address.country}
                     </Typography>
                   </Box>
@@ -287,22 +287,22 @@ function ChplListingInformation({ listing: initialListing }) {
                   <Typography variant="body1" gutterBottom>
                     <strong>Contact:</strong>
                     <br />
-                    <span className="sr-only">Full name:</span>
+                    <Box component="span" sx={utilStyles.srOnly}>Full name:</Box>
                     {listing.product.contact.fullName}
                     {listing.product.contact.title
                      && (
                        <>
                          ,
                          {' '}
-                         <span className="sr-only">Title:</span>
+                         <Box component="span" sx={utilStyles.srOnly}>Title:</Box>
                          {listing.product.contact.title}
                        </>
                      )}
                     <br />
-                    <span className="sr-only">Phone:</span>
+                    <Box component="span" sx={utilStyles.srOnly}>Phone:</Box>
                     {listing.product.contact.phoneNumber}
                     <br />
-                    <span className="sr-only">Email:</span>
+                    <Box component="span" sx={utilStyles.srOnly}>Email:</Box>
                     {listing.product.contact.email}
                   </Typography>
                 )}
@@ -311,7 +311,7 @@ function ChplListingInformation({ listing: initialListing }) {
                   <Typography variant="body1" gutterBottom>
                     <strong>Contact</strong>
                     <br />
-                    <span className="sr-only">Full name:</span>
+                    <Box component="span" sx={utilStyles.srOnly}>Full name:</Box>
                     {' '}
                     {listing.developer.contact.fullName}
                     { listing.developer.contact.title
@@ -319,15 +319,15 @@ function ChplListingInformation({ listing: initialListing }) {
                        <>
                          ,
                          {' '}
-                         <span className="sr-only">Title:</span>
+                         <Box component="span" sx={utilStyles.srOnly}>Title:</Box>
                          {listing.developer.contact.title}
                        </>
                      )}
                     <br />
-                    <span className="sr-only">Phone:</span>
+                    <Box component="span" sx={utilStyles.srOnly}>Phone:</Box>
                     {listing.developer.contact.phoneNumber}
                     <br />
-                    <span className="sr-only">Email:</span>
+                    <Box component="span" sx={utilStyles.srOnly}>Email:</Box>
                     {listing.developer.contact.email}
                   </Typography>
                 )}

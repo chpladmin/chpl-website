@@ -1,8 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useState } from 'react';
+import { Box } from '@mui/material';
 import { bool } from 'prop-types';
 
 import criterionPropType from '../../shared/prop-types/criterion';
+
+import { utilStyles } from 'themes';
 
 function ChplCriterionTitle({
   criterion,
@@ -12,9 +15,9 @@ function ChplCriterionTitle({
   const [removedClass] = useState(useRemovedClass);
 
   return (
-    <span className={criterion.removed && removedClass ? 'removed' : ''} data-testid="criterion-title">
+    <Box component="span" sx={criterion.removed && removedClass ? utilStyles.removedText : undefined} data-testid="criterion-title">
       { `${(criterion.removed ? 'Removed | ' : '')} ${criterion.number}  ${(displayTitle && ' : ' && criterion.title)}` }
-    </span>
+    </Box>
   );
 }
 

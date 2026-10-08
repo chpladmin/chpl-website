@@ -172,7 +172,7 @@ function ChplSearchResultCard({
                           </Box>
                         )}
                     </Box>
-                    <Typography sx={styles.titleValue}>
+                    <Typography component="div" sx={styles.titleValue}>
                       { cardTitleValue }
                     </Typography>
                   </Box>
@@ -206,7 +206,7 @@ function ChplSearchResultCard({
                         </Box>
                       )}
                   </Box>
-                  <Typography sx={styles.fieldValue}>
+                  <Typography component="div" sx={styles.fieldValue}>
                     { field.value ?? field.fallback ?? 'N/A' }
                   </Typography>
                 </Box>

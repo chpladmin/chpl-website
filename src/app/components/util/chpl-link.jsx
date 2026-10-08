@@ -6,6 +6,7 @@ import { bool, node, string } from 'prop-types';
 import { eventTrack } from 'services/analytics.service';
 import { goToState } from 'services/navigation.service';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const styles = {
   chplLink: {
@@ -13,6 +14,9 @@ const styles = {
     overflowWrap: 'anywhere',
     gap: '4px',
     justifyContent: 'space-between',
+  },
+  chplLinkInline: {
+    display: 'inline-flex',
   },
   inlineLink: {
     overflowWrap: 'anywhere',
@@ -78,7 +82,7 @@ function ChplLink({
   }
 
   return (
-    <Box component="span" sx={styles.chplLink}>
+    <Box component="span" sx={inline ? { ...styles.chplLink, ...styles.chplLinkInline } : styles.chplLink}>
       <Box component="a" href={href} onClick={track} sx={indicateOnHover ? styles.indicateOnHover : undefined}>
         {text}
       </Box>
@@ -87,7 +91,7 @@ function ChplLink({
         && (
           <Box component="a" href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" sx={styles.disclaimerIcon}>
             <ExitToAppIcon />
-            <span className="sr-only">Web Site Disclaimers</span>
+            <Box component="span" sx={utilStyles.srOnly}>Web Site Disclaimers</Box>
           </Box>
         )}
     </Box>

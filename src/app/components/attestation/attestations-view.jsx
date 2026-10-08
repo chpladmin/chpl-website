@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -29,6 +30,7 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const styles = {
   content: {
@@ -88,40 +90,41 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
     setAttestationsOpen(true);
   };
 
-  return <>
-    <Card>
-      <CardHeader title="Attestations" />
-      <CardContent sx={styles.content}>
-        <>
-          <Typography variant="body1">
-            Attestations information is displayed here if a health IT developer’s attestation of compliance with the
-            {' '}
-            <ChplLink
-              href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
-              text="Conditions and Maintenance of Certification requirements"
-              analytics={{
-                ...analytics,
-                event: 'Go to Conditions and Maintenance of Certification requirements',
-              }}
-              external={false}
-              inline
-            />
-            {' '}
-            was submitted. For more information, please visit the
-            {' '}
-            <ChplLink
-              href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
-              text="Attestations Resource Guide"
-              analytics={{
-                ...analytics,
-                event: 'Go to Attestations Resource Guide',
-              }}
-              external={false}
-              inline
-            />
-            .
-          </Typography>
-          { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
+  return (
+    <>
+      <Card>
+        <CardHeader title="Attestations" />
+        <CardContent sx={styles.content}>
+          <>
+            <Typography variant="body1">
+              Attestations information is displayed here if a health IT developer’s attestation of compliance with the
+              {' '}
+              <ChplLink
+                href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification"
+                text="Conditions and Maintenance of Certification requirements"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Conditions and Maintenance of Certification requirements',
+                }}
+                external={false}
+                inline
+              />
+              {' '}
+              was submitted. For more information, please visit the
+              {' '}
+              <ChplLink
+                href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf"
+                text="Attestations Resource Guide"
+                analytics={{
+                  ...analytics,
+                  event: 'Go to Attestations Resource Guide',
+                }}
+                external={false}
+                inline
+              />
+              .
+            </Typography>
+            { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
             && (
               <Card>
                 <TableContainer>
@@ -135,7 +138,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                         { canSeeAttestationData()
                           && (
                             <TableCell>
-                              <span className="sr-only">View Details</span>
+                              <Box component="span" sx={utilStyles.srOnly}>View Details</Box>
                             </TableCell>
                           )}
                       </TableRow>
@@ -165,7 +168,8 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                                         variant="contained"
                                         onClick={() => viewAttestations(item)}
                                         aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
-                                        size="large">
+                                        size="large"
+                                      >
                                         <VisibilityIcon color="primary" />
                                       </IconButton>
                                     ) : (
@@ -175,7 +179,8 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                                         onClick={() => setExceptionPeriod(item.attestationPeriod)}
                                         aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
                                         disabled={!canCreateException}
-                                        size="large">
+                                        size="large"
+                                      >
                                         <AddIcon color="primary" />
                                       </IconButton>
                                     )}
@@ -188,8 +193,8 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                 </TableContainer>
               </Card>
             )}
-        </>
-        { exceptionPeriod
+          </>
+          { exceptionPeriod
           && (
             <ChplAttestationCreateException
               developer={developer}
@@ -197,8 +202,8 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
               period={exceptionPeriod}
             />
           )}
-      </CardContent>
-      { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id })
+        </CardContent>
+        { hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id })
         && (
           <CardActions>
             <Button
@@ -212,8 +217,8 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
             </Button>
           </CardActions>
         )}
-    </Card>
-    { activeAttestations
+      </Card>
+      { activeAttestations
       && (
         <Dialog
           fullWidth
@@ -239,7 +244,8 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
           </DialogContent>
         </Dialog>
       )}
-  </>;
+    </>
+  );
 }
 
 export default ChplAttestationsView;

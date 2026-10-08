@@ -261,9 +261,9 @@ function ChplListingView({
         )}
       <Box sx={styles.content}>
         <Card>
-          <span className="anchor-element">
-            <span id="listingInformation" className="page-anchor" />
-          </span>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="listingInformation" sx={utilStyles.pageAnchor} />
+          </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Listing Information</Typography>
           </Box>
@@ -274,9 +274,9 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <span className="anchor-element">
-            <span id="certificationCriteria" className="page-anchor" />
-          </span>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="certificationCriteria" sx={utilStyles.pageAnchor} />
+          </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Certification Criteria</Typography>
             <div>
@@ -310,9 +310,9 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <span className="anchor-element">
-            <span id="clinicalQualityMeasures" className="page-anchor" />
-          </span>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="clinicalQualityMeasures" sx={utilStyles.pageAnchor} />
+          </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
             <div>
@@ -345,9 +345,9 @@ function ChplListingView({
         {(listing.edition === null || listing.edition.name !== '2011')
          && (
            <Card>
-             <span className="anchor-element">
-               <span id="sed" className="page-anchor" />
-             </span>
+             <Box component="span" sx={utilStyles.anchorElement}>
+               <Box component="span" id="sed" sx={utilStyles.pageAnchor} />
+             </Box>
              <Box sx={styles.sectionHeader}>
                <Typography sx={styles.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
              </Box>
@@ -361,9 +361,9 @@ function ChplListingView({
         { (listing.edition === null || listing.edition.name === '2015') && !hti520270101IsOn
           && (
             <Card>
-              <span className="anchor-element">
-                <span id="g1g2Measures" className="page-anchor" />
-              </span>
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="g1g2Measures" sx={utilStyles.pageAnchor} />
+              </Box>
               <Box sx={styles.sectionHeader}>
                 <Typography sx={styles.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
               </Box>
@@ -377,9 +377,9 @@ function ChplListingView({
         { !isConfirming
           && (
             <Card>
-              <span className="anchor-element">
-                <span id="compliance" className="page-anchor" />
-              </span>
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="compliance" sx={utilStyles.pageAnchor} />
+              </Box>
               <Box sx={styles.sectionHeader}>
                 <Typography sx={styles.sectionHeaderText} variant="h2">Compliance Activities</Typography>
               </Box>
@@ -394,9 +394,9 @@ function ChplListingView({
             </Card>
           )}
         <Card>
-          <span className="anchor-element">
-            <span id="additional" className="page-anchor" />
-          </span>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="additional" sx={utilStyles.pageAnchor} />
+          </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Additional Information</Typography>
           </Box>

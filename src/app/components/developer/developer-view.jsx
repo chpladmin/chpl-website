@@ -39,7 +39,7 @@ import {
   UserContext,
   useAnalyticsContext,
 } from 'shared/contexts';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const styles = {
   content: {
@@ -287,22 +287,22 @@ function ChplDeveloperView(props) {
               <Typography variant="body1" gutterBottom>
                 <strong>Contact</strong>
                 <br />
-                <span className="sr-only">Full name: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Full name: </Box>
                 {developer.contact.fullName}
                 {developer.contact.title
                   && (
                     <>
                       ,
                       {' '}
-                      <span className="sr-only">Title: </span>
+                      <Box component="span" sx={utilStyles.srOnly}>Title: </Box>
                       {developer.contact.title}
                     </>
                   )}
                 <br />
-                <span className="sr-only">Phone: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Phone: </Box>
                 {developer.contact.phoneNumber}
                 <br />
-                <span className="sr-only">Email: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Email: </Box>
                 {developer.contact.email}
               </Typography>
             )}
@@ -319,30 +319,30 @@ function ChplDeveloperView(props) {
               <Typography variant="body1" gutterBottom>
                 <strong>Address</strong>
                 <br />
-                <span className="sr-only">Line 1: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Line 1: </Box>
                 {developer.address.line1}
                 {developer.address.line2
                   && (
                     <>
                       ,
                       {' '}
-                      <span className="sr-only">Line 2: </span>
+                      <Box component="span" sx={utilStyles.srOnly}>Line 2: </Box>
                       {developer.address.line2}
                     </>
                   )}
                 <br />
-                <span className="sr-only">City: </span>
+                <Box component="span" sx={utilStyles.srOnly}>City: </Box>
                 {developer.address.city}
                 ,
                 {' '}
-                <span className="sr-only">State: </span>
+                <Box component="span" sx={utilStyles.srOnly}>State: </Box>
                 {developer.address.state}
                 {' '}
-                <span className="sr-only">Zipcode: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Zipcode: </Box>
                 {developer.address.zipcode}
                 ,
                 {' '}
-                <span className="sr-only">Country: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Country: </Box>
                 {developer.address.country}
               </Typography>
             )}

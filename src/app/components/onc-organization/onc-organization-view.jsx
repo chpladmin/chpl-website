@@ -17,6 +17,7 @@ import { compareOrganization } from 'components/activity/services/organizations.
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
 
 const styles = {
   content: {
@@ -107,30 +108,30 @@ function ChplOncOrganizationView({
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
              <br />
-             <span className="sr-only">Line 1: </span>
+             <Box component="span" sx={utilStyles.srOnly}>Line 1: </Box>
              {organization.address.line1}
              {organization.address.line2
               && (
                 <>
                   ,
                   {' '}
-                  <span className="sr-only">Line 2: </span>
+                  <Box component="span" sx={utilStyles.srOnly}>Line 2: </Box>
                   {organization.address.line2}
                 </>
               )}
              <br />
-             <span className="sr-only">City: </span>
+             <Box component="span" sx={utilStyles.srOnly}>City: </Box>
              {organization.address.city}
              ,
              {' '}
-             <span className="sr-only">State: </span>
+             <Box component="span" sx={utilStyles.srOnly}>State: </Box>
              {organization.address.state}
              {' '}
-             <span className="sr-only">Zipcode: </span>
+             <Box component="span" sx={utilStyles.srOnly}>Zipcode: </Box>
              {organization.address.zipcode}
              ,
              {' '}
-             <span className="sr-only">Country: </span>
+             <Box component="span" sx={utilStyles.srOnly}>Country: </Box>
              {organization.address.country}
            </Typography>
          </Box>

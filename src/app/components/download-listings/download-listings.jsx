@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button, ButtonGroup, Divider, Menu, MenuItem,
+  Box, Button, ButtonGroup, Divider, Menu, MenuItem,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -16,7 +16,7 @@ import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   noMargin: {
@@ -285,7 +285,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
             selected={c.selected}
             style={{ gap: '8px', padding: '8px 16px' }}
           >
-            <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
+            <Box component="span" sx={utilStyles.srOnly}>{ c.selected ? 'selected: ' : 'not selected: '}</Box>
             { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon color="primary" /> }
             { c.name }
           </MenuItem>,

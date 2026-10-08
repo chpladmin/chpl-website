@@ -1,23 +1,25 @@
 import React from 'react';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material';
 import { bool, func, number } from 'prop-types';
 
 import { ChplProgress } from 'components/util';
-import theme from 'themes/theme';
 
-function ChplConfirmProgress(props) {
+function ChplConfirmProgress({
+  canNext,
+  canPrevious,
+  dispatch,
+  value,
+}) {
   const steps = ['Developer', 'Product', 'Version', 'Listing'];
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <ChplProgress
-          buttonContainerMarginTop="-16px"
-          steps={steps}
-          {...props}
-        />
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <ChplProgress
+      buttonContainerMarginTop="-16px"
+      steps={steps}
+      canNext={canNext}
+      canPrevious={canPrevious}
+      dispatch={dispatch}
+      value={value}
+    />
   );
 }
 

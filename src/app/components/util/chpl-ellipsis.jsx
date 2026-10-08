@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';
+
+import { utilStyles } from 'themes';
 
 const styles = {
   chplEllipsis: {
@@ -53,7 +55,7 @@ function ChplEllipsis({
              onClick={() => setShortened(false)}
            >
              <MoreHorizIcon />
-             <span className="sr-only">Expand description</span>
+             <Box component="span" sx={utilStyles.srOnly}>Expand description</Box>
            </IconButton>
          </ChplTooltip>
        )}
@@ -65,7 +67,7 @@ function ChplEllipsis({
            onClick={() => setShortened(true)}
          >
            <ArrowBackIcon />
-           <span className="sr-only">Minimize description</span>
+           <Box component="span" sx={utilStyles.srOnly}>Minimize description</Box>
          </IconButton>
        )}
     </>
