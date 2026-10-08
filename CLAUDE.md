@@ -136,7 +136,12 @@ Add a body only when the reason for the change is not evident from the subject. 
 - `release` — version deploys. Exempt from the tag requirement, as above.
 - `wip` — appears in the history but says nothing useful; avoid it.
 
-Lowercase the text after the prefix. Append `!` — `feat!:`, `ui!:`, `fix-flag!:` — when the change is user-visible and should be picked up for release notes. It does not carry the conventional-commits "breaking change" meaning here.
+Append `!` — `feat!:`, `ui!:`, `fix-flag!:` — when the change is user-visible and should be picked up for release notes. It does not carry the conventional-commits "breaking change" meaning here.
+
+The `!` also decides capitalization of the text after the prefix:
+
+- **Without `!`**, lowercase it: `fix: bail out of downloads when the session cannot be renewed`.
+- **With `!`**, capitalize the first word, since the subject is read as a release-notes line: `fix!: Show every ungrouped relied upon software item`.
 
 ### Which mechanism supplies the tag
 

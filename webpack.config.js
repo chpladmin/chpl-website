@@ -85,7 +85,7 @@ module.exports = (env) => {
           },
         },
       }, {
-        test: /\.(s*)css$/, /// \.scss$/,
+        test: /\.css$/, // only third-party stylesheets; app styling is JSS
         use: [{
           loader: 'style-loader', // inject CSS to page
           options: {
@@ -93,23 +93,6 @@ module.exports = (env) => {
           },
         }, {
           loader: 'css-loader',
-          options: {
-            sourceMap: true,
-          },
-        }, {
-          loader: 'postcss-loader', // Run post css actions
-          options: {
-            plugins() { // post css plugins, can be exported to postcss.config.js
-              return [
-                require('postcss-import'),
-                require('precss'),
-                require('autoprefixer'),
-              ];
-            },
-            sourceMap: true,
-          },
-        }, {
-          loader: 'sass-loader',
           options: {
             sourceMap: true,
           },
