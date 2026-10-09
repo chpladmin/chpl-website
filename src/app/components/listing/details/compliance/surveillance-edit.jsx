@@ -22,6 +22,7 @@ import { useFetchSurveillanceTypes } from 'api/data';
 import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { getSurveillanceTitle } from 'services/surveillance.service';
 import { ListingContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
@@ -76,7 +77,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
 
   useEffect(() => {
     if (isLoading || isError) { return; }
-    setSurveillanceTypes(data.sort((a, b) => a.name.localeCompare(b.name)));
+    setSurveillanceTypes(data.sort((a, b) => compareStrings(a.name, b.name)));
   }, [data, isLoading, isError]);
 
   const addReq = () => {

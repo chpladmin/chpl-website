@@ -24,6 +24,7 @@ import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -59,7 +60,7 @@ const useStyles = makeStyles({
 const sortOrgs = (a, b) => {
   if (a.retired && !b.retired) { return 1; }
   if (!a.retired && b.retired) { return -1; }
-  return a.name < b.name ? -1 : 1;
+  return compareStrings(a.name, b.name);
 };
 
 function ChplOncOrganizations({ orgType = 'acb' }) {

@@ -13,6 +13,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { func } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { user as userPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -61,7 +62,7 @@ function ChplUserView({ user, dispatch = () => {} }) {
                 :
               </strong>
               <br />
-              { user.organizations.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensistivity: 'base' })).map((org) => (org.name)).join('; ') }
+              { user.organizations.sort((a, b) => compareStrings(a.name, b.name)).map((org) => (org.name)).join('; ') }
             </Typography>
           )}
         <Typography gutterBottom>

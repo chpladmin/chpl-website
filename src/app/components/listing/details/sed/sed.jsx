@@ -22,6 +22,7 @@ import ChplSedTaskView from './sed-task-view';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { FlagContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
@@ -54,9 +55,9 @@ const useStyles = makeStyles({
   },
 });
 
-const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
+const sortTestTasks = (a, b) => compareStrings(a.description, b.description);
 
-const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
+const sortUcdProcesses = (a, b) => compareStrings(a.name, b.name);
 
 function ChplSed({ listing }) {
   const {

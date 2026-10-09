@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button,
-  makeStyles,
-} from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 
@@ -10,11 +7,7 @@ import ChplMessaging from './messaging/messaging';
 
 import { useFreshAccessToken } from 'api/axios';
 import { useFetchDevelopersBySearch } from 'api/developer';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -24,6 +17,7 @@ import {
   ChplSortControls,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -78,7 +72,7 @@ function ChplDevelopersView() {
     if (isLoading || !data.results) { return; }
     setDevelopers(data.results.map((developer) => ({
       ...developer,
-      oncAcbDisplay: developer.acbsForActiveListings.map((acb) => acb.name).sort((a, b) => (a < b ? -1 : 1)).join(', '),
+      oncAcbDisplay: developer.acbsForActiveListings.map((acb) => acb.name).sort(compareStrings).join(', '),
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);

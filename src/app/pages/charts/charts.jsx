@@ -11,6 +11,7 @@ import {
 import { useFetchReportMetadata } from 'api/reports';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -123,7 +124,7 @@ function ChplCharts() {
                     Charts
                   </Button>
                   { reportMetadata
-                    .sort((a, b) => (a.title < b.title ? -1 : 1))
+                    .sort((a, b) => compareStrings(a.title, b.title))
                     .map((report) => (
                       <Button
                         key={`${report.title}-button`}

@@ -29,6 +29,7 @@ import {
   ChplPageHeader,
   InternalScrollButton,
 } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -93,7 +94,7 @@ const getOrgs = (query, key) => {
   if (!query.isSuccess) { return []; }
   return query.data[key]
     .filter((item) => !item.retired)
-    .sort((a, b) => (a.name < b.name ? -1 : 1));
+    .sort((a, b) => compareStrings(a.name, b.name));
 };
 
 function ChplResourcesOverview() {

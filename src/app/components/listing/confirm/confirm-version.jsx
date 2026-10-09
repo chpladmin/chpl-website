@@ -18,6 +18,7 @@ import * as yup from 'yup';
 
 import { useFetchVersionsByProduct } from 'api/version';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { version as versionProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -114,7 +115,7 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setVersions(data
-      .sort((a, b) => (a.version < b.version ? -1 : 1)));
+      .sort((a, b) => compareStrings(a.version, b.version)));
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {

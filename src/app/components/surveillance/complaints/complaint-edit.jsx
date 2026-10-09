@@ -29,6 +29,7 @@ import { useFetchCriteria } from 'api/standards';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { compareStrings } from 'services/sort.service';
 import { complaint as complaintPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 
@@ -141,18 +142,18 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
 
   useEffect(() => {
     if (certificationBodiesIsLoading || !certificationBodiesIsSuccess) { return; }
-    setCertificationBodies(certificationBodiesData.acbs.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setCertificationBodies(certificationBodiesData.acbs.sort((a, b) => compareStrings(a.name, b.name)));
   }, [certificationBodiesData, certificationBodiesIsLoading, certificationBodiesIsSuccess]);
 
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
-    setComplainantTypes(complainantTypesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setComplainantTypes(complainantTypesData.sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('complainantType', complainantTypesData.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
   }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (complaintTypesIsLoading || !complaintTypesIsSuccess) { return; }
-    setComplaintTypes(complaintTypesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setComplaintTypes(complaintTypesData.sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('complaintTypes', complaintTypesData.filter((type) => initialComplaint?.complaintTypes?.some((t) => t.id === type.id)) || []);
   }, [complaintTypesData, complaintTypesIsLoading, complaintTypesIsSuccess, initialComplaint]);
 

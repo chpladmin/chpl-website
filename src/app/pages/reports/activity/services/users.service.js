@@ -9,7 +9,8 @@ const compare = (before, after, key, title = 'unknown') => {
   switch (key) {
     case 'organizations':
       options = {
-        sort: (p, c) => p.name.localeCompare(c.name, 'en', { sensitivity: 'base' }),
+        // Exact and case-sensitive: 0 means "same organization", so a case-only rename still shows as a change
+        sort: (p, c) => (p.name > c.name) - (p.name < c.name),
         write: (f) => `Organization "${f.name}"`,
       };
       break;

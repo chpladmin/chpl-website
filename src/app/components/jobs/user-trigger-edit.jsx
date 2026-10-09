@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplCronGen from 'components/cron-gen/cron-gen';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { acb as acbPropType, trigger as triggerType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -59,7 +60,7 @@ function ChplUserTriggerEdit(props) {
   const { acbs: initialAcbs, dispatch, trigger: initialTrigger } = props;
   const [acbs, setAcbs] = useState(
     initialAcbs
-      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .sort((a, b) => compareStrings(a.name, b.name))
       .map((acb) => ({
         ...acb,
         selected: !acb.retired,

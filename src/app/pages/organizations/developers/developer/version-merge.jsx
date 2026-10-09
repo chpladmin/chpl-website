@@ -20,6 +20,7 @@ import { usePutVersion } from 'api/version';
 import { ChplTooltip } from 'components/util';
 import ChplVersion from 'components/version/version';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -152,7 +153,7 @@ function ChplVersionMerge({ dispatch, product, version }) {
                 { product.versions
                   .filter((ver) => mergingVersions.every((v) => v.id !== ver.id))
                   .filter((ver) => ver.id !== version.id)
-                  .sort((a, b) => (a.version < b.version ? -1 : 1))
+                  .sort((a, b) => compareStrings(a.version, b.version))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.itemName}>
@@ -183,7 +184,7 @@ function ChplVersionMerge({ dispatch, product, version }) {
               <List className={classes.listingList}>
                 <ListItem>{ version.version }</ListItem>
                 { mergingVersions
-                  .sort((a, b) => (a.version < b.version ? -1 : 1))
+                  .sort((a, b) => compareStrings(a.version, b.version))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.itemName}>

@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-} from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { arrayOf } from 'prop-types';
 
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import {
   ChplLink,
   ChplSearchResultCard,
@@ -17,6 +11,7 @@ import {
 } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { criterion as criterionPropType } from 'shared/prop-types';
 import { palette } from 'themes';
 
@@ -77,7 +72,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           .entries(item.attributes)
           .filter(([, value]) => value)
           .map(([key]) => getDisplay(key))
-          .sort((a, b) => (a < b ? -1 : 1))
+          .sort(compareStrings)
           .join('; '),
       }))
       .sort(sortComparator('number')));

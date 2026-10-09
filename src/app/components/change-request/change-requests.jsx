@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import {
-  arrayOf, bool, func, string,
+  arrayOf,
+  bool,
+  func,
+  string,
 } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
@@ -13,6 +16,7 @@ import {
   getDateDisplay,
   getDateTimeEntry,
 } from 'components/filter';
+import { compareStrings } from 'services/sort.service';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
@@ -86,7 +90,7 @@ function ChplChangeRequests({
       return;
     }
     const values = crtQuery.data
-      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .sort((a, b) => compareStrings(a.name, b.name))
       .map((type) => ({
         value: type.name,
       }));

@@ -24,6 +24,7 @@ import {
 import { usePutRelevantSurveillance } from 'api/surveillance';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -87,25 +88,25 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
 
   useEffect(() => {
     if (capStatusesIsLoading || !capStatusesIsSuccess) { return; }
-    setCapStatuses(capStatusesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setCapStatuses(capStatusesData.sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('capStatuses', capStatusesData.filter((type) => surveillance?.capStatuses?.some((t) => t.id === type.id)) || []);
   }, [capStatusesData, capStatusesIsLoading, capStatusesIsSuccess]);
 
   useEffect(() => {
     if (surveillanceGroundsForInitiatingIsLoading || !surveillanceGroundsForInitiatingIsSuccess) { return; }
-    setSurveillanceGroundsForInitiating(surveillanceGroundsForInitiatingData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setSurveillanceGroundsForInitiating(surveillanceGroundsForInitiatingData.sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('surveillanceGroundsForInitiating', surveillanceGroundsForInitiatingData.filter((type) => surveillance?.surveillanceGroundsForInitiating?.some((t) => t.id === type.id)) || []);
   }, [surveillanceGroundsForInitiatingData, surveillanceGroundsForInitiatingIsLoading, surveillanceGroundsForInitiatingIsSuccess]);
 
   useEffect(() => {
     if (surveillanceOutcomesIsLoading || !surveillanceOutcomesIsSuccess) { return; }
-    setSurveillanceOutcomes(surveillanceOutcomesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setSurveillanceOutcomes(surveillanceOutcomesData.sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('surveillanceOutcome', surveillanceOutcomesData.find((o) => o.id === surveillance?.surveillanceOutcome?.id)?.name);
   }, [surveillanceOutcomesData, surveillanceOutcomesIsLoading, surveillanceOutcomesIsSuccess]);
 
   useEffect(() => {
     if (surveillanceProcessTypesIsLoading || !surveillanceProcessTypesIsSuccess) { return; }
-    setSurveillanceProcessTypes(surveillanceProcessTypesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setSurveillanceProcessTypes(surveillanceProcessTypesData.sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('surveillanceProcessTypes', surveillanceProcessTypesData.filter((type) => surveillance?.surveillanceProcessTypes?.some((t) => t.id === type.id)) || []);
   }, [surveillanceProcessTypesData, surveillanceProcessTypesIsLoading, surveillanceProcessTypesIsSuccess]);
 
@@ -267,7 +268,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             multiple: true,
             renderValue: (selected) => selected
               .map((value) => surveillanceProcessTypes.find((item) => item.id === value.id)?.name)
-              .sort((a, b) => (a < b ? -1 : 1))
+              .sort(compareStrings)
               .join(', '),
           }}
         >
@@ -325,7 +326,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             multiple: true,
             renderValue: (selected) => selected
               .map((value) => surveillanceGroundsForInitiating.find((item) => item.id === value.id)?.name)
-              .sort((a, b) => (a < b ? -1 : 1))
+              .sort(compareStrings)
               .join(', '),
           }}
         >
@@ -535,7 +536,7 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
             multiple: true,
             renderValue: (selected) => selected
               .map((value) => capStatuses.find((item) => item.id === value.id)?.name)
-              .sort((a, b) => (a < b ? -1 : 1))
+              .sort(compareStrings)
               .join(', '),
           }}
         >

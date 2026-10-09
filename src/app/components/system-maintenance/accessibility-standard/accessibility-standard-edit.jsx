@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core';
 import {
-  makeStyles,
-} from '@material-ui/core';
-import {
-  arrayOf, bool, func, string,
+  arrayOf,
+  bool,
+  func,
+  string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { accessibilityStandardType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -76,7 +78,7 @@ function ChplAccessibilityStandardEdit({
 
   useActionBar({
     canDelete: !!accessibilityStandard.id,
-    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    errors: [...propsErrors].sort(compareStrings),
     isDisabled: !isValid(),
     isProcessing,
   });
