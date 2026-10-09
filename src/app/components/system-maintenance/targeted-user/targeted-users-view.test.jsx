@@ -1,7 +1,10 @@
 import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import {
-  fireEvent, render, screen, within,
+  fireEvent,
+  render,
+  screen,
+  within,
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 

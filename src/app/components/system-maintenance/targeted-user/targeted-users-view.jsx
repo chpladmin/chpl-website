@@ -1,5 +1,8 @@
 import React, {
-  useEffect, useMemo, useRef, useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import {
   Box,
@@ -10,16 +13,15 @@ import {
 } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import {
-  arrayOf, number, shape, string,
+  arrayOf,
+  number,
+  shape,
+  string,
 } from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { useFetchTargetedUsers } from 'api/standards';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { certificationStatuses as certificationStatusesFilter } from 'components/filter/filters';
 import { ChplPagination, ChplSearchResultCard, ChplSortControls } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
