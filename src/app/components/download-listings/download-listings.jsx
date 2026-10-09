@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
-  Divider,
-  Menu,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckIcon from '@material-ui/icons/Check';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+  Box, Button, ButtonGroup, Divider, Menu, MenuItem,
+} from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckIcon from '@mui/icons-material/Check';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { ExportToCsv } from 'export-to-csv';
 import { arrayOf, string } from 'prop-types';
 
@@ -23,21 +18,20 @@ import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const styles = {
   noMargin: {
     margin: '0',
   },
   buttonGroup: {
     width: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
   downloadButton: {
     padding: '0 16px',
     fontSize: '12px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flex: '1 1 auto',
       minWidth: 0,
       justifyContent: 'flex-start',
@@ -55,14 +49,14 @@ const useStyles = makeStyles({
   toggleButton: {
     minWidth: '40px',
     padding: '9px 4px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flex: '0 0 44px',
       minWidth: '44px',
       paddingLeft: 0,
       paddingRight: 0,
     },
   },
-});
+};
 
 const csvOptions = {
   filename: 'listings',
@@ -145,7 +139,6 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
   const [open, setOpen] = useState(false);
   const [svaps, setSvaps] = useState([]);
   const svapQuery = useFetchSvaps();
-  const classes = useStyles();
 
   useEffect(() => {
     setListings(initialListings.map((listing) => ({
@@ -229,9 +222,9 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
 
   return (
     <>
-      <ButtonGroup className={classes.buttonGroup} color="primary" size="small" variant="outlined">
+      <ButtonGroup sx={styles.buttonGroup} color="primary" size="small" variant="outlined">
         <Button
-          className={classes.downloadButton}
+          sx={styles.downloadButton}
           onClick={handleDownload}
           disabled={!canDownload()}
           color="primary"
@@ -254,9 +247,9 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
             color="primary"
             size="small"
             id="open-download-listings-menu"
-            className={`${classes.noMargin} ${classes.toggleButton}`}
+            sx={{ ...styles.noMargin, ...styles.toggleButton }}
           >
-            <ExpandMoreIcon />
+            <ArrowDropDownIcon />
           </Button>
         </ChplTooltip>
       </ButtonGroup>
@@ -264,7 +257,6 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
         id="download-listings-menu"
         open={open}
         anchorEl={anchor}
-        getContentAnchorEl={null}
         keepMounted
         onClose={handleClose}
         variant="selectedMenu"
@@ -293,11 +285,11 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
             selected={c.selected}
             style={{ gap: '8px', padding: '8px 16px' }}
           >
-            <span className={classes.srOnly}>{ c.selected ? 'selected: ' : 'not selected: '}</span>
+            <Box component="span" sx={utilStyles.srOnly}>{ c.selected ? 'selected: ' : 'not selected: '}</Box>
             { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon color="primary" /> }
             { c.name }
           </MenuItem>,
-          c.hasDivider && <Divider className={classes.noMargin} />,
+          c.hasDivider && <Divider sx={styles.noMargin} />,
         ])}
       </Menu>
     </>

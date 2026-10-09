@@ -9,9 +9,8 @@ import {
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 import SwaggerUI from 'swagger-ui-react';
 
@@ -26,7 +25,7 @@ import { eventTrack } from 'services/analytics.service';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   downloadCard: {
     width: '100%',
@@ -166,7 +165,7 @@ const useStyles = makeStyles({
     gridGap: '16px',
     alignItems: 'center',
   },
-});
+};
 
 const allOptions = [
   'Active products',
@@ -185,7 +184,6 @@ function ChplResourcesApi() {
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('Active products');
-  const classes = useStyles();
   const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
 
   useEffect(() => {
@@ -214,21 +212,21 @@ function ChplResourcesApi() {
     <>
       <ChplPageHeader text="CHPL API" />
       <ChplPageBody>
-        <div className={classes.pageBody}>
-          <Box className={classes.fullWidth}>
+        <Box sx={styles.pageBody}>
+          <Box sx={styles.fullWidth}>
             <Typography
               variant="h4"
               component="h2"
             >
               Definitions & Guidelines
             </Typography>
-            <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
+            <Typography sx={styles.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
             <Divider />
           </Box>
-          <div className={classes.downloadSection}>
+          <Box sx={styles.downloadSection}>
             <Card>
               <CardContent>
-                <ul className={classes.listSpacing}>
+                <Box component="ul" sx={styles.listSpacing}>
                   <li>
                     <Typography gutterBottom><strong>Certified Products:</strong></Typography>
                     {' '}
@@ -245,17 +243,17 @@ function ChplResourcesApi() {
                       </li>
                     </ul>
                   </li>
-                </ul>
+                </Box>
               </CardContent>
             </Card>
-            <Card className={classes.downloadCard}>
+            <Card sx={styles.downloadCard}>
               <CardHeader title="Select A File To Download" />
               <CardContent>
-                <Box display="flex" flexDirection="column" gridGap={16}>
+                <Box display="flex" flexDirection="column" gap="16px">
                   <Typography>
                     To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
                   </Typography>
-                  <div className={classes.fullWidth}>
+                  <Box sx={styles.fullWidth}>
                     <ChplTextField
                       select
                       id="download-select"
@@ -268,7 +266,7 @@ function ChplResourcesApi() {
                         <MenuItem value={item} key={item}>{item}</MenuItem>
                       ))}
                     </ChplTextField>
-                  </div>
+                  </Box>
                 </Box>
               </CardContent>
               <CardActions>
@@ -284,8 +282,8 @@ function ChplResourcesApi() {
                 </Button>
               </CardActions>
             </Card>
-          </div>
-          <div className={classes.fullWidth}>
+          </Box>
+          <Box sx={styles.fullWidth}>
             <Typography
               variant="h4"
               component="h2"
@@ -293,8 +291,8 @@ function ChplResourcesApi() {
               Access API Documentation
             </Typography>
             <Divider />
-          </div>
-          <div className={classes.downloadSection}>
+          </Box>
+          <Box sx={styles.downloadSection}>
             <Card>
               <CardContent>
                 <Typography
@@ -343,14 +341,14 @@ function ChplResourcesApi() {
                 </Typography>
               </CardContent>
             </Card>
-            <div className={classes.downloadCard}>
+            <Box sx={styles.downloadCard}>
               <AnalyticsContext.Provider value={{ analytics }}>
                 <ChplApiKeyRegistration />
               </AnalyticsContext.Provider>
-            </div>
-          </div>
-          <Card className={classes.fullWidth}>
-            <CardContent className={classes.swaggerCardContent}>
+            </Box>
+          </Box>
+          <Card sx={styles.fullWidth}>
+            <CardContent sx={styles.swaggerCardContent}>
               <SwaggerUI
                 url={url}
                 docExpansion="none"
@@ -358,7 +356,7 @@ function ChplResourcesApi() {
               />
             </CardContent>
           </Card>
-        </div>
+        </Box>
       </ChplPageBody>
     </>
   );

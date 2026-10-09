@@ -1,16 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Card, CardActions, CardContent, CardHeader, Typography,
+} from '@mui/material';
 import { bool, func } from 'prop-types';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { theme } from 'themes';
 import { sortCriteria } from 'services/criteria.service';
@@ -18,7 +12,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { complaint as complaintPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '32px',
@@ -36,13 +30,12 @@ const useStyles = makeStyles({
     gap: '4px',
     marginTop: '16px',
   },
-});
+};
 
 function ChplComplaintView(props) {
   const { complaint: initialComplaint, dispatch, canEdit } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [complaint, setComplaint] = useState({});
-  const classes = useStyles();
 
   useEffect(() => {
     setComplaint({
@@ -74,8 +67,8 @@ function ChplComplaintView(props) {
           {' '}
           { complaint.certificationBody?.name }
         </Typography>
-        <div className={classes.content}>
-          <div className={classes.dataContent}>
+        <Box sx={styles.content}>
+          <Box sx={styles.dataContent}>
             <Typography variant="subtitle1">General Info</Typography>
             <Typography variant="subtitle2">
               Received Date:
@@ -135,8 +128,8 @@ function ChplComplaintView(props) {
                   </Typography>
                 </>
               )}
-          </div>
-          <div className={classes.dataContent}>
+          </Box>
+          <Box sx={styles.dataContent}>
             <Typography variant="subtitle1">Summary and Actions</Typography>
             <Typography variant="subtitle2">
               Complaint Summary:
@@ -150,8 +143,8 @@ function ChplComplaintView(props) {
             <Typography>
               { complaint.actions }
             </Typography>
-          </div>
-          <div className={classes.dataContent}>
+          </Box>
+          <Box sx={styles.dataContent}>
             <Typography variant="subtitle1">Review Info</Typography>
             <Typography variant="subtitle2">
               Associated Criteria:
@@ -200,8 +193,8 @@ function ChplComplaintView(props) {
                  None
                </Typography>
              )}
-          </div>
-          <div className={classes.dataContent}>
+          </Box>
+          <Box sx={styles.dataContent}>
             <Typography variant="subtitle1">Parties Contacted</Typography>
             <Typography variant="subtitle2">
               Complainant Contacted:
@@ -227,8 +220,8 @@ function ChplComplaintView(props) {
             <Typography>
               { complaint.flagForOncReview ? 'Yes' : 'No' }
             </Typography>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </CardContent>
       <CardActions>
         <Button

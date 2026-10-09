@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 import ChplLoadingSpinner from './chpl-loading-spinner';
 
@@ -7,7 +7,7 @@ import { onRouteChange } from 'services/navigation.service';
 
 const MIN_VISIBLE_MS = 500;
 
-const useStyles = makeStyles({
+const styles = {
   overlay: {
     position: 'fixed',
     inset: 0,
@@ -17,10 +17,9 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.75)',
   },
-});
+};
 
 function ChplRouteLoading() {
-  const classes = useStyles();
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -76,7 +75,7 @@ function ChplRouteLoading() {
   }
 
   return (
-    <Box className={classes.overlay} role="status" aria-live="polite" aria-label="Loading">
+    <Box sx={styles.overlay} role="status" aria-live="polite" aria-label="Loading">
       <ChplLoadingSpinner />
     </Box>
   );

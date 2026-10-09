@@ -10,9 +10,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+} from '@mui/material';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { bool, object } from 'prop-types';
 
 import ChplAttestationCreateException from './attestation-create-exception';
@@ -22,7 +21,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   questionParagraph: {
     marginBottom: '8px',
   },
@@ -38,9 +37,9 @@ const useStyles = makeStyles({
     gridGap: '16px',
     alignItems: 'center',
   },
-});
+};
 
-const getRows = (section, classes) => section.formItems
+const getRows = (section) => section.formItems
   .sort((a, b) => a.sortOrder - b.sortOrder)
   .map((item) => (
     <TableRow key={`${section.id}-${item.id}`}>
@@ -51,7 +50,7 @@ const getRows = (section, classes) => section.formItems
         </strong>
         { item.question.question.split('\n\n').map((p) => (
           <Typography
-            className={classes.questionParagraph}
+            sx={styles.questionParagraph}
             key={p}
           >
             { interpretLink(p) }
@@ -62,7 +61,7 @@ const getRows = (section, classes) => section.formItems
         { item.submittedResponses[0]?.response }
         { item.submittedResponses[0]?.message
           && (
-            <Box className={classes.warningBox}>
+            <Box sx={styles.warningBox}>
               <ReportProblemOutlinedIcon />
               <Typography>
                 { item.submittedResponses[0].message }
@@ -91,7 +90,6 @@ function ChplAttestationView({
   const { hasAnyRole } = useContext(UserContext);
   const [attestations, setAttestations] = useState({});
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
-  const classes = useStyles();
 
   useEffect(() => {
     setAttestations({
@@ -113,66 +111,64 @@ function ChplAttestationView({
     }
   };
 
-  return (
-    <>
-      <Box display="flex" flexDirection="column" gridGap={16}>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-          <Typography gutterBottom>
-            { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
-            {' '}
-            -
-            {' '}
-            { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
-          </Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-          <Typography gutterBottom>{attestations.statusText}</Typography>
-        </div>
-        { attestations.sections
-          && (
-            <Card>
-              <TableContainer>
-                <Table
-                  aria-label="Developer Attestations details"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Attestation</TableCell>
-                      <TableCell>Response</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { attestations.sections.map((section) => getRows(section, classes)) }
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          )}
-      </Box>
-      { canCreateException && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+  return <>
+    <Box display="flex" flexDirection="column" gap="16px">
+      <div>
+        <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
+        <Typography gutterBottom>
+          { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
+          {' '}
+          -
+          {' '}
+          { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
+        </Typography>
+      </div>
+      <div>
+        <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+        <Typography gutterBottom>{attestations.statusText}</Typography>
+      </div>
+      { attestations.sections
         && (
-          <Button
-            color="primary"
-            id="create-attestation-exception-button"
-            variant="contained"
-            onClick={() => setExceptionPeriod(attestations.period)}
-            fullWidth
-          >
-            Re-Open Submission
-          </Button>
+          <Card>
+            <TableContainer>
+              <Table
+                aria-label="Developer Attestations details"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Attestation</TableCell>
+                    <TableCell>Response</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { attestations.sections.map((section) => getRows(section)) }
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
         )}
-      { exceptionPeriod
-        && (
-          <ChplAttestationCreateException
-            developer={developer}
-            dispatch={handleDispatch}
-            period={exceptionPeriod}
-          />
-        )}
-    </>
-  );
+    </Box>
+    { canCreateException && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+      && (
+        <Button
+          color="primary"
+          id="create-attestation-exception-button"
+          variant="contained"
+          onClick={() => setExceptionPeriod(attestations.period)}
+          fullWidth
+        >
+          Re-Open Submission
+        </Button>
+      )}
+    { exceptionPeriod
+      && (
+        <ChplAttestationCreateException
+          developer={developer}
+          dispatch={handleDispatch}
+          period={exceptionPeriod}
+        />
+      )}
+  </>;
 }
 
 export default ChplAttestationView;

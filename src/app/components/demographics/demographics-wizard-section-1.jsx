@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Container, Typography,
+} from '@mui/material';
 
-const useStyles = makeStyles({
+const styles = {
   demographicsContainerList: {
     fontSize: '0.875em',
   },
@@ -22,14 +17,12 @@ const useStyles = makeStyles({
   forAssistanceContainer: {
     marginTop: '16px',
   },
-});
+};
 
 function ChplDemographicsWizardSection1() {
-  const classes = useStyles();
-
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Box className={classes.demographicsSectionContainer}>
+    <Container sx={styles.fixFooterSpacing} maxWidth="md">
+      <Box sx={styles.demographicsSectionContainer}>
         <Typography component="h2" variant="h3">
           Section 1 &mdash; Introduction
         </Typography>

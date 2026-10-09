@@ -9,29 +9,28 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
-import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
-import AnnouncementOutlinedIcon from '@material-ui/icons/AnnouncementOutlined';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
-import BeenhereOutlinedIcon from '@material-ui/icons/BeenhereOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
-import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
-import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
-import HomeOutlined from '@material-ui/icons/HomeOutlined';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import MenuIcon from '@material-ui/icons/Menu';
-import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
-import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
-import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
-import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
-import SubscriptionsOutlinedIcon from '@material-ui/icons/SubscriptionsOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
+} from '@mui/material';
+import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
+import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
+import DataUsageOutlinedIcon from '@mui/icons-material/DataUsageOutlined';
+import HomeOutlined from '@mui/icons-material/HomeOutlined';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import PlaylistAddCheckOutlinedIcon from '@mui/icons-material/PlaylistAddCheckOutlined';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import SubscriptionsOutlinedIcon from '@mui/icons-material/SubscriptionsOutlined';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
+import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 
 import ChplAccessibilityStandards from 'components/system-maintenance/accessibility-standard/accessibility-standards';
 import ChplAnnouncements from 'components/system-maintenance/announcement/announcements';
@@ -61,7 +60,7 @@ import {
 } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -80,7 +79,7 @@ const useStyles = makeStyles({
     gap: '4px',
     alignItems: 'baseline',
     margin: 0,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -88,10 +87,10 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     position: 'sticky',
-    top: '115px',
+    top: '16px',
     zIndex: 1,
     transition: 'width 0.3s ease',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       position: 'relative',
       top: 0,
       width: '100%',
@@ -99,7 +98,7 @@ const useStyles = makeStyles({
   },
   navOpen: {
     width: '200px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
@@ -110,8 +109,10 @@ const useStyles = makeStyles({
     display: 'flex',
     width: '100%',
     padding: '8px',
+    overflowY: 'auto',
+    maxHeight: '64vh',
     flexDirection: 'column',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       overflowX: 'scroll',
     },
@@ -122,13 +123,16 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     textTransform: 'none',
     fontSize: '11.5px',
+    '& .MuiSvgIcon-root, & .MuiButton-endIcon > .MuiSvgIcon-root': {
+      fontSize: '16px',
+    },
     '&.Mui-disabled': {
       color: palette.black,
       backgroundColor: palette.background,
       fontWeight: 600,
     },
   },
-});
+};
 
 const baseItems = [{
   id: 'home',
@@ -238,7 +242,6 @@ function ChplSystemMaintenance() {
   const [active, setActive] = useState('');
   const [maintenanceItems, setMaintenanceItems] = useState(baseItems);
   const [navOpen, setNavOpen] = useState(true);
-  const classes = useStyles();
   let navigate;
   let data;
 
@@ -260,7 +263,7 @@ function ChplSystemMaintenance() {
       variant="text"
       color="primary"
       endIcon={navOpen ? item.icon : null}
-      className={classes.menuItems}
+      sx={styles.menuItems}
     >
       { navOpen ? item.primary : item.icon }
     </Button>
@@ -283,16 +286,16 @@ function ChplSystemMaintenance() {
 
   return (
     <AnalyticsContext.Provider value={data}>
-      <div className={classes.container}>
-        <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
-          <Card className={classes.navigationFlex}>
+      <Box sx={styles.container}>
+        <Box sx={[styles.navigation, navOpen ? styles.navOpen : styles.navClosed]}>
+          <Card sx={styles.navigationFlex}>
             <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
               <Button
                 onClick={() => setNavOpen((prev) => !prev)}
                 variant="text"
                 color="primary"
                 size="medium"
-                className={classes.menuItems}
+                sx={styles.menuItems}
               >
                 { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
               </Button>
@@ -301,7 +304,7 @@ function ChplSystemMaintenance() {
               .filter((item) => !item.roles || hasAnyRole(item.roles))
               .map((item) => getNavigationItem(item))}
           </Card>
-        </div>
+        </Box>
         <Box width="100%">
           { (active === '' || active === 'home')
               && (
@@ -317,7 +320,7 @@ function ChplSystemMaintenance() {
                         .map((item, index) => (
                           <React.Fragment key={item.id}>
                             <ListItem>
-                              <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
+                              <ListItemText sx={styles.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
                             </ListItem>
                             { index < maintenanceItems.length - 1 && <Divider component="li" /> }
                           </React.Fragment>
@@ -345,7 +348,7 @@ function ChplSystemMaintenance() {
           { active === 'testTools' && <ChplTestTools /> }
           { active === 'ucdProcesses' && <ChplUcdProcesses /> }
         </Box>
-      </div>
+      </Box>
     </AnalyticsContext.Provider>
   );
 }

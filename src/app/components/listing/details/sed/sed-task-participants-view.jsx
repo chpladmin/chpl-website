@@ -11,16 +11,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import { Visibility } from '@material-ui/icons';
+} from '@mui/material';
+import { Visibility } from '@mui/icons-material';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
     color: '#156dac',
     fontWeight: 'bold',
   },
-});
+};
 
 function ChplSedTaskParticipantsView(props) {
   const { task } = props;
@@ -42,7 +41,6 @@ function ChplSedTaskParticipantsView(props) {
     if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }
     return 0;
   });
-  const classes = useStyles();
 
   const handleClickOpen = () => {
     eventTrack({
@@ -80,7 +78,7 @@ function ChplSedTaskParticipantsView(props) {
         <ChplDialogTitle
           id="participant-details-title"
           onClose={handleClose}
-          className={classes.legendTitle}
+          sx={styles.legendTitle}
         >
           SED Participants
         </ChplDialogTitle>

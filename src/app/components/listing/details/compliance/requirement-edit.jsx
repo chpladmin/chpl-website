@@ -8,9 +8,9 @@ import {
   CircularProgress,
   IconButton,
   MenuItem,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   func, number, object, oneOfType, string,
 } from 'prop-types';
@@ -163,15 +163,15 @@ function ChplRequirementEdit({
         title={`Requirement: ${getRequirementDisplay(requirement)}`}
         action={(
           <ChplTooltip placement="left" title="Remove Requirement">
-            <IconButton onClick={remove}>
+            <IconButton onClick={remove} size="large">
               <DeleteIcon color="error" />
             </IconButton>
           </ChplTooltip>
         )}
       />
       <CardContent>
-        <Box display="flex" gridGap="16px" flexWrap="wrap" flexDirection="column" justifyContent="space-between" pb={4}>
-          <Box display="flex" justifyContent="space-between" gridGap="16px" flexDirection="row">
+        <Box display="flex" gap="16px" flexWrap="wrap" flexDirection="column" justifyContent="space-between" pb={4}>
+          <Box display="flex" justifyContent="space-between" gap="16px" flexDirection="row">
             <ChplTextField
               select
               id="requirement-group-type"
@@ -214,7 +214,7 @@ function ChplRequirementEdit({
                 ))}
             </ChplTextField>
           </Box>
-          <Box display="flex" justifyContent="space-between" gridGap="16px" flexDirection="row">
+          <Box display="flex" justifyContent="space-between" gap="16px" flexDirection="row">
             <ChplTextField
               type="text"
               id="requirement-type-other"

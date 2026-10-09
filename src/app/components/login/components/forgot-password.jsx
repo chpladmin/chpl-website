@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  makeStyles,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
-import SendIcon from '@material-ui/icons/Send';
+  Button, Card, CardHeader, CardContent,
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import SendIcon from '@mui/icons-material/Send';
 import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
@@ -21,7 +17,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -31,7 +27,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.secondary,
     padding: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -44,8 +40,6 @@ function ChplForgotPassword({ userName }) {
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostForgotPassword();
-
-  const classes = useStyles();
 
   let formik;
 
@@ -102,8 +96,8 @@ function ChplForgotPassword({ userName }) {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Forgotten password" />
-      <CardContent className={classes.grid}>
+      <CardHeader sx={styles.loginHeader} title="Forgotten password" />
+      <CardContent sx={styles.grid}>
         <ChplTextField
           id="email"
           name="email"

@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CircularProgress,
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
 import { useFormik } from 'formik';
@@ -45,7 +45,7 @@ import {
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -115,7 +115,7 @@ const useStyles = makeStyles({
     gridColumnStart: '1',
     gridColumnEnd: '-1',
   },
-});
+};
 
 const validationSchema = yup.object({
   comment: yup.string()
@@ -217,7 +217,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate, isLoading: isProcessing } = usePutChangeRequest();
   const { group, hasErrors, validateAll } = useFormGroup();
-  const classes = useStyles();
 
   let formik;
   let updateActionBar;
@@ -456,18 +455,18 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
               pendingMessage={confirmationMessage}
             />
           )}
-        <Card className={classes.productCard}>
-          <div className={classes.cardHeaderContainer}>
+        <Card sx={styles.productCard}>
+          <Box sx={styles.cardHeaderContainer}>
             <ChplAvatar
               text={changeRequest.developer.name}
             />
-            <Typography gutterBottom className={classes.cardHeader} variant="h4">
+            <Typography gutterBottom sx={styles.cardHeader} variant="h4">
               { isEditing ? 'Edit ' : '' }
               {changeRequest.changeRequestType.name}
             </Typography>
-          </div>
-          <CardContent className={classes.cardContentContainer}>
-            <div className={classes.cardSubHeaderContainer}>
+          </Box>
+          <CardContent sx={styles.cardContentContainer}>
+            <Box sx={styles.cardSubHeaderContainer}>
               <div>
                 <Typography gutterBottom variant="subtitle2">Developer:</Typography>
                 <Typography variant="body1">{changeRequest.developer.name}</Typography>
@@ -530,7 +529,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                     </Typography>
                   </div>
                 )}
-            </div>
+            </Box>
             { !isEditing
               && (
                 <>
@@ -541,12 +540,12 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
               && (
                 <>
                   <Divider />
-                  <div className={classes.cardContentChangeRequest}>
+                  <Box sx={styles.cardContentChangeRequest}>
                     <div>
                       { getChangeRequestEditDetails(changeRequest, formik.values.changeRequestStatusType?.name === 'Accepted') }
                     </div>
-                    <div className={classes.actionsContainer}>
-                      <div className={classes.actionSubContainer}>
+                    <Box sx={styles.actionsContainer}>
+                      <Box sx={styles.actionSubContainer}>
                         <Typography variant="subtitle1">Change Request change data</Typography>
                         <Typography variant="subtitle2">
                           { changeRequest.certificationBodies.length > 1
@@ -580,7 +579,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                         </div>
                         {hasAnyRole(['chpl-developer'])
                           ? (
-                            <Typography className={classes.fullWidth}>
+                            <Typography sx={styles.fullWidth}>
                               {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
                               && (
                                 <>
@@ -600,7 +599,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                               id="change-request-status-type"
                               name="changeRequestStatusType"
                               label="Select new Status"
-                              className={classes.fullWidth}
+                              sx={styles.fullWidth}
                               required
                               value={formik.values.changeRequestStatusType}
                               onChange={formik.handleChange}
@@ -619,7 +618,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                           name="comment"
                           label="Reason for change"
                           margin="none"
-                          className={classes.fullWidth}
+                          sx={styles.fullWidth}
                           required={isReasonRequired()}
                           disabled={isReasonDisabled()}
                           multiline
@@ -630,9 +629,9 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
                           helperText={formik.touched.comment && formik.errors.comment}
                           minRows={4}
                         />
-                      </div>
-                    </div>
-                  </div>
+                      </Box>
+                    </Box>
+                  </Box>
                 </>
               )}
             <Divider />

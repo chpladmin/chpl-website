@@ -7,7 +7,7 @@ import {
   List,
   ListItem,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { bool } from 'prop-types';
 
@@ -51,125 +51,123 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
     }
   }, [listing]);
 
-  return (
-    <>
-      <Box gridGap={8} display="flex" flexDirection="column">
-        { listing.edition !== null && listing.edition.name === '2014'
-          && (
-            <Card>
-              <CardHeader title="Test Results Summary" />
-              <CardContent>
-                { listing.reportFileLocation
-                  && (
-                    <ChplLink
-                      href={listing.reportFileLocation}
-                      text={listing.reportFileLocation}
-                      analytics={{
-                        event: 'Navigate to Test Results Summary',
-                        category: 'Listing Details',
-                        label: listing.chplProductNumber,
-                        aggregationName: listing.product.name,
-                        group: user?.role,
-                      }}
-                    />
-                  )}
-                { !listing.reportFileLocation
-                  && (
-                    <Typography>No report on file.</Typography>
-                  )}
-              </CardContent>
-            </Card>
-          )}
-        { listing.ics !== null
-          && (
-            <Card>
-              <CardHeader title="Certification History" />
-              <CardContent>
-                { listing.ics.inherits !== null
-                  && (
-                    <>
-                      <Typography variant="subtitle1">Inherited Certified Status (ICS):</Typography>
-                      <Typography gutterBottom>{ listing.ics.inherits ? 'True' : 'False' }</Typography>
-                    </>
-                  )}
-                { listing.ics.inherits === null
-                  && (
-                    <>
-                      <Typography gutterBottom>N/A</Typography>
-                    </>
-                  )}
-                { listing.ics.parents?.length > 0
-                  && (
-                    <>
-                      <Typography variant="subtitle1">Inherits From:</Typography>
-                      <List>
-                        { getRelatives(listing, user, false, listing.ics.parents) }
-                      </List>
-                    </>
-                  )}
-                { listing.ics.children?.length > 0
-                  && (
-                    <>
-                      <Typography variant="subtitle1">ICS Source for:</Typography>
-                      <List>
-                        { getRelatives(listing, user, true, listing.ics.children) }
-                      </List>
-                    </>
-                  )}
-                { (listing.ics.parents?.length > 0 || listing.ics.children?.length > 0) && (listing.edition === null || listing.edition?.name === '2015') && !isConfirming
-                  && (
-                    <ChplIcsFamily
-                      id={listing.id}
-                    />
-                  )}
-              </CardContent>
-            </Card>
-          )}
-        { listing.otherAcb !== null
-          && (
-            <Card>
-              <CardHeader title="Other ACB" />
-              <CardContent>
-                <Typography>{ listing.otherAcb }</Typography>
-              </CardContent>
-            </Card>
-          )}
-        { listing.targetedUsers?.length > 0
-          && (
-            <Card>
-              <CardHeader title="Developer Identified Targeted Users" />
-              <CardContent>
-                <List>
-                  { listing.targetedUsers.map((tu) => (
-                    <ListItem key={tu.targetedUserName}>
-                      { tu.targetedUserName }
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          )}
-        <Card>
-          <CardHeader title="Estimated Number of Promoting Interoperability Users" />
-          <CardContent>
-            { currentPi
-              && (
-                <Typography>
-                  { currentPi.userCount }
-                  , last updated on
-                  {' '}
-                  { getDisplayDateFormat(currentPi.userCountDate) }
-                </Typography>
-              )}
-            { !currentPi
-              && (
-                <Typography>No Promoting Interoperability Users data exists.</Typography>
-              )}
-          </CardContent>
-        </Card>
-      </Box>
-    </>
-  );
+  return <>
+    <Box gap="8px" display="flex" flexDirection="column">
+      { listing.edition !== null && listing.edition.name === '2014'
+        && (
+          <Card>
+            <CardHeader title="Test Results Summary" />
+            <CardContent>
+              { listing.reportFileLocation
+                && (
+                  <ChplLink
+                    href={listing.reportFileLocation}
+                    text={listing.reportFileLocation}
+                    analytics={{
+                      event: 'Navigate to Test Results Summary',
+                      category: 'Listing Details',
+                      label: listing.chplProductNumber,
+                      aggregationName: listing.product.name,
+                      group: user?.role,
+                    }}
+                  />
+                )}
+              { !listing.reportFileLocation
+                && (
+                  <Typography>No report on file.</Typography>
+                )}
+            </CardContent>
+          </Card>
+        )}
+      { listing.ics !== null
+        && (
+          <Card>
+            <CardHeader title="Certification History" />
+            <CardContent>
+              { listing.ics.inherits !== null
+                && (
+                  <>
+                    <Typography variant="subtitle1">Inherited Certified Status (ICS):</Typography>
+                    <Typography gutterBottom>{ listing.ics.inherits ? 'True' : 'False' }</Typography>
+                  </>
+                )}
+              { listing.ics.inherits === null
+                && (
+                  <>
+                    <Typography gutterBottom>N/A</Typography>
+                  </>
+                )}
+              { listing.ics.parents?.length > 0
+                && (
+                  <>
+                    <Typography variant="subtitle1">Inherits From:</Typography>
+                    <List>
+                      { getRelatives(listing, user, false, listing.ics.parents) }
+                    </List>
+                  </>
+                )}
+              { listing.ics.children?.length > 0
+                && (
+                  <>
+                    <Typography variant="subtitle1">ICS Source for:</Typography>
+                    <List>
+                      { getRelatives(listing, user, true, listing.ics.children) }
+                    </List>
+                  </>
+                )}
+              { (listing.ics.parents?.length > 0 || listing.ics.children?.length > 0) && (listing.edition === null || listing.edition?.name === '2015') && !isConfirming
+                && (
+                  <ChplIcsFamily
+                    id={listing.id}
+                  />
+                )}
+            </CardContent>
+          </Card>
+        )}
+      { listing.otherAcb !== null
+        && (
+          <Card>
+            <CardHeader title="Other ACB" />
+            <CardContent>
+              <Typography>{ listing.otherAcb }</Typography>
+            </CardContent>
+          </Card>
+        )}
+      { listing.targetedUsers?.length > 0
+        && (
+          <Card>
+            <CardHeader title="Developer Identified Targeted Users" />
+            <CardContent>
+              <List>
+                { listing.targetedUsers.map((tu) => (
+                  <ListItem key={tu.targetedUserName}>
+                    { tu.targetedUserName }
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+        )}
+      <Card>
+        <CardHeader title="Estimated Number of Promoting Interoperability Users" />
+        <CardContent>
+          { currentPi
+            && (
+              <Typography>
+                { currentPi.userCount }
+                , last updated on
+                {' '}
+                { getDisplayDateFormat(currentPi.userCountDate) }
+              </Typography>
+            )}
+          { !currentPi
+            && (
+              <Typography>No Promoting Interoperability Users data exists.</Typography>
+            )}
+        </CardContent>
+      </Card>
+    </Box>
+  </>;
 }
 
 export default ChplAdditionalInformation;

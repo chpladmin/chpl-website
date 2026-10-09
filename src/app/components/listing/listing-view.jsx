@@ -1,20 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
-import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
-import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
-import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+  Box, Card, CardContent, FormControlLabel, Switch, Typography,
+} from '@mui/material';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
+import NotesOutlinedIcon from '@mui/icons-material/NotesOutlined';
+import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { bool, func } from 'prop-types';
 
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
@@ -32,7 +26,7 @@ import { useAnalyticsContext, FlagContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   navigation: {
     backgroundColor: palette.white,
@@ -115,7 +109,7 @@ const useStyles = makeStyles({
       display: 'inherit',
     },
   },
-});
+};
 
 function ChplListingView({
   isConfirming = false,
@@ -128,7 +122,6 @@ function ChplListingView({
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     if (!initialListing) { return; }
@@ -161,7 +154,7 @@ function ChplListingView({
     if (displayFilter(listing)) {
       return (
         <Box
-          className={classes.menuItems}
+          sx={styles.menuItems}
           key={id}
         >
           <InternalScrollButton
@@ -187,7 +180,7 @@ function ChplListingView({
     children: (
       <>
         Listing Information
-        <NotesOutlinedIcon className={classes.iconSpacing} />
+        <NotesOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
   }, {
@@ -196,7 +189,7 @@ function ChplListingView({
     children: (
       <>
         Certification Criteria
-        <BookOutlinedIcon className={classes.iconSpacing} />
+        <BookOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
   }, {
@@ -205,7 +198,7 @@ function ChplListingView({
     children: (
       <>
         Clinical Quality Measures
-        <DoneAllOutlinedIcon className={classes.iconSpacing} />
+        <DoneAllOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
   }, {
@@ -214,7 +207,7 @@ function ChplListingView({
     children: (
       <>
         Safety Enhanced Design (SED)
-        <TouchAppOutlinedIcon className={classes.iconSpacing} />
+        <TouchAppOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
     displayFilter: (l) => (l.edition === null || l.edition.name !== '2011'),
@@ -224,7 +217,7 @@ function ChplListingView({
     children: (
       <>
         G1/G2 Measures
-        <AssessmentOutlinedIcon className={classes.iconSpacing} />
+        <AssessmentOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
     displayFilter: (l) => (l.edition === null || l.edition.name === '2015') && !hti520270101IsOn,
@@ -234,7 +227,7 @@ function ChplListingView({
     children: (
       <>
         Compliance Activities
-        <SecurityOutlinedIcon className={classes.iconSpacing} />
+        <SecurityOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
   }, {
@@ -243,7 +236,7 @@ function ChplListingView({
     children: (
       <>
         Additional Information
-        <InfoOutlinedIcon className={classes.iconSpacing} />
+        <InfoOutlinedIcon sx={styles.iconSpacing} />
       </>
     ),
   }];
@@ -252,27 +245,27 @@ function ChplListingView({
     <>
       { !isConfirming
         && (
-          <div className={classes.leftSideContent}>
-            <div className={classes.navigation}>
-              <Box className={classes.menuContainer}>
+          <Box sx={styles.leftSideContent}>
+            <Box sx={styles.navigation}>
+              <Box sx={styles.menuContainer}>
                 { navigationItems.map((item) => getNavigation(item)) }
               </Box>
-            </div>
-            <Box className={classes.subscribe}>
+            </Box>
+            <Box sx={styles.subscribe}>
               <ChplSubscribe
                 subscribedObjectId={listing.id}
                 subscribedObjectTypeId={1}
               />
             </Box>
-          </div>
+          </Box>
         )}
-      <div className={classes.content}>
+      <Box sx={styles.content}>
         <Card>
-          <span className={classes.anchorElement}>
-            <span id="listingInformation" className={classes.pageAnchor} />
-          </span>
-          <Box className={classes.sectionHeader}>
-            <Typography className={classes.sectionHeaderText} variant="h2">Listing Information</Typography>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="listingInformation" sx={utilStyles.pageAnchor} />
+          </Box>
+          <Box sx={styles.sectionHeader}>
+            <Typography sx={styles.sectionHeaderText} variant="h2">Listing Information</Typography>
           </Box>
           <CardContent>
             <ChplListingInformation
@@ -281,11 +274,11 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <span className={classes.anchorElement}>
-            <span id="certificationCriteria" className={classes.pageAnchor} />
-          </span>
-          <Box className={classes.sectionHeader}>
-            <Typography className={classes.sectionHeaderText} variant="h2">Certification Criteria</Typography>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="certificationCriteria" sx={utilStyles.pageAnchor} />
+          </Box>
+          <Box sx={styles.sectionHeader}>
+            <Typography sx={styles.sectionHeaderText} variant="h2">Certification Criteria</Typography>
             <div>
               { canSeeAllCriteria
                 && (
@@ -317,11 +310,11 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <span className={classes.anchorElement}>
-            <span id="clinicalQualityMeasures" className={classes.pageAnchor} />
-          </span>
-          <Box className={classes.sectionHeader}>
-            <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="clinicalQualityMeasures" sx={utilStyles.pageAnchor} />
+          </Box>
+          <Box sx={styles.sectionHeader}>
+            <Typography sx={styles.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
             <div>
               <FormControlLabel
                 control={(
@@ -352,11 +345,11 @@ function ChplListingView({
         {(listing.edition === null || listing.edition.name !== '2011')
          && (
            <Card>
-             <span className={classes.anchorElement}>
-               <span id="sed" className={classes.pageAnchor} />
-             </span>
-             <Box className={classes.sectionHeader}>
-               <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+             <Box component="span" sx={utilStyles.anchorElement}>
+               <Box component="span" id="sed" sx={utilStyles.pageAnchor} />
+             </Box>
+             <Box sx={styles.sectionHeader}>
+               <Typography sx={styles.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
              </Box>
              <CardContent>
                <ChplSed
@@ -368,11 +361,11 @@ function ChplListingView({
         { (listing.edition === null || listing.edition.name === '2015') && !hti520270101IsOn
           && (
             <Card>
-              <span className={classes.anchorElement}>
-                <span id="g1g2Measures" className={classes.pageAnchor} />
-              </span>
-              <Box className={classes.sectionHeader}>
-                <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="g1g2Measures" sx={utilStyles.pageAnchor} />
+              </Box>
+              <Box sx={styles.sectionHeader}>
+                <Typography sx={styles.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
               </Box>
               <CardContent>
                 <ChplG1G2
@@ -384,11 +377,11 @@ function ChplListingView({
         { !isConfirming
           && (
             <Card>
-              <span className={classes.anchorElement}>
-                <span id="compliance" className={classes.pageAnchor} />
-              </span>
-              <Box className={classes.sectionHeader}>
-                <Typography className={classes.sectionHeaderText} variant="h2">Compliance Activities</Typography>
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="compliance" sx={utilStyles.pageAnchor} />
+              </Box>
+              <Box sx={styles.sectionHeader}>
+                <Typography sx={styles.sectionHeaderText} variant="h2">Compliance Activities</Typography>
               </Box>
               <CardContent>
                 <ChplCompliance
@@ -401,11 +394,11 @@ function ChplListingView({
             </Card>
           )}
         <Card>
-          <span className={classes.anchorElement}>
-            <span id="additional" className={classes.pageAnchor} />
-          </span>
-          <Box className={classes.sectionHeader}>
-            <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="additional" sx={utilStyles.pageAnchor} />
+          </Box>
+          <Box sx={styles.sectionHeader}>
+            <Typography sx={styles.sectionHeaderText} variant="h2">Additional Information</Typography>
           </Box>
           <CardContent>
             <ChplAdditionalInformation
@@ -414,7 +407,7 @@ function ChplListingView({
             />
           </CardContent>
         </Card>
-      </div>
+      </Box>
     </>
   );
 }

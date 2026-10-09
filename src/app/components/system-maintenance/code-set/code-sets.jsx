@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+} from '@mui/material';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import { useSnackbar } from 'notistack';
 
 import ChplCodeSetEdit from './code-set-edit';

@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIcon from '@material-ui/icons/Info';
+  Accordion, AccordionDetails, AccordionSummary, Container,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InfoIcon from '@mui/icons-material/Info';
 import { bool, func } from 'prop-types';
 
 import ChplCriterion from './criterion';
@@ -23,7 +19,7 @@ import {
   resources as resourceDefinition,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   infoIconColor: {
     color: '#156dac',
     marginLeft: '4px',
@@ -41,7 +37,7 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     borderBottom: '.5px solid #c2c6ca',
   },
-});
+};
 
 function ChplCriteria(props) {
   const {
@@ -61,7 +57,6 @@ function ChplCriteria(props) {
     activeEndDay: jsJoda.LocalDate.now(),
     certificationEdition: listing.edition?.name,
   });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -129,17 +124,17 @@ function ChplCriteria(props) {
         && (
           <div>
             <Accordion
-              className={classes.NestedAccordionLevelOne}
+              sx={styles.NestedAccordionLevelOne}
               onChange={handleRemovedChange}
             >
               <AccordionSummary
-                className={classes.NestedAccordionLevelOneSummary}
+                sx={styles.NestedAccordionLevelOneSummary}
                 expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
                 id="removed-header"
               >
                 Removed Certification Criteria
                 <ChplTooltip title="These certification criteria have been removed from the Program.">
-                  <InfoIcon className={classes.infoIconColor} fontSize="medium" />
+                  <InfoIcon sx={styles.infoIconColor} fontSize="medium" />
                 </ChplTooltip>
               </AccordionSummary>
               <AccordionDetails>

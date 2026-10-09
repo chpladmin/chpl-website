@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container, Typography } from '@mui/material';
 
 import WhiteHouseLogo from '../../assets/images/US-WhiteHouse-Logo.svg.png';
 import HHSLogo from '../../assets/images/HHS-White_HiRes.png';
@@ -13,7 +8,7 @@ import USAGovEspLogo from '../../assets/images/Logo_USAGov_Spanish.png';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   footer: {
     position: 'sticky',
     flexShrink: 0,
@@ -26,7 +21,7 @@ const useStyles = makeStyles({
     right: 0,
     bottom: 0,
     top: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       position: 'relative',
       marginTop: 0,
     },
@@ -37,11 +32,22 @@ const useStyles = makeStyles({
     marginTop: '4px',
     gap: '8px',
     alignItems: 'center',
+    '@media (min-width: 800px) and (max-width: 1200px)': {
+      '& .MuiTypography-root, & a': {
+        fontSize: 'clamp(0.75rem, calc(0.25rem + 1vw), 1rem)',
+      },
+    },
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
+      fontSize: 'clamp(0.75rem, calc(0.25rem + 1vw), 1rem)',
       gap: '4px',
       justifyContent: 'space-between',
+    },
+  },
+  affiliateLogo: {
+    height: '24px',
+    '@media (min-width: 800px) and (max-width: 1200px)': {
+      height: 'clamp(18px, calc(6px + 1.5vw), 24px)',
     },
   },
   footerText: {
@@ -50,45 +56,43 @@ const useStyles = makeStyles({
       color: palette.white,
     },
   },
-});
+};
 function ChplNavigationBottom() {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.footer}>
-      <Container maxWidth="lg" disableGutters>
-        <Box className={classes.footerContentContainer}>
-          <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gridGap={4} >
-            <Typography className={classes.footerText} variant="body1">Helpful Links</Typography>
-            <Box color={palette.white} display="flex" gridGap={2}>
-              <a className={classes.footerText} href="#/search">Home</a>
+    <Box sx={styles.footer}>
+      <Container noGutters maxWidth="xl" disableGutters>
+        <Box sx={styles.footerContentContainer}>
+          <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gap="4px">
+            <Typography sx={styles.footerText} variant="body1">Helpful Links</Typography>
+            <Box color={palette.white} display="flex" gap="2px">
+              <Box component="a" sx={styles.footerText} href="#/search">Home</Box>
               {' | '}
-              <a className={classes.footerText} href="http://www.hhs.gov/privacy.html">Privacy Policy</a>
+              <Box component="a" sx={styles.footerText} href="http://www.hhs.gov/privacy.html">Privacy Policy</Box>
               {' | '}
-              <a className={classes.footerText} href="http://www.hhs.gov/disclaimer.html">Disclaimer</a>
+              <Box component="a" sx={styles.footerText} href="http://www.hhs.gov/disclaimer.html">Disclaimer</Box>
               {' | '}
-              <a className={classes.footerText} href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</a>
+              <Box component="a" sx={styles.footerText} href="http://www.hhs.gov/plugins.html">Viewers &amp; Players</Box>
             </Box>
           </Box>
-          <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gridGap={4}>
-            <Typography className={classes.footerText} variant="body1">Affiliate Websites</Typography>
-            <Box display="flex" alignItems="center" gridGap={16}>
+          <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gap="4px">
+            <Typography sx={styles.footerText} variant="body1">Affiliate Websites</Typography>
+            <Box display="flex" alignItems="center" gap="16px">
               <a href="https://www.whitehouse.gov/">
-                <img src={WhiteHouseLogo} alt="Whitehouse.gov logo" style={{ height: '24px' }} />
+                <Box component="img" src={WhiteHouseLogo} alt="Whitehouse.gov logo" sx={styles.affiliateLogo} />
               </a>
               <a href="https://www.usa.gov/">
-                <img src={USAGovLogo} alt="USA.gov logo" style={{ height: '24px' }} />
+                <Box component="img" src={USAGovLogo} alt="USA.gov logo" sx={styles.affiliateLogo} />
               </a>
               <a href="http://www.hhs.gov/">
-                <img src={HHSLogo} alt="HHS.gov logo" style={{ height: '24px' }} />
+                <Box component="img" src={HHSLogo} alt="HHS.gov logo" sx={styles.affiliateLogo} />
               </a>
               <a href="https://gobierno.usa.gov/">
-                <img src={USAGovEspLogo} alt="gobiernoUSA.gov logo" style={{ height: '24px' }} />
+                <Box component="img" src={USAGovEspLogo} alt="gobiernoUSA.gov logo" sx={styles.affiliateLogo} />
               </a>
             </Box>
           </Box>
-          <Box display="flex" alignItems="center" textAlign={{xs: 'center', md: 'left' }} flexDirection={{ xs: 'column', md: 'row' }} gridGap={4}>
-            <Typography className={classes.footerText} variant="body1">Owned by the Office of the National Coordinator for Health Information Technology</Typography>
+          <Box display="flex" alignItems="center" textAlign={{ xs: 'center', md: 'left' }} flexDirection={{ xs: 'column', md: 'row' }} gap="4px">
+            <Typography sx={styles.footerText} variant="body1">Owned by the Office of the National Coordinator for Health Information Technology</Typography>
           </Box>
         </Box>
       </Container>

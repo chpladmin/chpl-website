@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DoneIcon from '@material-ui/icons/Done';
+  Box, Button, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DoneIcon from '@mui/icons-material/Done';
 import { useSnackbar } from 'notistack';
 
 import { useAxios } from 'api/axios';
 
-const useStyles = makeStyles({
+const styles = {
   buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -62,14 +56,13 @@ const useStyles = makeStyles({
   snackbarIcon: {
     marginLeft: '4px',
   },
-});
+};
 
 function ChplUploadListings() {
   const axios = useAxios();
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const classes = useStyles();
 
   const clearFile = () => {
     setFile(undefined);
@@ -96,9 +89,9 @@ function ChplUploadListings() {
           enqueueSnackbar(message, {
             variant: 'success',
             action: (key) => (
-              <div className={classes.snackbarActions}>
+              <Box sx={styles.snackbarActions}>
                 <Button
-                  color="default"
+                  color="inherit"
                   variant="contained"
                   onClick={() => {
                     window.location.href = '#/administration/confirm/listings';
@@ -108,15 +101,15 @@ function ChplUploadListings() {
                   Confirm Listing
                 </Button>
                 <Button
-                  color="default"
+                  color="inherit"
                   variant="contained"
                   onClick={() => closeSnackbar(key)}
                 >
                   Dismiss
                   {' '}
-                  <CloseIcon className={classes.snackbarIcon} />
+                  <CloseIcon sx={styles.snackbarIcon} />
                 </Button>
-              </div>
+              </Box>
             ),
           });
         }
@@ -151,7 +144,7 @@ function ChplUploadListings() {
     <Card id="upload-certified-products">
       <CardHeader title="Upload Certified Products" />
       <CardContent>
-        <div className={classes.uploadContentContainer}>
+        <Box sx={styles.uploadContentContainer}>
           <Typography variant="body1">
             <strong> CSV files only</strong>
           </Typography>
@@ -173,13 +166,13 @@ function ChplUploadListings() {
           </div>
           { file
             && (
-              <Box className={classes.fileUploadContainer}>
-                <Box className={classes.fileUploadContent}>
-                  <div className={classes.fileName}>
+              <Box sx={styles.fileUploadContainer}>
+                <Box sx={styles.fileUploadContent}>
+                  <Box sx={styles.fileName}>
                     <strong>Filename:</strong>
                     {' '}
                     { file.name }
-                  </div>
+                  </Box>
                   { file
                     && (
                       <div>
@@ -191,7 +184,7 @@ function ChplUploadListings() {
                 </Box>
                 { file
                   && (
-                    <div className={classes.buttonUploadContainer}>
+                    <Box sx={styles.buttonUploadContainer}>
                       <Button
                         color="primary"
                         variant="contained"
@@ -202,7 +195,7 @@ function ChplUploadListings() {
                         Upload
                       </Button>
                       <Button
-                        className={classes.deleteButton}
+                        sx={styles.deleteButton}
                         variant="contained"
                         onClick={clearFile}
                         endIcon={<DeleteIcon />}
@@ -210,11 +203,11 @@ function ChplUploadListings() {
                       >
                         Remove
                       </Button>
-                    </div>
+                    </Box>
                   )}
               </Box>
             )}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

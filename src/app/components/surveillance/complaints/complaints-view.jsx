@@ -1,16 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+  Box, Button, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useSnackbar } from 'notistack';
 import { bool, string } from 'prop-types';
 
@@ -36,7 +30,7 @@ import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   card: {
     overflow: 'visible',
@@ -55,7 +49,7 @@ const useStyles = makeStyles({
   statusIndicatorClosed: {
     color: 'rgba(0, 0, 0, 0.87)',
   },
-});
+};
 
 function ChplComplaintsView(props) {
   const storageKey = 'storageKey-complaintsView';
@@ -80,7 +74,6 @@ function ChplComplaintsView(props) {
     sortDescending: order === 'desc',
     query: `${queryString()}&${bonusQuery}`,
   });
-  const classes = useStyles();
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -207,7 +200,7 @@ function ChplComplaintsView(props) {
     }
     if (canAdd) {
       return (
-        <Box display="flex" gridGap="8px">
+        <Box display="flex" gap="8px">
           <Button
             onClick={() => handleDispatch({ action: 'add' })}
             color="secondary"
@@ -249,7 +242,7 @@ function ChplComplaintsView(props) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={styles.card}>
       { bonusQuery
         && (
           <CardHeader title="Complaints" />
@@ -284,14 +277,14 @@ function ChplComplaintsView(props) {
               </ChplSearchResultControls>
               { complaints.length === 0
                 && (
-                  <Box className={classes.emptyActions}>
+                  <Box sx={styles.emptyActions}>
                     { getButtons() }
                   </Box>
                 )}
               { complaints.length > 0
                 && (
                   <>
-                    <Box className={classes.resultsContainer}>
+                    <Box sx={styles.resultsContainer}>
                       { complaints.map((complaint) => {
                         const showAcb = !hasAnyRole(['chpl-onc-acb']) && !bonusQuery;
                         const primaryGroup = [];
@@ -303,7 +296,7 @@ function ChplComplaintsView(props) {
                           value: (
                             <Typography
                               variant="subtitle1"
-                              className={complaint.closedDate ? classes.statusIndicatorClosed : classes.statusIndicatorOpen}
+                              sx={complaint.closedDate ? styles.statusIndicatorClosed : styles.statusIndicatorOpen}
                             >
                               {complaint.closedDate ? 'Closed' : 'Open'}
                             </Typography>

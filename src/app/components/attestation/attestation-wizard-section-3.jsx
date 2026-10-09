@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
+  Box, Button, Card, CardContent, CircularProgress, Container, Typography,
+} from '@mui/material';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Moment from 'react-moment';
 import { useSelector } from 'react-redux';
 import {
@@ -22,7 +16,7 @@ import { useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   attestationContainer: {
     display: 'grid',
@@ -55,13 +49,12 @@ const useStyles = makeStyles({
   dateContainer: {
     gridColumn: '6 / 7',
   },
-});
+};
 
 function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispatch }) {
   const user = useSelector((state) => state.userInfo.user);
   const { analytics } = useAnalyticsContext();
   const [signature, setSignature] = useState('');
-  const classes = useStyles();
 
   const isSubmitDisabled = () => (signature !== user.fullName) || isSubmitting;
 
@@ -78,12 +71,12 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
   };
 
   return (
-    <div className={classes.fixFooterSpacing}>
-      <Container maxWidth="md" className={classes.attestationContainer}>
-        <Typography variant="h2" className={classes.fullWidthGridRow}>
+    <Box sx={styles.fixFooterSpacing}>
+      <Container maxWidth="md" sx={styles.attestationContainer}>
+        <Typography variant="h2" sx={styles.fullWidthGridRow}>
           Section 3 &mdash; Electronic Signature
         </Typography>
-        <Card className={classes.fullWidthGridRow}>
+        <Card sx={styles.fullWidthGridRow}>
           <CardContent>
             <Typography gutterBottom variant="body1">
               As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
@@ -96,10 +89,10 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             </Typography>
           </CardContent>
         </Card>
-        <Typography className={classes.fullWidthGridRow}>
-          Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the “Sign Electronically” button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
+        <Typography sx={styles.fullWidthGridRow}>
+          Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the â€œSign Electronicallyâ€ button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
         </Typography>
-        <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
+        <Card sx={user.title ? styles.nameContainer : styles.nameOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
@@ -110,7 +103,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
           </CardContent>
         </Card>
         { user.title && (
-          <Card className={classes.titleContainer}>
+          <Card sx={styles.titleContainer}>
             <CardContent>
               <div>
                 <Typography gutterBottom variant="subtitle1">
@@ -121,7 +114,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             </CardContent>
           </Card>
         )}
-        <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
+        <Card sx={user.title ? styles.developerContainer : styles.developerOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
@@ -131,7 +124,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             </div>
           </CardContent>
         </Card>
-        <Card className={classes.signatureContainer}>
+        <Card sx={styles.signatureContainer}>
           <CardContent>
             <ChplTextField
               id="signature"
@@ -144,7 +137,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             />
           </CardContent>
         </Card>
-        <Card className={classes.dateContainer}>
+        <Card sx={styles.dateContainer}>
           <CardContent>
             <Typography gutterBottom variant="subtitle1">
               Date:
@@ -157,7 +150,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             </Typography>
           </CardContent>
         </Card>
-        <div className={classes.fullWidthGridRow}>
+        <Box sx={styles.fullWidthGridRow}>
           <Button
             fullWidth
             id="sign-electronically"
@@ -166,15 +159,15 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
-            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
+            { isSubmitting && <CircularProgress size={24} sx={styles.buttonProgress} /> }
             Sign Electronically
             <BorderColorIcon
-              className={classes.iconSpacing}
+              sx={styles.iconSpacing}
             />
           </Button>
-        </div>
+        </Box>
       </Container>
-    </div>
+    </Box>
   );
 }
 

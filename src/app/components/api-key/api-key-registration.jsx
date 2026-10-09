@@ -1,15 +1,8 @@
 import React from 'react';
 import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  TextField,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
+  Box, Button, Card, CardActions, CardContent, CardHeader, TextField, Typography,
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -19,17 +12,19 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridRowGap: '16px',
   },
-  longLabelFix: {
-    paddingRight: '4px',
-    backgroundColor: palette.white,
+  textField: {
+    '& .MuiInputLabel-root': {
+      paddingRight: '4px',
+      backgroundColor: palette.white,
+    },
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -43,7 +38,6 @@ function ChplApiKeyRegistration() {
   const { mutate } = usePostRequestApiKey();
   const { enqueueSnackbar } = useSnackbar();
   const { analytics } = useAnalyticsContext();
-  const classes = useStyles();
   let formik = {};
 
   const writeAnalytics = () => {
@@ -92,7 +86,7 @@ function ChplApiKeyRegistration() {
     <Card>
       <CardHeader title="Register" />
       <CardContent>
-        <div className={classes.grid}>
+        <Box sx={styles.grid}>
           <Typography variant="body1">
             You must register to use this API.
           </Typography>
@@ -108,7 +102,7 @@ function ChplApiKeyRegistration() {
             onBlur={formik.handleBlur}
             error={formik.touched.nameOrganization && !!formik.errors.nameOrganization}
             helperText={formik.touched.nameOrganization && formik.errors.nameOrganization}
-            InputLabelProps={{ classes: { root: classes.longLabelFix } }}
+            sx={styles.textField}
           />
           <TextField
             fullWidth
@@ -122,9 +116,9 @@ function ChplApiKeyRegistration() {
             onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
-            InputLabelProps={{ classes: { root: classes.longLabelFix } }}
+            sx={styles.textField}
           />
-        </div>
+        </Box>
       </CardContent>
       <CardActions>
         <Button

@@ -5,13 +5,13 @@ import {
   Card,
   CardContent,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { func, number, object } from 'prop-types';
-import BeenhereIcon from '@material-ui/icons/Beenhere';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import Edit from '@material-ui/icons/Edit';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import Edit from '@mui/icons-material/Edit';
+import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 
 import ChplAnnualEdit from './annual-edit';
 import ChplAnnualView from './annual-view';

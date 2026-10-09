@@ -1,22 +1,19 @@
-import React from 'react';
-import {
-  Box,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import React, { useContext } from 'react';
+import { Box, Typography } from '@mui/material';
 import {
   bool, node, number, string,
 } from 'prop-types';
 
+import { CmsContext, CompareContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const getStyles = ({ fadeBackground, sticky, wrapActions }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
     marginBottom: '16px',
-    position: ({ sticky }) => (sticky ? 'sticky' : 'static'),
+    position: sticky ? 'sticky' : 'static',
     top: '96px',
     zIndex: 2,
     alignItems: 'flex-start',
@@ -30,17 +27,17 @@ const useStyles = makeStyles({
     borderLeft: `1px solid ${palette.divider}`,
     boxShadow: `0px 6px 8px -4px ${theme.palette.grey[300]}`,
     '&::before': {
-      content: ({ sticky }) => (sticky ? '""' : 'none'),
+      content: sticky ? '""' : 'none',
       position: 'absolute',
       left: '-1px',
       right: '-1px',
       bottom: '100%',
       height: '24px',
-      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
+      background: `linear-gradient(to top, ${fadeBackground} 40%, transparent)`,
       pointerEvents: 'none',
       zIndex: 1,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gap: '12px',
       padding: '16px',
     },
@@ -59,8 +56,8 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '2px',
-    flexWrap: ({ wrapActions }) => (wrapActions ? 'wrap' : 'nowrap'),
-    [theme.breakpoints.down('sm')]: {
+    flexWrap: wrapActions ? 'wrap' : 'nowrap',
+    [theme.breakpoints.down('md')]: {
       flexWrap: 'wrap',
       gap: '8px',
       width: '100%',
@@ -85,11 +82,14 @@ function ChplSearchResultControls({
   sticky = true,
   wrapActions = false,
 }) {
-  const classes = useStyles({ fadeBackground, sticky, wrapActions });
+  const { isOpen: cmsIsOpen } = useContext(CmsContext);
+  const { isOpen: compareIsOpen } = useContext(CompareContext);
+  // an open widget narrows the page without changing the viewport, so breakpoints alone won't wrap
+  const styles = getStyles({ fadeBackground, sticky, wrapActions: wrapActions || cmsIsOpen || compareIsOpen });
 
   return (
-    <div className={classes.container}>
-      <div className={classes.results}>
+    <Box sx={styles.container}>
+      <Box sx={styles.results}>
         <Typography variant="subtitle2">Search Results:</Typography>
         { recordCount === 0
           && (
@@ -103,14 +103,14 @@ function ChplSearchResultControls({
               {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
             </Typography>
           )}
-      </div>
+      </Box>
       { recordCount > 0 && children
         && (
-          <Box className={classes.actions}>
+          <Box sx={styles.actions}>
             { children }
           </Box>
         )}
-    </div>
+    </Box>
   );
 }
 

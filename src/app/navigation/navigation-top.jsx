@@ -1,11 +1,8 @@
 import React, { useContext } from 'react';
+import { keyframes } from '@emotion/react';
 import {
-  AppBar,
-  Box,
-  ButtonBase,
-  Toolbar,
-  makeStyles,
-} from '@material-ui/core';
+  AppBar, Box, ButtonBase, Toolbar,
+} from '@mui/material';
 
 import ChplLogo from '../../assets/images/Certified-HealthIT-Product-List-Upper-Left-Logo.svg';
 
@@ -23,7 +20,21 @@ import {
 } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const shimmer = keyframes({
+  '0%': {
+    transform: 'translateX(-100%)',
+    opacity: 0,
+  },
+  '50%': {
+    opacity: 1,
+  },
+  '100%': {
+    transform: 'translateX(100%)',
+    opacity: 0,
+  },
+});
+
+const styles = {
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     backgroundColor: `${palette.navBackground} !important`,
@@ -31,19 +42,6 @@ const useStyles = makeStyles({
   },
   appBarWithBanner: {
     top: '25px',
-  },
-  '@keyframes shimmer': {
-    '0%': {
-      transform: 'translateX(-100%)',
-      opacity: 0,
-    },
-    '50%': {
-      opacity: 1,
-    },
-    '100%': {
-      transform: 'translateX(100%)',
-      opacity: 0,
-    },
   },
   logoContainer: {
     position: 'relative',
@@ -66,10 +64,10 @@ const useStyles = makeStyles({
   logo: {
     height: '40px',
     display: 'block',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       height: '32px',
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: '20px',
     },
   },
@@ -80,7 +78,7 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
     background: 'linear-gradient(63deg, transparent 0%, rgba(255, 255, 255, 0.6) 20%, transparent 6%)',
-    animation: '$shimmer 2s ease-in-out forwards',
+    animation: `${shimmer} 2s ease-in-out forwards`,
     animationFillMode: 'forwards',
     opacity: 0,
     pointerEvents: 'none',
@@ -99,16 +97,15 @@ const useStyles = makeStyles({
   },
   mobileOnly: {
     display: 'none',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
     },
   },
-});
+};
 
 function ChplNavigationTop() {
   const { analytics } = useAnalyticsContext();
   const { isProduction } = useContext(FlagContext);
-  const classes = useStyles();
 
   const home = () => {
     eventTrack({
@@ -138,32 +135,29 @@ function ChplNavigationTop() {
       {!isProduction && (
         <ChplEnvironmentBanner />
       )}
-      <AppBar position="fixed" className={!isProduction ? `${classes.appBar} ${classes.appBarWithBanner}` : classes.appBar}>
-        <Toolbar style={{
+      <AppBar position="fixed" sx={[styles.appBar, !isProduction && styles.appBarWithBanner]}>
+        <Toolbar sx={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '64px',
         }}
         >
           <ButtonBase
             onClick={home}
-            className={classes.logoButton}
+            sx={styles.logoButton}
             aria-label="Go to CHPL home"
           >
-            <div className={classes.logoContainer}>
-              <img src={ChplLogo} alt="Certified Health IT Product List Logo" className={classes.logo} />
-              <div className={classes.shimmer} />
-            </div>
+            <Box sx={styles.logoContainer}>
+              <Box component="img" src={ChplLogo} alt="Certified Health IT Product List Logo" sx={styles.logo} />
+              <Box sx={styles.shimmer} />
+            </Box>
           </ButtonBase>
           <Box
-            className={classes.rightSide}
-            style={{
-              display: 'flex', alignItems: 'center', flexWrap: 'nowrap', flexShrink: 0,
-            }}
+            sx={styles.rightSide}
           >
             <ChplDesktopNav
               onHomeClick={home}
               onSearchClick={searchChpl}
             />
-            <Box className={classes.mobileOnly}>
+            <Box sx={styles.mobileOnly}>
               <ChplMobileNavDrawer
                 onHomeClick={home}
                 onSearchClick={searchChpl}
@@ -174,11 +168,8 @@ function ChplNavigationTop() {
           </Box>
         </Toolbar>
       </AppBar>
-      <div
-        className={!isProduction ? classes.offsetWithBanner : classes.offset}
-        style={!isProduction
-          ? { minHeight: '64px', marginTop: '25px' }
-          : { minHeight: '64px' }}
+      <Box
+        sx={[styles.offset, !isProduction && styles.offsetWithBanner, { minHeight: '64px' }]}
       />
     </>
   );

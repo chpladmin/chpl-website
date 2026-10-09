@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import {
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
 import { arrayOf } from 'prop-types';
 
 import { reliedUponSoftware } from 'shared/prop-types';
 
-const getDisplay = (sw, classes) => (
+const styles = {
+  invalidData: {
+    textDecoration: 'line-through',
+  },
+  unindentedData: {
+    marginLeft: '-25px',
+  },
+};
+
+const getDisplay = (sw) => (
   <>
     { sw.certifiedProductId
       && <a href={`#/listing/${sw.certifiedProductId}`}>{ sw.certifiedProductNumber }</a>}
     { !sw.certifiedProductId && sw.certifiedProductNumber
         && (
         <>
-          <span className={classes.invalidData}>{ sw.certifiedProductNumber }</span>
+          <Box component="span" sx={styles.invalidData}>{ sw.certifiedProductNumber }</Box>
           (this CHPL Product Number is invalid)
         </>
         )}
@@ -31,19 +38,9 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
   return '';
 };
 
-const useStyles = makeStyles({
-  invalidData: {
-    textDecoration: 'line-through',
-  },
-  unindentedData: {
-    marginLeft: '-25px',
-  },
-});
-
 function ChplReliedUponSoftwareView({ sw }) {
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
-  const classes = useStyles();
 
   useEffect(() => {
     const displaySw = {};
@@ -65,14 +62,14 @@ function ChplReliedUponSoftwareView({ sw }) {
   }, []);
 
   return (
-    <ul className={classes.unindentedData}>
+    <Box component="ul" sx={styles.unindentedData}>
       { Object.entries(software).map(([groupKey, group], groupIndex) => (group.length > 1 ? (
         <li key={`oneOf-${groupKey}`}>
           One of
           <ul key={`group-${groupKey}`}>
             { group.map((groupItem, subIndex) => (
               <li key={groupItem.id || groupItem.key || subIndex}>
-                { getDisplay(groupItem, classes) }
+                { getDisplay(groupItem) }
                 { isAndOrOr(subIndex, group.length, groupIndex, groupCount) }
               </li>
             ))}
@@ -80,11 +77,11 @@ function ChplReliedUponSoftwareView({ sw }) {
         </li>
       ) : (
         <li key={group[0].id || group[0].key || groupIndex}>
-          { getDisplay(group[0], classes) }
+          { getDisplay(group[0]) }
           { groupIndex !== groupCount - 1 && ' AND' }
         </li>
       )))}
-    </ul>
+    </Box>
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
@@ -15,14 +15,14 @@ import {
 } from 'components/filter';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 283px)',
   },
   noFooterSpacing: {
     minHeight: 'unset',
   },
-});
+};
 
 const staticFilters = [{
   ...defaultFilter,
@@ -75,7 +75,6 @@ function ChplChangeRequests({
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
-  const classes = useStyles();
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
@@ -117,14 +116,14 @@ function ChplChangeRequests({
         filters={filters}
         storageKey="storageKey-changeRequestsComponent"
       >
-        <div className={useFooterSpacing ? classes.fixFooterSpacing : classes.noFooterSpacing}>
+        <Box sx={useFooterSpacing ? styles.fixFooterSpacing : styles.noFooterSpacing}>
           <ChplChangeRequestsView
             disallowedFilters={disallowedFilters}
             bonusQuery={bonusQuery}
             dispatch={dispatch}
             embedded={embedded}
           />
-        </div>
+        </Box>
       </FilterProvider>
     </AnalyticsContext.Provider>
   );

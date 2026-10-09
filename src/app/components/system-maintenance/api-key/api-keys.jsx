@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
+} from '@mui/material';
+import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplApiKeysView from './api-keys-view';

@@ -1,15 +1,8 @@
 import React, { useContext } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
+  Box, Button, Card, CardContent, CircularProgress, Container, Typography,
+} from '@mui/material';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Moment from 'react-moment';
 import { useSelector } from 'react-redux';
 import {
@@ -23,7 +16,7 @@ import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   sbulContainer: {
     display: 'grid',
@@ -59,14 +52,13 @@ const useStyles = makeStyles({
   dateContainer: {
     gridColumn: '6 / 7',
   },
-});
+};
 
 function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   const user = useSelector((state) => state.userInfo.user);
   const { developer } = useContext(DeveloperContext);
   const { analytics } = useAnalyticsContext();
   const { url, setUrl } = useContext(UrlCheckerContext);
-  const classes = useStyles();
 
   const isSubmitDisabled = () => (!url || url.length === 0 || isSubmitting);
 
@@ -91,23 +83,23 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
   };
 
   return (
-    <div className={classes.fixFooterSpacing}>
+    <Box sx={styles.fixFooterSpacing}>
       <Container maxWidth="md">
-        <Box className={classes.sbulSectionContainer}>
+        <Box sx={styles.sbulSectionContainer}>
           <Typography gutterBottom component="h2" variant="h3">
             Section 3 &mdash; Service Base URL List entry
           </Typography>
         </Box>
       </Container>
-      <Container maxWidth="md" className={classes.sbulContainer}>
-        <Card className={classes.fullWidthGridRow}>
+      <Container maxWidth="md" sx={styles.sbulContainer}>
+        <Card sx={styles.fullWidthGridRow}>
           <CardContent>
             <Typography variant="body1">
               Please confirm the accessibility of your updated URL by entering the new URL and clicking Validate. If you have any issues with the validation of your URL, please reach out to your ONC-ACB for further assistance.
             </Typography>
           </CardContent>
         </Card>
-        <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
+        <Card sx={user.title ? styles.nameContainer : styles.nameOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
@@ -118,7 +110,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
           </CardContent>
         </Card>
         { user.title && (
-          <Card className={classes.titleContainer}>
+          <Card sx={styles.titleContainer}>
             <CardContent>
               <div>
                 <Typography gutterBottom variant="subtitle1">
@@ -129,7 +121,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
             </CardContent>
           </Card>
         )}
-        <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
+        <Card sx={user.title ? styles.developerContainer : styles.developerOnlyContainer}>
           <CardContent>
             <div>
               <Typography gutterBottom variant="subtitle1">
@@ -139,14 +131,14 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
             </div>
           </CardContent>
         </Card>
-        <Card className={classes.urlContainer}>
+        <Card sx={styles.urlContainer}>
           <CardContent>
             <ChplUrlChecker
               dispatch={handleDispatch}
             />
           </CardContent>
         </Card>
-        <Card className={classes.dateContainer}>
+        <Card sx={styles.dateContainer}>
           <CardContent>
             <Typography gutterBottom variant="subtitle1">
               Date:
@@ -159,7 +151,7 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
             </Typography>
           </CardContent>
         </Card>
-        <div className={classes.fullWidthGridRow}>
+        <Box sx={styles.fullWidthGridRow}>
           <Button
             fullWidth
             id="submit-cr"
@@ -168,15 +160,15 @@ function ChplSbulWizardSection3({ isSubmitting = false, dispatch }) {
             onClick={handleSubmit}
             disabled={isSubmitDisabled()}
           >
-            { isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} /> }
+            { isSubmitting && <CircularProgress size={24} sx={styles.buttonProgress} /> }
             Submit Service Base URL List Change Request
             <BorderColorIcon
-              className={classes.iconSpacing}
+              sx={styles.iconSpacing}
             />
           </Button>
-        </div>
+        </Box>
       </Container>
-    </div>
+    </Box>
   );
 }
 

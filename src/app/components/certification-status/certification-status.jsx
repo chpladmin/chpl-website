@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Card,
   Dialog,
   DialogContent,
@@ -11,16 +12,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getStatusIcon } from 'services/listing.service';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
@@ -28,11 +27,10 @@ const useStyles = makeStyles({
     color: '#156dac',
     fontWeight: 'bold',
   },
-});
+};
 
 function ChplCertificationStatusLegend() {
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -66,7 +64,7 @@ function ChplCertificationStatusLegend() {
         <ChplDialogTitle
           id="certification-status-legend-title"
           onClose={handleClose}
-          className={classes.legendTitle}
+          sx={styles.legendTitle}
         >
           Certification Status Icon Legend
         </ChplDialogTitle>
@@ -76,7 +74,7 @@ function ChplCertificationStatusLegend() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell><span className={classes.srOnly}>Category</span></TableCell>
+                    <TableCell><Box component="span" sx={utilStyles.srOnly}>Category</Box></TableCell>
                     <TableCell>Icon</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Description</TableCell>
@@ -84,7 +82,7 @@ function ChplCertificationStatusLegend() {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell className={classes.rowHeader} rowSpan={3} scope="rowgroup">Active Certificates</TableCell>
+                    <TableCell sx={styles.rowHeader} rowSpan={3} scope="rowgroup">Active Certificates</TableCell>
                     <TableCell>{ getStatusIcon({ name: 'Active' }) }</TableCell>
                     <TableCell>Active</TableCell>
                     <TableCell>Product is certified and in good standing.</TableCell>
@@ -100,7 +98,7 @@ function ChplCertificationStatusLegend() {
                     <TableCell>Product&apos;s certification is suspended because corrective action plan not completed in time. The product is still considered certified, but it is at risk of having its certification withdrawn.</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.rowHeader} rowSpan={3} scope="rowgroup">Decertified Products</TableCell>
+                    <TableCell sx={styles.rowHeader} rowSpan={3} scope="rowgroup">Decertified Products</TableCell>
                     <TableCell>{ getStatusIcon({ name: 'Terminated by ONC' }) }</TableCell>
                     <TableCell>Terminated by ONC</TableCell>
                     <TableCell>The certification of the product has been terminated by ONC.</TableCell>
@@ -116,7 +114,7 @@ function ChplCertificationStatusLegend() {
                     <TableCell>Product&apos;s certification is withdrawn by the product&apos;s developer&apos;s ONC-ACB. No longer considered a certified product.</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.rowHeader} rowSpan={2} scope="rowgroup">Inactive Certificates</TableCell>
+                    <TableCell sx={styles.rowHeader} rowSpan={2} scope="rowgroup">Inactive Certificates</TableCell>
                     <TableCell>{ getStatusIcon({ name: 'Withdrawn by Developer' }) }</TableCell>
                     <TableCell>Withdrawn by Developer</TableCell>
                     <TableCell>Product&apos;s certification is withdrawn by the product&apos;s developer. No longer a certified product.</TableCell>

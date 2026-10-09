@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  IconButton,
-  Typography,
-  makeStyles,
-  Fade,
-} from '@material-ui/core';
-import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
-import BlockIcon from '@material-ui/icons/Block';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import CodeIcon from '@material-ui/icons/Code';
-import DescriptionIcon from '@material-ui/icons/Description';
-import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
-import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import ImageIcon from '@material-ui/icons/Image';
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+  Box, Card, CardContent, Container, IconButton, Typography, Fade,
+} from '@mui/material';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import BlockIcon from '@mui/icons-material/Block';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CodeIcon from '@mui/icons-material/Code';
+import DescriptionIcon from '@mui/icons-material/Description';
+import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import ImageIcon from '@mui/icons-material/Image';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 import LandingBackgroundLogo from '../../../../assets/images/Certified-HealthIT-Product-List-LogoWhite.svg';
 
@@ -28,7 +21,7 @@ import { ChplFilterSearchBar } from 'components/filter';
 import { ChplLink } from 'components/util';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   announcement: {
     marginBottom: '8px',
     color: palette.white,
@@ -177,10 +170,9 @@ const useStyles = makeStyles({
       padding: '0',
     },
   },
-});
+};
 
 function ChplLandingPage() {
-  const classes = useStyles();
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
@@ -200,317 +192,315 @@ function ChplLandingPage() {
     setCurrentAnnouncementIndex((prev) => (prev === announcements.length - 1 ? 0 : prev + 1));
   };
 
-  return (
-    <>
-      <Box width="100%" className={classes.heroSection}>
+  return <>
+    <Box width="100%" sx={styles.heroSection}>
+      <Container maxWidth="md">
+        <Typography align="center" variant="h1" gutterBottom>
+          Welcome to the Certified Health IT Product List
+        </Typography>
+        <Typography align="center" variant="body1">
+          The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program
+        </Typography>
+      </Container>
+    </Box>
+    <Box sx={styles.landingPageBackground} pb={16}>
+      <Box sx={styles.landingPageImageryBackground}>
         <Container maxWidth="md">
-          <Typography align="center" variant="h1" gutterBottom>
-            Welcome to the Certified Health IT Product List
-          </Typography>
-          <Typography align="center" variant="body1">
-            The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program
-          </Typography>
-        </Container>
-      </Box>
-      <Box className={classes.landingPageBackground} pb={16}>
-        <Box className={classes.landingPageImageryBackground}>
-          <Container maxWidth="md">
-            <Box position="relative" top="-32px">
-              <ChplFilterSearchBar
-                hideAdvancedSearch
-              />
-            </Box>
-            {announcements.length > 0 && (
-              <>
-                <Typography className={classes.announcement} variant="h2" id="announcements-heading">
-                  Announcement
-                  {announcements.length > 1 ? 's' : ''}
-                </Typography>
-                <Box className={classes.infoBox} mb={4}>
-                  {announcements.length === 1 ? (
-                    // Single announcement - no carousel
-                    <Box>
-                      <Typography color="textPrimary" variant="body1">
-                        <strong>{announcements[0].title}</strong>
+          <Box position="relative" top="-32px">
+            <ChplFilterSearchBar
+              hideAdvancedSearch
+            />
+          </Box>
+          {announcements.length > 0 && (
+            <>
+              <Typography sx={styles.announcement} variant="h2" id="announcements-heading">
+                Announcement
+                {announcements.length > 1 ? 's' : ''}
+              </Typography>
+              <Box sx={styles.infoBox} mb={4}>
+                {announcements.length === 1 ? (
+                  // Single announcement - no carousel
+                  <Box>
+                    <Typography color="textPrimary" variant="body1">
+                      <strong>{announcements[0].title}</strong>
+                    </Typography>
+                    {announcements[0].text && (
+                      <Typography variant="body2">
+                        {announcements[0].text}
                       </Typography>
-                      {announcements[0].text && (
-                        <Typography variant="body2">
-                          {announcements[0].text}
+                    )}
+                  </Box>
+                ) : (
+                  // Multiple announcements - show carousel
+                  <Box sx={styles.carouselControls} role="region" aria-label="Announcement carousel">
+                    <IconButton
+                      onClick={handlePrevious}
+                      sx={styles.carouselButton}
+                      size="small"
+                      color="primary"
+                      aria-label="Previous announcement"
+                    >
+                      <ChevronLeftIcon color="primary" />
+                    </IconButton>
+                    <Fade in key={currentAnnouncementIndex} timeout={500}>
+                      <Box flexGrow={1} flexDirection="column">
+                        <Typography color="textPrimary" variant="body1">
+                          <strong>{announcements[currentAnnouncementIndex].title}</strong>
                         </Typography>
-                      )}
-                    </Box>
-                  ) : (
-                    // Multiple announcements - show carousel
-                    <Box className={classes.carouselControls} role="region" aria-label="Announcement carousel">
-                      <IconButton
-                        onClick={handlePrevious}
-                        className={classes.carouselButton}
-                        size="small"
-                        color="primary"
-                        aria-label="Previous announcement"
-                      >
-                        <ChevronLeftIcon color="primary" />
-                      </IconButton>
-                      <Fade in key={currentAnnouncementIndex} timeout={500}>
-                        <Box flexGrow={1} flexDirection="column">
-                          <Typography color="textPrimary" variant="body1">
-                            <strong>{announcements[currentAnnouncementIndex].title}</strong>
+                        {announcements[currentAnnouncementIndex].text && (
+                          <Typography variant="body2">
+                            {announcements[currentAnnouncementIndex].text}
                           </Typography>
-                          {announcements[currentAnnouncementIndex].text && (
-                            <Typography variant="body2">
-                              {announcements[currentAnnouncementIndex].text}
-                            </Typography>
-                          )}
-                          <Typography variant="caption" aria-live="polite">
-                            Announcement
-                            {' '}
-                            {currentAnnouncementIndex + 1}
-                            {' '}
-                            of
-                            {' '}
-                            {announcements.length}
-                          </Typography>
-                        </Box>
-                      </Fade>
-                      <IconButton
-                        onClick={handleNext}
-                        className={classes.carouselButton}
-                        size="small"
-                        color="primary"
-                        aria-label="Next announcement"
-                      >
-                        <ChevronRightIcon color="primary" />
-                      </IconButton>
+                        )}
+                        <Typography variant="caption" aria-live="polite">
+                          Announcement
+                          {' '}
+                          {currentAnnouncementIndex + 1}
+                          {' '}
+                          of
+                          {' '}
+                          {announcements.length}
+                        </Typography>
+                      </Box>
+                    </Fade>
+                    <IconButton
+                      onClick={handleNext}
+                      sx={styles.carouselButton}
+                      size="small"
+                      color="primary"
+                      aria-label="Next announcement"
+                    >
+                      <ChevronRightIcon color="primary" />
+                    </IconButton>
+                  </Box>
+                )}
+              </Box>
+            </>
+          )}
+          <Box pt={6} pb={4}>
+            <Typography sx={styles.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
+              Use our shortcuts to help find a particular category of listings
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="column" gap="16px">
+            <Box sx={styles.shortcutCardContainer}>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gap="8px">
+                      <CodeIcon style={{ color: theme.palette.primary.dark }} />
+                      <Box sx={styles.shortcutCardText}>
+                        <Typography>
+                          <ChplLink
+                            href="#/api-documentation"
+                            text="API Information"
+                            external={false}
+                            router={{ sref: 'shortcut.api-documentation' }}
+                            analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          This list includes all health IT products that have been certified to at least one API Criteria
+                        </Typography>
+                      </Box>
                     </Box>
-                  )}
-                </Box>
-              </>
-            )}
-            <Box pt={6} pb={4}>
-              <Typography className={classes.subHeaders} align="left" component="h3" variant="h2" gutterBottom>
-                Use our shortcuts to help find a particular category of listings
+                  </CardContent>
+                </Card>
+              </Box>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gap="8px">
+                      <AssignmentTurnedInOutlinedIcon style={{ color: theme.palette.primary.dark }} />
+                      <Box sx={styles.shortcutCardText}>
+                        <Typography>
+                          <ChplLink
+                            href="#/real-world-testing"
+                            text="Real World Testing"
+                            external={false}
+                            router={{ sref: 'shortcut.real-world-testing' }}
+                            analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Real World Testing' }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gap="8px">
+                      <ImageIcon style={{ color: theme.palette.primary.dark }} />
+                      <Box sx={styles.shortcutCardText}>
+                        <Typography>
+                          <ChplLink
+                            href="#/charts"
+                            text="Charts"
+                            external={false}
+                            router={{ sref: 'charts' }}
+                            analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Charts' }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          Charts are a dynamic display of the data currently on the CHPL
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+              <Box sx={styles.shortcutCard}>
+                <Card sx={styles.shortcutCards}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gap="8px">
+                      <TrendingUpIcon style={{ color: theme.palette.primary.dark }} />
+                      <Box sx={styles.shortcutCardText}>
+                        <Typography>
+                          <ChplLink
+                            href="#/svap"
+                            text="SVAP Information"
+                            external={false}
+                            router={{ sref: 'shortcut.svap' }}
+                            analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'SVAP' }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          Standards Version Advancement Process (SVAP) This list includes Health IT Module(s) utilizing advanced interoperability standards through the SVAP process, promoting streamlined adoption and improved communication
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Box>
+            <Box pt={4} pb={4}>
+              <Typography sx={styles.subHeaders} align="left" variant="h2">
+                Need Help? Learn more about CHPL through our documentation
               </Typography>
             </Box>
-            <Box display="flex" flexDirection="column" gridGap={16}>
-              <Box className={classes.shortcutCardContainer}>
-                <Box className={classes.shortcutCard}>
-                  <Card className={classes.shortcutCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <CodeIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.shortcutCardText}>
-                          <Typography>
-                            <ChplLink
-                              href="#/api-documentation"
-                              text="API Information"
-                              external={false}
-                              router={{ sref: 'shortcut.api-documentation' }}
-                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This list includes all health IT products that have been certified to at least one API Criteria
-                          </Typography>
-                        </Box>
+            <Box sx={styles.helpCardsContainer}>
+              <Box sx={styles.helpCard}>
+                <Card sx={styles.helpCardContent}>
+                  <CardContent>
+                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap="8px">
+                      <DescriptionIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
+                      <Box>
+                        <Typography align="center">
+                          <ChplLink
+                            href="#/resources/overview"
+                            text="CHPL Overview"
+                            external={false}
+                            router={{ sref: 'resources.overview' }}
+                            analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL Overview' }}
+                          />
+                        </Typography>
                       </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.shortcutCard}>
-                  <Card className={classes.shortcutCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <AssignmentTurnedInOutlinedIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.shortcutCardText}>
-                          <Typography>
-                            <ChplLink
-                              href="#/real-world-testing"
-                              text="Real World Testing"
-                              external={false}
-                              router={{ sref: 'shortcut.real-world-testing' }}
-                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Real World Testing' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.shortcutCard}>
-                  <Card className={classes.shortcutCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <ImageIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.shortcutCardText}>
-                          <Typography>
-                            <ChplLink
-                              href="#/charts"
-                              text="Charts"
-                              external={false}
-                              router={{ sref: 'charts' }}
-                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Charts' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            Charts are a dynamic display of the data currently on the CHPL
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.shortcutCard}>
-                  <Card className={classes.shortcutCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <TrendingUpIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.shortcutCardText}>
-                          <Typography>
-                            <ChplLink
-                              href="#/svap"
-                              text="SVAP Information"
-                              external={false}
-                              router={{ sref: 'shortcut.svap' }}
-                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'SVAP' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            Standards Version Advancement Process (SVAP) This list includes Health IT Module(s) utilizing advanced interoperability standards through the SVAP process, promoting streamlined adoption and improved communication
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
               </Box>
-              <Box pt={4} pb={4}>
-                <Typography className={classes.subHeaders} align="left" variant="h2">
-                  Need Help? Learn more about CHPL through our documentation
-                </Typography>
+              <Box sx={styles.helpCard}>
+                <Card sx={styles.helpCardContent}>
+                  <CardContent>
+                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap="8px">
+                      <DeveloperModeIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
+                      <Box>
+                        <Typography align="center">
+                          <ChplLink
+                            href="#/resources/api"
+                            text="CHPL API"
+                            external={false}
+                            router={{ sref: 'resources.api' }}
+                            analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL API' }}
+                          />
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
               </Box>
-              <Box className={classes.helpCardsContainer}>
-                <Box className={classes.helpCard}>
-                  <Card className={classes.helpCardContent}>
-                    <CardContent>
-                      <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <DescriptionIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
-                        <Box>
-                          <Typography align="center">
-                            <ChplLink
-                              href="#/resources/overview"
-                              text="CHPL Overview"
-                              external={false}
-                              router={{ sref: 'resources.overview' }}
-                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL Overview' }}
-                            />
-                          </Typography>
-                        </Box>
+              <Box sx={styles.helpCard}>
+                <Card sx={styles.helpCardContent}>
+                  <CardContent>
+                    <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gap="8px">
+                      <MenuBookIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
+                      <Box display="flex" gap="4px">
+                        <Typography align="center">
+                          <ChplLink
+                            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+                            text="Training Guide"
+                            external={false}
+                            analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'Training Guide' }}
+                          />
+                        </Typography>
                       </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.helpCard}>
-                  <Card className={classes.helpCardContent}>
-                    <CardContent>
-                      <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <DeveloperModeIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
-                        <Box>
-                          <Typography align="center">
-                            <ChplLink
-                              href="#/resources/api"
-                              text="CHPL API"
-                              external={false}
-                              router={{ sref: 'resources.api' }}
-                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL API' }}
-                            />
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.helpCard}>
-                  <Card className={classes.helpCardContent}>
-                    <CardContent>
-                      <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <MenuBookIcon fontSize="large" style={{ color: theme.palette.primary.dark }} />
-                        <Box display="flex" gridGap={4}>
-                          <Typography align="center">
-                            <ChplLink
-                              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
-                              text="Training Guide"
-                              external={false}
-                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'Training Guide' }}
-                            />
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-              </Box>
-              <Box pt={4} pb={4}>
-                <Typography className={classes.subHeaders} align="left" variant="h2">
-                  Check our compliance pages
-                </Typography>
-              </Box>
-              <Box className={classes.complianceCardsContainer}>
-                <Box className={classes.complianceCard}>
-                  <Card className={classes.complianceCardContent}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <BlockIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.shortcutCardText}>
-                          <Typography>
-                            <ChplLink
-                              href="#/banned-developers"
-                              text="Banned Developers"
-                              external={false}
-                              router={{ sref: 'shortcut.banned-developers' }}
-                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Banned Developers' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.complianceCard}>
-                  <Card className={classes.complianceCardContent}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <ErrorOutlineOutlinedIcon style={{ color: theme.palette.primary.dark }} />
-                        <Box className={classes.shortcutCardText}>
-                          <Typography>
-                            <ChplLink
-                              href="#/corrective-action"
-                              text="Products: Corrective Actions"
-                              external={false}
-                              router={{ sref: 'shortcut.corrective-action' }}
-                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Products: Corrective Action' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
               </Box>
             </Box>
-          </Container>
-        </Box>
+            <Box pt={4} pb={4}>
+              <Typography sx={styles.subHeaders} align="left" variant="h2">
+                Check our compliance pages
+              </Typography>
+            </Box>
+            <Box sx={styles.complianceCardsContainer}>
+              <Box sx={styles.complianceCard}>
+                <Card sx={styles.complianceCardContent}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gap="8px">
+                      <BlockIcon style={{ color: theme.palette.primary.dark }} />
+                      <Box sx={styles.shortcutCardText}>
+                        <Typography>
+                          <ChplLink
+                            href="#/banned-developers"
+                            text="Banned Developers"
+                            external={false}
+                            router={{ sref: 'shortcut.banned-developers' }}
+                            analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Banned Developers' }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+              <Box sx={styles.complianceCard}>
+                <Card sx={styles.complianceCardContent}>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row" gap="8px">
+                      <ErrorOutlineOutlinedIcon style={{ color: theme.palette.primary.dark }} />
+                      <Box sx={styles.shortcutCardText}>
+                        <Typography>
+                          <ChplLink
+                            href="#/corrective-action"
+                            text="Products: Corrective Actions"
+                            external={false}
+                            router={{ sref: 'shortcut.corrective-action' }}
+                            analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Products: Corrective Action' }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Box>
+          </Box>
+        </Container>
       </Box>
-    </>
-  );
+    </Box>
+  </>;
 }
 
 export default ChplLandingPage;

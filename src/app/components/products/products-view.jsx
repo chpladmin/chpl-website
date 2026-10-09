@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, CardHeader, GlobalStyles, Typography,
+} from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 
 import ChplProductView from './product-view';
@@ -18,7 +14,7 @@ import {
 import { product as productPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'grid',
@@ -38,25 +34,23 @@ const useStyles = makeStyles({
     gridTemplateColumns: 'auto auto',
     alignItems: 'center',
   },
-  searchContainer: {
-    color: 'white !important',
-  },
   wrap: {
     flexFlow: 'wrap',
   },
-  '@global': {
-    '.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
-      width: '300px !important',
-      right: '0px !important',
-      [theme.breakpoints.up('sm')]: {
-        width: '600px !important',
-      },
-      [theme.breakpoints.up('md')]: {
-        width: '750px !important',
-      },
+};
+
+const globalStyles = {
+  '.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
+    width: '300px !important',
+    right: '0 !important',
+    [theme.breakpoints.up('sm')]: {
+      width: '600px !important',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '750px !important',
     },
   },
-});
+};
 
 const includeListing = (listing, params) => {
   let include = true;
@@ -98,7 +92,6 @@ function ChplProductsView({ products = [], dispatch }) {
   const { queryParams } = useFilterContext();
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [params, setParams] = useState({});
-  const classes = useStyles();
 
   useEffect(() => {
     setParams(queryParams());
@@ -118,6 +111,7 @@ function ChplProductsView({ products = [], dispatch }) {
 
   return (
     <Card>
+      <GlobalStyles styles={globalStyles} />
       <CardHeader
         title="Products"
       />
@@ -126,8 +120,8 @@ function ChplProductsView({ products = [], dispatch }) {
           hideSearchTerm
         />
         <ChplFilterLayout mobileOnly>
-          <div className={classes.tableResultsHeaderContainer}>
-            <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+          <Box sx={styles.tableResultsHeaderContainer}>
+            <Box sx={[styles.resultsContainer, styles.wrap]}>
               <Typography variant="subtitle2">Search Results:</Typography>
               { displayedProducts.length === 0
               && (
@@ -144,8 +138,8 @@ function ChplProductsView({ products = [], dispatch }) {
                   { displayedProducts.length === 1 ? '' : 's' }
                 </Typography>
               )}
-            </div>
-          </div>
+            </Box>
+          </Box>
           { displayedProducts
             .sort((a, b) => sortProducts(a, b))
             .map((product) => (

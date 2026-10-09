@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, Typography,
+} from '@mui/material';
 import { arrayOf, func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@mui/icons-material/Add';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
@@ -30,9 +26,9 @@ const sortOptions = [
   { property: 'endDay', text: 'End Date' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -40,7 +36,6 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const filterContext = useFilterContext();
-  const classes = useStyles();
 
   useEffect(() => {
     setTestTools(initialTestTools
@@ -65,89 +60,87 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
     setOrder(orderDirection);
   };
 
-  return (
-    <>
-      <ChplFilterSearchBar
-        placeholder="Search by Value..."
-      />
-      <ChplFilterLayout>
-        <Box className={classes.headerContainer}>
-          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
-            <Typography variant="subtitle2">Search Results</Typography>
-            <Typography variant="body2">
-              {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" gridGap={4}>
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-            { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-            <Button
-              onClick={() => dispatch({ action: 'edit', payload: {} })}
-              id="add-new-test-tool"
-              variant="contained"
-              color="primary"
-              endIcon={<AddIcon />}
-            >
-              Add
-            </Button>
+  return <>
+    <ChplFilterSearchBar
+      placeholder="Search by Value..."
+    />
+    <ChplFilterLayout>
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+          <Typography variant="subtitle2">Search Results</Typography>
+          <Typography variant="body2">
+            {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-test-tool"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+          )}
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { testTools
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.value}`}
+              cardTitle="Value"
+              cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
             )}
-          </Box>
-        </Box>
-        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-          { testTools
-            .map((item) => (
-              <ChplSearchResultCard
-                key={`${item.value}`}
-                cardTitle="Value"
-                cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}
-                titleIconButton={(
-                  <ChplTooltip title="Use this value in a upload file">
-                    <IconButton color="primary" size="small">
-                      <InfoIcon fontSize="small" />
-                    </IconButton>
-                  </ChplTooltip>
-              )}
-                fieldGroups={[
-                  [
-                    {
-                      label: 'Start Date',
-                      value: getDisplayDateFormat(item.startDay),
-                    },
-                    {
-                      label: 'End Date',
-                      value: getDisplayDateFormat(item.endDay),
-                    },
-                    {
-                      label: 'Applicable Criteria',
-                      value: item.criteriaDisplay || 'N/A',
-                    },
-                  ],
-                ]}
-                actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-test-tool-${item.value}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
-              />
-            ))}
-        </Box>
-      </ChplFilterLayout>
-    </>
-  );
+              fieldGroups={[
+                [
+                  {
+                    label: 'Start Date',
+                    value: getDisplayDateFormat(item.startDay),
+                  },
+                  {
+                    label: 'End Date',
+                    value: getDisplayDateFormat(item.endDay),
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                  },
+                ],
+              ]}
+              actions={
+              hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                <Button
+                  onClick={() => dispatch({ action: 'edit', payload: item })}
+                  id={`edit-test-tool-${item.value}`}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  endIcon={<EditOutlinedIcon />}
+                >
+                  Edit
+                </Button>
+              )
+            }
+            />
+          ))}
+      </Box>
+    </ChplFilterLayout>
+  </>;
 }
 
 export default ChplTestToolsView;

@@ -5,7 +5,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { defaultFilter } from 'components/filter';
 import { getStatusIcon } from 'services/listing.service';

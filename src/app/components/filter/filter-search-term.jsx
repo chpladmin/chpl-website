@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  IconButton,
-  InputBase,
-  InputAdornment,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, InputAdornment, InputBase,
+} from '@mui/material';
 import { string } from 'prop-types';
-import SearchIcon from '@material-ui/icons/Search';
-import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { useFilterContext } from './filter-context';
 
@@ -16,7 +12,7 @@ import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   searchButton: {
     margin: '-8px',
     borderRadius: '0 8px 8px 0',
@@ -41,11 +37,10 @@ const useStyles = makeStyles({
     padding: '8px',
     borderRadius: '8px',
   },
-});
+};
 
 function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or CHPL ID...' }) {
   const [term, setTerm] = useState('');
-  const classes = useStyles();
 
   const {
     analytics,
@@ -91,46 +86,41 @@ function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or 
     }
   };
 
-  return (
-    <>
-      <div className={classes.searchBarContainer}>
-        <div className={classes.searchBar}>
-          <InputBase
-            className={classes.searchInput}
-            placeholder={placeholder}
-            value={term}
-            onChange={handleTerm}
-            onKeyPress={handleKeyPress}
-            id="filter-search-term-input"
-            inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
-            endAdornment={(
-              <InputAdornment position="start">
-                <ChplTooltip title="Clear">
-                  <IconButton
-                    onClick={handleClear}
-                    aria-label="Clear search"
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </ChplTooltip>
-              </InputAdornment>
-            )}
-          />
-          <Button
-            className={classes.searchButton}
-            size="medium"
-            variant="contained"
-            color="primary"
-            id="filter-search-term-search"
-            onClick={handleSearch}
-            endIcon={<SearchIcon className={classes.searchIcon} color="inherit" fontSize="large" />}
-          >
-            Search
-          </Button>
-        </div>
-      </div>
-    </>
-  );
+  return <>
+    <Box sx={styles.searchBarContainer}>
+      <Box sx={styles.searchBar}>
+        <InputBase
+          sx={styles.searchInput}
+          placeholder={placeholder}
+          value={term}
+          onChange={handleTerm}
+          onKeyPress={handleKeyPress}
+          id="filter-search-term-input"
+          inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
+          endAdornment={(
+            <InputAdornment position="start">
+              <ChplTooltip title="Clear">
+                <IconButton onClick={handleClear} aria-label="Clear search" size="large">
+                  <ClearIcon />
+                </IconButton>
+              </ChplTooltip>
+            </InputAdornment>
+          )}
+        />
+        <Button
+          sx={styles.searchButton}
+          size="medium"
+          variant="contained"
+          color="primary"
+          id="filter-search-term-search"
+          onClick={handleSearch}
+          endIcon={<SearchIcon sx={styles.searchIcon} color="inherit" fontSize="large" />}
+        >
+          Search
+        </Button>
+      </Box>
+    </Box>
+  </>;
 }
 
 export default ChplFilterSearchTerm;

@@ -1,11 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import { node, oneOfType, string } from 'prop-types';
 
 import theme from '../../themes/theme';
 
-const useStylesBootstrap = makeStyles({
+const styles = {
   arrow: {
     color: theme.palette.common.black,
   },
@@ -14,13 +13,21 @@ const useStylesBootstrap = makeStyles({
     textAlign: 'center',
     fontSize: '12px',
   },
-});
+};
 
 function ChplTooltip(props) {
-  const classes = useStylesBootstrap();
-
   /* eslint-disable react/jsx-props-no-spreading */
-  return <Tooltip arrow placement="top" classes={classes} {...props} />;
+  return (
+    <Tooltip
+      arrow
+      placement="top"
+      componentsProps={{
+        arrow: { sx: styles.arrow },
+        tooltip: { sx: styles.tooltip },
+      }}
+      {...props}
+    />
+  );
   /* eslint-enable react/jsx-props-no-spreading */
 }
 
