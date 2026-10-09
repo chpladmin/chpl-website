@@ -21,7 +21,7 @@ import { usePostInitiateQuarterlyReport, usePostQuarterlyReportRequest } from 'a
 import { UserContext } from 'shared/contexts';
 
 function ChplQuarter({
-  quarter, year, dispatch, report: initialReport = {}, acb,
+  quarter, year, dispatch, report: initialReport, acb,
 }) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -30,8 +30,11 @@ function ChplQuarter({
   const [report, setReport] = useState(undefined);
   const [state, setState] = useState('summary');
 
+  // Default here rather than in the signature: a `= {}` default is a new object
+  // on every render, which would re-fire this effect forever for a quarter with
+  // no report yet.
   useEffect(() => {
-    setReport(initialReport);
+    setReport(initialReport ?? {});
   }, [initialReport]);
 
   const download = () => {

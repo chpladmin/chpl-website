@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -16,7 +16,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
@@ -48,25 +48,15 @@ const validationSchema = yup.object({
 function ChplVersionEdit(props) {
   const {
     dispatch,
-    errorMessages: initialErrorMessages,
-    isInvalid: initialIsInvalid,
+    errorMessages,
+    isInvalid,
     isProcessing = false,
     isSplitting,
     version,
   } = props;
   const { analytics } = useAnalyticsContext();
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isInvalid, setIsInvalid] = useState(false);
   const classes = useStyles();
   let formik;
-
-  useEffect(() => {
-    setIsInvalid(initialIsInvalid);
-  }, [initialIsInvalid]);
-
-  useEffect(() => {
-    setErrorMessages(initialErrorMessages);
-  }, [initialErrorMessages]);
 
   const cancel = () => {
     eventTrack({
@@ -108,6 +98,12 @@ function ChplVersionEdit(props) {
       save();
     },
     validationSchema,
+  });
+
+  useActionBar({
+    isDisabled: isActionDisabled(),
+    isProcessing,
+    errors: errorMessages,
   });
 
   return (
@@ -160,12 +156,7 @@ function ChplVersionEdit(props) {
             )}
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={isActionDisabled()}
-        isProcessing={isProcessing}
-        errors={errorMessages}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Container>
   );
 }

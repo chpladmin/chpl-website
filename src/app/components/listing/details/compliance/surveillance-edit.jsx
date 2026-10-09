@@ -20,7 +20,7 @@ import ChplRequirementEdit from './requirement-edit';
 
 import { useFetchSurveillanceTypes } from 'api/data';
 import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getSurveillanceTitle } from 'services/surveillance.service';
 import { ListingContext } from 'shared/contexts';
@@ -59,12 +59,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { mutate: remove } = useDeleteSurveillance();
   const { mutate: create } = usePostSurveillance();
   const { mutate: update } = usePutSurveillance();
-  const [errors, setErrors] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   const classes = useStyles();
   let formik;
+  let updateActionBar;
 
   useEffect(() => {
     if (surveillance.requirements) {
@@ -88,27 +87,25 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     let payload;
     switch (action) {
       case 'delete':
-        setIsProcessing(true);
-        setErrors([]);
+        updateActionBar({ errors: [], isProcessing: true });
         payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
         remove(payload, {
           onSuccess: () => {
-            setIsProcessing(false);
+            updateActionBar({ isProcessing: false });
             dispatch({ action: 'cancel' });
           },
           onError: (error) => {
-            setIsProcessing(false);
+            updateActionBar({ isProcessing: false });
             if (error.response.data.error) {
-              setErrors([error.response.data.error]);
+              updateActionBar({ errors: [error.response.data.error] });
             } else {
-              setErrors(error.response.data.errorMessages);
+              updateActionBar({ errors: error.response.data.errorMessages });
             }
           },
         });
         break;
       case 'save':
-        setErrors([]);
-        setIsProcessing(true);
+        updateActionBar({ errors: [], isProcessing: true });
         payload = {
           ...surveillance,
           ...formik.values,
@@ -119,30 +116,30 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         if (surveillance.id) {
           update(payload, {
             onSuccess: () => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               if (error.response.data.error) {
-                setErrors([error.response.data.error]);
+                updateActionBar({ errors: [error.response.data.error] });
               } else {
-                setErrors(error.response.data.errorMessages);
+                updateActionBar({ errors: error.response.data.errorMessages });
               }
             },
           });
         } else {
           create(payload, {
             onSuccess: () => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               if (error.response.data.error) {
-                setErrors([error.response.data.error]);
+                updateActionBar({ errors: [error.response.data.error] });
               } else {
-                setErrors(error.response.data.errorMessages);
+                updateActionBar({ errors: error.response.data.errorMessages });
               }
             },
           });
@@ -176,6 +173,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     },
     validationSchema,
   });
+
+  updateActionBar = useActionBar({
+    canDelete: !!surveillance.id,
+    isDeleteDisabled: formik.values.reason === '',
+  }, surveillanceTypes.length > 0);
 
   if (surveillanceTypes.length === 0) { return <CircularProgress />; }
 
@@ -306,13 +308,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           </Box>
         </Container>
       </Box>
-      <ChplActionBar
-        dispatch={handleActionBar}
-        canDelete={!!surveillance.id}
-        isDeleteDisabled={formik.values.reason === ''}
-        errors={errors}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleActionBar} />
     </>
   );
 }

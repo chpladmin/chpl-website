@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import actionBarReducer from 'components/action-bar/actionBar.slice';
 import browserInfoReducer, { MAX_REMEMBERED, initialState as browserInfoDefaults } from 'components/browser/browserInfo.slice';
 import userInfoReducer from 'components/login/userInfo.slice';
 
@@ -65,7 +66,8 @@ const loadState = () => {
       return migrated;
     }
 
-    const persisted = JSON.parse(serializedState);
+    // `actionBar` is never persisted, but drop it in case an older `chplState` holds one.
+    const { actionBar, ...persisted } = JSON.parse(serializedState);
     return {
       ...persisted,
       browserInfo: {
@@ -81,9 +83,11 @@ const loadState = () => {
   }
 };
 
-const saveState = (state) => {
+// The action bar is per-page UI state, so it is never written: a reload would
+// otherwise restore whatever bar was showing beforehand.
+const saveState = ({ browserInfo, userInfo }) => {
   try {
-    const serializedState = JSON.stringify(state);
+    const serializedState = JSON.stringify({ browserInfo, userInfo });
     localStorage.setItem('chplState', serializedState);
   } catch (err) {
     // Ignore write errors or log them
@@ -99,6 +103,7 @@ const localStorageMiddleware = (store) => (next) => (action) => {
 const createStore = () => {
   const configured = configureStore({
     reducer: {
+      actionBar: actionBarReducer,
       browserInfo: browserInfoReducer,
       userInfo: userInfoReducer,
     },
