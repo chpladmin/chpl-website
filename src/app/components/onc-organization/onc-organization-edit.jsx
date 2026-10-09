@@ -12,7 +12,7 @@ import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { acb as acbPropType } from 'shared/prop-types';
@@ -209,6 +209,11 @@ function ChplOncOrganizationEdit(props) {
     validationSchema,
   });
 
+  useActionBar({
+    isDisabled: isActionDisabled(),
+    isProcessing,
+  });
+
   /* eslint-disable object-curly-newline */
   return (
     <>
@@ -263,11 +268,7 @@ function ChplOncOrganizationEdit(props) {
           { getEnhancedEditField({ key: 'country', display: 'Country', disabled: formik.values.retired }) }
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={isActionDisabled()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

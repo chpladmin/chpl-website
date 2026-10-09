@@ -12,7 +12,7 @@ import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplCronGen from 'components/cron-gen/cron-gen';
 import { ChplTextField } from 'components/util';
 import { acb as acbPropType, trigger as triggerType } from 'shared/prop-types';
@@ -56,10 +56,9 @@ const validationSchema = yup.object({
 });
 
 function ChplUserTriggerEdit(props) {
-  const { dispatch } = props;
-  /* eslint-disable react/destructuring-assignment */
+  const { acbs: initialAcbs, dispatch, trigger: initialTrigger } = props;
   const [acbs, setAcbs] = useState(
-    props.acbs
+    initialAcbs
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map((acb) => ({
         ...acb,
@@ -67,20 +66,19 @@ function ChplUserTriggerEdit(props) {
         label: `${acb.name}${acb.retired ? ' (Retired)' : ''}`,
       })),
   );
-  /* eslint-enable react/destructuring-assignment */
   const [showRange, setShowRange] = useState(false);
   const [trigger, setTrigger] = useState({});
   let formik;
 
   useEffect(() => {
-    setTrigger(props.trigger);
-    formik.setFieldValue('email', props.trigger.email || '');
-    if (props.trigger.job.jobDataMap.parameters) {
+    setTrigger(initialTrigger);
+    formik.setFieldValue('email', initialTrigger.email || '');
+    if (initialTrigger.job.jobDataMap.parameters) {
       setShowRange(true);
-      formik.setFieldValue('range', props.trigger.job.jobDataMap.range);
+      formik.setFieldValue('range', initialTrigger.job.jobDataMap.range);
     }
-    if (props.trigger.job?.jobDataMap.acbSpecific) {
-      const selected = props.trigger.acb?.split(',')
+    if (initialTrigger.job?.jobDataMap.acbSpecific) {
+      const selected = initialTrigger.acb?.split(',')
             .map((id) => parseInt(id, 10));
       if (selected) {
         setAcbs((previous) => previous.map((acb) => ({
@@ -89,7 +87,7 @@ function ChplUserTriggerEdit(props) {
         })));
       }
     }
-  }, [props.trigger]); // eslint-disable-line react/destructuring-assignment
+  }, [initialTrigger]);
 
   const handleAcbToggle = (clicked) => {
     setAcbs(acbs.map((acb) => ({
@@ -124,7 +122,7 @@ function ChplUserTriggerEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      email: props.trigger.email || '', // eslint-disable-line react/destructuring-assignment
+      email: initialTrigger.email || '',
       range: 7,
     },
     onSubmit: () => {
@@ -140,11 +138,16 @@ function ChplUserTriggerEdit(props) {
           },
         },
       };
-      props.dispatch({ action: 'save', payload });
+      dispatch({ action: 'save', payload });
       formik.setSubmitting(false);
     },
     validationSchema,
   });
+
+  useActionBar({
+    isDisabled: !formik.isValid || formik.isSubmitting || (!!trigger.job && !isAcbSelectionValid()),
+    canDelete: !!trigger.name,
+  }, !!trigger.job);
 
   if (!trigger.job) { return null; }
 
@@ -236,11 +239,7 @@ function ChplUserTriggerEdit(props) {
           </Box>
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleBarDispatch}
-        isDisabled={!formik.isValid || formik.isSubmitting || !isAcbSelectionValid()}
-        canDelete={!!trigger.name}
-      />
+      <ChplActionBar dispatch={handleBarDispatch} />
     </>
   );
 }

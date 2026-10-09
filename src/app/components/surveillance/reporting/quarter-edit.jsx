@@ -13,7 +13,7 @@ import ChplQuarterEditListing from './quarter-edit-listing';
 
 import { useDeleteQuarterly, useFetchRelevantListings, usePutQuarterly } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
@@ -181,6 +181,15 @@ function ChplQuarterEdit({ dispatch, report }) {
     validationSchema,
   });
 
+  // Kept in local state rather than written straight to the store: the bar only
+  // shows on the first tab, and a save can settle after switching tabs.
+  useActionBar({
+    canDelete: true,
+    errors: errorMessages,
+    isDisabled: !formik.isValid,
+    isProcessing,
+  }, state === menuItems[0]);
+
   return (
     <>
       <Box sx={styles.container}>
@@ -238,7 +247,7 @@ function ChplQuarterEdit({ dispatch, report }) {
               <Typography variant="h5" gutterBottom><strong>Surveillance Activities and Outcomes</strong></Typography>
               <Box sx={styles.summaryGroup}>
                 <Typography variant="h6">
-                  <strong>Randomized Surveillance Ã¢â‚¬â€œ Selection Methods</strong>
+                  <strong>Randomized Surveillance – Selection Methods</strong>
                 </Typography>
                 <Typography sx={styles.question} variant="body2" gutterBottom>
                   The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.
@@ -246,7 +255,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                 <ChplTextField
                   id="surveillance-activities-and-outcomes"
                   name="surveillanceActivitiesAndOutcomes"
-                  label="Randomized Surveillance Ã¢â‚¬â€œ Selection Methods"
+                  label="Randomized Surveillance – Selection Methods"
                   multiline
                   value={formik.values.surveillanceActivitiesAndOutcomes}
                   onChange={formik.handleChange}
@@ -336,7 +345,7 @@ function ChplQuarterEdit({ dispatch, report }) {
                   <strong>Disclosure Requirements Summary</strong>
                 </Typography>
                 <Typography sx={styles.question} variant="body2" gutterBottom>
-                  The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR Ã‚Â§ 170.523(k):
+                  The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):
                 </Typography>
                 <ChplTextField
                   id="disclosure-requirements-summary"
@@ -462,13 +471,7 @@ function ChplQuarterEdit({ dispatch, report }) {
       </Box>
       { state === menuItems[0]
       && (
-        <ChplActionBar
-          dispatch={handleDispatch}
-          disabled={!formik.isValid}
-          errors={errorMessages}
-          isProcessing={isProcessing}
-          canDelete
-        />
+        <ChplActionBar dispatch={handleDispatch} />
       )}
     </>
   );

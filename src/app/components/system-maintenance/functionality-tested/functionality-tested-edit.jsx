@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Chip, Divider, MenuItem,
+  Box, Chip, Divider, MenuItem,
 } from '@mui/material';
 import {
   arrayOf, bool, func, string,
@@ -8,7 +8,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import {
@@ -61,7 +61,6 @@ function ChplFunctionalityTestedEdit({
   const practiceTypes = [{ id: 1, name: 'Ambulatory' }, { id: 2, name: 'Inpatient' }];
   const practiceTypeOptions = ['Ambulatory', 'Inpatient', 'N/A'];
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [functionalityTested, setFunctionalityTested] = useState({});
@@ -77,10 +76,6 @@ function ChplFunctionalityTestedEdit({
   useEffect(() => {
     setRuleOptions(rules.map((rule) => rule.name).sort((a, b) => (a < b ? -1 : 1)));
   }, [rules]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -140,6 +135,13 @@ function ChplFunctionalityTestedEdit({
       dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    canDelete: !!functionalityTested.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
   });
 
   if (ruleOptions.length === 0) { return null; }
@@ -297,13 +299,7 @@ function ChplFunctionalityTestedEdit({
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
       />
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!functionalityTested.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Box>
   );
 }

@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import {
-  Button, Card, CardContent, CardHeader, FormHelperText, Typography,
+  Card, CardContent, CardHeader, FormHelperText, Typography,
 } from '@mui/material';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import * as jsJoda from '@js-joda/core';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
 
@@ -53,9 +53,13 @@ function ChplSystemTriggerCreate(props) {
         ...job,
         runTime: formik.values.runTime,
       };
-      props.dispatch({ action: 'save', payload });
+      dispatch({ action: 'save', payload });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    isDisabled: !formik.isValid,
   });
 
   return (
@@ -90,10 +94,7 @@ function ChplSystemTriggerCreate(props) {
           </Card>
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={!formik.isValid}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

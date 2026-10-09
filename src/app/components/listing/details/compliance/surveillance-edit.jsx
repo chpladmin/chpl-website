@@ -19,7 +19,7 @@ import ChplRequirementEdit from './requirement-edit';
 
 import { useFetchSurveillanceTypes } from 'api/data';
 import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getSurveillanceTitle } from 'services/surveillance.service';
 import { ListingContext } from 'shared/contexts';
@@ -58,11 +58,10 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { mutate: remove } = useDeleteSurveillance();
   const { mutate: create } = usePostSurveillance();
   const { mutate: update } = usePutSurveillance();
-  const [errors, setErrors] = useState([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
   let formik;
+  let updateActionBar;
 
   useEffect(() => {
     if (surveillance.requirements) {
@@ -86,27 +85,25 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     let payload;
     switch (action) {
       case 'delete':
-        setIsProcessing(true);
-        setErrors([]);
+        updateActionBar({ errors: [], isProcessing: true });
         payload = { id: surveillance.id, reason: formik.values.reason, listingId: listing.id };
         remove(payload, {
           onSuccess: () => {
-            setIsProcessing(false);
+            updateActionBar({ isProcessing: false });
             dispatch({ action: 'cancel' });
           },
           onError: (error) => {
-            setIsProcessing(false);
+            updateActionBar({ isProcessing: false });
             if (error.response.data.error) {
-              setErrors([error.response.data.error]);
+              updateActionBar({ errors: [error.response.data.error] });
             } else {
-              setErrors(error.response.data.errorMessages);
+              updateActionBar({ errors: error.response.data.errorMessages });
             }
           },
         });
         break;
       case 'save':
-        setErrors([]);
-        setIsProcessing(true);
+        updateActionBar({ errors: [], isProcessing: true });
         payload = {
           ...surveillance,
           ...formik.values,
@@ -117,30 +114,30 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
         if (surveillance.id) {
           update(payload, {
             onSuccess: () => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               if (error.response.data.error) {
-                setErrors([error.response.data.error]);
+                updateActionBar({ errors: [error.response.data.error] });
               } else {
-                setErrors(error.response.data.errorMessages);
+                updateActionBar({ errors: error.response.data.errorMessages });
               }
             },
           });
         } else {
           create(payload, {
             onSuccess: () => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               dispatch({ action: 'cancel' });
             },
             onError: (error) => {
-              setIsProcessing(false);
+              updateActionBar({ isProcessing: false });
               if (error.response.data.error) {
-                setErrors([error.response.data.error]);
+                updateActionBar({ errors: [error.response.data.error] });
               } else {
-                setErrors(error.response.data.errorMessages);
+                updateActionBar({ errors: error.response.data.errorMessages });
               }
             },
           });
@@ -175,26 +172,32 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
     validationSchema,
   });
 
+  updateActionBar = useActionBar({
+    canDelete: !!surveillance.id,
+    isDeleteDisabled: formik.values.reason === '',
+  }, surveillanceTypes.length > 0);
+
   if (surveillanceTypes.length === 0) { return <CircularProgress />; }
 
-  return <>
-    <Container sx={styles.pageHeader} maxWidth="md">
-      <Typography variant="h1">
-        { getSurveillanceTitle({
-          ...surveillance,
-          ...formik.values,
-          requirements,
-        }) }
-      </Typography>
-    </Container>
-    <Box pt={4} sx={styles.background}>
-      <Container maxWidth="lg">
-        <Box display="flex" gap="16px" flexDirection="column">
-          <Card>
-            <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
-            <CardContent>
-              <Box display="flex" gap="8px" flexDirection="column" justifyContent="space-between" pb={2}>
-                { surveillance.id
+  return (
+    <>
+      <Container sx={styles.pageHeader} maxWidth="md">
+        <Typography variant="h1">
+          { getSurveillanceTitle({
+            ...surveillance,
+            ...formik.values,
+            requirements,
+          }) }
+        </Typography>
+      </Container>
+      <Box pt={4} sx={styles.background}>
+        <Container maxWidth="lg">
+          <Box display="flex" gap="16px" flexDirection="column">
+            <Card>
+              <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
+              <CardContent>
+                <Box display="flex" gap="8px" flexDirection="column" justifyContent="space-between" pb={2}>
+                  { surveillance.id
                   && (
                     <Typography gutterBottom>
                       <strong>Surveillance ID:</strong>
@@ -202,84 +205,84 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
                       { surveillance.friendlyId }
                     </Typography>
                   )}
-                <Box display="flex" gap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
-                  <ChplTextField
-                    type="date"
-                    id="start-day"
-                    name="startDay"
-                    label="Start Date"
-                    required
-                    value={formik.values.startDay}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.startDay && !!formik.errors.startDay}
-                    helperText={formik.touched.startDay && formik.errors.startDay}
-                  />
-                  <ChplTextField
-                    type="date"
-                    id="end-day"
-                    name="endDay"
-                    label="End Date"
-                    value={formik.values.endDay}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.endDay && !!formik.errors.endDay}
-                    helperText={formik.touched.endDay && formik.errors.endDay}
-                  />
+                  <Box display="flex" gap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
+                    <ChplTextField
+                      type="date"
+                      id="start-day"
+                      name="startDay"
+                      label="Start Date"
+                      required
+                      value={formik.values.startDay}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.startDay && !!formik.errors.startDay}
+                      helperText={formik.touched.startDay && formik.errors.startDay}
+                    />
+                    <ChplTextField
+                      type="date"
+                      id="end-day"
+                      name="endDay"
+                      label="End Date"
+                      value={formik.values.endDay}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.endDay && !!formik.errors.endDay}
+                      helperText={formik.touched.endDay && formik.errors.endDay}
+                    />
+                  </Box>
+                  <Box display="flex" gap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
+                    <ChplTextField
+                      select
+                      id="type"
+                      name="type"
+                      label="Type"
+                      required
+                      value={formik.values.type}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.type && !!formik.errors.type}
+                      helperText={formik.touched.type && formik.errors.type}
+                    >
+                      { surveillanceTypes.map((type) => (
+                        <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
+                      ))}
+                    </ChplTextField>
+                    <ChplTextField
+                      type="number"
+                      id="randomized-sites-used"
+                      name="randomizedSitesUsed"
+                      label="Randomized Sites Used"
+                      required={formik.values.type === 'Randomized'}
+                      disabled={formik.values.type !== 'Randomized'}
+                      value={formik.values.randomizedSitesUsed}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.randomizedSitesUsed && !!formik.errors.randomizedSitesUsed}
+                      helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
+                    />
+                  </Box>
                 </Box>
-                <Box display="flex" gap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
-                  <ChplTextField
-                    select
-                    id="type"
-                    name="type"
-                    label="Type"
-                    required
-                    value={formik.values.type}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.type && !!formik.errors.type}
-                    helperText={formik.touched.type && formik.errors.type}
-                  >
-                    { surveillanceTypes.map((type) => (
-                      <MenuItem key={type.id} value={type.name}>{type.name}</MenuItem>
-                    ))}
-                  </ChplTextField>
-                  <ChplTextField
-                    type="number"
-                    id="randomized-sites-used"
-                    name="randomizedSitesUsed"
-                    label="Randomized Sites Used"
-                    required={formik.values.type === 'Randomized'}
-                    disabled={formik.values.type !== 'Randomized'}
-                    value={formik.values.randomizedSitesUsed}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.randomizedSitesUsed && !!formik.errors.randomizedSitesUsed}
-                    helperText={formik.touched.randomizedSitesUsed && formik.errors.randomizedSitesUsed}
-                  />
-                </Box>
-              </Box>
-              <Button
-                onClick={addReq}
-                variant="outlined"
-                color="primary"
-                endIcon={<AddIcon color="primary" />}
-              >
-                Add Requirement
-              </Button>
-            </CardContent>
-          </Card>
-          { requirements.map((req) => (
-            <ChplRequirementEdit
-              key={req.guid}
-              requirement={req}
-              dispatch={handleDispatch}
-              guid={req.guid}
-              randomizedSitesUsed={formik.values.randomizedSitesUsed}
-              surveillanceStartDay={formik.values.startDay}
-            />
-          ))}
-          { !!surveillance.id
+                <Button
+                  onClick={addReq}
+                  variant="outlined"
+                  color="primary"
+                  endIcon={<AddIcon color="primary" />}
+                >
+                  Add Requirement
+                </Button>
+              </CardContent>
+            </Card>
+            { requirements.map((req) => (
+              <ChplRequirementEdit
+                key={req.guid}
+                requirement={req}
+                dispatch={handleDispatch}
+                guid={req.guid}
+                randomizedSitesUsed={formik.values.randomizedSitesUsed}
+                surveillanceStartDay={formik.values.startDay}
+              />
+            ))}
+            { !!surveillance.id
             && (
               <Card>
                 <CardHeader title="Reason for Change" />
@@ -300,17 +303,12 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
                 </CardContent>
               </Card>
             )}
-        </Box>
-      </Container>
-    </Box>
-    <ChplActionBar
-      dispatch={handleActionBar}
-      canDelete={!!surveillance.id}
-      isDeleteDisabled={formik.values.reason === ''}
-      errors={errors}
-      isProcessing={isProcessing}
-    />
-  </>;
+          </Box>
+        </Container>
+      </Box>
+      <ChplActionBar dispatch={handleActionBar} />
+    </>
+  );
 }
 
 export default ChplSurveillanceEdit;

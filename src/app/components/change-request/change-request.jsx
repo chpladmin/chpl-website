@@ -29,12 +29,19 @@ import {
   useFetchChangeRequestStatusTypes,
   usePutChangeRequest,
 } from 'api/change-requests';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
-import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  ChangeRequestContext,
+  FormGroupContext,
+  UserContext,
+  useAnalyticsContext,
+  useFormGroup,
+  useFormGroupMember,
+} from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import { palette, theme } from 'themes';
 
@@ -165,13 +172,12 @@ const getChangeRequestViewDetails = (cr) => {
   }
 };
 
-const getChangeRequestEditDetails = (cr, handleDispatch, isAccepting) => {
+const getChangeRequestEditDetails = (cr, isAccepting) => {
   switch (cr.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return (
         <ChplChangeRequestAttestationEdit
           changeRequest={cr}
-          dispatch={handleDispatch}
         />
       );
     case 'Developer Demographics Change Request':
@@ -205,16 +211,15 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
-  const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id, enabled: !isEditing });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate, isLoading: isProcessing } = usePutChangeRequest();
+  const { group, hasErrors, validateAll } = useFormGroup();
 
   let formik;
+  let updateActionBar;
   let save;
 
   useEffect(() => {
@@ -224,7 +229,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     setChangeRequest({
       ...data,
     });
-    setDetails(data.details);
     if (data.certificationBodies.length > 1 && hasAnyRole(['chpl-onc-acb'])) {
       setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
       setIsConfirming(true);
@@ -318,46 +322,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     }
   };
 
-  const handleUpdate = (payload) => {
-    switch (changeRequest.changeRequestType.name) {
-      case 'Developer Attestation Change Request':
-        setDetails({
-          ...details,
-          attestation: payload.attestation,
-        });
-        break;
-      case 'Developer Demographics Change Request':
-        setDetails({
-          ...details,
-          address: {
-            line1: payload.line1,
-            line2: payload.line2,
-            city: payload.city,
-            state: payload.state,
-            zipcode: payload.zipcode,
-            country: payload.country,
-          },
-          contact: {
-            fullName: payload.fullName,
-            email: payload.email,
-            phoneNumber: payload.phoneNumber,
-            title: payload.title,
-          },
-          selfDeveloper: payload.selfDeveloper,
-          website: payload.website,
-        });
-        break;
-      case 'Service Base URL List Change Request':
-        setDetails({
-          ...details,
-          url: payload.url,
-        });
-        break;
-        // no default
-    }
-  };
-
-  const handleDispatch = (action, payload) => {
+  const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
         eventTrack({
@@ -370,16 +335,19 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
       case 'edit':
         editCr();
         break;
-      case 'update':
-        handleUpdate(payload);
-        break;
       case 'save':
-        if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['chpl-onc-acb'])) {
-          setConfirmationMessage('All associated ONC-ACBs have been consulted regarding this change');
-          setIsConfirming(true);
-        } else {
-          save();
-        }
+        validateAll().then((isValid) => {
+          if (!isValid) { return; }
+          if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['chpl-onc-acb'])) {
+            setConfirmationMessage('All associated ONC-ACBs have been consulted regarding this change');
+            setIsConfirming(true);
+          } else {
+            save();
+          }
+        });
+        break;
+      case 'saveHover':
+        validateAll();
         break;
       case 'toggleWarningAcknowledgement':
         setAcknowledgeWarnings((prev) => !prev);
@@ -390,8 +358,6 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
         // no default
     }
   };
-
-  const isAccepting = () => formik.values.changeRequestStatusType?.name === 'Accepted';
 
   const isReasonDisabled = () => hasAnyRole(['chpl-developer']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
 
@@ -422,7 +388,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     }, {
       onSuccess: () => {
         dispatch('close');
-        setWarnings([]);
+        updateActionBar({ warnings: [] });
       },
       onError: (error) => {
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
@@ -430,17 +396,19 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
             variant: 'info',
           });
           dispatch('close');
-          setWarnings([]);
+          updateActionBar({ warnings: [] });
         } else if (error.response.data.warningMessages?.length > 0) {
-          setShowAcknowledgement(true);
-          setWarnings(error.response.data.warningMessages);
+          updateActionBar({
+            showWarningAcknowledgement: true,
+            warnings: error.response.data.warningMessages,
+          });
         } else {
           const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
           enqueueSnackbar(message, {
             variant: 'error',
           });
-          setWarnings([]);
+          updateActionBar({ warnings: [] });
         }
       },
     });
@@ -454,6 +422,20 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
     validationSchema,
   });
 
+  useFormGroupMember(formik, group);
+
+  // `canEdit` and `canWithdraw` read `changeRequest`, which is undefined until it loads
+  updateActionBar = useActionBar({
+    canEdit: !!changeRequest && !isEditing && canEdit(),
+    canWithdraw: !!changeRequest && ((!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['chpl-developer']))),
+    canClose: !isEditing,
+    canCancel: isEditing,
+    canSave: isEditing,
+    dispatchSaveHover: true,
+    isProcessing,
+    isSaveDisabled: hasErrors,
+  }, !!changeRequest);
+
   if (!changeRequest) {
     return <CircularProgress />;
   }
@@ -465,209 +447,201 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
 
   return (
     <ChangeRequestContext.Provider value={changeRequestState}>
-      { isConfirming
-        && (
-          <ChplActionBarConfirmation
-            dispatch={handleConfirmation}
-            pendingMessage={confirmationMessage}
-          />
-        )}
-      <Card sx={styles.productCard}>
-        <Box sx={styles.cardHeaderContainer}>
-          <ChplAvatar
-            text={changeRequest.developer.name}
-          />
-          <Typography gutterBottom sx={styles.cardHeader} variant="h4">
-            { isEditing ? 'Edit ' : '' }
-            {changeRequest.changeRequestType.name}
-          </Typography>
-        </Box>
-        <CardContent sx={styles.cardContentContainer}>
-          <Box sx={styles.cardSubHeaderContainer}>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-              <Typography variant="body1">{changeRequest.developer.name}</Typography>
-            </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-              <Typography variant="body1">{getDisplayDateFormat(changeRequest.submittedDateTime)}</Typography>
-            </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-            </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-              <Typography variant="body1">
-                <Moment
-                  withTitle
-                  titleFormat="DD MMM yyyy"
-                  fromNow
-                >
-                  {changeRequest.currentStatus.statusChangeDateTime}
-                </Moment>
-              </Typography>
-            </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">
-                Associated ONC-ACB
-                { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
-              </Typography>
-              { changeRequest.certificationBodies.length > 0
-                ? (
-                  <ul>
-                    {changeRequest.certificationBodies.map((acb) => (
-                      <li key={acb.name}>{acb.name}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <Typography variant="body1">
-                    None
-                  </Typography>
-                )}
-            </div>
-            { changeRequest.details.listing?.id
-              && (
-                <div>
-                  <Typography gutterBottom variant="subtitle2">CHPL Product Number:</Typography>
-                  <Typography>
-                    <ChplLink
-                      href={`#/listing/${changeRequest.details.listing.id}`}
-                      text={changeRequest.details.listing.chplProductNumber}
-                      analytics={{
-                        ...analytics,
-                        event: 'Navigate to Listing Details Page',
-                        label: changeRequest.details.listing.chplProductNumber,
-                        aggregationName: changeRequest.details.listing.product.name,
-                      }}
-                      external={false}
-                      router={{ sref: 'listing', params: { id: changeRequest.details.listing.id } }}
-                    />
-                  </Typography>
-                </div>
-              )}
+      <FormGroupContext.Provider value={group}>
+        { isConfirming
+          && (
+            <ChplActionBarConfirmation
+              dispatch={handleConfirmation}
+              pendingMessage={confirmationMessage}
+            />
+          )}
+        <Card sx={styles.productCard}>
+          <Box sx={styles.cardHeaderContainer}>
+            <ChplAvatar
+              text={changeRequest.developer.name}
+            />
+            <Typography gutterBottom sx={styles.cardHeader} variant="h4">
+              { isEditing ? 'Edit ' : '' }
+              {changeRequest.changeRequestType.name}
+            </Typography>
           </Box>
-          { !isEditing
-            && (
-              <>
-                { getChangeRequestViewDetails(changeRequest) }
-              </>
-            )}
-          { isEditing
-            && (
-              <>
-                <Divider />
-                <Box sx={styles.cardContentChangeRequest}>
+          <CardContent sx={styles.cardContentContainer}>
+            <Box sx={styles.cardSubHeaderContainer}>
+              <div>
+                <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+                <Typography variant="body1">{changeRequest.developer.name}</Typography>
+              </div>
+              <div>
+                <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+                <Typography variant="body1">{getDisplayDateFormat(changeRequest.submittedDateTime)}</Typography>
+              </div>
+              <div>
+                <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+                <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              </div>
+              <div>
+                <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+                <Typography variant="body1">
+                  <Moment
+                    withTitle
+                    titleFormat="DD MMM yyyy"
+                    fromNow
+                  >
+                    {changeRequest.currentStatus.statusChangeDateTime}
+                  </Moment>
+                </Typography>
+              </div>
+              <div>
+                <Typography gutterBottom variant="subtitle2">
+                  Associated ONC-ACB
+                  { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+                </Typography>
+                { changeRequest.certificationBodies.length > 0
+                  ? (
+                    <ul>
+                      {changeRequest.certificationBodies.map((acb) => (
+                        <li key={acb.name}>{acb.name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <Typography variant="body1">
+                      None
+                    </Typography>
+                  )}
+              </div>
+              { changeRequest.details.listing?.id
+                && (
                   <div>
-                    { getChangeRequestEditDetails(changeRequest, handleDispatch, isAccepting()) }
-                  </div>
-                  <Box sx={styles.actionsContainer}>
-                    <Box sx={styles.actionSubContainer}>
-                      <Typography variant="subtitle1">Change Request change data</Typography>
-                      <Typography variant="subtitle2">
-                        { changeRequest.certificationBodies.length > 1
-                          && (
-                            <>
-                              This Change Request requires ONC-ACB coordination
-                            </>
-                          )}
-                      </Typography>
-                      <div>
-                        <Typography variant="subtitle2">Current status</Typography>
-                        <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-                      </div>
-                      <div>
-                        <Typography variant="subtitle2">
-                          Associated ONC-ACB
-                          { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
-                        </Typography>
-                        { changeRequest.certificationBodies.length > 0
-                          ? (
-                            <ul>
-                              {changeRequest.certificationBodies.map((acb) => (
-                                <li key={acb.name}>{acb.name}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <Typography>
-                              None
-                            </Typography>
-                          )}
-                      </div>
-                      {hasAnyRole(['chpl-developer'])
-                        ? (
-                          <Typography sx={styles.fullWidth}>
-                            {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
-                            && (
-                              <>
-                                Status will be set to &quot;Pending ONC-ACB Action&quot;
-                              </>
-                            )}
-                            {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
-                            && (
-                              <>
-                                No status change will occur
-                              </>
-                            )}
-                          </Typography>
-                        ) : (
-                          <ChplTextField
-                            select
-                            id="change-request-status-type"
-                            name="changeRequestStatusType"
-                            label="Select new Status"
-                            sx={styles.fullWidth}
-                            required
-                            value={formik.values.changeRequestStatusType}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
-                            helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
-                          >
-                            { changeRequestStatusTypes
-                              .map((item) => (
-                                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                              ))}
-                          </ChplTextField>
-                        )}
-                      <ChplTextField
-                        id="comment"
-                        name="comment"
-                        label="Reason for change"
-                        margin="none"
-                        sx={styles.fullWidth}
-                        required={isReasonRequired()}
-                        disabled={isReasonDisabled()}
-                        multiline
-                        value={formik.values.comment}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.comment && !!formik.errors.comment}
-                        helperText={formik.touched.comment && formik.errors.comment}
-                        minRows={4}
+                    <Typography gutterBottom variant="subtitle2">CHPL Product Number:</Typography>
+                    <Typography>
+                      <ChplLink
+                        href={`#/listing/${changeRequest.details.listing.id}`}
+                        text={changeRequest.details.listing.chplProductNumber}
+                        analytics={{
+                          ...analytics,
+                          event: 'Navigate to Listing Details Page',
+                          label: changeRequest.details.listing.chplProductNumber,
+                          aggregationName: changeRequest.details.listing.product.name,
+                        }}
+                        external={false}
+                        router={{ sref: 'listing', params: { id: changeRequest.details.listing.id } }}
                       />
+                    </Typography>
+                  </div>
+                )}
+            </Box>
+            { !isEditing
+              && (
+                <>
+                  { getChangeRequestViewDetails(changeRequest) }
+                </>
+              )}
+            { isEditing
+              && (
+                <>
+                  <Divider />
+                  <Box sx={styles.cardContentChangeRequest}>
+                    <div>
+                      { getChangeRequestEditDetails(changeRequest, formik.values.changeRequestStatusType?.name === 'Accepted') }
+                    </div>
+                    <Box sx={styles.actionsContainer}>
+                      <Box sx={styles.actionSubContainer}>
+                        <Typography variant="subtitle1">Change Request change data</Typography>
+                        <Typography variant="subtitle2">
+                          { changeRequest.certificationBodies.length > 1
+                            && (
+                              <>
+                                This Change Request requires ONC-ACB coordination
+                              </>
+                            )}
+                        </Typography>
+                        <div>
+                          <Typography variant="subtitle2">Current status</Typography>
+                          <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+                        </div>
+                        <div>
+                          <Typography variant="subtitle2">
+                            Associated ONC-ACB
+                            { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+                          </Typography>
+                          { changeRequest.certificationBodies.length > 0
+                            ? (
+                              <ul>
+                                {changeRequest.certificationBodies.map((acb) => (
+                                  <li key={acb.name}>{acb.name}</li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <Typography>
+                                None
+                              </Typography>
+                            )}
+                        </div>
+                        {hasAnyRole(['chpl-developer'])
+                          ? (
+                            <Typography sx={styles.fullWidth}>
+                              {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
+                              && (
+                                <>
+                                  Status will be set to &quot;Pending ONC-ACB Action&quot;
+                                </>
+                              )}
+                              {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
+                              && (
+                                <>
+                                  No status change will occur
+                                </>
+                              )}
+                            </Typography>
+                          ) : (
+                            <ChplTextField
+                              select
+                              id="change-request-status-type"
+                              name="changeRequestStatusType"
+                              label="Select new Status"
+                              sx={styles.fullWidth}
+                              required
+                              value={formik.values.changeRequestStatusType}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+                              helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
+                            >
+                              { changeRequestStatusTypes
+                                .map((item) => (
+                                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                                ))}
+                            </ChplTextField>
+                          )}
+                        <ChplTextField
+                          id="comment"
+                          name="comment"
+                          label="Reason for change"
+                          margin="none"
+                          sx={styles.fullWidth}
+                          required={isReasonRequired()}
+                          disabled={isReasonDisabled()}
+                          multiline
+                          value={formik.values.comment}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.comment && !!formik.errors.comment}
+                          helperText={formik.touched.comment && formik.errors.comment}
+                          minRows={4}
+                        />
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              </>
-            )}
-          <Divider />
-          <ChplChangeRequestHistory
-            changeRequest={changeRequest}
-          />
-        </CardContent>
-      </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canEdit={!isEditing && canEdit()}
-        canWithdraw={(!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['chpl-developer']))}
-        canClose={!isEditing}
-        canCancel={isEditing}
-        canSave={isEditing}
-        isProcessing={isProcessing}
-        showWarningAcknowledgement={showAcknowledgement}
-        warnings={warnings}
-      />
+                </>
+              )}
+            <Divider />
+            <ChplChangeRequestHistory
+              changeRequest={changeRequest}
+            />
+          </CardContent>
+        </Card>
+        <ChplActionBar dispatch={handleDispatch} />
+      </FormGroupContext.Provider>
     </ChangeRequestContext.Provider>
   );
 }

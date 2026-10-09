@@ -12,6 +12,7 @@ import ChplUrlCheckerResponse from './url-checker-response';
 
 import { usePostUrlChecker } from 'api/url-checker';
 import { ChplTextField } from 'components/util';
+import { useFormGroupMember } from 'shared/contexts';
 import { palette } from 'themes';
 
 const styles = {
@@ -107,6 +108,9 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
     },
     validationSchema,
   });
+
+  // Only has an effect inside a FormGroupContext, e.g. when editing a change request
+  useFormGroupMember(formik);
 
   const handleValidate = (event) => {
     if (showResultPopover) {

@@ -6,7 +6,7 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { jsJoda } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
@@ -72,6 +72,11 @@ function ChplAnnouncementEdit(props) {
       dispatch('save', updated);
     },
     validationSchema,
+  });
+
+  useActionBar({
+    isDisabled: !formik.isValid || formik.isSubmitting,
+    canDelete: !!announcement.id,
   });
 
   return (
@@ -148,11 +153,7 @@ function ChplAnnouncementEdit(props) {
           )}
         label={formik.values.isPublic ? 'Public announcement' : 'For logged in users only'}
       />
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={!formik.isValid || formik.isSubmitting}
-        canDelete={!!announcement.id}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Box>
   );
 }

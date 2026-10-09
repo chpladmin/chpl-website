@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Chip, Divider, MenuItem,
+  Box, Chip, Divider, MenuItem,
 } from '@mui/material';
 import {
   arrayOf, bool, func, string,
@@ -8,7 +8,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import {
@@ -59,7 +59,6 @@ function ChplStandardEdit({
   errors: propsErrors = [],
 }) {
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [standard, setStandard] = useState({});
@@ -75,10 +74,6 @@ function ChplStandardEdit({
   useEffect(() => {
     setRuleOptions(rules.map((rule) => rule.name).sort((a, b) => (a < b ? -1 : 1)));
   }, [rules]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -138,6 +133,13 @@ function ChplStandardEdit({
       dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    canDelete: !!standard.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
   });
 
   if (ruleOptions.length === 0) { return null; }
@@ -284,13 +286,7 @@ function ChplStandardEdit({
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
       />
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!standard.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Box>
   );
 }

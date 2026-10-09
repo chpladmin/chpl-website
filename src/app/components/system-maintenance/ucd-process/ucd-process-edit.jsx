@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { ucdProcessType } from 'shared/prop-types';
 
@@ -32,17 +32,12 @@ const styles = {
 function ChplUcdProcessEdit({
   dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [],
 }) {
-  const [errors, setErrors] = useState([]);
   const [ucdProcess, setUcdProcess] = useState({});
   let formik;
 
   useEffect(() => {
     setUcdProcess(initialUcdProcess);
   }, [initialUcdProcess]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const buildPayload = () => ({
     ...ucdProcess,
@@ -76,6 +71,13 @@ function ChplUcdProcessEdit({
     validationSchema,
   });
 
+  useActionBar({
+    canDelete: !!ucdProcess.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
+  });
+
   return (
     <Box sx={styles.container}>
       <ChplTextField
@@ -89,13 +91,7 @@ function ChplUcdProcessEdit({
         error={formik.touched.name && !!formik.errors.name}
         helperText={formik.touched.name && formik.errors.name}
       />
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!ucdProcess.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Box>
   );
 }

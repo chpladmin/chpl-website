@@ -6,7 +6,9 @@ import * as yup from 'yup';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink, ChplTextField } from 'components/util';
-import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
+import {
+  ChangeRequestContext, UserContext, useAnalyticsContext, useFormGroupMember,
+} from 'shared/contexts';
 
 const styles = {
   container: {
@@ -93,6 +95,8 @@ function ChplChangeRequestListingRwtEdit({ isAccepting = false }) {
     },
     validationSchema,
   });
+
+  useFormGroupMember(formik);
 
   return (
     <Box sx={styles.container}>

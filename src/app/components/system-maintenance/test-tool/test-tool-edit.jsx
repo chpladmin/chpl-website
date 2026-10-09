@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Chip, Divider, MenuItem,
+  Box, Chip, Divider, MenuItem,
 } from '@mui/material';
 import {
   arrayOf, bool, func, string,
@@ -8,7 +8,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import {
@@ -50,7 +50,6 @@ function ChplTestToolEdit({
   errors: propsErrors = [],
 }) {
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [testTool, setTestTool] = useState({});
   let formik;
@@ -61,10 +60,6 @@ function ChplTestToolEdit({
       ...c,
     })) || []);
   }, [initialTestTool]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const add = (item) => {
     setCriteria((prev) => prev.concat(item));
@@ -112,6 +107,13 @@ function ChplTestToolEdit({
       dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    canDelete: !!testTool.id,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
   });
 
   return (
@@ -188,13 +190,7 @@ function ChplTestToolEdit({
             />
           ))}
       </Box>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!testTool.id}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Box>
   );
 }

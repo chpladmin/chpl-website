@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box, Button, Checkbox, CircularProgress, FormControlLabel, Typography,
 } from '@mui/material';
-import {
-  arrayOf, bool, func, string,
-} from 'prop-types';
+import { func } from 'prop-types';
+import { useSelector } from 'react-redux';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -62,54 +61,31 @@ const styles = {
 };
 
 function ChplActionBar({
-  errors = [],
-  warnings = [],
-  canCancel = true,
-  canClose = false,
-  canConfirm = false,
-  canDelete = false,
-  canEdit = false,
-  canReject = false,
-  canSave = true,
-  canWithdraw = false,
   dispatch,
-  isDeleteDisabled: initialIsDeleteDisabled = false,
-  isDisabled: initialIsDisabled = false,
-  isProcessing: initialIsProcessing = false,
-  showErrorAcknowledgement: initialShowErrorAcknowledgement = false,
-  showWarningAcknowledgement: initialShowWarningAcknowledgement = false,
 }) {
   const { hasAnyRole } = useContext(UserContext);
+  const errors = useSelector((state) => state.actionBar.errors);
+  const warnings = useSelector((state) => state.actionBar.warnings);
+  const canCancel = useSelector((state) => state.actionBar.canCancel);
+  const canClose = useSelector((state) => state.actionBar.canClose);
+  const canConfirm = useSelector((state) => state.actionBar.canConfirm);
+  const canDelete = useSelector((state) => state.actionBar.canDelete);
+  const canEdit = useSelector((state) => state.actionBar.canEdit);
+  const canReject = useSelector((state) => state.actionBar.canReject);
+  const canSave = useSelector((state) => state.actionBar.canSave);
+  const canWithdraw = useSelector((state) => state.actionBar.canWithdraw);
+  const dispatchSaveHover = useSelector((state) => state.actionBar.dispatchSaveHover);
+  const isDeleteDisabled = useSelector((state) => state.actionBar.isDeleteDisabled);
+  const isDisabled = useSelector((state) => state.actionBar.isDisabled);
+  const isProcessing = useSelector((state) => state.actionBar.isProcessing);
+  const isSaveDisabled = useSelector((state) => state.actionBar.isSaveDisabled);
+  const showErrorAcknowledgement = useSelector((state) => state.actionBar.showErrorAcknowledgement) && hasAnyRole(['chpl-admin', 'chpl-onc']);
+  const showWarningAcknowledgement = useSelector((state) => state.actionBar.showWarningAcknowledgement);
   const [errorAcknowledged, setErrorAcknowledged] = useState(false);
   const [warningAcknowledged, setWarningAcknowledged] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
-  const [isDeleteDisabled, setIsDeleteDisabled] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
-  const [showErrorAcknowledgement, setShowErrorAcknowledgement] = useState(false);
-  const [showWarningAcknowledgement, setShowWarningAcknowledgement] = useState(false);
-
-  useEffect(() => {
-    setShowErrorAcknowledgement(initialShowErrorAcknowledgement && hasAnyRole(['chpl-admin', 'chpl-onc']));
-  }, [initialShowErrorAcknowledgement, hasAnyRole]);
-
-  useEffect(() => {
-    setShowWarningAcknowledgement(initialShowWarningAcknowledgement);
-  }, [initialShowWarningAcknowledgement]);
-
-  useEffect(() => {
-    setIsDeleteDisabled(initialIsDeleteDisabled);
-  }, [initialIsDeleteDisabled]);
-
-  useEffect(() => {
-    setIsDisabled(initialIsDisabled);
-  }, [initialIsDisabled]);
-
-  useEffect(() => {
-    setIsProcessing(initialIsProcessing);
-  }, [initialIsProcessing]);
 
   const act = (action) => {
     if (dispatch) {
@@ -281,7 +257,8 @@ function ChplActionBar({
                   color="primary"
                   variant="contained"
                   onClick={() => act('save')}
-                  disabled={isDisabled || isProcessing}
+                  onMouseEnter={dispatchSaveHover ? () => act('saveHover') : undefined}
+                  disabled={isDisabled || isSaveDisabled || isProcessing}
                   sx={styles.actionBarButton}
                 >
                   { isProcessing && <CircularProgress size={24} sx={utilStyles.buttonProgress} /> }
@@ -352,19 +329,4 @@ export default ChplActionBar;
 
 ChplActionBar.propTypes = {
   dispatch: func.isRequired,
-  errors: arrayOf(string),
-  warnings: arrayOf(string),
-  canCancel: bool,
-  canClose: bool,
-  canConfirm: bool,
-  canDelete: bool,
-  canEdit: bool,
-  canReject: bool,
-  canSave: bool,
-  canWithdraw: bool,
-  isDeleteDisabled: bool,
-  isDisabled: bool,
-  isProcessing: bool,
-  showErrorAcknowledgement: bool,
-  showWarningAcknowledgement: bool,
 };

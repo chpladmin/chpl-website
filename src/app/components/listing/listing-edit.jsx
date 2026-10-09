@@ -30,7 +30,7 @@ import {
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
 import { useFetchCertificationStatuses } from 'api/data';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
@@ -233,7 +233,17 @@ function ChplListingEdit({
     validationSchema,
   });
 
-  if (statusesIsLoading || acbsIsLoading || atlsIsLoading) {
+  const isLoading = statusesIsLoading || acbsIsLoading || atlsIsLoading;
+
+  useActionBar({
+    errors,
+    warnings,
+    isProcessing,
+    showErrorAcknowledgement: errors.length > 0,
+    showWarningAcknowledgement: warnings.length > 0,
+  }, !isLoading);
+
+  if (isLoading) {
     return (
       <CircularProgress />
     );
@@ -607,14 +617,7 @@ function ChplListingEdit({
           </Box>
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        errors={errors}
-        warnings={warnings}
-        isProcessing={isProcessing}
-        showErrorAcknowledgement={errors.length > 0}
-        showWarningAcknowledgement={warnings.length > 0}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

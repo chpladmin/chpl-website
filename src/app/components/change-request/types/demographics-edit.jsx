@@ -7,7 +7,7 @@ import * as yup from 'yup';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplTextField } from 'components/util';
-import { ChangeRequestContext, UserContext } from 'shared/contexts';
+import { ChangeRequestContext, UserContext, useFormGroupMember } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const styles = {
@@ -51,9 +51,6 @@ const validationSchema = yup.object({
     .required('State is required'),
   zipcode: yup.string()
     .required('Zip is required'),
-  website: yup.string()
-    .url('Website is not in a valid format')
-    .required('Website is required'),
 });
 
 function ChplChangeRequestDemographicsEdit() {
@@ -116,6 +113,8 @@ function ChplChangeRequestDemographicsEdit() {
     },
     validationSchema,
   });
+
+  useFormGroupMember(formik);
 
   return (
     <Box sx={styles.container}>

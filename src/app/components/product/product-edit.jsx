@@ -34,7 +34,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchDevelopers } from 'api/developer';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, jsJoda } from 'services/date-util';
@@ -131,16 +131,14 @@ function ChplProductEdit(props) {
   const {
     product,
     dispatch,
-    errorMessages: initialErrorMessages,
-    isInvalid: initialIsInvalid,
+    errorMessages,
+    isInvalid,
     isProcessing = false,
     isSplitting,
   } = props;
   const { analytics } = useAnalyticsContext();
   const { data, isLoading } = useFetchDevelopers();
   const [developers, setDevelopers] = useState([]);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [isInvalid, setIsInvalid] = useState(false);
   const [owners, setOwners] = useState([]);
   let formik;
 
@@ -152,14 +150,6 @@ function ChplProductEdit(props) {
   useEffect(() => {
     setOwners(product.ownerHistory);
   }, [product]);
-
-  useEffect(() => {
-    setIsInvalid(initialIsInvalid);
-  }, [initialIsInvalid]);
-
-  useEffect(() => {
-    setErrorMessages(initialErrorMessages);
-  }, [initialErrorMessages]);
 
   const cancel = () => {
     eventTrack({
@@ -264,6 +254,12 @@ function ChplProductEdit(props) {
       save();
     },
     validationSchema,
+  });
+
+  useActionBar({
+    isDisabled: isActionDisabled(),
+    isProcessing,
+    errors: errorMessages,
   });
 
   if (developers.length === 0) { return <CircularProgress />; }
@@ -444,12 +440,7 @@ function ChplProductEdit(props) {
           )}
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={isActionDisabled()}
-        isProcessing={isProcessing}
-        errors={errorMessages}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </Container>
   );
 }
