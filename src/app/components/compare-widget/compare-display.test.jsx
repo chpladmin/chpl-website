@@ -8,11 +8,23 @@ import { CompareContext } from 'shared/contexts';
 
 jest.mock('services/navigation.service', () => ({ goToUrl: jest.fn() }));
 
-// Frozen, so any in-place sort of the context's array throws
-const listings = Object.freeze([
-  Object.freeze({ id: 3, name: 'beta' }),
-  Object.freeze({ id: 1, name: 'Alpha' }),
-  Object.freeze({ id: 2, name: 'Gamma' }),
+const deepFreeze = (value) => {
+  if (value && typeof value === 'object') {
+    Object.values(value).forEach(deepFreeze);
+    Object.freeze(value);
+  }
+  return value;
+};
+
+// As the widget stores them (search results plus `name`), in the order they were added.
+// Frozen, so any in-place sort of the context's array throws.
+const listing = (id, product, version, certificationDate) => ({
+  id, name: product, product: { name: product }, version: { name: version }, certificationDate,
+});
+const listings = deepFreeze([
+  listing(12, 'beta', '1', '2020-01-01'),
+  listing(3, 'Alpha', '2', '2021-01-01'),
+  listing(7, 'Alpha', '10', '2019-01-01'),
 ]);
 
 const renderDisplay = () => render(
@@ -22,15 +34,15 @@ const renderDisplay = () => render(
 );
 
 describe('the compare widget', () => {
-  it('lists the listings by name, ignoring case', () => {
+  it('lists the listings by product name, then version, ignoring the order they were added', () => {
     renderDisplay();
-    expect(screen.getAllByText(/^(Alpha|beta|Gamma)$/).map((el) => el.textContent)).toEqual(['Alpha', 'beta', 'Gamma']);
+    expect(screen.getAllByText(/^(Alpha|beta)$/).map((el) => el.textContent)).toEqual(['Alpha', 'Alpha', 'beta']);
+    expect(listings.map((l) => l.id)).toEqual([12, 3, 7]);
   });
 
-  it('compares the listings in the order they were added, without reordering the context', () => {
+  it('opens the compare page with the ids in numeric order', () => {
     renderDisplay();
     fireEvent.click(document.getElementById('compare-listings'));
-    expect(goToUrl).toHaveBeenCalledWith('/compare/3&1&2');
-    expect(listings.map((l) => l.id)).toEqual([3, 1, 2]);
+    expect(goToUrl).toHaveBeenCalledWith('/compare/3&7&12');
   });
 });

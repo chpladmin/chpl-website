@@ -15,8 +15,8 @@ import { func, objectOf, string } from 'prop-types';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareListingsForDisplay } from 'services/listing.service';
 import { goToUrl } from 'services/navigation.service';
-import { compareStrings } from 'services/sort.service';
 import { CompareContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -134,7 +134,8 @@ function ChplCompareDisplay({ onClose }) {
   const classes = useStyles();
 
   const compareAll = () => {
-    goToUrl(`/compare/${listings.map((listing) => listing.id).join('&')}`);
+    // Ids in numeric order, so the same set of listings always gives the same URL
+    goToUrl(`/compare/${listings.map((listing) => listing.id).sort((a, b) => a - b).join('&')}`);
   };
 
   const removeAll = () => {
@@ -184,7 +185,7 @@ function ChplCompareDisplay({ onClose }) {
       </div>
       <Typography className={classes.sectionLabelFontWeight800}>Products Selected</Typography>
       <div className={classes.chipContainer}>
-        { [...listings].sort((a, b) => compareStrings(a.name, b.name))
+        { [...listings].sort(compareListingsForDisplay)
           .map((listing) => (
             <Chip
               className={classes.productChips}
