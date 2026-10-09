@@ -33,7 +33,6 @@ import { developer as developerPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
 const styles = {
-  ...utilStyles,
   content: {
     display: 'grid',
     gap: '16px',
@@ -139,7 +138,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
                         { canSeeAttestationData()
                           && (
                             <TableCell>
-                              <Box component="span" sx={styles.srOnly}>View Details</Box>
+                              <Box component="span" sx={utilStyles.srOnly}>View Details</Box>
                             </TableCell>
                           )}
                       </TableRow>

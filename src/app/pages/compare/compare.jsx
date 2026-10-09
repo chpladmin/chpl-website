@@ -272,7 +272,7 @@ function ChplComparePage({ ids }) {
             <Table size="small">
               <TableHead>
                 <TableRow hover={false} sx={styles.headerRow}>
-                  <TableCell sx={styles.stickyColumn}><Box component="span" sx={styles.srOnly}>Data item</Box></TableCell>
+                  <TableCell sx={styles.stickyColumn}><Box component="span" sx={utilStyles.srOnly}>Data item</Box></TableCell>
                   { listings.map((listing) => (
                     <TableCell sx={styles.headerColumnContent} key={listing.id}>
                       <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">

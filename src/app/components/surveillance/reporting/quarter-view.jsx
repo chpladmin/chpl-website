@@ -145,7 +145,7 @@ function ChplQuarterView({ dispatch, report }) {
               <Typography variant="h5" gutterBottom><strong>Surveillance Activities and Outcomes</strong></Typography>
               <Box sx={styles.summaryGroup}>
                 <Typography variant="h6">
-                  <strong>Randomized Surveillance Ã¢â‚¬â€œ Selection Methods</strong>
+                  <strong>Randomized Surveillance – Selection Methods</strong>
                 </Typography>
                 <Typography sx={styles.question} variant="body2" gutterBottom>
                   The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.
@@ -211,7 +211,7 @@ function ChplQuarterView({ dispatch, report }) {
                   <strong>Disclosure Requirements Summary</strong>
                 </Typography>
                 <Typography sx={styles.question} variant="body2" gutterBottom>
-                  The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR Ã‚Â§ 170.523(k):
+                  The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclose additional types of costs or fees requirements, as required of the ONC-ACB under 45 CFR § 170.523(k):
                 </Typography>
                 <Typography sx={styles.responseBox}>
                   { report.disclosureRequirementsSummary }

@@ -104,7 +104,7 @@ function ChplEditableJobEdit(props) {
             <Typography sx={styles.subHeaderColor} variant="body1">
               {job.description}
             </Typography>
-          )}
+        )}
         />
         <CardContent sx={styles.container}>
           <Card>
@@ -146,11 +146,7 @@ function ChplEditableJobEdit(props) {
                       {item}
                     </div>
                     <div>
-                      <IconButton
-                        onClick={() => remove(item)}
-                        color="default"
-                        size="large"
-                      >
+                      <IconButton onClick={() => remove(item)} color="default" size="large">
                         <DeleteIcon color="error" />
                       </IconButton>
                     </div>

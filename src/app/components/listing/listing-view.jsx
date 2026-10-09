@@ -261,8 +261,8 @@ function ChplListingView({
         )}
       <Box sx={styles.content}>
         <Card>
-          <Box component="span" sx={styles.anchorElement}>
-            <Box component="span" id="listingInformation" sx={styles.pageAnchor} />
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="listingInformation" sx={utilStyles.pageAnchor} />
           </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Listing Information</Typography>
@@ -274,8 +274,8 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <Box component="span" sx={styles.anchorElement}>
-            <Box component="span" id="certificationCriteria" sx={styles.pageAnchor} />
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="certificationCriteria" sx={utilStyles.pageAnchor} />
           </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Certification Criteria</Typography>
@@ -310,8 +310,8 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <Box component="span" sx={styles.anchorElement}>
-            <Box component="span" id="clinicalQualityMeasures" sx={styles.pageAnchor} />
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="clinicalQualityMeasures" sx={utilStyles.pageAnchor} />
           </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
@@ -345,8 +345,8 @@ function ChplListingView({
         {(listing.edition === null || listing.edition.name !== '2011')
          && (
            <Card>
-             <Box component="span" sx={styles.anchorElement}>
-               <Box component="span" id="sed" sx={styles.pageAnchor} />
+             <Box component="span" sx={utilStyles.anchorElement}>
+               <Box component="span" id="sed" sx={utilStyles.pageAnchor} />
              </Box>
              <Box sx={styles.sectionHeader}>
                <Typography sx={styles.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
@@ -361,8 +361,8 @@ function ChplListingView({
         { (listing.edition === null || listing.edition.name === '2015') && !hti520270101IsOn
           && (
             <Card>
-              <Box component="span" sx={styles.anchorElement}>
-                <Box component="span" id="g1g2Measures" sx={styles.pageAnchor} />
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="g1g2Measures" sx={utilStyles.pageAnchor} />
               </Box>
               <Box sx={styles.sectionHeader}>
                 <Typography sx={styles.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
@@ -377,8 +377,8 @@ function ChplListingView({
         { !isConfirming
           && (
             <Card>
-              <Box component="span" sx={styles.anchorElement}>
-                <Box component="span" id="compliance" sx={styles.pageAnchor} />
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="compliance" sx={utilStyles.pageAnchor} />
               </Box>
               <Box sx={styles.sectionHeader}>
                 <Typography sx={styles.sectionHeaderText} variant="h2">Compliance Activities</Typography>
@@ -394,8 +394,8 @@ function ChplListingView({
             </Card>
           )}
         <Card>
-          <Box component="span" sx={styles.anchorElement}>
-            <Box component="span" id="additional" sx={styles.pageAnchor} />
+          <Box component="span" sx={utilStyles.anchorElement}>
+            <Box component="span" id="additional" sx={utilStyles.pageAnchor} />
           </Box>
           <Box sx={styles.sectionHeader}>
             <Typography sx={styles.sectionHeaderText} variant="h2">Additional Information</Typography>

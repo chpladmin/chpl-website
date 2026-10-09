@@ -28,7 +28,6 @@ import { DeveloperContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
-  ...utilStyles,
   errorColor: {
     border: '1px solid #c44f65',
     color: palette.error,
@@ -49,7 +48,7 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    gap: '16px',
+    gridGap: '16px',
     minHeight: 'calc(100vh - 188px)',
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
@@ -171,7 +170,7 @@ function ChplJoinDevelopers({ dispatch }) {
                         <TableCell>Code</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell><Box component="span" sx={styles.srOnly}>Action</Box></TableCell>
+                        <TableCell><Box component="span" sx={utilStyles.srOnly}>Action</Box></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -227,7 +226,7 @@ function ChplJoinDevelopers({ dispatch }) {
                          <TableCell>Code</TableCell>
                          <TableCell>Name</TableCell>
                          <TableCell>Status</TableCell>
-                         <TableCell><Box component="span" sx={styles.srOnly}>Action</Box></TableCell>
+                         <TableCell><Box component="span" sx={utilStyles.srOnly}>Action</Box></TableCell>
                        </TableRow>
                      </TableHead>
                      <TableBody>

@@ -88,7 +88,7 @@ const getItemsSurveilled = (surveillance) => {
         .sort(sortRequirements)
         .map((req) => (
           <ListItem key={req.id}>
-            <Box component="span" sx={req.requirementType?.removed ? styles.removedText : undefined}>
+            <Box component="span" sx={req.requirementType?.removed ? utilStyles.removedText : undefined}>
               { getRequirementDisplay(req) }
             </Box>
           </ListItem>
@@ -117,7 +117,7 @@ const getSurveillanceResult = (surveillance) => {
             <Typography variant="body1">
               { `${result.statusName} Non-Conformity Found for ` }
               {' '}
-              <Box component="span" sx={result.removed ? styles.removedText : undefined}>{ result.display }</Box>
+              <Box component="span" sx={result.removed ? utilStyles.removedText : undefined}>{ result.display }</Box>
             </Typography>
           </Box>
         </ListItem>
@@ -286,7 +286,7 @@ function ChplSurveillance({
                         { getDataDisplay('Date Corrective Action Must Be Completed', <Typography>{ getDisplayDateFormat(nc.capMustCompleteDay) }</Typography>, 'The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status.') }
                         { getDataDisplay('Date Corrective Action Was Completed', <Typography>{ getDisplayDateFormat(nc.capEndDay) }</Typography>, 'The date that the corrective action was completed.') }
                         { getDataDisplay('Non-Conformity Type',
-                          <Typography sx={nc.type.removed ? styles.removedText : undefined}>
+                          <Typography sx={nc.type.removed ? utilStyles.removedText : undefined}>
                             {nc.type.removed ? 'Removed | ' : ''}
                             {' '}
                             {nc.type.number ? (`${nc.type.number}: `) : ''}

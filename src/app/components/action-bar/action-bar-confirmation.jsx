@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import {
   Button,
   Dialog,
@@ -17,7 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { palette, utilStyles } from 'themes';
 
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+const Transition = forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 function ChplActionBarConfirmation(props) {
   const act = (action) => {

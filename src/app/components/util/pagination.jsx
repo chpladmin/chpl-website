@@ -9,6 +9,20 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
+const styles = {
+  pagination: {
+    '& .MuiTablePagination-toolbar': {
+      px: 2,
+      pt: 2,
+      width: '100%',
+      maxHeight: '32px',
+      '& p': {
+        margin: 0,
+      },
+    },
+  },
+};
+
 function ChplPagination({
   count,
   page,
@@ -46,6 +60,7 @@ function ChplPagination({
   return (
     <TablePagination
       component="div"
+      sx={styles.pagination}
       labelRowsPerPage="Results per page:"
       onPageChange={handlePageChange}
       onRowsPerPageChange={handleRowsPerPageChange}

@@ -9,7 +9,6 @@ import { analyticsConfig, routerConfig } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
 const styles = {
-  ...utilStyles,
   chplLink: {
     display: 'flex',
     overflowWrap: 'anywhere',
@@ -92,7 +91,7 @@ function ChplLink({
         && (
           <Box component="a" href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" sx={styles.disclaimerIcon}>
             <ExitToAppIcon />
-            <Box component="span" sx={styles.srOnly}>Web Site Disclaimers</Box>
+            <Box component="span" sx={utilStyles.srOnly}>Web Site Disclaimers</Box>
           </Box>
         )}
     </Box>

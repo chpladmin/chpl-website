@@ -9,7 +9,6 @@ import ChplTooltip from './chpl-tooltip';
 import { utilStyles } from 'themes';
 
 const styles = {
-  ...utilStyles,
   chplEllipsis: {
     border: 'none',
     backgroundColor: 'transparent',
@@ -56,7 +55,7 @@ function ChplEllipsis({
              onClick={() => setShortened(false)}
            >
              <MoreHorizIcon />
-             <Box component="span" sx={styles.srOnly}>Expand description</Box>
+             <Box component="span" sx={utilStyles.srOnly}>Expand description</Box>
            </IconButton>
          </ChplTooltip>
        )}
@@ -68,7 +67,7 @@ function ChplEllipsis({
            onClick={() => setShortened(true)}
          >
            <ArrowBackIcon />
-           <Box component="span" sx={styles.srOnly}>Minimize description</Box>
+           <Box component="span" sx={utilStyles.srOnly}>Minimize description</Box>
          </IconButton>
        )}
     </>
