@@ -96,9 +96,9 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container spacing={4} alignItems="flex-start">
+    <Grid container sx={{ width: `calc(100% + 64px)` }} spacing={2} alignItems="flex-start">
       <Grid item xs={12} md={4}>
-        <Grid container spacing={4}>
+        <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
           { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
         </Grid>
       </Grid>
