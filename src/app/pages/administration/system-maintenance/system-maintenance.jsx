@@ -87,7 +87,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     position: 'sticky',
-    top: '115px',
+    top: '16px',
     zIndex: 1,
     transition: 'width 0.3s ease',
     [theme.breakpoints.down('md')]: {
@@ -109,6 +109,8 @@ const styles = {
     display: 'flex',
     width: '100%',
     padding: '8px',
+    overflowY: 'auto',
+    maxHeight: '64vh',
     flexDirection: 'column',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
@@ -121,6 +123,9 @@ const styles = {
     justifyContent: 'space-between',
     textTransform: 'none',
     fontSize: '11.5px',
+    '& .MuiSvgIcon-root, & .MuiButton-endIcon > .MuiSvgIcon-root': {
+      fontSize: '16px',
+    },
     '&.Mui-disabled': {
       color: palette.black,
       backgroundColor: palette.background,
