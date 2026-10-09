@@ -12,7 +12,7 @@ import {
   object,
 } from 'prop-types';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -55,6 +55,12 @@ function ChplAnnualView({
   report,
 }) {
   const classes = useStyles();
+
+  useActionBar({
+    canCancel: false,
+    canClose: true,
+    canSave: false,
+  });
 
   const handleDispatch = (action) => {
     dispatch({ action });
@@ -101,12 +107,7 @@ function ChplAnnualView({
           </Typography>
         </CardContent>
       </Card>
-      <ChplActionBar
-        canCancel={false}
-        canClose
-        canSave={false}
-        dispatch={handleDispatch}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }

@@ -16,6 +16,7 @@ import ChplUrlCheckerResponse from './url-checker-response';
 
 import { usePostUrlChecker } from 'api/url-checker';
 import { ChplTextField } from 'components/util';
+import { useFormGroupMember } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -113,6 +114,9 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
     validationSchema,
   });
 
+  // Only has an effect inside a FormGroupContext, e.g. when editing a change request
+  useFormGroupMember(formik);
+
   const handleValidate = (event) => {
     if (showResultPopover) {
       const popoverAnchor = fieldAnchorRef.current || event.currentTarget;
@@ -137,7 +141,7 @@ function ChplUrlChecker({ dispatch, showResultPopover = true, url = '' }) {
   return (
     <>
       <Box display="flex" alignItems="flex-start">
-        <Box ref={fieldAnchorRef} flexGrow={1} style={{ backgroundColor: palette.white }} borderRadius={4}> 
+        <Box ref={fieldAnchorRef} flexGrow={1} style={{ backgroundColor: palette.white }} borderRadius={4}>
           <ChplTextField
             id="url"
             name="url"
