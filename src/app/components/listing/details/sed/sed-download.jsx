@@ -60,7 +60,7 @@ function ChplSedDownload({ listing }) {
         .map((participant) => ({
           ...base,
           ...task,
-          criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
+          criteria: [...task.criteria].sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
           ...{
             ...participant,
             age: participant.age.name,

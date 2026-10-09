@@ -159,7 +159,7 @@ function ChplIcsFamily(props) {
     if (isLoading || !isSuccess) {
       return;
     }
-    setListings(data.sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
+    setListings([...data].sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
     setElements(generateElements(data, id, parseInt(listingId, 10)));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
     setIsShowingDiagram(true);

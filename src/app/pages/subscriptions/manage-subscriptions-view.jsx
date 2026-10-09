@@ -242,7 +242,7 @@ function ChplManageSubscriptionsView({ analytics }) {
                                 label: 'Subscription Subjects',
                                 value: (
                                   <List className={classes.listContainer}>
-                                    { item.subscriptionSubjects
+                                    { [...item.subscriptionSubjects]
                                       .sort(compareStrings)
                                       .map((sub) => (
                                         <ListItem className={classes.listItem} key={sub}>{ sub }</ListItem>

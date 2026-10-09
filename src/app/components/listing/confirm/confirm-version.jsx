@@ -114,7 +114,7 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setVersions(data
+    setVersions([...data]
       .sort((a, b) => compareStrings(a.version, b.version)));
   }, [data, isLoading, isSuccess]);
 

@@ -158,7 +158,7 @@ function ChplDownloadListings({ listings: initialListings = [], toggled = [] }) 
       acb: listing.certificationBody.name,
       practiceTypeName: listing.practiceType?.name ?? '',
       detailsLink: `https://chpl.healthit.gov/#/listing/${listing.id}`,
-      criteria: listing.criteriaMet.sort(sortCriteria).map((cc) => `${cc.number}: ${cc.title}`).join('\n'),
+      criteria: [...listing.criteriaMet].sort(sortCriteria).map((cc) => `${cc.number}: ${cc.title}`).join('\n'),
       cqms: listing.cqmsMet.map((cqm) => ({ ...cqm, name: cqm.number })).sort(sortCqms).map((cqm) => cqm.number).join('\n'),
       apiDocumentation56: listing.apiDocumentation.find((cc) => cc.criterion.id === 56)?.value || '',
       apiDocumentation181: listing.apiDocumentation.find((cc) => cc.criterion.id === 181)?.value || '',

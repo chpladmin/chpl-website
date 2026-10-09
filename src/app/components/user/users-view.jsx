@@ -217,7 +217,7 @@ function ChplUsersView({
                   />
                 </div>
                 <div className={classes.users}>
-                  { users
+                  { [...users]
                     .sort((a, b) => compareStrings(a.fullName, b.fullName))
                     .map((u) => displayUser(u))}
                 </div>

@@ -40,7 +40,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
       .map((c) => ({
         ...c,
         display: c.cmsId ? c.cmsId : `NQF-${c.nqfNumber}`,
-        versionDisplay: c.versions.sort(sortVersion).join(', '),
+        versionDisplay: [...c.versions].sort(sortVersion).join(', '),
       }))
       .sort(sortComparator('display')));
   }, [initialCqms]);

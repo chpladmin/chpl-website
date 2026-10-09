@@ -128,12 +128,12 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
   const filterContext = useFilterContext();
 
   useEffect(() => {
-    setFilters(filterContext.filters
+    setFilters([...filterContext.filters]
       .sort((a, b) => compareStrings(a.getFilterDisplay(a), b.getFilterDisplay(b)))
       .filter((f) => f.values?.length > 0)
       .map((f) => ({
         ...f,
-        values: f.values.sort((a, b) => f.sortValues(f, a, b)),
+        values: [...f.values].sort((a, b) => f.sortValues(f, a, b)),
       })));
   }, [filterContext.filters]);
 

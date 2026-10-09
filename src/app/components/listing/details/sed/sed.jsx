@@ -149,13 +149,13 @@ function ChplSed({ listing }) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    { sed.ucdProcesses
+                    { [...sed.ucdProcesses]
                       .sort(sortUcdProcesses)
                       .map((ucd) => (
                         <TableRow key={ucd.id}>
                           <TableCell>
                             <List>
-                              {ucd.criteria
+                              {[...ucd.criteria]
                                 .sort(sortCriteria)
                                 .map((criterion) => (
                                   <ListItem key={criterion.id}>
@@ -186,7 +186,7 @@ function ChplSed({ listing }) {
                           listing={listing}
                         />
                       </Box>
-                      { sed.testTasks
+                      { [...sed.testTasks]
                         .sort(sortTestTasks)
                         .map((task) => (
                           <ChplSedTaskView
@@ -210,13 +210,13 @@ function ChplSed({ listing }) {
               </TableRow>
             </TableHead>
             <TableBody className={classes.tableBody}>
-              { sed.ucdProcesses
+              { [...sed.ucdProcesses]
                 .sort(sortUcdProcesses)
                 .map((ucd) => (
                   <TableRow key={`${ucd.id} - ${ucd.name} - ${ucd.details}`}>
                     <TableCell>
                       <List>
-                        {ucd.criteria
+                        {[...ucd.criteria]
                           .sort(sortCriteria)
                           .map((criterion) => (
                             <ListItem key={criterion.id}>

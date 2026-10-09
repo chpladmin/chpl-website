@@ -250,7 +250,7 @@ function ChplStandardEdit({
         onChange={(event) => add(event.target.value)}
         helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
       >
-        { criterionOptions
+        { [...criterionOptions]
           .sort(sortCriteria)
           .map((item) => (
             <MenuItem
@@ -263,7 +263,7 @@ function ChplStandardEdit({
           ))}
       </ChplTextField>
       <div className={classes.chips}>
-        { criteria
+        { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
             <Chip

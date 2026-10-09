@@ -309,7 +309,7 @@ function ChplProductEdit(props) {
                     onChange={handleOwnerChange}
                     onBlur={formik.handleBlur}
                   >
-                    { developers
+                    { [...developers]
                       .sort((a, b) => compareStrings(a.name, b.name))
                       .map((d) => (
                         <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
@@ -326,8 +326,8 @@ function ChplProductEdit(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {owners
-                       ?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
+                      {owners && [...owners]
+                        .sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
                        ?.map((item) => (
                          <TableRow key={getKey(item)}>
                            <TableCell>
@@ -388,7 +388,7 @@ function ChplProductEdit(props) {
                         error={formik.touched.owner && !!formik.errors.owner}
                         helperText={formik.touched.owner && formik.errors.owner}
                       >
-                        { developers
+                        { [...developers]
                           .sort((a, b) => compareStrings(a.name, b.name))
                           .map((d) => (
                             <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>

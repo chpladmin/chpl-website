@@ -47,7 +47,7 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
 
   useEffect(() => {
     if (listing.promotingInteroperabilityUserHistory?.length > 0) {
-      setCurrentPi(listing.promotingInteroperabilityUserHistory.sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))[0]);
+      setCurrentPi([...listing.promotingInteroperabilityUserHistory].sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))[0]);
     }
   }, [listing]);
 

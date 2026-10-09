@@ -88,25 +88,25 @@ function ChplQuarterEditListingSurveillanceData({ dispatch, reportId, surveillan
 
   useEffect(() => {
     if (capStatusesIsLoading || !capStatusesIsSuccess) { return; }
-    setCapStatuses(capStatusesData.sort((a, b) => compareStrings(a.name, b.name)));
+    setCapStatuses([...capStatusesData].sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('capStatuses', capStatusesData.filter((type) => surveillance?.capStatuses?.some((t) => t.id === type.id)) || []);
   }, [capStatusesData, capStatusesIsLoading, capStatusesIsSuccess]);
 
   useEffect(() => {
     if (surveillanceGroundsForInitiatingIsLoading || !surveillanceGroundsForInitiatingIsSuccess) { return; }
-    setSurveillanceGroundsForInitiating(surveillanceGroundsForInitiatingData.sort((a, b) => compareStrings(a.name, b.name)));
+    setSurveillanceGroundsForInitiating([...surveillanceGroundsForInitiatingData].sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('surveillanceGroundsForInitiating', surveillanceGroundsForInitiatingData.filter((type) => surveillance?.surveillanceGroundsForInitiating?.some((t) => t.id === type.id)) || []);
   }, [surveillanceGroundsForInitiatingData, surveillanceGroundsForInitiatingIsLoading, surveillanceGroundsForInitiatingIsSuccess]);
 
   useEffect(() => {
     if (surveillanceOutcomesIsLoading || !surveillanceOutcomesIsSuccess) { return; }
-    setSurveillanceOutcomes(surveillanceOutcomesData.sort((a, b) => compareStrings(a.name, b.name)));
+    setSurveillanceOutcomes([...surveillanceOutcomesData].sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('surveillanceOutcome', surveillanceOutcomesData.find((o) => o.id === surveillance?.surveillanceOutcome?.id)?.name);
   }, [surveillanceOutcomesData, surveillanceOutcomesIsLoading, surveillanceOutcomesIsSuccess]);
 
   useEffect(() => {
     if (surveillanceProcessTypesIsLoading || !surveillanceProcessTypesIsSuccess) { return; }
-    setSurveillanceProcessTypes(surveillanceProcessTypesData.sort((a, b) => compareStrings(a.name, b.name)));
+    setSurveillanceProcessTypes([...surveillanceProcessTypesData].sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('surveillanceProcessTypes', surveillanceProcessTypesData.filter((type) => surveillance?.surveillanceProcessTypes?.some((t) => t.id === type.id)) || []);
   }, [surveillanceProcessTypesData, surveillanceProcessTypesIsLoading, surveillanceProcessTypesIsSuccess]);
 

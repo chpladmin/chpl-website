@@ -62,7 +62,7 @@ function ChplUserView({ user, dispatch = () => {} }) {
                 :
               </strong>
               <br />
-              { user.organizations.sort((a, b) => compareStrings(a.name, b.name)).map((org) => (org.name)).join('; ') }
+              { [...user.organizations].sort((a, b) => compareStrings(a.name, b.name)).map((org) => (org.name)).join('; ') }
             </Typography>
           )}
         <Typography gutterBottom>

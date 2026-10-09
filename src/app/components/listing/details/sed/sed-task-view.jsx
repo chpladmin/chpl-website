@@ -164,7 +164,7 @@ function ChplSedTaskView({ task: initialTask }) {
                     <TableCell>Associated Certification Criteria</TableCell>
                     <TableCell>
                       <List>
-                        {task.criteria
+                        {[...task.criteria]
                           .sort(sortCriteria)
                           .map((criterion) => (
                             <ListItem key={criterion.id}>

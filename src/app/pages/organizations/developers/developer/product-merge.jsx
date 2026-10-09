@@ -184,7 +184,7 @@ function ChplProductMerge({ dispatch, product }) {
             <CardContent>
               <List className={classes.itemList}>
                 <ListItem>{ product.name }</ListItem>
-                { mergingProducts
+                { [...mergingProducts]
                   .sort((a, b) => compareStrings(a.name, b.name))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>

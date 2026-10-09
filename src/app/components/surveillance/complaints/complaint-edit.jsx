@@ -142,18 +142,18 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
 
   useEffect(() => {
     if (certificationBodiesIsLoading || !certificationBodiesIsSuccess) { return; }
-    setCertificationBodies(certificationBodiesData.acbs.sort((a, b) => compareStrings(a.name, b.name)));
+    setCertificationBodies([...certificationBodiesData.acbs].sort((a, b) => compareStrings(a.name, b.name)));
   }, [certificationBodiesData, certificationBodiesIsLoading, certificationBodiesIsSuccess]);
 
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
-    setComplainantTypes(complainantTypesData.sort((a, b) => compareStrings(a.name, b.name)));
+    setComplainantTypes([...complainantTypesData].sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('complainantType', complainantTypesData.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
   }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (complaintTypesIsLoading || !complaintTypesIsSuccess) { return; }
-    setComplaintTypes(complaintTypesData.sort((a, b) => compareStrings(a.name, b.name)));
+    setComplaintTypes([...complaintTypesData].sort((a, b) => compareStrings(a.name, b.name)));
     formik.setFieldValue('complaintTypes', complaintTypesData.filter((type) => initialComplaint?.complaintTypes?.some((t) => t.id === type.id)) || []);
   }, [complaintTypesData, complaintTypesIsLoading, complaintTypesIsSuccess, initialComplaint]);
 

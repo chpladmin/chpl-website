@@ -6,18 +6,13 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  Timeline,
-} from '@material-ui/lab';
+import { Timeline } from '@material-ui/lab';
 import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
 import { object } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
 
-import {
-  useFetchProductActivitiesMetadata,
-  useFetchVersionActivitiesMetadata,
-} from 'api/activity';
+import { useFetchProductActivitiesMetadata, useFetchVersionActivitiesMetadata } from 'api/activity';
 import { compareProduct } from 'components/activity/services/products.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
@@ -105,7 +100,7 @@ function ChplProductHistory({ product }) {
           { activities.length > 0
             && (
               <Timeline>
-                { activities
+                { [...activities]
                   .sort((a, b) => (a.date < b.date ? 1 : -1))
                   .map((activity, idx, arr) => (
                     <ChplActivityDetails

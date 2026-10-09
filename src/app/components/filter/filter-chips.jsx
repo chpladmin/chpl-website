@@ -85,7 +85,7 @@ function ChplFilterChips({ horizontal = false }) {
   const DISPLAY_MAX = 7;
 
   useEffect(() => {
-    setFilters(filterContext.filters
+    setFilters([...filterContext.filters]
       .sort((a, b) => compareStrings(a.getFilterDisplay(a), b.getFilterDisplay(b)))
       .map((filter) => ({
         ...filter,

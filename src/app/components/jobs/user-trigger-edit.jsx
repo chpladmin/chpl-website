@@ -59,7 +59,7 @@ const validationSchema = yup.object({
 function ChplUserTriggerEdit(props) {
   const { acbs: initialAcbs, dispatch, trigger: initialTrigger } = props;
   const [acbs, setAcbs] = useState(
-    initialAcbs
+    [...initialAcbs]
       .sort((a, b) => compareStrings(a.name, b.name))
       .map((acb) => ({
         ...acb,

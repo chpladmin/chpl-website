@@ -168,7 +168,7 @@ function ChplMessaging({ dispatch }) {
 
   useEffect(() => {
     if (undeliverableIsLoading || undeliverableIsError || !undeliverableData.results) { return; }
-    setUndeliverable(undeliverableData.results.sort((a, b) => compareStrings(a.name, b.name)));
+    setUndeliverable([...undeliverableData.results].sort((a, b) => compareStrings(a.name, b.name)));
     setUndeliverableTotalCount(undeliverableData.recordCount);
   }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 

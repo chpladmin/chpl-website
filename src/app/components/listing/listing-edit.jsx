@@ -119,17 +119,17 @@ function ChplListingEdit({
 
   useEffect(() => {
     if (statusesIsLoading || !statusesIsSuccess) { return; }
-    setStatuses(statusesData.sort((a, b) => compareStrings(a.name, b.name)));
+    setStatuses([...statusesData].sort((a, b) => compareStrings(a.name, b.name)));
   }, [statusesData, statusesIsLoading, statusesIsSuccess]);
 
   useEffect(() => {
     if (acbsIsLoading || !acbsIsSuccess) { return; }
-    setAcbs(acbsData.acbs.sort((a, b) => compareStrings(a.name, b.name)));
+    setAcbs([...acbsData.acbs].sort((a, b) => compareStrings(a.name, b.name)));
   }, [acbsData, acbsIsLoading, acbsIsSuccess]);
 
   useEffect(() => {
     if (atlsIsLoading || !atlsIsSuccess) { return; }
-    setAtls(atlsData.atls.sort((a, b) => compareStrings(a.name, b.name)));
+    setAtls([...atlsData.atls].sort((a, b) => compareStrings(a.name, b.name)));
   }, [atlsData, atlsIsLoading, atlsIsSuccess]);
 
   const handleDispatch = (action) => {
@@ -295,7 +295,7 @@ function ChplListingEdit({
                 Certification Status
               </Typography>
               <List>
-                { selectedStatuses
+                { [...selectedStatuses]
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((status, idx, arr) => (
                     <ListItem

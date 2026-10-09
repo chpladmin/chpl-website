@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   },
 });
 
-const getRows = (section, classes) => section.formItems
+const getRows = (section, classes) => [...section.formItems]
   .sort((a, b) => a.sortOrder - b.sortOrder)
   .map((item) => (
     <TableRow key={`${section.id}-${item.id}`}>
@@ -72,7 +72,7 @@ const getRows = (section, classes) => section.formItems
         { item.childFormItems[0]?.submittedResponses.length > 0
               && (
                 <ul>
-                  { item.childFormItems[0].submittedResponses
+                  { [...item.childFormItems[0].submittedResponses]
                     .sort((a, b) => a.sortOrder - b.sortOrder)
                     .map((response) => (
                       <li key={response.id}>{ response.response }</li>
@@ -97,7 +97,7 @@ function ChplAttestationView({
     setAttestations({
       ...initialAttestations,
       period: initialAttestations.period || initialAttestations.attestationPeriod,
-      sections: initialAttestations.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder),
+      sections: [...initialAttestations.form.sectionHeadings].sort((a, b) => a.sortOrder - b.sortOrder),
     });
   }, [initialAttestations]);
 

@@ -183,7 +183,7 @@ function ChplVersionMerge({ dispatch, product, version }) {
             <CardContent>
               <List className={classes.listingList}>
                 <ListItem>{ version.version }</ListItem>
-                { mergingVersions
+                { [...mergingVersions]
                   .sort((a, b) => compareStrings(a.version, b.version))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>

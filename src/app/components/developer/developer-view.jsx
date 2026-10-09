@@ -92,11 +92,10 @@ const useStyles = makeStyles({
 const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDate);
 
 const getStatusData = (statuses, classes) => {
-  const current = statuses
-    .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
-  if (current.endDate) { return undefined; }
-  const rest = statuses
+  const rest = [...statuses]
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
+  const current = rest[0];
+  if (current.endDate) { return undefined; }
   return (
     <div className={classes.fullWidth}>
       <Typography variant="body1" gutterBottom>

@@ -6,9 +6,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  Timeline,
-} from '@material-ui/lab';
+import { Timeline } from '@material-ui/lab';
 import TrackChangesOutlined from '@material-ui/icons/TrackChangesOutlined';
 import { func, object, string } from 'prop-types';
 
@@ -44,7 +42,7 @@ function ChplOrganizationActivity({ organization, type, interpret }) {
       setActivities([]);
       return;
     }
-    setActivities(data
+    setActivities([...data]
       .sort((a, b) => (a.date < b.date ? 1 : -1))
       .map((activity, idx, arr) => (
         <ChplActivityDetails

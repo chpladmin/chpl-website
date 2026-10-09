@@ -134,7 +134,7 @@ function ChplUserInvite({ dispatch, groupNames }) {
                 error={formik.touched.groupName && !!formik.errors.groupName}
                 helperText={formik.touched.groupName && formik.errors.groupName}
               >
-                { groupNames
+                { [...groupNames]
                   .sort(compareStrings)
                   .map((item) => (
                     <MenuItem value={item} key={item}>{item}</MenuItem>

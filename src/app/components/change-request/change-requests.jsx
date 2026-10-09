@@ -89,7 +89,7 @@ function ChplChangeRequests({
     if (crtQuery.isLoading || !crtQuery.isSuccess) {
       return;
     }
-    const values = crtQuery.data
+    const values = [...crtQuery.data]
       .sort((a, b) => compareStrings(a.name, b.name))
       .map((type) => ({
         value: type.name,

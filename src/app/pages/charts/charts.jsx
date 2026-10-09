@@ -123,7 +123,7 @@ function ChplCharts() {
                   >
                     Charts
                   </Button>
-                  { reportMetadata
+                  { [...reportMetadata]
                     .sort((a, b) => compareStrings(a.title, b.title))
                     .map((report) => (
                       <Button

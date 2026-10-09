@@ -78,7 +78,7 @@ function ChplInsightsView({ developer }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  { insights
+                  { [...insights]
                     .sort((a, b) => (a.year < b.year ? 1 : -1))
                     .map((item) => (
                       <TableRow key={item.year}>

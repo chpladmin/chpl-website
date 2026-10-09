@@ -75,17 +75,17 @@ function ChplRequirementEdit({
 
   useEffect(() => {
     if (groupTypeQuery.isLoading || groupTypeQuery.isError) { return; }
-    setRequirementGroupTypes(groupTypeQuery.data.sort((a, b) => compareStrings(a.name, b.name)));
+    setRequirementGroupTypes([...groupTypeQuery.data].sort((a, b) => compareStrings(a.name, b.name)));
   }, [groupTypeQuery.data, groupTypeQuery.isLoading, groupTypeQuery.isError]);
 
   useEffect(() => {
     if (typeQuery.isLoading || typeQuery.isError) { return; }
-    setRequirementTypes(typeQuery.data.sort((a, b) => compareStrings(a.title, b.title)));
+    setRequirementTypes([...typeQuery.data].sort((a, b) => compareStrings(a.title, b.title)));
   }, [typeQuery.data, typeQuery.isLoading, typeQuery.isError]);
 
   useEffect(() => {
     if (resultQuery.isLoading || resultQuery.isError) { return; }
-    setResultTypes(resultQuery.data.sort((a, b) => compareStrings(a.name, b.name)));
+    setResultTypes([...resultQuery.data].sort((a, b) => compareStrings(a.name, b.name)));
   }, [resultQuery.data, resultQuery.isLoading, resultQuery.isError]);
 
   const addNc = () => {

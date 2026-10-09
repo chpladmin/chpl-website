@@ -77,7 +77,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
 
   useEffect(() => {
     if (isLoading || isError) { return; }
-    setSurveillanceTypes(data.sort((a, b) => compareStrings(a.name, b.name)));
+    setSurveillanceTypes([...data].sort((a, b) => compareStrings(a.name, b.name)));
   }, [data, isLoading, isError]);
 
   const addReq = () => {

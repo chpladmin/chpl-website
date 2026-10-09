@@ -97,7 +97,7 @@ function ChplJoinDevelopers({ dispatch }) {
     if (developer.statuses?.length === 0) {
       return undefined;
     }
-    const current = developer.statuses
+    const current = [...developer.statuses]
       .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
     if (current.endDate) {
       return undefined;

@@ -35,7 +35,7 @@ function ChplSedTaskParticipantsView(props) {
   const { task } = props;
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
-  const participants = props.participants.sort((a, b) => { // eslint-disable-line react/destructuring-assignment
+  const participants = [...props.participants].sort((a, b) => { // eslint-disable-line react/destructuring-assignment
     const byText = compareStrings(a.occupation, b.occupation) || compareStrings(a.educationType.name, b.educationType.name);
     if (byText !== 0) { return byText; }
     if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }

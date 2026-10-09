@@ -112,7 +112,7 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setProducts(data.products
+    setProducts([...data.products]
       .sort((a, b) => compareStrings(a.name, b.name)));
   }, [data, isLoading, isSuccess]);
 

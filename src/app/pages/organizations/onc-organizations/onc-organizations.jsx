@@ -84,7 +84,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   useEffect(() => {
     if (orgType !== 'acb') { return; }
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
-    setOrgs(acbQuery.data.acbs.sort(sortOrgs));
+    setOrgs([...acbQuery.data.acbs].sort(sortOrgs));
     if (acbQuery.data.acbs.length === 1) {
       setActiveId(acbQuery.data.acbs[0].id);
     }
@@ -93,7 +93,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   useEffect(() => {
     if (orgType !== 'atl') { return; }
     if (atlQuery.isLoading || !atlQuery.isSuccess) { return; }
-    setOrgs(atlQuery.data.atls.sort(sortOrgs));
+    setOrgs([...atlQuery.data.atls].sort(sortOrgs));
     if (atlQuery.data.atls.length === 1) {
       setActiveId(atlQuery.data.atls[0].id);
     }

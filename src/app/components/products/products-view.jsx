@@ -143,7 +143,7 @@ function ChplProductsView({ products = [], dispatch }) {
               )}
             </div>
           </div>
-          { displayedProducts
+          { [...displayedProducts]
             .sort((a, b) => sortProducts(a, b))
             .map((product) => (
               <ChplProductView
