@@ -114,6 +114,21 @@ Group imports into three blocks, separated by a blank line, in this order:
 
 Within any named (non-default) import, alphabetize the imported names, e.g. `import { setLoginState, setUser } from 'components/login/userInfo.slice';` (not `{ setUser, setLoginState }`).
 
+Keep up to three names on one line. From four names, the point where the airbnb `object-curly-newline` rule requires wrapping, put **every name on its own line**, with a trailing comma, rather than several to a line:
+
+```
+import { Box, Container } from '@material-ui/core';
+
+import {
+  Box,
+  Container,
+  Drawer,
+  Table,
+} from '@material-ui/core';
+```
+
+not `import {⏎  Box, Container, Drawer, Table,⏎} from '@material-ui/core';`. The same goes for a default plus named import (`import React, {⏎  useEffect,⏎  useMemo,⏎  …⏎} from 'react';`) and for `export { … } from`. An import of three names or fewer stays on one line even though lint would allow wrapping it. No lint rule enforces any of this, so apply it by hand. Existing code doesn't follow it everywhere yet: convert the imports in files a change already touches, but don't reformat untouched files just for this.
+
 ## Commits
 
 Every commit message must contain its branch name as a tag — `[#OCD-1234]` for branch `OCD-1234` — **exactly once**. This is a regulatory and policy requirement: a missing tag is a defect, and so is a second copy. `release:` commits are the one exemption; they are version deploys rather than ticket work.
