@@ -18,7 +18,7 @@ module.exports = {
   // webpack resolves these through style-loader / url-loader / file-loader;
   // under jest they only need to not explode.
   moduleNameMapper: {
-    '\\.(css|scss|sass)$': '<rootDir>/test/stubs/style.js',
+    '\\.css$': '<rootDir>/test/stubs/style.js',
     '\\.(png|jpe?g|gif|svg|ico|woff2?|ttf|eot)$': '<rootDir>/test/stubs/file.js',
     // Heavy third-party UI that tests never render, and which ships ESM only.
     // Transforming it instead would slow every run down for no benefit.

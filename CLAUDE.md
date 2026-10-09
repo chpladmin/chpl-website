@@ -129,7 +129,12 @@ Add a body only when the reason for the change is not evident from the subject. 
 - `release` — version deploys. Exempt from the tag requirement, as above.
 - `wip` — appears in the history but says nothing useful; avoid it.
 
-Lowercase the text after the prefix. Append `!` — `feat!:`, `ui!:`, `fix-flag!:` — when the change is user-visible and should be picked up for release notes. It does not carry the conventional-commits "breaking change" meaning here.
+Append `!` — `feat!:`, `ui!:`, `fix-flag!:` — when the change is user-visible and should be picked up for release notes. It does not carry the conventional-commits "breaking change" meaning here.
+
+The `!` also decides capitalization of the text after the prefix:
+
+- **Without `!`**, lowercase it: `fix: bail out of downloads when the session cannot be renewed`.
+- **With `!`**, capitalize the first word, since the subject is read as a release-notes line: `fix!: Show every ungrouped relied upon software item`.
 
 ### Which mechanism supplies the tag
 
@@ -162,3 +167,41 @@ PR titles follow `OCD-1234: short description` — the ticket, a colon, then a b
 For the body: a short summary of the change and its motivation, then the per-file or per-area detail, then anything the reviewer needs to know (collateral risk, follow-ups in other repos, deliberate deviations from the ticket). Use task lists (`- [ ]`) for reviewer or release checklists, tables where they genuinely help, and fenced code blocks for diffs or commands. Link issues and PRs by `#number`, and reference code as `path/to/file.jsx:42`.
 
 Keep it proportional: a one-file refactor does not need a six-section description.
+
+## Test cases
+
+Test case documents are written for the **manual testing team**. Write their steps against the environments described under "Testing environments" above.
+
+### Header table
+
+Every test case document opens with this table, before any other content. It has two columns: the heading on the left and its value on the right.
+
+```markdown
+| | |
+|---|---|
+| User Story in JIRA | OCD-1234 |
+| Repository | chpl-website |
+| Change type | Disable change request save while the edit form has errors |
+| TC Written by | Claude (AI draft) / |
+| TC Reviewed by (1) | |
+| TC Reviewed by (2) | |
+| AQA Developer | |
+| Feature Developer | Full Name |
+| TC Executed by | |
+| Pre-release test by | |
+```
+
+Fill in these rows when drafting, and leave the rest blank for people to complete later:
+
+- **User Story in JIRA**: the current branch name (`git branch --show-current`).
+- **Repository**: the repository the test cases are written for, e.g. `chpl-website` for changes to the CHPL website. Use the project's name, not the owner of whichever fork the remotes point at.
+- **Change type**: one line summing up the branch's commits, phrased like the description half of a PR title (see "Pull requests"). Leave out the ticket; it's already in the first row.
+- **TC Written by**: `Claude (AI draft) /`. Keep the trailing `/`; the human reviewer adds their name after it.
+- **Feature Developer**: the full name of every human who authored commits on the branch, comma-separated. Claude `Co-Authored-By:` trailers don't count. If an author is recorded under a username rather than a full name, ask.
+
+"The branch's commits", for both Change type and Feature Developer, means the non-merge commits since the branch left `staging`: `git log staging..HEAD --no-merges`.
+
+### Content
+
+- Include only manual checks. Leave out anything automated, such as `yarn test`, `yarn lint`, `yarn build`, or bundle and grep checks: the build process runs those, so the testers never do. Report automated results in the PR description's testing section instead.
+- Number the sections from 1, starting with the first manual check. The header table is not numbered.

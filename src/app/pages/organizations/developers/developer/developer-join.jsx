@@ -23,12 +23,13 @@ import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { DeveloperContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   errorColor: {
     border: '1px solid #c44f65',
     color: palette.error,
@@ -73,8 +74,8 @@ function ChplJoinDevelopers({ dispatch }) {
   const [developers, setDevelopers] = useState([]);
   const [developersToJoin, setDevelopersToJoin] = useState([]);
   const [developerValueToLoad, setDeveloperValueToLoad] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const classes = useStyles();
+  let updateActionBar;
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -109,20 +110,20 @@ function ChplJoinDevelopers({ dispatch }) {
         dispatch('cancel');
         break;
       case 'save':
-        setIsProcessing(true);
+        updateActionBar({ isProcessing: true });
         mutate({
           developer: activeDeveloper,
           developerIds: developersToJoin.map((dev) => dev.id),
         }, {
           onSuccess: (response) => {
-            setIsProcessing(false);
+            updateActionBar({ isProcessing: false });
             enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
               variant: 'success',
             });
             dispatch('cancel');
           },
           onError: (error) => {
-            setIsProcessing(false);
+            updateActionBar({ isProcessing: false });
             enqueueSnackbar(error.response.data.error, {
               variant: 'error',
             });
@@ -136,6 +137,10 @@ function ChplJoinDevelopers({ dispatch }) {
   const removeDeveloper = (developer) => {
     setDevelopersToJoin((prev) => prev.filter((dev) => dev.id !== developer.id));
   };
+
+  updateActionBar = useActionBar({
+    isDisabled: developersToJoin.length === 0,
+  }, !isLoading && !!activeDeveloper);
 
   if (isLoading || !activeDeveloper) { return <CircularProgress />; }
 
@@ -168,7 +173,7 @@ function ChplJoinDevelopers({ dispatch }) {
                         <TableCell>Code</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell><span className="sr-only">Action</span></TableCell>
+                        <TableCell><span className={classes.srOnly}>Action</span></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -224,7 +229,7 @@ function ChplJoinDevelopers({ dispatch }) {
                            <TableCell>Code</TableCell>
                            <TableCell>Name</TableCell>
                            <TableCell>Status</TableCell>
-                           <TableCell><span className="sr-only">Action</span></TableCell>
+                           <TableCell><span className={classes.srOnly}>Action</span></TableCell>
                          </TableRow>
                        </TableHead>
                        <TableBody>
@@ -254,11 +259,7 @@ function ChplJoinDevelopers({ dispatch }) {
           </Card>
         </Box>
       </Container>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={developersToJoin.length === 0}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

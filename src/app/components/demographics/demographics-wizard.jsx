@@ -12,7 +12,7 @@ import ChplDemographicsWizardSection1 from './demographics-wizard-section-1';
 import ChplDemographicsWizardSection2 from './demographics-wizard-section-2';
 import ChplDemographicsWizardSection3 from './demographics-wizard-section-3';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 
 function ChplDemographicsWizard({
   isSubmitting = false,
@@ -33,6 +33,14 @@ function ChplDemographicsWizard({
   const handleEditDispatch = (payload) => {
     dispatch('submit', payload);
   };
+
+  useActionBar({
+    errors,
+    canCancel: stage !== 2,
+    canClose: stage === 2,
+    canSave: false,
+    isProcessing: isSubmitting,
+  });
 
   return (
     <>
@@ -57,14 +65,7 @@ function ChplDemographicsWizard({
         && (
           <ChplDemographicsWizardSection3 />
         )}
-      <ChplActionBar
-        dispatch={handleActionBarDispatch}
-        errors={errors}
-        canCancel={stage !== 2}
-        canClose={stage === 2}
-        canSave={false}
-        isProcessing={isSubmitting}
-      />
+      <ChplActionBar dispatch={handleActionBarDispatch} />
     </>
   );
 }

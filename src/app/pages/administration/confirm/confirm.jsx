@@ -11,7 +11,7 @@ import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { useConfirmPendingListing, useFetchPendingListing, useRejectPendingListing } from 'api/pending-listings';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import {
   ChplConfirmDeveloper,
   ChplConfirmListing,
@@ -38,9 +38,6 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     gap: '16px',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 100px)',
-  },
   menuItems: {
     padding: '8px',
     justifyContent: 'space-between',
@@ -49,15 +46,9 @@ const useStyles = makeStyles({
       backgroundColor: '#f9f9f9',
       fontWeight: 600,
     },
-    snackbarActions: {
-      display: 'flex',
-      gap: '8px',
-      paddingRight: '8px',
-      pointerEvents: 'auto',
-    },
-    snackbarIcon: {
-      marginLeft: '4px',
-    },
+  },
+  snackbarIcon: {
+    marginLeft: '4px',
   },
 });
 
@@ -70,12 +61,12 @@ function ChplConfirm({ id }) {
   const [errors, setErrors] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pending, setPending] = useState(undefined);
-  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [stage, setStage] = useState('developer');
   const [staged, setStaged] = useState(undefined);
   const [uploaded, setUploaded] = useState(undefined);
   const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
+  let updateActionBar;
 
   useEffect(() => {
     if (!uploaded) { return; }
@@ -116,10 +107,17 @@ function ChplConfirm({ id }) {
         enqueueSnackbar('The Listing has been confirmed', {
           variant: 'success',
           action: (key) => (
-            <div className={classes.snackbarActions}>
+            <div style={{
+              display: 'flex',
+              gap: '8px',
+              paddingRight: '8px',
+              pointerEvents: 'auto',
+            }}
+            >
               <Button
                 color="default"
                 variant="contained"
+                style={{marginRight: '4px'}}
                 onClick={() => {
                   window.location.href = `#/listing/${result.data.id}`;
                   closeSnackbar(key);
@@ -159,9 +157,9 @@ function ChplConfirm({ id }) {
           setErrors(error.response.data.errorMessages);
           setWarnings(error.response.data.warningMessages);
           if (error.response.data.warningMessages?.length > 0) {
-            setShowAcknowledgement(true);
+            updateActionBar({ showWarningAcknowledgement: true });
           } else {
-            setShowAcknowledgement(false);
+            updateActionBar({ showWarningAcknowledgement: false });
             setAcknowledgeWarnings(false);
           }
           setIsSubmitting(false);
@@ -323,6 +321,15 @@ function ChplConfirm({ id }) {
     }
   };
 
+  updateActionBar = useActionBar({
+    canConfirm: true,
+    canReject: true,
+    isDisabled: !canAct('confirm'),
+    isProcessing: isSubmitting,
+    errors,
+    warnings,
+  }, !!uploaded && !isLoading && isSuccess);
+
   if (!uploaded || isLoading || !isSuccess) { return <CircularProgress />; }
 
   const pendingListingState = {
@@ -333,7 +340,7 @@ function ChplConfirm({ id }) {
   };
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="lg">
+    <Container maxWidth="lg">
       <PendingListingContext.Provider value={pendingListingState}>
         <div className={classes.container}>
           <Container maxWidth="md">
@@ -375,16 +382,7 @@ function ChplConfirm({ id }) {
             && (
               <ChplConfirmListing />
             )}
-          <ChplActionBar
-            canConfirm
-            canReject
-            isDisabled={!canAct('confirm')}
-            isProcessing={isSubmitting}
-            showWarningAcknowledgement={showAcknowledgement}
-            errors={errors}
-            warnings={warnings}
-            dispatch={handleActionDispatch}
-          />
+          <ChplActionBar dispatch={handleActionDispatch} />
         </div>
       </PendingListingContext.Provider>
     </Container>
