@@ -26,9 +26,10 @@ import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { DeveloperContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   errorColor: {
     border: '1px solid #c44f65',
     color: palette.error,
@@ -172,7 +173,7 @@ function ChplJoinDevelopers({ dispatch }) {
                         <TableCell>Code</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell><span className="sr-only">Action</span></TableCell>
+                        <TableCell><span className={classes.srOnly}>Action</span></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -228,7 +229,7 @@ function ChplJoinDevelopers({ dispatch }) {
                            <TableCell>Code</TableCell>
                            <TableCell>Name</TableCell>
                            <TableCell>Status</TableCell>
-                           <TableCell><span className="sr-only">Action</span></TableCell>
+                           <TableCell><span className={classes.srOnly}>Action</span></TableCell>
                          </TableRow>
                        </TableHead>
                        <TableBody>

@@ -29,8 +29,10 @@ import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   cardContainer: {
     display: 'flex',
     justifyContent: 'flex-start',
@@ -313,7 +315,7 @@ function ChplIcsFamily(props) {
                 stylesheet={stylesheet}
                 cy={setCytoscape}
               />
-              <figcaption className="sr-only">
+              <figcaption className={classes.srOnly}>
                 <Typography variant="h5">Overview</Typography>
                 <Typography>The image shows the ICS relationships between related Products</Typography>
                 <Typography variant="h5">Values</Typography>
