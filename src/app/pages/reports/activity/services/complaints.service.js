@@ -1,4 +1,9 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import {
+  compareArrays,
+  compareBoolean,
+  compareObject,
+  comparePrimitive,
+} from 'pages/reports/reports.v2.service';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -60,7 +65,7 @@ lookup = {
   'root.acbComplaintId': { message: (before, after) => comparePrimitive(before, after, 'acbComplaintId', 'ONC-ACB Complaint ID') },
   'root.actions': { message: (before, after) => comparePrimitive(before, after, 'actions', 'Actions') },
   'root.closedDate': { message: (before, after) => comparePrimitive(before, after, 'closedDate', 'Closed Date', getDisplayDateFormat) },
-  'root.complainantContacted': { message: (before, after) => comparePrimitive(before, after, 'complainantContacted', 'Complainant Contacted') },
+  'root.complainantContacted': { message: (before, after) => compareBoolean(before, after, 'complainantContacted', 'Complainant Contacted') },
   'root.complainantType': { message: () => 'Complainant Type' },
   'root.complainantType.id': { message: () => undefined },
   'root.complainantType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
@@ -73,12 +78,12 @@ lookup = {
   'root.complaintTypes': { message: (before, after) => compare(before, after, 'complaintTypes', 'Complaint Type(s)') },
   'root.complaintTypesOther': { message: (before, after) => comparePrimitive(before, after, 'complaintTypesOther', 'Complaint Type(s) - Other') },
   'root.criteria': { message: (before, after) => compare(before, after, 'criteria', 'Criteria') },
-  'root.developerContacted': { message: (before, after) => comparePrimitive(before, after, 'developerContacted', 'Developer Contacted') },
-  'root.flagForOncReview': { message: (before, after) => comparePrimitive(before, after, 'flagForOncReview', 'Flag For ONC Review') },
+  'root.developerContacted': { message: (before, after) => compareBoolean(before, after, 'developerContacted', 'Developer Contacted') },
+  'root.flagForOncReview': { message: (before, after) => compareBoolean(before, after, 'flagForOncReview', 'Flag For ONC Review') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.lastModifiedUser': { message: () => undefined },
   'root.listings': { message: (before, after) => compare(before, after, 'listings', 'Listings') },
-  'root.oncAtlContacted': { message: (before, after) => comparePrimitive(before, after, 'oncAtlContacted', 'ONC-ATL Contacted') },
+  'root.oncAtlContacted': { message: (before, after) => compareBoolean(before, after, 'oncAtlContacted', 'ONC-ATL Contacted') },
   'root.oncComplaintId': { message: (before, after) => comparePrimitive(before, after, 'oncComplaintId', 'ONC Complaint ID') },
   'root.receivedDate': { message: (before, after) => comparePrimitive(before, after, 'receivedDate', 'Received Date', getDisplayDateFormat) },
   'root.summary': { message: (before, after) => comparePrimitive(before, after, 'summary', 'Summary') },
