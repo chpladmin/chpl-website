@@ -9,7 +9,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
-  arrayOf, bool, func, number, string,
+  arrayOf,
+  bool,
+  func,
+  number,
+  string,
 } from 'prop-types';
 
 import ChplUserInvite from './user-invite';
@@ -19,6 +23,7 @@ import ChplUserEdit from './user-edit';
 import { usePutUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -212,8 +217,8 @@ function ChplUsersView({
                   />
                 </div>
                 <div className={classes.users}>
-                  { users
-                    .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
+                  { [...users]
+                    .sort((a, b) => compareStrings(a.fullName, b.fullName))
                     .map((u) => displayUser(u))}
                 </div>
               </CardContent>

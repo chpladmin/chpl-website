@@ -75,7 +75,7 @@ function ChplQuarterViewListing({ listing }) {
       }}
       >
         <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
-          { listing.surveillances
+          { [...listing.surveillances]
             .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
             .map((surv) => (
               <ChplQuarterViewListingSurveillance

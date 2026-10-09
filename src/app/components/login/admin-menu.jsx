@@ -16,6 +16,7 @@ import sectionConfigs from './navigation/admin-menu-data';
 
 import { setLoginState } from 'components/login/userInfo.slice';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
@@ -56,7 +57,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
         title: 'Developers',
         roles: ['chpl-developer'],
         items: [...user?.organizations]
-          .sort((a, b) => (a.name < b.name ? -1 : 1))
+          .sort((a, b) => compareStrings(a.name, b.name))
           .map((d) => ({
             key: d.id,
             roles: ['chpl-developer'],
@@ -66,7 +67,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
           })),
       }]
       .filter((s) => !s.flag || isOn(s.flag))
-      .sort((a, b) => (a.title < b.title ? -1 : 1)));
+      .sort((a, b) => compareStrings(a.title, b.title)));
   }, []);
 
   const toggleSection = (section) => {

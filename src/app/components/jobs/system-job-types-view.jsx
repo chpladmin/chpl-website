@@ -42,7 +42,7 @@ function ChplSystemJobTypesView(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    setJobTypes(initialJobTypes
+    setJobTypes([...initialJobTypes]
       .sort(sortComparator('name')));
   }, []);
 

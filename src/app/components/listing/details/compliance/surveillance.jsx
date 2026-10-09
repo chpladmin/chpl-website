@@ -85,7 +85,7 @@ const getItemsSurveilled = (surveillance, classes) => {
   if (surveillance.requirements?.length === 0) { return 'None'; }
   return (
     <List>
-      { surveillance.requirements
+      { [...surveillance.requirements]
         .sort(sortRequirements)
         .map((req) => (
           <ListItem key={req.id}>

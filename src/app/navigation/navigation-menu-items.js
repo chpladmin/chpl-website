@@ -1,3 +1,5 @@
+import { compareStrings } from 'services/sort.service';
+
 const developerGuideRoles = ['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'];
 
 const shortcutItems = [{
@@ -116,7 +118,7 @@ const getResourceItems = ({ includeDeveloperGuide }) => {
       text: 'Contact Us',
       analyticsEvent: 'Go to Contact Us Page',
     },
-  ].sort((a, b) => (a.text < b.text ? -1 : 1));
+  ].sort((a, b) => compareStrings(a.text, b.text));
 };
 
 export {

@@ -13,11 +13,7 @@ import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
@@ -56,7 +52,7 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
       ]))
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
+        criteriaDisplay: [...item.criteria]
           .sort(sortCriteria)
           .map((c) => c.number)
           .join(', '),

@@ -10,6 +10,7 @@ import { getDefaultValueEntry, getDateEntry, getDateTimeEntry } from './filters/
 
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { filter as filterPropType } from 'shared/prop-types';
@@ -24,9 +25,17 @@ const defaultFilter = {
   getValueDisplay: (value) => value.display,
   getLongValueDisplay: (value) => value.longDisplay || value.display,
   getValueEntry: getDefaultValueEntry,
-  sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
+  sortValues: (filter, a, b) => compareStrings(filter.getValueDisplay(a), filter.getValueDisplay(b)),
   singular: false,
   disabled: false,
+};
+
+// A stored choice for `key` when there is one, otherwise `fallback`; undefined when the filter has no such key.
+// `stored` is falsy when nothing is persisted.
+const getStoredOption = (key, stored, fallback) => {
+  if (!key) { return undefined; }
+  if (stored && stored[key]) { return stored[key]; }
+  return fallback;
 };
 
 const clearFilter = (filter, category, setFilters) => {
@@ -188,8 +197,8 @@ function FilterProvider(props) {
     setFilters(initialFilters.map((filter) => ({
       ...filter,
       required: !!filter.required,
-      operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
-      developersListingsCriteriaOption: filter.developersListingsCriteriaOptionKey ? (storageKey && developersListingsCriteriaOptions[filter.developersListingsCriteriaOptionKey] ? developersListingsCriteriaOptions[filter.developersListingsCriteriaOptionKey] : 'active') : undefined,
+      operator: getStoredOption(filter.operatorKey, storageKey && operators, 'or'),
+      developersListingsCriteriaOption: getStoredOption(filter.developersListingsCriteriaOptionKey, storageKey && developersListingsCriteriaOptions, 'active'),
       values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,

@@ -38,7 +38,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
   const classes = useStyles();
 
   useEffect(() => {
-    setApiKeys(initialApiKeys.sort(sortComparator('lastUsedDate')));
+    setApiKeys([...initialApiKeys].sort(sortComparator('lastUsedDate')));
   }, [initialApiKeys]);
 
   const handleSort = (property, orderDirection) => {
@@ -86,7 +86,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
                   label: 'Email',
                   value: key.email,
                   flex: 1,
-                 style: { flex: '2 1 320px' },
+                  style: { flex: '2 1 320px' },
                 },
                 {
                   label: 'API Key',
@@ -103,7 +103,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
                 },
               ],
             ]}
-            actions={
+            actions={(
               <Button
                 onClick={() => dispatch({ action: 'revoke', payload: key })}
                 id={`revoke-api-key-${key.key}`}
@@ -114,7 +114,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
               >
                 Revoke key
               </Button>
-            }
+            )}
           />
         ))}
       </Box>

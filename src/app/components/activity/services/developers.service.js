@@ -40,8 +40,8 @@ const compareAttestationData = (before, after) => {
     return `Attestation changes<ul><li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li></ul>`;
   }
   if (before.length === after.length) {
-    const sortedBefore = before.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
-    const sortedAfter = after.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
+    const sortedBefore = [...before].sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
+    const sortedAfter = [...after].sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
     const changes = sortedBefore
       .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
       .filter((msgs) => msgs.length > 0)

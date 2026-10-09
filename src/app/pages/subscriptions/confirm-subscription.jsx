@@ -79,7 +79,7 @@ function ChplConfirmSubscription(props) {
     if (isLoading || !isSuccess) {
       return;
     }
-    setRoles(data.sort((a, b) => (a.sortOrder - b.sortOrder)));
+    setRoles([...data].sort((a, b) => (a.sortOrder - b.sortOrder)));
   }, [data, isLoading, isSuccess]);
 
   const confirm = () => {

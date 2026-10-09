@@ -12,8 +12,10 @@ import {
 import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
+
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
+import { compareStrings } from 'services/sort.service';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -83,8 +85,8 @@ function ChplFilterChips({ horizontal = false }) {
   const DISPLAY_MAX = 7;
 
   useEffect(() => {
-    setFilters(filterContext.filters
-      .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
+    setFilters([...filterContext.filters]
+      .sort((a, b) => compareStrings(a.getFilterDisplay(a), b.getFilterDisplay(b)))
       .map((filter) => ({
         ...filter,
         values: filter.values

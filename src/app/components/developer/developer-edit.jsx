@@ -310,7 +310,7 @@ function ChplDeveloperEdit({
   useEffect(() => {
     if (!statuses || statuses.length === 0) { return; }
     const warns = [];
-    statuses
+    [...statuses]
       .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
       .forEach((status, idx) => {
         if (idx === 0) {
@@ -372,36 +372,36 @@ function ChplDeveloperEdit({
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {statuses
-                          ?.sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
-                          .map((status) => (
-                            <TableRow key={getKey(status)}>
-                              <TableCell>
-                                <Typography variant="body2">{status.status.name}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="body2">{getDisplayDateFormat(status.startDate)}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="body2">{getDisplayDateFormat(status.endDate)}</Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography variant="body2">{status.reason}</Typography>
-                              </TableCell>
-                              <TableCell align="right">
-                                <IconButton
-                                  onClick={() => removeStatus(status)}
-                                  aria-label="Remove status"
-                                  disabled={formik.values.isAdding}
-                                >
-                                  <CloseIcon
-                                    color="error"
-                                    size="small"
-                                  />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
+                      {statuses && [...statuses]
+                        .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
+                        .map((status) => (
+                          <TableRow key={getKey(status)}>
+                            <TableCell>
+                              <Typography variant="body2">{status.status.name}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{getDisplayDateFormat(status.startDate)}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{getDisplayDateFormat(status.endDate)}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{status.reason}</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                              <IconButton
+                                onClick={() => removeStatus(status)}
+                                aria-label="Remove status"
+                                disabled={formik.values.isAdding}
+                              >
+                                <CloseIcon
+                                  color="error"
+                                  size="small"
+                                />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                     </TableBody>
                     { !formik.values.isAdding
                         && (

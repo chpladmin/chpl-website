@@ -23,6 +23,7 @@ const classes = {
 const getAcbValueEntry = (props) => (
   <ChplTabbedValueEntry
     isActive={(value, filter) => !filter.getValueDisplay(value).includes('Retired')}
+    // eslint-disable-next-line react/jsx-props-no-spreading -- thin wrappers that forward the value-entry props
     {...props}
   />
 );
@@ -30,6 +31,7 @@ const getAcbValueEntry = (props) => (
 const getCqmValueEntry = (props) => (
   <ChplTabbedValueEntry
     isActive={(value, filter) => filter.getValueDisplay(value).includes('CMS')}
+    // eslint-disable-next-line react/jsx-props-no-spreading -- thin wrappers that forward the value-entry props
     {...props}
   />
 );
@@ -38,6 +40,7 @@ const getCriteriaValueEntry = (props) => (
   <ChplTabbedValueEntry
     retiredLabel="Removed/Retired"
     isActive={(value, filter) => !filter.getValueDisplay(value).includes('|')}
+    // eslint-disable-next-line react/jsx-props-no-spreading -- thin wrappers that forward the value-entry props
     {...props}
   />
 );
@@ -46,13 +49,14 @@ const getStandardValueEntry = (props) => (
   <ChplTabbedValueEntry
     retiredLabel="Expired"
     isActive={(value, filter) => !filter.getValueDisplay(value).includes('(Expired)')}
+    // eslint-disable-next-line react/jsx-props-no-spreading -- thin wrappers that forward the value-entry props
     {...props}
   />
 );
 
 const generateDateEntry = ({ filter, handleFilterUpdate, type }) => (
   <>
-    {filter.values
+    {[...filter.values]
       .sort((a, b) => (a.value < b.value ? -1 : 1))
       .map((value) => {
         const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;

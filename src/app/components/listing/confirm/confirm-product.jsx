@@ -18,6 +18,7 @@ import * as yup from 'yup';
 
 import { useFetchProductsByDeveloper } from 'api/product';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 
 const useStyles = makeStyles({
   buttonCard: {
@@ -111,8 +112,8 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setProducts(data.products
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setProducts([...data.products]
+      .sort((a, b) => compareStrings(a.name, b.name)));
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
