@@ -82,6 +82,15 @@ Most pages/features under `src/app/pages/**` and `src/app/components/**` follow 
 
 Webpack's `resolve.modules` includes `src/app`, so imports write as if `src/app` were a root, e.g. `import ApiWrapper from 'api/api-wrapper'`, `import { AnalyticsContext } from 'shared/contexts'`, `import AppWrapper from 'app-wrapper'`. Don't use relative `../../..` paths across top-level directories (`api/`, `components/`, `pages/`, `services/`, `shared/`, `themes/`) — use the bare-style import instead, matching existing files. ESLint's `import/resolver` is configured the same way (`moduleDirectory: ["src/app", "node_modules"]`).
 
+### Sorting
+
+Sort human-readable strings with `compareStrings` from `services/sort.service` (negate it, or swap the arguments, for descending). It ignores case and accents, orders numbers inside text by value ("item2" before "item10"), returns 0 for equal strings, and puts null/undefined last. It is built on one shared `Intl.Collator`. Don't use `<`/`>` on display strings (that puts every capital letter first), and don't call `localeCompare` with an options object inline (it builds a collator per comparison, which is very slow on long lists). `sortComparator` from `components/util/sortable-headers` and the default filter `sortValues` already use it.
+
+Two exceptions keep exact comparisons:
+
+- **Codes and query parts** — CHPL product numbers, friendly ids, query-string building, Before/After filter keys — where order is structural rather than alphabetical. Fixed-order helpers like `sortCriteria` and `sortCqms` stay as they are.
+- **The history and activity compare services** (`pages/listing/history/*.service.js`, `pages/reports/activity/services/*`, `components/activity/services/*`), whose `sort` options double as an equality test: 0 means "same item", so a case-insensitive compare there would hide a case-only rename.
+
 ### Webpack entry point
 
 `webpack.config.js` defines a single `app` entry. It used to define ten, one per page area, but those existed only to register AngularJS modules and each pulled in a duplicate copy of the shared code.
