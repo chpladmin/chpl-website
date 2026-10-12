@@ -18,7 +18,7 @@ const styles = {
     gap: '16px',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
+      gridTemplateColumns: '1.5fr 4fr',
       alignItems: 'start',
     },
   },

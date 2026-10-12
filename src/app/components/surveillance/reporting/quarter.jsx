@@ -118,7 +118,7 @@ function ChplQuarter({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Card>
+      <Card sx={{ minWidth: '250px', minHeight: '121px' }}>
         <CardContent>
           <Typography variant="h4">
             <strong>

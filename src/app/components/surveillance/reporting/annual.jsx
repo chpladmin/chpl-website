@@ -102,7 +102,7 @@ function ChplAnnual({
   }
 
   return (
-    <Card>
+    <Card sx={{ minWidth: '250px', minHeight: '121px' }}>
       <CardContent>
         <Typography variant="h4" component="h2">
           <strong>Annual Summary</strong>
