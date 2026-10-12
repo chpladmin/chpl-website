@@ -34,6 +34,7 @@ import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const validationSchema = yup.object({
   acbCertificationId: yup.string()
@@ -75,15 +76,6 @@ const styles = {
     border: '1px solid #c2c6ca',
     borderRadius: '4px',
     paddingBottom: '4px',
-  },
-  deleteButton: {
-    border: '1px solid #c44f65',
-    backgroundColor: '#FFFFFF',
-    color: '#c44f65',
-    '&:hover': {
-      border: '1px solid #853544',
-      color: '#853544',
-    },
   },
   tooltipText: {
     fontSize: '1.5em !important',
@@ -402,7 +394,7 @@ function ChplListingEdit({
                     onClick={() => setAddingStatus(false)}
                     endIcon={<Close />}
                     variant="contained"
-                    sx={styles.deleteButton}
+                    sx={utilStyles.deleteButton}
                   >
                     Cancel adding Certification Status
                   </Button>
@@ -526,7 +518,7 @@ function ChplListingEdit({
                     <Button
                       onClick={() => setAddingAtl(false)}
                       endIcon={<Close />}
-                      sx={styles.deleteButton}
+                      sx={utilStyles.deleteButton}
                     >
                       Cancel adding ONC-ATL
                     </Button>

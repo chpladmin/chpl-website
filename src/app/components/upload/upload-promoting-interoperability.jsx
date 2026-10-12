@@ -11,21 +11,13 @@ import { useSnackbar } from 'notistack';
 
 import { useAxios } from 'api/axios';
 import { ChplTextField } from 'components/util';
+import { utilStyles } from 'themes';
 
 const styles = {
   buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
     gap: '16px',
-  },
-  deleteButton: {
-    border: '1px solid #c44f65',
-    backgroundColor: '#FFFFFF',
-    color: '#c44f65',
-    '&:hover': {
-      border: '1px solid #853544',
-      color: '#853544',
-    },
   },
   fileName: {
     wordBreak: 'break-word',
@@ -180,7 +172,7 @@ function ChplUploadPromotingInteroperability() {
                         Upload
                       </Button>
                       <Button
-                        sx={styles.deleteButton}
+                        sx={utilStyles.deleteButton}
                         variant="contained"
                         onClick={clearFile}
                         endIcon={<DeleteIcon />}

@@ -25,13 +25,9 @@ import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { DeveloperContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const styles = {
-  errorColor: {
-    border: '1px solid #c44f65',
-    color: palette.error,
-  },
   cardContainer: {
     width: '100%',
     height: '700px',
@@ -239,7 +235,7 @@ function ChplJoinDevelopers({ dispatch }) {
                              <Button
                                onClick={() => removeDeveloper(developer)}
                                variant="outlined"
-                               sx={styles.errorColor}
+                               sx={utilStyles.deleteButton}
                                endIcon={<ClearIcon fontSize="small" />}
                              >
                                Remove

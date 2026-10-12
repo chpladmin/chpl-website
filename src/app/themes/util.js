@@ -1,3 +1,5 @@
+import palette from './palette';
+
 const util = {
   anchorElement: {
     position: 'relative',
@@ -10,10 +12,13 @@ const util = {
     marginLeft: '-12px',
   },
   deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    border: `1px solid ${palette.error}`,
+    backgroundColor: palette.white,
+    color: palette.error,
     '&:hover': {
-      backgroundColor: '#853544',
+      border: `1px solid ${palette.errorDark}`,
+      color: palette.errorDark,
+      backgroundColor: palette.errorLight,
     },
   },
   deleteButtonOutlined: {
