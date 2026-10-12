@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 14.12.0
+_12 October 2026_
+
+### Features
+* Disable change request save while the edit form has errors
+* Add Questionable Activities chart to ONC Compliance Dashboard
+* Add additional graphs to Surveillance Activities chart on ONC Compliance Dashboard
+
+### User Interface Updates
+* Add link to Developer page from Compare screen
+* Add link to Confirm Listing page once an upload completes
+* Add "CERT ID" button to Listings on Compare page
+
+### Bug Fixes
+* Disable surveillance report saves while the form is invalid
+* Keep inline external links in the flow of their text
+* Show every ungrouped relied upon software item
+* Show status message after Listing confirmation
+* Restore ability to scroll to the bottom of the Confirm Listings page
+
+---
+
 ## Version 14.11.1
 _28 September 2026_
 
