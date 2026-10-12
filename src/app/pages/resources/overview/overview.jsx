@@ -30,9 +30,10 @@ import {
   InternalScrollButton,
 } from 'components/util';
 import { useAnalyticsContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   announcement: {
     marginBottom: '8px',
   },
@@ -197,8 +198,8 @@ function ChplResourcesOverview() {
             {announcements.length > 0
               && (
                 <Box className={classes.infoBox}>
-                  <span className="anchor-element">
-                    <span id="announcements" className="page-anchor" />
+                  <span className={classes.anchorElement}>
+                    <span id="announcements" className={classes.pageAnchor} />
                   </span>
                   <Typography className={classes.announcement} variant="h2">
                     Announcement
@@ -223,8 +224,8 @@ function ChplResourcesOverview() {
               )}
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="whatIsTheChpl" className="page-anchor" />
+                <span className={classes.anchorElement}>
+                  <span id="whatIsTheChpl" className={classes.pageAnchor} />
                 </span>
                 <Typography gutterBottom variant="h2">
                   What is the CHPL?
@@ -267,8 +268,8 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="recommendedWebBrowsers" className="page-anchor" />
+                <span className={classes.anchorElement}>
+                  <span id="recommendedWebBrowsers" className={classes.pageAnchor} />
                 </span>
                 <Typography gutterBottom variant="h2">
                   Recommended Web Browsers
@@ -287,8 +288,8 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="usingTheChplWebsite" className="page-anchor" />
+                <span className={classes.anchorElement}>
+                  <span id="usingTheChplWebsite" className={classes.pageAnchor} />
                 </span>
                 <Typography gutterBottom variant="h2">
                   Using the CHPL Website
@@ -441,8 +442,8 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="oncCertificationProgram" className="page-anchor" />
+                <span className={classes.anchorElement}>
+                  <span id="oncCertificationProgram" className={classes.pageAnchor} />
                 </span>
                 <Typography gutterBottom variant="h2">
                   ONC Certification Program
@@ -531,8 +532,8 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="forEhrDevelopers" className="page-anchor" />
+                <span className={classes.anchorElement}>
+                  <span id="forEhrDevelopers" className={classes.pageAnchor} />
                 </span>
                 <Typography gutterBottom variant="h2">
                   For EHR Developers
@@ -572,8 +573,8 @@ function ChplResourcesOverview() {
             </Card>
             <Card>
               <CardContent>
-                <span className="anchor-element">
-                  <span id="oncacbAndAtlInformation" className="page-anchor" />
+                <span className={classes.anchorElement}>
+                  <span id="oncacbAndAtlInformation" className={classes.pageAnchor} />
                 </span>
                 <Typography gutterBottom variant="h2">
                   ONC-ACB and ONC-ATL Information

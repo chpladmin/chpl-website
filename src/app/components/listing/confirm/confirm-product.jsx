@@ -39,9 +39,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     whiteSpace: 'pre-wrap',
   },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 257px)',
-  },
   developerConfirm: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -164,7 +161,7 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
   });
 
   return (
-    <Container maxWidth="md" className={classes.fixFooterSpacing}>
+    <Container maxWidth="md">
       <div className={classes.developerConfirm}>
         <div className={classes.developerSubContainer}>
           <Button

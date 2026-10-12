@@ -268,8 +268,8 @@ function ChplListingView({
         )}
       <div className={classes.content}>
         <Card>
-          <span className="anchor-element">
-            <span id="listingInformation" className="page-anchor" />
+          <span className={classes.anchorElement}>
+            <span id="listingInformation" className={classes.pageAnchor} />
           </span>
           <Box className={classes.sectionHeader}>
             <Typography className={classes.sectionHeaderText} variant="h2">Listing Information</Typography>
@@ -281,8 +281,8 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <span className="anchor-element">
-            <span id="certificationCriteria" className="page-anchor" />
+          <span className={classes.anchorElement}>
+            <span id="certificationCriteria" className={classes.pageAnchor} />
           </span>
           <Box className={classes.sectionHeader}>
             <Typography className={classes.sectionHeaderText} variant="h2">Certification Criteria</Typography>
@@ -317,8 +317,8 @@ function ChplListingView({
           </CardContent>
         </Card>
         <Card>
-          <span className="anchor-element">
-            <span id="clinicalQualityMeasures" className="page-anchor" />
+          <span className={classes.anchorElement}>
+            <span id="clinicalQualityMeasures" className={classes.pageAnchor} />
           </span>
           <Box className={classes.sectionHeader}>
             <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
@@ -352,8 +352,8 @@ function ChplListingView({
         {(listing.edition === null || listing.edition.name !== '2011')
          && (
            <Card>
-             <span className="anchor-element">
-               <span id="sed" className="page-anchor" />
+             <span className={classes.anchorElement}>
+               <span id="sed" className={classes.pageAnchor} />
              </span>
              <Box className={classes.sectionHeader}>
                <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
@@ -368,8 +368,8 @@ function ChplListingView({
         { (listing.edition === null || listing.edition.name === '2015') && !hti520270101IsOn
           && (
             <Card>
-              <span className="anchor-element">
-                <span id="g1g2Measures" className="page-anchor" />
+              <span className={classes.anchorElement}>
+                <span id="g1g2Measures" className={classes.pageAnchor} />
               </span>
               <Box className={classes.sectionHeader}>
                 <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
@@ -384,8 +384,8 @@ function ChplListingView({
         { !isConfirming
           && (
             <Card>
-              <span className="anchor-element">
-                <span id="compliance" className="page-anchor" />
+              <span className={classes.anchorElement}>
+                <span id="compliance" className={classes.pageAnchor} />
               </span>
               <Box className={classes.sectionHeader}>
                 <Typography className={classes.sectionHeaderText} variant="h2">Compliance Activities</Typography>
@@ -401,8 +401,8 @@ function ChplListingView({
             </Card>
           )}
         <Card>
-          <span className="anchor-element">
-            <span id="additional" className="page-anchor" />
+          <span className={classes.anchorElement}>
+            <span id="additional" className={classes.pageAnchor} />
           </span>
           <Box className={classes.sectionHeader}>
             <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>

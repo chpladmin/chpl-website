@@ -213,6 +213,153 @@ const theme = createTheme({
         },
       },
     },
+    MuiCssBaseline: {
+      // element-level rules that used to come from bootstrap and index.scss
+      '@global': {
+        html: {
+          // bootstrap's root size; every rem in the app, MUI's included, is sized against it
+          fontSize: '10px',
+        },
+        body: {
+          backgroundColor: paletteColors.white,
+          color: '#1c1c1c',
+          fontFamily: 'Lato, sans-serif',
+          fontSize: '14px',
+          lineHeight: 1.428571429,
+        },
+        'input, button, select, textarea': {
+          fontFamily: 'inherit',
+          fontSize: 'inherit',
+          lineHeight: 'inherit',
+        },
+        a: {
+          color: '#1a67a9',
+          textDecoration: 'underline',
+        },
+        'a:hover, a:focus': {
+          color: '#23527c',
+        },
+        ':focus': {
+          outlineOffset: '-2px',
+        },
+        'h1, h2, h3, h4, h5, h6': {
+          color: 'inherit',
+          fontFamily: 'inherit',
+          lineHeight: 1.1,
+        },
+        'h1, h2, h3': {
+          marginBottom: '10px',
+          marginTop: '20px',
+        },
+        'h4, h5, h6': {
+          marginBottom: '10px',
+          marginTop: '10px',
+        },
+        h1: {
+          fontSize: '2.5em',
+          fontWeight: 900,
+        },
+        h2: {
+          fontSize: '2em',
+          fontWeight: 600,
+        },
+        h3: {
+          fontSize: '1.75em',
+          fontWeight: 500,
+        },
+        h4: {
+          fontSize: '1.5em',
+          fontWeight: 900,
+        },
+        h5: {
+          fontSize: '1.25em',
+          fontWeight: 600,
+        },
+        h6: {
+          fontSize: '1.25em',
+          fontWeight: 500,
+        },
+        p: {
+          fontSize: '1em',
+          fontWeight: 400,
+          margin: '0 0 10px',
+        },
+        'ul, ol': {
+          marginBottom: '10px',
+          marginTop: 0,
+        },
+        'ul ul, ul ol, ol ul, ol ol': {
+          marginBottom: 0,
+        },
+        dl: {
+          marginBottom: '20px',
+          marginTop: 0,
+        },
+        'dt, dd': {
+          lineHeight: 1.428571429,
+        },
+        dt: {
+          fontWeight: 700,
+        },
+        dd: {
+          marginLeft: 0,
+        },
+        label: {
+          color: '#1c1c1c',
+          display: 'inline-block',
+          fontSize: '12px',
+          fontWeight: 700,
+          marginBottom: '5px',
+          maxWidth: '100%',
+          textTransform: 'uppercase',
+        },
+        '::placeholder': {
+          color: '#333 !important',
+        },
+        'option[disabled], option[label^="Removed"], option[label^="Retired"]': {
+          fontStyle: 'italic',
+        },
+        img: {
+          border: 0,
+          verticalAlign: 'middle',
+        },
+        'code, pre': {
+          fontFamily: 'Menlo, Monaco, Consolas, "Courier New", monospace',
+        },
+        code: {
+          backgroundColor: '#f9f2f4',
+          borderRadius: '4px',
+          color: '#c7254e',
+          fontSize: '90%',
+          padding: '2px 4px',
+        },
+        pre: {
+          backgroundColor: '#f5f5f5',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          color: '#333',
+          display: 'block',
+          fontSize: '13px',
+          lineHeight: 1.428571429,
+          margin: '0 0 10px',
+          overflowWrap: 'break-word',
+          padding: '9.5px',
+          wordBreak: 'break-all',
+        },
+        'pre code': {
+          backgroundColor: 'transparent',
+          borderRadius: 0,
+          color: 'inherit',
+          fontSize: 'inherit',
+          padding: 0,
+          whiteSpace: 'pre-wrap',
+        },
+        // activity history is rendered from html strings, which can't carry a jss class
+        '.removed': {
+          fontStyle: 'italic',
+        },
+      },
+    },
     MuiDialogActions: {
       root: {
         padding: '16px',

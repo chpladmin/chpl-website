@@ -17,8 +17,10 @@ import InfoIcon from '@material-ui/icons/Info';
 
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getStatusIcon } from 'services/listing.service';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   legendTitle: {
     fontSize: '1.25em',
   },
@@ -74,7 +76,7 @@ function ChplCertificationStatusLegend() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell><span className="sr-only">Category</span></TableCell>
+                    <TableCell><span className={classes.srOnly}>Category</span></TableCell>
                     <TableCell>Icon</TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Description</TableCell>

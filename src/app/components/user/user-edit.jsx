@@ -15,7 +15,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import {
   user as userPropType,
 } from 'shared/prop-types';
@@ -88,6 +88,11 @@ function ChplUserEdit({
     validationSchema,
   });
 
+  useActionBar({
+    errors,
+    isDisabled: !formik.isValid,
+  });
+
   return (
     <div className={classes.fixFooterSpacing}>
       <Card>
@@ -129,11 +134,7 @@ function ChplUserEdit({
           </div>
         </CardContent>
       </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        errors={errors}
-        isDisabled={!formik.isValid}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }

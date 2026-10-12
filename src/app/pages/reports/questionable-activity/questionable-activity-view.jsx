@@ -165,7 +165,7 @@ function ChplQuestionableActivityView() {
                                   label: item.developerName,
                                 }}
                                 external={false}
-                                router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
+                                router={{ sref: 'organizations.developers.developer', params: { id: item.developerId } }}
                               />
                             )
                             : item.developerName || 'N/A'}
@@ -187,7 +187,7 @@ function ChplQuestionableActivityView() {
                                         label: item.chplProductNumber,
                                       }}
                                       external={false}
-                                      router={{ sref: 'listing', options: { id: item.listingId } }}
+                                      router={{ sref: 'listing', params: { id: item.listingId } }}
                                     />
                                   )
                                   : item.chplProductNumber,

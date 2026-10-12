@@ -34,9 +34,10 @@ import {
   certificationResult,
   qmsStandard,
 } from 'shared/prop-types';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   infoIcon: {
     float: 'right',
   },
@@ -273,7 +274,7 @@ function ChplCriterionDetailsView({
                         && (
                           <List>
                             { criterion.functionalitiesTested.map((ft, index) => (
-                              <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? 'removed' : ''}>
+                              <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? classes.removedText : ''}>
                                 <Box width="100%">
                                   { ft.functionalityTested.retired ? 'Expired | ' : '' }
                                   { ft.functionalityTested.value
@@ -311,7 +312,7 @@ function ChplCriterionDetailsView({
                         && (
                           <List>
                             { criterion.conformanceMethods.map((cm, index) => (
-                              <ListItem key={cm.id || cm.key || index} className={cm.conformanceMethod.removed ? 'removed' : ''}>
+                              <ListItem key={cm.id || cm.key || index} className={cm.conformanceMethod.removed ? classes.removedText : ''}>
                                 Name:
                                 {' '}
                                 {`${cm.conformanceMethod.removed ? 'Removed | ' : ''} ${cm.conformanceMethod.name}`}
@@ -349,7 +350,7 @@ function ChplCriterionDetailsView({
                         { criterion.standards
                           .sort((a, b) => (a.standard.regulatoryTextCitation < b.standard.regulatoryTextCitation ? -1 : 1))
                           .map((std, index) => (
-                            <ListItem key={std.id || std.key || index} className={std.standard.retired ? 'removed' : ''}>
+                            <ListItem key={std.id || std.key || index} className={std.standard.retired ? classes.removedText : ''}>
                               <Box width="100%">
                                 <ChplEllipsis
                                   text={`${std.standard.retired ? 'Retired | ' : ''} ${std.standard.regulatoryTextCitation}: ${std.standard.value}`}
@@ -490,7 +491,7 @@ function ChplCriterionDetailsView({
                         && (
                           <List>
                             { criterion.testToolsUsed.map((tt, index) => (
-                              <ListItem key={tt.id || tt.key || index} className={tt.testTool.retired ? 'removed' : ''}>
+                              <ListItem key={tt.id || tt.key || index} className={tt.testTool.retired ? classes.removedText : ''}>
                                 Tool:
                                 {' '}
                                 {`${tt.testTool.retired ? 'Retired | ' : ''} ${tt.testTool.value}`}

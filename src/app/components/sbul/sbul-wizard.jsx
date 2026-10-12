@@ -14,7 +14,7 @@ import ChplSbulWizardSection2 from './sbul-wizard-section-2';
 import ChplSbulWizardSection3 from './sbul-wizard-section-3';
 import ChplSbulWizardSection4 from './sbul-wizard-section-4';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 
 function ChplSbulWizard({
   isSubmitting = false,
@@ -57,6 +57,14 @@ function ChplSbulWizard({
     dispatch('submit', payload);
   };
 
+  useActionBar({
+    errors,
+    canCancel: stage !== 3,
+    canClose: stage === 3,
+    canSave: false,
+    isProcessing: isSubmitting,
+  });
+
   return (
     <>
       <ChplSbulProgress
@@ -88,14 +96,7 @@ function ChplSbulWizard({
         && (
           <ChplSbulWizardSection4 />
         )}
-      <ChplActionBar
-        dispatch={handleActionBarDispatch}
-        errors={errors}
-        canCancel={stage !== 3}
-        canClose={stage === 3}
-        canSave={false}
-        isProcessing={isSubmitting}
-      />
+      <ChplActionBar dispatch={handleActionBarDispatch} />
     </>
   );
 }

@@ -16,7 +16,7 @@ import ChplQuarterViewListing from './quarter-view-listing';
 
 import { useFetchRelevantListings } from 'api/surveillance';
 import ChplComplaints from 'components/surveillance/complaints/complaints';
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -77,6 +77,12 @@ function ChplQuarterView({ dispatch, report }) {
   const [listings, setListings] = useState([]);
   const [state, setState] = useState(menuItems[0]);
   const classes = useStyles();
+
+  useActionBar({
+    canCancel: false,
+    canClose: true,
+    canSave: false,
+  });
 
   useEffect(() => {
     setBonusQuery([
@@ -293,12 +299,7 @@ function ChplQuarterView({ dispatch, report }) {
             />
           )}
       </div>
-      <ChplActionBar
-        canCancel={false}
-        canClose
-        canSave={false}
-        dispatch={handleDispatch}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 /* global DEVELOPER_MODE */
 
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import { bool, node } from 'prop-types';
@@ -28,6 +28,7 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
       }}
       >
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <SnackbarWrapper>
             <ApiWrapper showQueryTools={showQueryTools}>
               <UserWrapper>

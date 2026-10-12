@@ -62,7 +62,7 @@ function ChplAdminMenu({ onClose = () => {} }) {
             roles: ['chpl-developer'],
             href: `#/organizations/developers/${d.id}`,
             text: d.name,
-            router: { sref: 'organizations.developers.developer', options: { id: d.id } },
+            router: { sref: 'organizations.developers.developer', params: { id: d.id } },
           })),
       }]
       .filter((s) => !s.flag || isOn(s.flag))

@@ -26,8 +26,8 @@ import { useFetchComplaintTypes, useFetchComplainantTypes } from 'api/data';
 import { useFetchListings as useFetchListingsBasic } from 'api/listing';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { ChplActionBar } from 'components/action-bar';
 import { sortCriteria } from 'services/criteria.service';
 import { complaint as complaintPropType } from 'shared/prop-types';
 import { theme } from 'themes';
@@ -108,7 +108,6 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
   const [query, setQuery] = useState('');
   const [surveillances, setSurveillances] = useState([]);
   const [surveillanceToAdd, setSurveillanceToAdd] = useState('');
-  const [errors, setErrors] = useState([]);
   const { mutate: post } = usePostComplaint();
   const { mutate: put } = usePutComplaint();
   const { mutate: remove } = useDeleteComplaint();
@@ -128,6 +127,7 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
   });
   const classes = useStyles();
   let formik;
+  let updateActionBar;
 
   useEffect(() => {
     const c = {
@@ -274,9 +274,9 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
       },
       onError: (error) => {
         if (error.response.data?.error) {
-          setErrors([error.response.data.error]);
+          updateActionBar({ errors: [error.response.data.error] });
         } else {
-          setErrors(error.response.data?.errorMessages);
+          updateActionBar({ errors: error.response.data?.errorMessages ?? [] });
         }
       },
     });
@@ -340,9 +340,9 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
       },
       onError: (error) => {
         if (error.response.data?.error) {
-          setErrors([error.response.data.error]);
+          updateActionBar({ errors: [error.response.data.error] });
         } else {
-          setErrors(error.response.data?.errorMessages);
+          updateActionBar({ errors: error.response.data?.errorMessages ?? [] });
         }
       },
     });
@@ -374,7 +374,13 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
     validateOnMount: true,
   });
 
-  if (certificationBodiesIsLoading || complainantTypesIsLoading || complaintTypesIsLoading) {
+  const isLoading = certificationBodiesIsLoading || complainantTypesIsLoading || complaintTypesIsLoading;
+
+  updateActionBar = useActionBar({
+    canDelete: !!complaint.id,
+  }, !isLoading);
+
+  if (isLoading) {
     return (
       <CircularProgress />
     );
@@ -743,11 +749,7 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
           </div>
         </CardContent>
       </Card>
-      <ChplActionBar
-        errors={errors}
-        dispatch={handleDispatch}
-        canDelete={!!complaint.id}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </>
   );
 }

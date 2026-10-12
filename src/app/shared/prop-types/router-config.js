@@ -3,7 +3,7 @@ import { object, shape, string } from 'prop-types';
 
 const routerConfig = shape({
   sref: string,
-  options: object, // eslint-disable-line react/forbid-prop-types
+  params: object, // eslint-disable-line react/forbid-prop-types
 });
 
 export default routerConfig;

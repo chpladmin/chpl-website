@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Chip,
   FormControlLabel,
   MenuItem,
   Switch,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, func, string } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
+import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { criterion as criterionPropType, svap as svapPropType } from 'shared/prop-types';
@@ -37,9 +38,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [] }) {
+function ChplSvapEdit({
+  criterionOptions, dispatch, isProcessing, svap: initialSvap, errors: propsErrors = [],
+}) {
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
   const classes = useStyles();
@@ -51,10 +53,6 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
       ...c,
     })) || []);
   }, [initialSvap]);
-
-  useEffect(() => {
-    setErrors(propsErrors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [propsErrors]);
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
@@ -102,6 +100,13 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
       dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
+  });
+
+  useActionBar({
+    canDelete: !!svap.svapId,
+    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    isDisabled: !isValid(),
+    isProcessing,
   });
 
   return (
@@ -175,13 +180,7 @@ function ChplSvapEdit({ criterionOptions, dispatch, isProcessing, svap: initialS
         )}
         label="Replaced"
       />
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={!!svap.svapId}
-        errors={errors}
-        isDisabled={!isValid()}
-        isProcessing={isProcessing}
-      />
+      <ChplActionBar dispatch={handleDispatch} />
     </div>
   );
 }

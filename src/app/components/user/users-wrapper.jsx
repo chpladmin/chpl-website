@@ -5,7 +5,6 @@ import {
 
 import ChplUsers from './users';
 
-import AppWrapper from 'app-wrapper';
 import { user as userPropType } from 'shared/prop-types';
 
 function ChplUsersWrapper({
@@ -16,7 +15,7 @@ function ChplUsersWrapper({
   isLoading = false,
 }) {
   return (
-    <AppWrapper>
+    <>
       <ChplUsers
         users={users}
         dispatch={dispatch}
@@ -24,7 +23,7 @@ function ChplUsersWrapper({
         organizationId={organizationId}
         isLoading={isLoading}
       />
-    </AppWrapper>
+    </>
   );
 }
 

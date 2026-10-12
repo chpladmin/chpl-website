@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { object } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -37,9 +38,17 @@ import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, timestampToString, toTimestamp } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
+const useStyles = makeStyles({
+  unstyledList: {
+    listStyle: 'none',
+    paddingLeft: 0,
+  },
+});
+
 function ChplListingHistory(props) {
   const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
+  const classes = useStyles();
   const [activity, setActivity] = useState([]);
   const [evaluated, setEvaluated] = useState([]);
   const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
@@ -303,9 +312,9 @@ function ChplListingHistory(props) {
                             { item.eventDay ? getDisplayDateFormat(item.eventDay) : timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>
-                            <ul className="list-unstyled">
-                              { item.change.map((change, idx) => (
-                                <li key={idx} dangerouslySetInnerHTML={{ __html: `${change}` }} />
+                            <ul className={classes.unstyledList}>
+                              { item.change.map((change) => (
+                                <li key={change} dangerouslySetInnerHTML={{ __html: `${change}` }} />
                               ))}
                             </ul>
                           </TableCell>

@@ -14,6 +14,12 @@ const getCqmValue = (cqm) => {
   return parseInt(cqm.nqfNumber, 10);
 };
 
+const getCqmDisplayValue = (cqm) => {
+  if (cqm.cmsId) { return cqm.cmsId; }
+  if (cqm.nqfNumber) { return `NQF-${cqm.nqfNumber}`; }
+  return 'unknown';
+};
+
 const sortCqms = (a, b) => {
   if (a.cmsId && !b.cmsId) { return -1; }
   if (!a.cmsId && b.cmsId) { return 1; }
@@ -21,5 +27,6 @@ const sortCqms = (a, b) => {
 };
 
 export {
-  sortCqms, // eslint-disable-line import/prefer-default-export
+  getCqmDisplayValue,
+  sortCqms,
 };

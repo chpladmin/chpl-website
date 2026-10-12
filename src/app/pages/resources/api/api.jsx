@@ -47,6 +47,92 @@ const useStyles = makeStyles({
     '&:last-child': {
       paddingBottom: '16px',
     },
+    '& .swagger-ui': {
+      '& .btn.authorize': {
+        borderColor: '#384903',
+        color: '#384903',
+      },
+      '& .btn.authorize svg': {
+        fill: '#384903',
+      },
+      '& .info': {
+        borderTop: 'none',
+        margin: '0 0 24px',
+        paddingTop: '32px',
+      },
+      '& .info a': {
+        color: palette.primary,
+        textDecoration: 'underline',
+      },
+      '& .info .title': {
+        color: '#3b4151',
+        fontFamily: 'Lato',
+        fontSize: '1.75em',
+        fontWeight: 400,
+        margin: 0,
+      },
+      '& .info .title small': {
+        background: palette.black,
+      },
+      '& .info .title small.version-stamp': {
+        backgroundColor: '#384903',
+      },
+      '& .opblock.opblock-get': {
+        borderColor: palette.primary,
+      },
+      '& .opblock.opblock-get .opblock-summary-method': {
+        background: palette.primary,
+      },
+      '& .opblock.opblock-put': {
+        borderColor: '#7a5000',
+      },
+      '& .opblock.opblock-put .opblock-summary-method': {
+        background: '#7a5000',
+      },
+      '& .opblock.opblock-post': {
+        borderColor: '#384903',
+      },
+      '& .opblock.opblock-post .opblock-summary-method': {
+        background: '#384903',
+      },
+      '& .opblock.opblock-delete': {
+        borderColor: palette.error,
+      },
+      '& .opblock.opblock-delete .opblock-summary-method': {
+        background: palette.error,
+      },
+      '& .opblock.opblock-deprecated': {
+        opacity: 1,
+      },
+      '& .opblock.opblock-deprecated .opblock-summary-method': {
+        background: '#eeeeee',
+        color: '#3b495f',
+      },
+      '& .parameter__name .required span': {
+        color: palette.error,
+        fontSize: '24px',
+        verticalAlign: 'middle',
+      },
+      '& pre': {
+        backgroundColor: 'transparent',
+        border: 'none',
+      },
+      '& .servers': {
+        paddingTop: '8px',
+      },
+      '& .wrapper': {
+        maxWidth: 'none',
+        padding: '0 8px',
+      },
+      '@media only screen and (max-width: 600px)': {
+        '& .scheme-container .schemes': {
+          display: 'grid',
+          gap: '8px',
+          gridTemplateColumns: '1fr',
+          justifyItems: 'start',
+        },
+      },
+    },
   },
   downloadSection: {
     display: 'grid',

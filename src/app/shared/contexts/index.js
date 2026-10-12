@@ -5,6 +5,7 @@ import CompareContext from './compare-context';
 import CriterionContext from './criterion-context';
 import DeveloperContext from './developer-context';
 import FlagContext from './flag-context';
+import { FormGroupContext, useFormGroup, useFormGroupMember } from './form-group-context';
 import { HashContext, HashProvider, useHashContext } from './hash-context';
 import ListingContext from './listing-context';
 import PendingListingContext from './pending-listing-context';
@@ -19,11 +20,14 @@ export {
   CriterionContext,
   DeveloperContext,
   FlagContext,
+  FormGroupContext,
   HashContext,
   HashProvider,
   ListingContext,
   PendingListingContext,
   UserContext,
   useAnalyticsContext,
+  useFormGroup,
+  useFormGroupMember,
   useHashContext,
 };

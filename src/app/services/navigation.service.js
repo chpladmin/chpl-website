@@ -1,34 +1,32 @@
-import { getAngularService } from 'services/angular-react-helper';
+import router from 'router/router';
 
-// The single place that talks to the AngularJS router. Everything else
-// navigates through these helpers, so swapping ui-router out later is a change
-// to this file rather than a hunt across components.
+// The single place that talks to the router. Everything else navigates through
+// these helpers, so the router is a change to this file rather than a hunt
+// across components.
 //
-// Each function looks its service up at call time rather than at module load,
-// because the Angular injector does not exist until the app has bootstrapped.
+// This used to reach into the AngularJS injector at call time, because the
+// injector did not exist until Angular had bootstrapped. The router instance is
+// a plain module export, so that indirection is gone - as is the manual
+// $digest that goToUrl needed to make a location change outside Angular's
+// digest cycle take effect.
 
-const goToState = (state, params, options) => getAngularService('$state').go(state, params, options);
+const goToState = (state, params, options) => router.stateService.go(state, params, options);
 
-const reloadState = () => getAngularService('$state').reload();
+const reloadState = () => router.stateService.reload();
 
-const getRouteParams = () => getAngularService('$stateParams');
+const getRouteParams = () => router.globals.params;
 
-const getCurrentUrl = () => getAngularService('$location').url();
+const getCurrentUrl = () => router.urlService.url();
 
-// A `$location` change made from a React event handler happens outside Angular's
-// digest cycle and will not take effect on its own, hence the explicit digest.
-const goToUrl = (url) => {
-  getAngularService('$location').url(url);
-  getAngularService('$rootScope').$digest();
-};
+const goToUrl = (url) => router.urlService.url(url);
 
 // Subscribes to route transitions; returns a function that removes every hook.
 const onRouteChange = ({ onStart, onSuccess, onError }) => {
-  const transitions = getAngularService('$transitions');
+  const { transitionService } = router;
   const deregister = [
-    onStart && transitions.onStart({}, onStart),
-    onSuccess && transitions.onSuccess({}, onSuccess),
-    onError && transitions.onError({}, onError),
+    onStart && transitionService.onStart({}, onStart),
+    onSuccess && transitionService.onSuccess({}, onSuccess),
+    onError && transitionService.onError({}, onError),
   ].filter((deregisterHook) => deregisterHook);
   return () => deregister.forEach((deregisterHook) => deregisterHook());
 };

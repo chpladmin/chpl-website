@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     marginTop: '4px',
     gap: '8px',
     alignItems: 'center',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       gap: '4px',

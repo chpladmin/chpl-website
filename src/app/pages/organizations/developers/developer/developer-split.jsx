@@ -100,7 +100,7 @@ function ChplDeveloperSplit({ dispatch }) {
           onSuccess: (response) => {
             setIsProcessing(false);
             let body;
-            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+            if (!response.status || response.status === 200 || (response.status !== null && typeof response.status === 'object')) {
               enqueueSnackbar(`Split submitted. Your action has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
                 variant: 'success',
               });

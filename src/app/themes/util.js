@@ -1,4 +1,7 @@
 const util = {
+  anchorElement: {
+    position: 'relative',
+  },
   buttonProgress: {
     position: 'absolute',
     top: '50%',
@@ -48,12 +51,26 @@ const util = {
   linkWrap: {
     overflowWrap: 'anywhere',
   },
+  pageAnchor: {
+    position: 'absolute',
+    top: '-125px',
+  },
   noWrap: {
     whiteSpace: 'nowrap',
   },
   wordWrap: {
     wordWrap: 'break-word',
     overflowWrap: 'break-word',
+  },
+  srOnly: {
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    padding: 0,
+    margin: '-1px',
+    overflow: 'hidden',
+    clip: 'rect(0, 0, 0, 0)',
+    border: 0,
   },
   removedText: {
     fontStyle: 'italic',
