@@ -2,6 +2,9 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import { string } from 'prop-types';
 
+// native pickers always show a placeholder (e.g. mm/dd/yyyy), so their label has to stay shrunk
+const pickerTypes = ['date', 'datetime-local', 'month', 'time', 'week'];
+
 const styles = {
   longLabelFix: {
     padding: '0 4px',
@@ -10,13 +13,18 @@ const styles = {
 };
 
 function ChplTextField(props) {
+  const { type } = props;
+
   /* eslint-disable react/jsx-props-no-spreading */
   return (
     <TextField
       fullWidth
       variant="outlined"
       size="small"
-      InputLabelProps={{ sx: styles.longLabelFix }}
+      InputLabelProps={{
+        sx: styles.longLabelFix,
+        ...(pickerTypes.includes(type) && { shrink: true }),
+      }}
       {...props}
     />
   );
