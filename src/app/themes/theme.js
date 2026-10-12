@@ -691,7 +691,7 @@ const theme = createTheme({
             borderRadius: '64px',
           },
           '&.Mui-completed': {
-            color: '#356635',
+            color: paletteColors.success,
           },
         },
         text: {

@@ -92,7 +92,7 @@ function ChplUploadListings() {
               <Box sx={styles.snackbarActions}>
                 <Button
                   color="inherit"
-                  variant="contained"
+                  variant="outlined"
                   onClick={() => {
                     window.location.href = '#/administration/confirm/listings';
                     closeSnackbar(key);
@@ -102,7 +102,7 @@ function ChplUploadListings() {
                 </Button>
                 <Button
                   color="inherit"
-                  variant="contained"
+                  variant="outlined"
                   onClick={() => closeSnackbar(key)}
                 >
                   Dismiss

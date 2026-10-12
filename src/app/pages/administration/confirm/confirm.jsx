@@ -111,7 +111,7 @@ function ChplConfirm({ id }) {
             <Box sx={styles.snackbarActions}>
               <Button
                 color="inherit"
-                variant="contained"
+                variant="outlined"
                 sx={{ marginRight: '4px' }}
                 onClick={() => {
                   window.location.href = `#/listing/${result.data.id}`;
@@ -122,7 +122,7 @@ function ChplConfirm({ id }) {
               </Button>
               <Button
                 color="inherit"
-                variant="contained"
+                variant="outlined"
                 onClick={() => closeSnackbar(key)}
               >
                 Dismiss

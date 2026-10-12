@@ -4,6 +4,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { node } from 'prop-types';
 import { SnackbarProvider } from 'notistack';
 
+import { palette, theme } from 'themes';
+
 const snackbarClasses = {
   success: 'chpl-snackbar-success',
   error: 'chpl-snackbar-error',
@@ -13,24 +15,28 @@ const snackbarClasses = {
   root: 'chpl-snackbar-root',
 };
 
+// notistack styles each variant with two classes, so ours need !important to win.
+// Buttons can come from the provider or from each enqueueSnackbar call, so they all
+// pick up the severity from the variant class on the surrounding snackbar
+const variantStyles = (backgroundColor, color, buttonColor, buttonBorderColor = buttonColor) => ({
+  backgroundColor: `${backgroundColor} !important`,
+  color: `${color} !important`,
+  '& .MuiButton-root, & .MuiButton-root:hover': {
+    backgroundColor: palette.white,
+    border: `1px solid ${buttonBorderColor}`,
+    color: buttonColor,
+  },
+});
+
 const globalStyles = {
-  [`.${snackbarClasses.success}`]: {
-    backgroundColor: '#356635',
-  },
-  [`.${snackbarClasses.error}`]: {
-    backgroundColor: '#c44f65',
-  },
-  [`.${snackbarClasses.warning}`]: {
-    backgroundColor: '#e6ea0b',
-    color: '#000000',
-  },
-  [`.${snackbarClasses.info}`]: {
-    backgroundColor: '#0e547f',
-  },
+  [`.${snackbarClasses.success}`]: variantStyles(palette.success, palette.white, palette.success),
+  [`.${snackbarClasses.error}`]: variantStyles(palette.error, palette.white, palette.error),
+  [`.${snackbarClasses.warning}`]: variantStyles(palette.warning, palette.black, palette.black, palette.warningDark),
+  [`.${snackbarClasses.info}`]: variantStyles(palette.info, palette.white, palette.info),
   [`.${snackbarClasses.containerRoot}`]: {
     flexWrap: 'nowrap',
     padding: '8px',
-    zIndex: 1400,
+    zIndex: theme.zIndex.snackbar,
   },
   [`.${snackbarClasses.root}`]: {
     marginBottom: '64px',
@@ -78,8 +84,9 @@ function SnackbarWrapper(props) {
           <div style={{ pointerEvents: 'auto', zIndex: 1402 }}>
             <Button
               sx={styles.dismissButton}
-              variant="contained"
-              onClick={onClickDismiss(key)}>
+              variant="outlined"
+              onClick={onClickDismiss(key)}
+            >
               Dismiss
               {' '}
               <CloseIcon sx={styles.iconSpacing} />
