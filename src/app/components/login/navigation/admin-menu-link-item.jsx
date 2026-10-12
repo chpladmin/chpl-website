@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem } from '@mui/material';
+import { ListItemButton } from '@mui/material';
 import {
   bool,
   func,
@@ -62,8 +62,7 @@ function ChplAdminMenuLinkItem({
   };
 
   return (
-    <ListItem
-      button
+    <ListItemButton
       sx={[styles.menuItem, href && currentHash === href && styles.menuItemActive]}
       onClick={handleRowClick}
     >
@@ -73,7 +72,7 @@ function ChplAdminMenuLinkItem({
         external={external}
         router={router}
       />
-    </ListItem>
+    </ListItemButton>
   );
 }
 

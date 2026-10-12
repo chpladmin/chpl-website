@@ -4,7 +4,7 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Radio,
@@ -86,9 +86,8 @@ const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
   .map((value) => {
     const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
     return (
-      <ListItem
+      <ListItemButton
         key={value.value}
-        button
         onClick={() => handleFilterToggle(value)}
         disabled={filter.required && value.selected && filter.values.filter((a) => a.selected).length === 1}
       >
@@ -102,7 +101,7 @@ const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
           />
         </ListItemIcon>
         <ListItemText id={labelId}>{filter.getLongValueDisplay(value)}</ListItemText>
-      </ListItem>
+      </ListItemButton>
     );
   });
 

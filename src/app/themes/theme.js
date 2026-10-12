@@ -481,6 +481,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'rgb(0 0 0 / 10%)',
+          },
+        },
+      },
+    },
     MuiListSubheader: {
       styleOverrides: {
         root: {
