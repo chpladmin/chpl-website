@@ -111,23 +111,24 @@ function ChplAttestationView({
     }
   };
 
-  return <>
-    <Box display="flex" flexDirection="column" gap="16px">
-      <div>
-        <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-        <Typography gutterBottom>
-          { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
-          {' '}
-          -
-          {' '}
-          { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
-        </Typography>
-      </div>
-      <div>
-        <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-        <Typography gutterBottom>{attestations.statusText}</Typography>
-      </div>
-      { attestations.sections
+  return (
+    <>
+      <Box display="flex" flexDirection="column" gap="16px">
+        <div>
+          <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
+          <Typography gutterBottom>
+            { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
+            {' '}
+            -
+            {' '}
+            { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
+          </Typography>
+        </div>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+          <Typography gutterBottom>{attestations.statusText}</Typography>
+        </div>
+        { attestations.sections
         && (
           <Card>
             <TableContainer>
@@ -147,8 +148,8 @@ function ChplAttestationView({
             </TableContainer>
           </Card>
         )}
-    </Box>
-    { canCreateException && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
+      </Box>
+      { canCreateException && hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
       && (
         <Button
           color="primary"
@@ -160,7 +161,7 @@ function ChplAttestationView({
           Re-Open Submission
         </Button>
       )}
-    { exceptionPeriod
+      { exceptionPeriod
       && (
         <ChplAttestationCreateException
           developer={developer}
@@ -168,7 +169,8 @@ function ChplAttestationView({
           period={exceptionPeriod}
         />
       )}
-  </>;
+    </>
+  );
 }
 
 export default ChplAttestationView;

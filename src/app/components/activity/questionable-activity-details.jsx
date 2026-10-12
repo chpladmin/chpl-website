@@ -99,49 +99,50 @@ function ChplQuestionableActivityDetails({ activity }) {
     setOpen(false);
   };
 
-  return <>
-    <ChplTooltip title="Activity Details">
-      <Button
-        id={`view-activity-details-${activity.id}`}
-        aria-label="Open Activity Details dialog"
-        color="secondary"
-        variant="contained"
-        onClick={handleClickOpen}
-        endIcon={<InfoIcon />}
-      >
-        Details
-      </Button>
-    </ChplTooltip>
-    <Dialog
-      onClose={handleClose}
-      aria-labelledby={`activity-details-${activity.id}-title`}
-      open={open}
-      maxWidth="sm"
-    >
-      <ChplDialogTitle
-        id={`activity-details-${activity.id}-title`}
+  return (
+    <>
+      <ChplTooltip title="Activity Details">
+        <Button
+          id={`view-activity-details-${activity.id}`}
+          aria-label="Open Activity Details dialog"
+          color="secondary"
+          variant="contained"
+          onClick={handleClickOpen}
+          endIcon={<InfoIcon />}
+        >
+          Details
+        </Button>
+      </ChplTooltip>
+      <Dialog
         onClose={handleClose}
-        sx={styles.legendTitle}
+        aria-labelledby={`activity-details-${activity.id}-title`}
+        open={open}
+        maxWidth="sm"
       >
-        Questionable Activity Details
-      </ChplDialogTitle>
-      <DialogContent dividers>
-        <Box pb={4} display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
-          {getDisplay('Trigger Level', activity.triggerLevel)}
-          {getDisplay('Trigger Name', activity.triggerName)}
-          {getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate))}
-          {getDisplay('Acting User', activity.username)}
-          {getDisplay('Developer', activity.developerName)}
-          {getDisplay('Product', activity.productName)}
-          {getDisplay('Version', activity.versionName)}
-          {getDisplay('CHPL Product Number', activity.chplProductNumber)}
-          {getDisplay('ONC-ACB', activity.acbName)}
-          {getDisplay('Description', activity.description)}
-          {getDisplay('Certification Status', activity.certificationStatusName)}
-          {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
-          {getDisplay('Reason', activity.reason, true)}
-        </Box>
-        { activity.activityId && details?.length > 0
+        <ChplDialogTitle
+          id={`activity-details-${activity.id}-title`}
+          onClose={handleClose}
+          sx={styles.legendTitle}
+        >
+          Questionable Activity Details
+        </ChplDialogTitle>
+        <DialogContent dividers>
+          <Box pb={4} display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+            {getDisplay('Trigger Level', activity.triggerLevel)}
+            {getDisplay('Trigger Name', activity.triggerName)}
+            {getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate))}
+            {getDisplay('Acting User', activity.username)}
+            {getDisplay('Developer', activity.developerName)}
+            {getDisplay('Product', activity.productName)}
+            {getDisplay('Version', activity.versionName)}
+            {getDisplay('CHPL Product Number', activity.chplProductNumber)}
+            {getDisplay('ONC-ACB', activity.acbName)}
+            {getDisplay('Description', activity.description)}
+            {getDisplay('Certification Status', activity.certificationStatusName)}
+            {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
+            {getDisplay('Reason', activity.reason, true)}
+          </Box>
+          { activity.activityId && details?.length > 0
           && (
             <Accordion variant="outlined">
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -156,9 +157,10 @@ function ChplQuestionableActivityDetails({ activity }) {
               </AccordionDetails>
             </Accordion>
           )}
-      </DialogContent>
-    </Dialog>
-  </>;
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 }
 
 export default ChplQuestionableActivityDetails;

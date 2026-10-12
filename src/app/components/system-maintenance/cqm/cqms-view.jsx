@@ -46,50 +46,52 @@ function ChplCqmsView({ cqms: initialCqms }) {
     setOrder(orderDirection);
   };
 
-  return <>
-    <Box sx={styles.headerContainer}>
-      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-        <Typography variant="subtitle2">
-          CQMs
-        </Typography>
-        <Typography variant="body2">
-          {`(${cqms.length} Result${cqms.length !== 1 ? 's' : ''})`}
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="4px">
-        <ChplSortControls
-          sortOptions={sortOptions}
-          orderBy={orderBy}
-          order={order}
-          onSort={handleSort}
-        />
-      </Box>
-    </Box>
-    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-      { cqms
-        .map((item) => (
-          <ChplSearchResultCard
-            key={item.display}
-            cardTitle="ID"
-            cardTitleValue={item.display}
-            titleIconButton={(
-              <ChplTooltip title="Use this value in a upload file">
-                <IconButton color="primary" size="small">
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </ChplTooltip>
-            )}
-            fieldGroups={[
-              [
-                { label: 'Title', value: item.title || 'N/A' },
-                { label: `Version${item.versionDisplay.indexOf(',') > -1 ? 's' : ''}`, value: item.versionDisplay || 'N/A' },
-              ],
-              [{ label: 'Description', value: item.description || 'N/A' }],
-            ]}
+  return (
+    <>
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+          <Typography variant="subtitle2">
+            CQMs
+          </Typography>
+          <Typography variant="body2">
+            {`(${cqms.length} Result${cqms.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
           />
-        ))}
-    </Box>
-  </>;
+        </Box>
+      </Box>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { cqms
+          .map((item) => (
+            <ChplSearchResultCard
+              key={item.display}
+              cardTitle="ID"
+              cardTitleValue={item.display}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
+            )}
+              fieldGroups={[
+                [
+                  { label: 'Title', value: item.title || 'N/A' },
+                  { label: `Version${item.versionDisplay.indexOf(',') > -1 ? 's' : ''}`, value: item.versionDisplay || 'N/A' },
+                ],
+                [{ label: 'Description', value: item.description || 'N/A' }],
+              ]}
+            />
+          ))}
+      </Box>
+    </>
+  );
 }
 
 export default ChplCqmsView;

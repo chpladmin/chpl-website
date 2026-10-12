@@ -29,7 +29,8 @@ function ChplDialogTitle(props) {
            aria-label="close"
            sx={styles.closeButton}
            onClick={onClose}
-           size="large">
+           size="large"
+         >
            <CloseIcon />
          </IconButton>
        )}

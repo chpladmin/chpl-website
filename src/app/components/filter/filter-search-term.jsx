@@ -86,41 +86,43 @@ function ChplFilterSearchTerm({ placeholder = 'Search by Developer, Product, or 
     }
   };
 
-  return <>
-    <Box sx={styles.searchBarContainer}>
-      <Box sx={styles.searchBar}>
-        <InputBase
-          sx={styles.searchInput}
-          placeholder={placeholder}
-          value={term}
-          onChange={handleTerm}
-          onKeyPress={handleKeyPress}
-          id="filter-search-term-input"
-          inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
-          endAdornment={(
-            <InputAdornment position="start">
-              <ChplTooltip title="Clear">
-                <IconButton onClick={handleClear} aria-label="Clear search" size="large">
-                  <ClearIcon />
-                </IconButton>
-              </ChplTooltip>
-            </InputAdornment>
+  return (
+    <>
+      <Box sx={styles.searchBarContainer}>
+        <Box sx={styles.searchBar}>
+          <InputBase
+            sx={styles.searchInput}
+            placeholder={placeholder}
+            value={term}
+            onChange={handleTerm}
+            onKeyPress={handleKeyPress}
+            id="filter-search-term-input"
+            inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
+            endAdornment={(
+              <InputAdornment position="start">
+                <ChplTooltip title="Clear">
+                  <IconButton onClick={handleClear} aria-label="Clear search" size="large">
+                    <ClearIcon />
+                  </IconButton>
+                </ChplTooltip>
+              </InputAdornment>
           )}
-        />
-        <Button
-          sx={styles.searchButton}
-          size="medium"
-          variant="contained"
-          color="primary"
-          id="filter-search-term-search"
-          onClick={handleSearch}
-          endIcon={<SearchIcon sx={styles.searchIcon} color="inherit" fontSize="large" />}
-        >
-          Search
-        </Button>
+          />
+          <Button
+            sx={styles.searchButton}
+            size="medium"
+            variant="contained"
+            color="primary"
+            id="filter-search-term-search"
+            onClick={handleSearch}
+            endIcon={<SearchIcon sx={styles.searchIcon} color="inherit" fontSize="large" />}
+          >
+            Search
+          </Button>
+        </Box>
       </Box>
-    </Box>
-  </>;
+    </>
+  );
 }
 
 export default ChplFilterSearchTerm;

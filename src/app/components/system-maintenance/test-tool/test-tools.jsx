@@ -182,7 +182,8 @@ function ChplTestTools() {
             <BuildOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplTestToolEdit
             testTool={activeTestTool}

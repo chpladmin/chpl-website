@@ -108,7 +108,8 @@ function ChplUcdProcesses() {
             <TouchAppOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeUcdProcess.id ? 'Edit' : 'Add'} UCD Process`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplUcdProcessEdit
             ucdProcess={activeUcdProcess}

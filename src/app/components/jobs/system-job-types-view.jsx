@@ -97,7 +97,8 @@ function ChplSystemJobTypesView(props) {
                     onClick={() => dispatch({ action: 'schedule', payload: item })}
                     color="primary"
                     aria-label={`Schedule Job ${item.name}`}
-                    size="large">
+                    size="large"
+                  >
                     <PlayArrowIcon />
                   </IconButton>
                 </ChplTooltip>

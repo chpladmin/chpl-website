@@ -34,22 +34,23 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
       })));
   }, [initialCodeSets]);
 
-  return <>
-    <Box sx={styles.headerContainer}>
-      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-        <Typography variant="subtitle2">
-          Code Sets
-        </Typography>
-        <Typography variant="body2">
-          {`(${codeSets.length} Result${codeSets.length !== 1 ? 's' : ''})`}
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="4px">
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchCodeSetsActivity}
-          title="Code Sets"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+  return (
+    <>
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+          <Typography variant="subtitle2">
+            Code Sets
+          </Typography>
+          <Typography variant="body2">
+            {`(${codeSets.length} Result${codeSets.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchCodeSetsActivity}
+            title="Code Sets"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-code-set"
@@ -59,52 +60,52 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
           >
             Add
           </Button>
-        )}
+          )}
+        </Box>
       </Box>
-    </Box>
-    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-      { codeSets
-        .map((item) => (
-          <ChplSearchResultCard
-            key={item.id}
-            cardTitle="CHPL Entry Value"
-            cardTitleValue={item.name}
-            titleIconButton={(
-              <ChplTooltip title="Use this value in a upload file">
-                <IconButton color="primary" size="small">
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </ChplTooltip>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { codeSets
+          .map((item) => (
+            <ChplSearchResultCard
+              key={item.id}
+              cardTitle="CHPL Entry Value"
+              cardTitleValue={item.name}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
             )}
-            additionalTitleContent={(
-              <ChplUpdateIndicator
-                endDay={item.requiredDay}
-                additionalInformation="Contact the developer for more information."
-              />
+              additionalTitleContent={(
+                <ChplUpdateIndicator
+                  endDay={item.requiredDay}
+                  additionalInformation="Contact the developer for more information."
+                />
             )}
-            fieldGroups={[
-              [
-                {
-                  label: 'Start Date',
-                  value: getDisplayDateFormat(item.startDay),
-                },
-                {
-                  label: 'Required Date',
-                  value: getDisplayDateFormat(item.requiredDay),
-                },
-                {
-                  label: 'Extension End Date',
-                  value: getDisplayDateFormat(item.extensionEndDay),
-                },
-              ],
-              [
-                {
-                  label: 'Applicable Criteria',
-                  value: item.criteriaDisplay || 'N/A',
-                },
-              ],
-            ]}
-            actions={
+              fieldGroups={[
+                [
+                  {
+                    label: 'Start Date',
+                    value: getDisplayDateFormat(item.startDay),
+                  },
+                  {
+                    label: 'Required Date',
+                    value: getDisplayDateFormat(item.requiredDay),
+                  },
+                  {
+                    label: 'Extension End Date',
+                    value: getDisplayDateFormat(item.extensionEndDay),
+                  },
+                ],
+                [
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                  },
+                ],
+              ]}
+              actions={
               hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                 <Button
                   onClick={() => dispatch({ action: 'edit', payload: item })}
@@ -118,10 +119,11 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
                 </Button>
               )
             }
-          />
-        ))}
-    </Box>
-  </>;
+            />
+          ))}
+      </Box>
+    </>
+  );
 }
 
 export default ChplCodeSetsView;

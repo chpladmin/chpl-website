@@ -75,7 +75,8 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
             color="primary"
             onClick={dispatch}
             sx={styles.closeIcon}
-            size="large">
+            size="large"
+          >
             <CloseIcon />
           </IconButton>
 )}

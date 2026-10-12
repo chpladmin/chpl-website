@@ -46,24 +46,25 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
     setOrder(orderDirection);
   };
 
-  return <>
-    <Box sx={styles.headerContainer}>
-      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-        <Typography variant="subtitle2">
-          Accessibility Standards
-        </Typography>
-        <Typography variant="body2">
-          {`(${accessibilityStandards.length} Result${accessibilityStandards.length !== 1 ? 's' : ''})`}
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="4px">
-        <ChplSortControls
-          sortOptions={sortOptions}
-          orderBy={orderBy}
-          order={order}
-          onSort={handleSort}
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+  return (
+    <>
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+          <Typography variant="subtitle2">
+            Accessibility Standards
+          </Typography>
+          <Typography variant="body2">
+            {`(${accessibilityStandards.length} Result${accessibilityStandards.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-accessibility-standard"
@@ -73,24 +74,24 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
           >
             Add
           </Button>
-        )}
+          )}
+        </Box>
       </Box>
-    </Box>
-    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-      { accessibilityStandards
-        .map((item) => (
-          <ChplSearchResultCard
-            key={`${item.id}`}
-            cardTitle="Name"
-            cardTitleValue={item.name}
-            titleIconButton={(
-              <ChplTooltip title="Use this value in a upload file">
-                <IconButton color="primary" size="small">
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </ChplTooltip>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { accessibilityStandards
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              cardTitle="Name"
+              cardTitleValue={item.name}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
             )}
-            actions={
+              actions={
               hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                 <Button
                   onClick={() => dispatch({ action: 'edit', payload: item })}
@@ -104,10 +105,11 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
                 </Button>
               )
             }
-          />
-        ))}
-    </Box>
-  </>;
+            />
+          ))}
+      </Box>
+    </>
+  );
 }
 
 export default ChplAccessibilityStandardsView;

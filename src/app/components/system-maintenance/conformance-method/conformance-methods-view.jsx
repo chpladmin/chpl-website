@@ -53,28 +53,29 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
     setOrder(orderDirection);
   };
 
-  return <>
-    <Box sx={styles.headerContainer}>
-      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-        <Typography variant="subtitle2">
-          Conformance Methods
-        </Typography>
-        <Typography variant="body2">
-          {`(${conformanceMethods.length} Result${conformanceMethods.length !== 1 ? 's' : ''})`}
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="4px">
-        <ChplSortControls
-          sortOptions={sortOptions}
-          orderBy={orderBy}
-          order={order}
-          onSort={handleSort}
-        />
-        <ChplSystemMaintenanceActivity
-          fetch={useFetchConformanceMethodsActivity}
-          title="Conformance Methods"
-        />
-        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+  return (
+    <>
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+          <Typography variant="subtitle2">
+            Conformance Methods
+          </Typography>
+          <Typography variant="body2">
+            {`(${conformanceMethods.length} Result${conformanceMethods.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchConformanceMethodsActivity}
+            title="Conformance Methods"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-conformance-method"
@@ -84,36 +85,36 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
           >
             Add
           </Button>
-        )}
+          )}
+        </Box>
       </Box>
-    </Box>
-    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-      { conformanceMethods
-        .map((item) => (
-          <ChplSearchResultCard
-            key={`${item.id}`}
-            cardTitle="Name"
-            cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}
-            titleIconButton={(
-              <ChplTooltip title="Use this value in a upload file">
-                <IconButton color="primary" size="small">
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </ChplTooltip>
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { conformanceMethods
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              cardTitle="Name"
+              cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}
+              titleIconButton={(
+                <ChplTooltip title="Use this value in a upload file">
+                  <IconButton color="primary" size="small">
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </ChplTooltip>
             )}
-            fieldGroups={[
-              [
-                {
-                  label: 'Removal Date',
-                  value: getDisplayDateFormat(item.removalDate),
-                },
-                {
-                  label: 'Applicable Criteria',
-                  value: item.criteriaDisplay || 'N/A',
-                },
-              ],
-            ]}
-            actions={
+              fieldGroups={[
+                [
+                  {
+                    label: 'Removal Date',
+                    value: getDisplayDateFormat(item.removalDate),
+                  },
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                  },
+                ],
+              ]}
+              actions={
               hasAnyRole(['chpl-admin', 'chpl-onc']) && (
                 <Button
                   onClick={() => dispatch({ action: 'edit', payload: item })}
@@ -127,10 +128,11 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
                 </Button>
               )
             }
-          />
-        ))}
-    </Box>
-  </>;
+            />
+          ))}
+      </Box>
+    </>
+  );
 }
 
 export default ChplConformanceMethodsView;

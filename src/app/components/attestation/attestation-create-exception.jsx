@@ -115,7 +115,8 @@ function ChplAttestationCreateException(props) {
           variant="contained"
           id="cancel-attestation-exception-button"
           onClick={cancelCreatingException}
-          sx={styles.buttonMargin}>
+          sx={styles.buttonMargin}
+        >
           Cancel
           {' '}
           <CloseIcon sx={styles.iconSpacing} />

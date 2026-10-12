@@ -115,7 +115,8 @@ function ChplConformanceMethods() {
             <AccountBalanceOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeConformanceMethod.id ? 'Edit' : 'Add'} Conformance Method`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplConformanceMethodEdit
             conformanceMethod={activeConformanceMethod}

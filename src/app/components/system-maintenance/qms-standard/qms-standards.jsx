@@ -108,7 +108,8 @@ function ChplQmsStandards() {
             <AssignmentTurnedInOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeQmsStandard.id ? 'Edit' : 'Add'} QMS Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplQmsStandardEdit
             qmsStandard={activeQmsStandard}

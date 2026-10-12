@@ -170,7 +170,8 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
             fullWidth
             disabled={versions?.length === 0}
             sx={[styles.buttonCard, !isCreating && styles.buttonCardFocused]}
-            onClick={() => handleCreationToggle(false)}>
+            onClick={() => handleCreationToggle(false)}
+          >
             <Box component="span" sx={styles.buttonContent}>
               <CheckCircleIcon color="primary" sx={styles.extraLargeIcons} />
               { selectedVersion
@@ -194,7 +195,8 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
             variant="outlined"
             fullWidth
             sx={[styles.buttonCard, isCreating && styles.buttonCardFocused]}
-            onClick={() => handleCreationToggle(true)}>
+            onClick={() => handleCreationToggle(true)}
+          >
             <Box component="span" sx={styles.buttonContent}>
               <AddCircleIcon color="primary" sx={styles.extraLargeIcons} />
               Create A Version

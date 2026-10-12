@@ -106,83 +106,85 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
     setOpen(false);
   };
 
-  return <>
-    <Card style={{ width: '100%' }}>
-      <Box sx={styles.idContainer}>
-        <Typography>
-          <strong>Surveillance ID:</strong>
-          {' '}
-          { surveillance.friendlyId }
-        </Typography>
-        <Box display="flex" flexDirection="row" alignItems="center" gap="4px">
-          <Box position="relative" display="inline-flex">
-            <CircularProgress value={progress} variant="determinate" size={24} color="primary" />
-            <Box
-              top={0}
-              left={0}
-              bottom={0}
-              right={0}
-              position="absolute"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Typography variant="caption" component="div" color="textSecondary">
-                {`${progress} %`}
-              </Typography>
+  return (
+    <>
+      <Card style={{ width: '100%' }}>
+        <Box sx={styles.idContainer}>
+          <Typography>
+            <strong>Surveillance ID:</strong>
+            {' '}
+            { surveillance.friendlyId }
+          </Typography>
+          <Box display="flex" flexDirection="row" alignItems="center" gap="4px">
+            <Box position="relative" display="inline-flex">
+              <CircularProgress value={progress} variant="determinate" size={24} color="primary" />
+              <Box
+                top={0}
+                left={0}
+                bottom={0}
+                right={0}
+                position="absolute"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Typography variant="caption" component="div" color="textSecondary">
+                  {`${progress} %`}
+                </Typography>
+              </Box>
             </Box>
+            <Typography variant="body2">Completed</Typography>
           </Box>
-          <Typography variant="body2">Completed</Typography>
         </Box>
-      </Box>
-      <Box sx={styles.container}>
-        <Typography>
-          <strong>Start Day:</strong>
-          {' '}
-          { getDisplayDateFormat(surveillance.startDay) }
-        </Typography>
-        <Typography>
-          <strong>End Day:</strong>
-          {' '}
-          { getDisplayDateFormat(surveillance.endDay) }
-        </Typography>
-        <Typography>
-          <strong>Number of Closed Nonconformities:</strong>
-          {' '}
-          { surveillance.numClosedNonconformities }
-        </Typography>
-        <Typography>
-          <strong>Number of Open Nonconformities:</strong>
-          {' '}
-          { surveillance.numOpenNonconformities }
-        </Typography>
-      </Box>
-      <Box style={{ padding: '8px 16px' }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ margin: '8px 0' }}
-          endIcon={<Edit />}
-          onClick={handleOpen}
-        >
-          Edit Surveillance Data
-        </Button>
-      </Box>
-    </Card>
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth sx={styles.editModal}>
-      <CardHeader title="Surveillance Data" />
-      <DialogContent>
-        <Box sx={styles.editContainer}>
-          <ChplQuarterEditListingSurveillanceData
-            surveillance={surveillance}
-            dispatch={handleDispatch}
-            reportId={reportId}
-          />
+        <Box sx={styles.container}>
+          <Typography>
+            <strong>Start Day:</strong>
+            {' '}
+            { getDisplayDateFormat(surveillance.startDay) }
+          </Typography>
+          <Typography>
+            <strong>End Day:</strong>
+            {' '}
+            { getDisplayDateFormat(surveillance.endDay) }
+          </Typography>
+          <Typography>
+            <strong>Number of Closed Nonconformities:</strong>
+            {' '}
+            { surveillance.numClosedNonconformities }
+          </Typography>
+          <Typography>
+            <strong>Number of Open Nonconformities:</strong>
+            {' '}
+            { surveillance.numOpenNonconformities }
+          </Typography>
         </Box>
-      </DialogContent>
-    </Dialog>
-  </>;
+        <Box style={{ padding: '8px 16px' }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            style={{ margin: '8px 0' }}
+            endIcon={<Edit />}
+            onClick={handleOpen}
+          >
+            Edit Surveillance Data
+          </Button>
+        </Box>
+      </Card>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth sx={styles.editModal}>
+        <CardHeader title="Surveillance Data" />
+        <DialogContent>
+          <Box sx={styles.editContainer}>
+            <ChplQuarterEditListingSurveillanceData
+              surveillance={surveillance}
+              dispatch={handleDispatch}
+              reportId={reportId}
+            />
+          </Box>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 }
 
 export default ChplQuarterEditListingSurveillance;

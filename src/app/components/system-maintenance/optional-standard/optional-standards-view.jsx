@@ -52,62 +52,64 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
     setOrder(orderDirection);
   };
 
-  return <>
-    <ChplFilterSearchBar
-      placeholder="Search by Display Value, Citation, or Description..."
-    />
-    <ChplFilterLayout>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">Search Results</Typography>
-          <Typography variant="body2">
-            {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="4px">
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-        { optionalStandards
-          .map((item) => (
-            <ChplSearchResultCard
-              key={`${item.id}`}
-              cardTitle="Display Value"
-              cardTitleValue={item.displayValue}
-              fieldGroups={[
-                [
-                  {
-                    label: 'Description',
-                    value: item.description || 'N/A',
-                  },
-                  {
-                    label: 'Citation',
-                    value: item.citation || 'N/A',
-                    iconButton: (
-                      <ChplTooltip title="Use this value in a upload file">
-                        <IconButton color="primary" size="small">
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </ChplTooltip>
-                    ),
-                  },
-                  {
-                    label: 'Applicable Criteria',
-                    value: item.criteriaDisplay || 'N/A',
-                  },
-                ],
-              ]}
+  return (
+    <>
+      <ChplFilterSearchBar
+        placeholder="Search by Display Value, Citation, or Description..."
+      />
+      <ChplFilterLayout>
+        <Box sx={styles.headerContainer}>
+          <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+            <Typography variant="subtitle2">Search Results</Typography>
+            <Typography variant="body2">
+              {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap="4px">
+            <ChplSortControls
+              sortOptions={sortOptions}
+              orderBy={orderBy}
+              order={order}
+              onSort={handleSort}
             />
-          ))}
-      </Box>
-    </ChplFilterLayout>
-  </>;
+          </Box>
+        </Box>
+        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          { optionalStandards
+            .map((item) => (
+              <ChplSearchResultCard
+                key={`${item.id}`}
+                cardTitle="Display Value"
+                cardTitleValue={item.displayValue}
+                fieldGroups={[
+                  [
+                    {
+                      label: 'Description',
+                      value: item.description || 'N/A',
+                    },
+                    {
+                      label: 'Citation',
+                      value: item.citation || 'N/A',
+                      iconButton: (
+                        <ChplTooltip title="Use this value in a upload file">
+                          <IconButton color="primary" size="small">
+                            <InfoIcon fontSize="small" />
+                          </IconButton>
+                        </ChplTooltip>
+                      ),
+                    },
+                    {
+                      label: 'Applicable Criteria',
+                      value: item.criteriaDisplay || 'N/A',
+                    },
+                  ],
+                ]}
+              />
+            ))}
+        </Box>
+      </ChplFilterLayout>
+    </>
+  );
 }
 
 export default ChplOptionalStandardsView;

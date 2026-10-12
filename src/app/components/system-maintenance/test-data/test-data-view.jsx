@@ -26,37 +26,39 @@ function ChplTestDataView({ testData: initialTestData }) {
       .sort(sortComparator('name')));
   }, [initialTestData]);
 
-  return <>
-    <Box sx={styles.headerContainer}>
-      <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-        <Typography variant="subtitle2">
-          Test Data
-        </Typography>
-        <Typography variant="body2">
-          {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
-        </Typography>
+  return (
+    <>
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
+          <Typography variant="subtitle2">
+            Test Data
+          </Typography>
+          <Typography variant="body2">
+            {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="4px" />
       </Box>
-      <Box display="flex" alignItems="center" gap="4px" />
-    </Box>
-    <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-      { testData
-        .map((item) => (
-          <ChplSearchResultCard
-            key={`${item.id}`}
-            cardTitle="Name"
-            cardTitleValue={item.name}
-            fieldGroups={[
-              [
-                {
-                  label: 'Applicable Criteria',
-                  value: item.criteriaDisplay || 'N/A',
-                },
-              ],
-            ]}
-          />
-        ))}
-    </Box>
-  </>;
+      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        { testData
+          .map((item) => (
+            <ChplSearchResultCard
+              key={`${item.id}`}
+              cardTitle="Name"
+              cardTitleValue={item.name}
+              fieldGroups={[
+                [
+                  {
+                    label: 'Applicable Criteria',
+                    value: item.criteriaDisplay || 'N/A',
+                  },
+                ],
+              ]}
+            />
+          ))}
+      </Box>
+    </>
+  );
 }
 
 export default ChplTestDataView;

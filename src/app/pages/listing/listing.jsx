@@ -210,7 +210,8 @@ function ChplListingPage({ id }) {
                 onClick={toggleFavorite}
                 style={{ color: '#e3bf00' }}
                 aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
-                size="large">
+                size="large"
+              >
                 {isFavorited ? <Star /> : <StarOutline />}
               </IconButton>
             </ChplTooltip>

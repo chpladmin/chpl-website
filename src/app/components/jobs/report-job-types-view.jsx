@@ -51,7 +51,8 @@ const getAction = (item, dispatch) => {
           variant="contained"
           color="primary"
           aria-label={`Edit Report ${item.name}`}
-          size="large">
+          size="large"
+        >
           <EditIcon />
         </IconButton>
       </ChplTooltip>
@@ -67,7 +68,8 @@ const getAction = (item, dispatch) => {
           onClick={() => dispatch({ action: 'schedule', payload: item })}
           color="primary"
           aria-label={`Schedule Report ${item.name}`}
-          size="large">
+          size="large"
+        >
           <EventIcon />
         </IconButton>
       </ChplTooltip>

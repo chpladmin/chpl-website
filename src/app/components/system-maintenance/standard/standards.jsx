@@ -230,7 +230,8 @@ function ChplStandards() {
             <PlaylistAddCheckOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeStandard.id ? 'Edit' : 'Add'} Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplStandardEdit
             standard={activeStandard}

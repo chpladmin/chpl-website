@@ -116,7 +116,8 @@ function ChplCodeSets() {
             <SettingsEthernetIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeCodeSet.id ? 'Edit' : 'Add'} Code Set`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplCodeSetEdit
             codeSet={activeCodeSet}

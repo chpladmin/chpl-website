@@ -108,7 +108,8 @@ function ChplAccessibilityStandards() {
             <AccessibilityNewOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeAccessibilityStandard.id ? 'Edit' : 'Add'} Accessibility Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplAccessibilityStandardEdit
             accessibilityStandard={activeAccessibilityStandard}

@@ -120,7 +120,7 @@ function ChplUserTriggersView({
                         cardTitle="Report Name"
                         cardTitleValue={item.name}
                         fieldGroups={fieldGroups}
-                        actions={
+                        actions={(
                           <ChplTooltip
                             title="Edit Report"
                             placement="top"
@@ -129,11 +129,12 @@ function ChplUserTriggersView({
                               onClick={() => dispatch({ action: 'edit', payload: item })}
                               color="primary"
                               aria-label={`Edit Report ${item.name}`}
-                              size="large">
+                              size="large"
+                            >
                               <EditIcon />
                             </IconButton>
                           </ChplTooltip>
-                        }
+                        )}
                       />
                     );
                   })}

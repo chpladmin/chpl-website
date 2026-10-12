@@ -90,7 +90,8 @@ function ChplSystemTriggersView({
           onClick={() => confirmDelete(item)}
           variant="contained"
           aria-label={`Delete Job ${item.name}`}
-          size="large">
+          size="large"
+        >
           <DeleteIcon color="error" />
         </IconButton>
       );

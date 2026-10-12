@@ -243,7 +243,8 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
             variant="outlined"
             fullWidth
             sx={[styles.buttonCard, !isCreating && styles.buttonCardFocused]}
-            onClick={() => handleCreationToggle(false)}>
+            onClick={() => handleCreationToggle(false)}
+          >
             <Box component="span" sx={styles.buttonContent}>
               <CheckCircleIcon color="primary" sx={styles.extraLargeIcons} />
               { selectedDeveloper
@@ -267,7 +268,8 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
             variant="outlined"
             fullWidth
             sx={[styles.buttonCard, isCreating && styles.buttonCardFocused]}
-            onClick={() => handleCreationToggle(true)}>
+            onClick={() => handleCreationToggle(true)}
+          >
             <Box component="span" sx={styles.buttonContent}>
               <AddCircleIcon color="primary" sx={styles.extraLargeIcons} />
               Create a developer

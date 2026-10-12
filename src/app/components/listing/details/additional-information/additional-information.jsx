@@ -51,9 +51,10 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
     }
   }, [listing]);
 
-  return <>
-    <Box gap="8px" display="flex" flexDirection="column">
-      { listing.edition !== null && listing.edition.name === '2014'
+  return (
+    <>
+      <Box gap="8px" display="flex" flexDirection="column">
+        { listing.edition !== null && listing.edition.name === '2014'
         && (
           <Card>
             <CardHeader title="Test Results Summary" />
@@ -79,7 +80,7 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
             </CardContent>
           </Card>
         )}
-      { listing.ics !== null
+        { listing.ics !== null
         && (
           <Card>
             <CardHeader title="Certification History" />
@@ -124,7 +125,7 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
             </CardContent>
           </Card>
         )}
-      { listing.otherAcb !== null
+        { listing.otherAcb !== null
         && (
           <Card>
             <CardHeader title="Other ACB" />
@@ -133,7 +134,7 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
             </CardContent>
           </Card>
         )}
-      { listing.targetedUsers?.length > 0
+        { listing.targetedUsers?.length > 0
         && (
           <Card>
             <CardHeader title="Developer Identified Targeted Users" />
@@ -148,10 +149,10 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
             </CardContent>
           </Card>
         )}
-      <Card>
-        <CardHeader title="Estimated Number of Promoting Interoperability Users" />
-        <CardContent>
-          { currentPi
+        <Card>
+          <CardHeader title="Estimated Number of Promoting Interoperability Users" />
+          <CardContent>
+            { currentPi
             && (
               <Typography>
                 { currentPi.userCount }
@@ -160,14 +161,15 @@ function ChplAdditionalInformation({ isConfirming = false, listing }) {
                 { getDisplayDateFormat(currentPi.userCountDate) }
               </Typography>
             )}
-          { !currentPi
+            { !currentPi
             && (
               <Typography>No Promoting Interoperability Users data exists.</Typography>
             )}
-        </CardContent>
-      </Card>
-    </Box>
-  </>;
+          </CardContent>
+        </Card>
+      </Box>
+    </>
+  );
 }
 
 export default ChplAdditionalInformation;

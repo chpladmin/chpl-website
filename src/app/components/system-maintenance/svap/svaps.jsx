@@ -149,7 +149,8 @@ function ChplSvaps() {
             <TrendingUpOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplSvapEdit
             svap={activeSvap}
