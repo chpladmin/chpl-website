@@ -90,7 +90,7 @@ function ChplAttestationWizardSection3({ developer, isSubmitting = false, dispat
           </CardContent>
         </Card>
         <Typography sx={styles.fullWidthGridRow}>
-          Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the â€œSign Electronicallyâ€ button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
+          Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
         </Typography>
         <Card sx={user.title ? styles.nameContainer : styles.nameOnlyContainer}>
           <CardContent>
