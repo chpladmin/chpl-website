@@ -1,10 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress, Container } from '@mui/material';
 import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -16,7 +11,7 @@ import { eventTrack } from 'services/analytics.service';
 import { DeveloperContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   errorColor: {
     border: '1px solid #c44f65',
     color: palette.error,
@@ -51,7 +46,7 @@ const useStyles = makeStyles({
       flexDirection: 'row',
     },
   },
-});
+};
 
 function ChplEditDeveloper({ dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -63,7 +58,6 @@ function ChplEditDeveloper({ dispatch }) {
   const [confirmationText, setConfirmationText] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   const handleError = (error) => {
     setIsProcessing(false);
@@ -165,7 +159,7 @@ function ChplEditDeveloper({ dispatch }) {
   return (
     <>
       <Container disableGutters maxWidth="lg">
-        <Box className={classes.pageContainer}>
+        <Box sx={styles.pageContainer}>
           <ChplDeveloper
             dispatch={handleDispatch}
             isEditing

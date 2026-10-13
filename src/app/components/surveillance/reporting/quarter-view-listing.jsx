@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
+  Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography,
+} from '@mui/material';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import ArrowUpward from '@mui/icons-material/ArrowUpward';
 import { object } from 'prop-types';
 
 import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveillance';
@@ -17,7 +11,7 @@ import ChplQuarterViewListingSurveillance from './quarter-view-listing-surveilla
 import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles, palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   accordionSummary: {
     backgroundColor: `${palette.white} !important`,
@@ -33,16 +27,15 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr 1fr',
     gridGap: '8px',
   },
-});
+};
 
 function ChplQuarterViewListing({ listing }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const classes = useStyles();
 
   return (
     <Accordion key={listing.chplProductNumber}>
       <AccordionSummary
-        className={classes.accordionSummary}
+        sx={styles.accordionSummary}
         expandIcon={(
           <Button
             variant="outlined"
@@ -55,7 +48,7 @@ function ChplQuarterViewListing({ listing }) {
         )}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className={classes.accordionSummaryContent}>
+        <Box sx={styles.accordionSummaryContent}>
           <div>
             <Typography gutterBottom><strong>Product Number</strong></Typography>
             <Typography>{ listing.chplProductNumber }</Typography>
@@ -68,13 +61,13 @@ function ChplQuarterViewListing({ listing }) {
             <Typography gutterBottom><strong># Relevant Surveillances:</strong></Typography>
             <Typography>{ listing.surveillances.length }</Typography>
           </div>
-        </div>
+        </Box>
       </AccordionSummary>
       <AccordionDetails style={{
         display: 'flex', padding: '0', marginTop: '-32px', boxShadow: 'none',
       }}
       >
-        <Box display="flex" width="100%" gridGap="32px" flexDirection="row" justifyContent="space-between">
+        <Box display="flex" width="100%" gap="32px" flexDirection="row" justifyContent="space-between">
           { listing.surveillances
             .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
             .map((surv) => (

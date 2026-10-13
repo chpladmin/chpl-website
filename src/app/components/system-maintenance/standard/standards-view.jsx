@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { arrayOf, func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@mui/icons-material/Add';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';

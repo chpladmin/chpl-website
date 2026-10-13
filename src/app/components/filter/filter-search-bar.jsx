@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -19,7 +16,7 @@ import { useFilterContext } from './filter-context';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   searchContainer: {
     backgroundColor: palette.grey,
     padding: '16px 32px',
@@ -28,7 +25,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '16px',
     },
     [theme.breakpoints.up('md')]: {
@@ -39,7 +36,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     gridGap: '8px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',
@@ -54,17 +51,18 @@ const useStyles = makeStyles({
     top: '8px',
     zIndex: 3,
   },
-  stuck: {
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: '100%',
-      height: '100px',
-      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 55%, transparent)`,
-      pointerEvents: 'none',
-    },
+};
+
+const getStuckStyles = (fadeBackground) => ({
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: '100%',
+    height: '100px',
+    background: `linear-gradient(to top, ${fadeBackground} 55%, transparent)`,
+    pointerEvents: 'none',
   },
 });
 
@@ -78,7 +76,6 @@ function ChplFilterSearchBar({
   toggleMultipleFilters = undefined,
 }) {
   const { filters } = useFilterContext();
-  const classes = useStyles({ fadeBackground });
   const sentinelRef = useRef(null);
   const [isStuck, setIsStuck] = useState(false);
 
@@ -95,8 +92,8 @@ function ChplFilterSearchBar({
   }, [sticky]);
 
   const searchBar = (
-    <div
-      className={sticky ? `${classes.searchContainer} ${classes.sticky} ${isStuck ? classes.stuck : ''}` : classes.searchContainer}
+    <Box
+      sx={[styles.searchContainer, sticky && styles.sticky, isStuck && getStuckStyles(fadeBackground)]}
       data-filter-search-bar="true"
     >
       { !hideSearchTerm
@@ -105,7 +102,7 @@ function ChplFilterSearchBar({
             placeholder={placeholder}
           />
         )}
-      <Box className={classes.searchButtonContainer}>
+      <Box sx={styles.searchButtonContainer}>
         <ChplFilterBrowse />
         { !hideAdvancedSearch
           && (
@@ -118,7 +115,7 @@ function ChplFilterSearchBar({
             />
           )}
       </Box>
-    </div>
+    </Box>
   );
 
   if (!sticky) {
@@ -127,7 +124,7 @@ function ChplFilterSearchBar({
 
   return (
     <>
-      <div ref={sentinelRef} />
+      <Box ref={sentinelRef} />
       {searchBar}
     </>
   );

@@ -3,8 +3,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
-} from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { arrayOf, object } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
@@ -67,7 +67,12 @@ function ChplFilterQuickFilters({ toggleMultipleFilters = undefined }) {
   return (
     <>
       <ChplTooltip title="Quick Filters">
-        <IconButton aria-controls="quick-filter-menu" aria-haspopup="true" onClick={handleClick}>
+        <IconButton
+          aria-controls="quick-filter-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+          size="large"
+        >
           <MoreVertIcon color="inherit" style={{ color: palette.black }} />
         </IconButton>
       </ChplTooltip>
@@ -75,7 +80,6 @@ function ChplFilterQuickFilters({ toggleMultipleFilters = undefined }) {
         id="quick-filter-menu"
         open={open}
         anchorEl={anchor}
-        getContentAnchorEl={null}
         keepMounted
         onClose={handleClose}
         anchorOrigin={{
@@ -104,14 +108,14 @@ function ChplFilterQuickFilters({ toggleMultipleFilters = undefined }) {
           Reset All Filters
         </MenuItem>
         { toggleMultipleFilters?.length > 0
-          && toggleMultipleFilters.map((f) => (
-            <MenuItem
-              key={f.display}
-              onClick={() => f.toggle()}
-            >
-              { f.display }
-            </MenuItem>
-          ))}
+        && toggleMultipleFilters.map((f) => (
+          <MenuItem
+            key={f.display}
+            onClick={() => f.toggle()}
+          >
+            { f.display }
+          </MenuItem>
+        ))}
         { quickFilter.values
           .filter((v) => toggleMultipleFilters?.display !== v.value)
           .map((v) => (

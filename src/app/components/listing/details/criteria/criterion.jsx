@@ -7,11 +7,10 @@ import {
   Container,
   IconButton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import WarningIcon from '@material-ui/icons/Warning';
+} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import WarningIcon from '@mui/icons-material/Warning';
 
 import ChplCriterionDetailsView from './criterion-details-view';
 
@@ -24,7 +23,7 @@ import {
 } from 'shared/prop-types';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   criterionAccordion: {
     borderRadius: '8px',
     display: 'grid',
@@ -69,7 +68,7 @@ const useStyles = makeStyles({
   updateRequired: {
     color: palette.error,
   },
-});
+};
 
 function ChplCriterion({
   certificationResult: initialCriterion,
@@ -81,7 +80,6 @@ function ChplCriterion({
   const [expanded, setExpanded] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [qmsStandards, setQmsStandards] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setCriterion(initialCriterion);
@@ -104,7 +102,7 @@ function ChplCriterion({
       ? (
         <>
           <Typography color="primary" variant="body2">Hide Details</Typography>
-          <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+          <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
         </>
       )
       : (
@@ -133,25 +131,25 @@ function ChplCriterion({
     <div>
       <Accordion
         disabled={isDisabled}
-        className={classes.criterionAccordion}
+        sx={styles.criterionAccordion}
         onChange={handleAccordionChange}
         id={`criterion-id-${criterion.criterion.id}`}
       >
         <AccordionSummary
-          className={classes.criterionAccordionSummary}
+          sx={styles.criterionAccordionSummary}
           expandIcon={getIcon()}
           id={`criterion-id-${criterion.criterion.id}-header`}
         >
-          <Box className={classes.criterionAccordionSummaryHeader}>
-            <Box className={classes.criterionAccordionSummarySubBox}>
-              <Box className={classes.criterionAccordionSummaryData}>
+          <Box sx={styles.criterionAccordionSummaryHeader}>
+            <Box sx={styles.criterionAccordionSummarySubBox}>
+              <Box sx={styles.criterionAccordionSummaryData}>
                 { criterion.success
                   && (
                     <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
                   )}
               </Box>
-              <Box className={classes.criterionAccordionSummaryData}>
-                <Typography variant="h6" className={classes.criterionNumber}>
+              <Box sx={styles.criterionAccordionSummaryData}>
+                <Typography variant="h6" sx={styles.criterionNumber}>
                   { criterion.criterion.status === 'REMOVED'
                     && (
                       <>
@@ -170,7 +168,7 @@ function ChplCriterion({
                 </Typography>
               </Box>
             </Box>
-            <Box className={classes.criterionAccordionSummaryData}>
+            <Box sx={styles.criterionAccordionSummaryData}>
               <Typography variant="body2">
                 { criterion.criterion.title }
               </Typography>
@@ -180,7 +178,7 @@ function ChplCriterion({
                 <Box>
                   <ChplTooltip title="Requirement not met">
                     <IconButton size="small" aria-label="Requirement not met for this criterion">
-                      <WarningIcon className={classes.updateRequired} />
+                      <WarningIcon sx={styles.updateRequired} />
                     </IconButton>
                   </ChplTooltip>
                 </Box>
@@ -190,7 +188,7 @@ function ChplCriterion({
         { (listing.edition === null || listing.edition.name !== '2011')
           && (
             <AccordionDetails
-              className={classes.criterionAccordionDetails}
+              sx={styles.criterionAccordionDetails}
               id={`criterion-id-${criterion.criterion.id}-details`}
             >
               <Container>

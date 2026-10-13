@@ -8,15 +8,14 @@ import {
   Dialog,
   DialogContent,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { object } from 'prop-types';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
+import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -52,12 +51,11 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 function ChplQuarterViewListingSurveillance({ surveillance }) {
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
-  const classes = useStyles();
 
   useEffect(() => {
     setProgress(Math.round(((
@@ -88,13 +86,13 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
   return (
     <>
       <Card style={{ width: '100%' }}>
-        <div className={classes.idContainer}>
+        <Box sx={styles.idContainer}>
           <Typography>
             <strong>Surveillance ID:</strong>
             {' '}
             { surveillance.friendlyId }
           </Typography>
-          <Box display="flex" flexDirection="row" alignItems="center" gridGap="4px">
+          <Box display="flex" flexDirection="row" alignItems="center" gap="4px">
             <Box position="relative" display="inline-flex">
               <CircularProgress value={progress} variant="determinate" size={24} color="primary" />
               <Box
@@ -114,8 +112,8 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             </Box>
             <Typography variant="body2">Completed</Typography>
           </Box>
-        </div>
-        <div className={classes.container}>
+        </Box>
+        <Box sx={styles.container}>
           <Typography>
             <strong>Start Day:</strong>
             {' '}
@@ -136,7 +134,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
             {' '}
             { surveillance.numOpenNonconformities }
           </Typography>
-        </div>
+        </Box>
         <Box style={{ padding: '8px 16px' }}>
           <Button
             variant="outlined"
@@ -153,7 +151,7 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <CardHeader title="Surveillance Data" />
         <DialogContent>
-          <div className={classes.container}>
+          <Box sx={styles.container}>
             <Typography>
               <strong>Surveillance Type:</strong>
               {' '}
@@ -170,39 +168,39 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
               { surveillance.surveillanceOutcome?.name }
             </Typography>
             { surveillance.surveillanceOutcome?.name === 'Other'
-              && (
-                <Typography>
-                  <strong>Outcome of Surveillance - Other Explanation:</strong>
-                  {' '}
-                  { surveillance.surveillanceOutcomeOther }
-                </Typography>
-              )}
+            && (
+              <Typography>
+                <strong>Outcome of Surveillance - Other Explanation:</strong>
+                {' '}
+                { surveillance.surveillanceOutcomeOther }
+              </Typography>
+            )}
             <Typography>
               <strong>Surveillance Process Type:</strong>
               {' '}
               { surveillance.surveillanceProcessTypes.map((s) => s.name).join('; ') }
             </Typography>
             { surveillance.surveillanceProcessTypes.some((s) => s.name === 'Other')
-              && (
-                <Typography>
-                  <strong>Surveillance Process Type - Other Explanation:</strong>
-                  {' '}
-                  { surveillance.surveillanceProcessTypeOther }
-                </Typography>
-              )}
+            && (
+              <Typography>
+                <strong>Surveillance Process Type - Other Explanation:</strong>
+                {' '}
+                { surveillance.surveillanceProcessTypeOther }
+              </Typography>
+            )}
             <Typography>
               <strong>Grounds For Initiating Surveillance:</strong>
               {' '}
               { surveillance.surveillanceGroundsForInitiating.map((s) => s.name).join('; ') }
             </Typography>
             { surveillance.surveillanceGroundsForInitiating.some((s) => s.name === 'Other')
-              && (
-                <Typography>
-                  <strong>Grounds For Initiating Surveillance - Other:</strong>
-                  {' '}
-                  { surveillance.surveillanceGroundsForInitiatingOther }
-                </Typography>
-              )}
+            && (
+              <Typography>
+                <strong>Grounds For Initiating Surveillance - Other:</strong>
+                {' '}
+                { surveillance.surveillanceGroundsForInitiatingOther }
+              </Typography>
+            )}
             <Typography>
               <strong>Potential Causes of Non-Conformities or Suspected Non-Conformities:</strong>
               {' '}
@@ -249,25 +247,25 @@ function ChplQuarterViewListingSurveillance({ surveillance }) {
               { surveillance.capStatuses.map((s) => s.name).join('; ') }
             </Typography>
             { surveillance.capStatuses.some((s) => s.name === 'Other')
-              && (
-                <Typography>
-                  <strong>CAP Status - Other:</strong>
-                  {' '}
-                  { surveillance.capStatusOther }
-                </Typography>
-              )}
+            && (
+              <Typography>
+                <strong>CAP Status - Other:</strong>
+                {' '}
+                { surveillance.capStatusOther }
+              </Typography>
+            )}
             <Typography>
               <strong>Surveillance Findings:</strong>
               {' '}
               { surveillance.surveillanceFindings }
             </Typography>
-          </div>
+          </Box>
         </DialogContent>
-        <div className={classes.dialogActions}>
+        <Box sx={styles.dialogActions}>
           <Button onClick={handleClose} variant="outlined" color="primary">
             Close
           </Button>
-        </div>
+        </Box>
       </Dialog>
     </>
   );

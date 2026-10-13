@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, IconButton, Typography } from '@mui/material';
 import { arrayOf, shape } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
@@ -22,16 +17,15 @@ const sortOptions = [
   { property: 'displayValue', text: 'Display Value' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards }) {
   const [optionalStandards, setOptionalStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('displayValue');
   const filterContext = useFilterContext();
-  const classes = useStyles();
 
   useEffect(() => {
     setOptionalStandards(initialOptionalStandards
@@ -64,14 +58,14 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
         placeholder="Search by Display Value, Citation, or Description..."
       />
       <ChplFilterLayout>
-        <Box className={classes.headerContainer}>
-          <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+        <Box sx={styles.headerContainer}>
+          <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
             <Typography variant="subtitle2">Search Results</Typography>
             <Typography variant="body2">
               {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center" gridGap={4}>
+          <Box display="flex" alignItems="center" gap="4px">
             <ChplSortControls
               sortOptions={sortOptions}
               orderBy={orderBy}

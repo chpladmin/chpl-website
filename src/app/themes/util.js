@@ -1,3 +1,5 @@
+import palette from './palette';
+
 const util = {
   anchorElement: {
     position: 'relative',
@@ -10,10 +12,13 @@ const util = {
     marginLeft: '-12px',
   },
   deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    border: `1px solid ${palette.error}`,
+    backgroundColor: palette.white,
+    color: palette.error,
     '&:hover': {
-      backgroundColor: '#853544',
+      border: `1px solid ${palette.errorDark}`,
+      color: palette.errorDark,
+      backgroundColor: palette.errorLight,
     },
   },
   deleteButtonOutlined: {
@@ -101,6 +106,17 @@ const util = {
     alignItems: 'center',
     marginBottom: '8px',
     padding: '16px 32px',
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: '1px',
+    margin: '-1px',
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    whiteSpace: 'nowrap',
+    width: '1px',
   },
 };
 

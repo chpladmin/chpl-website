@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  Collapse,
-  IconButton,
-  List,
-  ListItem,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+  Collapse, IconButton, List, ListItem, Typography,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import {
   bool,
   func,
@@ -20,7 +15,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   sectionHeader: {
     padding: '12px 16px',
     cursor: 'pointer',
@@ -41,7 +36,7 @@ const useStyles = makeStyles({
   sectionChevron: {
     marginLeft: 'auto',
   },
-});
+};
 
 function ChplAdminMenuSection({
   children,
@@ -51,7 +46,6 @@ function ChplAdminMenuSection({
   section,
   title,
 }) {
-  const classes = useStyles();
   const { analytics } = useAnalyticsContext();
 
   const handleToggle = () => {
@@ -66,13 +60,13 @@ function ChplAdminMenuSection({
   return (
     <>
       <ListItem
-        className={classes.sectionHeader}
+        sx={styles.sectionHeader}
         onClick={handleToggle}
         divider
       >
-        <Typography className={classes.sectionHeaderText}>{title}</Typography>
+        <Typography sx={styles.sectionHeaderText}>{title}</Typography>
         <IconButton
-          className={classes.sectionChevron}
+          sx={styles.sectionChevron}
           aria-label={isOpen ? `Collapse ${title}` : `Expand ${title}`}
           aria-expanded={isOpen}
           size="small"

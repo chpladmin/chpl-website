@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogContent,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+  Button, CircularProgress, Dialog, DialogContent,
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import { number } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
@@ -15,18 +11,17 @@ import ChplSed from 'components/listing/details/sed/sed';
 import { eventTrack } from 'services/analytics.service';
 import { ListingContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   title: {
     fontSize: '1.25em',
   },
-});
+};
 
 function ChplSedPopup({ id }) {
   const { analytics } = useAnalyticsContext();
   const [listing, setListing] = useState(undefined);
   const [open, setOpen] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id, enabled: open });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -77,7 +72,7 @@ function ChplSedPopup({ id }) {
         <ChplDialogTitle
           id="sed-title"
           onClose={handleClose}
-          className={classes.title}
+          sx={styles.title}
         >
           SED Details
         </ChplDialogTitle>

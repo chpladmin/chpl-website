@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -16,7 +12,7 @@ import {
 
 import ChplProductEdit from './product-edit';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -34,7 +30,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-});
+};
 
 function ChplProduct({
   dispatch = () => {},
@@ -46,7 +42,6 @@ function ChplProduct({
   product,
 }) {
   const [isInvalid, setIsInvalid] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setIsInvalid(initialIsInvalid);
@@ -71,14 +66,14 @@ function ChplProduct({
     >
       <CardHeader
         title={(
-          <div className={classes.headerContainer}>
-            <div className={classes.elementHeaderContainer}>Original Product</div>
-          </div>
+          <Box sx={styles.headerContainer}>
+            <Box sx={styles.elementHeaderContainer}>Original Product</Box>
+          </Box>
         )}
         component="div"
-        className={classes.elementHeader}
+        sx={styles.elementHeader}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Product</strong>
