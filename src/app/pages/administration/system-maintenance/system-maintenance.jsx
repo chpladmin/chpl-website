@@ -24,6 +24,7 @@ import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import PlaylistAddCheckOutlinedIcon from '@mui/icons-material/PlaylistAddCheckOutlined';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
