@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import {
   arrayOf,
   bool,
-  number,
   object,
   string,
 } from 'prop-types';
@@ -68,7 +67,6 @@ const getStuckStyles = (fadeBackground) => ({
 
 function ChplFilterSearchBar({
   fadeBackground = palette.backgroundPage,
-  filterGridMinColWidth = 200,
   hideAdvancedSearch = false,
   hideSearchTerm = false,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
@@ -106,7 +104,7 @@ function ChplFilterSearchBar({
         <ChplFilterBrowse />
         { !hideAdvancedSearch
           && (
-            <ChplFilterPanel filterGridMinColWidth={filterGridMinColWidth} />
+            <ChplFilterPanel />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
@@ -134,7 +132,6 @@ export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
   fadeBackground: string,
-  filterGridMinColWidth: number,
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
   placeholder: string,

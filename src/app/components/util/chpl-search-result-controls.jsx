@@ -55,15 +55,13 @@ const getStyles = ({ fadeBackground, sticky, wrapActions }) => ({
   actions: {
     display: 'flex',
     alignItems: 'center',
-    gap: '2px',
+    gap: '4px',
     flexWrap: wrapActions ? 'wrap' : 'nowrap',
     [theme.breakpoints.down('md')]: {
       flexWrap: 'wrap',
-      gap: '8px',
       width: '100%',
     },
     [theme.breakpoints.up('md')]: {
-      gap: '2px',
       width: 'auto',
       '& > *': {
         flex: '0 1 auto',

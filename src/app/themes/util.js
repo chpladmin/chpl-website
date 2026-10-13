@@ -102,6 +102,8 @@ const util = {
   headerContainer: {
     boxShadow: 'rgba(0, 0, 0, 0.1) 0px 8px 16px 0px',
     display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: '8px',

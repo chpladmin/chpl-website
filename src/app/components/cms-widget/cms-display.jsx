@@ -220,15 +220,25 @@ const styles = {
   yearSelectorLayout: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: '16px',
   },
   yearLabel: {
     fontWeight: '900 !important',
+    color: palette.black,
+    '&.Mui-focused': {
+      color: palette.black,
+    },
+    fontSize: '12.5px',
     marginBottom: 0,
+    width: 'fit-content',
     whiteSpace: 'nowrap',
   },
   yearRadioGroup: {
-    gap: '8px',
+    flexWrap: 'nowrap',
+    gap: '4px',
+  },
+  yearOption: {
+    marginLeft: '4px',
+    marginRight: 0,
   },
   reportingYearOptionFontWeight600WhenActive: {
     fontWeight: '600 !important',
@@ -237,11 +247,10 @@ const styles = {
     fontWeight: '400 !important',
   },
   reportingYearRadioUsesActivePaletteColor: {
-    color: palette.active,
+    color: palette.primary,
   },
-  reportingYearRadioScale150WithRightSpacing: {
-    transform: 'scale(1.5)',
-    marginRight: '4px',
+  reportingYearRadioPadding: {
+    padding: '4px',
   },
 };
 
@@ -446,12 +455,14 @@ function ChplCmsDisplay({ onClose }) {
                   <FormControlLabel
                     key={y}
                     value={y}
+                    sx={styles.yearOption}
                     control={(
                       <Radio
                         color="primary"
+                        size="small"
                         sx={[
                           styles.reportingYearRadioUsesActivePaletteColor,
-                          styles.reportingYearRadioScale150WithRightSpacing,
+                          styles.reportingYearRadioPadding,
                         ]}
                       />
                     )}
