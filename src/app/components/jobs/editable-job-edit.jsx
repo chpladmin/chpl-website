@@ -44,6 +44,7 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   email: yup.string()
+    .required('Email is required')
     .email('Enter a valid email'),
 });
 
@@ -72,6 +73,7 @@ function ChplEditableJobEdit(props) {
   };
 
   const add = () => {
+    if (!formik.values.email) { return; }
     setEmails([...new Set([...emails, formik.values.email])]);
     formik.resetForm();
   };
@@ -82,7 +84,7 @@ function ChplEditableJobEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      email: '',
+      email: undefined,
     },
     onSubmit: () => {
       const payload = {
@@ -134,6 +136,7 @@ function ChplEditableJobEdit(props) {
                   onClick={() => add()}
                   variant="contained"
                   color="primary"
+                  disabled={!formik.isValid}
                 >
                   Add
                   <AddIcon className={classes.iconSpacing} />
