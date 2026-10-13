@@ -77,7 +77,7 @@ function ChplEditableJobEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      email: undefined,
+      email: '',
     },
     onSubmit: () => {
       const payload = {
