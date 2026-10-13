@@ -602,6 +602,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                     <InputAdornment position="start">
                       <Select
                         aria-label="Select Edition of Certification Criteria"
+                        variant="standard"
+                        disableUnderline
                         value={criterionParagraph}
                         onChange={handleEditionFilterChange}
                       >

@@ -11,7 +11,6 @@ import {
   Typography,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { number } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
@@ -54,13 +53,21 @@ const styles = {
   filterBold: {
     fontWeight: '600',
   },
+  // Just under the theme's 1em, so the longest name still fits half a row when it's selected and bold
+  filterCategoryButton: {
+    fontSize: '0.9em',
+  },
+  // Two categories to a row, e.g. Certification Criteria beside Certification Date
   filterContainer: {
     display: 'grid',
-    justifyItems: 'start',
-    alignItems: 'start',
+    gridTemplateColumns: 'minmax(200px, 1fr)',
+    alignItems: 'stretch',
     gap: '16px',
     padding: '0 8px',
     marginTop: '16px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -114,7 +121,7 @@ const styles = {
   },
 };
 
-function ChplFilterPanel({ filterGridMinColWidth }) {
+function ChplFilterPanel() {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [panelWidth, setPanelWidth] = useState(null);
@@ -157,7 +164,6 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
       });
     }
     setOpen(false);
-    setPanelWidth(null);
   };
 
   const handleAction = (action) => {
@@ -247,7 +253,20 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
-        TransitionProps={{ onExited: () => { setAnchor(null); setActiveCategoryKey(''); } }}
+        // Everything the panel is sized and filled from stays put until it has finished closing,
+        // so the closing animation is not interrupted by the panel changing width or content
+        transitionDuration={{ enter: 260, exit: 180 }}
+        TransitionProps={{
+          easing: {
+            enter: theme.transitions.easing.easeOut,
+            exit: theme.transitions.easing.sharp,
+          },
+          onExited: () => {
+            setAnchor(null);
+            setActiveCategoryKey('');
+            setPanelWidth(null);
+          },
+        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -299,14 +318,14 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                 )}
               >
                 <Box sx={styles.filterSubHeaderContainer}>
-                  <Box sx={[styles.filterContainer, { gridTemplateColumns: `repeat(auto-fit, minmax(${filterGridMinColWidth}px, 1fr))` }]}>
+                  <Box sx={styles.filterContainer}>
                     { filters.map((f) => (
                       <Button
                         fullWidth
                         key={f.key}
                         color={f === activeCategory ? 'inherit' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
-                        sx={{ whiteSpace: f.wrapText ? 'normal' : 'nowrap' }}
+                        sx={[styles.filterCategoryButton, { whiteSpace: f.wrapText ? 'normal' : 'nowrap' }]}
                         variant="outlined"
                         onClick={() => handleCategoryToggle(f)}
                       >
@@ -325,7 +344,7 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
               <Box mt={2}>
                 <Typography sx={styles.directionText} variant="subtitle1" gutterBottom>Select a filter to begin</Typography>
                 <Typography variant="body1">To narrow down your search results, choose a filter category from the left-hand panel.</Typography>
-                <Typography sx={{mt: 2}} variant="body1">Then, select one or more filter options to apply to your search.</Typography>
+                <Typography sx={{ mt: 2 }} variant="body1">Then, select one or more filter options to apply to your search.</Typography>
               </Box>
             )}
             { activeCategory?.values.length > 0 && (
@@ -432,7 +451,3 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
 }
 
 export default ChplFilterPanel;
-
-ChplFilterPanel.propTypes = {
-  filterGridMinColWidth: number.isRequired,
-};

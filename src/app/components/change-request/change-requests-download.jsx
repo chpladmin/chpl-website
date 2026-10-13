@@ -53,7 +53,6 @@ function ChplChangeRequestsDownload({
 
   return (
     <Button
-      fullWidth
       color="primary"
       variant="outlined"
       onClick={download}
