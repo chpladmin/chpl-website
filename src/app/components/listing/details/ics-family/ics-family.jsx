@@ -11,9 +11,9 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CircularProgress,
   List,
   ListItem,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -209,7 +209,7 @@ function ChplIcsFamily(props) {
 
   if (!isShowingDiagram) {
     return (
-      <CircularProgress />
+      <Skeleton variant="rectangular" height={475} style={{ borderRadius: 4 }} />
     );
   }
 
