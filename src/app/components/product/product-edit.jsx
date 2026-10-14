@@ -53,6 +53,9 @@ const styles = {
     margin: '0',
     fontSize: '1.25em',
   },
+  currentOwner: {
+    paddingBottom: '8px',
+  },
   owners: {
     display: 'flex',
     flexDirection: 'column',
@@ -294,7 +297,7 @@ function ChplProductEdit(props) {
           { !isSplitting
             && (
               <Box sx={styles.fullWidthGridRow}>
-                <Card sx={styles.owners}>
+                <Box sx={styles.currentOwner}>
                   <ChplTextField
                     select
                     id="current-owner"
@@ -311,7 +314,7 @@ function ChplProductEdit(props) {
                         <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
                       ))}
                   </ChplTextField>
-                </Card>
+                </Box>
                 <TableContainer>
                   <Table sx={styles.table}>
                     <TableHead>
