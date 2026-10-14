@@ -172,7 +172,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, [{ flex: '2 1 320px', lines: 3 }, { lines: 2 }, {}]]} />)}
           { !isLoading
         && (
           <>

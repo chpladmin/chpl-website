@@ -158,7 +158,7 @@ function ChplDevelopersView() {
           toggleMultipleFilters={bonusQuickFilters}
         />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3]} actions={0} />)}
           { !isLoading
           && (
             <>

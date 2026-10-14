@@ -112,7 +112,7 @@ function ChplDecisionSupportInterventionsSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, [{ lines: 2 }]]} />)}
           { !isLoading
           && (
             <>

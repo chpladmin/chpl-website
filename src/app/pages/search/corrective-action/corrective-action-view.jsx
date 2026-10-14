@@ -141,7 +141,7 @@ function ChplCorrectiveActionSearchView() {
           <>
             <ChplFilterSearchBar sticky />
             <ChplFilterLayout>
-              { isLoading && (<ChplLoadingCards />)}
+              { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, [{ flex: '1 1 0' }, { flex: '1 1 0' }, { flex: '1 1 0' }, { flex: '1 1 0' }]]} />)}
               { !isLoading
               && (
                 <>

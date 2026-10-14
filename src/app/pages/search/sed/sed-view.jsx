@@ -126,7 +126,7 @@ function ChplSedSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3]} actions={3} />)}
           { !isLoading
         && (
           <>
