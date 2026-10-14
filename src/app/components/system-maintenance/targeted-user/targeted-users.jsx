@@ -65,7 +65,7 @@ function ChplTargetedUsers() {
       filters={filters}
       storageKey="storageKey-targetedUsers"
     >
-      <Card>
+      <Card style={{ overflow: 'visible' }}>
         <CardHeader
           style={{ paddingLeft: '16px' }}
           title={(
@@ -75,7 +75,7 @@ function ChplTargetedUsers() {
             </>
           )}
         />
-        <CardContent>
+        <CardContent style={{ overflow: 'visible' }}>
           <ChplTargetedUsersView
             certificationStatuses={certificationStatuses}
           />

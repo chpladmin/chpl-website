@@ -22,13 +22,18 @@ import { useSelector } from 'react-redux';
 import { useFetchTargetedUsers } from 'api/standards';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { certificationStatuses as certificationStatusesFilter } from 'components/filter/filters';
-import { ChplPagination, ChplSearchResultCard, ChplSortControls } from 'components/util';
+import {
+  ChplPagination,
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+} from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 // Sorted on the server: `property` is the API's orderBy value
 const sortOptions = [
@@ -196,78 +201,56 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
     <>
       <ChplFilterSearchBar
         placeholder="Search by Name..."
+        sticky
+        fadeBackground={palette.white}
       />
       <ChplFilterLayout>
         { isLoading && <CircularProgress /> }
         { !isLoading
           && (
             <>
-              <Box sx={styles.headerContainer}>
-                <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-                  { isPreviousData && <CircularProgress size={20} /> }
-                  {/* Same wording as ChplSearchResultControls on the other search pages */}
-                  { !isPreviousData
-                    && (
-                      <>
-                        <Typography variant="subtitle2">Search Results:</Typography>
-                        { recordCount === 0
-                          && (
-                            <Typography>
-                              No results found
-                            </Typography>
-                          )}
-                        { recordCount > 0
-                          && (
-                            <Typography variant="body2">
-                              {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                            </Typography>
-                          )}
-                      </>
+              <ChplSearchResultControls
+                recordCount={recordCount}
+                pageStart={pageStart}
+                pageEnd={pageEnd}
+                fadeBackground={palette.white}
+              >
+                <ChplSortControls
+                  sortOptions={sortOptions}
+                  orderBy={orderBy}
+                  order={sortDescending ? 'desc' : 'asc'}
+                  onSort={handleSort}
+                />
+                <Button
+                  onClick={downloadTargetedUsers}
+                  id="download-targeted-users"
+                  disabled={isPreviousData}
+                  variant="outlined"
+                  color="primary"
+                  endIcon={<CloudDownloadOutlinedIcon />}
+                >
+                  Download information for
+                  {' '}
+                  { recordCount }
+                  {' '}
+                  {`Targeted User${recordCount !== 1 ? 's' : ''}`}
+                </Button>
+              </ChplSearchResultControls>
+              { targetedUsers
+                .map((item) => (
+                  <ChplSearchResultCard
+                    key={item.id}
+                    cardTitle="Targeted User"
+                    cardTitleValue={item.name}
+                    additionalTitleContent={(
+                      <Box>
+                        { getNarrowField('Total Listings', item.total) }
+                        { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
+                      </Box>
                     )}
-                </Box>
-                <Box display="flex" alignItems="center" gap="4px">
-                  <ChplSortControls
-                    sortOptions={sortOptions}
-                    orderBy={orderBy}
-                    order={sortDescending ? 'desc' : 'asc'}
-                    onSort={handleSort}
+                    fieldGroups={getStatusFieldGroups(item)}
                   />
-                  { recordCount > 0
-                    && (
-                      <Button
-                        onClick={downloadTargetedUsers}
-                        id="download-targeted-users"
-                        disabled={isPreviousData}
-                        variant="outlined"
-                        color="primary"
-                        endIcon={<CloudDownloadOutlinedIcon />}
-                      >
-                        Download information for
-                        {' '}
-                        { recordCount }
-                        {' '}
-                        {`Targeted User${recordCount !== 1 ? 's' : ''}`}
-                      </Button>
-                    )}
-                </Box>
-              </Box>
-              <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
-                { targetedUsers
-                  .map((item) => (
-                    <ChplSearchResultCard
-                      key={item.id}
-                      cardTitle="Targeted User"
-                      cardTitleValue={item.name}
-                      additionalTitleContent={(
-                        <Box sx={styles.narrowFields}>
-                          { getNarrowField('Total Listings', item.total) }
-                          { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
-                        </Box>
-                      )}
-                      fieldGroups={getStatusFieldGroups(item)}
-                    />
-                  ))}
-              </Box>
+                ))}
               { recordCount > 0
                 && (
                   <ChplPagination

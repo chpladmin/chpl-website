@@ -338,23 +338,21 @@ describe('while new results are loading', () => {
   });
   const downloadButton = () => screen.getByRole('button', { name: /^Download information for/ });
 
-  it('shows a spinner in place of the count, keeps the old cards and disables the download', () => {
+  it('keeps the old count and cards, shows no spinner and disables the download', () => {
     loadingWith(true);
     renderView();
-    expect(screen.getByRole('progressbar')).toBeInTheDocument();
-    expect(screen.queryByText('Search Results:')).not.toBeInTheDocument();
-    expect(screen.queryByText(/ Results\)$/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    expect(screen.getByText('(1-25 of 120 Results)')).toBeInTheDocument();
     expect(cardFor('beta')).toBeInTheDocument();
     expect(downloadButton()).toBeDisabled();
   });
 
-  it('brings the count and the download back once the results arrive', () => {
+  it('brings the download back once the results arrive', () => {
     loadingWith(true);
     renderView();
     loadingWith(false);
     // any re-render picks up the new state
     fireEvent.click(screen.getByRole('button', { name: 'Sort descending' }));
-    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     expect(screen.getByText('(1-25 of 120 Results)')).toBeInTheDocument();
     expect(downloadButton()).toBeEnabled();
   });
