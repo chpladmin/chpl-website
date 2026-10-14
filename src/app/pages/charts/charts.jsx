@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Card, CardContent, Typography, Button,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Skeleton,
+  Typography,
 } from '@mui/material';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { ChplPageBody, ChplPageHeader } from 'components/util';
+import {
+  ChplLoadingPage,
+  ChplPageBody,
+  ChplPageHeader,
+  ChplSkeletonCard,
+} from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
@@ -78,6 +88,93 @@ const styles = {
   },
 };
 
+// Same layout as ChplCharts with no report open: the report menu card beside
+// the introduction card and its grid of report tiles
+const loadingStyles = {
+  layout: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '32px',
+    width: '100%',
+  },
+  menu: {
+    width: '350px',
+    maxWidth: '35%',
+    flexShrink: 0,
+  },
+  menuContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    padding: '16px',
+  },
+  introduction: {
+    flex: 1,
+  },
+  introductionContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '16px',
+  },
+  tiles: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '32px',
+    marginTop: '32px',
+    marginBottom: '16px',
+  },
+  tile: {
+    width: '48%',
+    [theme.breakpoints.down('lg')]: {
+      width: '100%',
+    },
+  },
+  tileContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '32px',
+  },
+};
+
+const menuWidths = ['40%', '75%', '65%', '80%', '70%', '60%', '75%'];
+const tileWidths = ['70%', '55%', '65%', '60%', '75%', '50%'];
+
+function ChplChartsLoading() {
+  return (
+    <ChplLoadingPage label="Loading charts">
+      <Box sx={loadingStyles.layout}>
+        <ChplSkeletonCard sx={loadingStyles.menu}>
+          <Box sx={loadingStyles.menuContent}>
+            { menuWidths.map((width) => (
+              <Skeleton key={width} variant="text" width={width} height={36} />
+            ))}
+          </Box>
+        </ChplSkeletonCard>
+        <ChplSkeletonCard sx={loadingStyles.introduction}>
+          <Box sx={loadingStyles.introductionContent}>
+            <Skeleton variant="text" width="25%" height={32} />
+            <Skeleton variant="text" width="100%" height={22} />
+            <Skeleton variant="text" width="95%" height={22} />
+            <Skeleton variant="text" width="60%" height={22} />
+            <Box sx={loadingStyles.tiles}>
+              { tileWidths.map((width) => (
+                <ChplSkeletonCard key={width} sx={loadingStyles.tile}>
+                  <Box sx={loadingStyles.tileContent}>
+                    <Skeleton variant="circular" width={40} height={40} />
+                    <Skeleton variant="text" width={width} height={24} />
+                  </Box>
+                </ChplSkeletonCard>
+              ))}
+            </Box>
+          </Box>
+        </ChplSkeletonCard>
+      </Box>
+    </ChplLoadingPage>
+  );
+}
+
 function ChplCharts() {
   const { analytics } = useAnalyticsContext();
   const [activeReport, setActiveReport] = useState(undefined);
@@ -97,6 +194,10 @@ function ChplCharts() {
       event: `Navigate to ${reportMetadata.find((metadata) => metadata.title === title)?.title || 'Charts'}`,
     });
   };
+
+  if (isLoading) {
+    return <ChplChartsLoading />;
+  }
 
   return (
     <>
