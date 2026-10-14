@@ -10,8 +10,11 @@ import ChplPagination from './pagination';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
 import ChplLoadingCards from './chpl-loading-cards';
+import ChplLoadingPage from './chpl-loading-page';
+import ChplLoadingSection from './chpl-loading-section';
 import ChplLoadingSpinner from './chpl-loading-spinner';
 import ChplRouteLoading from './chpl-route-loading';
+import ChplSkeletonCard, { skeletonLineColor } from './chpl-skeleton-card';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
@@ -30,6 +33,8 @@ export {
   ChplEllipsis,
   ChplLink,
   ChplLoadingCards,
+  ChplLoadingPage,
+  ChplLoadingSection,
   ChplLoadingSpinner,
   ChplLoadingTable,
   ChplPageBody,
@@ -37,6 +42,7 @@ export {
   ChplPagination,
   ChplProgress,
   ChplRouteLoading,
+  ChplSkeletonCard,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
@@ -46,4 +52,5 @@ export {
   ChplUpdateIndicator,
   InternalScrollButton,
   SnackbarWrapper,
+  skeletonLineColor,
 };
