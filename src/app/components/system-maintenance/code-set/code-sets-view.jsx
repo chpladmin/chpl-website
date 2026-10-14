@@ -32,7 +32,7 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
     setCodeSets(initialCodeSets
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
+        criteriaDisplay: [...item.criteria]
           .sort(sortCriteria)
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),

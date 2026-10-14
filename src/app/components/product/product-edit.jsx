@@ -39,6 +39,7 @@ import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, jsJoda } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -308,8 +309,8 @@ function ChplProductEdit(props) {
                     onChange={handleOwnerChange}
                     onBlur={formik.handleBlur}
                   >
-                    { developers
-                      .sort((a, b) => a.name.localeCompare(b.name))
+                    { [...developers]
+                      .sort((a, b) => compareStrings(a.name, b.name))
                       .map((d) => (
                         <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
                       ))}
@@ -325,8 +326,8 @@ function ChplProductEdit(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {owners
-                       ?.sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
+                      {owners && [...owners]
+                        .sort((a, b) => (a.transferDay < b.transferDay ? 1 : -1))
                        ?.map((item) => (
                          <TableRow key={getKey(item)}>
                            <TableCell>
@@ -387,8 +388,8 @@ function ChplProductEdit(props) {
                         error={formik.touched.owner && !!formik.errors.owner}
                         helperText={formik.touched.owner && formik.errors.owner}
                       >
-                        { developers
-                          .sort((a, b) => a.name.localeCompare(b.name))
+                        { [...developers]
+                          .sort((a, b) => compareStrings(a.name, b.name))
                           .map((d) => (
                             <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
                           ))}

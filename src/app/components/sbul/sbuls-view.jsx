@@ -40,7 +40,7 @@ function ChplSbulsView({ developer, dispatch }) {
 
   useEffect(() => {
     if (isError || isLoading) { return; }
-    setSbuls(data.sort((a, b) => (a.url < b.url ? -1 : 1)));
+    setSbuls([...data].sort((a, b) => (a.url < b.url ? -1 : 1)));
   }, [data, isError, isLoading]);
 
   const createSbulChangeRequest = () => {

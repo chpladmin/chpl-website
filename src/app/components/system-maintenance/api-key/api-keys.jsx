@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -24,7 +23,7 @@ function ChplApiKeys() {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setApiKeys(data.sort((a, b) => (a.lastUsedDate < b.lastUsedDate ? -1 : 1)));
+    setApiKeys([...data].sort((a, b) => (a.lastUsedDate < b.lastUsedDate ? -1 : 1)));
   }, [data, isLoading, isSuccess]);
 
   const handleDispatch = ({ action, payload }) => {
