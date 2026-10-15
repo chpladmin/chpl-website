@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  IconButton,
-} from '@material-ui/core';
-import { arrayOf, shape, string } from 'prop-types';
+import { Box, IconButton } from '@material-ui/core';
+import { arrayOf, shape } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
 import {
@@ -13,11 +10,7 @@ import {
   ChplTooltip,
 } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
 import { palette } from 'themes';
 
@@ -45,7 +38,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
       .map((item) => ({
         ...item,
         domainDisplay: item.domain.name,
-        criteriaDisplay: item.allowedCriteria
+        criteriaDisplay: [...item.allowedCriteria]
           .sort(sortCriteria)
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),

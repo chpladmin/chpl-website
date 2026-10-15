@@ -21,13 +21,10 @@ import {
   ChplSearchResultControls,
   ChplSortControls,
 } from 'components/util';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
@@ -245,8 +242,8 @@ function ChplManageSubscriptionsView({ analytics }) {
                                 label: 'Subscription Subjects',
                                 value: (
                                   <List className={classes.listContainer}>
-                                    { item.subscriptionSubjects
-                                      .sort((a, b) => (a < b ? -1 : 1))
+                                    { [...item.subscriptionSubjects]
+                                      .sort(compareStrings)
                                       .map((sub) => (
                                         <ListItem className={classes.listItem} key={sub}>{ sub }</ListItem>
                                       ))}

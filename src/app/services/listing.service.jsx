@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  IconButton,
-  Typography,
-} from '@material-ui/core';
+import { IconButton, Typography } from '@material-ui/core';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
@@ -12,7 +9,8 @@ import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import StopIcon from '@material-ui/icons/Stop';
 
-import { ChplTooltip } from 'components/util';
+import ChplTooltip from 'components/util/chpl-tooltip';
+import { compareStrings } from 'services/sort.service';
 import { palette } from 'themes';
 
 const getFullButton = (text, icon) => (
@@ -39,7 +37,22 @@ const getStatusIcon = (status) => {
 
 const isListingActive = (listing) => ['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(listing.currentStatus?.status?.name);
 
+// Listings reach the compare widget in two shapes: search results carry `version.name`
+// and `certificationDate` as a yyyy-MM-dd day, full listings carry `version.version` and
+// `certificationDay` (their `certificationDate` is a timestamp).
+const getVersion = (listing) => listing.version?.version ?? listing.version?.name;
+const getCertificationDay = (listing) => listing.certificationDay
+  ?? (typeof listing.certificationDate === 'string' ? listing.certificationDate : undefined);
+
+// The order listings show in, shared by the compare widget and the compare page: by
+// product name, then version, then earliest certification first. Dates are yyyy-MM-dd,
+// which compareStrings orders chronologically.
+const compareListingsForDisplay = (a, b) => compareStrings(a.product?.name, b.product?.name)
+  || compareStrings(getVersion(a), getVersion(b))
+  || compareStrings(getCertificationDay(a), getCertificationDay(b));
+
 export {
+  compareListingsForDisplay,
   getStatusIcon,
   isListingActive,
 };
