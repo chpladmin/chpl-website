@@ -64,7 +64,7 @@ function ChplDeveloperView({ dispatch }) {
   const { developer } = useContext(DeveloperContext);
   const usersQuery = useFetchUsersAtDeveloper({
     developer,
-    enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn(developer)),
+    enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id })),
   });
   const [state, setState] = useState('view');
   const [users, setUsers] = useState([]);
@@ -76,19 +76,18 @@ function ChplDeveloperView({ dispatch }) {
   }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
 
   const can = (action) => {
-    if (!hasAuthorityOn(developer)) { return false; } // basic authentication
-    if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']); } // only DEVELOPER can manage tracking
+    if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }); } // only DEVELOPER can manage tracking
     if (action === 'split-developer' && developer.products.length < 2) { return false; } // cannot split developer without at least two products
     if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
     if (action === 'join') { return false; } // if not above roles, can't join
     if (action === 'split-developer') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); } // ACB can split
     if (action === 'edit') {
       if (demographicChangeRequestIsOn) {
-        return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); // Developer can only edit based on flag
+        return isActive(developer.statuses) && (hasAnyRole(['chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }))); // Developer can only edit based on flag
       }
       return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
     }
-    if (action === 'manageUsers') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
+    if (action === 'manageUsers') { return isActive(developer.statuses) && (hasAnyRole(['chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }))); }
     console.error(`Unknown "can" action: ${action}`);
     return false;
   };
@@ -176,7 +175,7 @@ function ChplDeveloperView({ dispatch }) {
         {state === 'view' && (
           <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
-        {(state === 'view' || state === 'editUser') && (
+        {(state === 'view' || state === 'editUser') && can('manageUsers') && (
           <ChplUsers
             users={users}
             dispatch={handleUserDispatch}

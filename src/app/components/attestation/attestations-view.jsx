@@ -47,7 +47,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
   const [attestationsOpen, setAttestationsOpen] = useState(false);
   const [attestations, setAttestations] = useState([]);
   const [developer, setDeveloper] = useState({});
-  const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-developer']) });
+  const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }))) });
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
   const classes = useStyles();
 
