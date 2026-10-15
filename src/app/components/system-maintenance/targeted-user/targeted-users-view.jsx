@@ -243,7 +243,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                     cardTitle="Targeted User"
                     cardTitleValue={item.name}
                     additionalTitleContent={(
-                      <Box>
+                      <Box sx={styles.narrowFields}>
                         { getNarrowField('Total Listings', item.total) }
                         { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
                       </Box>

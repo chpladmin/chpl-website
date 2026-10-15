@@ -3,9 +3,15 @@ import { alpha, createTheme } from '@mui/material/styles';
 import paletteColors from './palette';
 
 const theme = createTheme({
-  root: {
-    width: '100%',
-    display: 'flex',
+  // v4's widths; v5 lowered md, lg and xl, which moved every layout switch
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
   },
   spacing: 4,
   palette: {
@@ -116,6 +122,9 @@ const theme = createTheme({
     },
     MuiAutocomplete: {
       styleOverrides: {
+        listbox: {
+          maxHeight: '300px',
+        },
         popupIndicator: {
           marginTop: '4px',
           color: paletteColors.primary,
@@ -216,9 +225,6 @@ const theme = createTheme({
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: paletteColors.primary,
-        },
-        colorSecondary: {
           color: paletteColors.primary,
         },
       },
@@ -392,6 +398,14 @@ const theme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        // Keeps MUI's own limit, so a short window still fits the dialog with its margins
+        paper: {
+          maxHeight: 'min(700px, calc(100% - 64px))',
+        },
+      },
+    },
     MuiDialogActions: {
       styleOverrides: {
         root: {
@@ -513,6 +527,14 @@ const theme = createTheme({
       },
     },
     MuiSelect: {
+      // A component passing its own MenuProps replaces this, so it has to set its own maxHeight
+      defaultProps: {
+        MenuProps: {
+          PaperProps: {
+            sx: { maxHeight: '300px' },
+          },
+        },
+      },
       styleOverrides: {
         icon: {
           top: 0,
@@ -530,11 +552,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           color: paletteColors.primary,
-        },
-        colorSecondary: {
-          '&.Mui-checked': {
-            color: paletteColors.primary,
-          },
         },
       },
     },

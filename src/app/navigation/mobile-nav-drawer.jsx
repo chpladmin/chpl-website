@@ -7,6 +7,7 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -224,20 +225,20 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
         </Box>
         <Divider sx={styles.drawerDivider} />
         <List disablePadding>
-          <ListItem button onClick={handleHomeClick} sx={styles.drawerItem}>
+          <ListItemButton onClick={handleHomeClick} sx={styles.drawerItem}>
             <ListItemText primary="Home" />
-          </ListItem>
+          </ListItemButton>
           <Divider sx={styles.drawerDivider} />
-          <ListItem button onClick={handleSearchClick} sx={styles.drawerItem}>
+          <ListItemButton onClick={handleSearchClick} sx={styles.drawerItem}>
             <ListItemText primary="Search CHPL" />
-          </ListItem>
+          </ListItemButton>
           <Divider sx={styles.drawerDivider} />
           {widgetSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key, section.title)} sx={styles.drawerItem}>
+              <ListItemButton onClick={() => toggleSection(section.key, section.title)} sx={styles.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListItem>
+              </ListItemButton>
               <Collapse in={expandedSections[section.key]}>
                 <Box sx={styles.widgetContainer}>
                   {section.content}
@@ -248,10 +249,10 @@ function ChplMobileNavDrawer({ onHomeClick, onSearchClick }) {
           ))}
           { linkSections.map((section) => (
             <React.Fragment key={section.key}>
-              <ListItem button onClick={() => toggleSection(section.key, section.title)} sx={styles.drawerItem}>
+              <ListItemButton onClick={() => toggleSection(section.key, section.title)} sx={styles.drawerItem}>
                 <ListItemText primary={section.title} />
                 {expandedSections[section.key] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </ListItem>
+              </ListItemButton>
               <Collapse in={expandedSections[section.key]}>
                 <List disablePadding>
                   { section.items.map((item) => (
