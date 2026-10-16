@@ -1,4 +1,9 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import {
+  compareArrays,
+  compareBoolean,
+  compareObject,
+  comparePrimitive,
+} from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
@@ -78,7 +83,7 @@ lookup = {
   'surveillances.directionDeveloperResolution': { message: (before, after) => comparePrimitive(before, after, 'directionDeveloperResolution', 'Direction Developer Resolution') },
   'surveillances.endDate': { message: (before, after) => comparePrimitive(before, after, 'endDate', 'End Date', getDisplayDateFormat) },
   'surveillances.groundsForInitiating': { message: (before, after) => compare(before, after, 'groundsForInitiating', 'Grounds For Initiating') },
-  'surveillances.k1Reviewed': { message: (before, after) => comparePrimitive(before, after, 'k1Reviewed', 'K1 Reviewed') },
+  'surveillances.k1Reviewed': { message: (before, after) => compareBoolean(before, after, 'k1Reviewed', 'K1 Reviewed') },
   'surveillances.limitationsEvaluation': { message: (before, after) => comparePrimitive(before, after, 'limitationsEvaluation', 'Limitations Evaluation') },
   'surveillances.mappingId': { message: () => undefined },
   'surveillances.nonconformityCauses': { message: (before, after) => comparePrimitive(before, after, 'nonconformityCauses', 'Nonconformity Causes') },
