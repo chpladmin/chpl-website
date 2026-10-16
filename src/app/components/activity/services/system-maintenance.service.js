@@ -1,4 +1,9 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import {
+  compareArrays,
+  compareBoolean,
+  compareObject,
+  comparePrimitive,
+} from 'pages/reports/reports.v2.service';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -38,7 +43,7 @@ const lookup = {
   'root.extensionEndDay': { message: (before, after) => comparePrimitive(before, after, 'extensionEndDay', 'Extension End Date', getDisplayDateFormat) },
   'root.groupName': { message: (before, after) => comparePrimitive(before, after, 'groupName', 'Group') },
   'root.id': { message: () => undefined },
-  'root.isPublic': { message: (before, after) => comparePrimitive(before, after, 'isPublic', 'Is Public?') },
+  'root.isPublic': { message: (before, after) => compareBoolean(before, after, 'isPublic', 'Is Public?') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.lastModifiedUser': { message: () => undefined },
   'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
@@ -48,10 +53,10 @@ const lookup = {
   'root.practiceType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
   'root.regulatoryTextCitation': { message: (before, after) => comparePrimitive(before, after, 'regulatoryTextCitation', 'Regulatory Text Citation') },
   'root.removalDate': { message: (before, after) => comparePrimitive(before, after, 'removalDate', 'Removal Date', getDisplayDateFormat) },
-  'root.removed': { message: (before, after) => comparePrimitive(before, after, 'removed', 'Removed') },
-  'root.replaced': { message: (before, after) => comparePrimitive(before, after, 'replaced', 'Replaced') },
+  'root.removed': { message: (before, after) => compareBoolean(before, after, 'removed', 'Removed') },
+  'root.replaced': { message: (before, after) => compareBoolean(before, after, 'replaced', 'Replaced') },
   'root.requiredDay': { message: (before, after) => comparePrimitive(before, after, 'requiredDay', 'Required Date', getDisplayDateFormat) },
-  'root.retired': { message: (before, after) => comparePrimitive(before, after, 'retired', 'Retired') },
+  'root.retired': { message: (before, after) => compareBoolean(before, after, 'retired', 'Retired') },
   'root.rule': { message: () => 'Rule' },
   'root.rule.id': { message: () => undefined },
   'root.rule.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
