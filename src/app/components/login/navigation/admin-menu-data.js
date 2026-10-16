@@ -127,7 +127,7 @@ const sectionConfigs = [{
   flag: 'insights-connection',
   items: [{
     key: 'insights',
-    href: 'https://healthit.gov/insights-condition-submission/',
+    href: 'https://healthit.gov/insights',
     text: 'Insights Reporting',
   }],
 }];
