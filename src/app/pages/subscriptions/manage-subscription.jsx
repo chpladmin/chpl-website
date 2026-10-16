@@ -10,6 +10,7 @@ import {
   Container,
   FormControlLabel,
   IconButton,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,7 +26,7 @@ import {
   useFetchSubscriber,
   useFetchSubscriptions,
 } from 'api/subscriptions';
-import { ChplLink, ChplTooltip } from 'components/util';
+import { ChplLink, ChplSkeletonCard, ChplTooltip } from 'components/util';
 import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
@@ -146,6 +147,112 @@ const styles = {
   },
 };
 
+// Same layout as ChplManageSubscription, which has its own header rather than a
+// ChplPageHeader: the welcome card beside the total and the row per product
+const loadingStyles = {
+  page: {
+    backgroundColor: palette.background,
+    width: '100%',
+  },
+  header: {
+    padding: '16px 0',
+    marginTop: '-8px',
+  },
+  headerContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  layout: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '16px',
+    padding: '32px 0',
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
+    },
+  },
+  welcome: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '16px',
+  },
+  total: {
+    paddingBottom: '16px',
+  },
+  rows: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '16px',
+    padding: '12px 16px',
+  },
+  rowData: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '32px',
+    flex: 1,
+  },
+};
+
+const rowWidths = ['30%', '25%', '35%', '28%'];
+
+function ChplManageSubscriptionLoading() {
+  return (
+    <Box sx={loadingStyles.page} role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading your subscriptions</Box>
+      <Box aria-hidden="true">
+        <Box sx={loadingStyles.header}>
+          <Container sx={loadingStyles.headerContent}>
+            <Skeleton variant="text" width="35%" height={56} />
+            <Skeleton variant="text" width="25%" height={24} />
+          </Container>
+        </Box>
+        <Container>
+          <Box sx={loadingStyles.layout}>
+            <ChplSkeletonCard>
+              <Skeleton variant="rectangular" height={164} />
+              <Box sx={loadingStyles.welcome}>
+                <Skeleton variant="text" width="85%" height={36} />
+                <Skeleton variant="text" width="95%" height={22} />
+                <Skeleton variant="text" width="60%" height={22} />
+              </Box>
+            </ChplSkeletonCard>
+            <Box>
+              <Box sx={loadingStyles.total}>
+                <Skeleton variant="text" width="30%" height={32} />
+              </Box>
+              <Box sx={loadingStyles.rows}>
+                { rowWidths.map((width) => (
+                  <ChplSkeletonCard key={width}>
+                    <Box sx={loadingStyles.row}>
+                      <Box sx={loadingStyles.rowData}>
+                        <Skeleton variant="text" width={width} height={24} />
+                        <Skeleton variant="text" width="15%" height={22} />
+                      </Box>
+                      <Skeleton variant="circular" width={24} height={24} />
+                    </Box>
+                  </ChplSkeletonCard>
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
+  );
+}
+
 function ChplManageSubscription({ hash }) {
   const { enqueueSnackbar } = useSnackbar();
   const [subscriber, setSubscriber] = useState(undefined);
@@ -220,6 +327,12 @@ function ChplManageSubscription({ hash }) {
       expanded: s.id === subscription.id ? !s.expanded : s.expanded,
     })));
   };
+
+  // Without this, "You have no current subscriptions" shows until they arrive.
+  // isInitialLoading, since a query disabled for want of a hash stays isLoading
+  if (subscriberQuery.isInitialLoading || subscriptionQuery.isInitialLoading) {
+    return <ChplManageSubscriptionLoading />;
+  }
 
   return (
     <Box sx={styles.page}>

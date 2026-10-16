@@ -134,7 +134,7 @@ function ChplListingsView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3]} />)}
           { !isLoading
           && (
             <>

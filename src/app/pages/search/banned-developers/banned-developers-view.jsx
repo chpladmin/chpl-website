@@ -132,7 +132,7 @@ function ChplBannedDevelopersSearchView() {
           sticky
         />
         <ChplFilterLayout>
-          {isLoading && (<ChplLoadingCards />)}
+          {isLoading && (<ChplLoadingCards title fieldGroups={[2]} actions={0} controls={1} />)}
           {!isLoading
           && (
             <>
