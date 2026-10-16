@@ -9,17 +9,16 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import { arrayOf } from 'prop-types';
 
-import { palette, utilStyles } from 'themes';
 import { ChplTooltip } from 'components/util';
-import { measure as measureType } from 'shared/prop-types';
 import { sortCriteria } from 'services/criteria.service';
+import { measure as measureType } from 'shared/prop-types';
+import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   infoIcon: {
     color: `${palette.primary}`,
@@ -27,7 +26,7 @@ const useStyles = makeStyles({
   tableScrolling: {
     overflowX: 'auto !important',
   },
-});
+};
 
 const getDisplayCriteria = (criteria) => [...new Set(criteria.map((c) => c.number))]
   .map((number) => ({ number, title: 'n/a' }))
@@ -37,7 +36,6 @@ const getDisplayCriteria = (criteria) => [...new Set(criteria.map((c) => c.numbe
 
 function ChplG1g2(props) {
   const { measures } = props;
-  const classes = useStyles();
 
   if (!measures || measures.length === 0) {
     return (
@@ -48,7 +46,7 @@ function ChplG1g2(props) {
   }
 
   return (
-    <Card className={classes.tableScrolling}>
+    <Card sx={styles.tableScrolling}>
       <Table>
         <TableHead>
           <TableRow>
@@ -62,8 +60,8 @@ function ChplG1g2(props) {
           { measures
             .map((measure) => (
               <TableRow key={measure.id ?? measure.measure.id}>
-                <TableCell className={measure.measure.removed ? classes.removedText : ''}>
-                  <Box display="flex" alignItems="center" gridGap={4}>
+                <TableCell sx={[measure.measure.removed && styles.removedText]}>
+                  <Box display="flex" alignItems="center" gap="4px">
                     { measure.measure.removed
                     && (
                       <>
@@ -75,8 +73,8 @@ function ChplG1g2(props) {
                     { measure.measure.removed
                     && (
                       <ChplTooltip title="This MACRA Measure has been removed from the Program.">
-                        <IconButton>
-                          <InfoIcon className={classes.infoIcon} />
+                        <IconButton size="large">
+                          <InfoIcon sx={styles.infoIcon} />
                         </IconButton>
                       </ChplTooltip>
                     )}

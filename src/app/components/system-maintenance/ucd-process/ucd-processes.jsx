@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+} from '@mui/material';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplUcdProcessEdit from './ucd-process-edit';
@@ -108,7 +108,8 @@ function ChplUcdProcesses() {
             <TouchAppOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeUcdProcess.id ? 'Edit' : 'Add'} UCD Process`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplUcdProcessEdit
             ucdProcess={activeUcdProcess}

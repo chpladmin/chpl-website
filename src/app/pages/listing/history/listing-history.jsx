@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogContent,
   Paper,
@@ -12,10 +12,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { object } from 'prop-types';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import {
   interpretActivity,
@@ -33,22 +32,21 @@ import {
   useFetchProductsActivitiesMetadata,
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
-import { ChplDialogTitle } from 'components/util';
+import { ChplDialogTitle, ChplLoadingSection } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, timestampToString, toTimestamp } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   unstyledList: {
     listStyle: 'none',
     paddingLeft: 0,
   },
-});
+};
 
 function ChplListingHistory(props) {
   const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
-  const classes = useStyles();
   const [activity, setActivity] = useState([]);
   const [evaluated, setEvaluated] = useState([]);
   const [listing] = useState(props.listing); // eslint-disable-line  react/destructuring-assignment -- can't read directly from props otherwise the activity is refreshed repeatedly
@@ -292,7 +290,7 @@ function ChplListingHistory(props) {
              || fetchVersionActivitiesMetadata.isLoading
              || fetchProductsActivitiesMetadata.isLoading
              || fetchDeveloperActivitiesMetadata.isLoading)
-            && <CircularProgress /> }
+            && <ChplLoadingSection title={false} variant="table" columns={3} rows={5} /> }
           { activity.length > 0
             ? (
               <TableContainer component={Paper}>
@@ -312,11 +310,11 @@ function ChplListingHistory(props) {
                             { item.eventDay ? getDisplayDateFormat(item.eventDay) : timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>
-                            <ul className={classes.unstyledList}>
+                            <Box component="ul" sx={styles.unstyledList}>
                               { item.change.map((change) => (
                                 <li key={change} dangerouslySetInnerHTML={{ __html: `${change}` }} />
                               ))}
-                            </ul>
+                            </Box>
                           </TableCell>
                         </TableRow>
                       ))}

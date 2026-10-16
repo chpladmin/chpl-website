@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { useFetchListings } from 'api/search';
@@ -234,7 +234,7 @@ function ChplSvapSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          {isLoading && (<ChplLoadingCards />)}
+          {isLoading && (<ChplLoadingCards fieldGroups={[3, 3, [{ flex: '1 1 100%', lines: 3 }, { flex: '1 1 100%' }]]} controls={hasAnyRole(['chpl-admin', 'chpl-onc']) ? 2 : 0} />)}
           {!isLoading
           && (
             <>

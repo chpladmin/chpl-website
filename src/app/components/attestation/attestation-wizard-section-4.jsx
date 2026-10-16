@@ -1,19 +1,14 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import StarsIcon from '@material-ui/icons/Stars';
+  Box, Card, CardContent, Container, Typography,
+} from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import StarsIcon from '@mui/icons-material/Stars';
 
 import { developer as developerPropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 400px)',
@@ -70,25 +65,24 @@ const useStyles = makeStyles({
     right: '47px',
     transform: 'rotate(4deg)',
   },
-});
+};
 
 function ChplAttestationWizardSection4(props) {
   const { developer } = props;
-  const classes = useStyles();
 
   return (
-    <Container className={classes.fixFooterSpacing} maxWidth="md">
-      <Typography gutterBottom variant="h2" className={classes.fullWidthGridRow}>
+    <Container sx={styles.fixFooterSpacing} maxWidth="md">
+      <Typography gutterBottom variant="h2" sx={styles.fullWidthGridRow}>
         Section 4 &mdash; Confirmation
       </Typography>
       <Card>
-        <CardContent className={classes.cardContent}>
-          <Box className={classes.confirmationGraphic} aria-hidden>
-            <StarsIcon className={`${classes.sparkleBase} ${classes.sparkleTopLeft}`} />
-            <StarsIcon className={`${classes.sparkleBase} ${classes.sparkleTopRight}`} />
-            <StarsIcon className={`${classes.sparkleBase} ${classes.sparkleBottom}`} />
-            <Box className={classes.confirmationGraphicCore}>
-              <CheckCircleIcon className={classes.confirmationGraphicIcon} />
+        <CardContent sx={styles.cardContent}>
+          <Box sx={styles.confirmationGraphic} aria-hidden>
+            <StarsIcon sx={{ ...styles.sparkleBase, ...styles.sparkleTopLeft }} />
+            <StarsIcon sx={{ ...styles.sparkleBase, ...styles.sparkleTopRight }} />
+            <StarsIcon sx={{ ...styles.sparkleBase, ...styles.sparkleBottom }} />
+            <Box sx={styles.confirmationGraphicCore}>
+              <CheckCircleIcon sx={styles.confirmationGraphicIcon} />
             </Box>
           </Box>
           <Typography variant="body1" align="center">

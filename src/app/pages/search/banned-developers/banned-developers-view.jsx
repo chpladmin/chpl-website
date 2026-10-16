@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   useFetchBannedDevelopers,
@@ -132,7 +132,7 @@ function ChplBannedDevelopersSearchView() {
           sticky
         />
         <ChplFilterLayout>
-          {isLoading && (<ChplLoadingCards />)}
+          {isLoading && (<ChplLoadingCards title fieldGroups={[2]} actions={0} controls={1} />)}
           {!isLoading
           && (
             <>

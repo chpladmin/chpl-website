@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { arrayOf, object } from 'prop-types';
 
 import { useFetchListings } from 'api/search';
@@ -172,7 +172,7 @@ function ChplApiDocumentationSearchView({ displayCriteria }) {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, [{ flex: '2 1 320px', lines: 3 }, { lines: 2 }, {}]]} />)}
           { !isLoading
         && (
           <>

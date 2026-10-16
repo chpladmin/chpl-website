@@ -1,18 +1,13 @@
 import React, { useContext, useState } from 'react';
 import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Checkbox, CircularProgress, FormControlLabel, Typography,
+} from '@mui/material';
 import { func } from 'prop-types';
 import { useSelector } from 'react-redux';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import SaveIcon from '@material-ui/icons/Save';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import SaveIcon from '@mui/icons-material/Save';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
@@ -20,8 +15,7 @@ import ChplActionBarMessages from './action-bar-messages';
 import { UserContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const styles = {
   actionBar: {
     backgroundColor: palette.white,
     position: 'fixed',
@@ -64,7 +58,7 @@ const useStyles = makeStyles({
   errorCheckbox: {
     color: palette.white,
   },
-});
+};
 
 function ChplActionBar({
   dispatch,
@@ -92,7 +86,6 @@ function ChplActionBar({
   const [isConfirming, setIsConfirming] = useState(false);
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
-  const classes = useStyles();
 
   const act = (action) => {
     if (dispatch) {
@@ -144,7 +137,7 @@ function ChplActionBar({
 
   return (
     <>
-      <div className={classes.actionBar}>
+      <Box sx={styles.actionBar}>
         {isConfirming
           && (
             <ChplActionBarConfirmation
@@ -154,13 +147,13 @@ function ChplActionBar({
           )}
         {showErrorAcknowledgement
           && (
-            <div
-              className={classes.actionBarErrorAcknowledgement}
+            <Box
+              sx={styles.actionBarErrorAcknowledgement}
             >
               <Typography variant="body1">Caution: You are about to bypass error messages to update this product. This action may have unintended consequences. Please check the box and press save to confirm that you want to proceed</Typography>
               <FormControlLabel
                 label={
-                  <Typography className={classes.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
+                  <Typography sx={styles.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
                 }
                 control={(
                   <Checkbox
@@ -168,16 +161,16 @@ function ChplActionBar({
                     onChange={toggleErrorAcknowledgement}
                     checked={errorAcknowledged}
                     color="default"
-                    className={classes.errorCheckbox}
+                    sx={styles.errorCheckbox}
                   />
                 )}
               />
-            </div>
+            </Box>
           )}
         {showWarningAcknowledgement
           && (
-            <div
-              className={classes.actionBarWarningAcknowledgement}
+            <Box
+              sx={styles.actionBarWarningAcknowledgement}
             >
               <FormControlLabel
                 label={`I have reviewed the warning${warnings.length !== 1 ? 's' : ''} and wish to proceed with this update`}
@@ -191,9 +184,9 @@ function ChplActionBar({
                   />
                 )}
               />
-            </div>
+            </Box>
           )}
-        <div className={classes.actionBarButtons}>
+        <Box sx={styles.actionBarButtons}>
           <>
             { canCancel
               && (
@@ -202,11 +195,11 @@ function ChplActionBar({
                   color="secondary"
                   variant="contained"
                   onClick={() => confirmCancel()}
-                  className={classes.actionBarButton}
+                  sx={styles.actionBarButton}
                 >
                   Cancel
                   <CloseOutlinedIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -217,11 +210,11 @@ function ChplActionBar({
                   variant="contained"
                   color="secondary"
                   onClick={() => act('cancel')}
-                  className={classes.actionBarButton}
+                  sx={styles.actionBarButton}
                 >
                   Close
                   <CloseOutlinedIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -233,12 +226,12 @@ function ChplActionBar({
                   color="primary"
                   onClick={() => act('confirm')}
                   disabled={isDisabled || isProcessing}
-                  className={classes.actionBarButton}
+                  sx={styles.actionBarButton}
                 >
-                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+                  { isProcessing && <CircularProgress size={24} sx={utilStyles.buttonProgress} /> }
                   Confirm
                   <SaveIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -249,11 +242,11 @@ function ChplActionBar({
                   variant="contained"
                   color="secondary"
                   onClick={() => act('edit')}
-                  className={classes.actionBarButton}
+                  sx={styles.actionBarButton}
                 >
                   Edit
                   <EditOutlinedIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -266,12 +259,12 @@ function ChplActionBar({
                   onClick={() => act('save')}
                   onMouseEnter={dispatchSaveHover ? () => act('saveHover') : undefined}
                   disabled={isDisabled || isSaveDisabled || isProcessing}
-                  className={classes.actionBarButton}
+                  sx={styles.actionBarButton}
                 >
-                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+                  { isProcessing && <CircularProgress size={24} sx={utilStyles.buttonProgress} /> }
                   Save
                   <SaveIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -280,14 +273,14 @@ function ChplActionBar({
                 <Button
                   id="action-bar-delete"
                   variant="outlined"
-                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
+                  sx={{ ...styles.actionBarButton, ...utilStyles.deleteButtonOutlined }}
                   onClick={() => confirmDelete()}
                   disabled={isDeleteDisabled || isProcessing}
                 >
-                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+                  { isProcessing && <CircularProgress size={24} sx={utilStyles.buttonProgress} /> }
                   Delete
                   <DeleteOutlinedIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -296,12 +289,12 @@ function ChplActionBar({
                 <Button
                   id="action-bar-reject"
                   variant="outlined"
-                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
+                  sx={{ ...styles.actionBarButton, ...utilStyles.deleteButtonOutlined }}
                   onClick={() => confirmReject()}
                 >
                   Reject
                   <DeleteOutlinedIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
@@ -310,20 +303,20 @@ function ChplActionBar({
                 <Button
                   id="action-bar-withdraw"
                   variant="outlined"
-                  className={`${classes.actionBarButton} ${classes.deleteButtonOutlined}`}
+                  sx={{ ...styles.actionBarButton, ...utilStyles.deleteButtonOutlined }}
                   disabled={isDisabled || isProcessing}
                   onClick={() => confirmWithdraw()}
                 >
-                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+                  { isProcessing && <CircularProgress size={24} sx={utilStyles.buttonProgress} /> }
                   Withdraw
                   <DeleteOutlinedIcon
-                    className={classes.iconSpacing}
+                    sx={utilStyles.iconSpacing}
                   />
                 </Button>
               )}
           </>
-        </div>
-      </div>
+        </Box>
+      </Box>
       <ChplActionBarMessages
         errors={errors}
         warnings={warnings}

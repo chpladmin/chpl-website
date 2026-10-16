@@ -1,24 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  CircularProgress,
-  Fade,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+  Box, Button, Fade, IconButton, Typography,
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import {
   Edit,
   Star,
   StarOutline,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingEdit from './listing-edit';
 import ChplListingHistory from './history/listing-history';
+import ChplListingLoading from './listing-loading';
 
 import { useFreshAccessToken } from 'api/axios';
 import { useFetchListing } from 'api/listing';
@@ -38,7 +33,7 @@ import {
 } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -55,10 +50,7 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'baseline',
   },
-  loadingScreen: {
-    height: '100vh',
-  },
-});
+};
 
 function ChplListingPage({ id }) {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
@@ -72,7 +64,6 @@ function ChplListingPage({ id }) {
   const [isEditing, setIsEditing] = useState(false);
   const [listing, setListing] = useState(undefined);
   const [favorites, setFavorites] = useLocalStorage('favorites', []);
-  const classes = useStyles();
   let analyticsData;
 
   useEffect(() => {
@@ -155,9 +146,7 @@ function ChplListingPage({ id }) {
 
   if (isLoading || !isSuccess || !listing) {
     return (
-      <div className={classes.loadingScreen}>
-        <CircularProgress />
-      </div>
+      <ChplListingLoading />
     );
   }
 
@@ -208,7 +197,7 @@ function ChplListingPage({ id }) {
       <ChplPageHeader
         text={listing.product.name}
         titleAdornment={(
-          <Box className={classes.favoriteContainer}>
+          <Box sx={styles.favoriteContainer}>
             <ChplTooltip
               title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
               placement="top"
@@ -217,6 +206,7 @@ function ChplListingPage({ id }) {
                 onClick={toggleFavorite}
                 style={{ color: '#e3bf00' }}
                 aria-label={isFavorited ? 'Unfavorite' : 'Favorite'}
+                size="large"
               >
                 {isFavorited ? <Star /> : <StarOutline />}
               </IconButton>
@@ -278,14 +268,14 @@ function ChplListingPage({ id }) {
         )}
       />
       <ChplPageBody>
-        <div className={classes.container}>
+        <Box sx={styles.container}>
           <ListingContext.Provider value={listingState}>
             <ChplListingView
               listing={listing}
               dispatch={handleDispatch}
             />
           </ListingContext.Provider>
-        </div>
+        </Box>
       </ChplPageBody>
     </AnalyticsContext.Provider>
   );

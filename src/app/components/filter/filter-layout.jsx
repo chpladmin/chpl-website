@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Collapse,
-  Typography,
-  makeStyles,
-  useMediaQuery,
-} from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import LabelOffIcon from '@material-ui/icons/LabelOff';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+  Box, Button, Card, CardContent, Chip, Collapse, Skeleton, Typography, useMediaQuery,
+} from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import LabelOffIcon from '@mui/icons-material/LabelOff';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { bool, node } from 'prop-types';
 
 import ChplFilterChips from './filter-chips';
@@ -21,7 +13,7 @@ import { useFilterContext } from './filter-context';
 
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   layoutContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -106,10 +98,9 @@ const useStyles = makeStyles({
     position: 'relative',
     zIndex: 1,
   },
-});
+};
 
 function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
-  const classes = useStyles();
   const filterContext = useFilterContext();
   const isDesktopWidth = useMediaQuery(theme.breakpoints.up('md'));
   const isDesktop = isDesktopWidth && !mobileOnly;
@@ -127,43 +118,60 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
     if (isDesktop) { setExpanded(false); }
   }, [isDesktop]);
 
+  // Hold the sidebar with a chips skeleton while filter values load, rather than
+  // flashing the "No filters applied" message before the defaults arrive
+  if (filterContext.isLoading) {
+    return (
+      <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
+        <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
+          {isDesktop
+            ? <ChplFilterChips />
+            : <Skeleton variant="rectangular" height={36} sx={{ borderRadius: '4px' }} />}
+        </Box>
+        <Box sx={styles.content}>
+          {children}
+        </Box>
+      </Box>
+    );
+  }
+
   if (!hasAppliedFilters) {
     return (
-      <div className={mobileOnly ? classes.layoutContainerMobileOnly : classes.layoutContainer}>
-        <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
-          <Card className={classes.emptyCard}>
-            <CardContent className={classes.emptyContent}>
-              <LabelOffIcon className={classes.emptyIcon} />
+      <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
+        <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
+          <Card sx={styles.emptyCard}>
+            <CardContent sx={styles.emptyContent}>
+              <LabelOffIcon sx={styles.emptyIcon} />
               <Typography variant="body2">
                 No filters applied. Please use the Filters button to apply filters and view results.
               </Typography>
             </CardContent>
           </Card>
         </Box>
-        <div className={classes.content}>
+        <Box sx={styles.content}>
           {children}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <div className={mobileOnly ? classes.layoutContainerMobileOnly : classes.layoutContainer}>
-      <Box className={mobileOnly ? classes.sidebarMobileOnly : classes.sidebar}>
+    <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
+      <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
         <Button
-          className={mobileOnly ? classes.sidebarToggleMobileOnly : classes.sidebarToggle}
-          variant="contained"
+          sx={mobileOnly ? styles.sidebarToggleMobileOnly : styles.sidebarToggle}
+          variant="outlined"
           fullWidth
           id="filter-layout-sidebar-toggle"
           onClick={() => setExpanded((prev) => !prev)}
           endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         >
-          <span className={classes.sidebarToggleLabel}>
+          <Box component="span" sx={styles.sidebarToggleLabel}>
             <FilterListIcon />
             Filters Applied
             { appliedCount > 0
-              && <Chip size="small" label={appliedCount} className={classes.countChip} /> }
-          </span>
+              && <Chip size="small" label={appliedCount} sx={styles.countChip} /> }
+          </Box>
         </Button>
         {isDesktop
           ? <ChplFilterChips />
@@ -173,10 +181,10 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
             </Collapse>
           )}
       </Box>
-      <div className={classes.content}>
+      <Box sx={styles.content}>
         {children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

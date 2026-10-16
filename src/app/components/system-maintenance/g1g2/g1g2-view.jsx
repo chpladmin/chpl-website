@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { arrayOf, shape, string } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
+import InfoIcon from '@mui/icons-material/Info';
 
 import {
   ChplSearchResultCard,

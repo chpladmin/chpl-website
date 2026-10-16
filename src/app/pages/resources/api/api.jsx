@@ -8,10 +8,10 @@ import {
   CardHeader,
   Divider,
   MenuItem,
+  Skeleton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 import SwaggerUI from 'swagger-ui-react';
 
@@ -19,14 +19,16 @@ import {
   ChplLink,
   ChplPageBody,
   ChplPageHeader,
+  ChplSkeletonCard,
   ChplTextField,
+  skeletonLineColor,
 } from 'components/util';
 import { ChplApiKeyRegistration } from 'components/api-key';
 import { eventTrack } from 'services/analytics.service';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   downloadCard: {
     width: '100%',
@@ -36,6 +38,9 @@ const useStyles = makeStyles({
   },
   fullWidth: {
     gridColumn: '1 / -1',
+  },
+  hidden: {
+    display: 'none',
   },
   pageBody: {
     display: 'flex',
@@ -154,19 +159,7 @@ const useStyles = makeStyles({
       marginTop: '.7em',
     },
   },
-  warningBox: {
-    padding: '16px',
-    backgroundColor: palette.warningLight,
-    border: `1px solid ${palette.grey}`,
-    borderRadius: '4px',
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: '4px',
-    marginBottom: '16px',
-    gridGap: '16px',
-    alignItems: 'center',
-  },
-});
+};
 
 const allOptions = [
   'Active products',
@@ -174,6 +167,50 @@ const allOptions = [
   '2014 edition products',
   '2011 edition products',
 ];
+
+// The Swagger UI card: the API title, then a row per group of operations
+const loadingStyles = {
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    padding: '48px 16px 16px',
+  },
+  info: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: '24px',
+  },
+  group: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '16px',
+    padding: '12px 0',
+    borderBottom: `1px solid ${skeletonLineColor}`,
+  },
+};
+
+const groupWidths = ['20%', '28%', '16%', '24%', '30%', '18%', '22%', '26%'];
+
+function ChplApiSwaggerLoading() {
+  return (
+    <ChplSkeletonCard>
+      <Box sx={loadingStyles.content} aria-hidden="true">
+        <Box sx={loadingStyles.info}>
+          <Skeleton variant="text" width="30%" height={40} />
+          <Skeleton variant="text" width="45%" height={22} />
+        </Box>
+        { groupWidths.map((width) => (
+          <Box key={width} sx={loadingStyles.group}>
+            <Skeleton variant="text" width={width} height={32} />
+            <Skeleton variant="circular" width={20} height={20} />
+          </Box>
+        ))}
+      </Box>
+    </ChplSkeletonCard>
+  );
+}
 
 function ChplResourcesApi() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
@@ -185,8 +222,16 @@ function ChplResourcesApi() {
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('Active products');
-  const classes = useStyles();
   const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
+  // Swagger UI fetches the definition itself after it mounts, so it renders
+  // hidden behind a skeleton until it is done. If onComplete never comes, as
+  // when the definition can't be fetched, show it anyway so its error is seen
+  const [swaggerIsReady, setSwaggerIsReady] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setSwaggerIsReady(true), 10000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const data = {
@@ -214,21 +259,21 @@ function ChplResourcesApi() {
     <>
       <ChplPageHeader text="CHPL API" />
       <ChplPageBody>
-        <div className={classes.pageBody}>
-          <Box className={classes.fullWidth}>
+        <Box sx={styles.pageBody}>
+          <Box sx={styles.fullWidth}>
             <Typography
               variant="h4"
               component="h2"
             >
               Definitions & Guidelines
             </Typography>
-            <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
+            <Typography sx={styles.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
             <Divider />
           </Box>
-          <div className={classes.downloadSection}>
+          <Box sx={styles.downloadSection}>
             <Card>
               <CardContent>
-                <ul className={classes.listSpacing}>
+                <Box component="ul" sx={styles.listSpacing}>
                   <li>
                     <Typography gutterBottom><strong>Certified Products:</strong></Typography>
                     {' '}
@@ -245,17 +290,17 @@ function ChplResourcesApi() {
                       </li>
                     </ul>
                   </li>
-                </ul>
+                </Box>
               </CardContent>
             </Card>
-            <Card className={classes.downloadCard}>
+            <Card sx={styles.downloadCard}>
               <CardHeader title="Select A File To Download" />
               <CardContent>
-                <Box display="flex" flexDirection="column" gridGap={16}>
+                <Box display="flex" flexDirection="column" gap="16px">
                   <Typography>
                     To download a list of certified health IT products listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File button.
                   </Typography>
-                  <div className={classes.fullWidth}>
+                  <Box sx={styles.fullWidth}>
                     <ChplTextField
                       select
                       id="download-select"
@@ -268,7 +313,7 @@ function ChplResourcesApi() {
                         <MenuItem value={item} key={item}>{item}</MenuItem>
                       ))}
                     </ChplTextField>
-                  </div>
+                  </Box>
                 </Box>
               </CardContent>
               <CardActions>
@@ -284,8 +329,8 @@ function ChplResourcesApi() {
                 </Button>
               </CardActions>
             </Card>
-          </div>
-          <div className={classes.fullWidth}>
+          </Box>
+          <Box sx={styles.fullWidth}>
             <Typography
               variant="h4"
               component="h2"
@@ -293,8 +338,8 @@ function ChplResourcesApi() {
               Access API Documentation
             </Typography>
             <Divider />
-          </div>
-          <div className={classes.downloadSection}>
+          </Box>
+          <Box sx={styles.downloadSection}>
             <Card>
               <CardContent>
                 <Typography
@@ -343,22 +388,24 @@ function ChplResourcesApi() {
                 </Typography>
               </CardContent>
             </Card>
-            <div className={classes.downloadCard}>
+            <Box sx={styles.downloadCard}>
               <AnalyticsContext.Provider value={{ analytics }}>
                 <ChplApiKeyRegistration />
               </AnalyticsContext.Provider>
-            </div>
-          </div>
-          <Card className={classes.fullWidth}>
-            <CardContent className={classes.swaggerCardContent}>
+            </Box>
+          </Box>
+          { !swaggerIsReady && <ChplApiSwaggerLoading /> }
+          <Card sx={[styles.fullWidth, !swaggerIsReady && styles.hidden]}>
+            <CardContent sx={styles.swaggerCardContent}>
               <SwaggerUI
                 url={url}
                 docExpansion="none"
                 supportedSubmitMethods={[]}
+                onComplete={() => setSwaggerIsReady(true)}
               />
             </CardContent>
           </Card>
-        </div>
+        </Box>
       </ChplPageBody>
     </>
   );

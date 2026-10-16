@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
   Chip,
   FormControlLabel,
+  Skeleton,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
+
+import { ChplSkeletonCard } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   filterContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -58,11 +61,11 @@ const useStyles = makeStyles({
       whiteSpace: 'normal',
       wordBreak: 'break-word',
     },
-  },
-  chipDeleteIcon: {
-    order: -2,
-    marginLeft: '5px',
-    marginRight: '-4px',
+    '& .MuiChip-deleteIcon': {
+      order: -2,
+      marginLeft: '5px',
+      marginRight: '-4px',
+    },
   },
   chipLabel: {
     alignItems: 'center',
@@ -74,12 +77,15 @@ const useStyles = makeStyles({
     maxHeight: '50vh',
     overflowY: 'auto',
   },
-});
+  // Same padding as the CardContent of the filter card
+  loadingContent: {
+    padding: '16px',
+  },
+};
 
 function ChplFilterChips({ horizontal = false }) {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
-  const classes = useStyles();
   const DISPLAY_MAX = 7;
 
   useEffect(() => {
@@ -139,30 +145,56 @@ function ChplFilterChips({ horizontal = false }) {
     filterContext.dispatch('toggleShowAll', f);
   };
 
+  if (filterContext.isLoading) {
+    return (
+      <Box component="span" sx={styles.filterContainer} role="status" aria-live="polite">
+        <Box component="span" sx={utilStyles.visuallyHidden}>Loading filters</Box>
+        <ChplSkeletonCard sx={[styles.card, styles.loadingContent]}>
+          <Box aria-hidden="true">
+            <Skeleton variant="text" width="50%" height={22} />
+            <Box sx={styles.filterChipsContainer}>
+              { [3, 2].map((chips, groupIdx) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Box key={groupIdx} sx={[styles.filterSelectedContainer, horizontal && styles.filterSelectedContainerHorizontal]}>
+                  <Skeleton variant="text" width="65%" height={24} sx={horizontal ? styles.filterGroupTitleHorizontal : undefined} />
+                  { [...Array(chips)].map((_chip, chipIdx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Skeleton key={chipIdx} variant="rounded" width={`${80 - (chipIdx * 15)}%`} height={24} sx={{ borderRadius: '16px', maxWidth: horizontal ? '160px' : undefined }} />
+                  ))}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </ChplSkeletonCard>
+      </Box>
+    );
+  }
+
   if (filters.length === 0) { return null; }
 
   const getChipLabel = (f, labelText, iconName) => {
     if (f.key !== 'certificationStatuses') { return labelText; }
     return (
-      <span className={classes.chipLabel}>
+      <Box component="span" sx={styles.chipLabel}>
         { labelText }
         { getStatusIcon({ name: iconName }) }
-      </span>
+      </Box>
     );
   };
 
   return (
-    <span className={classes.filterContainer} id="filter-chips">
-      <Card className={classes.card}>
+    <Box component="span" sx={styles.filterContainer} id="filter-chips">
+      <Card sx={styles.card}>
         <CardContent>
           <Typography variant="subtitle2">Filters Applied:</Typography>
-          <div className={classes.filterChipsContainer}>
+          <Box sx={styles.filterChipsContainer}>
             { filters.map((f) => (
-              <span
-                className={horizontal ? `${classes.filterSelectedContainer} ${classes.filterSelectedContainerHorizontal}` : classes.filterSelectedContainer}
+              <Box
+                component="span"
+                sx={[styles.filterSelectedContainer, horizontal && styles.filterSelectedContainerHorizontal]}
                 key={f.key}
               >
-                <Typography variant="body1" className={horizontal ? classes.filterGroupTitleHorizontal : undefined}>
+                <Typography variant="body1" sx={horizontal ? styles.filterGroupTitleHorizontal : undefined}>
                   <strong>
                     {f.getFilterDisplay(f)}
                   </strong>
@@ -204,7 +236,7 @@ function ChplFilterChips({ horizontal = false }) {
                         onDelete={() => removeChip(f, v)}
                         variant="outlined"
                         disabled={f.required && f.values.length === 1}
-                        classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
+                        sx={styles.chip}
                       />
                     </React.Fragment>
                   ))}
@@ -218,12 +250,12 @@ function ChplFilterChips({ horizontal = false }) {
                     { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
                   </Button>
                 )}
-              </span>
+              </Box>
             ))}
-          </div>
+          </Box>
         </CardContent>
       </Card>
-    </span>
+    </Box>
   );
 }
 

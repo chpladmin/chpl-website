@@ -5,8 +5,8 @@ import {
   DialogActions,
   DialogContent,
   Typography,
-} from '@material-ui/core';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+} from '@mui/material';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { func, string } from 'prop-types';
 
 import ChplDialogTitle from './chpl-dialog-title';

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
-  CircularProgress,
   List,
   ListItem,
+  Skeleton,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchCodeSets } from 'api/standards';
 import { ChplUpdateIndicator } from 'components/util';
@@ -33,7 +33,7 @@ function ChplCodeSetIndicator({ criterion }) {
     setEndDay(missingDays[0]);
   }, [criterion, relevantCodeSets]);
 
-  if (isLoading || isError) { return <CircularProgress />; }
+  if (isLoading || isError) { return <Skeleton variant="text" width={120} height={24} />; }
 
   if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
     return (
@@ -54,7 +54,7 @@ function ChplCodeSetIndicator({ criterion }) {
   }
 
   return (
-    <Box display="flex" alignItems="center" gridGap={8}>
+    <Box display="flex" alignItems="center" gap="8px">
       <Typography>
         { endDay ? 'Update Required' : 'Current' }
       </Typography>

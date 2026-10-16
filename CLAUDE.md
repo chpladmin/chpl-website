@@ -76,6 +76,10 @@ Most pages/features under `src/app/pages/**` and `src/app/components/**` follow 
 - `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own.
 - `x-view.jsx` — presentational component, receives data/handlers as props.
 
+### Loading states
+
+Every public-facing page shows a skeleton in its own shape while its data loads. It's built from `ChplSkeletonCard`, `ChplLoadingPage`, `ChplLoadingSection` and `ChplLoadingCards` in `components/util`, and it's never a spinner, a blank page, or shapes inside a real `Card`. A new page or feature that loads data defines its `ChplXLoading` skeleton in its own file, just above the page component. The rules, the components and the react-query v4 gating traps are in `src/app/components/util/LOADING-SKELETONS.md`; follow it.
+
 ### Provider stack
 
 `src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → `CompareWrapper` → `CmsWrapper` → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.

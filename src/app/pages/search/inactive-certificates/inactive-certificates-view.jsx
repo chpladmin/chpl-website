@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -129,7 +129,7 @@ function ChplInactiveCertificatesSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, 1]} />)}
           { !isLoading
           && (
             <>
