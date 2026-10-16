@@ -7,8 +7,7 @@ import {
   FormControlLabel,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,7 +17,7 @@ import { ChplTextField } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { acb as acbPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -49,7 +48,7 @@ const useStyles = makeStyles({
   errorColor: {
     color: '#c44f65',
   },
-});
+};
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -146,7 +145,6 @@ function ChplOncOrganizationEdit(props) {
     isProcessing,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const classes = useStyles();
   let formik;
 
   const cancel = () => {
@@ -222,17 +220,17 @@ function ChplOncOrganizationEdit(props) {
       <Card>
         <CardHeader
           title={organization.name ?? 'Create new Organization'}
-          className={classes.organizationHeader}
+          sx={styles.organizationHeader}
           component="h2"
         />
-        <CardContent className={classes.content}>
-          <Typography className={classes.fullWidth} variant="subtitle1">General Info</Typography>
+        <CardContent sx={styles.content}>
+          <Typography sx={styles.fullWidth} variant="subtitle1">General Info</Typography>
           { getEnhancedEditField({ key: 'name', display: 'Name', disabled: formik.values.retired }) }
           { getEnhancedEditField({ key: 'website', display: 'Website', disabled: formik.values.retired }) }
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && organization.name
               && (
                 <>
-                  <Divider className={classes.fullWidth} />
+                  <Divider sx={styles.fullWidth} />
                   <FormControlLabel
                     control={(
                       <Switch
@@ -260,8 +258,8 @@ function ChplOncOrganizationEdit(props) {
                   />
                 </>
               )}
-          <Divider className={classes.fullWidth} />
-          <Typography className={classes.fullWidth} variant="subtitle1">Address</Typography>
+          <Divider sx={styles.fullWidth} />
+          <Typography sx={styles.fullWidth} variant="subtitle1">Address</Typography>
           { getEnhancedEditField({ key: 'line1', display: 'Address', disabled: formik.values.retired }) }
           { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false, disabled: formik.values.retired }) }
           { getEnhancedEditField({ key: 'city', display: 'City', disabled: formik.values.retired }) }

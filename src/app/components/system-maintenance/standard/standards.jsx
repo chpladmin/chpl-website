@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import PlaylistAddCheckOutlinedIcon from '@material-ui/icons/PlaylistAddCheckOutlined';
+} from '@mui/material';
+import PlaylistAddCheckOutlinedIcon from '@mui/icons-material/PlaylistAddCheckOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplStandardEdit from './standard-edit';
@@ -230,7 +230,8 @@ function ChplStandards() {
             <PlaylistAddCheckOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeStandard.id ? 'Edit' : 'Add'} Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplStandardEdit
             standard={activeStandard}

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Typography } from '@mui/material';
 import {
   TimelineConnector,
   TimelineContent,
   TimelineDot,
   TimelineItem,
   TimelineSeparator,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import {
   bool, func, object, string,
 } from 'prop-types';
@@ -18,11 +15,11 @@ import { useFetchActivity } from 'api/activity';
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   dateText: {
     color: palette.greyDark,
   },
-});
+};
 
 const getDescription = (activity, title) => {
   let verb;
@@ -51,7 +48,6 @@ function ChplActivityDetails({
   activity, interpret, last, title = undefined,
 }) {
   const [details, setDetails] = useState([]);
-  const classes = useStyles();
 
   const { data, isError, isLoading } = useFetchActivity({
     id: activity.id,
@@ -89,7 +85,7 @@ function ChplActivityDetails({
       </TimelineSeparator>
       <TimelineContent>
         { getDescription(activity, title) }
-        <Typography variant="body2" className={classes.dateText}>
+        <Typography variant="body2" sx={styles.dateText}>
           { getDisplayDateFormat(activity.date) }
           { activity.responsibleUser?.fullName ? ` (${activity.responsibleUser.fullName})` : '' }
         </Typography>

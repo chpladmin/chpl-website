@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
 import {
+  Box,
   Button,
   CardContent,
   Chip,
   Divider,
   IconButton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { func, objectOf, string } from 'prop-types';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { func } from 'prop-types';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
@@ -33,9 +33,21 @@ function ChplCompareEmptyStateIcon() {
   );
 }
 
-function ChplCompareWidgetHelpFooter({ classes }) {
+const widgetHelpFooterStyles = {
+  marginTop: 'auto',
+  minHeight: '130px', // matches CMS widget footer height so empty-state icons align vertically
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  textAlign: 'center',
+  gap: '4px',
+  paddingTop: '12px',
+};
+
+function ChplCompareWidgetHelpFooter() {
   return (
-    <div className={classes.widgetHelpFooter}>
+    <Box sx={widgetHelpFooterStyles}>
       <Typography variant="body2" style={{ color: palette.greyDark }}>
         For assistance, view the
         <br />
@@ -48,15 +60,11 @@ function ChplCompareWidgetHelpFooter({ classes }) {
         />
         .
       </Typography>
-    </div>
+    </Box>
   );
 }
 
-ChplCompareWidgetHelpFooter.propTypes = {
-  classes: objectOf(string).isRequired,
-};
-
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   stickyWidgetHeader: {
     position: 'sticky',
@@ -103,17 +111,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     minHeight: '100%',
   },
-  widgetHelpFooter: {
-    marginTop: 'auto',
-    minHeight: '130px', // matches CMS widget footer height so empty-state icons align vertically
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    textAlign: 'center',
-    gap: '4px',
-    paddingTop: '12px',
-  },
   chipContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -126,11 +123,10 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     display: 'flex',
   },
-});
+};
 
 function ChplCompareDisplay({ onClose }) {
   const { listings, removeListing } = useContext(CompareContext);
-  const classes = useStyles();
 
   const compareAll = () => {
     goToUrl(`/compare/${listings.map((listing) => listing.id).join('&')}`);
@@ -146,8 +142,8 @@ function ChplCompareDisplay({ onClose }) {
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent id="no-products-selected" className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
-        <div className={classes.stickyWidgetHeader}>
+      <CardContent id="no-products-selected" sx={[styles.cardcontentPadding, styles.mainCardContent]}>
+        <Box sx={styles.stickyWidgetHeader}>
           <Typography variant="h2">
             Compare Products
           </Typography>
@@ -156,22 +152,22 @@ function ChplCompareDisplay({ onClose }) {
               <CloseIcon />
             </IconButton>
           </ChplTooltip>
-        </div>
-        <div className={classes.emptyStateBody}>
+        </Box>
+        <Box sx={styles.emptyStateBody}>
           <ChplCompareEmptyStateIcon />
           <Typography variant="h6"><strong>No products selected.</strong></Typography>
           <Typography variant="body2" color="textPrimary">
             Please select products to compare using the button found on either search results or product detail pages.
           </Typography>
-        </div>
-        <ChplCompareWidgetHelpFooter classes={classes} />
+        </Box>
+        <ChplCompareWidgetHelpFooter />
       </CardContent>
     );
   }
 
   return (
-    <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
-      <div className={classes.stickyWidgetHeader}>
+    <CardContent sx={[styles.cardcontentPadding, styles.mainCardContent]}>
+      <Box sx={styles.stickyWidgetHeader}>
         <Typography variant="h2">
           Compare Products
         </Typography>
@@ -180,13 +176,13 @@ function ChplCompareDisplay({ onClose }) {
             <CloseIcon />
           </IconButton>
         </ChplTooltip>
-      </div>
-      <Typography className={classes.sectionLabelFontWeight800}>Products Selected</Typography>
-      <div className={classes.chipContainer}>
+      </Box>
+      <Typography sx={styles.sectionLabelFontWeight800}>Products Selected</Typography>
+      <Box sx={styles.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
             <Chip
-              className={classes.productChips}
+              sx={styles.productChips}
               color="primary"
               variant="outlined"
               key={listing.id}
@@ -194,9 +190,9 @@ function ChplCompareDisplay({ onClose }) {
               onDelete={() => removeListing(listing)}
             />
           ))}
-      </div>
+      </Box>
       <Divider />
-      <div className={classes.buttonContainer}>
+      <Box sx={styles.buttonContainer}>
         <Button
           fullWidth
           color="primary"
@@ -209,7 +205,7 @@ function ChplCompareDisplay({ onClose }) {
           Compare products
         </Button>
         <Button
-          className={classes.deleteButtonOutlined}
+          sx={styles.deleteButtonOutlined}
           fullWidth
           variant="outlined"
           id="remove-listings"
@@ -218,8 +214,8 @@ function ChplCompareDisplay({ onClose }) {
         >
           Remove all products
         </Button>
-      </div>
-      <ChplCompareWidgetHelpFooter classes={classes} />
+      </Box>
+      <ChplCompareWidgetHelpFooter />
     </CardContent>
   );
 }

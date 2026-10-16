@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { arrayOf, bool, string } from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -17,11 +17,11 @@ import {
 } from 'components/filter/filters';
 import { AnalyticsContext, useAnalyticsContext, UserContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 283px)',
   },
-});
+};
 
 const staticFilters = [{
   ...defaultFilter,
@@ -129,7 +129,6 @@ function ChplComplaints({
   const [disallowedFilters, setDisallowedFilters] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
-  const classes = useStyles();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -187,13 +186,13 @@ function ChplComplaints({
         filters={filters}
         storageKey="storageKey-complaintsComponent"
       >
-        <div className={classes.fixFooterSpacing}>
+        <Box sx={styles.fixFooterSpacing}>
           <ChplComplaintsView
             bonusQuery={bonusQuery}
             canAdd={canAdd}
             canEdit={canEdit}
           />
-        </div>
+        </Box>
       </FilterProvider>
     </AnalyticsContext.Provider>
   );

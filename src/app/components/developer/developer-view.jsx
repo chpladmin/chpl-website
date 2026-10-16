@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -10,8 +11,7 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Timeline,
   TimelineConnector,
@@ -19,14 +19,14 @@ import {
   TimelineDot,
   TimelineItem,
   TimelineSeparator,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import { bool, func } from 'prop-types';
-import BlockIcon from '@material-ui/icons/Block';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import ErrorIcon from '@material-ui/icons/Error';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import BlockIcon from '@mui/icons-material/Block';
+import CallMergeIcon from '@mui/icons-material/CallMerge';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ErrorIcon from '@mui/icons-material/Error';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import ChplOrganizationActivity from 'components/activity/organization-activity';
 import { compareDeveloper } from 'components/activity/services/developers.service';
@@ -41,8 +41,7 @@ import {
 } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const styles = {
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -70,11 +69,6 @@ const useStyles = makeStyles({
     display: 'grid',
     padding: '4px',
   },
-  MuiAccordionroot: {
-    '&.MuiAccordion-root:before': {
-      backgroundColor: 'transparent',
-    },
-  },
   statusHistorySummary: {
     backgroundColor: palette.white,
     boxShadow: 'none',
@@ -86,19 +80,22 @@ const useStyles = makeStyles({
     border: `.5px solid ${palette.divider}`,
     fontWeight: 'bold',
     marginTop: '8px',
+    '&:before': {
+      backgroundColor: 'transparent',
+    },
   },
-});
+};
 
 const isActive = (statuses) => !statuses || statuses.length === 0 || statuses.every((status) => status.endDate);
 
-const getStatusData = (statuses, classes) => {
+const getStatusData = (statuses) => {
   const current = statuses
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
   if (current.endDate) { return undefined; }
   const rest = statuses
     .sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
   return (
-    <div className={classes.fullWidth}>
+    <Box sx={styles.fullWidth}>
       <Typography variant="body1" gutterBottom>
         <strong>Status</strong>
         <br />
@@ -118,19 +115,16 @@ const getStatusData = (statuses, classes) => {
       {rest.length > 0
         && (
           <Accordion
-            className={classes.statusHistory}
-            classes={{
-              root: classes.MuiAccordionroot,
-            }}
+            sx={styles.statusHistory}
           >
             <AccordionSummary
-              className={classes.statusHistorySummary}
+              sx={styles.statusHistorySummary}
               expandIcon={<ExpandMoreIcon color="primary" />}
             >
               Status History
             </AccordionSummary>
             <AccordionDetails
-              className={classes.historyContent}
+              sx={styles.historyContent}
             >
               {rest.map((status, idx) => (
                 <Timeline
@@ -191,7 +185,7 @@ const getStatusData = (statuses, classes) => {
             </AccordionDetails>
           </Accordion>
         )}
-    </div>
+    </Box>
   );
 };
 
@@ -207,7 +201,6 @@ function ChplDeveloperView(props) {
   const { analytics } = useAnalyticsContext();
   const { developer } = useContext(DeveloperContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const classes = useStyles();
 
   const can = (action) => {
     if (action === 'edit') {
@@ -266,8 +259,8 @@ function ChplDeveloperView(props) {
     >
       <CardHeader
         title={(
-          <div className={classes.headerContainer}>
-            <div className={classes.developerHeaderContainer}>{isSplitting ? 'Original Developer' : developer.name}</div>
+          <Box sx={styles.headerContainer}>
+            <Box sx={styles.developerHeaderContainer}>{isSplitting ? 'Original Developer' : developer.name}</Box>
             { can('edit') && !hasAnyRole(['chpl-developer'])
               && (
                 <ChplOrganizationActivity
@@ -276,12 +269,12 @@ function ChplDeveloperView(props) {
                   interpret={compareDeveloper}
                 />
               )}
-          </div>
+          </Box>
         )}
         component="div"
-        className={classes.developerHeader}
+        sx={styles.developerHeader}
       />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <div>
           <Typography variant="body1" gutterBottom>
             <strong>Developer code</strong>
@@ -294,22 +287,22 @@ function ChplDeveloperView(props) {
               <Typography variant="body1" gutterBottom>
                 <strong>Contact</strong>
                 <br />
-                <span className={classes.srOnly}>Full name: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Full name: </Box>
                 {developer.contact.fullName}
                 {developer.contact.title
                   && (
                     <>
                       ,
                       {' '}
-                      <span className={classes.srOnly}>Title: </span>
+                      <Box component="span" sx={utilStyles.srOnly}>Title: </Box>
                       {developer.contact.title}
                     </>
                   )}
                 <br />
-                <span className={classes.srOnly}>Phone: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Phone: </Box>
                 {developer.contact.phoneNumber}
                 <br />
-                <span className={classes.srOnly}>Email: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Email: </Box>
                 {developer.contact.email}
               </Typography>
             )}
@@ -326,35 +319,35 @@ function ChplDeveloperView(props) {
               <Typography variant="body1" gutterBottom>
                 <strong>Address</strong>
                 <br />
-                <span className={classes.srOnly}>Line 1: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Line 1: </Box>
                 {developer.address.line1}
                 {developer.address.line2
                   && (
                     <>
                       ,
                       {' '}
-                      <span className={classes.srOnly}>Line 2: </span>
+                      <Box component="span" sx={utilStyles.srOnly}>Line 2: </Box>
                       {developer.address.line2}
                     </>
                   )}
                 <br />
-                <span className={classes.srOnly}>City: </span>
+                <Box component="span" sx={utilStyles.srOnly}>City: </Box>
                 {developer.address.city}
                 ,
                 {' '}
-                <span className={classes.srOnly}>State: </span>
+                <Box component="span" sx={utilStyles.srOnly}>State: </Box>
                 {developer.address.state}
                 {' '}
-                <span className={classes.srOnly}>Zipcode: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Zipcode: </Box>
                 {developer.address.zipcode}
                 ,
                 {' '}
-                <span className={classes.srOnly}>Country: </span>
+                <Box component="span" sx={utilStyles.srOnly}>Country: </Box>
                 {developer.address.country}
               </Typography>
             )}
         </div>
-        <div className={classes.fullWidth}>
+        <Box sx={styles.fullWidth}>
           {developer.website
             && (
               <Typography variant="body1" gutterBottom>
@@ -365,12 +358,12 @@ function ChplDeveloperView(props) {
                 />
               </Typography>
             )}
-        </div>
-        {developer.statuses?.length > 0 && getStatusData(developer.statuses, classes)}
+        </Box>
+        {developer.statuses?.length > 0 && getStatusData(developer.statuses)}
       </CardContent>
       { (can('edit') || can('split') || can('join'))
         && (
-          <CardActions className={classes.cardActions}>
+          <CardActions>
             <ButtonGroup
               color="primary"
             >
