@@ -1,4 +1,4 @@
-import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { compareBoolean, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const lookup = {
@@ -16,11 +16,11 @@ const lookup = {
   'root.address.streetLineOne': { message: (before, after) => comparePrimitive(before, after, 'streetLineOne', 'Street Line 1') },
   'root.address.streetLineTwo': { message: (before, after) => comparePrimitive(before, after, 'streetLineTwo', 'Street Line 2') },
   'root.address.zipcode': { message: (before, after) => comparePrimitive(before, after, 'zipcode', 'Zipcode') },
-  'root.deleted': { message: (before, after) => comparePrimitive(before, after, 'deleted', 'Deleted') },
+  'root.deleted': { message: (before, after) => compareBoolean(before, after, 'deleted', 'Deleted') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.lastModifiedUser': { message: () => undefined },
   'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
-  'root.retired': { message: (before, after) => comparePrimitive(before, after, 'retired', 'Retired') },
+  'root.retired': { message: (before, after) => compareBoolean(before, after, 'retired', 'Retired') },
   'root.retirementDate': { message: (before, after) => comparePrimitive(before, after, 'retirementDate', 'Retirement Date', getDisplayDateFormat) },
   'root.retirementDay': { message: (before, after) => comparePrimitive(before, after, 'retirementDay', 'Retirement Day', getDisplayDateFormat) },
   'root.website': { message: (before, after) => comparePrimitive(before, after, 'website', 'Website') },
