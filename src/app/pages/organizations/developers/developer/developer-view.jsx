@@ -59,17 +59,6 @@ function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { demographicChangeRequestIsOn, insightsDisplayIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
-  const usersQuery = useFetchUsersAtDeveloper({
-    developer,
-    enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id })),
-  });
-  const [state, setState] = useState('view');
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    if (usersQuery.isLoading || !usersQuery.isSuccess) { return; }
-    setUsers(usersQuery.data.users);
-  }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
 
   const can = (action) => {
     if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }); } // only DEVELOPER can manage tracking
@@ -87,6 +76,19 @@ function ChplDeveloperView({ dispatch }) {
     console.error(`Unknown "can" action: ${action}`);
     return false;
   };
+
+  const canManageUsers = can('manageUsers');
+  const usersQuery = useFetchUsersAtDeveloper({
+    developer,
+    enabled: canManageUsers,
+  });
+  const [state, setState] = useState('view');
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (usersQuery.isLoading || !usersQuery.isSuccess) { return; }
+    setUsers(usersQuery.data.users);
+  }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
 
   const handleProductDispatch = ({ action, payload }) => {
     switch (action) {
@@ -171,7 +173,7 @@ function ChplDeveloperView({ dispatch }) {
         {state === 'view' && (
         <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
-        {(state === 'view' || state === 'editUser') && can('manageUsers') && (
+        {(state === 'view' || state === 'editUser') && canManageUsers && (
           <ChplUsers
             users={users}
             dispatch={handleUserDispatch}

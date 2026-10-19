@@ -97,7 +97,6 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Your account has been created. Please check your email for your temporary password', {
               variant: 'success',
             });
-            setState('login');
             goToState('search');
           },
           onError: (error) => {
