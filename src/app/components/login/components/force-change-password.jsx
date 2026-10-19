@@ -115,6 +115,7 @@ function ChplForceChangePassword({ dispatch, sessionId, userName }) {
     if (user?.fullName) { vals.push(user.fullName); }
     if (user?.email) { vals.push(user.email); }
     if (user?.phoneNumber) { vals.push(user.phoneNumber); }
+    if (userName) { vals.push(userName); }
     const passwordStrength = zxcvbn(event.target.value, vals);
     formik.values.passwordStrength = passwordStrength.score;
     setStrength(passwordStrength.score);

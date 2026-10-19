@@ -55,7 +55,7 @@ function ChplRegisterUser({ hash }) {
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       handleDispatch('authorize', {});
     }
-  }, [hash]);
+  }, []);
 
   handleDispatch = (action, payload) => {
     let packet;
@@ -98,6 +98,7 @@ function ChplRegisterUser({ hash }) {
               variant: 'success',
             });
             setState('login');
+            goToState('search');
           },
           onError: (error) => {
             let errorMessage;
