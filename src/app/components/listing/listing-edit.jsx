@@ -32,6 +32,7 @@ import { useFetchCertificationStatuses } from 'api/data';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareCertificationStatuses } from 'services/listing.service';
 import { compareStrings } from 'services/sort.service';
 import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
 
@@ -119,7 +120,7 @@ function ChplListingEdit({
 
   useEffect(() => {
     if (statusesIsLoading || !statusesIsSuccess) { return; }
-    setStatuses([...statusesData].sort((a, b) => compareStrings(a.name, b.name)));
+    setStatuses([...statusesData].sort((a, b) => compareCertificationStatuses(a.name, b.name)));
   }, [statusesData, statusesIsLoading, statusesIsSuccess]);
 
   useEffect(() => {

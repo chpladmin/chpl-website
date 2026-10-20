@@ -35,6 +35,26 @@ const getStatusIcon = (status) => {
   }
 };
 
+// The order of the certification status legend, which the status filter and every
+// list of statuses follow. Names it doesn't know about go last, by name.
+const certificationStatusOrder = [
+  'Active',
+  'Suspended by ONC',
+  'Suspended by ONC-ACB',
+  'Terminated by ONC',
+  'Withdrawn by Developer Under Surveillance/Review',
+  'Withdrawn by ONC-ACB',
+  'Withdrawn by Developer',
+  'Retired',
+];
+const getCertificationStatusOrder = (name) => (certificationStatusOrder.includes(name)
+  ? certificationStatusOrder.indexOf(name)
+  : certificationStatusOrder.length);
+
+// Compares certification status names for sorting, in legend order
+const compareCertificationStatuses = (a, b) => getCertificationStatusOrder(a) - getCertificationStatusOrder(b)
+  || compareStrings(a, b);
+
 const isListingActive = (listing) => ['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(listing.currentStatus?.status?.name);
 
 // Listings reach the compare widget in two shapes: search results carry `version.name`
@@ -52,6 +72,8 @@ const compareListingsForDisplay = (a, b) => compareStrings(a.product?.name, b.pr
   || compareStrings(getCertificationDay(a), getCertificationDay(b));
 
 export {
+  certificationStatusOrder,
+  compareCertificationStatuses,
   compareListingsForDisplay,
   getStatusIcon,
   isListingActive,
