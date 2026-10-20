@@ -1,4 +1,4 @@
-import { compareListingsForDisplay } from './listing.service';
+import { compareCertificationStatuses, compareListingsForDisplay } from './listing.service';
 
 // A full listing, as the listing page and the compare page get it
 const full = (id, product, version, certificationDay) => ({
@@ -50,5 +50,33 @@ describe('compareListingsForDisplay', () => {
       full(2, 'Product', '1', '2019-03-01'),
       searchResult(3, 'Product', 'v0', '2025-01-01'),
     ])).toEqual([2, 1, 3]);
+  });
+});
+
+describe('compareCertificationStatuses', () => {
+  const legendOrder = [
+    'Active',
+    'Suspended by ONC',
+    'Suspended by ONC-ACB',
+    'Terminated by ONC',
+    'Withdrawn by Developer Under Surveillance/Review',
+    'Withdrawn by ONC-ACB',
+    'Withdrawn by Developer',
+    'Retired',
+  ];
+
+  it('orders statuses as the legend does, not by name', () => {
+    const shuffled = [...legendOrder].sort().reverse();
+
+    expect(shuffled.sort(compareCertificationStatuses)).toEqual(legendOrder);
+  });
+
+  it('puts statuses the legend does not know about last, by name ignoring case', () => {
+    expect(['zeta', 'Retired', 'Alpha', 'Active', 'beta'].sort(compareCertificationStatuses))
+      .toEqual(['Active', 'Retired', 'Alpha', 'beta', 'zeta']);
+  });
+
+  it('treats the same status as equal', () => {
+    expect(compareCertificationStatuses('Active', 'Active')).toBe(0);
   });
 });
