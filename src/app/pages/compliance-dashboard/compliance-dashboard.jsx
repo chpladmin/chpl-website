@@ -38,7 +38,7 @@ const reports = [{
   title: 'Important Dates',
   uniqueClass: 'lessTopMargin',
 }, {
-  title: 'Direct Review Non-conformities',
+  title: 'Direct Review Activities',
 }, {
   title: 'Questionable URLs',
 }, {
